@@ -884,6 +884,11 @@
         }
 
         // Show register form
+        // Auto-show register form if #register hash is present
+        if (window.location.hash === '#register') {
+            window.showRegister();
+        }
+
         window.showRegister = function() {
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('registerForm').style.display = 'block';
