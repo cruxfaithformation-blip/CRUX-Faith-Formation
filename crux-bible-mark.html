@@ -1,0 +1,1029 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — The Gospel of Mark</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --navy: #1a1f36;
+    --navy-light: #252b47;
+    --navy-mid: #2e3555;
+    --gold: #d4a574;
+    --gold-light: #e8c9a0;
+    --gold-pale: #f5ead8;
+    --cream: #faf7f2;
+    --white: #ffffff;
+    --off-white: #f4f3ef;
+    --border: rgba(26,31,54,0.1);
+    --border-gold: rgba(212,165,116,0.3);
+    --text-primary: #1a1f36;
+    --text-secondary: #5a6080;
+    --text-muted: #8a90aa;
+    --shadow-sm: 0 1px 4px rgba(0,0,0,0.07);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--text-primary);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--navy);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  }
+
+  .site-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    text-decoration: none;
+    letter-spacing: 4px;
+  }
+
+  .site-nav { list-style: none; display: flex; gap: 1.5rem; }
+  .site-nav a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.82rem; font-weight: 500; transition: color 0.2s; }
+  .site-nav a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  .module-hero {
+    background: var(--navy);
+    padding: 3.5rem 2rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .module-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(212,165,116,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .module-track {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .module-part-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 0.25rem 0.85rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+  }
+
+  .module-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .module-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 1.25rem;
+  }
+
+  .module-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.4);
+    font-weight: 500;
+  }
+
+  .module-grade-badge {
+    display: inline-block;
+    background: rgba(212,165,116,0.15);
+    border: 1px solid rgba(212,165,116,0.3);
+    color: var(--gold);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 0.3rem 0.85rem;
+    border-radius: 20px;
+    margin-top: 1rem;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar {
+    background: var(--navy-light);
+    padding: 0.7rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+    position: sticky;
+    top: 57px;
+    z-index: 90;
+  }
+
+  .progress-label { font-size: 0.72rem; font-weight: 600; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+  .progress-track { flex: 1; height: 3px; background: var(--navy-mid); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 0; background: var(--gold); border-radius: 2px; transition: width 0.5s ease; }
+  .progress-count { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; }
+
+  /* ── LAYOUT ── */
+  .module-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+    align-items: start;
+  }
+
+  /* ── SECTION SYSTEM ── */
+  .module-section {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+  }
+
+  .module-section.locked .section-inner { filter: blur(3px); pointer-events: none; user-select: none; }
+  .module-section.locked .continue-btn-wrap { display: none; }
+
+  .lock-overlay {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 0.85rem 1.25rem;
+    background: rgba(250,247,242,0.92);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    backdrop-filter: blur(4px);
+  }
+
+  .module-section.locked .lock-overlay { display: flex; }
+  .lock-icon { font-size: 1rem; }
+
+  .section-sep { height: 1px; background: var(--border); margin: 2rem 0; }
+
+  .section-inner { padding: 2rem 0; }
+
+  .section-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-number {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--gold);
+    font-size: 0.78rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .section-divider { flex: 1; height: 0.5px; background: var(--border); }
+
+  .section-body p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 1.1rem;
+  }
+
+  .section-body p:last-child { margin-bottom: 0; }
+
+  /* Content blocks */
+  .scripture-opening {
+    margin-bottom: 2rem;
+    padding: 1.75rem 2rem;
+    background: var(--navy);
+    border-radius: 8px;
+    border-left: 3px solid var(--gold);
+  }
+
+  .scripture-mark { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); line-height: 0; vertical-align: -0.4em; margin-right: 0.1em; }
+  .scripture-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.6; display: inline; }
+  .scripture-ref { display: block; font-size: 0.78rem; font-weight: 600; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 0.75rem; }
+
+  .pull-quote {
+    margin: 1.75rem 0;
+    padding: 1.5rem 1.75rem;
+    background: var(--navy);
+    border-radius: 8px;
+  }
+
+  .pull-quote p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.85) !important;
+    line-height: 1.65;
+    margin: 0 !important;
+  }
+
+  .pull-quote cite {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 0.6rem;
+    font-style: normal;
+  }
+
+  .scripture-callout {
+    display: flex;
+    gap: 14px;
+    background: var(--white);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    align-items: flex-start;
+  }
+
+  .scripture-callout .sc-ref {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding-top: 2px;
+    min-width: 64px;
+  }
+
+  .scripture-callout p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.98rem;
+    color: var(--text-primary) !important;
+    line-height: 1.6;
+    margin: 0 !important;
+  }
+
+  .key-word-box {
+    background: var(--gold-pale);
+    border-radius: 8px;
+    padding: 1.5rem 1.75rem;
+    border: 0.5px solid var(--border-gold);
+    margin: 1.5rem 0;
+  }
+
+  .key-word-box h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--navy);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .key-word-box p {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 0.5rem !important;
+  }
+
+  .theme-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin: 1rem 0 1.25rem;
+  }
+
+  .theme-list li {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    align-items: flex-start;
+    line-height: 1.6;
+  }
+
+  .theme-list li::before {
+    content: '✦';
+    color: var(--gold);
+    font-size: 0.65rem;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  /* Reflection block */
+  .reflection-block {
+    background: var(--navy);
+    border-radius: 8px;
+    padding: 1.5rem 1.75rem;
+    margin-top: 1.25rem;
+  }
+
+  .reflection-block h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+
+  .reflection-block p {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.6) !important;
+    margin-bottom: 0.85rem !important;
+    line-height: 1.65;
+  }
+
+  .reflection-textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 0.5px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    padding: 0.85rem 1rem;
+    color: rgba(255,255,255,0.85);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    resize: vertical;
+    min-height: 80px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .reflection-textarea:focus { border-color: var(--gold); }
+  .reflection-textarea::placeholder { color: rgba(255,255,255,0.25); }
+
+  /* Discussion block */
+  .discussion-block {
+    background: var(--navy-light);
+    border-radius: 8px;
+    padding: 1.5rem 1.75rem;
+    margin: 1.25rem 0;
+  }
+
+  .discussion-block h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--white);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+
+  .discussion-block ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .discussion-block ul li {
+    font-size: 0.92rem;
+    color: rgba(255,255,255,0.65);
+    padding-left: 1.1rem;
+    border-left: 2px solid var(--gold);
+    line-height: 1.6;
+  }
+
+  /* Continue button */
+  .continue-btn-wrap { margin-top: 1.75rem; }
+
+  .continue-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1.75rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.2s;
+    letter-spacing: 0.03em;
+  }
+
+  .continue-btn:hover { background: var(--gold-light); }
+
+  /* Completion banner */
+  .next-part-banner {
+    display: none;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    border: 1px solid var(--border-gold);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+
+  .next-part-banner.visible { display: block; }
+  .next-part-banner h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--white); margin-bottom: 0.5rem; }
+  .next-part-banner p { font-size: 0.9rem; color: rgba(255,255,255,0.55); margin-bottom: 1.25rem; }
+
+  .next-part-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    border-radius: 6px;
+    padding: 0.85rem 2rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.2s;
+    letter-spacing: 0.03em;
+  }
+
+  .next-part-btn:hover { background: var(--gold-light); }
+
+  /* ── SIDEBAR ── */
+  .module-sidebar { position: sticky; top: 110px; display: flex; flex-direction: column; gap: 1rem; }
+
+  .sidebar-card {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 1.25rem;
+    box-shadow: var(--shadow-sm);
+    border: 0.5px solid var(--border);
+  }
+
+  .sidebar-card-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.85rem;
+  }
+
+  .sections-nav { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
+
+  .sections-nav li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    padding: 0.35rem 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+
+  .nav-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--border);
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+
+  .sections-nav li.s-active { color: var(--navy); font-weight: 600; background: var(--off-white); }
+  .sections-nav li.s-active .nav-dot { background: var(--gold); }
+  .sections-nav li.s-done { color: var(--text-secondary); }
+  .sections-nav li.s-done .nav-dot { background: #4caf50; }
+
+  .scripture-item {
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+    align-items: baseline;
+  }
+
+  .scripture-item-ref {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+    min-width: 52px;
+  }
+
+  .scripture-item-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  .track-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+    font-size: 0.82rem;
+  }
+
+  .track-dot {
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.65rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+
+  .track-dot.current { background: var(--gold); color: var(--navy); }
+  .track-dot.upcoming { background: var(--off-white); color: var(--text-muted); border: 1px solid var(--border); }
+
+  .current-item { color: var(--navy); font-weight: 600; }
+  .upcoming-item { color: var(--text-muted); }
+
+  /* Nav bottom bar */
+  .nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    position: sticky;
+    bottom: 0;
+  }
+
+  .nav-btn {
+    padding: 0.6rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    border: none;
+    transition: all 0.2s;
+  }
+
+  .nav-btn:not(.primary) { background: var(--off-white); color: var(--text-secondary); }
+  .nav-btn:not(.primary):hover { background: var(--border); }
+  .nav-btn.primary { background: var(--gold); color: var(--navy); }
+  .nav-btn.primary:hover { background: var(--gold-light); }
+
+  @media (max-width: 800px) {
+    .module-layout { grid-template-columns: 1fr; }
+    .module-sidebar { display: none; }
+    .site-nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="site-logo">CRUX</a>
+  <nav><ul class="site-nav">
+    <li><a href="crux-account.html">My Account</a></li>
+    <li><a href="index.html#bible">Bible Study</a></li>
+    <li><a href="crux-adult-formation.html">Adult Track</a></li>
+    <li><a href="index.html">Home</a></li>
+  </ul></nav>
+</header>
+
+<div class="module-hero">
+  <div class="module-track">Bible Study — Grades 6–8</div>
+  <div class="module-part-badge">Study 1 of 5 — Older Students</div>
+  <h1 class="module-title">The Gospel of Mark</h1>
+  <p class="module-subtitle">Who Is This Man? — A Close Reading of the Fastest Gospel</p>
+  <div class="module-meta">
+    <span>&#9679; 8 sections</span>
+    <span>&#9679; 4 reflection questions</span>
+    <span>&#9679; 8 scripture passages</span>
+    <span>&#9679; Discussion questions</span>
+  </div>
+  <div class="module-grade-badge">Grades 6–8</div>
+</div>
+
+<div class="progress-bar">
+  <span class="progress-label">Progress</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="progress-count" id="progressCount">0 of 8 sections complete</span>
+</div>
+
+<div class="module-layout">
+<main class="module-content">
+
+  <div class="scripture-opening">
+    <span class="scripture-mark">&ldquo;</span>
+    <p class="scripture-text">Who is this? Even the wind and the sea obey him.</p>
+    <span class="scripture-ref">Mark 4:41</span>
+  </div>
+
+  <!-- Section 1: The Fastest Gospel -->
+  <div class="module-section" id="s1">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">1</div>
+        <span class="section-label">The Fastest Gospel</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Mark's Gospel is the shortest of the four — and the fastest. The word <em>immediately</em> appears 41 times. Jesus doesn't sit down and give long speeches. He moves. He acts. He heals. He argues. He silences storms. Mark writes like someone who has urgent news and no time to waste.</p>
+        <p>This study is going to work through Mark's Gospel asking one question on every page: <em>who is this man?</em> That's the question his disciples ask in chapter 4, sitting in a boat after Jesus has just told a violent storm to be quiet — and it was. That's the question the whole Gospel is trying to answer.</p>
+        <p>Before we begin, a quick note: Mark was not an apostle. He wasn't one of the twelve. Most scholars believe he was a close companion of Peter, and that his Gospel is essentially Peter's eyewitness account — urgent, vivid, full of details only someone who was there would notice. When Mark says the disciples "looked at each other in terror," he's reporting what Peter actually remembered.</p>
+
+        <div class="key-word-box">
+          <h4>Why Mark First?</h4>
+          <p>Mark was almost certainly written before the other Gospels — probably between AD 65–70, when Peter was still alive. Matthew and Luke both use Mark as a source. John writes last and goes deepest theologically. Reading Mark first is like hearing the news before anyone has had time to reflect on it.</p>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(1)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 2: Immediately -->
+  <div class="module-section locked" id="s2">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">2</div>
+        <span class="section-label">Immediately</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Open your Bible to Mark 1. Read the first twenty verses. Count how many times the word "immediately" appears. By verse 20, Jesus has been baptized, tempted in the desert, and called four fishermen away from their nets — and all of it happens in less than one chapter.</p>
+        <p>This pace is deliberate. Mark wants you to feel the urgency. Something has happened in history that cannot wait. The kingdom of God is breaking into the world right now, and everyone in Jesus's path has to decide what to do about him.</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Mk 1:16–18</span>
+          <p>"As Jesus walked beside the Sea of Galilee, he saw Simon and his brother Andrew casting a net into the lake, for they were fishermen. 'Come, follow me,' Jesus said, 'and I will send you out to fish for people.' At once they left their nets and followed him."</p>
+        </div>
+
+        <p>At once. They left everything. No deliberation, no two weeks' notice. Mark doesn't explain why. He just reports what happened. And what happened was that two fishermen — not scholars, not religious leaders, not important people — dropped what they were doing and followed a stranger.</p>
+        <p>The key question isn't why they followed. It's: what did they see in him that made it an obvious decision?</p>
+
+        <div class="reflection-block">
+          <h4>Reflection</h4>
+          <p>If someone came to you today and said "follow me," what would it take for you to actually go? What does that say about what Jesus must have been like in person?</p>
+          <textarea class="reflection-textarea" placeholder="Write your thoughts here..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(2)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 3: With Authority -->
+  <div class="module-section locked" id="s3">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">3</div>
+        <span class="section-label">With Authority</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>One of the first things people notice about Jesus in Mark's Gospel is that he teaches differently. The religious leaders of his day would say "Rabbi So-and-So said this, and Rabbi Such-and-Such disagreed." They argued about tradition. They cited sources.</p>
+        <p>Jesus just says what's true. "You have heard it said — but <em>I say to you</em>." No citations. No committee approval. Just: this is how things are. The crowds notice immediately.</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Mk 1:27</span>
+          <p>"The people were all so amazed that they asked each other, 'What is this? A new teaching — and with authority! He even gives orders to impure spirits and they obey him.'"</p>
+        </div>
+
+        <p>The miracles and the teaching go together in Mark. He doesn't just tell people what's right — he has the power to actually change things. He doesn't just say "be healed." People are healed. He doesn't just say "be free." Demons leave.</p>
+        <p>Mark is making a point: Jesus has authority over the natural world, the spiritual world, and the moral world. That combination doesn't fit any normal category. The people asking "what is this?" are asking the right question.</p>
+
+        <div class="pull-quote">
+          <p>"He was not like the scribes. He spoke as one who had the right."</p>
+          <cite>— Mark 1:22 (paraphrased)</cite>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(3)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 4: Who He Chose -->
+  <div class="module-section locked" id="s4">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">4</div>
+        <span class="section-label">Who He Chose</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Look at who Jesus spends time with in Mark's Gospel. A man with a demon. A leper. A paralyzed man whose friends broke through a roof to get him close. A woman who had been bleeding for twelve years and was considered unclean. A dead girl. Blind Bartimaeus screaming on the side of the road while the crowd told him to shut up.</p>
+        <p>Every single one of these people was, in some way, excluded. Untouchable. Not the kind of person a respectable rabbi would associate with in public. Jesus not only associates with them — he makes them the point. He crosses every social line to get to them.</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Mk 2:16–17</span>
+          <p>"When the teachers of the law who were Pharisees saw him eating with the sinners and tax collectors, they asked his disciples: 'Why does he eat with tax collectors and sinners?' On hearing this, Jesus said to them, 'It is not the healthy who need a doctor, but the sick. I have not come to call the righteous, but sinners.'"</p>
+        </div>
+
+        <p>This is a direct shot at the religious establishment. The Pharisees were the most respected religious leaders in Israel. They kept all the rules. Jesus is saying: you've entirely missed the point of the rules. The point was always the people the rules were supposed to serve.</p>
+        <p>This gets him in trouble almost immediately — and he knows it will. But he doesn't stop.</p>
+
+        <div class="reflection-block">
+          <h4>Reflection</h4>
+          <p>Who in your school or community would be the modern equivalent of the people Jesus was spending time with? What would it cost to be seen with them?</p>
+          <textarea class="reflection-textarea" placeholder="Write your thoughts here..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(4)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 5: The Question -->
+  <div class="module-section locked" id="s5">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">5</div>
+        <span class="section-label">The Question</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>In Mark chapter 8, Jesus asks his disciples the most important question in the Gospel — maybe the most important question in history:</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Mk 8:27–29</span>
+          <p>"Jesus and his disciples went on to the villages around Caesarea Philippi. On the way he asked them, 'Who do people say I am?' They replied, 'Some say John the Baptist; others say Elijah; and still others, one of the prophets.' 'But what about you?' he asked. 'Who do you say I am?' Peter answered, 'You are the Messiah.'"</p>
+        </div>
+
+        <p>This question sits at the exact center of Mark's Gospel — both structurally and theologically. Everything before it has been building to this point. Everything after it is the consequence of Peter's answer.</p>
+        <p>Jesus doesn't let anyone stay neutral. The crowd has opinions — he's John the Baptist, or Elijah, or a prophet. All respectful answers. All wrong. But the disciples have been with him for months. They've seen things no one else has seen. So Jesus presses: <em>but what about you?</em></p>
+        <p>Peter says: Messiah. The anointed one. The one who was supposed to come and set everything right. It's the right answer — but as the next few chapters show, Peter doesn't fully understand what it means. And neither would we.</p>
+
+        <div class="key-word-box">
+          <h4>What Does "Messiah" Mean?</h4>
+          <p>The Hebrew word Messiah (Greek: Christ) means "anointed one." In Jewish tradition, this referred to a coming king who would deliver Israel. Most people expected a political or military leader. What they got was something far stranger and more radical: a king who rode into Jerusalem on a donkey and died on a cross.</p>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(5)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 6: The Road to Jerusalem -->
+  <div class="module-section locked" id="s6">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">6</div>
+        <span class="section-label">The Road to Jerusalem</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>After Peter's confession, everything changes. Jesus begins telling his disciples what's going to happen. Three times — in chapters 8, 9, and 10 — he tells them plainly: the Son of Man is going to be handed over, killed, and will rise again on the third day.</p>
+        <p>Three times they don't understand. Or they don't want to. Peter, right after correctly identifying Jesus as the Messiah, pulls him aside and tells him this absolutely cannot happen. Jesus turns on him: <em>"Get behind me, Satan."</em></p>
+        <p>The disciples are thinking about who gets to sit at Jesus's right hand in the kingdom. They're arguing about which of them is the greatest. Jesus keeps trying to tell them what kingdom he's actually bringing — one where the greatest is the servant of all.</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Mk 10:45</span>
+          <p>"For even the Son of Man did not come to be served, but to serve, and to give his life as a ransom for many."</p>
+        </div>
+
+        <p>This is the operating logic of Jesus's entire ministry: power expressed through service and sacrifice. It was completely unintelligible to the culture of his day — and in many ways it still is. He's not overthinking it as a strategy. He means it literally. He's going to Jerusalem to die, and he knows it.</p>
+
+        <div class="pull-quote">
+          <p>"They were on their way up to Jerusalem, with Jesus leading the way, and the disciples were astonished, while those who followed were afraid."</p>
+          <cite>— Mark 10:32</cite>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(6)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 7: The Cross -->
+  <div class="module-section locked" id="s7">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">7</div>
+        <span class="section-label">The Cross</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Mark's account of the crucifixion is brutal and spare. There are no long speeches from the cross — just one cry:</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Mk 15:34</span>
+          <p>"At three in the afternoon Jesus cried out in a loud voice: 'Eloi, Eloi, lema sabachthani?' (which means 'My God, my God, why have you forsaken me?')"</p>
+        </div>
+
+        <p>This is a quotation of Psalm 22 — a psalm that begins in desolation and ends in vindication. Jesus isn't just expressing despair; he's praying a psalm his listeners would have known. But the raw anguish of it is real. The Son of God, on a cross, feeling abandoned by his Father.</p>
+        <p>Immediately after Jesus dies, two things happen that Mark places side by side: the veil in the Temple — the curtain separating ordinary people from the presence of God — tears in two. And a Roman soldier standing at the cross says something no Jewish person in the crowd has said in the entire Gospel:</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Mk 15:39</span>
+          <p>"And when the centurion, who stood there in front of Jesus, saw how he died, he said, 'Surely this man was the Son of God!'"</p>
+        </div>
+
+        <p>A pagan soldier. A representative of the empire that just executed Jesus. He's the first person in Mark's Gospel to say out loud what the whole Gospel has been trying to show. Not the religious leaders. Not the disciples. A Roman centurion who saw how he died.</p>
+
+        <div class="reflection-block">
+          <h4>Reflection</h4>
+          <p>Why do you think Mark places these two events together — the Temple veil tearing and the centurion's confession? What is he trying to say about what the cross means?</p>
+          <textarea class="reflection-textarea" placeholder="Write your thoughts here..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(7)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 8: The Empty Tomb -->
+  <div class="module-section locked" id="s8">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">8</div>
+        <span class="section-label">The Empty Tomb</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Mark's original ending — most scholars believe — stops at chapter 16, verse 8. Three women go to the tomb on Sunday morning to anoint Jesus's body. They find the stone rolled away. A young man in white tells them Jesus has risen and is going ahead of them to Galilee. And then:</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Mk 16:8</span>
+          <p>"Trembling and bewildered, the women went out and fled from the tomb. They said nothing to anyone, because they were afraid."</p>
+        </div>
+
+        <p>That's it. That's where Mark ends. No appearance of the risen Jesus. No triumphant ending. Just women running in fear from an empty tomb and a message they haven't yet delivered.</p>
+        <p>This ending is either a disaster or a masterstroke. Most scholars think it's deliberate. Mark ends his Gospel the way he began it — in the middle of things, urgent, unresolved. The story isn't over. The message still needs to be delivered. Someone still has to go to Galilee.</p>
+        <p>The question Mark leaves hanging is the same one he started with: <em>who is this man?</em> He has given you everything he has. The answer is waiting for you in Galilee.</p>
+
+        <div class="discussion-block">
+          <h4>Discussion Questions</h4>
+          <ul>
+            <li>Why do you think Mark ends his Gospel the way he does — with women fleeing in fear rather than a triumphant appearance?</li>
+            <li>Of all the people Jesus encounters in Mark — the leper, the paralyzed man, blind Bartimaeus, the centurion — who stands out most to you, and why?</li>
+            <li>The disciples keep failing to understand Jesus throughout Mark's Gospel. Does that make them more relatable or less? What does it say about who Jesus chooses?</li>
+            <li>If you had to answer Jesus's question — "But who do you say I am?" — what would you say right now, honestly?</li>
+          </ul>
+        </div>
+
+        <div class="reflection-block">
+          <h4>Final Reflection</h4>
+          <p>After working through Mark's Gospel, what do you understand about Jesus now that you didn't before? What question is still unanswered for you?</p>
+          <textarea class="reflection-textarea" placeholder="Write your thoughts here..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="completeStudy()">Complete Study &#10003;</button></div>
+  </div>
+
+  <!-- Completion Banner -->
+  <div class="next-part-banner" id="completionBanner">
+    <h3>&#10003; Study Complete</h3>
+    <p>You've finished The Gospel of Mark. The question Jesus asked his disciples is still the right one: <em>who do you say I am?</em></p>
+    <button class="next-part-btn" onclick="window.location.href='index.html#bible'">&#8592; Back to Bible Study</button>
+  </div>
+
+</main>
+
+<!-- Sidebar -->
+<aside class="module-sidebar">
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Sections</div>
+    <ul class="sections-nav" id="sideNav">
+      <li class="s-active"><span class="nav-dot"></span>The Fastest Gospel</li>
+      <li class="s-locked"><span class="nav-dot"></span>Immediately</li>
+      <li class="s-locked"><span class="nav-dot"></span>With Authority</li>
+      <li class="s-locked"><span class="nav-dot"></span>Who He Chose</li>
+      <li class="s-locked"><span class="nav-dot"></span>The Question</li>
+      <li class="s-locked"><span class="nav-dot"></span>Road to Jerusalem</li>
+      <li class="s-locked"><span class="nav-dot"></span>The Cross</li>
+      <li class="s-locked"><span class="nav-dot"></span>The Empty Tomb</li>
+    </ul>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Scripture in this study</div>
+    <div class="scripture-item"><span class="scripture-item-ref">Mk 1:16–18</span><span class="scripture-item-desc">The call of the first disciples</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Mk 1:27</span><span class="scripture-item-desc">Teaching with authority</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Mk 2:16–17</span><span class="scripture-item-desc">Eating with sinners</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Mk 8:27–29</span><span class="scripture-item-desc">Who do you say I am?</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Mk 10:45</span><span class="scripture-item-desc">Servant of all</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Mk 10:32</span><span class="scripture-item-desc">Leading the way to Jerusalem</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Mk 15:34</span><span class="scripture-item-desc">The cry from the cross</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Mk 15:39</span><span class="scripture-item-desc">The centurion's confession</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Mk 16:8</span><span class="scripture-item-desc">The empty tomb</span></div>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Other studies — Grades 6–8</div>
+    <div class="track-item current-item"><div class="track-dot current">1</div><span>The Gospel of Mark</span></div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">2</div><span>Acts of the Apostles</span></div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">3</div><span>Wisdom Literature</span></div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">4</div><span>The Passion Narratives</span></div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">5</div><span>The Letters of Paul</span></div>
+  </div>
+</aside>
+
+</div><!-- /module-layout -->
+
+<div class="nav-bar">
+  <button class="nav-btn" onclick="window.location.href='index.html#bible'">&#8592; Bible Study</button>
+  <button class="nav-btn primary" id="nextBtn" style="opacity:0.35;pointer-events:none;">Next Study &#8594;</button>
+</div>
+
+<script>
+  const TOTAL = 8;
+
+  function advance(n) {
+    const navItems = document.querySelectorAll('#sideNav li');
+    navItems[n - 1].classList.remove('s-active');
+    navItems[n - 1].classList.add('s-done');
+    updateProgress(n);
+    if (n < TOTAL) {
+      const next = document.getElementById('s' + (n + 1));
+      next.classList.remove('locked');
+      navItems[n].classList.remove('s-locked');
+      navItems[n].classList.add('s-active');
+      setTimeout(() => next.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+    }
+  }
+
+  function updateProgress(n) {
+    const pct = Math.round((n / TOTAL) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressCount').textContent = n + ' of ' + TOTAL + ' sections complete';
+  }
+
+  function completeStudy() {
+    const navItems = document.querySelectorAll('#sideNav li');
+    navItems[TOTAL - 1].classList.remove('s-active');
+    navItems[TOTAL - 1].classList.add('s-done');
+    updateProgress(TOTAL);
+    document.getElementById('completionBanner').classList.add('visible');
+    const btn = document.getElementById('nextBtn');
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+    setTimeout(() => document.getElementById('completionBanner').scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+  }
+</script>
+
+</body>
+</html>
