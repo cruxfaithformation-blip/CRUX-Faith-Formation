@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — Module 1A: The Man Who Changed Everything</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-LQ35DLTVKY');</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.reflection-block i, .reflection-block em, .reflection-question,
+.pull-quote i, .pull-quote em, .pull-quote-text,
+.beatitudes-block i, .beatitudes-block em, .beatitude,
+.closing-prayer i, .closing-prayer em, .prayer-text, .prayer-intro,
+.discussion-block i, .discussion-block em, .discussion-title,
+.honest-wrap i, .honest-wrap em,
+.scripture-opening i, .scripture-opening em, .scripture-text,
+.video-block i, .video-block em {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+:root {
+  --navy: #1a1f36;
+  --navy-light: #252b47;
+  --navy-mid: #2e3555;
+  --gold: #d4a574;
+  --gold-light: #e8c9a0;
+  --gold-pale: #f5ead8;
+  --cream: #faf7f2;
+  --text-primary: #1a1f36;
+  --text-secondary: #5a6080;
+  --text-muted: #8a90aa;
+  --border: rgba(26,31,54,0.1);
+  --white: #ffffff;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--cream);
+  color: var(--text-primary);
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+.site-header {
+  background: var(--navy);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.site-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  text-decoration: none;
+}
+.site-nav { display: flex; gap: 2rem; list-style: none; }
+.site-nav a { color: #8a90aa; text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.04em; transition: color 0.2s; }
+.site-nav a:hover { color: var(--gold); }
+
+.module-hero {
+  background: var(--navy);
+  padding: 5rem 2rem 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.module-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(212,165,116,0.13) 0%, transparent 70%);
+  pointer-events: none;
+}
+.module-track { display: inline-block; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); border: 0.5px solid rgba(212,165,116,0.4); padding: 4px 14px; border-radius: 20px; margin-bottom: 1.25rem; }
+.module-part-badge { display: block; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #6b7299; margin-bottom: 0.6rem; }
+.module-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.2rem); color: #fff; font-weight: 400; line-height: 1.2; margin-bottom: 0.6rem; max-width: 720px; margin-left: auto; margin-right: auto; }
+.module-subtitle { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--gold); font-style: italic; margin-bottom: 1.5rem; }
+.module-meta { display: flex; align-items: center; justify-content: center; gap: 1.25rem; font-size: 12px; color: #6b7299; flex-wrap: wrap; }
+.part-nav-bar { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1.75rem; }
+.part-pill { font-size: 12px; font-weight: 500; padding: 5px 16px; border-radius: 20px; border: 0.5px solid #3a4268; color: #6b7299; letter-spacing: 0.04em; }
+.part-pill.active { background: #2a3158; border-color: var(--gold); color: var(--gold); }
+.part-arrow { color: #3a4268; font-size: 12px; }
+
+.progress-bar { background: var(--navy-light); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 1rem; border-bottom: 0.5px solid rgba(255,255,255,0.06); position: sticky; top: 57px; z-index: 90; }
+.progress-label { font-size: 11px; color: #6b7299; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+.progress-track { flex: 1; height: 3px; background: #2e3555; border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: var(--gold); border-radius: 2px; transition: width 0.5s ease; }
+.progress-count { font-size: 11px; color: #6b7299; white-space: nowrap; }
+
+.module-layout { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; display: grid; grid-template-columns: 1fr 280px; gap: 4rem; align-items: start; }
+
+.module-section { margin-bottom: 0; }
+.module-section.locked .section-inner { opacity: 0.18; filter: blur(2px); user-select: none; pointer-events: none; }
+.module-section.locked .continue-btn-wrap { display: none; }
+.module-section.locked .reflection-block { display: none; }
+.module-section.locked .video-block { display: none; }
+
+.lock-overlay { display: none; align-items: center; gap: 12px; padding: 1rem 1.25rem; background: #f0efe8; border: 0.5px solid var(--border); border-radius: 6px; margin-bottom: 1.5rem; color: var(--text-muted); font-size: 13px; }
+.module-section.locked .lock-overlay { display: flex; }
+.lock-icon { width: 26px; height: 26px; background: rgba(26,31,54,0.07); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+
+.section-sep { height: 0.5px; background: var(--border); margin: 2.5rem 0; }
+
+.section-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+.section-number { width: 28px; height: 28px; border-radius: 50%; background: var(--navy); color: var(--gold); font-size: 11px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+.section-divider { flex: 1; height: 0.5px; background: var(--border); }
+
+.section-body { font-size: 16px; line-height: 1.9; color: var(--text-primary); }
+.section-body p { margin-bottom: 1.35rem; }
+.section-body p:last-child { margin-bottom: 0; }
+
+.scripture-opening { margin-bottom: 2.5rem; padding: 2.25rem 2.5rem; background: var(--navy); border-radius: 6px; border-left: 3px solid var(--gold); }
+.scripture-mark { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--gold); opacity: 0.2; line-height: 1; margin-bottom: -0.5rem; display: block; }
+.scripture-text { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: #fff; font-style: italic; line-height: 1.55; margin-bottom: 0.75rem; }
+.scripture-ref { font-size: 11px; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+.honest-wrap { background: var(--white); border: 0.5px solid var(--border); border-left: 3px solid var(--navy); border-radius: 6px; padding: 1.75rem 2rem; }
+
+.pull-quote { margin: 1.75rem 0; padding: 1.5rem 2rem; background: var(--navy); border-radius: 6px; }
+.pull-quote-text { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: #f0f1f7; font-style: italic; line-height: 1.65; margin-bottom: 0.5rem; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+.pull-quote-attr { font-size: 11px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
+
+.scripture-callout { display: flex; gap: 14px; background: var(--white); border: 0.5px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; margin: 1.25rem 0; align-items: flex-start; }
+.scripture-callout-ref { font-size: 11px; font-weight: 500; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; padding-top: 2px; min-width: 56px; }
+.scripture-callout-text { font-size: 14px; color: var(--text-secondary); line-height: 1.65; font-style: italic; }
+
+.figure-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 10px; margin: 1.5rem 0; }
+.figure-card { background: var(--white); border: 0.5px solid var(--border); border-radius: 6px; padding: 1rem 1.1rem; }
+.figure-name { font-size: 13px; font-weight: 500; color: var(--navy); margin-bottom: 3px; }
+.figure-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+
+.beatitudes-block { background: var(--navy); border-radius: 6px; padding: 1.75rem 2rem; margin: 1.5rem 0; }
+.beatitudes-label { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7a819e; margin-bottom: 1rem; }
+.beatitude { font-family: 'Playfair Display', serif; font-size: 1rem; color: #e8eaf2; font-style: italic; padding: 0.5rem 0; border-bottom: 0.5px solid #2e3555; line-height: 1.55; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+.beatitude:last-child { border-bottom: none; padding-bottom: 0; }
+
+.video-block { background: var(--navy-light); border-radius: 6px; padding: 1.5rem; margin-top: 1.5rem; }
+.video-label { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+.video-title { font-size: 14px; font-weight: 500; color: #fff; margin-bottom: 0.35rem; line-height: 1.4; }
+.video-desc { font-size: 13px; color: #9ba3c0; margin-bottom: 1rem; line-height: 1.6; }
+.video-embed-wrap { position: relative; width: 100%; padding-bottom: 56.25%; border-radius: 4px; overflow: hidden; background: #111726; }
+.video-embed-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+.video-placeholder { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; background: #1a2038; }
+.video-placeholder-icon { width: 52px; height: 52px; border-radius: 50%; background: #2e3a5e; border: 1.5px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 20px; }
+.video-placeholder-text { font-size: 12px; color: #7a819e; text-align: center; max-width: 200px; line-height: 1.5; }
+
+.reflection-block { background: var(--navy); border-radius: 6px; padding: 1.5rem 1.75rem; margin-top: 1.25rem; }
+.reflection-label { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+.reflection-question { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: #f0f1f7; font-style: italic; line-height: 1.65; margin-bottom: 1rem; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+.reflection-textarea { width: 100%; background: #252b47; border: 0.5px solid #3a4268; border-radius: 4px; padding: 0.85rem 1rem; color: #e8eaf2; font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.6; resize: vertical; min-height: 90px; outline: none; transition: border-color 0.2s; }
+.reflection-textarea::placeholder { color: #6b7299; }
+.reflection-textarea:focus { border-color: #b8895a; }
+
+.continue-btn-wrap { display: flex; justify-content: flex-end; margin-top: 1.1rem; }
+.continue-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: var(--navy); border: none; border-radius: 4px; padding: 10px 22px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.2s; letter-spacing: 0.02em; }
+.continue-btn:hover { background: var(--gold-light); }
+
+.journal-block { border: 1.5px solid var(--gold); border-radius: 6px; padding: 1.75rem 2rem; background: var(--white); margin-bottom: 1.25rem; }
+.journal-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+.journal-icon { width: 28px; height: 28px; background: var(--gold-pale); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.journal-label { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+.journal-prompt { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--text-primary); font-style: italic; line-height: 1.65; margin-bottom: 0.75rem; }
+.journal-note { font-size: 12px; color: var(--text-muted); font-style: italic; }
+
+.discussion-block { background: var(--navy-light); border-radius: 6px; padding: 1.75rem 2rem; }
+.discussion-label { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7a819e; margin-bottom: 0.5rem; }
+.discussion-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--gold-light); margin-bottom: 0.75rem; font-style: italic; line-height: 1.55; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+.discussion-body { font-size: 14px; color: #9ba3c0; line-height: 1.75; }
+.discussion-body p { margin-bottom: 0.75rem; }
+.discussion-body p:last-child { margin-bottom: 0; }
+
+.closing-prayer { background: var(--navy); border-radius: 6px; padding: 2.5rem; position: relative; }
+.prayer-intro { font-size: 14px; color: #7a819e; font-style: italic; margin-bottom: 1.5rem; line-height: 1.75; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.prayer-text { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: #e8eaf2; line-height: 2.1; font-style: italic; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+.prayer-line { display: block; }
+.prayer-amen { margin-top: 0.5rem; color: var(--gold); font-style: normal; font-weight: 600; letter-spacing: 0.1em; font-size: 0.85rem; text-transform: uppercase; }
+
+.next-part-banner { display: none; background: var(--navy); border: 1.5px solid var(--gold); border-radius: 6px; padding: 1.75rem 2rem; margin-top: 2rem; text-align: center; }
+.next-part-banner.visible { display: block; }
+.next-part-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--gold); margin-bottom: 0.5rem; }
+.next-part-text { font-size: 14px; color: #9ba3c0; margin-bottom: 1.25rem; line-height: 1.7; }
+.next-part-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: var(--navy); border: none; border-radius: 4px; padding: 11px 24px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.2s; letter-spacing: 0.02em; }
+.next-part-btn:hover { background: var(--gold-light); }
+
+.module-nav { display: flex; align-items: center; justify-content: space-between; padding: 2rem 0; border-top: 0.5px solid var(--border); margin-top: 2rem; }
+.nav-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--text-secondary); padding: 10px 20px; border: 0.5px solid var(--border); border-radius: 4px; background: var(--white); transition: all 0.2s; cursor: pointer; font-family: 'Inter', sans-serif; }
+.nav-btn:hover { border-color: var(--navy); color: var(--navy); }
+.nav-btn.primary { background: var(--navy); color: var(--gold); border-color: var(--navy); }
+.nav-btn.primary:hover { background: var(--navy-mid); }
+.nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+
+.module-sidebar { position: sticky; top: 110px; display: flex; flex-direction: column; gap: 1.25rem; }
+.sidebar-card { background: var(--white); border: 0.5px solid var(--border); border-radius: 6px; padding: 1.25rem 1.5rem; }
+.sidebar-card-title { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 0.5px solid var(--border); }
+
+.sections-nav { list-style: none; }
+.sections-nav li { padding: 0.5rem 0; border-bottom: 0.5px solid var(--border); display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-muted); }
+.sections-nav li:last-child { border-bottom: none; }
+.nav-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: background 0.2s; }
+.sections-nav li.s-active .nav-dot { background: var(--gold); }
+.sections-nav li.s-active { color: var(--navy); font-weight: 500; }
+.sections-nav li.s-done .nav-dot { background: var(--navy); }
+.sections-nav li.s-done { color: var(--text-secondary); }
+.sections-nav li.s-locked { opacity: 0.35; }
+
+.track-item { display: flex; align-items: center; gap: 10px; padding: 0.5rem 0; border-bottom: 0.5px solid var(--border); font-size: 12px; }
+.track-item:last-child { border-bottom: none; }
+.track-dot { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 10px; font-weight: 500; }
+.track-dot.current { background: var(--navy); color: var(--gold); }
+.track-dot.upcoming { background: var(--border); color: var(--text-muted); }
+.track-item.current-item { color: var(--navy); font-weight: 500; }
+.track-item.upcoming-item { color: var(--text-muted); }
+.track-item .part-tag { font-size: 10px; color: var(--gold); font-weight: 500; margin-left: auto; letter-spacing: 0.04em; }
+
+.scripture-item { display: flex; align-items: baseline; gap: 8px; padding: 0.4rem 0; border-bottom: 0.5px solid var(--border); font-size: 12px; }
+.scripture-item:last-child { border-bottom: none; }
+.scripture-item-ref { color: var(--gold); font-weight: 500; white-space: nowrap; font-size: 11px; }
+.scripture-item-desc { color: var(--text-muted); line-height: 1.4; }
+
+.site-footer { background: var(--navy); padding: 2rem; text-align: center; }
+.footer-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--gold); letter-spacing: 0.12em; margin-bottom: 0.5rem; }
+.footer-text { font-size: 12px; color: rgba(255,255,255,0.22); }
+
+@media (max-width: 800px) {
+  .module-layout { grid-template-columns: 1fr; gap: 2rem; padding: 2rem 1.25rem; }
+  .module-sidebar { position: static; }
+  .site-nav { display: none; }
+  .module-hero { padding: 3rem 1.25rem 2.5rem; }
+  .figure-row { grid-template-columns: 1fr 1fr; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="site-logo">CRUX</a>
+  <nav><ul class="site-nav">
+    <li><a href="crux-account.html">For Students</a></li>
+    <li><a href="crux-teacher.html">For Teachers</a></li>
+    <li><a href="crux-adult-module1a.html">Adult Track</a></li>
+    <li><a href="index.html#about">About</a></li>
+  </ul></nav>
+</header>
+
+<div class="module-hero">
+  <div class="module-track">Adult Formation Track</div>
+  <div class="module-part-badge">Module 1 of 7</div>
+  <h1 class="module-title">Who Is This Man?</h1>
+  <p class="module-subtitle">Part A &mdash; The Man Who Changed Everything</p>
+  <div class="module-meta">
+    <span>&#9679; 25&ndash;30 min read</span>
+    <span>&#9679; 2 reflection questions</span>
+    <span>&#9679; 1 video</span>
+    <span>&#9679; Journal prompt</span>
+  </div>
+  <div class="part-nav-bar">
+    <span class="part-pill active">Part A &mdash; Historical Jesus</span>
+    <span class="part-arrow">&#8594;</span>
+    <span class="part-pill">Part B &mdash; The Claim</span>
+  </div>
+</div>
+
+<div class="progress-bar">
+  <span class="progress-label">Progress</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="progress-count" id="progressCount">0 of 8 sections complete</span>
+</div>
+
+<div class="module-layout">
+<main class="module-content">
+
+  <div class="scripture-opening">
+    <span class="scripture-mark">&ldquo;</span>
+    <p class="scripture-text">Whoever has ears, let them listen.</p>
+    <span class="scripture-ref">Matthew 13:9</span>
+  </div>
+
+  <!-- Section 1: Opening -->
+  <div class="module-section" id="s1">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock this one.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">1</div>
+        <span class="section-label">Opening</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Most people have heard about Jesus their whole lives through someone else's agenda. A political agenda. A cultural one. Something inherited from a grandparent or picked up from a bad experience in a church basement. This module isn't any of those things.</p>
+        <p>What follows is an attempt to look at the man himself. Who he was, who he spent time with, what he actually taught, and what the people who knew him personally thought of him. Some of it will be familiar. Some of it may surprise you. All of it is worth taking seriously.</p>
+        <p>Jesus preached one thing above everything else: love one another. His entire ministry was about breaking down the walls that kept people out. That's where we start.</p>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(1)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 2: Honest moment (REPLACED) -->
+  <div class="module-section locked" id="s2">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock this one.</span></div>
+    <div class="section-inner">
+      <div class="honest-wrap">
+        <div class="section-eyebrow">
+          <div class="section-number">2</div>
+          <span class="section-label">An honest moment</span>
+          <div class="section-divider"></div>
+        </div>
+        <div class="section-body">
+          <p>Here is something the Gospels don't soften: the people closest to Jesus struggled to follow him. Not strangers. Not skeptics. The twelve men who walked with him every day, watched him heal the sick, heard every sermon, sat across the table from him at every meal.</p>
+          <p>Peter denied knowing him three times the night before the crucifixion. Thomas refused to believe the resurrection until he could touch the wounds himself. The disciples argued constantly about which of them was the greatest. James and John sent their mother to lobby Jesus for the best seats in the kingdom. When soldiers came to arrest him in the garden, every one of them ran.</p>
+          <p>This matters because it tells you something honest about what following Jesus actually costs. He never promised it would be easy. He said take up your cross. He said the road is narrow. He said you will be hated on my account. The people who knew him best found him extraordinarily difficult to live up to, and they spent three years in his company.</p>
+          <p>If faith has felt hard to you, or impossible, or like something you keep failing at, you are in the exact same position as the twelve. That's not a reason to stop. It's the whole point of why he came.</p>
+        </div>
+      </div>
+      <div class="reflection-block">
+        <div class="reflection-label">&#9670; Reflect</div>
+        <p class="reflection-question">What has made following Jesus feel difficult or out of reach for you? Is it the teaching itself, the people who represent it, or something else?</p>
+        <textarea class="reflection-textarea" placeholder="Take a moment to write your thoughts. There are no wrong answers."></textarea>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(2)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 3: His life -->
+  <div class="module-section locked" id="s3">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock this one.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">3</div>
+        <span class="section-label">His life</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>He was born in a borrowed space to a teenage mother in an occupied country. The most powerful empire in the world was conducting a census when he arrived, history moving around an event it didn't know was happening. Within two years, soldiers were killing children in his village trying to find him. He grew up in a working town, the son of a carpenter, in a region people looked down on. Nothing about his origins suggested what was coming.</p>
+        <p>At thirty he walked into the desert for forty days. When he came back he began gathering people: not priests, not scholars, not the respectable. Fishermen. A tax collector despised by his own community. A political revolutionary. He told them to leave everything and follow him, and they did.</p>
+        <p>For three years he moved through the towns of Galilee and Judea, healing people who had been untouchable for decades, feeding crowds, arguing with the religious establishment and consistently winning. He told stories about a prodigal son, a good Samaritan, a lost sheep, stories people are still repeating two thousand years later because they get at something permanently true about what it means to be human and what God is like.</p>
+        <p>Then Jerusalem. The last week. A meal with his friends where he did something strange with bread and wine and told them to keep doing it. A garden where he prayed until he sweat blood. An arrest, a trial, a flogging, and a crucifixion, the most brutal form of execution the Roman world had invented, reserved for the lowest criminals and enemies of the state. He died on a Friday afternoon. His friends fled.</p>
+        <p>On Sunday morning, the tomb was empty.</p>
+
+        <div class="pull-quote">
+          <p class="pull-quote-text">He chose twelve ordinary men. He gave them three years. Two thousand years later, the movement they started has more than two billion members.</p>
+          <span class="pull-quote-attr">The Twelve Apostles</span>
+        </div>
+
+        <p>The people he chose to be closest to him are worth knowing by name, because each one tells you something about who he was drawn to and what he was building.</p>
+
+        <div class="figure-row">
+          <div class="figure-card">
+            <div class="figure-name">Peter</div>
+            <div class="figure-desc">A fisherman. Impulsive, loyal, deeply flawed. Named the rock on which the Church would be built.</div>
+          </div>
+          <div class="figure-card">
+            <div class="figure-name">Matthew</div>
+            <div class="figure-desc">A tax collector. A collaborator with Rome, despised by his own people. Called mid-shift, no questions asked.</div>
+          </div>
+          <div class="figure-card">
+            <div class="figure-name">Simon the Zealot</div>
+            <div class="figure-desc">A political revolutionary who wanted to overthrow Rome by force. Jesus put him at the same table as Matthew.</div>
+          </div>
+          <div class="figure-card">
+            <div class="figure-name">Thomas</div>
+            <div class="figure-desc">The questioner. Refused to believe the resurrection until he could touch the wounds himself.</div>
+          </div>
+          <div class="figure-card">
+            <div class="figure-name">Judas</div>
+            <div class="figure-desc">The one who betrayed him. Jesus knew what was coming and invited him anyway.</div>
+          </div>
+          <div class="figure-card">
+            <div class="figure-name">John</div>
+            <div class="figure-desc">The youngest. The one who stayed at the foot of the Cross when all the others had fled.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(3)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 4: His humanity -->
+  <div class="module-section locked" id="s4">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock this one.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">4</div>
+        <span class="section-label">His humanity</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>One of the things the Church insists on that tends to surprise people is how fully human Jesus actually was. Not human in appearance while remaining God underneath, but genuinely, bodily human. He got tired (John 4:6). He got hungry (Matthew 4:2). He wept at the grave of his friend Lazarus, not because he didn't know what was about to happen, but because grief is real and he felt it (John 11:35). He turned over tables in the Temple when he found merchants exploiting worshippers, and the Gospels make clear it was genuine anger, not a calculated gesture (John 2:13-17). In the garden of Gethsemane, the night before he died, he asked his Father if there was another way (Luke 22:42). On the Cross he cried out the words of Psalm 22:</p>
+
+        <div class="scripture-callout">
+          <span class="scripture-callout-ref">Mt 27:46</span>
+          <span class="scripture-callout-text">My God, my God, why have you abandoned me?</span>
+        </div>
+
+        <p>The Catholic Church does not offer a God who watched human suffering from a safe distance and sent advice. It offers a God who entered suffering completely, without reservation, all the way to the worst of it. Whatever you have been through, Jesus of Nazareth has a body that knows what pain feels like.</p>
+
+        <div class="scripture-callout">
+          <span class="scripture-callout-ref">Jn 11:35</span>
+          <span class="scripture-callout-text">Jesus wept.</span>
+        </div>
+
+        <p>The shortest verse in the Bible. Two words. The Son of God, standing at the grave of someone he loved, crying. Not performing grief for the crowd. Just weeping, the way you weep when you lose someone you cannot imagine living without.</p>
+        <p>If you have ever wondered whether God understands what loss feels like, that verse is the answer.</p>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(4)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 5: Who he chose -->
+  <div class="module-section locked" id="s5">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock this one.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">5</div>
+        <span class="section-label">Who he chose to be with</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>The religious world of Jesus's day had a clear social map. There were clean people and unclean people, the righteous and sinners, insiders and outsiders. Jesus paid no attention to any of it.</p>
+        <p>He healed lepers, people required by law to announce their own uncleanliness to anyone who came near. He spoke publicly and at length with a Samaritan woman, crossing two social barriers at once, since Samaritans were considered heretics and women were not addressed by rabbis in public. He let a woman with a public reputation for sin touch him and wash his feet with her hair while a Pharisee watched in horror (Luke 7:36-50). He called a Roman collaborator to be one of his twelve closest companions. He told a Roman soldier, an occupier, that he had more faith than anyone in all of Israel (Matthew 8:10).</p>
+
+        <div class="pull-quote">
+          <p class="pull-quote-text">It is not the healthy who need a doctor, but the sick. I have not come to call the righteous, but sinners.</p>
+          <span class="pull-quote-attr">Mark 2:17</span>
+        </div>
+
+        <p>Jesus consistently sought out the people who had been told they were too far gone, too dirty, too compromised, too foreign, too sinful to belong. His first question was almost never "what did you do?" It was "what do you need?"</p>
+        <p>If you have ever felt like the Church was not built for people like you, that feeling is worth sitting with. Because based on how Jesus actually operated, it was never supposed to work that way.</p>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(5)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 6: His teachings -->
+  <div class="module-section locked" id="s6">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock this one.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">6</div>
+        <span class="section-label">His teachings</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>The Sermon on the Mount (Matthew 5-7) is the longest continuous teaching of Jesus in any Gospel, and it reads unlike anything else from the ancient world. It opens with the Beatitudes, a series of statements that overturn every assumption about what a successful life looks like.</p>
+
+        <div class="beatitudes-block">
+          <div class="beatitudes-label">The Beatitudes &mdash; Matthew 5:3&ndash;10</div>
+          <div class="beatitude">Blessed are the poor in spirit, for theirs is the kingdom of heaven.</div>
+          <div class="beatitude">Blessed are those who mourn, for they will be comforted.</div>
+          <div class="beatitude">Blessed are the meek, for they will inherit the earth.</div>
+          <div class="beatitude">Blessed are those who hunger and thirst for righteousness, for they will be filled.</div>
+          <div class="beatitude">Blessed are the merciful, for they will be shown mercy.</div>
+          <div class="beatitude">Blessed are the pure in heart, for they will see God.</div>
+          <div class="beatitude">Blessed are the peacemakers, for they will be called children of God.</div>
+          <div class="beatitude">Blessed are those who are persecuted because of righteousness, for theirs is the kingdom of heaven.</div>
+        </div>
+
+        <p>Not the powerful. Not the comfortable. Not the ones who have everything sorted out. The ones who know they don't.</p>
+        <p>He goes further in the same sermon. Love your enemies. Pray for those who persecute you. Do not judge. Stop worrying about tomorrow. Forgive not seven times but seventy times seven, which is another way of saying: stop keeping score. The standard is impossibly high and he knows it. The point is not to make people feel like failures. The point is to describe what a human life looks like when it is fully oriented toward love, and to suggest that this is what we were actually built for.</p>
+        <p>The parables work differently. A father who runs toward a son who has disgraced him, because no dignified man in the ancient Near East ran anywhere, and yet this one does (Luke 15:20). A shepherd who abandons ninety-nine sheep to find one that wandered off (Luke 15:4). A Samaritan, the wrong kind of person by every social standard of the day, who stops to help a Jewish man lying in the road while the religious leaders cross the street (Luke 10:30-37). Jesus was not illustrating abstract principles. He was showing his listeners what God is actually like, in images that land in the gut before they reach the head.</p>
+        <p>When asked which commandment was the greatest, he gave two and said everything else hangs on them: love God with everything you have, and love your neighbor as yourself (Matthew 22:37-40). Not sacrifice. Not ritual. Not perfect theology. Love.</p>
+      </div>
+
+      <div class="video-block">
+        <div class="video-label">&#9654; Watch with Fr. Mike Schmitz</div>
+        <div class="video-title">How to Understand the Entire Bible Story in 10 Minutes</div>
+        <div class="video-desc">Fr. Mike Schmitz traces the arc of Scripture, placing Jesus at the center of the whole story. A good companion to this section before moving on.</div>
+        <div class="video-embed-wrap">
+          <!-- To activate: replace VIDEO_ID with the YouTube ID from the Ascension Presents channel -->
+          <!-- URL format: https://www.youtube-nocookie.com/embed/VIDEO_ID -->
+          <iframe src="https://www.youtube-nocookie.com/embed/jNAkausYV-g" title="How to Understand the Entire Bible Story in 10 Minutes — Fr. Mike Schmitz" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(6)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 7: Contemporaries -->
+  <div class="module-section locked" id="s7">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock this one.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">7</div>
+        <span class="section-label">What his contemporaries said</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Nobody who encountered Jesus seems to have walked away thinking he was a pleasant, inoffensive person with some good ideas. Every reaction was extreme.</p>
+        <p>His followers left everything to be near him. Peter, James, and John walked away from fishing nets mid-haul (Mark 1:18-20). Matthew left a government salary without asking a single question (Matthew 9:9). A rich young man left the conversation grieving because he couldn't bring himself to do what Jesus asked, but he couldn't dismiss it either (Mark 10:22).</p>
+        <p>His enemies found him dangerous enough to have him killed. The Pharisees debated him constantly and lost. The chief priests feared him because the crowds followed him. Pontius Pilate found no guilt in him but ordered the crucifixion anyway to prevent a riot, then had a sign nailed above his head in three languages: King of the Jews. Even Pilate's wife sent word during the trial, warning her husband to leave the man alone because she had suffered nightmares on his account (Matthew 27:19).</p>
+
+        <div class="scripture-callout">
+          <span class="scripture-callout-ref">Mk 15:39</span>
+          <span class="scripture-callout-text">When the centurion, who stood there in front of Jesus, saw how he died, he said, "Surely this man was the Son of God."</span>
+        </div>
+
+        <p>A Roman soldier. An occupier. The man responsible for carrying out the execution. Standing at the foot of the Cross, watching him die, saying that.</p>
+        <p>More than two billion people today organize their lives around Jesus of Nazareth. His birth divided the calendar used by most of the world. His name is spoken in prayer or in anger more than any other name in human history. Whatever you currently believe about him, he is the most consequential person who ever lived. That fact alone is worth sitting with before drawing any conclusions.</p>
+      </div>
+
+      <div class="reflection-block">
+        <div class="reflection-label">&#9670; Reflect</div>
+        <p class="reflection-question">Of everything you have read in this section, what surprised you most about who Jesus actually was? What did you expect, and what was different?</p>
+        <textarea class="reflection-textarea" placeholder="Take a moment to write your thoughts. There are no wrong answers."></textarea>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(7)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 8: For your life + journal + discussion + prayer -->
+  <div class="module-section locked" id="s8">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock this one.</span></div>
+    <div class="section-inner">
+
+      <div class="section-eyebrow">
+        <div class="section-number">8</div>
+        <span class="section-label">For your life</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body" style="margin-bottom:1.5rem;">
+        <p>Jesus isn't just a historical figure or a wise teacher worth listening to. The Church teaches that he is the source of life itself, that he came to this broken world not to observe it from above but to show us, in human terms, how to treat one another and what a fully lived life actually looks like.</p>
+        <p>What Jesus taught is not a religious obligation layered on top of ordinary life. It is an invitation back to the life you were originally made for. More purposeful. More connected. More fully yourself. That is not a promise the Church invented. It is the reason he came.</p>
+      </div>
+
+      <div class="journal-block">
+        <div class="journal-eyebrow">
+          <div class="journal-icon">&#9998;</div>
+          <span class="journal-label">Journal prompt</span>
+        </div>
+        <p class="journal-prompt">Before reading Part B, sit with this question: what would it mean for your daily life if the things Jesus taught about love, forgiveness, and human dignity were actually true?</p>
+        <p class="journal-note">You don't need to answer it now. Carry it with you before continuing.</p>
+      </div>
+
+      <div class="discussion-block" style="margin-bottom:1.5rem;">
+        <div class="discussion-label">For discussion &mdash; sponsor or small group</div>
+        <p class="discussion-title">Which story or teaching of Jesus stayed with you longest in this section, and why?</p>
+        <div class="discussion-body">
+          <p>Bring this to your sponsor, your group, or someone you trust before moving to Part B. The conversation doesn't need a tidy conclusion.</p>
+          <p>If you're working through this alone, write down your answer. Part B will ask you to build on it.</p>
+        </div>
+      </div>
+
+      <div class="closing-prayer">
+        <div class="section-eyebrow">
+          <div class="section-number" style="background:#2e3a5e;color:var(--gold);">&#10013;</div>
+          <span class="section-label" style="color:#6b7299;">Closing prayer</span>
+          <div class="section-divider" style="background:#2e3555;"></div>
+        </div>
+        <p class="prayer-intro">If you've never prayed before, that's fine. This isn't a test. It's a conversation with someone who may already be listening.</p>
+        <div class="prayer-text">
+          <span class="prayer-line">God,</span>
+          <span class="prayer-line">I don't know exactly what I believe yet.</span>
+          <span class="prayer-line">But I'm willing to look.</span>
+          <span class="prayer-line">If Jesus is who he said he was,</span>
+          <span class="prayer-line">if you came here, to this, for me,</span>
+          <span class="prayer-line">then I want to understand that.</span>
+          <span class="prayer-line">Open my ears.</span>
+          <span class="prayer-line">Whoever has ears, let them listen.</span>
+          <span class="prayer-amen">Amen.</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="completePartA()">Complete Part A &#10003;</button></div>
+  </div>
+
+  <div class="next-part-banner" id="nextPartBanner">
+    <div class="next-part-title">Part A complete.</div>
+    <p class="next-part-text">You've covered the historical life of Jesus of Nazareth. Part B turns to the question his life raises: what did he actually claim to be, and does it hold up? When you're ready, continue.</p>
+    <button class="next-part-btn" onclick="window.location.href='crux-adult-module1b.html'">Continue to Part B &#8594;</button>
+  </div>
+
+  <div class="module-nav">
+    <button class="nav-btn disabled">&#8592; Previous module</button>
+    <button class="nav-btn primary" id="nextBtn" onclick="window.location.href='crux-adult-module1b.html'">Part B &#8594;</button>
+  </div>
+
+</main>
+
+<aside class="module-sidebar">
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Part A &mdash; sections</div>
+    <ul class="sections-nav" id="sideNav">
+      <li class="s-active"><span class="nav-dot"></span>Opening</li>
+      <li class="s-locked"><span class="nav-dot"></span>An honest moment</li>
+      <li class="s-locked"><span class="nav-dot"></span>His life</li>
+      <li class="s-locked"><span class="nav-dot"></span>His humanity</li>
+      <li class="s-locked"><span class="nav-dot"></span>Who he chose to be with</li>
+      <li class="s-locked"><span class="nav-dot"></span>His teachings</li>
+      <li class="s-locked"><span class="nav-dot"></span>What his contemporaries said</li>
+      <li class="s-locked"><span class="nav-dot"></span>For your life</li>
+    </ul>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Module 1 parts</div>
+    <div class="track-item current-item">
+      <div class="track-dot current">A</div>
+      <span>The Man Who Changed Everything</span>
+    </div>
+    <div class="track-item upcoming-item">
+      <div class="track-dot upcoming">B</div>
+      <span>The Claim That Changes Everything</span>
+    </div>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Adult track</div>
+    <div class="track-item current-item">
+      <div class="track-dot current">1</div>
+      <span>Who Is This Man?</span>
+      <span class="part-tag">A / B</span>
+    </div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">2</div><span>Why Is There Suffering?</span></div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">3</div><span>Can I Trust the Church?</span></div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">4</div><span>Why Catholic Specifically?</span></div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">5</div><span>Does Faith Contradict Reason?</span></div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">6</div><span>Who Are Mary and the Saints?</span></div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">7</div><span>What Happens When We Die?</span></div>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Scripture in Part A</div>
+    <div class="scripture-item"><span class="scripture-item-ref">Mt 13:9</span><span class="scripture-item-desc">Whoever has ears, let them listen</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Jn 11:35</span><span class="scripture-item-desc">Jesus wept</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Mt 27:46</span><span class="scripture-item-desc">Why have you abandoned me?</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Lk 7:36-50</span><span class="scripture-item-desc">The sinful woman and the Pharisee</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Mt 5:3-10</span><span class="scripture-item-desc">The Beatitudes</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Lk 15:4-20</span><span class="scripture-item-desc">The lost sheep and prodigal son</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Mt 22:37-40</span><span class="scripture-item-desc">The two great commandments</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Mk 15:39</span><span class="scripture-item-desc">The centurion at the Cross</span></div>
+  </div>
+</aside>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-logo">CRUX</div>
+  <p class="footer-text">cruxfaith.com &nbsp;&middot;&nbsp; Catholic faith formation</p>
+</footer>
+
+<script>
+  const TOTAL = 8;
+
+  function advance(n) {
+    const navItems = document.querySelectorAll('#sideNav li');
+    navItems[n - 1].classList.remove('s-active');
+    navItems[n - 1].classList.add('s-done');
+    updateProgress(n);
+    if (n < TOTAL) {
+      const next = document.getElementById('s' + (n + 1));
+      next.classList.remove('locked');
+      navItems[n].classList.remove('s-locked');
+      navItems[n].classList.add('s-active');
+      setTimeout(() => next.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+    }
+  }
+
+  function updateProgress(n) {
+    const pct = Math.round((n / TOTAL) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressCount').textContent = n + ' of ' + TOTAL + ' sections complete';
+  }
+
+  function completePartA() {
+    const navItems = document.querySelectorAll('#sideNav li');
+    navItems[TOTAL - 1].classList.remove('s-active');
+    navItems[TOTAL - 1].classList.add('s-done');
+    updateProgress(TOTAL);
+    document.getElementById('nextPartBanner').classList.add('visible');
+    const btn = document.getElementById('nextBtn');
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+    setTimeout(() => document.getElementById('nextPartBanner').scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+  }
+</script>
+</body>
+</html>

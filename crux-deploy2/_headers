@@ -1,0 +1,20 @@
+# Netlify _headers
+
+# Service worker — scoped ONLY to cruxgames, no domain-wide control
+/cruxgames-sw.js
+  Service-Worker-Allowed: /cruxgames.html
+  Cache-Control: no-cache
+
+# Manifest — no cache
+/cruxgames-manifest.json
+  Cache-Control: no-cache
+
+# HTML files — always fresh from server, never cached
+/*.html
+  Cache-Control: no-cache, no-store, must-revalidate
+  Pragma: no-cache
+
+# Security headers
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff

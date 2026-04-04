@@ -1,0 +1,1932 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUX — Learning Modules</title>
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LQ35DLTVKY');
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDK v10 -->
+    <script type="module">
+        import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+            authDomain: "crux-faith-formation.firebaseapp.com",
+            projectId: "crux-faith-formation",
+            storageBucket: "crux-faith-formation.firebasestorage.app",
+            messagingSenderId: "838141015985",
+            appId: "1:838141015985:web:2655e570663e182d75ef90",
+            measurementId: "G-LQ35DLTVKY"
+        };
+
+        const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+        window.db = getFirestore(app);
+        window.auth = getAuth(app);
+        window.fsModules = { doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp };
+
+        onAuthStateChanged(window.auth, (user) => {
+            window.currentUser = user || null;
+            const el = document.getElementById('userDisplay');
+            if (el) el.textContent = user ? user.email.split('@')[0] : 'Guest';
+            if (user) loadUserProgress();
+        });
+    </script>
+
+    <style>
+        :root {
+            --navy: #1a1f36;
+            --navy-mid: #242a45;
+            --navy-light: #2f3659;
+            --gold: #d4a574;
+            --gold-light: #e8c9a0;
+            --gold-dark: #b8895a;
+            --white: #ffffff;
+            --off-white: #f8f7f4;
+            --text-primary: #1a1f36;
+            --text-secondary: #5a6282;
+            --text-muted: #8890b0;
+            --border: rgba(26, 31, 54, 0.1);
+            --border-gold: rgba(212, 165, 116, 0.3);
+            --shadow-sm: 0 2px 8px rgba(26, 31, 54, 0.08);
+            --shadow-md: 0 4px 20px rgba(26, 31, 54, 0.12);
+            --shadow-lg: 0 8px 40px rgba(26, 31, 54, 0.18);
+            --green: #2e7d32;
+            --green-light: #e8f5e9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--off-white);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ─── HEADER ──────────────────────────────────────── */
+        header {
+            background: var(--navy);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+        }
+
+        .header-left { display: flex; align-items: center; gap: 1.5rem; }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        .back-btn:hover { color: var(--gold); }
+
+        .header-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 4px;
+            text-decoration: none;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-chip {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.7);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .xp-chip {
+            background: rgba(212, 165, 116, 0.15);
+            border: 1px solid var(--border-gold);
+            color: var(--gold);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: none;
+        }
+
+        /* ─── PROGRESS BAR ────────────────────────────────── */
+        .progress-track {
+            background: rgba(255,255,255,0.08);
+            height: 3px;
+            position: sticky;
+            top: 57px;
+            z-index: 99;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gold);
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* ─── MAIN LAYOUT ─────────────────────────────────── */
+        .module-wrap {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 2rem 6rem;
+        }
+
+        /* ─── STEP INDICATOR ──────────────────────────────── */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 2.5rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        .step-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-dot {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: var(--white);
+        }
+
+        .step.complete .step-dot {
+            background: var(--green);
+            border-color: var(--green);
+            color: var(--white);
+        }
+
+        .step-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .step.active .step-label { color: var(--navy); font-weight: 600; }
+        .step.complete .step-label { color: var(--green); }
+
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background: var(--border);
+            margin: 0 0.5rem;
+            transition: background 0.3s ease;
+        }
+
+        .step-line.complete { background: var(--green); }
+
+        /* ─── MODULE HEADER ───────────────────────────────── */
+        .module-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .module-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-eyebrow .grade-tag {
+            display: inline-block;
+            background: rgba(212, 165, 116, 0.12);
+            color: var(--gold-dark);
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .module-eyebrow .topic-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .module-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* ─── LEVEL TOGGLE ────────────────────────────────── */
+        .level-toggle {
+            display: inline-flex;
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .level-btn {
+            padding: 0.6rem 1.4rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .level-btn.active {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        /* ─── CONTENT PANELS ──────────────────────────────── */
+        .panel {
+            display: none;
+            animation: fadeUp 0.35s ease;
+        }
+
+        .panel.active { display: block; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── LESSON CONTENT ──────────────────────────────── */
+        .lesson-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .lesson-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .lesson-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin: 1.5rem 0 0.6rem;
+        }
+
+        .lesson-card p {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.85;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card ul, .lesson-card ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card li {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.75;
+            margin-bottom: 0.4rem;
+        }
+
+        .highlight-box {
+            background: rgba(212, 165, 116, 0.08);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 8px 8px 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+            font-style: italic;
+            color: var(--navy);
+            font-size: 0.95rem;
+        }
+
+        .highlight-box cite {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--gold-dark);
+            font-weight: 600;
+            margin-top: 0.4rem;
+            font-style: normal;
+            letter-spacing: 0.5px;
+        }
+
+        .key-term {
+            display: inline-block;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            margin: 0 0.1rem;
+        }
+
+        /* ─── READING SECTION ─────────────────────────────── */
+        .reading-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .reading-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .reading-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reading-body {
+            font-size: 0.97rem;
+            line-height: 1.9;
+            color: var(--text-primary);
+        }
+
+        .reading-body p { margin-bottom: 1.1rem; }
+
+        .reflection-block {
+            background: var(--navy);
+            border-radius: 10px;
+            padding: 1.75rem;
+            margin-top: 2rem;
+        }
+
+        .reflection-block h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .reflection-block ol {
+            padding-left: 1.25rem;
+        }
+
+        .reflection-block li {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            margin-bottom: 0.6rem;
+        }
+
+        /* ─── QUIZ ────────────────────────────────────────── */
+        .quiz-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-intro {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question-block {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question-block:last-of-type { border-bottom: none; }
+
+        .question-num {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.85rem 1.1rem;
+            background: var(--off-white);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem;
+            color: var(--text-primary);
+            width: 100%;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--navy);
+            background: rgba(26, 31, 54, 0.04);
+        }
+
+        .option-btn.selected {
+            border-color: var(--navy);
+            background: rgba(26, 31, 54, 0.06);
+        }
+
+        .option-btn.correct {
+            border-color: var(--green);
+            background: var(--green-light);
+            color: var(--green);
+        }
+
+        .option-btn.incorrect {
+            border-color: #c62828;
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .option-letter {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 1.5px solid currentColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+
+        .answer-feedback {
+            margin-top: 0.75rem;
+            padding: 0.85rem 1rem;
+            border-radius: 7px;
+            font-size: 0.88rem;
+            line-height: 1.55;
+            display: none;
+        }
+
+        .answer-feedback.correct {
+            background: var(--green-light);
+            color: var(--green);
+            border-left: 3px solid var(--green);
+        }
+
+        .answer-feedback.incorrect {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 3px solid #c62828;
+        }
+
+        /* ─── NAVIGATION BUTTONS ──────────────────────────── */
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 2rem;
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary:hover {
+            background: var(--navy-light);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.5rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-dark);
+            color: var(--white);
+        }
+
+        /* ─── COMPLETION SCREEN ───────────────────────────── */
+        .completion-screen {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .completion-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .completion-screen h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .completion-screen p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .xp-award {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .score-display {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            display: inline-block;
+            margin-bottom: 2.5rem;
+            min-width: 240px;
+        }
+
+        .score-display .score-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1;
+        }
+
+        .score-display .score-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+
+        .completion-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ─── LOADING STATE ───────────────────────────────── */
+        .loading-state {
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--navy);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-state p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* ─── RESPONSIVE ──────────────────────────────────── */
+        @media (max-width: 640px) {
+            .module-wrap { padding: 2rem 1.25rem 5rem; }
+            .module-title { font-size: 1.7rem; }
+            .lesson-card, .reading-card, .quiz-card { padding: 1.75rem 1.25rem; }
+            .step-label { display: none; }
+            .nav-bar { flex-direction: column-reverse; }
+            .nav-bar .btn-primary, .nav-bar .btn-secondary { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <button class="back-btn" onclick="window.location.href='index.html#youth'">
+            ← Back
+        </button>
+        <a href="index.html" class="header-logo">CRUX</a>
+    </div>
+    <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
+        <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
+    </div>
+</header>
+
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div class="module-wrap">
+
+    <!-- Loading state -->
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
+
+    <!-- Step indicator -->
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
+        </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
+        </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
+
+    <!-- Module header -->
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">Grades 3–8</span>
+            <span class="topic-tag" id="topicTag">Faith Formation</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <!-- Level toggle -->
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel active" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions — you can review your answers before submitting.</p>
+            <div id="quizQuestions">
+                <!-- Populated by JS -->
+            </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You've completed this lesson. Keep going — the faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
+            </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    ← Back to CRUX
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+// ── MODULE DATA ────────────────────────────────────────────
+// Each module has: id, title, subtitle, gradeTag, topic,
+// lesson (beginner + theologian), reading (beginner + theologian), quiz
+
+const MODULES = {
+
+    trinity: {
+        id: 'trinity',
+        title: 'The Holy Trinity',
+        subtitle: 'Understanding the central mystery of the Christian faith — one God in three divine Persons.',
+        gradeTag: 'Grades 3–8',
+        topic: 'Core Beliefs',
+        xpReward: 50,
+        nextModule: 'jesus',
+
+        lesson: {
+            beginner: `
+                <h2>The Holy Trinity — Lesson</h2>
+                <p>The <span class="key-term">Trinity</span> is one of the most important beliefs in Christianity. It means that there is <strong>one God</strong>, but God exists as <strong>three Persons</strong>: the Father, the Son (Jesus), and the Holy Spirit.</p>
+
+                <h3>One God, Three Persons</h3>
+                <p>Think of it this way: a triangle has three corners, but it is still one triangle. God is one, but He has three distinct Persons. Each Person is fully God — not a piece of God, but completely God.</p>
+                <ul>
+                    <li><strong>God the Father</strong> created everything and loves us like a perfect parent.</li>
+                    <li><strong>God the Son</strong> (Jesus) came to earth as a human being to save us.</li>
+                    <li><strong>God the Holy Spirit</strong> lives in our hearts and helps us follow Jesus.</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>"Go and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit."</p>
+                    <cite>— Matthew 28:19</cite>
+                </div>
+
+                <h3>Why Does This Matter?</h3>
+                <p>The Trinity tells us something amazing: <strong>God is love by nature</strong>. Love requires someone to love. The Father, Son, and Holy Spirit have been loving each other forever — and they invite us into that love.</p>
+                <p>When we are baptized, we are baptized "in the name of the Father, and of the Son, and of the Holy Spirit." We are welcomed into the family of God — the Trinity.</p>
+            `,
+            theologian: `
+                <h2>The Holy Trinity — Theologian Level</h2>
+                <p>The doctrine of the <span class="key-term">Trinity</span> is the central mystery of the Christian faith: <em>one God subsisting in three co-equal, co-eternal divine Persons</em> — Father, Son, and Holy Spirit. Each Person is distinct yet identical in nature, will, and being.</p>
+
+                <h3>The Development of Trinitarian Doctrine</h3>
+                <p>The Church did not invent the Trinity — She articulated what Scripture reveals. The Council of Nicaea (325 AD) defined that the Son is <span class="key-term">homoousios</span> (of the same substance) as the Father, refuting Arianism's claim that the Son was a created being. The Council of Constantinople (381 AD) extended this to affirm the full divinity of the Holy Spirit.</p>
+
+                <h3>The Processions and Relations</h3>
+                <p>Catholic theology distinguishes the Persons by their <em>relations of origin</em>:</p>
+                <ul>
+                    <li>The <strong>Father</strong> is unbegotten — the first principle of the Godhead.</li>
+                    <li>The <strong>Son</strong> is eternally begotten of the Father (not made in time).</li>
+                    <li>The <strong>Holy Spirit</strong> proceeds from the Father and the Son (<em>filioque</em>).</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>"The Father and I are one."</p>
+                    <cite>— John 10:30</cite>
+                </div>
+
+                <h3>Immanent vs. Economic Trinity</h3>
+                <p>Theologians distinguish the <span class="key-term">immanent Trinity</span> (God as He is in Himself — three Persons in eternal communion) from the <span class="key-term">economic Trinity</span> (God as He acts in salvation history). The principle of Rahner's Rule states: "The economic Trinity is the immanent Trinity, and vice versa." In other words, the God who acts in history is the same God who exists eternally.</p>
+
+                <p>This mystery is not a contradiction but a <em>superabundance</em> of being. God is not a solitary monad but an eternal communion of love — which is why John can simply say: <em>"God is love"</em> (1 John 4:8).</p>
+            `
+        },
+
+        reading: {
+            beginner: `
+                <h2>Reading: What the Church Says About the Trinity</h2>
+                <div class="reading-meta">Catechism of the Catholic Church, paragraphs 253–255 (simplified)</div>
+                <div class="reading-body">
+                    <p>The Trinity is One. We do not say that there are three Gods, but one God. The three Persons are truly different from one another. "He is not the Father who is the Son, nor is the Son he who is the Father." But together they are one God.</p>
+                    <p>The three divine Persons are inseparable in what they are and what they do. When the Bible mentions God speaking, creating, saving, or loving — it is always the whole Trinity at work, even when one Person is mentioned by name.</p>
+                    <p>The whole Christian life is a relationship with each of the three Persons. We pray to the Father, through the Son, in the Holy Spirit. Every Mass begins and ends with the Trinity. We bless ourselves in the name of the Trinity. The Trinity is not a puzzle to solve — it is a family to belong to.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Reflect on These Questions</h4>
+                    <ol>
+                        <li>How does knowing God is three Persons help you understand what love really means?</li>
+                        <li>Which Person of the Trinity feels most real or close to you right now — the Father, Jesus, or the Holy Spirit? Why?</li>
+                        <li>How might believing in the Trinity change the way you pray?</li>
+                    </ol>
+                </div>
+            `,
+            theologian: `
+                <h2>Reading: The Trinitarian Controversies and Nicaea</h2>
+                <div class="reading-meta">Historical theology — Councils of Nicaea (325 AD) and Constantinople (381 AD)</div>
+                <div class="reading-body">
+                    <p>In the early fourth century, a priest named Arius taught that the Son of God was the greatest of all created beings — but a creature nonetheless. His slogan: "There was a time when He was not." This heresy spread rapidly through the Eastern Church and threatened to fracture Christianity permanently.</p>
+                    <p>Emperor Constantine called the Council of Nicaea in 325 AD — the first ecumenical council in Church history. Over 300 bishops gathered. After fierce debate, the council affirmed that the Son is <em>homoousios</em> — of the same substance as the Father. Not similar (<em>homoiousios</em>), but the same. The difference of a single Greek letter carried the weight of everything: either Jesus is fully God, or salvation is impossible.</p>
+                    <p>The Nicene Creed we recite at Mass is the direct result. When we say "God from God, Light from Light, true God from true God, begotten not made, consubstantial with the Father," we are standing with those bishops, rejecting Arianism, and professing the full divinity of Christ.</p>
+                    <p>The Council of Constantinople (381 AD) completed the work by affirming that the Holy Spirit is also "the Lord and giver of life, who proceeds from the Father and the Son, who together with the Father and Son is worshiped and glorified." The doctrine of the Trinity was not invented at these councils — it was defined, protected, and handed on.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Theological Reflection</h4>
+                    <ol>
+                        <li>Why does it matter whether Jesus is "of the same substance" as the Father rather than merely "similar"? What is at stake for salvation?</li>
+                        <li>How does the Nicene Creed function as a boundary marker — a statement of what the Church will and will not accept?</li>
+                        <li>Arius's position seems logically tidy. Why do you think the Church resisted it so forcefully?</li>
+                    </ol>
+                </div>
+            `
+        },
+
+        quiz: [
+            {
+                q: "How many Persons are there in the Holy Trinity?",
+                options: ["One", "Two", "Three", "Seven"],
+                correct: 2,
+                explanation: "The Trinity is one God in three Persons: Father, Son, and Holy Spirit. Each Person is fully God."
+            },
+            {
+                q: "Which council in 325 AD defined that Jesus is 'of the same substance' as the Father?",
+                options: ["Council of Jerusalem", "Council of Nicaea", "Council of Trent", "Council of Ephesus"],
+                correct: 1,
+                explanation: "The Council of Nicaea (325 AD) defined that the Son is homoousios — of the same substance as the Father — refuting Arianism."
+            },
+            {
+                q: "What does it mean that 'God is love' (1 John 4:8) in light of the Trinity?",
+                options: ["God has feelings like humans", "God became love after creating the world", "The Father, Son, and Holy Spirit have loved each other eternally", "Love is more important than God"],
+                correct: 2,
+                explanation: "Because God is eternally three Persons, love is not something God does — it's what God IS. The Persons have been in a communion of love from all eternity."
+            },
+            {
+                q: "When we are baptized, we are baptized in the name of:",
+                options: ["Jesus only", "The Father alone", "The Father, Son, and Holy Spirit", "The Church and the Pope"],
+                correct: 2,
+                explanation: "Matthew 28:19 — 'Go and baptize in the name of the Father and of the Son and of the Holy Spirit.' Baptism initiates us into the Trinitarian family of God."
+            },
+            {
+                q: "The word 'homoousios' used at Nicaea means:",
+                options: ["Of similar substance", "Of the same substance", "Created by God", "Equal in power only"],
+                correct: 1,
+                explanation: "Homoousios means 'of the same substance' — not merely similar. This single word was the crux of the Nicene definition: Jesus is fully and truly God."
+            }
+        ]
+    },
+
+    sacraments: {
+        id: 'sacraments',
+        title: 'The Seven Sacraments',
+        subtitle: 'Outward signs instituted by Christ that give grace — seven holy encounters with God across the span of a life.',
+        gradeTag: 'Grades 3–8',
+        topic: 'Core Beliefs',
+        xpReward: 50,
+        nextModule: 'jesus',
+
+        lesson: {
+            beginner: `
+                <h2>The Seven Sacraments — Lesson</h2>
+                <p>A <span class="key-term">sacrament</span> is an outward sign — something we can see, hear, or touch — that gives us God's grace on the inside. Jesus gave the Church seven sacraments, one for each major moment of our spiritual life.</p>
+
+                <h3>The Seven Sacraments</h3>
+                <ul>
+                    <li><strong>Baptism</strong> — We are born into God's family and sin is washed away.</li>
+                    <li><strong>Confirmation</strong> — We receive the Holy Spirit to strengthen our faith.</li>
+                    <li><strong>Eucharist</strong> — We receive Jesus Himself in Holy Communion.</li>
+                    <li><strong>Reconciliation (Confession)</strong> — Our sins are forgiven by God through the priest.</li>
+                    <li><strong>Anointing of the Sick</strong> — God heals and comforts those who are ill or dying.</li>
+                    <li><strong>Holy Orders</strong> — Men are ordained as deacons, priests, or bishops.</li>
+                    <li><strong>Matrimony</strong> — A man and woman are united in a lifelong covenant of love.</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>"I came that they may have life, and have it abundantly."</p>
+                    <cite>— John 10:10</cite>
+                </div>
+
+                <h3>Sacraments of Initiation, Healing, and Service</h3>
+                <p>The sacraments are grouped into three categories:</p>
+                <ul>
+                    <li><strong>Initiation</strong> (Baptism, Confirmation, Eucharist) — these make us full members of the Church</li>
+                    <li><strong>Healing</strong> (Reconciliation, Anointing of the Sick) — these restore and strengthen us</li>
+                    <li><strong>Service</strong> (Holy Orders, Matrimony) — these build up the Church and family</li>
+                </ul>
+                <p>The sacraments aren't rituals we perform — they are moments when Jesus meets us and gives us exactly what we need.</p>
+            `,
+            theologian: `
+                <h2>The Seven Sacraments — Theologian Level</h2>
+                <p>The Council of Trent (1547) definitively defined that Christ instituted exactly seven sacraments, each conferring the grace it signifies <em>ex opere operato</em> — by the very performance of the act, not by the merit of the minister or recipient. This distinguishes Catholic sacramentology from both Protestant ordinances and magic.</p>
+
+                <h3>Matter, Form, and Minister</h3>
+                <p>Scholastic theology, following Aristotle's hylomorphism, analyzes each sacrament according to:</p>
+                <ul>
+                    <li><span class="key-term">Matter</span> — the physical element (water, oil, bread, wine, hands)</li>
+                    <li><span class="key-term">Form</span> — the words pronounced that give the action its meaning</li>
+                    <li><span class="key-term">Minister</span> — the person who performs the sacramental action with proper intention</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>"Sacraments are perceptible signs (words and actions) accessible to our human nature. By the action of Christ and the power of the Holy Spirit they make present efficaciously the grace that they signify."</p>
+                    <cite>— Catechism of the Catholic Church, §1084</cite>
+                </div>
+
+                <h3>Character and Res et Sacramentum</h3>
+                <p>Three sacraments — Baptism, Confirmation, and Holy Orders — imprint an indelible <span class="key-term">sacramental character</span> on the soul, which is why they cannot be repeated. The character configures the recipient to Christ in a permanent way: as sharer in His priesthood (Baptism/Confirmation) or as ordained minister of His priesthood (Holy Orders).</p>
+
+                <h3>Sacraments and Salvation</h3>
+                <p>While the Church teaches that the sacraments are the ordinary means of salvation, Catholic theology also affirms <em>baptism of desire</em> — those who, through no fault of their own, do not receive the sacrament but sincerely seek God can be saved. Grace is not imprisoned in the sacraments; rather, the sacraments are the privileged channels through which grace normally flows.</p>
+            `
+        },
+
+        reading: {
+            beginner: `
+                <h2>Reading: Sacraments as Encounters with Christ</h2>
+                <div class="reading-meta">From the Catechism of the Catholic Church, §§1113–1116 (simplified)</div>
+                <div class="reading-body">
+                    <p>The sacraments of the Church were instituted by Christ. They are his gift to us. There are seven sacraments: Baptism, Confirmation, Eucharist, Penance, Anointing of the Sick, Holy Orders, and Matrimony.</p>
+                    <p>The sacraments touch all the stages and important moments of Christian life. They give us the grace we need at each stage. They make the Church, and the Church makes them. Through the sacraments, Jesus continues his work of saving and healing us today — not just two thousand years ago in Palestine, but right here, right now.</p>
+                    <p>Each sacrament uses physical things — water, oil, bread, wine, words, hands — because we are physical people. God meets us where we are. He comes to us through things we can experience with our senses, and through them, He changes us on the inside.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Reflect on These Questions</h4>
+                    <ol>
+                        <li>Which sacrament have you received that meant the most to you? What made it meaningful?</li>
+                        <li>Why do you think God uses physical things (water, bread, oil) rather than just words alone?</li>
+                        <li>How might knowing that Jesus meets you in the sacraments change how you prepare for Mass or Confession?</li>
+                    </ol>
+                </div>
+            `,
+            theologian: `
+                <h2>Reading: Ex Opere Operato and the Council of Trent</h2>
+                <div class="reading-meta">Historical and dogmatic theology — Council of Trent, Session VII (1547)</div>
+                <div class="reading-body">
+                    <p>One of the most important — and most misunderstood — principles of Catholic sacramental theology is the phrase <em>ex opere operato</em>: "from the work worked." The Council of Trent defined this against the Protestant reformers who argued that the effectiveness of a sacrament depended entirely on the faith of the recipient.</p>
+                    <p>The Catholic position is more subtle and more robust: the sacraments work because of Christ's action, not ours. A Baptism performed by an unworthy priest is still a valid Baptism, because it is Christ who baptizes. A priest in a state of mortal sin who consecrates the Eucharist still confects a valid Eucharist. The grace is real regardless of human failure — because the source is divine, not human.</p>
+                    <p>This does not mean faith and disposition are irrelevant. The Catechism clarifies that the sacrament works <em>ex opere operato</em> with respect to its validity, but the <em>fruitfulness</em> of the sacrament — how much grace actually takes root in the soul — depends on the recipient's dispositions. A person who approaches Communion in mortal sin commits a sacrilege and receives no grace, though the sacrament remains valid.</p>
+                    <p>This distinction is pastorally important: it grounds the Church's sacramental ministry in the reliability of Christ, not the holiness of the minister. It is also the theological foundation for why the Church takes sacramental form and matter so seriously — a priest who changes the words of consecration jeopardizes validity, not merely aesthetics.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Theological Reflection</h4>
+                    <ol>
+                        <li>Why might the Protestant emphasis on faith as the source of sacramental efficacy seem appealing — and what does Catholic theology offer in response?</li>
+                        <li>What is the difference between the validity of a sacrament and its fruitfulness? Why does this distinction matter practically?</li>
+                        <li>How does ex opere operato protect the faithful from dependence on the holiness of their priests?</li>
+                    </ol>
+                </div>
+            `
+        },
+
+        quiz: [
+            {
+                q: "How many sacraments did Jesus give the Church?",
+                options: ["Five", "Six", "Seven", "Ten"],
+                correct: 2,
+                explanation: "Christ instituted exactly seven sacraments, definitively defined by the Council of Trent in 1547."
+            },
+            {
+                q: "Which three sacraments make up the 'Sacraments of Initiation'?",
+                options: ["Baptism, Matrimony, Holy Orders", "Baptism, Confirmation, Eucharist", "Confession, Anointing, Confirmation", "Eucharist, Holy Orders, Anointing"],
+                correct: 1,
+                explanation: "Baptism, Confirmation, and Eucharist are the Sacraments of Initiation — they make us full members of the Body of Christ."
+            },
+            {
+                q: "The phrase 'ex opere operato' means the sacraments work because of:",
+                options: ["The faith of the recipient", "The holiness of the priest", "Christ's action, not human merit", "The bishop's approval"],
+                correct: 2,
+                explanation: "Ex opere operato means 'from the work worked' — the sacrament's validity comes from Christ's action, not the minister's or recipient's holiness."
+            },
+            {
+                q: "Which three sacraments imprint an indelible mark on the soul and cannot be repeated?",
+                options: ["Eucharist, Reconciliation, Anointing", "Matrimony, Holy Orders, Confirmation", "Baptism, Confirmation, Holy Orders", "Baptism, Eucharist, Matrimony"],
+                correct: 2,
+                explanation: "Baptism, Confirmation, and Holy Orders each imprint a permanent sacramental character — configuring the recipient to Christ in an unrepeatable way."
+            },
+            {
+                q: "A sacrament uses physical elements (water, oil, bread) because:",
+                options: ["Traditions required it", "God meets physical people through physical things", "The words alone are not holy enough", "It makes the ceremony longer"],
+                correct: 1,
+                explanation: "We are embodied beings. God meets us where we are — through things we can see, touch, and taste — and through them works an interior transformation."
+            }
+        ]
+    },
+
+    jesus: {
+        id: 'jesus',
+        title: 'Who is Jesus Christ?',
+        subtitle: 'The most important question ever asked — and the answer that changes everything.',
+        gradeTag: 'Grades 3–8',
+        topic: 'Christology',
+        xpReward: 50,
+        nextModule: 'mary',
+
+        lesson: {
+            beginner: `
+                <h2>Who is Jesus Christ? — Lesson</h2>
+                <p>Jesus asked His disciples: <em>"Who do you say that I am?"</em> (Matthew 16:15). It is still the most important question anyone can answer. The Catholic Church teaches that Jesus is <strong>true God and true man</strong> — fully divine and fully human at the same time.</p>
+
+                <h3>True God</h3>
+                <p>Jesus is the Second Person of the Trinity — God the Son who has existed forever. He is not a great teacher who became God, or an angel sent to help us. He is God Himself who entered human history.</p>
+
+                <h3>True Man</h3>
+                <p>Jesus was also completely human. He had a real body. He got tired, hungry, and sad. He had a mother named Mary and grew up in Nazareth. He experienced everything we experience — except sin.</p>
+
+                <div class="highlight-box">
+                    <p>"And the Word became flesh and lived among us, and we have seen his glory."</p>
+                    <cite>— John 1:14</cite>
+                </div>
+
+                <h3>Why Did Jesus Come?</h3>
+                <ul>
+                    <li>To reveal who God really is — a Father who loves us</li>
+                    <li>To save us from sin and death through His death and resurrection</li>
+                    <li>To show us how to live and what it means to love</li>
+                    <li>To give us a share in His own divine life</li>
+                </ul>
+
+                <p>The Resurrection is the proof of everything. If Jesus rose from the dead, then He really is who He claimed to be. And if He is who He claimed to be, then everything He said matters eternally.</p>
+            `,
+            theologian: `
+                <h2>Who is Jesus Christ? — Theologian Level</h2>
+                <p>The Church's answer to "Who is Jesus?" is expressed in the doctrine of the <span class="key-term">Hypostatic Union</span>: Jesus Christ is one divine Person (the eternal Son of God) subsisting in two complete natures — one divine, one human. This was defined at the Council of Chalcedon (451 AD).</p>
+
+                <h3>The Chalcedonian Definition</h3>
+                <p>Chalcedon declared that Christ's two natures exist "without confusion, without change, without division, without separation." The natures are distinct but united in one Person. This refuted two persistent heresies:</p>
+                <ul>
+                    <li><span class="key-term">Nestorianism</span> — claimed Jesus was two persons loosely joined (Mary is not Theotokos, "Mother of God")</li>
+                    <li><span class="key-term">Monophysitism</span> — claimed Christ had only one (divine) nature, absorbing the human</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>"One and the same Christ, Son, Lord, Only-begotten, recognized in two natures, without confusion, without change, without division, without separation."</p>
+                    <cite>— Council of Chalcedon, 451 AD</cite>
+                </div>
+
+                <h3>The Communicatio Idiomatum</h3>
+                <p>Because Christ is one Person, attributes of either nature can be predicated of the whole Person. We can say "God suffered" (attributing a human experience to the divine Person) and "Mary is the Mother of God" (Theotokos). This <span class="key-term">communicatio idiomatum</span> (communication of idioms) is not loose language but a precise theological conclusion of the Hypostatic Union.</p>
+
+                <h3>The Soteriological Stakes</h3>
+                <p>The doctrine is not abstract — it is salvific. Gregory of Nazianzus stated the principle: <em>"What has not been assumed has not been healed."</em> If Jesus did not take on a complete human nature — body, soul, will, intellect — then that aspect of our humanity remains unredeemed. The fullness of Christ's humanity is required for the fullness of our salvation.</p>
+            `
+        },
+
+        reading: {
+            beginner: `
+                <h2>Reading: The Resurrection Changes Everything</h2>
+                <div class="reading-meta">Based on 1 Corinthians 15:14–20 and early Church testimony</div>
+                <div class="reading-body">
+                    <p>St. Paul wrote something stunning: "If Christ has not been raised, your faith is futile." He didn't say the Resurrection is a nice story or a helpful symbol. He said it is the hinge on which everything turns. Either it happened, or Christianity is nothing.</p>
+                    <p>Here is what we know from history: Jesus was executed publicly by Roman crucifixion — a method designed to leave no doubt of death. He was buried. Three days later, the tomb was empty. The disciples, who had fled in fear, suddenly became willing to die rather than deny that they had seen Him risen.</p>
+                    <p>People die for things they believe are true. But people rarely die for things they know are false. The disciples were in a position to know whether they had seen the risen Christ or invented the story. They insisted it was real — and most of them died for that insistence. That is extraordinary evidence.</p>
+                    <p>The Resurrection is not just proof that Jesus survived death. It is proof that He has power over death — which means He can share that power with us. "Because I live, you also will live" (John 14:19).</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Reflect on These Questions</h4>
+                    <ol>
+                        <li>Why does Paul say faith is "futile" if the Resurrection isn't real? What does that tell you about how central it is?</li>
+                        <li>What do you find most compelling about the historical evidence for the Resurrection?</li>
+                        <li>If Jesus really rose from the dead, what difference should that make to how you live today?</li>
+                    </ol>
+                </div>
+            `,
+            theologian: `
+                <h2>Reading: The Council of Chalcedon and the Hypostatic Union</h2>
+                <div class="reading-meta">Historical theology — Council of Chalcedon, 451 AD</div>
+                <div class="reading-body">
+                    <p>By the fifth century, the Church had defined that Jesus is fully divine (Nicaea, 325) and that His humanity is complete enough that Mary can rightly be called Theotokos, Mother of God (Ephesus, 431). The remaining question was: how do these two natures relate in the one Person of Christ?</p>
+                    <p>Eutyches, an archimandrite in Constantinople, taught that Christ had only one nature after the Incarnation — a blend in which the human was absorbed into the divine "like a drop of honey in the ocean." This Monophysitism seemed pious, protecting Christ's divinity, but it gutted His humanity. Pope Leo I responded with his celebrated Tome, insisting that each nature retains its proper operations: the divine does what is divine, the human does what is human, while both meet in the one Person of the Son.</p>
+                    <p>The Council of Chalcedon (451 AD), attended by over 500 bishops, adopted Leo's framework. The Definition speaks of Christ in two natures "without confusion, without change" (against Eutyches) and "without division, without separation" (against Nestorius). These four adverbs are the precise formulation of two millennia of Christological faith.</p>
+                    <p>The pastoral implication is enormous. A Christ who is not fully human cannot fully redeem our humanity. A Christ who is not fully divine cannot give us divine life. Chalcedon protects both the medicine and the physician — ensuring that the Incarnation is truly a meeting of God and man, not the elimination of one by the other.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Theological Reflection</h4>
+                    <ol>
+                        <li>Why does Gregory of Nazianzus's principle — "What has not been assumed has not been healed" — make Monophysitism a soteriological problem, not just an abstract error?</li>
+                        <li>How does the communicatio idiomatum follow logically from the Hypostatic Union?</li>
+                        <li>Why might a well-meaning believer be drawn to Monophysitism? What does it get right, and where does it go wrong?</li>
+                    </ol>
+                </div>
+            `
+        },
+
+        quiz: [
+            {
+                q: "The Catholic Church teaches that Jesus is:",
+                options: ["A great prophet but not God", "Only divine, not truly human", "Fully God and fully human", "Half God and half human"],
+                correct: 2,
+                explanation: "The Hypostatic Union — defined at Chalcedon (451 AD) — teaches that Jesus is one Person with two complete natures: fully divine and fully human."
+            },
+            {
+                q: "Which council in 451 AD defined the doctrine of Christ's two natures?",
+                options: ["Council of Nicaea", "Council of Trent", "Council of Chalcedon", "Council of Jerusalem"],
+                correct: 2,
+                explanation: "The Council of Chalcedon (451 AD) defined that Christ exists in two natures 'without confusion, without change, without division, without separation.'"
+            },
+            {
+                q: "What heresy taught that Christ had only one nature — a divine nature that absorbed the human?",
+                options: ["Arianism", "Nestorianism", "Monophysitism", "Gnosticism"],
+                correct: 2,
+                explanation: "Monophysitism (from Greek: 'one nature') taught that Christ's human nature was absorbed into His divine nature. The Church rejected this at Chalcedon."
+            },
+            {
+                q: "St. Paul says 'if Christ has not been raised, your faith is ___.'",
+                options: ["Incomplete", "Futile", "Still valid", "Symbolic"],
+                correct: 1,
+                explanation: "1 Corinthians 15:17 — 'If Christ has not been raised, your faith is futile.' Paul makes the Resurrection the non-negotiable foundation of Christian faith."
+            },
+            {
+                q: "Gregory of Nazianzus said: 'What has not been assumed has not been ___.'",
+                options: ["Forgiven", "Revealed", "Healed", "Sanctified"],
+                correct: 2,
+                explanation: "'What has not been assumed has not been healed.' Jesus had to take on complete human nature — body, soul, will, intellect — for our complete redemption."
+            }
+        ]
+    },
+
+    mary: {
+        id: 'mary',
+        title: 'Mary & the Saints',
+        subtitle: 'Why Catholics honor Mary and ask the saints to pray for us — and why this is not worship.',
+        gradeTag: 'Grades 3–8',
+        topic: 'Catholic Life',
+        xpReward: 50,
+        nextModule: 'conscience',
+
+        lesson: {
+            beginner: `
+                <h2>Mary & the Saints — Lesson</h2>
+                <p>One of the most common questions people ask about Catholics is: <em>"Why do you pray to Mary and the saints? Isn't that worship?"</em> The short answer is: we don't worship them — we <strong>ask them to pray for us</strong>, just like we ask our friends to pray for us.</p>
+
+                <h3>Who is Mary?</h3>
+                <p>Mary is the mother of Jesus. She said "yes" to God when the angel Gabriel asked her to carry the Son of God. Because Jesus is God, Mary is rightly called <span class="key-term">Theotokos</span> — the Mother of God. She is the greatest of all saints and the closest human being to Jesus who ever lived.</p>
+
+                <div class="highlight-box">
+                    <p>"Hail, full of grace, the Lord is with you!"</p>
+                    <cite>— Luke 1:28 (the Angel Gabriel to Mary)</cite>
+                </div>
+
+                <h3>What Do Catholics Believe About Mary?</h3>
+                <ul>
+                    <li><strong>Immaculate Conception</strong> — Mary was preserved from original sin from the moment of her conception</li>
+                    <li><strong>Perpetual Virginity</strong> — Mary remained a virgin her whole life</li>
+                    <li><strong>Assumption</strong> — At the end of her life, Mary was taken body and soul into heaven</li>
+                </ul>
+
+                <h3>Who Are the Saints?</h3>
+                <p>Saints are people in heaven who lived holy lives on earth. They are not dead in the way we fear death — they are <em>more alive</em> than we are. And because they are with God, they can intercede for us. Asking a saint to pray for you is like asking your most faithful friend to pray for you — except they are with God right now.</p>
+            `,
+            theologian: `
+                <h2>Mary & the Saints — Theologian Level</h2>
+                <p>Catholic Marian doctrine has four defined dogmas, each with precise theological content. Understanding them requires distinguishing <span class="key-term">latria</span> (worship due to God alone), <span class="key-term">hyperdulia</span> (the unique veneration given to Mary), and <span class="key-term">dulia</span> (honor given to the saints).</p>
+
+                <h3>The Four Marian Dogmas</h3>
+                <ul>
+                    <li><strong>Theotokos (431)</strong> — Mary is the Mother of God. Defined at Ephesus primarily to protect Christology: since Jesus is one Person, His mother is the mother of that Person who is God.</li>
+                    <li><strong>Perpetual Virginity (649)</strong> — Mary was virgin before, during, and after the birth of Christ. The Lateran Council defined this against those who read "brothers of Jesus" as biological siblings.</li>
+                    <li><strong>Immaculate Conception (1854)</strong> — Mary was preserved from original sin from the first moment of her conception by a singular grace of God, in view of the merits of Christ. Defined by Pius IX in <em>Ineffabilis Deus</em>.</li>
+                    <li><strong>Assumption (1950)</strong> — At the end of her earthly life, Mary was assumed body and soul into heavenly glory. Defined by Pius XII in <em>Munificentissimus Deus</em> — the most recent ex cathedra definition.</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>"All generations will call me blessed, for the Mighty One has done great things for me."</p>
+                    <cite>— Luke 1:48–49</cite>
+                </div>
+
+                <h3>Mediatrix and the Communion of Saints</h3>
+                <p>Mary's role as <span class="key-term">Mediatrix</span> (not yet a defined dogma, but strong theological tradition) does not compete with Christ's unique mediation (1 Tim 2:5) but participates in it — as all intercession does. The Communion of Saints is the doctrine that the Church is one body spanning heaven, purgatory, and earth. The saints in heaven are not cut off from us; they intercede for us before the throne of God. Their intercession is effective precisely because it flows through and is united to Christ's own intercession.</p>
+            `
+        },
+
+        reading: {
+            beginner: `
+                <h2>Reading: The Magnificat — Mary's Prayer</h2>
+                <div class="reading-meta">Luke 1:46–55</div>
+                <div class="reading-body">
+                    <p>When Mary visited her cousin Elizabeth, who was pregnant with John the Baptist, Elizabeth greeted her with joy. Mary responded with one of the most beautiful prayers in Scripture — the Magnificat. It reveals Mary's heart: humble, faithful, overflowing with love for God.</p>
+                    <p><em>"My soul magnifies the Lord, and my spirit rejoices in God my Savior, for He has looked with favor on the lowliness of His servant. Surely, from now on all generations will call me blessed; for the Mighty One has done great things for me, and holy is His name."</em></p>
+                    <p>Notice what Mary does here: she doesn't take credit for anything. She points everything back to God. "He has done great things for me." This is why Catholics love Mary — not because she replaces Jesus, but because she leads us to Jesus better than anyone else. Her whole life was a pointing toward her Son.</p>
+                    <p>The saints do the same. Every saint, in their own way, lived the Magnificat — giving all glory to God and showing us what it looks like to say yes to Him completely.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Reflect on These Questions</h4>
+                    <ol>
+                        <li>What does Mary's prayer tell you about her character and her relationship with God?</li>
+                        <li>How is asking Mary to pray for you different from worshiping her?</li>
+                        <li>Is there a saint whose story has inspired you? What about their life speaks to you?</li>
+                    </ol>
+                </div>
+            `,
+            theologian: `
+                <h2>Reading: The Immaculate Conception — Ineffabilis Deus (1854)</h2>
+                <div class="reading-meta">Pope Pius IX, Apostolic Constitution — December 8, 1854</div>
+                <div class="reading-body">
+                    <p>The Immaculate Conception is one of the most misunderstood Catholic doctrines. It does not refer to the virginal conception of Jesus but to the conception of Mary herself — the claim that she was preserved from original sin from the first instant of her existence.</p>
+                    <p>The definition from <em>Ineffabilis Deus</em> reads: "The most Blessed Virgin Mary, in the first instance of her conception, by a singular grace and privilege granted by Almighty God, in view of the merits of Jesus Christ, the Savior of the human race, was preserved free from all stain of original sin."</p>
+                    <p>The critical phrase is "in view of the merits of Jesus Christ." Mary was not exempt from needing redemption — she was redeemed, but preemptively. Theologians call this <em>redemptio praeservativa</em> (preservative redemption) rather than <em>redemptio liberativa</em> (liberative redemption). Christ's saving grace, applied retroactively in time, preserved her from contracting the stain that the rest of humanity inherits.</p>
+                    <p>This was debated in the medieval period between Franciscans (who supported it, led by Duns Scotus) and Dominicans (who opposed it, following Thomas Aquinas's concern that it would exempt Mary from needing redemption). Scotus's solution — that prevention is a greater grace than cure — ultimately won the day and became the theological basis for Pius IX's definition.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Theological Reflection</h4>
+                    <ol>
+                        <li>How does the phrase "in view of the merits of Jesus Christ" protect the doctrine from the objection that Mary didn't need a Savior?</li>
+                        <li>Why do you think this doctrine was debated for so long before being defined? What theological concerns were at stake?</li>
+                        <li>What is the relationship between Mary's Immaculate Conception and her role as Mother of God?</li>
+                    </ol>
+                </div>
+            `
+        },
+
+        quiz: [
+            {
+                q: "The word 'Theotokos' means:",
+                options: ["Holy Woman", "Mother of God", "Queen of Heaven", "Immaculate One"],
+                correct: 1,
+                explanation: "Theotokos (Greek) means 'God-bearer' or 'Mother of God.' It was defined at the Council of Ephesus (431 AD) — primarily to protect the doctrine that Jesus is one Person who is God."
+            },
+            {
+                q: "The Immaculate Conception refers to:",
+                options: ["Jesus being conceived without a human father", "Mary being conceived without original sin", "Mary conceiving Jesus as a virgin", "The Church being founded without sin"],
+                correct: 1,
+                explanation: "The Immaculate Conception is the doctrine that Mary was preserved from original sin from the first instant of her conception — defined by Pope Pius IX in 1854."
+            },
+            {
+                q: "In Catholic theology, the worship due to God alone is called:",
+                options: ["Dulia", "Hyperdulia", "Latria", "Veneration"],
+                correct: 2,
+                explanation: "Latria is the adoration owed to God alone. Hyperdulia is the special veneration given to Mary. Dulia is the honor given to saints. Catholics give latria only to God."
+            },
+            {
+                q: "The Assumption (1950) teaches that Mary was taken into heaven:",
+                options: ["Only in spirit, not body", "After a period in purgatory", "Body and soul", "Symbolically, not literally"],
+                correct: 2,
+                explanation: "Defined by Pope Pius XII in Munificentissimus Deus (1950) — Mary was assumed body and soul into heavenly glory at the end of her earthly life."
+            },
+            {
+                q: "Duns Scotus's solution that made the Immaculate Conception theologically defensible was:",
+                options: ["Mary did not need redemption", "Prevention is a greater grace than cure", "Original sin does not apply to women", "The Pope has authority to exempt saints from sin"],
+                correct: 1,
+                explanation: "Scotus argued that to prevent someone from falling into sin is a greater act of redemption than rescuing them after. This resolved the concern that the doctrine exempted Mary from needing a Savior."
+            }
+        ]
+    },
+
+    conscience: {
+        id: 'conscience',
+        title: 'Conscience & Moral Decision-Making',
+        subtitle: 'What the Catholic Church teaches about conscience — and why it is not a permission slip to do whatever you want.',
+        gradeTag: 'Grades 6–8',
+        topic: 'Moral Theology',
+        xpReward: 60,
+        nextModule: null,
+
+        lesson: {
+            beginner: `
+                <h2>Conscience & Moral Decision-Making — Lesson</h2>
+                <p>Everyone has a <span class="key-term">conscience</span> — that inner voice that tells you when something is right or wrong. But what exactly is conscience, and can you always trust it?</p>
+
+                <h3>What Conscience Is</h3>
+                <p>The Catholic Church teaches that conscience is <strong>the voice of God speaking in our hearts</strong> — our ability to judge whether an action is good or evil. It is a gift from God built into every human being. When you feel guilty after doing something wrong, or feel at peace after doing something good, that is your conscience working.</p>
+
+                <h3>What Conscience Is Not</h3>
+                <p>Conscience is <em>not</em> just "whatever I feel like." A conscience can be:</p>
+                <ul>
+                    <li><strong>Wrong</strong> — if you were taught badly or never learned right from wrong</li>
+                    <li><strong>Dulled</strong> — if you keep ignoring it, it gets quieter over time</li>
+                    <li><strong>Manipulated</strong> — by peer pressure, culture, or self-deception</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>"Deep within his conscience man discovers a law which he has not laid upon himself but which he must obey."</p>
+                    <cite>— Gaudium et Spes, §16</cite>
+                </div>
+
+                <h3>Forming a Good Conscience</h3>
+                <p>Because conscience can be wrong, we have a duty to <strong>form it well</strong>. This means:</p>
+                <ul>
+                    <li>Learning what the Church teaches about right and wrong</li>
+                    <li>Reading Scripture and praying for wisdom</li>
+                    <li>Seeking advice from wise and holy people</li>
+                    <li>Examining our motives honestly</li>
+                </ul>
+                <p>You must always obey a certain conscience — but you must also always work to make sure your conscience is well-formed and aligned with truth.</p>
+            `,
+            theologian: `
+                <h2>Conscience & Moral Decision-Making — Theologian Level</h2>
+                <p>The Catholic doctrine of conscience is one of the most nuanced — and most misappropriated — areas of moral theology. Vatican II's <em>Gaudium et Spes</em> §16 defines conscience as "the most secret core and sanctuary of a person" where one is "alone with God, whose voice echoes in one's depths." This is not a license for autonomy but a description of the site of moral obligation.</p>
+
+                <h3>The Three Senses of Conscience</h3>
+                <p>The tradition distinguishes:</p>
+                <ul>
+                    <li><span class="key-term">Synderesis</span> — the innate habit of knowing basic moral principles ("do good, avoid evil")</li>
+                    <li><span class="key-term">Conscientia</span> — the act of applying those principles to particular situations</li>
+                    <li><span class="key-term">Moral sense</span> — the emotional-intuitive dimension of moral perception</li>
+                </ul>
+
+                <h3>Certain vs. Doubtful Conscience</h3>
+                <p>A <span class="key-term">certain conscience</span> judges an act to be obligatory, permissible, or forbidden without prudent fear of error. One must always act according to a certain conscience — even if it is objectively wrong. A person acting in invincible ignorance (unable through no fault of their own to know the truth) is not morally culpable.</p>
+                <p>A <span class="key-term">doubtful conscience</span> involves genuine uncertainty. The principle <em>agere contra conscientiam semper est malum</em> — to act against conscience is always evil — means one may not act when doubtful of the lawfulness of an action. One must first resolve the doubt.</p>
+
+                <div class="highlight-box">
+                    <p>"Conscience is the proximate norm of morality, but it must itself be judged by objective moral truth."</p>
+                    <cite>— John Paul II, Veritatis Splendor, §60</cite>
+                </div>
+
+                <h3>The Obligation to Form Conscience</h3>
+                <p>In <em>Veritatis Splendor</em>, John Paul II forcefully rejected the notion of "fundamental option" theories that would allow conscience to override specific moral norms. Conscience is not creative — it does not generate moral truth but <em>perceives</em> it. The obligation to form conscience according to objective moral truth and Church teaching is not optional: an erroneous conscience formed through culpable negligence does not excuse.</p>
+            `
+        },
+
+        reading: {
+            beginner: `
+                <h2>Reading: Conscience in the Catechism</h2>
+                <div class="reading-meta">Catechism of the Catholic Church, §§1776–1782 (simplified)</div>
+                <div class="reading-body">
+                    <p>Conscience is present at the heart of every person. It commands him at the right moment: do this, shun that. When he listens to his conscience, a prudent man hears God speaking to him.</p>
+                    <p>Conscience must be informed and moral judgment enlightened. A well-formed conscience is upright and truthful. It formulates its judgments according to reason, in conformity with the true good willed by the wisdom of the Creator. Everyone must avail himself of the means to form his conscience.</p>
+                    <p>Faced with a moral choice, conscience can make either a right judgment in accordance with reason and the divine law, or conversely, an erroneous judgment that departs from them. A human being must always obey the certain judgment of his conscience. If he were deliberately to act against it, he would condemn himself.</p>
+                    <p>Yet it can happen that moral conscience remains in ignorance and makes erroneous judgments about acts to be performed or already committed. This ignorance can often be imputed to personal responsibility. This is the case when a man takes little trouble to find out what is true and good, or when conscience is little by little almost blinded through the habit of committing sin.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Reflect on These Questions</h4>
+                    <ol>
+                        <li>What does it mean that conscience can be "blinded" over time? Have you ever noticed your sense of right and wrong shifting?</li>
+                        <li>What does the Church say are our responsibilities for forming our conscience well?</li>
+                        <li>Describe a situation where someone might have a sincere but wrong conscience. How should we respond to such a person?</li>
+                    </ol>
+                </div>
+            `,
+            theologian: `
+                <h2>Reading: Veritatis Splendor and the Limits of Conscience</h2>
+                <div class="reading-meta">John Paul II, Veritatis Splendor (1993), §§54–64</div>
+                <div class="reading-body">
+                    <p>In <em>Veritatis Splendor</em> (1993), John Paul II addressed the crisis of moral relativism that had entered even Catholic moral theology in the post-conciliar period. Some theologians had argued that conscience possessed a "creative" function — able to determine moral truth independently, particularly regarding specific norms the Magisterium had declared intrinsically evil.</p>
+                    <p>John Paul II rejected this systematically. Conscience, he insisted, is not a "tribunal" that stands above the moral law but one that bears witness to it. The famous dictum of Cardinal Newman — "I toast the Pope, but I toast conscience first" — is frequently misread to mean that personal conscience trumps the Magisterium. John Paul II noted that Newman himself meant precisely the opposite: he was defending the objective claims of conscience against social pressure and utilitarianism, not against revealed truth.</p>
+                    <p>The encyclical's most significant moral category is the <em>intrinsece malum</em> — the intrinsically evil act. Certain acts (torture, murder of innocents, adultery) are evil not because of circumstances or intentions but because of their object. No good intention, no pastoral exception, no sincere conscience can render them good. This is the point at which the popular phrase "follow your conscience" requires the most careful handling: a conscience that approves an intrinsically evil act has not been well formed, regardless of its sincerity.</p>
+                    <p>The encyclical thus establishes a hierarchy: objective moral truth → Church teaching (which authoritatively interprets natural law and revelation) → formed conscience → particular judgment. Conscience is indispensable and must be obeyed, but it is not the origin of moral truth.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Theological Reflection</h4>
+                    <ol>
+                        <li>How does John Paul II's reading of Newman challenge the popular use of "follow your conscience" to justify departures from Church teaching?</li>
+                        <li>What is an intrinsece malum, and why does its existence set limits on what conscience can legitimately approve?</li>
+                        <li>How do you reconcile the claim that one must always follow their conscience with the claim that conscience can be wrong and must be formed?</li>
+                    </ol>
+                </div>
+            `
+        },
+
+        quiz: [
+            {
+                q: "According to Catholic teaching, conscience is best described as:",
+                options: ["Whatever feels right to me", "A social construct shaped by culture", "The inner voice where God's law is perceived", "The rules the Church gives us"],
+                correct: 2,
+                explanation: "Gaudium et Spes §16 describes conscience as the inner sanctuary where one is 'alone with God, whose voice echoes in one's depths.' It is where God's law is perceived, not invented."
+            },
+            {
+                q: "The term 'synderesis' refers to:",
+                options: ["The emotional feeling of guilt", "The innate habit of knowing basic moral principles", "The act of going to Confession", "Church teaching on sexuality"],
+                correct: 1,
+                explanation: "Synderesis is the innate, habitual knowledge of the most basic moral principle: 'do good and avoid evil.' It is the foundation from which conscience reasons about specific situations."
+            },
+            {
+                q: "John Paul II's Veritatis Splendor (1993) teaches that certain acts are intrinsically evil, meaning:",
+                options: ["They are evil only if you intend harm", "They can be justified by sufficiently good intentions", "They are evil because of their object, regardless of intention", "They are evil only in most circumstances"],
+                correct: 2,
+                explanation: "Intrinsece malum — intrinsically evil acts — are evil because of what they are, not because of circumstances or intentions. No intention can render them good."
+            },
+            {
+                q: "A person acting with an 'invincibly ignorant' conscience:",
+                options: ["Is always morally culpable", "Is not morally culpable for the error", "Should be punished by the Church", "Has no real conscience"],
+                correct: 1,
+                explanation: "Invincible ignorance means one cannot know the truth through no fault of their own. Such a person acting sincerely on their (incorrect) conscience is not morally culpable for the error."
+            },
+            {
+                q: "The principle 'agere contra conscientiam semper est malum' means:",
+                options: ["Conscience is always correct", "To act against conscience is always evil", "The Church's law overrides conscience", "Good intentions excuse all actions"],
+                correct: 1,
+                explanation: "'To act against conscience is always evil.' One must always follow their certain conscience — but this is why forming it correctly according to truth is so important."
+            }
+        ]
+    }
+
+}; // end MODULES
+
+// ── STATE ──────────────────────────────────────────────────
+let currentModule = null;
+let currentLevel = 'beginner';
+let currentStep = 'lesson'; // lesson | reading | quiz | complete
+let quizAnswers = {};
+let quizSubmitted = false;
+let userProgressData = {};
+
+// ── INIT ───────────────────────────────────────────────────
+function goToPracticeGames() {
+    if (currentModule) {
+        window.location.href = 'crux-games.html?module=' + currentModule.id;
+    }
+}
+
+window.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    const moduleId = params.get('module') || 'trinity';
+    loadModule(moduleId);
+});
+
+function loadModule(moduleId) {
+    currentModule = MODULES[moduleId];
+    if (!currentModule) {
+        document.getElementById('loadingState').innerHTML = `
+            <div style="text-align:center;padding:3rem;">
+                <p style="color:var(--text-muted);font-size:1.1rem;">Module not found.</p>
+                <button class="btn-primary" style="margin-top:1.5rem;" onclick="window.location.href='index.html'">← Back to CRUX</button>
+            </div>`;
+        return;
+    }
+
+    document.title = `CRUX — ${currentModule.title}`;
+
+    // Show UI
+    document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('stepIndicator').style.display = 'flex';
+    document.getElementById('moduleHeader').style.display = 'block';
+    document.getElementById('levelToggleWrap').style.display = 'block';
+
+    // Populate header
+    document.getElementById('gradeTag').textContent = currentModule.gradeTag;
+    document.getElementById('topicTag').textContent = currentModule.topic;
+    document.getElementById('moduleTitle').textContent = currentModule.title;
+    document.getElementById('moduleSubtitle').textContent = currentModule.subtitle;
+
+    // Render lesson content
+    renderLesson();
+    renderReading();
+    renderQuiz();
+    updateProgress();
+}
+
+// ── LEVEL TOGGLE ───────────────────────────────────────────
+function setLevel(level) {
+    currentLevel = level;
+    document.getElementById('btnBeginner').classList.toggle('active', level === 'beginner');
+    document.getElementById('btnTheologian').classList.toggle('active', level === 'theologian');
+    renderLesson();
+    renderReading();
+    if (!quizSubmitted) renderQuiz();
+}
+
+// ── RENDER FUNCTIONS ───────────────────────────────────────
+function renderLesson() {
+    document.getElementById('lessonContent').innerHTML =
+        currentModule.lesson[currentLevel];
+}
+
+function renderReading() {
+    document.getElementById('readingContent').innerHTML =
+        currentModule.reading[currentLevel];
+}
+
+function renderQuiz() {
+    quizAnswers = {};
+    quizSubmitted = false;
+    const container = document.getElementById('quizQuestions');
+    const letters = ['A', 'B', 'C', 'D'];
+
+    container.innerHTML = currentModule.quiz.map((q, qi) => `
+        <div class="question-block" id="qblock${qi}">
+            <div class="question-num">Question ${qi + 1} of ${currentModule.quiz.length}</div>
+            <div class="question-text">${q.q}</div>
+            <div class="options-list">
+                ${q.options.map((opt, oi) => `
+                    <button class="option-btn" id="opt${qi}_${oi}"
+                        onclick="selectAnswer(${qi}, ${oi})"
+                        data-qi="${qi}" data-oi="${oi}">
+                        <span class="option-letter">${letters[oi]}</span>
+                        ${opt}
+                    </button>
+                `).join('')}
+            </div>
+            <div class="answer-feedback" id="feedback${qi}"></div>
+        </div>
+    `).join('');
+
+    updateSubmitBtn();
+}
+
+function selectAnswer(qi, oi) {
+    if (quizSubmitted) return;
+    quizAnswers[qi] = oi;
+
+    // Clear selection state for this question
+    currentModule.quiz[qi].options.forEach((_, i) => {
+        const btn = document.getElementById(`opt${qi}_${i}`);
+        btn.classList.remove('selected');
+    });
+    document.getElementById(`opt${qi}_${oi}`).classList.add('selected');
+    updateSubmitBtn();
+}
+
+function updateSubmitBtn() {
+    const allAnswered = currentModule.quiz.every((_, i) => quizAnswers[i] !== undefined);
+    document.getElementById('submitQuizBtn').disabled = !allAnswered;
+}
+
+function submitQuiz() {
+    quizSubmitted = true;
+    let correct = 0;
+
+    currentModule.quiz.forEach((q, qi) => {
+        const chosen = quizAnswers[qi];
+        const isCorrect = chosen === q.correct;
+        if (isCorrect) correct++;
+
+        // Style all buttons
+        q.options.forEach((_, oi) => {
+            const btn = document.getElementById(`opt${qi}_${oi}`);
+            btn.disabled = true;
+            btn.classList.remove('selected');
+            if (oi === q.correct) btn.classList.add('correct');
+            else if (oi === chosen && !isCorrect) btn.classList.add('incorrect');
+        });
+
+        // Show feedback
+        const fb = document.getElementById(`feedback${qi}`);
+        fb.style.display = 'block';
+        fb.className = `answer-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
+        fb.textContent = isCorrect
+            ? `✓ Correct! ${q.explanation}`
+            : `✗ The correct answer is "${q.options[q.correct]}." ${q.explanation}`;
+    });
+
+    // Scroll to top of quiz
+    document.getElementById('panelQuiz').scrollIntoView({ behavior: 'smooth' });
+
+    // Wait a moment then show completion
+    setTimeout(() => showCompletion(correct), 1800);
+}
+
+// ── NAVIGATION ─────────────────────────────────────────────
+function goToLesson() {
+    setStep('lesson');
+}
+
+function goToReading() {
+    setStep('reading');
+}
+
+function goToQuiz() {
+    setStep('quiz');
+}
+
+function setStep(step) {
+    currentStep = step;
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+
+    const panelMap = {
+        lesson: 'panelLesson',
+        reading: 'panelReading',
+        quiz: 'panelQuiz',
+        complete: 'panelComplete'
+    };
+
+    document.getElementById(panelMap[step]).classList.add('active');
+    updateStepIndicator(step);
+    updateProgress();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function updateStepIndicator(step) {
+    const steps = ['lesson', 'reading', 'quiz'];
+    const idx = steps.indexOf(step);
+
+    steps.forEach((s, i) => {
+        const el = document.getElementById(`step${i + 1}`);
+        el.className = 'step';
+        if (i < idx) el.classList.add('complete');
+        else if (i === idx) el.classList.add('active');
+
+        if (i < steps.length - 1) {
+            const line = document.getElementById(`line${i + 1}`);
+            line.className = 'step-line' + (i < idx ? ' complete' : '');
+        }
+    });
+}
+
+function updateProgress() {
+    const stepProgress = { lesson: 15, reading: 50, quiz: 80, complete: 100 };
+    document.getElementById('progressFill').style.width =
+        (stepProgress[currentStep] || 0) + '%';
+}
+
+// ── COMPLETION ─────────────────────────────────────────────
+async function showCompletion(correct) {
+    const total = currentModule.quiz.length;
+    const pct = Math.round((correct / total) * 100);
+    const xp = currentModule.xpReward;
+
+    document.getElementById('scoreNum').textContent = `${correct}/${total}`;
+    document.getElementById('completionTitle').textContent =
+        pct === 100 ? 'Perfect Score! 🎉' :
+        pct >= 80 ? 'Well Done!' :
+        pct >= 60 ? 'Good Effort!' : 'Keep Studying!';
+
+    document.getElementById('completionMessage').textContent =
+        pct === 100
+            ? `You answered every question correctly. Outstanding work on "${currentModule.title}."`
+            : `You scored ${correct} out of ${total} on the quiz. Review the lesson and try again to improve your score.`;
+
+    // Show practice games button
+    const gamesBtn = document.getElementById('practiceGamesBtn');
+    if (gamesBtn) gamesBtn.style.display = 'inline-flex';
+
+    // Show next module button if available
+    if (currentModule.nextModule && MODULES[currentModule.nextModule]) {
+        const nextBtn = document.getElementById('nextModuleBtn');
+        nextBtn.style.display = 'inline-flex';
+        nextBtn.textContent = `Next: ${MODULES[currentModule.nextModule].title} →`;
+    }
+
+    // Award XP if logged in
+    if (window.currentUser && pct >= 60) {
+        document.getElementById('xpAwardDisplay').style.display = 'inline-flex';
+        document.getElementById('xpEarned').textContent = xp;
+        await awardXP(xp);
+    }
+
+    setStep('complete');
+    saveProgress(correct, total);
+}
+
+async function awardXP(amount) {
+    if (!window.currentUser || !window.db) return;
+    const { doc, getDoc, setDoc, updateDoc, serverTimestamp } = window.fsModules;
+    const uid = window.currentUser.uid;
+
+    try {
+        const ref = doc(window.db, 'userProgress', uid);
+        const snap = await getDoc(ref);
+
+        if (snap.exists()) {
+            const current = snap.data().totalXP || 0;
+            await updateDoc(ref, {
+                totalXP: current + amount,
+                lastActivity: serverTimestamp()
+            });
+            document.getElementById('xpDisplay').textContent = current + amount;
+        } else {
+            await setDoc(ref, {
+                totalXP: amount,
+                lastActivity: serverTimestamp(),
+                userId: uid
+            });
+            document.getElementById('xpDisplay').textContent = amount;
+        }
+        document.getElementById('xpChip').style.display = 'inline-flex';
+    } catch (e) {
+        console.error('Error awarding XP:', e);
+    }
+}
+
+async function saveProgress(correct, total) {
+    if (!window.currentUser || !window.db) return;
+    const { doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp } = window.fsModules;
+    const uid = window.currentUser.uid;
+    const passed = (correct / total) >= 0.6;
+
+    // 1. Log the attempt to moduleProgress collection
+    try {
+        await addDoc(collection(window.db, 'moduleProgress'), {
+            userId: uid,
+            moduleId: currentModule.id,
+            moduleTitle: currentModule.title,
+            level: currentLevel,
+            score: correct,
+            total: total,
+            passed: passed,
+            completedAt: serverTimestamp()
+        });
+    } catch (e) {
+        console.error('Error saving module progress:', e);
+    }
+
+    // 2. If passed, stamp completedModules onto userProgress so
+    //    index.html can read it back in a single document fetch
+    if (!passed) return;
+
+    try {
+        const ref = doc(window.db, 'userProgress', uid);
+        const snap = await getDoc(ref);
+
+        if (snap.exists()) {
+            const existing = snap.data().completedModules || [];
+            if (!existing.includes(currentModule.id)) {
+                await updateDoc(ref, {
+                    completedModules: [...existing, currentModule.id],
+                    lastActivity: serverTimestamp()
+                });
+            }
+        } else {
+            await setDoc(ref, {
+                totalXP: 0,
+                completedModules: [currentModule.id],
+                lastActivity: serverTimestamp(),
+                userId: uid
+            });
+        }
+    } catch (e) {
+        console.error('Error stamping completed module:', e);
+    }
+}
+
+async function loadUserProgress() {
+    if (!window.currentUser || !window.db) return;
+    const { doc, getDoc } = window.fsModules;
+    const uid = window.currentUser.uid;
+
+    try {
+        const snap = await getDoc(doc(window.db, 'userProgress', uid));
+        if (snap.exists()) {
+            const xp = snap.data().totalXP || 0;
+            document.getElementById('xpDisplay').textContent = xp;
+            document.getElementById('xpChip').style.display = 'inline-flex';
+        }
+    } catch (e) {
+        console.error('Error loading user progress:', e);
+    }
+}
+
+function loadNextModule() {
+    if (currentModule.nextModule) {
+        window.location.href = `crux-modules.html?module=${currentModule.nextModule}`;
+    }
+}
+</script>
+</body>
+</html>

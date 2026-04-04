@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — Module 1B: The Claim That Changes Everything</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-LQ35DLTVKY');</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+.reflection-block i, .reflection-block em, .reflection-question,
+.pull-quote i, .pull-quote em, .pull-quote-text,
+.closing-prayer i, .closing-prayer em, .prayer-text, .prayer-intro,
+.discussion-block i, .discussion-block em, .discussion-title,
+.honest-wrap i, .honest-wrap em,
+.scripture-opening i, .scripture-opening em, .scripture-text,
+.video-block i, .video-block em,
+.ocia-block i, .ocia-block em,
+.scripture-callout-text {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+:root {
+  --navy: #1a1f36;
+  --navy-light: #252b47;
+  --navy-mid: #2e3555;
+  --gold: #d4a574;
+  --gold-light: #e8c9a0;
+  --gold-pale: #f5ead8;
+  --cream: #faf7f2;
+  --text-primary: #1a1f36;
+  --text-secondary: #5a6080;
+  --text-muted: #8a90aa;
+  --border: rgba(26,31,54,0.1);
+  --white: #ffffff;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--cream);
+  color: var(--text-primary);
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+.site-header { background: var(--navy); padding: 1rem 2rem; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 100; }
+.site-logo { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--gold); letter-spacing: 0.12em; text-decoration: none; }
+.site-nav { display: flex; gap: 2rem; list-style: none; }
+.site-nav a { color: #8a90aa; text-decoration: none; font-size: 13px; font-weight: 500; letter-spacing: 0.04em; transition: color 0.2s; }
+.site-nav a:hover { color: var(--gold); }
+
+.module-hero { background: var(--navy); padding: 5rem 2rem 4rem; text-align: center; position: relative; overflow: hidden; }
+.module-hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(212,165,116,0.13) 0%, transparent 70%); pointer-events: none; }
+.module-track { display: inline-block; font-size: 11px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); border: 0.5px solid rgba(212,165,116,0.4); padding: 4px 14px; border-radius: 20px; margin-bottom: 1.25rem; }
+.module-part-badge { display: block; font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: #6b7299; margin-bottom: 0.6rem; }
+.module-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.2rem); color: #fff; font-weight: 400; line-height: 1.2; margin-bottom: 0.6rem; max-width: 720px; margin-left: auto; margin-right: auto; }
+.module-subtitle { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--gold); font-style: italic; margin-bottom: 1.5rem; }
+.module-meta { display: flex; align-items: center; justify-content: center; gap: 1.25rem; font-size: 12px; color: #6b7299; flex-wrap: wrap; }
+.part-nav-bar { display: flex; align-items: center; justify-content: center; gap: 0.5rem; margin-top: 1.75rem; }
+.part-pill { font-size: 12px; font-weight: 500; padding: 5px 16px; border-radius: 20px; border: 0.5px solid #3a4268; color: #6b7299; letter-spacing: 0.04em; }
+.part-pill.active { background: #2a3158; border-color: var(--gold); color: var(--gold); }
+.part-arrow { color: #3a4268; font-size: 12px; }
+
+.progress-bar { background: var(--navy-light); padding: 0.8rem 2rem; display: flex; align-items: center; gap: 1rem; border-bottom: 0.5px solid rgba(255,255,255,0.06); position: sticky; top: 57px; z-index: 90; }
+.progress-label { font-size: 11px; color: #6b7299; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; }
+.progress-track { flex: 1; height: 3px; background: #2e3555; border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: var(--gold); border-radius: 2px; transition: width 0.5s ease; }
+.progress-count { font-size: 11px; color: #6b7299; white-space: nowrap; }
+
+.module-layout { max-width: 1100px; margin: 0 auto; padding: 4rem 2rem; display: grid; grid-template-columns: 1fr 280px; gap: 4rem; align-items: start; }
+
+.module-section { margin-bottom: 0; }
+.module-section.locked .section-inner { opacity: 0.18; filter: blur(2px); user-select: none; pointer-events: none; }
+.module-section.locked .continue-btn-wrap { display: none; }
+.module-section.locked .reflection-block { display: none; }
+.module-section.locked .video-block { display: none; }
+.module-section.locked .ocia-block { display: none; }
+
+.lock-overlay { display: none; align-items: center; gap: 12px; padding: 1rem 1.25rem; background: #f0efe8; border: 0.5px solid var(--border); border-radius: 6px; margin-bottom: 1.5rem; color: var(--text-muted); font-size: 13px; }
+.module-section.locked .lock-overlay { display: flex; }
+.lock-icon { width: 26px; height: 26px; background: rgba(26,31,54,0.07); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+
+.section-sep { height: 0.5px; background: var(--border); margin: 2.5rem 0; }
+
+.section-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+.section-number { width: 28px; height: 28px; border-radius: 50%; background: var(--navy); color: var(--gold); font-size: 11px; font-weight: 500; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.section-label { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); }
+.section-divider { flex: 1; height: 0.5px; background: var(--border); }
+
+.section-body { font-size: 16px; line-height: 1.9; color: var(--text-primary); }
+.section-body p { margin-bottom: 1.35rem; }
+.section-body p:last-child { margin-bottom: 0; }
+
+.scripture-opening { margin-bottom: 2.5rem; padding: 2.25rem 2.5rem; background: var(--navy); border-radius: 6px; border-left: 3px solid var(--gold); }
+.scripture-mark { font-family: 'Playfair Display', serif; font-size: 3.5rem; color: var(--gold); opacity: 0.2; line-height: 1; margin-bottom: -0.5rem; display: block; }
+.scripture-text { font-family: 'Playfair Display', serif; font-size: 1.35rem; color: #fff; font-style: italic; line-height: 1.55; margin-bottom: 0.75rem; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+.scripture-ref { font-size: 11px; color: var(--gold); letter-spacing: 0.1em; text-transform: uppercase; font-weight: 500; }
+
+.pull-quote { margin: 1.75rem 0; padding: 1.5rem 2rem; background: var(--navy); border-radius: 6px; }
+.pull-quote-text { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: #f0f1f7; font-style: italic; line-height: 1.65; margin-bottom: 0.5rem; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+.pull-quote-attr { font-size: 11px; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; font-weight: 500; }
+
+.scripture-callout { display: flex; gap: 14px; background: var(--white); border: 0.5px solid var(--border); border-radius: 6px; padding: 1rem 1.25rem; margin: 1.25rem 0; align-items: flex-start; }
+.scripture-callout-ref { font-size: 11px; font-weight: 500; color: var(--gold); letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap; padding-top: 2px; min-width: 56px; }
+.scripture-callout-text { font-size: 14px; color: var(--text-secondary); line-height: 1.65; font-style: italic; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+
+.doctrine-wrap { background: var(--gold-pale); border-radius: 6px; padding: 1.75rem 2rem; border: 0.5px solid rgba(212,165,116,0.3); }
+.doctrine-wrap .section-number { background: var(--gold); color: var(--navy); }
+
+.options-block { margin: 1.5rem 0; border-radius: 6px; overflow: hidden; border: 0.5px solid var(--border); }
+.option-row { display: flex; gap: 0; border-bottom: 0.5px solid var(--border); }
+.option-row:last-child { border-bottom: none; }
+.option-label { width: 110px; flex-shrink: 0; background: var(--navy); color: var(--gold); font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 1rem 1.1rem; display: flex; align-items: center; }
+.option-text { flex: 1; background: var(--white); padding: 1rem 1.25rem; font-size: 14px; color: var(--text-secondary); line-height: 1.65; }
+
+.honest-wrap { background: var(--white); border: 0.5px solid var(--border); border-left: 3px solid var(--navy); border-radius: 6px; padding: 1.75rem 2rem; }
+
+.reflection-block { background: var(--navy); border-radius: 6px; padding: 1.5rem 1.75rem; margin-top: 1.25rem; }
+.reflection-label { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+.reflection-question { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: #f0f1f7; font-style: italic; line-height: 1.65; margin-bottom: 1rem; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+.reflection-textarea { width: 100%; background: #252b47; border: 0.5px solid #3a4268; border-radius: 4px; padding: 0.85rem 1rem; color: #e8eaf2; font-family: 'Inter', sans-serif; font-size: 14px; line-height: 1.6; resize: vertical; min-height: 90px; outline: none; transition: border-color 0.2s; }
+.reflection-textarea::placeholder { color: #6b7299; }
+.reflection-textarea:focus { border-color: #b8895a; }
+
+.continue-btn-wrap { display: flex; justify-content: flex-end; margin-top: 1.1rem; }
+.continue-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: var(--navy); border: none; border-radius: 4px; padding: 10px 22px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.2s; letter-spacing: 0.02em; }
+.continue-btn:hover { background: var(--gold-light); }
+
+.journal-block { border: 1.5px solid var(--gold); border-radius: 6px; padding: 1.75rem 2rem; background: var(--white); margin-bottom: 1.25rem; }
+.journal-eyebrow { display: flex; align-items: center; gap: 10px; margin-bottom: 1rem; }
+.journal-icon { width: 28px; height: 28px; background: var(--gold-pale); border-radius: 4px; display: flex; align-items: center; justify-content: center; font-size: 14px; flex-shrink: 0; }
+.journal-label { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--gold); }
+.journal-prompt { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--text-primary); font-style: italic; line-height: 1.65; margin-bottom: 0.75rem; }
+.journal-note { font-size: 12px; color: var(--text-muted); font-style: italic; }
+
+.discussion-block { background: var(--navy-light); border-radius: 6px; padding: 1.75rem 2rem; margin-bottom: 1.25rem; }
+.discussion-label { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: #7a819e; margin-bottom: 0.5rem; }
+.discussion-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--gold-light); margin-bottom: 0.75rem; font-style: italic; line-height: 1.55; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+.discussion-body { font-size: 14px; color: #9ba3c0; line-height: 1.75; }
+.discussion-body p { margin-bottom: 0.75rem; }
+.discussion-body p:last-child { margin-bottom: 0; }
+
+.ocia-block { background: var(--navy); border-radius: 6px; padding: 2rem; margin-bottom: 1.25rem; border-left: 3px solid var(--gold); }
+.ocia-label { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+.ocia-title { font-family: 'Playfair Display', serif; font-size: 1.2rem; color: #f0f1f7; margin-bottom: 1rem; line-height: 1.4; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.ocia-body { font-size: 15px; color: #9ba3c0; line-height: 1.8; }
+.ocia-body p { margin-bottom: 1rem; }
+.ocia-body p:last-child { margin-bottom: 0; }
+.ocia-note { font-size: 12px; color: #6b7299; font-style: italic; margin-top: 1rem; padding-top: 1rem; border-top: 0.5px solid #2e3555; }
+
+.video-block { background: var(--navy-light); border-radius: 6px; padding: 1.5rem; margin-top: 1.25rem; }
+.video-label { font-size: 10px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+.video-title { font-size: 14px; font-weight: 500; color: #fff; margin-bottom: 0.35rem; line-height: 1.4; }
+.video-desc { font-size: 13px; color: #9ba3c0; margin-bottom: 1rem; line-height: 1.6; }
+.video-embed-wrap { position: relative; width: 100%; padding-bottom: 56.25%; border-radius: 4px; overflow: hidden; background: #111726; }
+.video-embed-wrap iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+
+.closing-prayer { background: var(--navy); border-radius: 6px; padding: 2.5rem; position: relative; }
+.prayer-intro { font-size: 14px; color: #7a819e; font-style: italic; margin-bottom: 1.5rem; line-height: 1.75; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+.prayer-text { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: #e8eaf2; line-height: 2.1; font-style: italic; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+.prayer-line { display: block; }
+.prayer-amen { margin-top: 0.5rem; color: var(--gold); font-style: normal; font-weight: 600; letter-spacing: 0.1em; font-size: 0.85rem; text-transform: uppercase; }
+
+.completion-banner { display: none; background: var(--navy); border: 1.5px solid var(--gold); border-radius: 6px; padding: 1.75rem 2rem; margin-top: 2rem; text-align: center; }
+.completion-banner.visible { display: block; }
+.completion-title { font-family: 'Playfair Display', serif; font-size: 1.3rem; color: var(--gold); margin-bottom: 0.75rem; }
+.completion-text { font-size: 14px; color: #9ba3c0; line-height: 1.75; margin-bottom: 1.25rem; }
+.completion-btn { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: var(--navy); border: none; border-radius: 4px; padding: 11px 24px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.2s; letter-spacing: 0.02em; }
+.completion-btn:hover { background: var(--gold-light); }
+
+.module-nav { display: flex; align-items: center; justify-content: space-between; padding: 2rem 0; border-top: 0.5px solid var(--border); margin-top: 2rem; }
+.nav-btn { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500; color: var(--text-secondary); padding: 10px 20px; border: 0.5px solid var(--border); border-radius: 4px; background: var(--white); transition: all 0.2s; cursor: pointer; font-family: 'Inter', sans-serif; }
+.nav-btn:hover { border-color: var(--navy); color: var(--navy); }
+.nav-btn.primary { background: var(--navy); color: var(--gold); border-color: var(--navy); }
+.nav-btn.primary:hover { background: var(--navy-mid); }
+.nav-btn.disabled { opacity: 0.3; pointer-events: none; }
+
+.module-sidebar { position: sticky; top: 110px; display: flex; flex-direction: column; gap: 1.25rem; }
+.sidebar-card { background: var(--white); border: 0.5px solid var(--border); border-radius: 6px; padding: 1.25rem 1.5rem; }
+.sidebar-card-title { font-size: 11px; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem; padding-bottom: 0.75rem; border-bottom: 0.5px solid var(--border); }
+
+.sections-nav { list-style: none; }
+.sections-nav li { padding: 0.5rem 0; border-bottom: 0.5px solid var(--border); display: flex; align-items: center; gap: 10px; font-size: 12px; color: var(--text-muted); }
+.sections-nav li:last-child { border-bottom: none; }
+.nav-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: background 0.2s; }
+.sections-nav li.s-active .nav-dot { background: var(--gold); }
+.sections-nav li.s-active { color: var(--navy); font-weight: 500; }
+.sections-nav li.s-done .nav-dot { background: var(--navy); }
+.sections-nav li.s-done { color: var(--text-secondary); }
+.sections-nav li.s-locked { opacity: 0.35; }
+
+.track-item { display: flex; align-items: center; gap: 10px; padding: 0.5rem 0; border-bottom: 0.5px solid var(--border); font-size: 12px; }
+.track-item:last-child { border-bottom: none; }
+.track-dot { width: 20px; height: 20px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; font-size: 10px; font-weight: 500; }
+.track-dot.done { background: var(--navy); color: var(--gold); }
+.track-dot.current { background: var(--gold); color: var(--navy); }
+.track-dot.upcoming { background: var(--border); color: var(--text-muted); }
+.track-item.done-item { color: var(--text-secondary); }
+.track-item.current-item { color: var(--navy); font-weight: 500; }
+.track-item.upcoming-item { color: var(--text-muted); }
+.track-item .part-tag { font-size: 10px; color: var(--gold); font-weight: 500; margin-left: auto; letter-spacing: 0.04em; }
+
+.scripture-item { display: flex; align-items: baseline; gap: 8px; padding: 0.4rem 0; border-bottom: 0.5px solid var(--border); font-size: 12px; }
+.scripture-item:last-child { border-bottom: none; }
+.scripture-item-ref { color: var(--gold); font-weight: 500; white-space: nowrap; font-size: 11px; }
+.scripture-item-desc { color: var(--text-muted); line-height: 1.4; }
+
+.site-footer { background: var(--navy); padding: 2rem; text-align: center; }
+.footer-logo { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: var(--gold); letter-spacing: 0.12em; margin-bottom: 0.5rem; }
+.footer-text { font-size: 12px; color: rgba(255,255,255,0.22); }
+
+@media (max-width: 800px) {
+  .module-layout { grid-template-columns: 1fr; gap: 2rem; padding: 2rem 1.25rem; }
+  .module-sidebar { position: static; }
+  .site-nav { display: none; }
+  .module-hero { padding: 3rem 1.25rem 2.5rem; }
+  .option-row { flex-direction: column; }
+  .option-label { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="site-logo">CRUX</a>
+  <nav><ul class="site-nav">
+    <li><a href="crux-account.html">For Students</a></li>
+    <li><a href="crux-teacher.html">For Teachers</a></li>
+    <li><a href="crux-adult-module1a.html">Adult Track</a></li>
+    <li><a href="index.html#about">About</a></li>
+  </ul></nav>
+</header>
+
+<div class="module-hero">
+  <div class="module-track">Adult Formation Track</div>
+  <div class="module-part-badge">Module 1 of 7</div>
+  <h1 class="module-title">Who Is This Man?</h1>
+  <p class="module-subtitle">Part B &mdash; The Claim That Changes Everything</p>
+  <div class="module-meta">
+    <span>&#9679; 25&ndash;30 min read</span>
+    <span>&#9679; 2 reflection questions</span>
+    <span>&#9679; 1 video</span>
+    <span>&#9679; Journal prompt</span>
+    <span>&#9679; OCIA next steps</span>
+  </div>
+  <div class="part-nav-bar">
+    <span class="part-pill">Part A &mdash; Historical Jesus</span>
+    <span class="part-arrow">&#8594;</span>
+    <span class="part-pill active">Part B &mdash; The Claim</span>
+  </div>
+</div>
+
+<div class="progress-bar">
+  <span class="progress-label">Progress</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="progress-count" id="progressCount">0 of 8 sections complete</span>
+</div>
+
+<div class="module-layout">
+<main class="module-content">
+
+  <div class="scripture-opening">
+    <span class="scripture-mark">&ldquo;</span>
+    <p class="scripture-text">In the beginning was the Word, and the Word was with God, and the Word was God.</p>
+    <span class="scripture-ref">John 1:1</span>
+  </div>
+
+  <!-- Section 1: Opening bridge -->
+  <div class="module-section" id="s1">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock this one.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">1</div>
+        <span class="section-label">Picking up where Part A left off</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Part A covered the man. His life, his teaching, the people he chose, what his enemies and friends thought of him. If you've made it this far, something in that held your attention.</p>
+        <p>Part B asks the harder question. Not whether Jesus was remarkable; most people across history have conceded that much. The real question is whether the claim he made about himself holds up. Because if it does, it changes everything. And if it doesn't, the most influential person in human history was either deeply deluded or deliberately dishonest. There is no comfortable middle position. That is not a Catholic assertion. It follows directly from what Jesus actually said.</p>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(1)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 2: The claim itself -->
+  <div class="module-section locked" id="s2">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock this one.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">2</div>
+        <span class="section-label">The claim itself</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Jesus made statements no Jewish teacher of his era would have made without knowing exactly how they would land.</p>
+
+        <div class="scripture-callout">
+          <span class="scripture-callout-ref">Jn 10:30</span>
+          <span class="scripture-callout-text">I and the Father are one.</span>
+        </div>
+
+        <div class="scripture-callout">
+          <span class="scripture-callout-ref">Jn 8:58</span>
+          <span class="scripture-callout-text">Before Abraham was, I am.</span>
+        </div>
+
+        <div class="scripture-callout">
+          <span class="scripture-callout-ref">Jn 14:9</span>
+          <span class="scripture-callout-text">Whoever has seen me has seen the Father.</span>
+        </div>
+
+        <p>He accepted worship on multiple occasions. He claimed authority to forgive sins, which his audience immediately understood as a claim belonging to God alone. That is why they accused him of blasphemy rather than mere arrogance.</p>
+        <p>The people who heard him understood exactly what he was saying. That is why they picked up stones (John 10:31). That is why the charge at his trial was blasphemy, not sedition. Pilate found no political crime. The religious authorities were not troubled by his politics. They were troubled by who he said he was.</p>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(2)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 3: The resurrection -->
+  <div class="module-section locked" id="s3">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock this one.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">3</div>
+        <span class="section-label">The resurrection: the historical case</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>The resurrection of Jesus is not a claim invented by the medieval Church or embellished over centuries. It is the earliest claim in the entire Christian tradition. Paul's letter to the Corinthians, written roughly twenty years after the crucifixion, records a list of resurrection appearances: to Peter, to the twelve, to more than five hundred people at once, most of whom Paul notes were still alive when he was writing and available to be questioned (1 Corinthians 15:3-8). This is not the language of legend. This is a man pointing at living witnesses.</p>
+        <p>Historians who study the resurrection, including skeptical ones, generally agree on four facts that any credible explanation has to account for.</p>
+
+        <div class="options-block">
+          <div class="option-row">
+            <div class="option-label">Fact 1</div>
+            <div class="option-text">The tomb was empty. No one in Jerusalem disputed this, including the authorities who had every reason to produce the body.</div>
+          </div>
+          <div class="option-row">
+            <div class="option-label">Fact 2</div>
+            <div class="option-text">The disciples claimed to have seen Jesus alive after his death, in multiple appearances, across multiple locations.</div>
+          </div>
+          <div class="option-row">
+            <div class="option-label">Fact 3</div>
+            <div class="option-text">Those claims transformed a group of terrified fugitives into people willing to die for what they had witnessed.</div>
+          </div>
+          <div class="option-row">
+            <div class="option-label">Fact 4</div>
+            <div class="option-text">The movement spread with extraordinary speed through the very city where the crucifixion had just happened, within weeks of the event.</div>
+          </div>
+        </div>
+
+        <p>The question is not whether these things happened. They are as well attested as almost anything from that era. The question is what explains them. The two most common alternatives, that the disciples stole the body or that they were hallucinating, both fall apart under examination. Mass hallucinations do not produce consistent detailed accounts across multiple independent witnesses. And people who steal a body do not then die rather than admit they stole it.</p>
+      </div>
+
+      <div class="reflection-block">
+        <div class="reflection-label">&#9670; Reflect</div>
+        <p class="reflection-question">Of the four historical facts listed above, which one do you find hardest to explain away? What does that tell you?</p>
+        <textarea class="reflection-textarea" placeholder="Take a moment to write your thoughts. There are no wrong answers."></textarea>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(3)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 4: Liar, lunatic, Lord, or legend -->
+  <div class="module-section locked" id="s4">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock this one.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">4</div>
+        <span class="section-label">Liar, lunatic, Lord, or legend</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>C.S. Lewis framed the problem plainly in Mere Christianity. A man who says the things Jesus said leaves you very few options. He is either a liar who knew he was not God and claimed otherwise, a lunatic who genuinely believed something that was not true, or exactly who he said he was.</p>
+        <p>Lewis was careful about what he was ruling out. He was not ruling out the possibility that Jesus was wrong. He was ruling out the possibility that Jesus was simply a great moral teacher who meant well. A man who claims to be God cannot also be merely a great moral teacher. The claim itself is either true or it destroys the credibility of everything else he said. You cannot keep the ethics and discard the identity. They come as one package.</p>
+
+        <div class="options-block">
+          <div class="option-row">
+            <div class="option-label">Liar</div>
+            <div class="option-text">He knew he was not God and deliberately deceived people. But a liar does not go to the Cross for a claim he knows is false, and his closest followers did not die protecting a story they knew was invented.</div>
+          </div>
+          <div class="option-row">
+            <div class="option-label">Lunatic</div>
+            <div class="option-text">He genuinely believed something that was not true. But a lunatic does not produce the most searching moral teaching in human history, maintain the psychological consistency the Gospels portray, or construct arguments two thousand years of scholarship has not managed to unseat.</div>
+          </div>
+          <div class="option-row">
+            <div class="option-label">Legend</div>
+            <div class="option-text">The claims were invented by later followers. But the claims appear in the earliest sources, written while eyewitnesses were still alive. If they were invented, they were invented immediately, in the same city where the events happened, among people who could have disputed them.</div>
+          </div>
+          <div class="option-row">
+            <div class="option-label">Lord</div>
+            <div class="option-text">He is exactly who he said he was. Not as a certainty anyone is required to accept on the spot, but as the conclusion that accounts for the most evidence with the fewest problems.</div>
+          </div>
+        </div>
+
+        <p>The myth theory requires a conspiracy of invention so fast and so total that it creates more problems than it solves. Which brings you back to three serious options. And the evidence, taken honestly, keeps pointing in the same direction.</p>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(4)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 5: Reasoning bridge (Andrew's voice) -->
+  <div class="module-section locked" id="s5">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock this one.</span></div>
+    <div class="section-inner">
+      <div class="honest-wrap">
+        <div class="section-eyebrow">
+          <div class="section-number">5</div>
+          <span class="section-label">The leap</span>
+          <div class="section-divider"></div>
+        </div>
+        <div class="section-body">
+          <p>No matter what anyone tells you, every Catholic has at one point questioned their faith. Maybe not intentionally. Maybe in a moment of frustration or despair. But we have all felt it. We have all asked some version of the same question: if so many people across history have not believed, who is to say that those who do are right?</p>
+          <p>The answer is that faith was never about certainty in numbers. Jesus addressed this directly:</p>
+
+          <div class="scripture-callout">
+            <span class="scripture-callout-ref">Jn 20:29</span>
+            <span class="scripture-callout-text">Have you believed because you have seen me? Blessed are those who have not seen and yet have believed.</span>
+          </div>
+
+          <p>We may never know the whole truth until the day we meet our maker and get to ask Jesus those questions ourselves. But not being able to understand how God does what he does is not an excuse to abandon faith that he has done it. We have historical evidence pointing to Jesus as the Messiah the Old Testament promised. We have testimony of miracles he performed, including from non-biblical writers who acknowledged them while attributing them to sorcery rather than divinity, because they could not explain them any other way. We have miracles that still happen today in his name, documented and witnessed across the world.</p>
+          <p>The proof is all around us. The leap comes when you have not yet witnessed one yourself.</p>
+          <p>But consider this. As humans, almost everything we believe requires some leap of faith. The Big Bang. The age of the universe. The shape of the earth beneath your feet. We take those leaps every day, trusting what others have witnessed, studied, and verified. We believe things we cannot personally see because the evidence from those who could see is strong enough to earn that trust.</p>
+          <p>The only question that remains is whether you can make that same leap for a God who gave his one and only son as a sacrifice for you.</p>
+        </div>
+      </div>
+
+      <div class="reflection-block">
+        <div class="reflection-label">&#9670; Reflect</div>
+        <p class="reflection-question">What is the one thing standing between you and taking that leap? Name it honestly, even if only to yourself.</p>
+        <textarea class="reflection-textarea" placeholder="Take a moment to write your thoughts. There are no wrong answers."></textarea>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(5)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 6: What the Church teaches -->
+  <div class="module-section locked" id="s6">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock this one.</span></div>
+    <div class="section-inner">
+      <div class="doctrine-wrap">
+        <div class="section-eyebrow">
+          <div class="section-number">6</div>
+          <span class="section-label">What the Church teaches</span>
+          <div class="section-divider"></div>
+        </div>
+        <div class="section-body">
+          <p>The Catholic Church teaches that Jesus Christ is the Second Person of the Trinity, fully God and fully human, not half of each but both completely and simultaneously. This is the doctrine of the Incarnation, defined at the Council of Nicaea in 325 AD and restated at every Mass: "God from God, Light from Light, true God from true God, begotten not made, consubstantial with the Father."</p>
+          <p>The Church further teaches that the resurrection was a real, bodily event. Not a spiritual metaphor, not a vision experienced by grieving disciples, but the actual raising of a dead man in a transformed physical body (CCC 638-658). This is not a secondary point of Catholic teaching. Paul writes without qualification: "If Christ has not been raised, your faith is futile" (1 Corinthians 15:17). The resurrection is the hinge on which everything else turns. Remove it and Christianity is not a diminished religion. It is no religion at all.</p>
+          <p>What the Church asks of someone hearing this for the first time is not immediate certainty. It asks honest engagement. The evidence is real. The questions it raises are serious. And the invitation has been the same for two thousand years: come and see.</p>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(6)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 7: For your life -->
+  <div class="module-section locked" id="s7">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock this one.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">7</div>
+        <span class="section-label">For your life</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Something shifts when you stop treating Jesus as a historical curiosity and start taking seriously the possibility that he was telling the truth. Not just about how to treat people, though he was right about that. About who God is. About what you are. About what death means and what comes after it.</p>
+        <p>If the resurrection happened, then human life has a weight to it that nothing else gives it. Forgiveness is real. The suffering you carry is not meaningless. The people you love are not headed toward oblivion. None of that comes from wishful thinking. It comes from a tomb that was empty on a Sunday morning two thousand years ago, and the question of what to make of that is one of the few questions that genuinely cannot be ignored forever.</p>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(7)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- Section 8: Journal, OCIA, discussion, video, prayer -->
+  <div class="module-section locked" id="s8">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock this one.</span></div>
+    <div class="section-inner">
+
+      <div class="section-eyebrow">
+        <div class="section-number">8</div>
+        <span class="section-label">What comes next</span>
+        <div class="section-divider"></div>
+      </div>
+
+      <div class="section-body" style="margin-bottom:1.5rem;">
+        <p>You have covered more ground in these two modules than most people cover in years of casual curiosity about the faith. Take that seriously. It means something that you are still here.</p>
+      </div>
+
+      <div class="journal-block">
+        <div class="journal-eyebrow">
+          <div class="journal-icon">&#9998;</div>
+          <span class="journal-label">Journal prompt</span>
+        </div>
+        <p class="journal-prompt">After everything in Parts A and B, what is the one question about Jesus you most want answered before you take a next step?</p>
+        <p class="journal-note">Write it down. That question is the best possible starting point for what comes next.</p>
+      </div>
+
+      <div class="ocia-block">
+        <div class="ocia-label">What comes next</div>
+        <p class="ocia-title">The Order of Christian Initiation of Adults</p>
+        <div class="ocia-body">
+          <p>If any part of what you've read across these two modules has stayed with you, if a question opened up that you want to keep pulling on, the Catholic Church has a formal process for exactly that. It is called OCIA: the Order of Christian Initiation of Adults.</p>
+          <p>OCIA is not a membership drive. It is a guided conversation, usually meeting once a week over several months, where you can bring every question you have into a room with people who take both the faith and the questions seriously. You are not required to become Catholic at the end. Many people go through it simply to understand what the Church actually teaches before deciding what they believe.</p>
+          <p>Most parishes run OCIA starting in the fall, though many welcome people at any point in the year. You can walk into any Catholic parish and ask about it without any obligation whatsoever. If you want to keep going here first, Module 2 is waiting.</p>
+        </div>
+        <p class="ocia-note">Some parishes may still refer to this process as RCIA. The name changed nationally in 2025 but the journey is identical under either name.</p>
+      </div>
+
+      <div class="video-block">
+        <div class="video-label">&#9654; Learn more</div>
+        <div class="video-title">What is OCIA? How to Become Catholic</div>
+        <div class="video-desc">Catholic Central walks you through what OCIA is, who it is for, and what to expect. A friendly, low-pressure introduction before you reach out to a parish.</div>
+        <div class="video-embed-wrap">
+          <iframe src="https://www.youtube-nocookie.com/embed/Hq-N-ImjTvM" title="What is OCIA? How to Become Catholic" allowfullscreen loading="lazy"></iframe>
+        </div>
+      </div>
+
+      <div class="discussion-block">
+        <div class="discussion-label">For discussion &mdash; sponsor or small group</div>
+        <p class="discussion-title">If the resurrection actually happened, what is the one thing in your life that would have to change?</p>
+        <div class="discussion-body">
+          <p>Bring this to your sponsor, your group, or someone you trust. It is the most honest question Module 1 leaves you with, and the most important one to sit with before moving on.</p>
+          <p>If you are working through this alone, write the answer before continuing. Module 2 will build on it.</p>
+        </div>
+      </div>
+
+      <div class="closing-prayer">
+        <div class="section-eyebrow">
+          <div class="section-number" style="background:#2e3a5e;color:var(--gold);">&#10013;</div>
+          <span class="section-label" style="color:#6b7299;">Closing prayer</span>
+          <div class="section-divider" style="background:#2e3555;"></div>
+        </div>
+        <p class="prayer-intro">You don't have to have all the answers to pray. You just have to be willing to ask.</p>
+        <div class="prayer-text">
+          <span class="prayer-line">Lord,</span>
+          <span class="prayer-line">I don't know yet what I believe about you.</span>
+          <span class="prayer-line">But I am paying attention.</span>
+          <span class="prayer-line">If the tomb was really empty,</span>
+          <span class="prayer-line">if you are who you said you were,</span>
+          <span class="prayer-line">then I want to know what that means for my life.</span>
+          <span class="prayer-line">I'm willing to keep looking.</span>
+          <span class="prayer-line">Show me what I need to see.</span>
+          <span class="prayer-amen">Amen.</span>
+        </div>
+      </div>
+
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="completeModule()">Complete Module 1 &#10003;</button></div>
+  </div>
+
+  <div class="completion-banner" id="completionBanner">
+    <div class="completion-title">Module 1 complete.</div>
+    <p class="completion-text">You've covered the life, the teaching, the claim, and the evidence. The question the module ends with is the right one to carry forward. Module 2 takes up the next hardest question: if God is real and good, why does he allow suffering? When you're ready, continue.</p>
+    <button class="completion-btn">Continue to Module 2 &#8594;</button>
+  </div>
+
+  <div class="module-nav">
+    <button class="nav-btn" onclick="window.location.href='crux-adult-module1a.html'">&#8592; Part A</button>
+    <button class="nav-btn primary" id="nextBtn" style="opacity:0.35;pointer-events:none;">Module 2 &#8594;</button>
+  </div>
+
+</main>
+
+<aside class="module-sidebar">
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Part B &mdash; sections</div>
+    <ul class="sections-nav" id="sideNav">
+      <li class="s-active"><span class="nav-dot"></span>Picking up from Part A</li>
+      <li class="s-locked"><span class="nav-dot"></span>The claim itself</li>
+      <li class="s-locked"><span class="nav-dot"></span>The resurrection</li>
+      <li class="s-locked"><span class="nav-dot"></span>Liar, lunatic, Lord, or legend</li>
+      <li class="s-locked"><span class="nav-dot"></span>The leap</li>
+      <li class="s-locked"><span class="nav-dot"></span>What the Church teaches</li>
+      <li class="s-locked"><span class="nav-dot"></span>For your life</li>
+      <li class="s-locked"><span class="nav-dot"></span>What comes next</li>
+    </ul>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Module 1 parts</div>
+    <div class="track-item done-item">
+      <div class="track-dot done">A</div>
+      <span>The Man Who Changed Everything</span>
+    </div>
+    <div class="track-item current-item">
+      <div class="track-dot current">B</div>
+      <span>The Claim That Changes Everything</span>
+    </div>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Adult track</div>
+    <div class="track-item current-item">
+      <div class="track-dot current">1</div>
+      <span>Who Is This Man?</span>
+      <span class="part-tag">A / B</span>
+    </div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">2</div><span>Why Is There Suffering?</span></div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">3</div><span>Can I Trust the Church?</span></div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">4</div><span>Why Catholic Specifically?</span></div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">5</div><span>Does Faith Contradict Reason?</span></div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">6</div><span>Who Are Mary and the Saints?</span></div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">7</div><span>What Happens When We Die?</span></div>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Scripture in Part B</div>
+    <div class="scripture-item"><span class="scripture-item-ref">Jn 1:1</span><span class="scripture-item-desc">In the beginning was the Word</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Jn 10:30</span><span class="scripture-item-desc">I and the Father are one</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Jn 8:58</span><span class="scripture-item-desc">Before Abraham was, I am</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Jn 14:9</span><span class="scripture-item-desc">Whoever has seen me has seen the Father</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">1 Cor 15:3-8</span><span class="scripture-item-desc">The resurrection appearances</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">1 Cor 15:17</span><span class="scripture-item-desc">If Christ has not been raised</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Jn 20:29</span><span class="scripture-item-desc">Blessed are those who have not seen</span></div>
+  </div>
+</aside>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-logo">CRUX</div>
+  <p class="footer-text">cruxfaith.com &nbsp;&middot;&nbsp; Catholic faith formation</p>
+</footer>
+
+<script>
+  const TOTAL = 8;
+
+  function advance(n) {
+    const navItems = document.querySelectorAll('#sideNav li');
+    navItems[n - 1].classList.remove('s-active');
+    navItems[n - 1].classList.add('s-done');
+    updateProgress(n);
+    if (n < TOTAL) {
+      const next = document.getElementById('s' + (n + 1));
+      next.classList.remove('locked');
+      navItems[n].classList.remove('s-locked');
+      navItems[n].classList.add('s-active');
+      setTimeout(() => next.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+    }
+  }
+
+  function updateProgress(n) {
+    const pct = Math.round((n / TOTAL) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressCount').textContent = n + ' of ' + TOTAL + ' sections complete';
+  }
+
+  function completeModule() {
+    const navItems = document.querySelectorAll('#sideNav li');
+    navItems[TOTAL - 1].classList.remove('s-active');
+    navItems[TOTAL - 1].classList.add('s-done');
+    updateProgress(TOTAL);
+    document.getElementById('completionBanner').classList.add('visible');
+    const btn = document.getElementById('nextBtn');
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+    setTimeout(() => document.getElementById('completionBanner').scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+  }
+</script>
+</body>
+</html>
