@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUX - Challenges</title>
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LQ35DLTVKY');
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK v10 -->
+    <script type="module">
+        import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+            authDomain: "crux-faith-formation.firebaseapp.com",
+            projectId: "crux-faith-formation",
+            storageBucket: "crux-faith-formation.firebasestorage.app",
+            messagingSenderId: "838141015985",
+            appId: "1:838141015985:web:2655e570663e182d75ef90",
+            measurementId: "G-LQ35DLTVKY"
+        };
+
+        const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+        window.auth = getAuth(app);
+        window.db = getFirestore(app);
+        
+        console.log('✅ Firebase initialized for CRUX Challenges!');
+    </script>
+    
+    <style>
+        /* ─── DESIGN TOKENS ───────────────────────────────── */
+        :root {
+            --navy:           #1a1f36;
+            --navy-mid:       #242a45;
+            --navy-light:     #2f3659;
+            --gold:           #d4a574;
+            --gold-light:     #e8c9a0;
+            --gold-dark:      #b8895a;
+            --white:          #ffffff;
+            --off-white:      #f8f7f4;
+            --text-primary:   #1a1f36;
+            --text-secondary: #5a6282;
+            --text-muted:     #8890b0;
+            --border:         rgba(26, 31, 54, 0.1);
+            --border-gold:    rgba(212, 165, 116, 0.25);
+            --shadow-sm:  0 2px 8px  rgba(26, 31, 54, 0.08);
+            --shadow-md:  0 4px 20px rgba(26, 31, 54, 0.12);
+            --shadow-lg:  0 8px 40px rgba(26, 31, 54, 0.16);
+        }
+
+        /* ─── RESET ───────────────────────────────────────── */
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--off-white);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ─── PAGE HERO ───────────────────────────────────── */
+        .page-hero {
+            background: var(--navy);
+            padding: 3.5rem 2rem 3rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 0;
+        }
+
+        .page-hero::before {
+            content: '✟';
+            position: absolute;
+            font-size: 22rem;
+            color: rgba(212, 165, 116, 0.04);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            line-height: 1;
+        }
+
+        .page-hero-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .page-hero-back {
+            position: absolute;
+            top: 1.5rem;
+            left: 2rem;
+            z-index: 2;
+        }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: transparent;
+            color: rgba(255,255,255,0.65);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 0.45rem 1rem;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .back-btn:hover {
+            color: var(--white);
+            border-color: rgba(255,255,255,0.45);
+            background: rgba(255,255,255,0.06);
+        }
+
+        .page-eyebrow {
+            display: inline-block;
+            color: var(--gold);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid var(--gold);
+            padding-bottom: 0.35rem;
+        }
+
+        .page-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.6rem;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.2;
+            margin-bottom: 1rem;
+        }
+
+        .page-subtitle {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.97rem;
+            line-height: 1.75;
+        }
+
+        /* ─── MAIN CONTAINER ──────────────────────────────── */
+        .container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 2.5rem 2rem 4rem;
+        }
+
+        /* ─── PROGRESS CARD ───────────────────────────────── */
+        .progress-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem 2.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .level-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .level-badge-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--gold);
+            color: var(--navy);
+            border-radius: 50%;
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .xp-display {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .xp-display strong {
+            color: var(--navy);
+            font-weight: 700;
+        }
+
+        .xp-bar {
+            background: var(--off-white);
+            height: 10px;
+            border-radius: 999px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-bottom: 0.5rem;
+        }
+
+        .xp-fill {
+            background: linear-gradient(90deg, var(--navy), var(--navy-light));
+            height: 100%;
+            border-radius: 999px;
+            transition: width 0.6s ease;
+        }
+
+        .xp-next-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .xp-next-label span { color: var(--gold-dark); font-weight: 600; }
+
+        .streak {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-top: 1.25rem;
+            padding: 1rem 1.25rem;
+            background: var(--off-white);
+            border-radius: 8px;
+            border: 1px solid var(--border);
+        }
+
+        .streak-icon { font-size: 1.3rem; }
+
+        .streak-text { font-size: 0.88rem; color: var(--text-secondary); }
+        .streak-text strong { color: var(--navy); }
+
+        /* ─── CHALLENGES GRID ─────────────────────────────── */
+        .challenges-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        /* ─── CHALLENGE CARD ──────────────────────────────── */
+        .challenge-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: all 0.25s ease;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 0.85rem;
+        }
+
+        .challenge-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0;
+            width: 4px; height: 100%;
+            background: var(--gold);
+            opacity: 0.5;
+            transition: opacity 0.2s ease;
+        }
+
+        .challenge-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-gold);
+        }
+
+        .challenge-card:hover::before { opacity: 1; }
+
+        .challenge-title {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            font-size: 1.2rem;
+            font-weight: 700;
+            line-height: 1.3;
+        }
+
+        .challenge-meta {
+            display: flex;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .meta-badge {
+            display: inline-block;
+            background: rgba(212, 165, 116, 0.1);
+            color: var(--gold-dark);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.2px;
+        }
+
+        .meta-badge.completed {
+            background: rgba(26, 31, 54, 0.07);
+            color: var(--text-secondary);
+        }
+
+        .challenge-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.65;
+            flex: 1;
+        }
+
+        .start-btn {
+            width: 100%;
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            padding: 0.8rem 1.25rem;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.2px;
+            margin-top: 0.25rem;
+        }
+
+        .start-btn:hover {
+            background: var(--navy-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(26, 31, 54, 0.2);
+        }
+
+        .start-btn:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .start-btn.retake {
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border);
+        }
+
+        .start-btn.retake:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+            background: transparent;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* ─── QUIZ CONTAINER ──────────────────────────────── */
+        .quiz-container {
+            background: var(--white);
+            border-radius: 16px;
+            max-width: 760px;
+            margin: 0 auto;
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border);
+            overflow: hidden;
+        }
+
+        .quiz-header {
+            background: var(--navy);
+            padding: 2rem 2.5rem 1.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .quiz-header::before {
+            content: '✟';
+            position: absolute;
+            font-size: 9rem;
+            color: rgba(212, 165, 116, 0.05);
+            bottom: -1rem;
+            right: 1.5rem;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .quiz-header h2 {
+            font-family: 'Playfair Display', serif !important;
+            color: var(--white) !important;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .quiz-progress {
+            background: rgba(255,255,255,0.1);
+            height: 4px;
+            border-radius: 999px;
+            overflow: hidden;
+            margin-bottom: 0.75rem;
+        }
+
+        .quiz-progress-fill {
+            background: var(--gold);
+            height: 100%;
+            transition: width 0.35s ease;
+        }
+
+        .question-number {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.5);
+            position: relative;
+        }
+
+        /* ─── QUIZ BODY ───────────────────────────────────── */
+        .quiz-body {
+            padding: 2.5rem;
+        }
+
+        .question-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 2rem;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .option {
+            background: var(--off-white);
+            border: 1.5px solid var(--border);
+            padding: 1rem 1.25rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            text-align: left;
+            line-height: 1.4;
+        }
+
+        .option:hover {
+            border-color: var(--gold);
+            background: rgba(212, 165, 116, 0.06);
+            transform: translateX(3px);
+        }
+
+        .option.selected {
+            border-color: var(--navy);
+            background: rgba(26, 31, 54, 0.04);
+            color: var(--navy);
+            font-weight: 500;
+        }
+
+        .option.correct {
+            border-color: #3B6D11;
+            background: #EAF3DE;
+            color: #3B6D11;
+            font-weight: 600;
+        }
+
+        .option.incorrect {
+            border-color: #A32D2D;
+            background: #FCEBEB;
+            color: #A32D2D;
+            font-weight: 600;
+        }
+
+        .option:disabled,
+        .option[style*="pointer-events: none"] { cursor: default; transform: none; }
+
+        .explanation {
+            background: rgba(212, 165, 116, 0.08);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 8px 8px 0;
+            padding: 1.25rem 1.5rem;
+            margin-top: 1.25rem;
+            display: none;
+        }
+
+        .explanation.show { display: block; }
+
+        .explanation strong {
+            display: block;
+            color: var(--navy);
+            font-weight: 700;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 0.4rem;
+        }
+
+        .explanation p,
+        .explanation br ~ * {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.7;
+        }
+
+        .quiz-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 0.85rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 600;
+            font-size: 0.92rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background: var(--navy-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(26, 31, 54, 0.2);
+        }
+
+        .btn-primary:disabled {
+            background: var(--text-muted);
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        /* ─── RESULTS ─────────────────────────────────────── */
+        .results-container {
+            text-align: center;
+            padding: 3rem 2.5rem;
+        }
+
+        .results-container h2 {
+            font-family: 'Playfair Display', serif !important;
+            color: var(--navy) !important;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .results-score {
+            display: inline-flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            background: var(--navy);
+            margin: 0 auto 1.5rem;
+        }
+
+        .results-score-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.9rem;
+            font-weight: 700;
+            color: var(--gold);
+            line-height: 1;
+        }
+
+        .results-score-sub {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.55);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 0.2rem;
+        }
+
+        .results-message {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            color: var(--navy);
+            font-weight: 600;
+            margin-bottom: 2rem;
+        }
+
+        .results-xp-card {
+            background: var(--off-white);
+            border-radius: 10px;
+            padding: 1.25rem 1.75rem;
+            max-width: 320px;
+            margin: 0 auto 1.5rem;
+            border: 1px solid var(--border);
+        }
+
+        .results-xp-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.35rem 0;
+            font-size: 0.9rem;
+        }
+
+        .results-xp-row + .results-xp-row {
+            border-top: 1px solid var(--border);
+            margin-top: 0.35rem;
+            padding-top: 0.6rem;
+        }
+
+        .results-xp-label { color: var(--text-secondary); }
+        .results-xp-value { font-weight: 700; color: var(--navy); }
+        .results-xp-total .results-xp-label { color: var(--navy); font-weight: 700; }
+        .results-xp-total .results-xp-value { color: var(--gold-dark); font-size: 1rem; }
+
+        /* Legacy inline .results-xp (still emitted by JS) */
+        .results-xp {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+            margin: 0.5rem 0;
+        }
+
+        .level-up-animation {
+            background: var(--gold);
+            color: var(--navy);
+            padding: 1.5rem 2rem;
+            border-radius: 10px;
+            margin: 1rem auto;
+            max-width: 380px;
+            animation: popIn 0.4s ease;
+        }
+
+        .level-up-animation h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; }
+        .level-up-animation p  { font-size: 1rem; margin-top: 0.4rem; opacity: 0.85; }
+
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.92); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+
+        /* ─── HIDDEN UTILITY ──────────────────────────────── */
+        .hidden { display: none; }
+
+        /* ─── LOGIN PROMPT ────────────────────────────────── */
+        .login-prompt {
+            background: var(--navy);
+            border-radius: 16px;
+            padding: 3.5rem 2.5rem;
+            text-align: center;
+            max-width: 560px;
+            margin: 3rem auto;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-prompt::before {
+            content: '✟';
+            position: absolute;
+            font-size: 14rem;
+            color: rgba(212, 165, 116, 0.05);
+            bottom: -2rem;
+            right: -1rem;
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .login-prompt h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            color: var(--white);
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .login-prompt p {
+            color: rgba(255,255,255,0.65);
+            font-size: 0.97rem;
+            line-height: 1.75;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .login-prompt .btn-primary {
+            display: inline-block;
+            flex: unset;
+            background: var(--gold);
+            color: var(--navy);
+            padding: 0.8rem 2.25rem;
+            font-size: 0.92rem;
+            position: relative;
+        }
+
+        .login-prompt .btn-primary:hover {
+            background: var(--gold-light);
+        }
+
+        /* ─── RESPONSIVE ──────────────────────────────────── */
+        @media (max-width: 768px) {
+            .page-title { font-size: 2rem; }
+            .challenges-grid { grid-template-columns: 1fr; }
+            .progress-header { flex-direction: column; align-items: flex-start; }
+            .quiz-header { padding: 1.5rem; }
+            .quiz-body { padding: 1.5rem; }
+            .results-container { padding: 2rem 1.5rem; }
+            .quiz-actions { flex-direction: column; }
+            .container { padding: 2rem 1.25rem 3rem; }
+        }
+
+        @media (max-width: 480px) {
+            .page-title { font-size: 1.75rem; }
+            .page-hero { padding: 3rem 1.25rem 2.5rem; }
+            .progress-card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Page Hero -->
+    <div class="page-hero">
+        <div class="page-hero-back">
+            <a href="index.html" class="back-btn">← Main Site</a>
+        </div>
+        <div class="page-hero-inner">
+            <span class="page-eyebrow">Faith Formation</span>
+            <h1 class="page-title">Challenges</h1>
+            <p class="page-subtitle">Test your knowledge · Earn XP · Level up your faith</p>
+        </div>
+    </div>
+
+    <div class="container">
+
+        <!-- Login Prompt (shown if not logged in) -->
+        <div id="loginPrompt" class="login-prompt hidden">
+            <h2>Create an Account to Track Your Progress</h2>
+            <p>Sign in to earn XP, level up, and track your achievements!</p>
+            <button class="btn btn-primary" onclick="window.location.href='crux-account.html'">
+                Sign In / Create Account
+            </button>
+        </div>
+
+        <!-- Progress Card (shown when logged in) -->
+        <div id="progressCard" class="progress-card hidden">
+            <div class="progress-header">
+                <div class="level-badge">
+                    <span class="level-badge-icon">✦</span>
+                    <span id="userLevel">Level 1 — Seeker</span>
+                </div>
+                <div class="xp-display">
+                    <strong><span id="currentXP">0</span> XP</strong> &nbsp;/&nbsp; <span id="nextLevelXP">100</span> XP to next level
+                </div>
+            </div>
+            <div class="xp-bar">
+                <div class="xp-fill" id="xpFill" style="width: 0%"></div>
+            </div>
+            <div class="xp-next-label" style="margin-top:0.5rem;">
+                <span id="xpPercent">0%</span> of the way to next level
+            </div>
+            <div class="streak">
+                <span class="streak-icon">🔥</span>
+                <div class="streak-text">
+                    <strong><span id="streakDays">0</span>-day streak</strong> — keep learning daily to maintain it!
+                </div>
+            </div>
+        </div>
+
+        <!-- Challenges List -->
+        <div id="challengesList" class="challenges-grid">
+            <!-- Challenges will be loaded here -->
+        </div>
+
+        <!-- Quiz Interface (hidden by default) -->
+        <div id="quizContainer" class="quiz-container hidden">
+            <!-- Quiz content will be loaded here -->
+        </div>
+    </div>
+
+    <script type="module">
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp, increment } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const auth = window.auth;
+        const db = window.db;
+        let currentUser = null;
+        let userProgress = null;
+        let currentChallenge = null;
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedAnswer = null;
+
+        // Quiz data - stored here for MVP (will move to Firestore later)
+        const challenges = [
+            {
+                id: 'old-testament-1',
+                title: 'Old Testament Heroes',
+                description: 'Journey through salvation history with the patriarchs, prophets, and kings who walked with God. From Noah\'s faith to David\'s courage, discover the heroes whose stories shaped the People of Israel.',
+                difficulty: 'Easy',
+                questions: 10,
+                xpReward: 100,
+                category: 'Bible',
+                questionList: [
+                    {
+                        question: 'Who led the Israelites out of Egypt?',
+                        options: ['Moses', 'Abraham', 'David', 'Joshua'],
+                        correct: 0,
+                        explanation: 'Moses led the Israelites out of slavery in Egypt, as told in the Book of Exodus.'
+                    },
+                    {
+                        question: 'Who built an ark during the great flood?',
+                        options: ['Abraham', 'Noah', 'Joseph', 'Jacob'],
+                        correct: 1,
+                        explanation: 'Noah built the ark to save his family and pairs of animals from the flood (Genesis 6-9).'
+                    },
+                    {
+                        question: 'Who defeated Goliath with a sling and stone?',
+                        options: ['Saul', 'Samuel', 'David', 'Solomon'],
+                        correct: 2,
+                        explanation: 'Young David defeated the giant Goliath with faith in God (1 Samuel 17).'
+                    },
+                    {
+                        question: 'Who was swallowed by a large fish?',
+                        options: ['Jonah', 'Job', 'Jeremiah', 'Joel'],
+                        correct: 0,
+                        explanation: 'Jonah was swallowed by a large fish after trying to flee from God\'s command (Book of Jonah).'
+                    },
+                    {
+                        question: 'Who interpreted dreams for Pharaoh in Egypt?',
+                        options: ['Jacob', 'Joseph', 'Moses', 'Aaron'],
+                        correct: 1,
+                        explanation: 'Joseph interpreted Pharaoh\'s dreams and became a ruler in Egypt (Genesis 41).'
+                    },
+                    {
+                        question: 'Who received the Ten Commandments on Mount Sinai?',
+                        options: ['Aaron', 'Joshua', 'Moses', 'Elijah'],
+                        correct: 2,
+                        explanation: 'Moses received the Ten Commandments from God on Mount Sinai (Exodus 20).'
+                    },
+                    {
+                        question: 'Who was the father of Isaac?',
+                        options: ['Abraham', 'Jacob', 'Noah', 'Adam'],
+                        correct: 0,
+                        explanation: 'Abraham was the father of Isaac, and God tested his faith through Isaac (Genesis 22).'
+                    },
+                    {
+                        question: 'Who led the Israelites into the Promised Land?',
+                        options: ['Moses', 'Aaron', 'Joshua', 'Caleb'],
+                        correct: 2,
+                        explanation: 'Joshua led the Israelites into the Promised Land after Moses\' death (Book of Joshua).'
+                    },
+                    {
+                        question: 'Who was known for his wisdom and built the Temple?',
+                        options: ['David', 'Solomon', 'Saul', 'Samuel'],
+                        correct: 1,
+                        explanation: 'King Solomon was renowned for his wisdom and built the First Temple in Jerusalem (1 Kings 6).'
+                    },
+                    {
+                        question: 'Who was called a "man after God\'s own heart"?',
+                        options: ['Moses', 'Abraham', 'David', 'Noah'],
+                        correct: 2,
+                        explanation: 'King David was called "a man after God\'s own heart" (1 Samuel 13:14, Acts 13:22).'
+                    }
+                ]
+            },
+            {
+                id: 'sacraments-1',
+                title: 'Catholic Sacraments',
+                description: 'Explore the seven sacred signs instituted by Christ to give grace. From Baptism\'s new life to the Eucharist\'s real presence, deepen your understanding of how God meets us through the sacraments.',
+                difficulty: 'Easy',
+                questions: 10,
+                xpReward: 100,
+                category: 'Doctrine',
+                questionList: [
+                    {
+                        question: 'How many sacraments are there in the Catholic Church?',
+                        options: ['5', '7', '9', '12'],
+                        correct: 1,
+                        explanation: 'There are seven sacraments: Baptism, Confirmation, Eucharist, Reconciliation, Anointing of the Sick, Holy Orders, and Matrimony.'
+                    },
+                    {
+                        question: 'Which sacrament makes us children of God?',
+                        options: ['Confirmation', 'Baptism', 'Eucharist', 'Matrimony'],
+                        correct: 1,
+                        explanation: 'Baptism cleanses us from original sin and makes us children of God and members of the Church.'
+                    },
+                    {
+                        question: 'What is called the "source and summit" of Christian life?',
+                        options: ['Baptism', 'Confirmation', 'Eucharist', 'Reconciliation'],
+                        correct: 2,
+                        explanation: 'The Eucharist is the source and summit of Christian life, where we receive the Body and Blood of Christ.'
+                    },
+                    {
+                        question: 'Which sacrament forgives sins committed after Baptism?',
+                        options: ['Reconciliation', 'Confirmation', 'Anointing', 'Eucharist'],
+                        correct: 0,
+                        explanation: 'The Sacrament of Reconciliation (Confession) forgives sins committed after Baptism.'
+                    },
+                    {
+                        question: 'Which sacrament completes Baptism and strengthens us with the Holy Spirit?',
+                        options: ['Eucharist', 'Confirmation', 'Holy Orders', 'Matrimony'],
+                        correct: 1,
+                        explanation: 'Confirmation completes Baptism and strengthens us with the gifts of the Holy Spirit.'
+                    },
+                    {
+                        question: 'Which sacrament is for the sick and dying?',
+                        options: ['Reconciliation', 'Anointing of the Sick', 'Holy Orders', 'Confirmation'],
+                        correct: 1,
+                        explanation: 'Anointing of the Sick provides grace, healing, and comfort to those who are seriously ill or dying.'
+                    },
+                    {
+                        question: 'Which sacrament makes a man a priest?',
+                        options: ['Confirmation', 'Holy Orders', 'Matrimony', 'Baptism'],
+                        correct: 1,
+                        explanation: 'Holy Orders is the sacrament by which men become deacons, priests, or bishops.'
+                    },
+                    {
+                        question: 'Which sacrament unites a man and woman in marriage?',
+                        options: ['Holy Orders', 'Confirmation', 'Matrimony', 'Eucharist'],
+                        correct: 2,
+                        explanation: 'Matrimony is the sacrament that unites a baptized man and woman in marriage.'
+                    },
+                    {
+                        question: 'What are the sacraments of initiation?',
+                        options: [
+                            'Baptism, Reconciliation, Eucharist',
+                            'Baptism, Confirmation, Eucharist',
+                            'Confirmation, Eucharist, Holy Orders',
+                            'Baptism, Confirmation, Matrimony'
+                        ],
+                        correct: 1,
+                        explanation: 'The three sacraments of initiation are Baptism, Confirmation, and Eucharist.'
+                    },
+                    {
+                        question: 'In which sacrament do we receive Jesus Christ himself?',
+                        options: ['Baptism', 'Confirmation', 'Eucharist', 'All of them'],
+                        correct: 2,
+                        explanation: 'In the Eucharist, we receive the true Body and Blood of Jesus Christ under the appearances of bread and wine.'
+                    }
+                ]
+            },
+            {
+                id: 'saints-1',
+                title: 'Catholic Saints',
+                description: 'Meet the heroes of Christian history who lived lives of extraordinary holiness. From Augustine\'s conversion to Francis\' joy, learn about the saints whose witness inspires us to live courageously for Christ.',
+                difficulty: 'Medium',
+                questions: 10,
+                xpReward: 150,
+                category: 'Saints',
+                questionList: [
+                    {
+                        question: 'Who is the patron saint of animals?',
+                        options: ['St. Anthony', 'St. Francis of Assisi', 'St. Patrick', 'St. Christopher'],
+                        correct: 1,
+                        explanation: 'St. Francis of Assisi is known for his love of all God\'s creation and is the patron saint of animals and ecology.'
+                    },
+                    {
+                        question: 'Which saint wrote "Confessions"?',
+                        options: ['St. Thomas Aquinas', 'St. Augustine', 'St. Jerome', 'St. Ambrose'],
+                        correct: 1,
+                        explanation: 'St. Augustine of Hippo wrote "Confessions," one of the greatest spiritual autobiographies in Christian history.'
+                    },
+                    {
+                        question: 'Who appeared to St. Bernadette at Lourdes?',
+                        options: ['Jesus', 'St. Joseph', 'The Virgin Mary', 'An angel'],
+                        correct: 2,
+                        explanation: 'The Virgin Mary appeared to St. Bernadette Soubirous 18 times in Lourdes, France in 1858.'
+                    },
+                    {
+                        question: 'Which saint translated the Bible into Latin (the Vulgate)?',
+                        options: ['St. Augustine', 'St. Jerome', 'St. Ambrose', 'St. Gregory'],
+                        correct: 1,
+                        explanation: 'St. Jerome translated the Bible into Latin, creating the Vulgate, the official Latin Bible of the Catholic Church.'
+                    },
+                    {
+                        question: 'Who is known as "The Little Flower"?',
+                        options: ['St. Teresa of Avila', 'St. Thérèse of Lisieux', 'St. Catherine', 'St. Bernadette'],
+                        correct: 1,
+                        explanation: 'St. Thérèse of Lisieux is known as "The Little Flower" and taught the "Little Way" of spiritual childhood.'
+                    },
+                    {
+                        question: 'Which saint is the patron of lost causes?',
+                        options: ['St. Anthony', 'St. Jude', 'St. Christopher', 'St. Joseph'],
+                        correct: 1,
+                        explanation: 'St. Jude Thaddeus is known as the patron saint of desperate cases and lost causes.'
+                    },
+                    {
+                        question: 'Who was the first American-born saint?',
+                        options: ['St. Kateri Tekakwitha', 'St. Elizabeth Ann Seton', 'St. Frances Cabrini', 'St. John Neumann'],
+                        correct: 1,
+                        explanation: 'St. Elizabeth Ann Seton was the first person born in the United States to be canonized as a saint.'
+                    },
+                    {
+                        question: 'Which saint is known for the "Summa Theologica"?',
+                        options: ['St. Augustine', 'St. Thomas Aquinas', 'St. Bonaventure', 'St. Anselm'],
+                        correct: 1,
+                        explanation: 'St. Thomas Aquinas wrote the "Summa Theologica," one of the greatest theological works in Christianity.'
+                    },
+                    {
+                        question: 'Which saint founded the Society of Jesus (Jesuits)?',
+                        options: ['St. Francis Xavier', 'St. Ignatius of Loyola', 'St. Philip Neri', 'St. Charles Borromeo'],
+                        correct: 1,
+                        explanation: 'St. Ignatius of Loyola founded the Society of Jesus (Jesuits) in 1540.'
+                    },
+                    {
+                        question: 'Who is the patron saint of Ireland?',
+                        options: ['St. Brendan', 'St. Columba', 'St. Patrick', 'St. Brigid'],
+                        correct: 2,
+                        explanation: 'St. Patrick is the patron saint of Ireland, known for bringing Christianity to the Irish people in the 5th century.'
+                    }
+                ]
+            }
+        ];
+
+        // Level thresholds
+        const levels = [
+            { level: 1, name: 'Seeker', xp: 0 },
+            { level: 2, name: 'Learner', xp: 100 },
+            { level: 3, name: 'Student', xp: 300 },
+            { level: 4, name: 'Disciple', xp: 600 },
+            { level: 5, name: 'Apostle', xp: 1000 },
+            { level: 6, name: 'Teacher', xp: 2000 },
+            { level: 7, name: 'Saint', xp: 4000 }
+        ];
+
+        // Check authentication state
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                currentUser = user;
+                await loadUserProgress();
+                showChallenges();
+            } else {
+                document.getElementById('loginPrompt').classList.remove('hidden');
+                document.getElementById('progressCard').classList.add('hidden');
+            }
+        });
+
+        // Load user progress from Firestore
+        async function loadUserProgress() {
+            try {
+                const progressDoc = await getDoc(doc(db, 'userProgress', currentUser.uid));
+                
+                if (progressDoc.exists()) {
+                    userProgress = progressDoc.data();
+                    console.log('✅ Loaded existing progress:', userProgress);
+                } else {
+                    // Create new progress for user
+                    console.log('Creating new user progress...');
+                    
+                    const newProgress = {
+                        totalXP: 0,
+                        level: 1,
+                        streak: 0,
+                        lastActivity: serverTimestamp(),
+                        completedChallenges: [],
+                        createdAt: serverTimestamp()
+                    };
+                    
+                    await setDoc(doc(db, 'userProgress', currentUser.uid), newProgress);
+                    
+                    // Set userProgress with actual values (not serverTimestamp placeholders)
+                    userProgress = {
+                        totalXP: 0,
+                        level: 1,
+                        streak: 0,
+                        completedChallenges: []
+                    };
+                    
+                    console.log('✅ Created new progress:', userProgress);
+                }
+
+                updateProgressDisplay();
+                document.getElementById('progressCard').classList.remove('hidden');
+            } catch (error) {
+                console.error('❌ Error loading progress:', error);
+                // Initialize with defaults if loading fails
+                userProgress = {
+                    totalXP: 0,
+                    level: 1,
+                    streak: 0,
+                    completedChallenges: []
+                };
+            }
+        }
+
+        // Update progress display
+        function updateProgressDisplay() {
+            const currentLevel = getCurrentLevel(userProgress.totalXP);
+            const nextLevel = levels[currentLevel.level] || levels[levels.length - 1];
+            const xpInLevel = userProgress.totalXP - currentLevel.xp;
+            const xpNeeded = nextLevel.xp - currentLevel.xp;
+            const progress = (xpInLevel / xpNeeded) * 100;
+
+            document.getElementById('userLevel').textContent = `Level ${currentLevel.level} - ${currentLevel.name}`;
+            document.getElementById('currentXP').textContent = userProgress.totalXP;
+            document.getElementById('nextLevelXP').textContent = nextLevel.xp;
+            document.getElementById('xpFill').style.width = progress + '%';
+            document.getElementById('xpPercent').textContent = Math.round(progress) + '%';
+            document.getElementById('streakDays').textContent = userProgress.streak || 0;
+        }
+
+        // Get current level based on XP
+        function getCurrentLevel(xp) {
+            for (let i = levels.length - 1; i >= 0; i--) {
+                if (xp >= levels[i].xp) {
+                    return levels[i];
+                }
+            }
+            return levels[0];
+        }
+
+        // Show available challenges
+        function showChallenges() {
+            const container = document.getElementById('challengesList');
+            container.innerHTML = '';
+
+            challenges.forEach(challenge => {
+                const isCompleted = userProgress && userProgress.completedChallenges.includes(challenge.id);
+                
+                const card = document.createElement('div');
+                card.className = 'challenge-card';
+                card.innerHTML = `
+                    <div class="challenge-title">${challenge.title}</div>
+                    <div class="challenge-meta">
+                        <span class="meta-badge">${challenge.questions} Questions</span>
+                        <span class="meta-badge">${challenge.xpReward} XP</span>
+                        <span class="meta-badge">${challenge.difficulty}</span>
+                        ${isCompleted ? '<span class="meta-badge completed">✓ Completed</span>' : ''}
+                    </div>
+                    <div class="challenge-description">${challenge.description}</div>
+                    <button class="start-btn${isCompleted ? ' retake' : ''}" onclick="startChallenge('${challenge.id}')">
+                        ${isCompleted ? 'Retake Challenge' : 'Start Challenge →'}
+                    </button>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Start a challenge
+        window.startChallenge = function(challengeId) {
+            currentChallenge = challenges.find(c => c.id === challengeId);
+            currentQuestionIndex = 0;
+            score = 0;
+            selectedAnswer = null;
+
+            document.getElementById('challengesList').classList.add('hidden');
+            document.getElementById('progressCard').classList.add('hidden');
+            document.getElementById('quizContainer').classList.remove('hidden');
+
+            showQuestion();
+        };
+
+        // Show current question
+        function showQuestion() {
+            const question = currentChallenge.questionList[currentQuestionIndex];
+            const progress = ((currentQuestionIndex) / currentChallenge.questionList.length) * 100;
+
+            document.getElementById('quizContainer').innerHTML = `
+                <div class="quiz-header">
+                    <h2>${currentChallenge.title}</h2>
+                    <div class="quiz-progress">
+                        <div class="quiz-progress-fill" style="width: ${progress}%"></div>
+                    </div>
+                    <div class="question-number">Question ${currentQuestionIndex + 1} of ${currentChallenge.questionList.length}</div>
+                </div>
+                <div class="quiz-body">
+                    <div class="question-text">${question.question}</div>
+                    <div class="options" id="optionsContainer">
+                        ${question.options.map((option, index) => `
+                            <div class="option" onclick="selectAnswer(${index})" id="option${index}">
+                                ${option}
+                            </div>
+                        `).join('')}
+                    </div>
+                    <div class="explanation" id="explanation">
+                        <strong>Explanation</strong>
+                        ${question.explanation}
+                    </div>
+                    <div class="quiz-actions">
+                        <button class="btn btn-primary" onclick="submitAnswer()" id="submitBtn" disabled>
+                            Submit Answer
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // Select an answer
+        window.selectAnswer = function(index) {
+            if (selectedAnswer !== null) return; // Already answered
+
+            selectedAnswer = index;
+            document.querySelectorAll('.option').forEach(opt => opt.classList.remove('selected'));
+            document.getElementById(`option${index}`).classList.add('selected');
+            document.getElementById('submitBtn').disabled = false;
+        };
+
+        // Submit answer
+        window.submitAnswer = function() {
+            if (selectedAnswer === null) return;
+
+            const question = currentChallenge.questionList[currentQuestionIndex];
+            const isCorrect = selectedAnswer === question.correct;
+
+            if (isCorrect) {
+                score++;
+                document.getElementById(`option${selectedAnswer}`).classList.add('correct');
+            } else {
+                document.getElementById(`option${selectedAnswer}`).classList.add('incorrect');
+                document.getElementById(`option${question.correct}`).classList.add('correct');
+            }
+
+            document.getElementById('explanation').classList.add('show');
+            document.getElementById('submitBtn').textContent = currentQuestionIndex < currentChallenge.questionList.length - 1 ? 'Next Question →' : 'See Results';
+            document.getElementById('submitBtn').onclick = nextQuestion;
+        };
+
+        // Next question
+        function nextQuestion() {
+            currentQuestionIndex++;
+            selectedAnswer = null;
+
+            if (currentQuestionIndex < currentChallenge.questionList.length) {
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        // Show quiz results
+        async function showResults() {
+            try {
+                // Safety check - ensure userProgress exists
+                if (!userProgress) {
+                    console.error('❌ userProgress is null, initializing...');
+                    userProgress = {
+                        totalXP: 0,
+                        level: 1,
+                        streak: 0,
+                        completedChallenges: []
+                    };
+                }
+                
+                const percentage = Math.round((score / currentChallenge.questionList.length) * 100);
+                const xpEarned = Math.round(currentChallenge.xpReward * (percentage / 100));
+                const perfectBonus = percentage === 100 ? Math.round(currentChallenge.xpReward * 0.25) : 0;
+                const totalXP = xpEarned + perfectBonus;
+
+                console.log('Quiz complete! Score:', score, '/', currentChallenge.questionList.length);
+                console.log('XP earned:', totalXP);
+                console.log('Current userProgress:', userProgress);
+
+                const oldLevel = getCurrentLevel(userProgress.totalXP);
+                const newTotalXP = userProgress.totalXP + totalXP;
+                const newLevel = getCurrentLevel(newTotalXP);
+                const leveledUp = newLevel.level > oldLevel.level;
+
+                // Update progress in Firestore
+                if (currentUser) {
+                    try {
+                        console.log('Saving progress for user:', currentUser.uid);
+                        console.log('Current XP:', userProgress.totalXP);
+                        console.log('Adding XP:', totalXP);
+                        console.log('New total will be:', newTotalXP);
+                        
+                        const completedChallenges = userProgress.completedChallenges || [];
+                        if (!completedChallenges.includes(currentChallenge.id)) {
+                            completedChallenges.push(currentChallenge.id);
+                        }
+                        
+                        console.log('Completed challenges:', completedChallenges);
+                        console.log('Attempting to save to Firestore...');
+
+                        // Use setDoc with merge instead of updateDoc
+                        // This creates the document if it doesn't exist, or updates if it does
+                        await setDoc(doc(db, 'userProgress', currentUser.uid), {
+                            totalXP: newTotalXP,
+                            level: newLevel.level,
+                            completedChallenges: completedChallenges,
+                            lastActivity: serverTimestamp()
+                        }, { merge: true });
+
+                        userProgress.totalXP = newTotalXP;
+                        userProgress.level = newLevel.level;
+                        userProgress.completedChallenges = completedChallenges;
+                        
+                        console.log('✅ Progress saved to Firebase successfully!');
+                        console.log('Updated userProgress:', userProgress);
+                    } catch (error) {
+                        console.error('❌ FIREBASE ERROR:', error);
+                        console.error('Error code:', error.code);
+                        console.error('Error message:', error.message);
+                        
+                        // Show error to user
+                        alert('⚠️ Could not save progress to Firebase!\n\nError: ' + error.message + '\n\nYour XP was not saved. Please check Firebase security rules.');
+                    }
+                }
+
+                let message = '';
+                if (percentage === 100) message = '🎉 Perfect Score! Outstanding!';
+                else if (percentage >= 80) message = '🌟 Excellent work!';
+                else if (percentage >= 60) message = '👍 Good job!';
+                else message = '📚 Keep studying!';
+
+                document.getElementById('quizContainer').innerHTML = `
+                    <div class="results-container">
+                        <h2>Challenge Complete!</h2>
+                        <div class="results-score">
+                            <span class="results-score-num">${score}/${currentChallenge.questionList.length}</span>
+                            <span class="results-score-sub">Score</span>
+                        </div>
+                        <div class="results-message">${message}</div>
+                        <div class="results-xp-card">
+                            <div class="results-xp-row">
+                                <span class="results-xp-label">Quiz XP earned</span>
+                                <span class="results-xp-value">+${xpEarned} XP</span>
+                            </div>
+                            ${perfectBonus > 0 ? `
+                            <div class="results-xp-row">
+                                <span class="results-xp-label">Perfect score bonus</span>
+                                <span class="results-xp-value">+${perfectBonus} XP</span>
+                            </div>` : ''}
+                            <div class="results-xp-row results-xp-total">
+                                <span class="results-xp-label">Total earned</span>
+                                <span class="results-xp-value">+${totalXP} XP</span>
+                            </div>
+                        </div>
+                        ${leveledUp ? `
+                            <div class="level-up-animation">
+                                <h3>🎊 Level Up!</h3>
+                                <p>You are now Level ${newLevel.level} — ${newLevel.name}!</p>
+                            </div>
+                        ` : ''}
+                        <div class="quiz-actions">
+                            <button class="btn btn-primary" onclick="returnToChallenges()">
+                                Back to Challenges
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                updateProgressDisplay();
+                
+                console.log('✅ Results displayed!');
+            } catch (error) {
+                console.error('❌ Error in showResults:', error);
+                alert('Error showing results: ' + error.message);
+            }
+        }
+
+        // Return to challenges
+        window.returnToChallenges = async function() {
+            console.log('Returning to challenges, reloading progress...');
+            
+            // Reload progress from Firebase to get updated XP
+            await loadUserProgress();
+            
+            // Show the challenges page
+            document.getElementById('quizContainer').classList.add('hidden');
+            document.getElementById('challengesList').classList.remove('hidden');
+            document.getElementById('progressCard').classList.remove('hidden');
+            
+            // Refresh challenges list to show completed status
+            showChallenges();
+            
+            console.log('✅ Challenges refreshed with updated progress!');
+        };
+    </script>
+</body>
+</html>

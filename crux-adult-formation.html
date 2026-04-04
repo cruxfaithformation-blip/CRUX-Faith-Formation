@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — Adult Formation</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: #f8f7f4;
+  color: #1a1f36;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: #1a1f36;
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #d4a574;
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.header-right { display:flex; align-items:center; gap:0.75rem; }
+
+.btn-home {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+.btn-home:hover { color:#d4a574; border-color:#d4a574; }
+
+/* ── HERO ── */
+.hero {
+  background: #1a1f36;
+  padding: 4rem 2rem 3.5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.hero::before {
+  content: '✟';
+  position: absolute;
+  font-size: 22rem;
+  color: rgba(212,165,116,0.04);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.hero .eyebrow {
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #d4a574;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+  position: relative;
+}
+
+.hero p {
+  color: rgba(255,255,255,0.55);
+  font-size: 1rem;
+  line-height: 1.7;
+  max-width: 560px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ── WELCOME STRIP ── */
+.welcome-strip {
+  background: #ffffff;
+  border-bottom: 1px solid rgba(26,31,54,0.08);
+  padding: 1.5rem 2rem;
+  text-align: center;
+}
+
+.welcome-strip p {
+  color: #5a6282;
+  font-size: 0.92rem;
+  line-height: 1.7;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+/* ── MODULE SHELF ── */
+.page-wrap {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 3rem 2rem 5rem;
+}
+
+.shelf-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.shelf-header h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: #1a1f36;
+  font-weight: 700;
+}
+
+.shelf-header span {
+  font-size: 0.8rem;
+  color: #8890b0;
+  font-weight: 500;
+}
+
+/* Module cards */
+.module-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 3rem;
+}
+
+.module-card {
+  background: #ffffff;
+  border-radius: 14px;
+  border: 1px solid rgba(26,31,54,0.1);
+  box-shadow: 0 2px 8px rgba(26,31,54,0.06);
+  overflow: hidden;
+  transition: all 0.25s ease;
+  display: flex;
+  position: relative;
+}
+
+.module-card.available {
+  cursor: pointer;
+  border-color: rgba(212,165,116,0.25);
+}
+
+.module-card.available:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 24px rgba(26,31,54,0.12);
+  border-color: rgba(212,165,116,0.5);
+}
+
+.module-card.locked {
+  opacity: 0.6;
+  cursor: default;
+}
+
+/* Number tab on left */
+.module-num {
+  width: 72px;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  background: #1a1f36;
+  color: rgba(212,165,116,0.25);
+  letter-spacing: -1px;
+}
+
+.module-card.available .module-num {
+  color: #d4a574;
+  background: #1a1f36;
+}
+
+.module-body {
+  flex: 1;
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.module-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.module-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  color: #1a1f36;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.module-badge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 0.25rem 0.75rem;
+  border-radius: 20px;
+  flex-shrink: 0;
+  margin-top: 3px;
+}
+
+.module-badge.available {
+  background: rgba(46,125,50,0.1);
+  color: #2e7d32;
+  border: 1px solid rgba(46,125,50,0.2);
+}
+
+.module-badge.coming-soon {
+  background: rgba(26,31,54,0.05);
+  color: #8890b0;
+  border: 1px solid rgba(26,31,54,0.1);
+}
+
+.module-desc {
+  font-size: 0.88rem;
+  color: #5a6282;
+  line-height: 1.65;
+}
+
+.module-parts {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: 0.25rem;
+}
+
+.module-part {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  color: #8890b0;
+}
+
+.module-part::before {
+  content: '';
+  width: 16px;
+  height: 1.5px;
+  background: rgba(212,165,116,0.4);
+  flex-shrink: 0;
+}
+
+.module-card.locked .module-part::before {
+  background: rgba(26,31,54,0.15);
+}
+
+.module-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid rgba(26,31,54,0.07);
+  margin-top: 0.25rem;
+}
+
+.module-meta {
+  font-size: 0.75rem;
+  color: #8890b0;
+  font-weight: 500;
+}
+
+.module-cta {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #b8895a;
+}
+
+.module-card.locked .module-cta {
+  color: #8890b0;
+  font-weight: 400;
+}
+
+/* ── OCIA CALLOUT ── */
+.ocia-block {
+  background: #1a1f36;
+  border-radius: 14px;
+  padding: 2rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.ocia-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  color: #d4a574;
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.ocia-block p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.65;
+  max-width: 520px;
+}
+
+.btn-ocia {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem 1.5rem;
+  background: #b8895a;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-ocia:hover { background: #d4a574; color: #1a1f36; }
+
+/* ── FOOTER ── */
+.scripture-footer {
+  background: #1a1f36;
+  text-align: center;
+  padding: 2.5rem 2rem;
+  margin-top: 0;
+}
+.scripture-footer p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: rgba(255,255,255,0.5);
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+}
+.scripture-footer cite {
+  font-size: 0.75rem;
+  color: rgba(212,165,116,0.5);
+  font-style: normal;
+  letter-spacing: 1px;
+}
+
+@media (max-width: 640px) {
+  .hero h1 { font-size: 2rem; }
+  .module-num { width: 52px; font-size: 1.5rem; }
+  .module-body { padding: 1.25rem; }
+  .ocia-block { flex-direction: column; align-items: flex-start; }
+  .page-wrap { padding: 2rem 1rem 4rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="index.html" class="logo">CRUX</a>
+  <div class="header-right">
+    <a href="index.html" class="btn-home">← Main Site</a>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="eyebrow">Adult Faith Formation</div>
+  <h1>Begin the Journey</h1>
+  <p>A thoughtful, honest introduction to Catholic faith — written for seekers, skeptics, and returning Catholics. No prior knowledge required.</p>
+</div>
+
+<div class="welcome-strip">
+  <p>Whether you've never set foot in a church, grew up Catholic and drifted, or are simply asking hard questions about God and meaning — this track is written for you. Start with Module 1 and go at your own pace.</p>
+</div>
+
+<div class="page-wrap">
+
+  <div class="shelf-header">
+    <h2>Formation Modules</h2>
+    <span>1 of 7 available now</span>
+  </div>
+
+  <div class="module-grid">
+
+    <!-- MODULE 1 — AVAILABLE -->
+    <div class="module-card available" onclick="window.location.href='crux-adult-module1a.html'">
+      <div class="module-num">01</div>
+      <div class="module-body">
+        <div class="module-top">
+          <div class="module-title">Who Is This Man?</div>
+          <span class="module-badge available">Available Now</span>
+        </div>
+        <div class="module-desc">The historical Jesus — his humanity, his radical claims about himself, and the resurrection that changed everything. The foundation the rest of this track builds on.</div>
+        <div class="module-parts">
+          <span class="module-part">Part A: The Man Who Changed Everything</span>
+          <span class="module-part">Part B: The Claim That Changes Everything</span>
+        </div>
+        <div class="module-footer">
+          <span class="module-meta">⏱ 50–60 min · 2 parts</span>
+          <span class="module-cta">Begin Module →</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 2 — COMING SOON -->
+    <div class="module-card locked">
+      <div class="module-num">02</div>
+      <div class="module-body">
+        <div class="module-top">
+          <div class="module-title">Why Is There Suffering?</div>
+          <span class="module-badge coming-soon">Coming Soon</span>
+        </div>
+        <div class="module-desc">If God is real and good, why does He allow suffering? Theodicy, the Cross as God's answer rather than God's absence, and the Catholic teaching on redemptive suffering.</div>
+        <div class="module-footer">
+          <span class="module-meta">In development</span>
+          <span class="module-cta">🔒 Locked</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 3 -->
+    <div class="module-card locked">
+      <div class="module-num">03</div>
+      <div class="module-body">
+        <div class="module-top">
+          <div class="module-title">What Is the Church?</div>
+          <span class="module-badge coming-soon">Coming Soon</span>
+        </div>
+        <div class="module-desc">Why does an institution matter? The history, the wounds, the mission, and the honest case for why the Church is still worth belonging to.</div>
+        <div class="module-footer">
+          <span class="module-meta">In development</span>
+          <span class="module-cta">🔒 Locked</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 4 -->
+    <div class="module-card locked">
+      <div class="module-num">04</div>
+      <div class="module-body">
+        <div class="module-top">
+          <div class="module-title">The Sacraments</div>
+          <span class="module-badge coming-soon">Coming Soon</span>
+        </div>
+        <div class="module-desc">How God uses physical things — water, oil, bread, words — to meet us where we are. The seven sacraments explained for adult seekers.</div>
+        <div class="module-footer">
+          <span class="module-meta">In development</span>
+          <span class="module-cta">🔒 Locked</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 5 -->
+    <div class="module-card locked">
+      <div class="module-num">05</div>
+      <div class="module-body">
+        <div class="module-top">
+          <div class="module-title">How Do I Pray?</div>
+          <span class="module-badge coming-soon">Coming Soon</span>
+        </div>
+        <div class="module-desc">An honest guide to Catholic prayer for adults who find it awkward or unfamiliar. Scripture, the Rosary, liturgy, and personal prayer.</div>
+        <div class="module-footer">
+          <span class="module-meta">In development</span>
+          <span class="module-cta">🔒 Locked</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 6 -->
+    <div class="module-card locked">
+      <div class="module-num">06</div>
+      <div class="module-body">
+        <div class="module-top">
+          <div class="module-title">Mary & the Saints</div>
+          <span class="module-badge coming-soon">Coming Soon</span>
+        </div>
+        <div class="module-desc">The question every seeker asks: why do Catholics pray to Mary? A clear, honest answer — and why the communion of saints matters for daily life.</div>
+        <div class="module-footer">
+          <span class="module-meta">In development</span>
+          <span class="module-cta">🔒 Locked</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULE 7 -->
+    <div class="module-card locked">
+      <div class="module-num">07</div>
+      <div class="module-body">
+        <div class="module-top">
+          <div class="module-title">Now What? — Next Steps</div>
+          <span class="module-badge coming-soon">Coming Soon</span>
+        </div>
+        <div class="module-desc">For those ready to take the next step: what OCIA looks like, how to find a parish, and what it means to enter the Church.</div>
+        <div class="module-footer">
+          <span class="module-meta">In development</span>
+          <span class="module-cta">🔒 Locked</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- OCIA callout -->
+  <div class="ocia-block">
+    <div>
+      <h3>Ready to take the next step?</h3>
+      <p>The Order of Christian Initiation of Adults (OCIA) is the Church's welcoming process for adults exploring Catholicism. Most parishes run OCIA in the fall — you can attend and listen before making any commitment.</p>
+    </div>
+    <a href="https://www.usccb.org/beliefs-and-teachings/who-we-teach/adult-faith-formation" target="_blank" class="btn-ocia">Learn about OCIA →</a>
+  </div>
+
+</div>
+
+<div class="scripture-footer">
+  <p>"Come to me, all you who are weary and burdened, and I will give you rest."</p>
+  <cite>— Matthew 11:28</cite>
+</div>
+
+</body>
+</html>

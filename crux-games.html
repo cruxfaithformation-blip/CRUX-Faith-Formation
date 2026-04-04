@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUX — Practice Games</title>
+
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LQ35DLTVKY');
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <script type="module">
+        import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        const _fbCfg = {
+            apiKey:"AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+            authDomain:"crux-faith-formation.firebaseapp.com",
+            projectId:"crux-faith-formation",
+            storageBucket:"crux-faith-formation.firebasestorage.app",
+            messagingSenderId:"838141015985",
+            appId:"1:838141015985:web:2655e570663e182d75ef90"
+        };
+        const app = getApps().length ? getApps()[0] : initializeApp(_fbCfg);
+        window.db = getFirestore(app);
+        window.auth = getAuth(app);
+        window.fsOps = { doc, getDoc, setDoc, updateDoc, serverTimestamp };
+        onAuthStateChanged(window.auth, user => {
+            window.currentUser = user || null;
+            const el = document.getElementById('userChip');
+            if (el) el.textContent = user ? user.email.split('@')[0] : 'Guest';
+            if (user) loadXP(user.uid);
+        });
+        async function loadXP(uid) {
+            try {
+                const snap = await getDoc(doc(window.db,'userProgress',uid));
+                if (snap.exists()) {
+                    const xp = snap.data().totalXP || 0;
+                    const el = document.getElementById('xpChip');
+                    if (el) { el.textContent=`⭐ ${xp} XP`; el.style.display='inline-flex'; }
+                }
+            } catch(e) { console.error(e); }
+        }
+    </script>
+
+    <style>
+        :root{--navy:#1a1f36;--navy-mid:#242a45;--navy-light:#2f3659;--gold:#d4a574;--gold-light:#e8c9a0;--gold-dark:#b8895a;--white:#ffffff;--off-white:#f8f7f4;--text-primary:#1a1f36;--text-secondary:#5a6282;--text-muted:#8890b0;--border:rgba(26,31,54,0.1);--border-gold:rgba(212,165,116,0.3);--shadow-sm:0 2px 8px rgba(26,31,54,0.08);--shadow-md:0 4px 20px rgba(26,31,54,0.12);--shadow-lg:0 8px 40px rgba(26,31,54,0.18);--green:#2e7d32;--green-light:#e8f5e9;--red:#c62828;--red-light:#ffebee;}
+        *{margin:0;padding:0;box-sizing:border-box;}
+        body{font-family:'Inter',sans-serif;background:var(--off-white);color:var(--text-primary);min-height:100vh;}
+        header{background:var(--navy);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:200;box-shadow:0 4px 24px rgba(0,0,0,0.2);}
+        .header-left{display:flex;align-items:center;gap:1.25rem;}
+        .logo{font-family:'Playfair Display',serif;font-size:1.5rem;font-weight:900;color:var(--gold);letter-spacing:5px;text-decoration:none;}
+        .page-label{font-size:0.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);border-left:1px solid rgba(255,255,255,0.12);padding-left:1.25rem;}
+        .header-right{display:flex;align-items:center;gap:0.75rem;}
+        .user-chip{background:rgba(255,255,255,0.07);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);padding:0.3rem 0.8rem;border-radius:20px;font-size:0.78rem;}
+        .xp-chip{background:rgba(212,165,116,0.12);border:1px solid var(--border-gold);color:var(--gold);padding:0.3rem 0.8rem;border-radius:20px;font-size:0.78rem;font-weight:700;display:none;}
+        .btn-back{color:rgba(255,255,255,0.5);font-size:0.82rem;font-weight:500;text-decoration:none;border:1.5px solid rgba(255,255,255,0.15);padding:0.4rem 0.9rem;border-radius:6px;transition:all 0.2s;}
+        .btn-back:hover{color:var(--gold);border-color:var(--gold);}
+        .page-wrap{max-width:860px;margin:0 auto;padding:3rem 2rem 6rem;}
+        .lesson-hero{background:var(--navy);border-radius:14px;padding:2.5rem 3rem;margin-bottom:2.5rem;position:relative;overflow:hidden;}
+        .lesson-hero::before{content:'✟';position:absolute;font-size:16rem;color:rgba(212,165,116,0.04);right:1rem;bottom:-2rem;line-height:1;}
+        .lesson-hero .eyebrow{font-size:0.7rem;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;position:relative;}
+        .lesson-hero h1{font-family:'Playfair Display',serif;font-size:2rem;color:var(--white);font-weight:700;margin-bottom:0.5rem;position:relative;}
+        .lesson-hero p{color:rgba(255,255,255,0.55);font-size:0.9rem;position:relative;}
+        .game-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.25rem;margin-bottom:1.25rem;}
+        .game-card{background:var(--white);border-radius:12px;border:1px solid var(--border);box-shadow:var(--shadow-sm);overflow:hidden;cursor:pointer;transition:all 0.25s ease;}
+        .game-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:var(--border-gold);}
+        .game-card.completed{border-color:var(--green);}
+        .game-card-top{padding:1.5rem;display:flex;align-items:flex-start;gap:1rem;}
+        .game-icon{width:44px;height:44px;border-radius:10px;background:var(--navy);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
+        .game-meta{flex:1;}
+        .game-name{font-family:'Playfair Display',serif;font-size:1.05rem;color:var(--navy);font-weight:700;margin-bottom:0.25rem;}
+        .game-desc{font-size:0.8rem;color:var(--text-muted);line-height:1.5;}
+        .game-card-footer{padding:0.75rem 1.5rem;background:var(--off-white);border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;font-size:0.75rem;}
+        .game-xp{color:var(--gold-dark);font-weight:700;}
+        .game-status{color:var(--text-muted);font-weight:500;}
+        .game-status.done{color:var(--green);font-weight:700;}
+        .game-overlay{position:fixed;inset:0;background:rgba(26,31,54,0.75);display:none;align-items:center;justify-content:center;z-index:500;padding:1rem;backdrop-filter:blur(6px);}
+        .game-overlay.open{display:flex;}
+        .game-modal{background:var(--white);border-radius:16px;width:100%;max-width:640px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modalIn 0.25s ease;}
+        @keyframes modalIn{from{opacity:0;transform:translateY(20px) scale(0.97);}to{opacity:1;transform:translateY(0) scale(1);}}
+        .game-modal-header{padding:1.75rem 2rem 1.25rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:var(--white);border-radius:16px 16px 0 0;z-index:10;}
+        .game-modal-title{font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--navy);font-weight:700;}
+        .btn-close-game{background:none;border:1.5px solid var(--border);color:var(--text-muted);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1rem;display:flex;align-items:center;justify-content:center;transition:all 0.2s;}
+        .btn-close-game:hover{border-color:var(--red);color:var(--red);}
+        .game-modal-body{padding:2rem;}
+        .score-bar{display:flex;align-items:center;justify-content:space-between;padding:0.75rem 1rem;background:var(--off-white);border-radius:8px;margin-bottom:1.75rem;font-size:0.82rem;font-weight:600;}
+        .score-bar .score{color:var(--navy);}
+        .score-bar .progress-text{color:var(--text-muted);}
+        /* Flashcard */
+        .flashcard-wrap{perspective:1000px;margin:0 auto 1.5rem;cursor:pointer;height:220px;}
+        .flashcard{width:100%;height:100%;position:relative;transform-style:preserve-3d;transition:transform 0.5s ease;}
+        .flashcard.flipped{transform:rotateY(180deg);}
+        .flashcard-face{position:absolute;inset:0;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:2rem;backface-visibility:hidden;-webkit-backface-visibility:hidden;}
+        .flashcard-front{background:var(--navy);border:2px solid rgba(212,165,116,0.2);}
+        .flashcard-back{background:var(--off-white);border:2px solid var(--border-gold);transform:rotateY(180deg);}
+        .flashcard-front .card-label{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;}
+        .flashcard-front .card-term{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--white);font-weight:700;line-height:1.2;}
+        .flashcard-back .card-label{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dark);margin-bottom:0.75rem;}
+        .flashcard-back .card-def{font-size:1rem;color:var(--text-primary);line-height:1.65;}
+        .flashcard-hint{text-align:center;font-size:0.78rem;color:var(--text-muted);margin-bottom:1.5rem;}
+        .flashcard-nav{display:flex;gap:0.75rem;justify-content:center;}
+        /* Scramble */
+        .scramble-clue{background:rgba(212,165,116,0.08);border-left:3px solid var(--gold);border-radius:0 8px 8px 0;padding:1rem 1.25rem;margin-bottom:1.5rem;font-size:0.95rem;color:var(--text-primary);line-height:1.6;font-style:italic;}
+        .scramble-letters,.answer-slots{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin-bottom:1.5rem;}
+        .answer-slots{min-height:56px;}
+        .letter-tile{width:44px;height:52px;background:var(--navy);color:var(--gold);border-radius:8px;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;cursor:pointer;transition:all 0.15s;user-select:none;border:2px solid transparent;}
+        .letter-tile:hover{background:var(--navy-light);transform:translateY(-2px);}
+        .letter-tile.used{opacity:0.25;cursor:default;transform:none;}
+        .answer-slot{width:44px;height:52px;border-radius:8px;border:2px solid var(--border);background:var(--off-white);display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:1.4rem;font-weight:700;color:var(--navy);cursor:pointer;transition:all 0.15s;}
+        .answer-slot.filled{background:var(--white);border-color:var(--navy);}
+        .answer-slot.correct{border-color:var(--green);background:var(--green-light);color:var(--green);}
+        .answer-slot.incorrect{border-color:var(--red);background:var(--red-light);color:var(--red);}
+        /* Matching */
+        .match-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-bottom:1.5rem;}
+        .match-col{display:flex;flex-direction:column;gap:0.6rem;}
+        .match-item{padding:0.85rem 1rem;border-radius:8px;border:2px solid var(--border);background:var(--off-white);font-size:0.88rem;font-weight:600;cursor:pointer;transition:all 0.2s;text-align:center;line-height:1.4;user-select:none;}
+        .match-item.term{color:var(--navy);}
+        .match-item.definition{color:var(--text-secondary);font-weight:400;}
+        .match-item.selected{border-color:var(--navy);background:rgba(26,31,54,0.06);}
+        .match-item.matched-correct{border-color:var(--green);background:var(--green-light);color:var(--green);cursor:default;}
+        .match-item.matched-wrong{border-color:var(--red);background:var(--red-light);animation:shake 0.3s ease;}
+        @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-6px);}75%{transform:translateX(6px);}}
+        /* True/False */
+        .tf-statement{background:var(--navy);border-radius:12px;padding:2rem;text-align:center;margin-bottom:1.5rem;min-height:120px;display:flex;align-items:center;justify-content:center;}
+        .tf-statement p{font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--white);line-height:1.5;font-weight:600;}
+        .tf-buttons{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1.5rem;}
+        .btn-tf{padding:1.1rem;border-radius:10px;border:2px solid var(--border);background:var(--off-white);font-size:1.1rem;font-weight:700;cursor:pointer;transition:all 0.2s;font-family:'Inter',sans-serif;}
+        .btn-tf.true-btn:hover{border-color:var(--green);background:var(--green-light);}
+        .btn-tf.false-btn:hover{border-color:var(--red);background:var(--red-light);}
+        .btn-tf.correct{border-color:var(--green);background:var(--green-light);color:var(--green);}
+        .btn-tf.incorrect{border-color:var(--red);background:var(--red-light);color:var(--red);}
+        .btn-tf:disabled{cursor:default;}
+        .tf-feedback{padding:0.85rem 1.1rem;border-radius:8px;font-size:0.9rem;font-weight:600;text-align:center;display:none;margin-bottom:1rem;}
+        .tf-feedback.correct{background:var(--green-light);color:var(--green);display:block;}
+        .tf-feedback.incorrect{background:var(--red-light);color:var(--red);display:block;}
+        /* Fill in blank */
+        .fitb-sentence{font-family:'Playfair Display',serif;font-size:1.25rem;color:var(--navy);text-align:center;line-height:1.8;margin-bottom:1.5rem;padding:1.5rem;background:var(--off-white);border-radius:10px;border:1px solid var(--border);}
+        .fitb-blank{display:inline-block;min-width:120px;border-bottom:3px solid var(--navy);color:var(--navy);font-weight:700;padding:0 0.25rem;}
+        .word-bank{display:flex;flex-wrap:wrap;gap:0.6rem;justify-content:center;margin-bottom:1.5rem;}
+        .word-chip{padding:0.5rem 1.1rem;background:var(--white);border:1.5px solid var(--border);border-radius:25px;font-size:0.88rem;font-weight:600;cursor:pointer;transition:all 0.2s;color:var(--text-primary);}
+        .word-chip:hover{border-color:var(--navy);background:rgba(26,31,54,0.04);}
+        .word-chip.correct{border-color:var(--green);background:var(--green-light);color:var(--green);cursor:default;}
+        .word-chip.incorrect{border-color:var(--red);background:var(--red-light);color:var(--red);}
+        /* Drag and drop */
+        .dnd-bank{display:flex;flex-wrap:wrap;gap:0.6rem;justify-content:center;min-height:56px;padding:1rem;background:var(--off-white);border-radius:10px;border:1.5px dashed var(--border);margin-bottom:1.5rem;}
+        .dnd-chip{padding:0.5rem 1rem;background:var(--navy);color:var(--white);border-radius:8px;font-size:0.85rem;font-weight:600;cursor:grab;transition:all 0.15s;user-select:none;}
+        .dnd-chip:active{cursor:grabbing;transform:scale(1.05);}
+        .dnd-chip.dragging{opacity:0.4;}
+        .dnd-categories{display:grid;gap:0.75rem;}
+        .dnd-categories.cols-2{grid-template-columns:1fr 1fr;}
+        .dnd-categories.cols-3{grid-template-columns:1fr 1fr 1fr;}
+        .dnd-category{border-radius:10px;border:2px dashed var(--border);background:var(--white);padding:0.75rem;min-height:100px;transition:all 0.2s;}
+        .dnd-category.drag-over{border-color:var(--gold);background:rgba(212,165,116,0.05);}
+        .dnd-cat-label{font-size:0.72rem;font-weight:800;letter-spacing:0.8px;text-transform:uppercase;color:var(--gold-dark);margin-bottom:0.6rem;text-align:center;}
+        .dnd-category .dnd-chip{margin-bottom:0.4rem;width:100%;text-align:center;cursor:pointer;}
+        .dnd-category .dnd-chip.correct{background:var(--green);}
+        .dnd-category .dnd-chip.incorrect{background:var(--red);}
+        /* Buttons */
+        .btn-game{display:inline-flex;align-items:center;gap:0.4rem;padding:0.75rem 1.5rem;background:var(--navy);color:var(--white);border:none;border-radius:8px;font-size:0.88rem;font-weight:700;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;}
+        .btn-game:hover{background:var(--navy-light);}
+        .btn-game:disabled{background:#ccc;cursor:not-allowed;}
+        .btn-game.gold{background:var(--gold-dark);color:var(--white);}
+        .btn-game.gold:hover{background:var(--gold);color:var(--navy);}
+        .btn-game.outline{background:transparent;color:var(--navy);border:1.5px solid var(--border);}
+        .btn-game.outline:hover{border-color:var(--navy);}
+        .game-btn-row{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap;}
+        /* Win */
+        .win-screen{text-align:center;padding:2rem 1rem;}
+        .win-icon{font-size:3.5rem;margin-bottom:1rem;display:block;}
+        .win-screen h3{font-family:'Playfair Display',serif;font-size:1.7rem;color:var(--navy);font-weight:700;margin-bottom:0.5rem;}
+        .win-screen p{color:var(--text-secondary);font-size:0.95rem;margin-bottom:1.5rem;}
+        .xp-award-badge{display:inline-flex;align-items:center;gap:0.5rem;background:var(--navy);color:var(--gold);padding:0.75rem 1.75rem;border-radius:50px;font-size:1.1rem;font-weight:700;margin-bottom:1.75rem;font-family:'Playfair Display',serif;}
+        /* Toast */
+        .toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(80px);background:var(--navy);color:var(--white);padding:0.8rem 1.6rem;border-radius:50px;font-size:0.88rem;font-weight:600;box-shadow:var(--shadow-lg);transition:transform 0.3s ease;z-index:2000;white-space:nowrap;}
+        .toast.show{transform:translateX(-50%) translateY(0);}
+        /* Not found */
+        .not-found{text-align:center;padding:5rem 2rem;}
+        .not-found h2{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--navy);margin-bottom:1rem;}
+        .not-found p{color:var(--text-muted);margin-bottom:2rem;}
+        @media(max-width:600px){.game-grid{grid-template-columns:1fr;}.match-grid{grid-template-columns:1fr;}.dnd-categories.cols-3{grid-template-columns:1fr;}.tf-buttons{grid-template-columns:1fr;}.page-wrap{padding:1.5rem 1rem 4rem;}.lesson-hero{padding:1.75rem;}}
+    </style>
+</head>
+<body>
+<header>
+    <div class="header-left">
+        <a href="index.html" class="logo">CRUX</a>
+        <span class="page-label" id="pageLabel">Practice Games</span>
+    </div>
+    <div class="header-right">
+        <span class="xp-chip" id="xpChip"></span>
+        <span class="user-chip" id="userChip">Guest</span>
+        <a href="#" class="btn-back" id="backBtn">← Back to Lesson</a>
+    </div>
+</header>
+
+<div class="page-wrap">
+    <div class="lesson-hero">
+        <div class="eyebrow" id="heroEyebrow">Faith Formation</div>
+        <h1 id="heroTitle">Practice Games</h1>
+        <p id="heroDesc">Six games to reinforce what you've learned. Complete each one to earn XP.</p>
+    </div>
+    <div class="game-grid" id="gameGrid"></div>
+</div>
+
+<div class="game-overlay" id="gameOverlay">
+    <div class="game-modal">
+        <div class="game-modal-header">
+            <span class="game-modal-title" id="gameModalTitle">Game</span>
+            <button class="btn-close-game" onclick="closeGame()">✕</button>
+        </div>
+        <div class="game-modal-body" id="gameModalBody"></div>
+    </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════════
+// ALL MODULE GAME DATA
+// ══════════════════════════════════════════════════════════
+const GAME_MODULES = {
+
+// ─── SACRAMENTS ───────────────────────────────────────────
+sacraments: {
+    title: 'The Seven Sacraments',
+    eyebrow: 'Chapter 1 · Core Beliefs',
+    desc: 'Six games to reinforce what you\'ve learned. Complete each one to earn XP.',
+    moduleLink: 'crux-modules.html?module=sacraments',
+    games: [
+        { id:'flashcard',   icon:'🃏', name:'Flashcards',       desc:'Flip each card to reveal the definition. Test yourself on all 7 sacraments.',          xp:15 },
+        { id:'scramble',    icon:'🔤', name:'Word Scramble',    desc:'Unscramble key sacrament vocabulary. Tap letters to build the answer.',               xp:15 },
+        { id:'matching',    icon:'🔗', name:'Matching Pairs',   desc:'Match each sacrament to its correct description.',                                    xp:20 },
+        { id:'truefalse',   icon:'✅', name:'True or False',    desc:'Quick-fire statements about the sacraments. How fast can you go?',                   xp:15 },
+        { id:'fillinblank', icon:'✏️', name:'Fill in the Blank',desc:'Complete sentences about the sacraments by selecting the right word.',                xp:15 },
+        { id:'dragdrop',    icon:'🗂️', name:'Sort the Sacraments',desc:'Drag each sacrament into the correct category: Initiation, Healing, or Service.',  xp:20 },
+    ],
+    flashcards: [
+        { term:'Baptism',               def:'The first sacrament — water is poured and we are born into God\'s family. Original sin is washed away and we receive the Holy Spirit.' },
+        { term:'Confirmation',          def:'We receive the gifts of the Holy Spirit to strengthen our faith. We become full members of the Church.' },
+        { term:'Eucharist',             def:'The bread and wine truly become the Body and Blood of Jesus Christ. It is the "source and summit" of the Christian life.' },
+        { term:'Reconciliation',        def:'Also called Confession or Penance. Our sins are forgiven by God through the ministry of the priest.' },
+        { term:'Anointing of the Sick', def:'God\'s healing grace for the seriously ill or dying. The priest anoints with oil and prays for healing.' },
+        { term:'Holy Orders',           def:'A man is ordained as a deacon, priest, or bishop, configured to Christ as servant and shepherd of the Church.' },
+        { term:'Matrimony',             def:'A man and woman enter a lifelong covenant of love, open to children, as a sign of Christ\'s love for the Church.' },
+    ],
+    scrambles: [
+        { word:'BAPTISM',            clue:'The sacrament in which we are born into God\'s family and original sin is washed away.' },
+        { word:'EUCHARIST',          clue:'The sacrament in which bread and wine truly become the Body and Blood of Jesus.' },
+        { word:'CONFIRMATION',       clue:'The sacrament that strengthens our faith through the gifts of the Holy Spirit.' },
+        { word:'RECONCILIATION',     clue:'The sacrament in which we confess our sins and receive God\'s forgiveness through the priest.' },
+        { word:'MATRIMONY',          clue:'The sacrament of marriage — a lifelong covenant between a man and a woman.' },
+    ],
+    matching: [
+        { term:'Baptism',               def:'Born into God\'s family, sin washed away' },
+        { term:'Confirmation',          def:'Sealed with the gifts of the Holy Spirit' },
+        { term:'Eucharist',             def:'True Body and Blood of Christ' },
+        { term:'Reconciliation',        def:'Sins forgiven through the priest' },
+        { term:'Anointing of the Sick', def:'Healing grace for the ill and dying' },
+        { term:'Holy Orders',           def:'Ordained as deacon, priest, or bishop' },
+        { term:'Matrimony',             def:'Lifelong covenant of husband and wife' },
+    ],
+    truefalse: [
+        { stmt:'There are seven sacraments in the Catholic Church.',                                     ans:true,  expl:'Correct! The Council of Trent definitively defined exactly seven sacraments.' },
+        { stmt:'Baptism, Confirmation, and Eucharist are the Sacraments of Initiation.',                ans:true,  expl:'Correct! These three sacraments make us full members of the Body of Christ.' },
+        { stmt:'The Eucharist is just a symbol — the bread and wine represent Jesus.',                  ans:false, expl:'False! Catholics believe the bread and wine truly become the Body and Blood of Christ.' },
+        { stmt:'Baptism, Confirmation, and Holy Orders imprint a permanent mark on the soul.',         ans:true,  expl:'Correct! These three sacraments leave an indelible character and cannot be repeated.' },
+        { stmt:'Anointing of the Sick is only for people who are about to die.',                       ans:false, expl:'False! It is for anyone who is seriously ill, facing surgery, or weakened by age.' },
+        { stmt:'The sacraments work because of Christ\'s action, not the holiness of the minister.',   ans:true,  expl:'Correct! This is ex opere operato — the sacrament\'s validity comes from Christ.' },
+    ],
+    fillinblank: [
+        { sentence:'The sacraments are grouped into three categories: ___, Healing, and Service.',   answer:'Initiation',         wordBank:['Initiation','Worship','Prayer','Creation'] },
+        { sentence:'During Mass, bread and wine become the Body and Blood of Christ through ___.',   answer:'Transubstantiation', wordBank:['Transubstantiation','Consecration','Transformation','Blessing'] },
+        { sentence:'The sacrament of ___ strengthens us with the gifts of the Holy Spirit.',        answer:'Confirmation',        wordBank:['Confirmation','Baptism','Holy Orders','Reconciliation'] },
+        { sentence:'The phrase "source and summit" of the Christian life refers to the ___.',       answer:'Eucharist',           wordBank:['Eucharist','Mass','Baptism','Bible'] },
+        { sentence:'Holy Orders and ___ are the two Sacraments at the Service of Communion.',       answer:'Matrimony',           wordBank:['Matrimony','Baptism','Confirmation','Reconciliation'] },
+    ],
+    dragdrop: {
+        items:['Baptism','Confirmation','Eucharist','Reconciliation','Anointing of the Sick','Holy Orders','Matrimony'],
+        cols: 3,
+        categories:{ 'Initiation':['Baptism','Confirmation','Eucharist'], 'Healing':['Reconciliation','Anointing of the Sick'], 'Service':['Holy Orders','Matrimony'] }
+    },
+},
+
+// ─── TRINITY ──────────────────────────────────────────────
+trinity: {
+    title: 'The Holy Trinity',
+    eyebrow: 'Chapter 2 · Core Beliefs',
+    desc: 'Five games to reinforce the central mystery of the Christian faith.',
+    moduleLink: 'crux-modules.html?module=trinity',
+    games: [
+        { id:'flashcard',   icon:'🃏', name:'Flashcards',      desc:'Key terms and concepts from the doctrine of the Trinity.',                       xp:15 },
+        { id:'scramble',    icon:'🔤', name:'Word Scramble',   desc:'Unscramble theological vocabulary from the Nicene debates.',                     xp:15 },
+        { id:'matching',    icon:'🔗', name:'Matching Pairs',  desc:'Match each Person of the Trinity to their role and key attributes.',             xp:20 },
+        { id:'truefalse',   icon:'✅', name:'True or False',   desc:'Statements about the Trinity, Nicaea, and the Persons of God.',                  xp:15 },
+        { id:'fillinblank', icon:'✏️', name:'Fill in the Blank',desc:'Complete key sentences about Trinitarian theology.',                            xp:15 },
+    ],
+    flashcards: [
+        { term:'Trinity',          def:'One God existing as three co-equal, co-eternal divine Persons: Father, Son, and Holy Spirit.' },
+        { term:'Homoousios',       def:'Greek: "of the same substance." The Council of Nicaea\'s key word — the Son is of the same substance as the Father, not merely similar.' },
+        { term:'Arianism',         def:'The heresy that the Son of God was the greatest created being, but still a creature. Condemned at Nicaea in 325 AD.' },
+        { term:'Nicene Creed',     def:'The profession of faith defined at the Councils of Nicaea (325) and Constantinople (381), recited at every Mass.' },
+        { term:'Filioque',         def:'Latin: "and from the Son." The Western Church\'s addition to the Creed — the Holy Spirit proceeds from the Father and the Son.' },
+        { term:'Immanent Trinity', def:'God as He exists in Himself — three Persons in eternal, loving communion, apart from creation.' },
+        { term:'Economic Trinity', def:'God as He acts in salvation history — the Father sends the Son, the Son sends the Spirit.' },
+    ],
+    scrambles: [
+        { word:'TRINITY',      clue:'One God in three Persons: Father, Son, and Holy Spirit.' },
+        { word:'NICAEA',       clue:'The council in 325 AD that defined the Son is of the same substance as the Father.' },
+        { word:'HOMOOUSIOS',   clue:'The Greek term meaning "of the same substance," used at Nicaea to describe the Son.' },
+        { word:'ARIANISM',     clue:'The heresy claiming the Son was a created being, not fully divine.' },
+        { word:'FILIOQUE',     clue:'Latin term meaning "and from the Son," describing how the Holy Spirit proceeds.' },
+    ],
+    matching: [
+        { term:'God the Father',       def:'Creates and sustains all things; first Person of the Trinity' },
+        { term:'God the Son',          def:'Became human in Jesus Christ; second Person of the Trinity' },
+        { term:'God the Holy Spirit',  def:'Guides and strengthens the Church; third Person of the Trinity' },
+        { term:'Nicaea (325 AD)',       def:'Council that defined the Son is homoousios with the Father' },
+        { term:'Arianism',             def:'Heresy that the Son was created, not fully divine' },
+        { term:'Homoousios',           def:'Same substance — the Son is fully God, not merely similar' },
+        { term:'Filioque',             def:'Holy Spirit proceeds from Father and Son' },
+    ],
+    truefalse: [
+        { stmt:'The Council of Nicaea was held in 325 AD.',                                              ans:true,  expl:'Correct! Nicaea in 325 was the first ecumenical council in Church history.' },
+        { stmt:'Arius taught that the Son of God was equal in substance to the Father.',                ans:false, expl:'False! Arius taught the Son was the greatest creature — "There was a time when He was not."' },
+        { stmt:'The word homoousios means "of similar substance."',                                     ans:false, expl:'False! Homoousios means "of the SAME substance." Homoiousios means similar — a crucial difference.' },
+        { stmt:'Catholics believe God is a communion of three Persons who have loved each other eternally.',ans:true,  expl:'Correct! Because God is eternally Trinity, love is not something God does — it is what God IS.' },
+        { stmt:'The Nicene Creed is recited at every Catholic Mass.',                                   ans:true,  expl:'Correct! Every Sunday Mass includes the Nicene Creed, directly from the councils of Nicaea and Constantinople.' },
+        { stmt:'The economic Trinity and the immanent Trinity are completely separate.',                 ans:false, expl:'False! Rahner\'s Rule: "The economic Trinity IS the immanent Trinity." The God who acts in history is the eternal God.' },
+    ],
+    fillinblank: [
+        { sentence:'The Council of ___ in 325 AD defined that the Son is of the same substance as the Father.',  answer:'Nicaea',       wordBank:['Nicaea','Trent','Jerusalem','Ephesus'] },
+        { sentence:'The Greek word ___ means "of the same substance" and was central to Nicaea\'s definition.',   answer:'Homoousios',   wordBank:['Homoousios','Filioque','Homoiousios','Logos'] },
+        { sentence:'The heresy of ___ taught that the Son of God was a created being, not fully divine.',         answer:'Arianism',     wordBank:['Arianism','Gnosticism','Nestorianism','Monophysitism'] },
+        { sentence:'The Holy Spirit proceeds from the Father and the Son — expressed in the Latin word ___.',     answer:'Filioque',     wordBank:['Filioque','Homoousios','Incarnatus','Procedit'] },
+        { sentence:'God is one God existing as ___ co-equal, co-eternal divine Persons.',                        answer:'three',        wordBank:['three','two','seven','four'] },
+    ],
+    dragdrop: null,
+},
+
+// ─── JESUS ────────────────────────────────────────────────
+jesus: {
+    title: 'Who is Jesus Christ?',
+    eyebrow: 'Chapter 3 · Christology',
+    desc: 'Five games on the Incarnation, the Resurrection, and the councils that defined Christ.',
+    moduleLink: 'crux-modules.html?module=jesus',
+    games: [
+        { id:'flashcard',   icon:'🃏', name:'Flashcards',      desc:'Key Christological terms from the councils and the Gospels.',                    xp:15 },
+        { id:'truefalse',   icon:'✅', name:'True or False',   desc:'Statements about who Jesus is — test your knowledge of Christology.',            xp:15 },
+        { id:'matching',    icon:'🔗', name:'Matching Pairs',  desc:'Match heresies to their definitions, and councils to what they defined.',        xp:20 },
+        { id:'fillinblank', icon:'✏️', name:'Fill in the Blank',desc:'Complete sentences about the Hypostatic Union and the Resurrection.',           xp:15 },
+        { id:'dragdrop',    icon:'🗂️', name:'Heresy or Orthodox?',desc:'Sort each statement into "Orthodox Teaching" or "Condemned Heresy."',       xp:20 },
+    ],
+    flashcards: [
+        { term:'Hypostatic Union',         def:'The doctrine that Jesus Christ is one divine Person with two complete natures — fully divine and fully human — defined at Chalcedon (451 AD).' },
+        { term:'Chalcedon (451 AD)',        def:'The council that defined Christ\'s two natures exist "without confusion, without change, without division, without separation."' },
+        { term:'Nestorianism',             def:'The heresy claiming Jesus was two separate persons loosely joined. Condemned at Ephesus (431 AD).' },
+        { term:'Monophysitism',            def:'The heresy claiming Christ had only one (divine) nature, absorbing the human. Condemned at Chalcedon.' },
+        { term:'Theotokos',                def:'Greek: "God-bearer" or "Mother of God." Mary\'s title, defined at Ephesus (431 AD) to protect Christ\'s unity of Person.' },
+        { term:'Communicatio Idiomatum',   def:'Because Christ is one Person, attributes of either nature apply to the whole Person. We can say "God suffered" or "Mary is the Mother of God."' },
+        { term:'Resurrection',             def:'Christ\'s bodily rising from the dead on the third day — the central fact of Christianity. Paul: "If Christ has not been raised, your faith is futile."' },
+    ],
+    scrambles: null,
+    matching: [
+        { term:'Nestorianism',            def:'Jesus is two persons loosely joined' },
+        { term:'Monophysitism',           def:'Christ has only one (divine) nature' },
+        { term:'Chalcedon (451 AD)',       def:'Defined two natures in one Person' },
+        { term:'Ephesus (431 AD)',         def:'Defined Mary as Theotokos' },
+        { term:'Hypostatic Union',        def:'One Person, two complete natures' },
+        { term:'Theotokos',               def:'Mother of God — Mary\'s defined title' },
+        { term:'Communicatio Idiomatum',  def:'Attributes of each nature apply to the one Person' },
+    ],
+    truefalse: [
+        { stmt:'The Council of Chalcedon was held in 451 AD.',                                           ans:true,  expl:'Correct! Chalcedon (451 AD) is one of the most important councils in Church history.' },
+        { stmt:'Monophysitism taught that Christ had two natures after the Incarnation.',                ans:false, expl:'False! Monophysitism taught Christ had only ONE nature — a divine nature that absorbed the human.' },
+        { stmt:'Nestorianism was condemned at the Council of Ephesus in 431 AD.',                       ans:true,  expl:'Correct! Ephesus (431) condemned Nestorianism and defined Mary as Theotokos.' },
+        { stmt:'The Catholic Church teaches Jesus is half human and half divine.',                      ans:false, expl:'False! Jesus is FULLY human and FULLY divine — two complete natures in one Person (Hypostatic Union).' },
+        { stmt:'Gregory of Nazianzus said: "What has not been assumed has not been healed."',          ans:true,  expl:'Correct! This principle explains why Christ\'s full humanity was essential for our complete redemption.' },
+        { stmt:'St. Paul says faith is valid even if the Resurrection did not happen.',                ans:false, expl:'False! 1 Corinthians 15:17 — "If Christ has not been raised, your faith is futile."' },
+    ],
+    fillinblank: [
+        { sentence:'The doctrine that Jesus is one Person with two complete natures is called the ___ Union.',  answer:'Hypostatic',    wordBank:['Hypostatic','Trinitarian','Eucharistic','Apostolic'] },
+        { sentence:'The Council of ___ in 451 AD defined Christ\'s two natures with four key adverbs.',        answer:'Chalcedon',     wordBank:['Chalcedon','Nicaea','Trent','Jerusalem'] },
+        { sentence:'The title ___ means "God-bearer" and was defined for Mary at the Council of Ephesus.',     answer:'Theotokos',     wordBank:['Theotokos','Magnificat','Mediatrix','Immaculata'] },
+        { sentence:'Paul says: "If Christ has not been raised, your faith is ___."',                           answer:'futile',        wordBank:['futile','incomplete','symbolic','uncertain'] },
+        { sentence:'The heresy of ___ claimed Christ had only one divine nature, absorbing the human.',        answer:'Monophysitism', wordBank:['Monophysitism','Arianism','Nestorianism','Gnosticism'] },
+    ],
+    dragdrop: {
+        items:['Christ is fully divine','Christ is fully human','Jesus is two separate persons','Christ has only one nature','Mary is the Mother of God','The Resurrection was bodily','Jesus only appeared to be human'],
+        cols: 2,
+        categories:{ 'Orthodox Teaching':['Christ is fully divine','Christ is fully human','Mary is the Mother of God','The Resurrection was bodily'], 'Condemned Heresy':['Jesus is two separate persons','Christ has only one nature','Jesus only appeared to be human'] }
+    },
+},
+
+// ─── MARY & SAINTS ────────────────────────────────────────
+mary: {
+    title: 'Mary & the Saints',
+    eyebrow: 'Chapter 4 · Catholic Life',
+    desc: 'Five games on Marian doctrine, the saints, and Catholic intercession.',
+    moduleLink: 'crux-modules.html?module=mary',
+    games: [
+        { id:'flashcard',   icon:'🃏', name:'Flashcards',      desc:'The four Marian dogmas and key terms in Catholic devotion.',                    xp:15 },
+        { id:'scramble',    icon:'🔤', name:'Word Scramble',   desc:'Unscramble words from Marian theology and the Communion of Saints.',            xp:15 },
+        { id:'matching',    icon:'🔗', name:'Matching Pairs',  desc:'Match dogmas to their definitions and popes to their definitions.',             xp:20 },
+        { id:'truefalse',   icon:'✅', name:'True or False',   desc:'Statements about Mary, the saints, and Catholic intercession.',                 xp:15 },
+        { id:'fillinblank', icon:'✏️', name:'Fill in the Blank',desc:'Complete sentences about the four Marian dogmas.',                            xp:15 },
+    ],
+    flashcards: [
+        { term:'Theotokos',              def:'"Mother of God" — defined at Ephesus (431 AD). Because Jesus is one Person who is God, His mother is the Mother of God.' },
+        { term:'Immaculate Conception', def:'Mary was preserved from original sin from the first instant of her conception. Defined by Pope Pius IX in 1854 (Ineffabilis Deus).' },
+        { term:'Perpetual Virginity',   def:'Mary was a virgin before, during, and after the birth of Christ. Defined at the Lateran Council (649 AD).' },
+        { term:'Assumption',            def:'At the end of her earthly life, Mary was taken body and soul into heavenly glory. Defined by Pope Pius XII in 1950 (Munificentissimus Deus).' },
+        { term:'Latria',                def:'The adoration and worship owed to God alone. Catholics give latria only to the Trinity — never to Mary or saints.' },
+        { term:'Hyperdulia',            def:'The unique, elevated honor given to Mary — greater than the honor given to any other saint, but infinitely less than worship.' },
+        { term:'Dulia',                 def:'The honor and veneration given to the saints. Asking saints to pray for us, just as we ask friends to pray for us.' },
+    ],
+    scrambles: [
+        { word:'THEOTOKOS',             clue:'The Greek title meaning "Mother of God," defined for Mary at the Council of Ephesus.' },
+        { word:'ASSUMPTION',            clue:'The dogma that Mary was taken body and soul into heaven, defined by Pius XII in 1950.' },
+        { word:'IMMACULATE',            clue:'This word describes Mary\'s conception — she was preserved from original sin from the very first moment.' },
+        { word:'INTERCESSION',          clue:'Asking another person — a saint or friend — to pray to God on your behalf.' },
+        { word:'MAGNIFICAT',            clue:'Mary\'s prayer of praise from Luke 1:46-55, beginning "My soul magnifies the Lord."' },
+    ],
+    matching: [
+        { term:'Theotokos (431 AD)',             def:'Mary is the Mother of God' },
+        { term:'Perpetual Virginity (649 AD)',   def:'Mary was always a virgin' },
+        { term:'Immaculate Conception (1854)',   def:'Mary preserved from original sin' },
+        { term:'Assumption (1950)',              def:'Mary taken body and soul to heaven' },
+        { term:'Latria',                         def:'Worship due to God alone' },
+        { term:'Hyperdulia',                     def:'Special honor given to Mary' },
+        { term:'Dulia',                          def:'Honor given to the saints' },
+    ],
+    truefalse: [
+        { stmt:'Catholics worship Mary as a goddess.',                                                   ans:false, expl:'False! Catholics honor Mary (hyperdulia) but worship God alone (latria). These are carefully distinguished.' },
+        { stmt:'The Immaculate Conception refers to Mary being conceived without a human father.',       ans:false, expl:'False! The Immaculate Conception refers to MARY\'s conception — she was preserved from original sin from her first moment.' },
+        { stmt:'The Assumption was defined as a dogma by Pope Pius XII in 1950.',                       ans:true,  expl:'Correct! Munificentissimus Deus (1950) is the most recent ex cathedra definition in Catholic history.' },
+        { stmt:'Asking a saint to pray for you is different from worshiping them.',                     ans:true,  expl:'Correct! Asking "St. Francis, pray for me" is like asking a friend to pray — it\'s intercession, not worship.' },
+        { stmt:'The Perpetual Virginity of Mary means she was a virgin only until Jesus was born.',     ans:false, expl:'False! Perpetual Virginity means Mary was virgin before, during, AND after the birth of Christ.' },
+        { stmt:'Duns Scotus argued that prevention from sin is a greater grace than rescue from sin.',  ans:true,  expl:'Correct! Scotus\'s solution made the Immaculate Conception theologically defensible — and ultimately prevailed.' },
+    ],
+    fillinblank: [
+        { sentence:'The four Marian dogmas are Theotokos, Perpetual Virginity, ___, and the Assumption.',    answer:'Immaculate Conception', wordBank:['Immaculate Conception','Coronation','Mediatrix','Co-Redemptrix'] },
+        { sentence:'The worship owed to God alone is called ___ — Catholics never give this to Mary.',        answer:'Latria',               wordBank:['Latria','Dulia','Hyperdulia','Magnificat'] },
+        { sentence:'Mary\'s prayer "My soul magnifies the Lord" from Luke 1 is called the ___.',             answer:'Magnificat',           wordBank:['Magnificat','Rosary','Angelus','Memorare'] },
+        { sentence:'Pope Pius IX defined the Immaculate Conception in 1854 in the document ___.',             answer:'Ineffabilis Deus',     wordBank:['Ineffabilis Deus','Munificentissimus Deus','Lumen Gentium','Humanae Vitae'] },
+        { sentence:'The Assumption was defined by Pope Pius XII in the document ___.',                        answer:'Munificentissimus Deus',wordBank:['Munificentissimus Deus','Ineffabilis Deus','Lumen Gentium','Deus Caritas Est'] },
+    ],
+    dragdrop: null,
+},
+
+// ─── CONSCIENCE ───────────────────────────────────────────
+conscience: {
+    title: 'Conscience & Moral Decision-Making',
+    eyebrow: 'Chapter 5 · Moral Theology',
+    desc: 'Five games on conscience, natural law, and moral decision-making.',
+    moduleLink: 'crux-modules.html?module=conscience',
+    games: [
+        { id:'flashcard',   icon:'🃏', name:'Flashcards',      desc:'Key terms in moral theology: synderesis, conscience, intrinsic evil.',          xp:15 },
+        { id:'matching',    icon:'🔗', name:'Matching Pairs',  desc:'Match theological terms to their correct definitions.',                         xp:20 },
+        { id:'truefalse',   icon:'✅', name:'True or False',   desc:'Statements about conscience, moral law, and Veritatis Splendor.',               xp:15 },
+        { id:'fillinblank', icon:'✏️', name:'Fill in the Blank',desc:'Complete sentences about moral theology and the formation of conscience.',     xp:15 },
+        { id:'dragdrop',    icon:'🗂️', name:'Conscience Check',desc:'Sort each statement: does it describe a well-formed or poorly-formed conscience?', xp:20 },
+    ],
+    flashcards: [
+        { term:'Conscience',         def:'The inner capacity to judge whether an act is good or evil. The Church calls it "the most secret core and sanctuary of a person" (Gaudium et Spes §16).' },
+        { term:'Synderesis',         def:'The innate, habitual knowledge of the most basic moral principle: "do good and avoid evil." The foundation from which conscience reasons.' },
+        { term:'Certain Conscience', def:'A conscience that judges an act to be obligatory, permissible, or forbidden without prudent fear of error. One must always follow a certain conscience.' },
+        { term:'Invincible Ignorance',def:'Being unable to know the moral truth through no fault of one\'s own. A person acting sincerely in invincible ignorance is not morally culpable.' },
+        { term:'Intrinsece Malum',   def:'Latin: "intrinsically evil." Acts that are evil because of their very object — regardless of intention or circumstances. No good end can justify them.' },
+        { term:'Veritatis Splendor', def:'Pope John Paul II\'s 1993 encyclical on moral theology. Argues conscience perceives moral truth but does not create it. Rejects moral relativism.' },
+        { term:'Ex Opere Operato',   def:'Latin: "from the work worked." The sacraments are valid by Christ\'s action, not human merit — but fruitfulness still depends on the recipient\'s disposition.' },
+    ],
+    scrambles: null,
+    matching: [
+        { term:'Synderesis',              def:'Innate knowledge of basic moral principles' },
+        { term:'Certain conscience',      def:'Judges without prudent fear of error' },
+        { term:'Invincible ignorance',    def:'Cannot know truth through no fault of their own' },
+        { term:'Intrinsece malum',        def:'Evil by its very object, regardless of intent' },
+        { term:'Veritatis Splendor',      def:'JPII encyclical rejecting moral relativism' },
+        { term:'Gaudium et Spes §16',     def:'Describes conscience as the "sanctuary" of the person' },
+        { term:'Natural law',             def:'Moral law written into human nature and accessible to reason' },
+    ],
+    truefalse: [
+        { stmt:'"Follow your conscience" means you can do whatever feels right to you.',                 ans:false, expl:'False! Conscience must be formed according to truth. A conscience can be wrong and must be educated.' },
+        { stmt:'One must always follow a certain conscience, even if it is objectively mistaken.',       ans:true,  expl:'Correct! But this is exactly why forming conscience well is so important — an erroneous conscience formed through negligence does not excuse.' },
+        { stmt:'Veritatis Splendor teaches that conscience creates moral truth.',                        ans:false, expl:'False! Veritatis Splendor explicitly states conscience perceives moral truth — it does not generate it.' },
+        { stmt:'An intrinsically evil act can be justified by sufficiently good intentions.',            ans:false, expl:'False! An intrinsece malum is evil by its very object. No intention, however good, can make it good.' },
+        { stmt:'Synderesis is the innate habit of knowing "do good and avoid evil."',                   ans:true,  expl:'Correct! Synderesis is the pre-reflective, habitual knowledge of the most basic moral principle.' },
+        { stmt:'A person in invincible ignorance who acts wrongly is fully morally culpable.',          ans:false, expl:'False! Invincible ignorance reduces or removes moral culpability because the person cannot know better through no fault of their own.' },
+    ],
+    fillinblank: [
+        { sentence:'The innate habit of knowing "do good and avoid evil" is called ___.',                  answer:'Synderesis',      wordBank:['Synderesis','Conscientia','Prudence','Natural Law'] },
+        { sentence:'John Paul II\'s 1993 encyclical on moral theology is called ___ Splendor.',           answer:'Veritatis',       wordBank:['Veritatis','Amoris','Humanae','Caritas'] },
+        { sentence:'An act that is evil because of its very object, regardless of intention, is called ___.',answer:'Intrinsece Malum',wordBank:['Intrinsece Malum','Grave Matter','Mortal Sin','Natural Evil'] },
+        { sentence:'Gaudium et Spes describes conscience as the most secret core and ___ of a person.',   answer:'sanctuary',       wordBank:['sanctuary','mystery','burden','gift'] },
+        { sentence:'Being unable to know the moral truth through no fault of one\'s own is called ___ ignorance.',answer:'invincible',wordBank:['invincible','culpable','partial','complete'] },
+    ],
+    dragdrop: {
+        items:['Studies Church teaching to form conscience','Does whatever feels right','Consults a spiritual director','Ignores inconvenient moral norms','Prays for wisdom before deciding','Rationalizes to justify a desired act'],
+        cols: 2,
+        categories:{ 'Well-Formed Conscience':['Studies Church teaching to form conscience','Consults a spiritual director','Prays for wisdom before deciding'], 'Poorly-Formed Conscience':['Does whatever feels right','Ignores inconvenient moral norms','Rationalizes to justify a desired act'] }
+    },
+},
+
+}; // end GAME_MODULES
+
+// ══════════════════════════════════════════════════════════
+// INIT — read URL param
+// ══════════════════════════════════════════════════════════
+
+let MODULE_ID  = new URLSearchParams(window.location.search).get('module') || 'sacraments';
+let MODULE     = GAME_MODULES[MODULE_ID] || null;
+
+const completed  = {};
+const XP_VALUES  = {};
+let activeGame   = null;
+let fcIndex=0, fcFlipped=false;
+let scrIndex=0, scrAnswer=[], scrUsed=[];
+let matchSelected=null, matchedCount=0;
+let tfIndex=0, tfScore=0;
+let fitbIndex=0;
+let dndDragging=null;
+
+window.addEventListener('DOMContentLoaded', () => {
+    if (!MODULE) { renderNotFound(); return; }
+
+    // Set page meta
+    document.title = `CRUX — ${MODULE.title} Games`;
+    document.getElementById('pageLabel').textContent = MODULE.title;
+    document.getElementById('heroEyebrow').textContent = MODULE.eyebrow;
+    document.getElementById('heroTitle').textContent   = 'Practice Games';
+    document.getElementById('heroDesc').textContent    = MODULE.desc;
+    document.getElementById('backBtn').href = MODULE.moduleLink;
+
+    // Build XP map
+    MODULE.games.forEach(g => { XP_VALUES[g.id] = g.xp; completed[g.id] = false; });
+
+    // Render game cards
+    const grid = document.getElementById('gameGrid');
+    grid.innerHTML = MODULE.games.map(g => `
+        <div class="game-card" id="card-${g.id}" onclick="openGame('${g.id}')">
+            <div class="game-card-top">
+                <div class="game-icon">${g.icon}</div>
+                <div class="game-meta">
+                    <div class="game-name">${g.name}</div>
+                    <div class="game-desc">${g.desc}</div>
+                </div>
+            </div>
+            <div class="game-card-footer">
+                <span class="game-xp">+${g.xp} XP</span>
+                <span class="game-status" id="status-${g.id}">Not started</span>
+            </div>
+        </div>`).join('');
+});
+
+function renderNotFound() {
+    document.querySelector('.page-wrap').innerHTML = `
+        <div class="not-found">
+            <h2>Module Not Found</h2>
+            <p>That module doesn't exist yet. Check back soon!</p>
+            <a href="index.html" class="btn-game">← Back to CRUX</a>
+        </div>`;
+}
+
+// ══════════════════════════════════════════════════════════
+// OPEN / CLOSE GAME
+// ══════════════════════════════════════════════════════════
+
+function openGame(gameId) {
+    activeGame = gameId;
+    // Reset per-game state each open
+    if (gameId==='flashcard')   { fcIndex=0; fcFlipped=false; }
+    if (gameId==='scramble')    { scrIndex=0; scrAnswer=[]; scrUsed=[]; }
+    if (gameId==='matching')    { matchSelected=null; matchedCount=0; }
+    if (gameId==='truefalse')   { tfIndex=0; tfScore=0; }
+    if (gameId==='fillinblank') { fitbIndex=0; }
+
+    const gameConfig = MODULE.games.find(g => g.id === gameId);
+    document.getElementById('gameModalTitle').textContent = gameConfig ? `${gameConfig.icon} ${gameConfig.name}` : 'Game';
+    document.getElementById('gameOverlay').classList.add('open');
+    renderGame(gameId);
+}
+
+window.openGame = openGame;
+
+window.closeGame = function() {
+    document.getElementById('gameOverlay').classList.remove('open');
+    activeGame = null;
+};
+
+document.getElementById('gameOverlay').addEventListener('click', e => {
+    if (e.target === document.getElementById('gameOverlay')) window.closeGame();
+});
+
+function renderGame(gameId) {
+    const body = document.getElementById('gameModalBody');
+    const fns = { flashcard:renderFlashcard, scramble:renderScramble, matching:renderMatching, truefalse:renderTrueFalse, fillinblank:renderFillBlank, dragdrop:renderDragDrop };
+    if (fns[gameId]) fns[gameId](body);
+}
+
+// ══════════════════════════════════════════════════════════
+// 1. FLASHCARDS
+// ══════════════════════════════════════════════════════════
+
+function renderFlashcard(body) {
+    const cards = MODULE.flashcards;
+    if (!cards || !cards.length) { body.innerHTML='<p style="text-align:center;color:var(--text-muted);padding:2rem;">No flashcards for this module yet.</p>'; return; }
+    const card = cards[fcIndex];
+    body.innerHTML = `
+        <div class="score-bar">
+            <span class="score">Card ${fcIndex+1} of ${cards.length}</span>
+            <span class="progress-text">${fcIndex} reviewed</span>
+        </div>
+        <div class="flashcard-wrap" onclick="flipCard()">
+            <div class="flashcard" id="fc">
+                <div class="flashcard-face flashcard-front"><div class="card-label">Term</div><div class="card-term">${card.term}</div></div>
+                <div class="flashcard-face flashcard-back"><div class="card-label">Definition</div><div class="card-def">${card.def}</div></div>
+            </div>
+        </div>
+        <p class="flashcard-hint" id="fcHint">Tap card to flip · Showing term</p>
+        <div class="flashcard-nav">
+            <button class="btn-game outline" onclick="fcNav(-1)" ${fcIndex===0?'disabled':''}>← Prev</button>
+            ${fcIndex<cards.length-1
+                ? `<button class="btn-game" onclick="fcNav(1)">Next →</button>`
+                : `<button class="btn-game gold" onclick="finishFlashcards()">Finish ✓</button>`}
+        </div>`;
+    if (fcFlipped) document.getElementById('fc')?.classList.add('flipped');
+}
+
+window.flipCard = function() {
+    fcFlipped = !fcFlipped;
+    document.getElementById('fc')?.classList.toggle('flipped', fcFlipped);
+    const h = document.getElementById('fcHint');
+    if (h) h.textContent = `Tap card to flip · ${fcFlipped?'Showing definition':'Showing term'}`;
+};
+
+window.fcNav = function(dir) {
+    fcIndex = Math.max(0, Math.min((MODULE.flashcards.length||1)-1, fcIndex+dir));
+    fcFlipped = false;
+    renderFlashcard(document.getElementById('gameModalBody'));
+};
+
+function finishFlashcards() {
+    showWin('flashcard', MODULE.flashcards.length, MODULE.flashcards.length);
+}
+
+// ══════════════════════════════════════════════════════════
+// 2. WORD SCRAMBLE
+// ══════════════════════════════════════════════════════════
+
+function renderScramble(body) {
+    const items = MODULE.scrambles;
+    if (!items || !items.length) { body.innerHTML='<p style="text-align:center;color:var(--text-muted);padding:2rem;">No scrambles for this module.</p>'; return; }
+    if (scrIndex >= items.length) { showWin('scramble', items.length, items.length); return; }
+    const item = items[scrIndex];
+    const shuffled = item.word.split('').sort(()=>Math.random()-0.5);
+    window._scrShuffled = shuffled;
+    scrAnswer = new Array(item.word.length).fill(null);
+    scrUsed   = new Array(shuffled.length).fill(false);
+    body.innerHTML = `
+        <div class="score-bar">
+            <span class="score">Word ${scrIndex+1} of ${items.length}</span>
+            <span class="progress-text">${scrIndex} solved</span>
+        </div>
+        <div class="scramble-clue">${item.clue}</div>
+        <div class="answer-slots" id="answerSlots">
+            ${item.word.split('').map((_,i)=>`<div class="answer-slot" id="slot${i}" onclick="unselectLetter(${i})"></div>`).join('')}
+        </div>
+        <div class="scramble-letters" id="letterBank">
+            ${shuffled.map((l,i)=>`<div class="letter-tile" id="tile${i}" onclick="selectLetter('${l}',${i})">${l}</div>`).join('')}
+        </div>
+        <div class="game-btn-row">
+            <button class="btn-game outline" onclick="resetScramble()">↺ Reset</button>
+            <button class="btn-game" id="checkScrambleBtn" onclick="checkScramble()" disabled>Check →</button>
+        </div>`;
+}
+
+window.selectLetter = function(letter, tileIdx) {
+    if (scrUsed[tileIdx]) return;
+    const first = scrAnswer.indexOf(null);
+    if (first===-1) return;
+    scrAnswer[first] = { letter, tileIdx };
+    scrUsed[tileIdx] = true;
+    document.getElementById(`tile${tileIdx}`)?.classList.add('used');
+    const slot = document.getElementById(`slot${first}`);
+    if (slot) { slot.textContent=letter; slot.classList.add('filled'); }
+    document.getElementById('checkScrambleBtn').disabled = scrAnswer.some(s=>s===null);
+};
+
+window.unselectLetter = function(idx) {
+    const entry = scrAnswer[idx]; if (!entry) return;
+    scrUsed[entry.tileIdx]=false;
+    document.getElementById(`tile${entry.tileIdx}`)?.classList.remove('used');
+    const slot=document.getElementById(`slot${idx}`);
+    if (slot){slot.textContent='';slot.classList.remove('filled');}
+    scrAnswer[idx]=null;
+    document.getElementById('checkScrambleBtn').disabled=true;
+};
+
+window.resetScramble = function() {
+    const item=MODULE.scrambles[scrIndex];
+    scrAnswer=new Array(item.word.length).fill(null);
+    scrUsed=new Array(window._scrShuffled?.length||0).fill(false);
+    document.querySelectorAll('.letter-tile').forEach(t=>t.classList.remove('used'));
+    document.querySelectorAll('.answer-slot').forEach(s=>{s.textContent='';s.className='answer-slot';});
+    document.getElementById('checkScrambleBtn').disabled=true;
+};
+
+window.checkScramble = function() {
+    const guess=scrAnswer.map(s=>s?.letter||'').join('');
+    const target=MODULE.scrambles[scrIndex].word;
+    const correct=guess===target;
+    document.querySelectorAll('.answer-slot').forEach(s=>s.classList.add(correct?'correct':'incorrect'));
+    setTimeout(()=>{
+        if (correct) {
+            scrIndex++;
+            if (scrIndex>=MODULE.scrambles.length) showWin('scramble',MODULE.scrambles.length,MODULE.scrambles.length);
+            else { scrAnswer=[];scrUsed=[];renderScramble(document.getElementById('gameModalBody'));showToast('✓ Correct!'); }
+        } else { showToast('Not quite — try again'); resetScramble(); }
+    },700);
+};
+
+// ══════════════════════════════════════════════════════════
+// 3. MATCHING
+// ══════════════════════════════════════════════════════════
+
+function renderMatching(body) {
+    const pairs = MODULE.matching;
+    if (!pairs || !pairs.length) { body.innerHTML='<p style="text-align:center;color:var(--text-muted);padding:2rem;">No matching pairs for this module.</p>'; return; }
+    matchSelected=null; matchedCount=0;
+    const sT=[...pairs].sort(()=>Math.random()-0.5);
+    const sD=[...pairs].sort(()=>Math.random()-0.5);
+    body.innerHTML=`
+        <div class="score-bar">
+            <span class="score">Matched: <span id="matchCount">0</span>/${pairs.length}</span>
+            <span class="progress-text">Tap a term, then its definition</span>
+        </div>
+        <div class="match-grid">
+            <div class="match-col">${sT.map(p=>`<div class="match-item term" data-id="${p.term}" onclick="matchClick('term','${p.term.replace(/'/g,"\\'")}',this)">${p.term}</div>`).join('')}</div>
+            <div class="match-col">${sD.map(p=>`<div class="match-item definition" data-id="${p.term}" onclick="matchClick('def','${p.term.replace(/'/g,"\\'")}',this)">${p.def}</div>`).join('')}</div>
+        </div>`;
+}
+
+window.matchClick = function(type,id,el) {
+    if (el.classList.contains('matched-correct')) return;
+    if (!matchSelected) { document.querySelectorAll('.match-item.selected').forEach(e=>e.classList.remove('selected')); matchSelected={type,id,el}; el.classList.add('selected'); return; }
+    if (matchSelected.type===type) { document.querySelectorAll('.match-item.selected').forEach(e=>e.classList.remove('selected')); matchSelected={type,id,el}; el.classList.add('selected'); return; }
+    const isMatch=matchSelected.id===id;
+    const prev=matchSelected.el;
+    if (isMatch) {
+        prev.classList.remove('selected'); prev.classList.add('matched-correct'); el.classList.add('matched-correct');
+        matchedCount++; document.getElementById('matchCount').textContent=matchedCount; matchSelected=null;
+        showToast('✓ Matched!');
+        if (matchedCount===MODULE.matching.length) setTimeout(()=>showWin('matching',MODULE.matching.length,MODULE.matching.length),400);
+    } else {
+        prev.classList.add('matched-wrong'); el.classList.add('matched-wrong');
+        setTimeout(()=>{ prev.classList.remove('selected','matched-wrong'); el.classList.remove('selected','matched-wrong'); matchSelected=null; },600);
+    }
+};
+
+// ══════════════════════════════════════════════════════════
+// 4. TRUE / FALSE
+// ══════════════════════════════════════════════════════════
+
+function renderTrueFalse(body) {
+    const items=MODULE.truefalse;
+    if (!items||!items.length) { body.innerHTML='<p style="text-align:center;color:var(--text-muted);padding:2rem;">No T/F questions for this module.</p>'; return; }
+    if (tfIndex>=items.length) { showWin('truefalse',tfScore,items.length); return; }
+    const item=items[tfIndex];
+    body.innerHTML=`
+        <div class="score-bar">
+            <span class="score">Question ${tfIndex+1} of ${items.length}</span>
+            <span class="score">Score: <strong>${tfScore}</strong></span>
+        </div>
+        <div class="tf-statement"><p>${item.stmt}</p></div>
+        <div class="tf-buttons">
+            <button class="btn-tf true-btn" onclick="answerTF(true)">✓ True</button>
+            <button class="btn-tf false-btn" onclick="answerTF(false)">✗ False</button>
+        </div>
+        <div class="tf-feedback" id="tfFeedback"></div>`;
+}
+
+window.answerTF = function(answer) {
+    const item=MODULE.truefalse[tfIndex];
+    const correct=answer===item.ans;
+    if(correct) tfScore++;
+    document.querySelectorAll('.btn-tf').forEach(b=>b.disabled=true);
+    const tB=document.querySelector('.true-btn'), fB=document.querySelector('.false-btn');
+    if(answer===true)  tB.classList.add(correct?'correct':'incorrect');
+    if(answer===false) fB.classList.add(correct?'correct':'incorrect');
+    if(item.ans===true  && answer===false) tB.classList.add('correct');
+    if(item.ans===false && answer===true)  fB.classList.add('correct');
+    const fb=document.getElementById('tfFeedback');
+    if(fb){fb.className=`tf-feedback ${correct?'correct':'incorrect'}`;fb.textContent=item.expl;}
+    setTimeout(()=>{ tfIndex++; renderTrueFalse(document.getElementById('gameModalBody')); },1800);
+};
+
+// ══════════════════════════════════════════════════════════
+// 5. FILL IN THE BLANK
+// ══════════════════════════════════════════════════════════
+
+function renderFillBlank(body) {
+    const items=MODULE.fillinblank;
+    if (!items||!items.length) { body.innerHTML='<p style="text-align:center;color:var(--text-muted);padding:2rem;">No fill-in-blank for this module.</p>'; return; }
+    if (fitbIndex>=items.length) { showWin('fillinblank',items.length,items.length); return; }
+    const item=items[fitbIndex];
+    const bank=[...item.wordBank].sort(()=>Math.random()-0.5);
+    const display=item.sentence.replace('___',`<span class="fitb-blank" id="blankSlot">___</span>`);
+    body.innerHTML=`
+        <div class="score-bar">
+            <span class="score">Sentence ${fitbIndex+1} of ${items.length}</span>
+            <span class="progress-text">${fitbIndex} complete</span>
+        </div>
+        <div class="fitb-sentence">${display}</div>
+        <div class="word-bank">${bank.map(w=>`<div class="word-chip" onclick="selectWord('${w.replace(/'/g,"\\'")}',this)">${w}</div>`).join('')}</div>`;
+}
+
+window.selectWord = function(word,el) {
+    if(el.classList.contains('correct')) return;
+    const item=MODULE.fillinblank[fitbIndex];
+    const correct=word===item.answer;
+    const blank=document.getElementById('blankSlot');
+    if(correct){
+        el.classList.add('correct');
+        if(blank){blank.textContent=word;blank.style.borderBottomColor='var(--green)';blank.style.color='var(--green)';}
+        showToast('✓ Correct!');
+        setTimeout(()=>{ fitbIndex++; renderFillBlank(document.getElementById('gameModalBody')); },900);
+    } else {
+        el.classList.add('incorrect');
+        showToast('Not quite — try again');
+        setTimeout(()=>el.classList.remove('incorrect'),700);
+    }
+};
+
+// ══════════════════════════════════════════════════════════
+// 6. DRAG & DROP
+// ══════════════════════════════════════════════════════════
+
+function renderDragDrop(body) {
+    const dnd=MODULE.dragdrop;
+    if(!dnd){body.innerHTML='<p style="text-align:center;color:var(--text-muted);padding:2rem;">No drag-and-drop for this module.</p>';return;}
+    const items=[...dnd.items].sort(()=>Math.random()-0.5);
+    const catKeys=Object.keys(dnd.categories);
+    body.innerHTML=`
+        <div class="score-bar">
+            <span class="score">Drag each item to the right category</span>
+            <span id="dndScore" class="progress-text">0/${dnd.items.length} sorted</span>
+        </div>
+        <div class="dnd-bank" id="dndBank">
+            ${items.map(name=>`<div class="dnd-chip" draggable="true" data-name="${name.replace(/"/g,'&quot;')}" ondragstart="dndStart(event)" ondragend="dndEnd(event)">${name}</div>`).join('')}
+        </div>
+        <div class="dnd-categories cols-${dnd.cols}">
+            ${catKeys.map(cat=>`
+                <div class="dnd-category" id="cat-${cat.replace(/\s/g,'-')}" ondragover="dndOver(event)" ondragleave="dndLeave(event)" ondrop="dndDrop(event,'${cat.replace(/'/g,"\\'")}')">
+                    <div class="dnd-cat-label">${cat}</div>
+                </div>`).join('')}
+        </div>
+        <div style="margin-top:1.5rem;" class="game-btn-row">
+            <button class="btn-game outline" onclick="renderDragDrop(document.getElementById('gameModalBody'))">↺ Reset</button>
+            <button class="btn-game" id="checkDndBtn" onclick="checkDragDrop()" disabled>Check →</button>
+        </div>`;
+}
+
+window.dndStart = function(e){ dndDragging=e.target.dataset.name; e.target.classList.add('dragging'); };
+window.dndEnd   = function(e){ e.target.classList.remove('dragging'); };
+window.dndOver  = function(e){ e.preventDefault(); e.currentTarget.classList.add('drag-over'); };
+window.dndLeave = function(e){ e.currentTarget.classList.remove('drag-over'); };
+
+window.dndDrop = function(e,cat) {
+    e.preventDefault(); e.currentTarget.classList.remove('drag-over');
+    if(!dndDragging) return;
+    const bankEl=document.querySelector(`.dnd-bank .dnd-chip[data-name="${dndDragging.replace(/"/g,'&quot;')}"]`);
+    if(!bankEl) return;
+    bankEl.remove();
+    const catKey=cat.replace(/\s/g,'-');
+    const catEl=document.getElementById(`cat-${catKey}`);
+    if(!catEl) return;
+    const chip=document.createElement('div');
+    chip.className='dnd-chip'; chip.dataset.name=dndDragging; chip.dataset.cat=cat; chip.textContent=dndDragging;
+    chip.onclick=()=>{
+        chip.remove();
+        const bank=document.getElementById('dndBank');
+        const nc=document.createElement('div');
+        nc.className='dnd-chip'; nc.draggable=true; nc.dataset.name=chip.dataset.name; nc.textContent=chip.dataset.name;
+        nc.ondragstart=window.dndStart; nc.ondragend=window.dndEnd; bank.appendChild(nc);
+        updateDndScore();
+    };
+    catEl.appendChild(chip); dndDragging=null; updateDndScore();
+};
+
+function updateDndScore(){
+    const placed=document.querySelectorAll('.dnd-category .dnd-chip').length;
+    const el=document.getElementById('dndScore');
+    if(el) el.textContent=`${placed}/${MODULE.dragdrop.items.length} sorted`;
+    const btn=document.getElementById('checkDndBtn');
+    if(btn) btn.disabled=placed<MODULE.dragdrop.items.length;
+}
+
+window.checkDragDrop = function() {
+    const dnd=MODULE.dragdrop; let correct=0;
+    Object.entries(dnd.categories).forEach(([cat,correctItems])=>{
+        const catKey=cat.replace(/\s/g,'-');
+        document.querySelectorAll(`#cat-${catKey} .dnd-chip`).forEach(chip=>{
+            const ok=correctItems.includes(chip.dataset.name);
+            chip.classList.add(ok?'correct':'incorrect');
+            if(ok) correct++;
+        });
+    });
+    setTimeout(()=>{
+        if(correct===dnd.items.length) showWin('dragdrop',correct,dnd.items.length);
+        else { showToast(`${correct}/${dnd.items.length} correct — red items need to move`); document.getElementById('checkDndBtn').disabled=false; }
+    },800);
+};
+
+// ══════════════════════════════════════════════════════════
+// WIN SCREEN
+// ══════════════════════════════════════════════════════════
+
+function showWin(gameId,score,total) {
+    const xp=XP_VALUES[gameId]||15;
+    const pct=Math.round((score/total)*100);
+    const already=completed[gameId];
+    document.getElementById('gameModalBody').innerHTML=`
+        <div class="win-screen">
+            <span class="win-icon">✟</span>
+            <h3>${pct>=80?'Well Done!':'Good Effort!'}</h3>
+            <p>${score}/${total} complete. Keep studying what you missed.</p>
+            ${!already?`<div class="xp-award-badge">⭐ +${xp} XP Earned</div>`:`<p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:1.5rem;">XP already earned for this game.</p>`}
+            <div class="game-btn-row">
+                <button class="btn-game outline" onclick="openGame('${gameId}')">Play Again</button>
+                <button class="btn-game" onclick="window.closeGame()">Back to Games</button>
+            </div>
+        </div>`;
+    if(!already){ completed[gameId]=true; markCardComplete(gameId); awardXP(gameId,xp); }
+}
+
+function markCardComplete(gameId){
+    document.getElementById(`card-${gameId}`)?.classList.add('completed');
+    const s=document.getElementById(`status-${gameId}`);
+    if(s){s.textContent='✓ Completed';s.className='game-status done';}
+}
+
+async function awardXP(gameId,amount){
+    if(!window.currentUser||!window.db) return;
+    const {doc,getDoc,setDoc,updateDoc,serverTimestamp}=window.fsOps;
+    const uid=window.currentUser.uid;
+    try {
+        const ref=doc(window.db,'userProgress',uid);
+        const snap=await getDoc(ref);
+        if(snap.exists()){
+            const cur=snap.data().totalXP||0;
+            await updateDoc(ref,{totalXP:cur+amount,lastActivity:serverTimestamp()});
+            const c=document.getElementById('xpChip');
+            if(c){c.textContent=`⭐ ${cur+amount} XP`;c.style.display='inline-flex';}
+        } else {
+            await setDoc(ref,{totalXP:amount,lastActivity:serverTimestamp(),userId:uid});
+            const c=document.getElementById('xpChip');
+            if(c){c.textContent=`⭐ ${amount} XP`;c.style.display='inline-flex';}
+        }
+        showToast(`⭐ +${amount} XP added!`);
+    } catch(e){console.error(e);}
+}
+
+function showToast(msg){
+    const t=document.getElementById('toast');
+    t.textContent=msg; t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),2200);
+}
+</script>
+</body>
+</html>

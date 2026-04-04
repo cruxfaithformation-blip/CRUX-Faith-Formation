@@ -1,0 +1,1256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUX - Account</title>
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LQ35DLTVKY');
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK v10 -->
+    <script type="module">
+        import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getAuth } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+            authDomain: "crux-faith-formation.firebaseapp.com",
+            projectId: "crux-faith-formation",
+            storageBucket: "crux-faith-formation.firebasestorage.app",
+            messagingSenderId: "838141015985",
+            appId: "1:838141015985:web:2655e570663e182d75ef90",
+            measurementId: "G-LQ35DLTVKY"
+        };
+
+        const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+        window.auth = getAuth(app);
+        window.db = getFirestore(app);
+        
+        console.log('✅ Firebase initialized for CRUX accounts!');
+    </script>
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Mulish', sans-serif;
+            background: linear-gradient(135deg, #2D1B4E 0%, #4B0082 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+
+        .account-container {
+            max-width: 500px;
+            width: 100%;
+        }
+
+        .logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .logo h1 {
+            font-family: 'Cinzel', serif;
+            font-size: 3rem;
+            color: #C19A6B;
+            letter-spacing: 8px;
+            margin-bottom: 0.5rem;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .logo p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1rem;
+        }
+
+        .auth-card {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+        }
+
+        .auth-card h2 {
+            font-family: 'Cinzel', serif;
+            color: #4B0082;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            color: #2C2C2C;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.875rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #4B0082;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 1rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Mulish', sans-serif;
+        }
+
+        .btn-primary {
+            background: #4B0082;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #6A3BA3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(75, 0, 130, 0.3);
+        }
+
+        .btn-secondary {
+            background: #C19A6B;
+            color: white;
+            margin-top: 1rem;
+        }
+
+        .btn-secondary:hover {
+            background: #8B6F47;
+        }
+
+        .btn-logout {
+            background: #dc3545;
+            color: white;
+            margin-top: 1rem;
+        }
+
+        .btn-logout:hover {
+            background: #c82333;
+        }
+
+        .toggle-auth {
+            text-align: center;
+            margin-top: 1.5rem;
+            color: #5A5A5A;
+        }
+
+        .toggle-auth a {
+            color: #4B0082;
+            cursor: pointer;
+            font-weight: 600;
+            text-decoration: none;
+        }
+
+        .toggle-auth a:hover {
+            text-decoration: underline;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 0.875rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #dc3545;
+        }
+
+        .success-message {
+            background: #d4edda;
+            color: #155724;
+            padding: 0.875rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #28a745;
+        }
+
+        .dashboard {
+            background: white;
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+        }
+
+        .dashboard h2 {
+            font-family: 'Cinzel', serif;
+            color: #4B0082;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            letter-spacing: 2px;
+        }
+
+        .user-info {
+            background: #f9f9f9;
+            border-left: 4px solid #4B0082;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 2rem;
+        }
+
+        .user-info p {
+            margin-bottom: 0.75rem;
+            color: #2C2C2C;
+        }
+
+        .user-info strong {
+            color: #4B0082;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #5A5A5A;
+        }
+
+        .firebase-badge {
+            background: #d4edda;
+            color: #155724;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+        }
+
+        /* ── NEW: XP, Classes, Join Class, Awards ── */
+
+        .section-card {
+            background: #f9f9f9;
+            border-left: 4px solid #4B0082;
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-card h3 {
+            font-family: 'Cinzel', serif;
+            color: #4B0082;
+            font-size: 1rem;
+            letter-spacing: 1px;
+            margin-bottom: 1rem;
+        }
+
+        .level-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #4B0082, #7B2FBE);
+            color: #C19A6B;
+            font-family: 'Cinzel', serif;
+            font-size: 0.8rem;
+            padding: 0.3rem 0.9rem;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            margin-top: 0.35rem;
+        }
+
+        .xp-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .xp-pill {
+            background: #EDE9FE;
+            border-radius: 8px;
+            padding: 0.75rem 1rem;
+            text-align: center;
+        }
+
+        .xp-pill .xp-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.06em;
+            text-transform: uppercase;
+            color: #6B7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .xp-pill .xp-value {
+            font-family: 'Cinzel', serif;
+            font-size: 1.3rem;
+            color: #4B0082;
+        }
+
+        .xp-pill.xp-total {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, #EDE9FE, #DDD6FE);
+        }
+
+        .xp-pill.xp-total .xp-value {
+            font-size: 1.55rem;
+            color: #2D0057;
+        }
+
+        .progress-label-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.78rem;
+            color: #6B7280;
+            margin-bottom: 0.4rem;
+        }
+
+        .progress-track {
+            height: 10px;
+            background: #E5E7EB;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4B0082, #7B2FBE);
+            border-radius: 10px;
+            transition: width 0.6s ease;
+        }
+
+        .class-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .class-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            padding: 0.6rem 0.75rem;
+            background: #fff;
+            border: 1px solid #E9E3F5;
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .class-item .teacher-name { font-weight: 700; color: #2C2C2C; }
+        .class-item .teacher-school { font-size: 0.82rem; color: #6B7280; }
+
+        .join-row {
+            display: flex;
+            gap: 0.6rem;
+            align-items: flex-end;
+        }
+
+        .join-row .form-group {
+            flex: 1;
+            margin-bottom: 0;
+        }
+
+        .join-row .form-group input {
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+        }
+
+        .btn-join {
+            padding: 0.875rem 1.25rem;
+            background: #C19A6B;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Mulish', sans-serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s;
+            white-space: nowrap;
+        }
+
+        .btn-join:hover { background: #8B6F47; }
+        .btn-join:disabled { opacity: 0.6; cursor: not-allowed; }
+
+        .join-feedback {
+            margin-top: 0.6rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            display: none;
+        }
+
+        .join-feedback.success { color: #15803d; display: block; }
+        .join-feedback.error   { color: #b91c1c; display: block; }
+
+        .award-card {
+            background: #fff;
+            border: 1px solid #E9E3F5;
+            border-radius: 10px;
+            padding: 1rem 1.1rem;
+            margin-bottom: 0.75rem;
+            transition: box-shadow 0.2s;
+        }
+
+        .award-card:hover { box-shadow: 0 4px 12px rgba(75,0,130,0.1); }
+
+        .award-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.4rem;
+        }
+
+        .award-stars { font-size: 1.05rem; letter-spacing: 0.04em; }
+
+        .award-xp {
+            font-family: 'Cinzel', serif;
+            font-size: 0.85rem;
+            color: #4B0082;
+            background: #EDE9FE;
+            padding: 0.2rem 0.55rem;
+            border-radius: 6px;
+        }
+
+        .award-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: #2C2C2C;
+            margin-bottom: 0.2rem;
+        }
+
+        .award-from {
+            font-size: 0.8rem;
+            color: #6B7280;
+            margin-bottom: 0.35rem;
+        }
+
+        .award-notes {
+            font-size: 0.85rem;
+            color: #4B0082;
+            font-style: italic;
+            background: #F3F0FF;
+            padding: 0.35rem 0.65rem;
+            border-radius: 6px;
+            margin-bottom: 0.3rem;
+        }
+
+        .award-date {
+            font-size: 0.75rem;
+            color: #9CA3AF;
+            text-align: right;
+        }
+
+        .no-data {
+            font-size: 0.875rem;
+            color: #6B7280;
+            font-style: italic;
+            text-align: center;
+            padding: 0.75rem;
+        }
+
+        /* Role toggle on register form */
+        .role-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2rem;
+            padding: 0.85rem 0.5rem;
+            border: 2px solid #E5E7EB;
+            border-radius: 10px;
+            text-align: center;
+            transition: all 0.2s;
+            background: #fff;
+        }
+        .role-option.role-active {
+            border-color: #4B0082;
+            background: #F3F0FF;
+        }
+        .role-option:hover { border-color: #7B2FBE; }
+
+        /* Teacher class code display */
+        .class-code-display {
+            background: #1a1f36;
+            color: #d4a574;
+            font-family: 'Courier New', monospace;
+            font-size: 2rem;
+            font-weight: 700;
+            letter-spacing: 0.3em;
+            text-align: center;
+            padding: 1rem;
+            border-radius: 10px;
+            margin: 0.75rem 0;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            user-select: all;
+        }
+        .class-code-display:hover { opacity: 0.85; }
+        .class-code-hint { font-size: 0.78rem; color: #6B7280; text-align: center; margin-top: 0.3rem; }
+
+        @media (max-width: 480px) {
+            .xp-grid { grid-template-columns: 1fr; }
+            .xp-pill.xp-total { grid-column: auto; }
+            .join-row { flex-direction: column; }
+            .btn-join { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+    <div class="account-container">
+        <div class="logo">
+            <h1>CRUX</h1>
+            <p>Catholic Faith Formation</p>
+        </div>
+
+        <!-- Login Form -->
+        <div id="loginForm" class="auth-card">
+            <h2>Sign In</h2>
+            <div class="firebase-badge">✓ Firebase Authentication</div>
+            
+            <div id="loginError"></div>
+            
+            <form onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="loginEmail" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="loginPassword" required autocomplete="current-password">
+                </div>
+                <button type="submit" class="btn btn-primary">Sign In</button>
+            </form>
+
+            <div class="toggle-auth">
+                Don't have an account? <a onclick="showRegister()">Create Account</a>
+            </div>
+        </div>
+
+        <!-- Register Form -->
+        <div id="registerForm" class="auth-card" style="display: none;">
+            <h2>Create Account</h2>
+            <div class="firebase-badge">✓ Firebase Authentication</div>
+            
+            <div id="registerError"></div>
+            
+            <form onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="registerUsername" required minlength="3">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="registerEmail" required autocomplete="email">
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="registerPassword" required minlength="6" autocomplete="new-password">
+                </div>
+
+                <!-- Role toggle -->
+                <div class="form-group" style="margin-bottom:1.25rem;">
+                    <label style="margin-bottom:0.6rem;display:block;">I am a&#8230;</label>
+                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;">
+                        <label id="roleStudentLabel" class="role-option role-active" style="cursor:pointer;" onclick="selectRole('student')">
+                            <input type="radio" name="role" value="student" id="roleStudent" checked style="display:none;">
+                            <span style="font-size:1.3rem;display:block;">&#127891;</span>
+                            <span style="font-weight:700;display:block;">Student</span>
+                            <span style="font-size:0.78rem;color:#6B7280;">Earn XP &amp; join a class</span>
+                        </label>
+                        <label id="roleTeacherLabel" class="role-option" style="cursor:pointer;" onclick="selectRole('teacher')">
+                            <input type="radio" name="role" value="teacher" id="roleTeacher" style="display:none;">
+                            <span style="font-size:1.3rem;display:block;">&#128203;</span>
+                            <span style="font-weight:700;display:block;">Teacher</span>
+                            <span style="font-size:0.78rem;color:#6B7280;">Create a class &amp; award XP</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Extra teacher fields shown when teacher role selected -->
+                <div id="teacherRegFields" style="display:none;">
+                    <div class="form-group">
+                        <label>Your Full Name</label>
+                        <input type="text" id="registerTeacherName" placeholder="e.g. Mrs. Sullivan">
+                    </div>
+                    <div class="form-group">
+                        <label>School / Parish</label>
+                        <input type="text" id="registerSchool" placeholder="e.g. St. Patrick's School">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary">Create Account</button>
+            </form>
+
+            <div class="toggle-auth">
+                Already have an account? <a onclick="showLogin()">Sign In</a>
+            </div>
+        </div>
+
+        <!-- Dashboard -->
+        <div id="dashboard" class="dashboard" style="display: none;">
+            <h2>Your Account</h2>
+
+            <!-- Profile Info -->
+            <div class="user-info">
+                <p><strong>Username:</strong> <span id="dashUsername"></span></p>
+                <p><strong>Email:</strong> <span id="dashEmail"></span></p>
+                <p><strong>Member Since:</strong> <span id="dashJoined"></span></p>
+                <div class="level-badge" id="levelBadge">⚔️ Level 1 – Seeker</div>
+            </div>
+
+            <!-- XP Breakdown -->
+            <div class="section-card">
+                <h3>📊 XP Breakdown</h3>
+                <div class="xp-grid">
+                    <div class="xp-pill">
+                        <div class="xp-label">Quiz XP</div>
+                        <div class="xp-value" id="xpQuiz">–</div>
+                    </div>
+                    <div class="xp-pill">
+                        <div class="xp-label">Teacher Awards</div>
+                        <div class="xp-value" id="xpTeachers">–</div>
+                    </div>
+                    <div class="xp-pill xp-total">
+                        <div class="xp-label">Total XP</div>
+                        <div class="xp-value" id="xpTotal">–</div>
+                    </div>
+                </div>
+                <div class="progress-label-row">
+                    <span id="progressLabelLeft">Level 1: Seeker</span>
+                    <span id="progressLabelRight">0% to Level 2</span>
+                </div>
+                <div class="progress-track">
+                    <div class="progress-fill" id="progressFill" style="width:0%"></div>
+                </div>
+            </div>
+
+            <!-- Your Classes -->
+            <div class="section-card">
+                <h3>📚 Your Classes</h3>
+                <ul class="class-list" id="classList">
+                    <li class="no-data">Loading…</li>
+                </ul>
+            </div>
+
+            <!-- Join a Class -->
+            <div class="section-card">
+                <h3>➕ Join a Class</h3>
+                <div class="join-row">
+                    <div class="form-group">
+                        <label>Class Code</label>
+                        <input type="text" id="classCodeInput" placeholder="e.g. ABCD1234" maxlength="8" />
+                    </div>
+                    <button class="btn-join" id="joinBtn" onclick="joinClass()">Join</button>
+                </div>
+                <div class="join-feedback" id="joinFeedback"></div>
+            </div>
+
+            <!-- Teacher Setup Card (shown only for teacher accounts) -->
+            <div class="section-card" id="teacherSetupCard" style="display:none;background:#f0f9ff;border-left-color:#0369a1;">
+                <h3 style="color:#0369a1;">&#128203; Teacher Setup</h3>
+                <div id="teacherSetupContent">
+                    <!-- Populated by JS: either "set up your class" form or "your class code" display -->
+                </div>
+            </div>
+
+            <!-- Become a Teacher (shown for student accounts) -->
+            <div class="section-card" id="becomeTeacherCard" style="display:none;background:#fefce8;border-left-color:#ca8a04;">
+                <h3 style="color:#ca8a04;">&#128203; Are You a Teacher?</h3>
+                <p style="font-size:0.875rem;color:#6B7280;margin-bottom:1rem;">If you teach faith formation, upgrade your account to create a class code and award XP to students.</p>
+                <button class="btn-join" style="background:#ca8a04;width:100%;" onclick="upgradeToTeacher()">Set Up Teacher Account</button>
+                <div id="upgradeTeacherFeedback" class="join-feedback"></div>
+            </div>
+
+            <!-- Teacher Awards -->
+            <div class="section-card">
+                <h3>🎯 Recent Teacher Awards</h3>
+                <div id="awardsList">
+                    <div class="no-data">Loading…</div>
+                </div>
+            </div>
+
+            <button class="btn btn-secondary" id="goToWebsiteBtn">
+                Go to CRUX Website
+            </button>
+
+            <button class="btn btn-logout" id="logoutBtn">
+                Sign Out
+            </button>
+        </div>
+    </div>
+
+    <script type="module">
+        import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+        import { getFirestore, doc, setDoc, getDoc, updateDoc, collection, query, where, orderBy, getDocs, arrayUnion, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const auth = window.auth;
+        const db = window.db;
+
+        // ── LEVEL SYSTEM ──────────────────────────────────
+        const LEVELS = [
+            { level: 1, name: 'Seeker',   minXP: 0 },
+            { level: 2, name: 'Learner',  minXP: 100 },
+            { level: 3, name: 'Student',  minXP: 300 },
+            { level: 4, name: 'Disciple', minXP: 600 },
+            { level: 5, name: 'Apostle',  minXP: 1000 },
+            { level: 6, name: 'Teacher',  minXP: 2000 },
+            { level: 7, name: 'Saint',    minXP: 4000 }
+        ];
+
+        function getLevelInfo(xp) {
+            let current = LEVELS[0];
+            for (const l of LEVELS) {
+                if (xp >= l.minXP) current = l;
+                else break;
+            }
+            const idx  = LEVELS.indexOf(current);
+            const next = LEVELS[idx + 1] || null;
+            const pct  = next
+                ? Math.round(((xp - current.minXP) / (next.minXP - current.minXP)) * 100)
+                : 100;
+            return { current, next, pct };
+        }
+
+        function timeAgo(ts) {
+            if (!ts) return '';
+            const date = ts.toDate ? ts.toDate() : new Date(ts);
+            const diff = Date.now() - date.getTime();
+            const m = Math.floor(diff / 60000);
+            if (m < 1)  return 'just now';
+            if (m < 60) return `${m}m ago`;
+            const h = Math.floor(m / 60);
+            if (h < 24) return `${h}h ago`;
+            const d = Math.floor(h / 24);
+            if (d < 30) return `${d} day${d > 1 ? 's' : ''} ago`;
+            const mo = Math.floor(d / 30);
+            return `${mo} month${mo > 1 ? 's' : ''} ago`;
+        }
+
+        // ── ROLE TOGGLE (register form) ───────────────────
+        window.selectRole = function(role) {
+            document.getElementById('roleStudent').checked = (role === 'student');
+            document.getElementById('roleTeacher').checked = (role === 'teacher');
+            document.getElementById('roleStudentLabel').classList.toggle('role-active', role === 'student');
+            document.getElementById('roleTeacherLabel').classList.toggle('role-active', role === 'teacher');
+            document.getElementById('teacherRegFields').style.display = (role === 'teacher') ? 'block' : 'none';
+        };
+
+        // ── GENERATE CLASS CODE ────────────────────────────
+        function generateClassCode() {
+            const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+            let code = '';
+            for (let i = 0; i < 8; i++) code += chars[Math.floor(Math.random() * chars.length)];
+            return code;
+        }
+
+        // ── RENDER TEACHER SETUP CARD ──────────────────────
+        function renderTeacherSetup(teacherData) {
+            const card    = document.getElementById('teacherSetupCard');
+            const content = document.getElementById('teacherSetupContent');
+            card.style.display = 'block';
+            document.getElementById('becomeTeacherCard').style.display = 'none';
+
+            if (teacherData && teacherData.classCode) {
+                // Already set up — show the code
+                content.innerHTML = `
+                    <p style="font-size:0.875rem;color:#6B7280;margin-bottom:0.5rem;">
+                        <strong style="color:#0369a1;">${teacherData.name || 'Your'}</strong> class at
+                        <strong style="color:#0369a1;">${teacherData.school || 'your school'}</strong>
+                    </p>
+                    <p style="font-size:0.82rem;color:#6B7280;margin-bottom:0.3rem;">Share this code with your students:</p>
+                    <div class="class-code-display" onclick="copyCode('${teacherData.classCode}')" title="Click to copy">${teacherData.classCode}</div>
+                    <p class="class-code-hint">Click the code to copy it to your clipboard</p>
+                    <p style="font-size:0.78rem;color:#6B7280;margin-top:0.75rem;">
+                        Students enrolled: <strong style="color:#0369a1;">${(teacherData.students || []).length}</strong>
+                        &nbsp;&#183;&nbsp;
+                        <a href="crux-teacher.html" style="color:#0369a1;font-weight:700;">Open Teacher Dashboard &#8594;</a>
+                    </p>`;
+            } else {
+                // Needs setup
+                content.innerHTML = `
+                    <p style="font-size:0.875rem;color:#6B7280;margin-bottom:1rem;">Complete your teacher profile to generate a class code your students can use to join.</p>
+                    <div class="form-group">
+                        <label>Your Full Name</label>
+                        <input type="text" id="setupTeacherName" placeholder="e.g. Mrs. Sullivan" style="width:100%;padding:0.75rem;border:2px solid #ddd;border-radius:8px;font-size:0.95rem;">
+                    </div>
+                    <div class="form-group">
+                        <label>School / Parish</label>
+                        <input type="text" id="setupSchool" placeholder="e.g. St. Patrick's School" style="width:100%;padding:0.75rem;border:2px solid #ddd;border-radius:8px;font-size:0.95rem;">
+                    </div>
+                    <button class="btn-join" style="background:#0369a1;width:100%;padding:0.875rem;" onclick="saveTeacherSetup()">Generate My Class Code</button>
+                    <div id="setupFeedback" class="join-feedback"></div>`;
+            }
+        }
+
+        // ── SAVE TEACHER SETUP ─────────────────────────────
+        window.saveTeacherSetup = async function() {
+            const name     = (document.getElementById('setupTeacherName').value || '').trim();
+            const school   = (document.getElementById('setupSchool').value || '').trim();
+            const feedback = document.getElementById('setupFeedback');
+            if (!name) { feedback.className='join-feedback error'; feedback.textContent='Please enter your name.'; return; }
+            if (!school) { feedback.className='join-feedback error'; feedback.textContent='Please enter your school or parish.'; return; }
+
+            const user = auth.currentUser;
+            if (!user) return;
+            feedback.className='join-feedback'; feedback.textContent='Generating code…';
+
+            try {
+                // Ensure unique code
+                let code = generateClassCode();
+                let attempts = 0;
+                while (attempts < 5) {
+                    const existing = await getDocs(query(collection(db, 'teachers'), where('classCode', '==', code)));
+                    if (existing.empty) break;
+                    code = generateClassCode();
+                    attempts++;
+                }
+
+                const teacherPayload = {
+                    name, school, classCode: code,
+                    userId: user.uid, email: user.email,
+                    students: [], createdAt: serverTimestamp()
+                };
+
+                await setDoc(doc(db, 'teachers', user.uid), teacherPayload);
+                await updateDoc(doc(db, 'users', user.uid), { role: 'teacher', teacherDocId: user.uid });
+
+                feedback.className='join-feedback success'; feedback.textContent='✅ Class code created!';
+                setTimeout(() => renderTeacherSetup(teacherPayload), 700);
+            } catch (err) {
+                console.error('saveTeacherSetup error:', err);
+                feedback.className='join-feedback error'; feedback.textContent='Something went wrong. Please try again.';
+            }
+        };
+
+        // ── UPGRADE EXISTING ACCOUNT TO TEACHER ───────────
+        window.upgradeToTeacher = async function() {
+            const user = auth.currentUser;
+            if (!user) return;
+            const fb = document.getElementById('upgradeTeacherFeedback');
+            fb.className='join-feedback'; fb.textContent='';
+            // Just show the setup card
+            renderTeacherSetup(null);
+        };
+
+        // ── COPY CLASS CODE TO CLIPBOARD ──────────────────
+        window.copyCode = function(code) {
+            navigator.clipboard.writeText(code).then(() => {
+                const el = document.querySelector('.class-code-display');
+                const orig = el.textContent;
+                el.textContent = 'Copied!';
+                el.style.background = '#15803d';
+                setTimeout(() => { el.textContent = orig; el.style.background = ''; }, 1200);
+            }).catch(() => {
+                alert('Your class code is: ' + code);
+            });
+        };
+
+        // ── AUTH STATE ─────────────────────────────────────
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                await loadUserProfile(user);
+            } else {
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('registerForm').style.display = 'none';
+                document.getElementById('dashboard').style.display = 'none';
+            }
+        });
+
+        // Show login form
+        window.showLogin = function() {
+            document.getElementById('loginForm').style.display = 'block';
+            document.getElementById('registerForm').style.display = 'none';
+            document.getElementById('loginError').innerHTML = '';
+        }
+
+        // Show register form
+        window.showRegister = function() {
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerForm').style.display = 'block';
+            document.getElementById('registerError').innerHTML = '';
+        }
+
+        // ── REGISTER ───────────────────────────────────────
+        window.handleRegister = async function(event) {
+            event.preventDefault();
+            const username = document.getElementById('registerUsername').value.trim();
+            const email    = document.getElementById('registerEmail').value.trim();
+            const password = document.getElementById('registerPassword').value;
+            const isTeacher = document.getElementById('roleTeacher').checked;
+            const teacherName = isTeacher ? (document.getElementById('registerTeacherName').value || '').trim() : '';
+            const school      = isTeacher ? (document.getElementById('registerSchool').value || '').trim() : '';
+            document.getElementById('registerError').innerHTML = '';
+
+            if (isTeacher && !teacherName) {
+                document.getElementById('registerError').innerHTML = '<div class="error-message">&#10060; Please enter your full name.</div>';
+                return;
+            }
+
+            try {
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
+
+                await setDoc(doc(db, 'users', user.uid), {
+                    username, email, role: isTeacher ? 'teacher' : 'student',
+                    joinedDate: serverTimestamp(), createdAt: serverTimestamp()
+                });
+
+                // Create initial userProgress doc
+                await setDoc(doc(db, 'userProgress', user.uid), {
+                    totalXP: 0, xpFromQuizzes: 0, xpFromTeachers: 0,
+                    level: 1, teacherIds: [], createdAt: serverTimestamp()
+                });
+
+                // If teacher — generate class code and create teacher doc
+                if (isTeacher) {
+                    let code = generateClassCode();
+                    let attempts = 0;
+                    while (attempts < 5) {
+                        const existing = await getDocs(query(collection(db, 'teachers'), where('classCode', '==', code)));
+                        if (existing.empty) break;
+                        code = generateClassCode(); attempts++;
+                    }
+                    await setDoc(doc(db, 'teachers', user.uid), {
+                        name: teacherName, school: school || '', classCode: code,
+                        userId: user.uid, email, students: [], createdAt: serverTimestamp()
+                    });
+                    await updateDoc(doc(db, 'users', user.uid), { teacherDocId: user.uid });
+                }
+
+                console.log('✅ Account created successfully!');
+                document.getElementById('registerError').innerHTML =
+                    '<div class="success-message">&#10003; Account created! Loading your dashboard&#8230;</div>';
+            } catch (error) {
+                console.error('Registration error:', error);
+                let errorMessage = 'Failed to create account. ';
+                if (error.code === 'auth/email-already-in-use') errorMessage += 'This email is already registered.';
+                else if (error.code === 'auth/weak-password')   errorMessage += 'Password should be at least 6 characters.';
+                else if (error.code === 'auth/invalid-email')   errorMessage += 'Invalid email address.';
+                else errorMessage += error.message;
+                document.getElementById('registerError').innerHTML =
+                    `<div class="error-message">❌ ${errorMessage}</div>`;
+            }
+        }
+
+        // ── LOGIN ──────────────────────────────────────────
+        window.handleLogin = async function(event) {
+            event.preventDefault();
+            const email    = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            document.getElementById('loginError').innerHTML = '';
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+                console.log('✅ Logged in successfully!');
+            } catch (error) {
+                console.error('Login error:', error);
+                let errorMessage = 'Failed to log in. ';
+                if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+                    errorMessage += 'Invalid email or password.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage += 'Invalid email address.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMessage += 'Too many failed attempts. Please try again later.';
+                } else {
+                    errorMessage += error.message;
+                }
+                document.getElementById('loginError').innerHTML =
+                    `<div class="error-message">❌ ${errorMessage}</div>`;
+            }
+        }
+
+        // ── LOAD USER PROFILE ──────────────────────────────
+        async function loadUserProfile(user) {
+            try {
+                const userDoc = await getDoc(doc(db, 'users', user.uid));
+
+                document.getElementById('loginForm').style.display    = 'none';
+                document.getElementById('registerForm').style.display = 'none';
+                document.getElementById('dashboard').style.display    = 'block';
+
+                // Hoist userData so it's always in scope
+                const userData = userDoc.exists() ? userDoc.data() : {};
+
+                if (userDoc.exists()) {
+                    document.getElementById('dashUsername').textContent = userData.username || 'User';
+                    document.getElementById('dashEmail').textContent    = user.email;
+                    if (userData.joinedDate && userData.joinedDate.toDate) {
+                        document.getElementById('dashJoined').textContent =
+                            userData.joinedDate.toDate().toLocaleDateString();
+                    } else {
+                        document.getElementById('dashJoined').textContent = 'Recently';
+                    }
+                } else {
+                    document.getElementById('dashUsername').textContent = user.email.split('@')[0];
+                    document.getElementById('dashEmail').textContent    = user.email;
+                    document.getElementById('dashJoined').textContent   = 'Recently';
+                }
+
+                // Load XP, classes, and awards in parallel
+                await Promise.all([
+                    loadUserProgress(user.uid),
+                    loadTeacherAwards(user.uid)
+                ]);
+
+                // Determine teacher status — check role field first,
+                // then fall back to teachers collection for older accounts
+                const role = userData.role || '';
+                let isTeacher = (role === 'teacher');
+                if (!isTeacher) {
+                    try {
+                        const tSnap = await getDoc(doc(db, 'teachers', user.uid));
+                        if (tSnap.exists()) {
+                            isTeacher = true;
+                            // Backfill role field for future logins
+                            try { await updateDoc(doc(db, 'users', user.uid), { role: 'teacher' }); } catch(e) {}
+                        }
+                    } catch(e) {}
+                }
+
+                if (isTeacher) {
+                    try {
+                        const tSnap = await getDoc(doc(db, 'teachers', user.uid));
+                        renderTeacherSetup(tSnap.exists() ? tSnap.data() : null);
+                    } catch(e) { renderTeacherSetup(null); }
+                } else {
+                    document.getElementById('becomeTeacherCard').style.display = 'block';
+                }
+
+            } catch (error) {
+                console.error('Error loading user profile:', error);
+                document.getElementById('dashboard').style.display    = 'block';
+                document.getElementById('dashUsername').textContent   = 'User';
+                document.getElementById('dashEmail').textContent      = user.email || '';
+                document.getElementById('dashJoined').textContent     = 'Recently';
+            }
+        }
+
+        // ── LOAD USER PROGRESS & XP ────────────────────────
+        async function loadUserProgress(userId) {
+            try {
+                let snap = await getDoc(doc(db, 'userProgress', userId));
+                let data = {};
+                if (!snap.exists()) {
+                    data = { totalXP: 0, xpFromQuizzes: 0, xpFromTeachers: 0, level: 1, teacherIds: [] };
+                    await setDoc(doc(db, 'userProgress', userId), { ...data, createdAt: serverTimestamp() });
+                } else {
+                    data = snap.data();
+                }
+
+                const totalXP   = data.totalXP        || 0;
+                const quizXP    = data.xpFromQuizzes   || 0;
+                const teacherXP = data.xpFromTeachers  || 0;
+                const { current, next, pct } = getLevelInfo(totalXP);
+
+                document.getElementById('xpQuiz').textContent     = quizXP.toLocaleString();
+                document.getElementById('xpTeachers').textContent = teacherXP.toLocaleString();
+                document.getElementById('xpTotal').textContent    = totalXP.toLocaleString();
+                document.getElementById('levelBadge').textContent =
+                    `⚔️ Level ${current.level} – ${current.name} (${totalXP} XP)`;
+                document.getElementById('progressLabelLeft').textContent  = `Level ${current.level}: ${current.name}`;
+                document.getElementById('progressLabelRight').textContent = next
+                    ? `${pct}% to Level ${next.level} (${next.name})`
+                    : '🏆 Max Level Reached!';
+                document.getElementById('progressFill').style.width = `${pct}%`;
+
+                await loadTeachers(data.teacherIds || []);
+            } catch (err) {
+                console.error('loadUserProgress error:', err);
+                document.getElementById('classList').innerHTML = '<li class="no-data">Could not load classes.</li>';
+            }
+        }
+
+        // ── LOAD TEACHERS / CLASSES ────────────────────────
+        async function loadTeachers(teacherIds) {
+            const list = document.getElementById('classList');
+            if (!teacherIds || teacherIds.length === 0) {
+                list.innerHTML = '<li class="no-data">You haven\'t joined any classes yet.</li>';
+                return;
+            }
+            try {
+                const teachers = await Promise.all(
+                    teacherIds.map(id => getDoc(doc(db, 'teachers', id)))
+                );
+                list.innerHTML = '';
+                teachers.forEach(snap => {
+                    if (!snap.exists()) return;
+                    const t  = snap.data();
+                    const li = document.createElement('li');
+                    li.className = 'class-item';
+                    li.innerHTML = `
+                        <span>📖</span>
+                        <div>
+                            <div class="teacher-name">${t.name || 'Teacher'}</div>
+                            <div class="teacher-school">${t.school || ''}</div>
+                        </div>`;
+                    list.appendChild(li);
+                });
+                if (!list.children.length) {
+                    list.innerHTML = '<li class="no-data">No class info found.</li>';
+                }
+            } catch (err) {
+                console.error('loadTeachers error:', err);
+                list.innerHTML = '<li class="no-data">Could not load classes.</li>';
+            }
+        }
+
+        // ── LOAD TEACHER AWARDS ────────────────────────────
+        async function loadTeacherAwards(userId) {
+            const container = document.getElementById('awardsList');
+            try {
+                const q    = query(collection(db, 'xpAwards'), where('studentId', '==', userId), orderBy('awardedAt', 'desc'));
+                const snap = await getDocs(q);
+                if (snap.empty) {
+                    container.innerHTML = '<div class="no-data">No awards yet — keep up the great work! 🌟</div>';
+                    return;
+                }
+                container.innerHTML = '';
+                snap.forEach(d => {
+                    const a     = d.data();
+                    const stars = '⭐'.repeat(Math.min(a.stars || 0, 5));
+                    const div   = document.createElement('div');
+                    div.className = 'award-card';
+                    div.innerHTML = `
+                        <div class="award-top">
+                            <span class="award-stars">${stars}</span>
+                            <span class="award-xp">+${a.xpAwarded || 0} XP</span>
+                        </div>
+                        <div class="award-title">${a.assignmentTitle || 'Assignment'}</div>
+                        <div class="award-from">From: ${a.teacherName || 'Your Teacher'}</div>
+                        ${a.notes ? `<div class="award-notes">"${a.notes}"</div>` : ''}
+                        <div class="award-date">${timeAgo(a.awardedAt)}</div>`;
+                    container.appendChild(div);
+                });
+            } catch (err) {
+                console.error('loadTeacherAwards error:', err);
+                container.innerHTML = '<div class="no-data">Could not load awards.</div>';
+            }
+        }
+
+        // ── JOIN CLASS ─────────────────────────────────────
+        window.joinClass = async function() {
+            const input    = document.getElementById('classCodeInput');
+            const feedback = document.getElementById('joinFeedback');
+            const btn      = document.getElementById('joinBtn');
+            const code     = (input.value || '').trim().toUpperCase();
+
+            feedback.className = 'join-feedback';
+            feedback.textContent = '';
+
+            if (!code || code.length < 4) {
+                feedback.className = 'join-feedback error';
+                feedback.textContent = 'Please enter a valid class code.';
+                return;
+            }
+
+            const user = auth.currentUser;
+            if (!user) return;
+
+            btn.disabled = true;
+            btn.textContent = '…';
+
+            try {
+                const q    = query(collection(db, 'teachers'), where('classCode', '==', code));
+                const snap = await getDocs(q);
+
+                if (snap.empty) {
+                    feedback.className = 'join-feedback error';
+                    feedback.textContent = '❌ Class code not found. Check with your teacher.';
+                    btn.disabled = false;
+                    btn.textContent = 'Join';
+                    return;
+                }
+
+                const teacherDoc  = snap.docs[0];
+                const teacherId   = teacherDoc.id;
+                const teacherData = teacherDoc.data();
+
+                // Check if already joined
+                const progressSnap = await getDoc(doc(db, 'userProgress', user.uid));
+                const existing = progressSnap.exists() ? (progressSnap.data().teacherIds || []) : [];
+                if (existing.includes(teacherId)) {
+                    feedback.className = 'join-feedback error';
+                    feedback.textContent = '⚠️ You\'ve already joined this class!';
+                    btn.disabled = false;
+                    btn.textContent = 'Join';
+                    return;
+                }
+
+                // Add teacherId to student's own progress only
+                // (students cannot write to the teachers collection)
+                if (progressSnap.exists()) {
+                    await updateDoc(doc(db, 'userProgress', user.uid), {
+                        teacherIds: arrayUnion(teacherId)
+                    });
+                } else {
+                    await setDoc(doc(db, 'userProgress', user.uid), {
+                        totalXP: 0, xpFromQuizzes: 0, xpFromTeachers: 0,
+                        level: 1, teacherIds: [teacherId], createdAt: serverTimestamp()
+                    });
+                }
+
+                feedback.className = 'join-feedback success';
+                feedback.textContent = `✅ Joined ${teacherData.name || 'class'}'s class at ${teacherData.school || 'school'}!`;
+                input.value = '';
+
+                // Refresh progress & class list
+                await loadUserProgress(user.uid);
+
+            } catch (err) {
+                console.error('joinClass error:', err);
+                feedback.className = 'join-feedback error';
+                feedback.textContent = '❌ Something went wrong. Please try again.';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Join';
+            }
+        };
+
+        // Enter key support for class code input
+        document.getElementById('classCodeInput').addEventListener('keydown', e => {
+            if (e.key === 'Enter') window.joinClass();
+        });
+
+        // ── LOGOUT ─────────────────────────────────────────
+        window.handleLogout = async function() {
+            if (confirm('Are you sure you want to sign out?')) {
+                try {
+                    await signOut(auth);
+                    console.log('✅ Logged out successfully!');
+                } catch (error) {
+                    console.error('Logout error:', error);
+                    alert('Failed to log out: ' + error.message);
+                }
+            }
+        }
+
+        // ── BUTTON EVENT LISTENERS ─────────────────────────
+        document.addEventListener('DOMContentLoaded', () => {
+            const websiteBtn = document.getElementById('goToWebsiteBtn');
+            if (websiteBtn) websiteBtn.addEventListener('click', () => { window.location.href = '/'; });
+
+            const logoutBtn = document.getElementById('logoutBtn');
+            if (logoutBtn) logoutBtn.addEventListener('click', () => { window.handleLogout(); });
+        });
+    </script>
+</body>
+</html>

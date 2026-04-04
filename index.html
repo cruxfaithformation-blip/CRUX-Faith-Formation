@@ -1,0 +1,3171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUX - Catholic Faith Formation</title>
+    
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LQ35DLTVKY');
+    </script>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Firebase SDK v10 -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, collection, getDocs, query, orderBy, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+            authDomain: "crux-faith-formation.firebaseapp.com",
+            projectId: "crux-faith-formation",
+            storageBucket: "crux-faith-formation.firebasestorage.app",
+            messagingSenderId: "838141015985",
+            appId: "1:838141015985:web:2655e570663e182d75ef90",
+            measurementId: "G-LQ35DLTVKY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        window.db = getFirestore(app);
+        window.auth = getAuth(app);
+        window.firebaseModules = { collection, getDocs, query, orderBy, doc, getDoc };
+        
+        console.log('✅ Firebase initialized for CRUX public site!');
+        
+        onAuthStateChanged(window.auth, (user) => {
+            window.currentUser = user || null;
+            if (user) {
+                console.log('✅ User logged in:', user.email);
+                const accountBtn = document.getElementById('accountBtnText');
+                if (accountBtn) {
+                    accountBtn.textContent = user.email.split('@')[0];
+                }
+                // Auth is now resolved — stamp completions if Youth tab is active
+                if (typeof window.loadModuleCompletions === 'function') {
+                    window.loadModuleCompletions(user.uid);
+                }
+            } else {
+                console.log('No user logged in');
+                window.currentUser = null;
+            }
+        });
+    </script>
+    
+    <style>
+        :root {
+            --navy: #1a1f36;
+            --navy-mid: #242a45;
+            --navy-light: #2f3659;
+            --gold: #d4a574;
+            --gold-light: #e8c9a0;
+            --gold-dark: #b8895a;
+            --white: #ffffff;
+            --off-white: #f8f7f4;
+            --text-primary: #1a1f36;
+            --text-secondary: #5a6282;
+            --text-muted: #8890b0;
+            --border: rgba(26, 31, 54, 0.1);
+            --border-gold: rgba(212, 165, 116, 0.25);
+            --shadow-sm: 0 2px 8px rgba(26, 31, 54, 0.08);
+            --shadow-md: 0 4px 20px rgba(26, 31, 54, 0.12);
+            --shadow-lg: 0 8px 40px rgba(26, 31, 54, 0.16);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--off-white);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        /* ─── HEADER ─────────────────────────────────── */
+        header {
+            background: var(--navy);
+            padding: 1.5rem 0 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.25);
+        }
+
+        .header-top {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1.5rem;
+        }
+
+        .logo-lockup {
+            display: flex;
+            align-items: baseline;
+            gap: 1rem;
+        }
+
+        .site-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 6px;
+            line-height: 1;
+        }
+
+        .site-subtitle {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 0.75rem;
+            align-items: center;
+        }
+
+        .btn-account {
+            background: transparent;
+            border: 1.5px solid var(--gold);
+            color: var(--gold);
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-account:hover {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        .btn-challenges {
+            background: var(--gold);
+            border: none;
+            color: var(--navy);
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.85rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            transition: all 0.2s ease;
+            white-space: nowrap;
+        }
+
+        .btn-challenges:hover {
+            background: var(--gold-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.4);
+        }
+
+        /* ─── NAV ─────────────────────────────────────── */
+        nav {
+            border-top: 1px solid rgba(255,255,255,0.08);
+            background: rgba(255,255,255,0.03);
+        }
+
+        .nav-inner {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            gap: 0;
+            overflow-x: auto;
+            scrollbar-width: none;
+        }
+
+        .nav-inner::-webkit-scrollbar { display: none; }
+
+        .nav-btn {
+            background: transparent;
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: rgba(255,255,255,0.55);
+            padding: 0.9rem 1.4rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+            text-transform: uppercase;
+        }
+
+        .nav-btn:hover {
+            color: rgba(255,255,255,0.9);
+            border-bottom-color: rgba(212, 165, 116, 0.4);
+        }
+
+        .nav-btn.active {
+            color: var(--gold);
+            border-bottom-color: var(--gold);
+            font-weight: 600;
+        }
+
+        /* ─── LAYOUT ──────────────────────────────────── */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .section.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(16px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-body {
+            padding: 3rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* ─── HERO ────────────────────────────────────── */
+        .hero {
+            background: var(--navy);
+            padding: 6rem 2rem 5rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '✟';
+            position: absolute;
+            font-size: 28rem;
+            color: rgba(212, 165, 116, 0.04);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            line-height: 1;
+        }
+
+        .hero-inner {
+            position: relative;
+            z-index: 1;
+            max-width: 860px;
+            margin: 0 auto;
+        }
+
+        .hero-cross {
+            display: block;
+            font-size: 3rem;
+            color: var(--gold);
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+
+        .hero-eyebrow {
+            display: inline-block;
+            color: var(--gold);
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            border-bottom: 1px solid var(--gold);
+            padding-bottom: 0.4rem;
+        }
+
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.6rem;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.2;
+            margin-bottom: 2rem;
+        }
+
+        .hero-verse {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            color: rgba(255,255,255,0.75);
+            font-style: italic;
+            line-height: 1.7;
+            margin-bottom: 0.75rem;
+        }
+
+        .hero-reference {
+            color: var(--gold);
+            font-size: 0.9rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            margin-bottom: 3rem;
+        }
+
+        .hero-body {
+            color: rgba(255,255,255,0.7);
+            font-size: 1.05rem;
+            line-height: 1.85;
+        }
+
+        .hero-body p { margin-bottom: 1.25rem; }
+        .hero-body p:last-child { margin-bottom: 0; }
+
+        .hero-body strong { color: var(--gold); font-weight: 600; }
+
+        /* ─── DIVIDER ─────────────────────────────────── */
+        .gold-divider {
+            width: 60px;
+            height: 2px;
+            background: var(--gold);
+            margin: 0 auto 2rem;
+            opacity: 0.6;
+        }
+
+        /* ─── CTA STRIP ───────────────────────────────── */
+        .cta-strip {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            border-top: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .cta-tile {
+            background: var(--navy-mid);
+            padding: 3.5rem 3rem;
+            cursor: pointer;
+            transition: background 0.25s ease;
+            border-right: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .cta-tile:last-child { border-right: none; }
+
+        .cta-tile:hover { background: var(--navy-light); }
+
+        .cta-icon {
+            font-size: 1.5rem;
+            color: var(--gold);
+        }
+
+        .cta-tile h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--white);
+            font-weight: 700;
+        }
+
+        .cta-tile p {
+            color: rgba(255,255,255,0.6);
+            font-size: 0.95rem;
+            line-height: 1.65;
+        }
+
+        .cta-arrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--gold);
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            margin-top: 0.5rem;
+        }
+
+        /* ─── COURAGE BANNER ──────────────────────────── */
+        .courage-banner {
+            background: var(--gold);
+            padding: 4rem 2rem;
+            text-align: center;
+        }
+
+        .courage-banner-inner {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .courage-banner h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+        }
+
+        .courage-banner p {
+            color: var(--navy);
+            font-size: 1.05rem;
+            line-height: 1.85;
+            opacity: 0.85;
+        }
+
+        .courage-banner strong { opacity: 1; font-weight: 700; }
+
+        /* ─── PATHWAY GRID ────────────────────────────── */
+        .pathway-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid var(--border);
+        }
+
+        .pathway-tile {
+            background: var(--white);
+            padding: 3rem 2.5rem;
+            text-align: center;
+            cursor: pointer;
+            border-right: 1px solid var(--border);
+            transition: all 0.25s ease;
+        }
+
+        .pathway-tile:last-child { border-right: none; }
+
+        .pathway-tile:hover {
+            background: var(--off-white);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            z-index: 1;
+            position: relative;
+        }
+
+        .pathway-icon {
+            font-size: 2rem;
+            color: var(--gold-dark);
+            margin-bottom: 1rem;
+        }
+
+        .pathway-tile h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            color: var(--navy);
+            margin-bottom: 0.6rem;
+            font-weight: 700;
+        }
+
+        .pathway-tile p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+            margin-bottom: 0.75rem;
+        }
+
+        .tag {
+            display: inline-block;
+            background: rgba(212, 165, 116, 0.12);
+            color: var(--gold-dark);
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+        }
+
+        /* ─── SECTION HEADER ──────────────────────────── */
+        .section-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-header .eyebrow {
+            display: inline-block;
+            color: var(--gold-dark);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .section-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 640px;
+            margin: 0 auto;
+        }
+
+        /* ─── CARDS ───────────────────────────────────── */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: all 0.25s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+            border-color: var(--border-gold);
+        }
+
+        .card h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            font-size: 1.15rem;
+            margin-bottom: 0.6rem;
+            font-weight: 700;
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.65;
+        }
+
+        /* ─── CATEGORY BLOCK ──────────────────────────── */
+        .category-block {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+
+        .category-block h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            font-weight: 700;
+        }
+
+        /* ─── STUDY ITEMS ─────────────────────────────── */
+        .study-item {
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 0.75rem;
+            background: var(--off-white);
+            border-radius: 8px;
+            border-left: 3px solid var(--gold);
+            transition: all 0.2s ease;
+        }
+
+        .study-item:hover {
+            background: rgba(212, 165, 116, 0.07);
+            transform: translateX(4px);
+        }
+
+        .study-item h5 {
+            color: var(--navy);
+            margin-bottom: 0.4rem;
+            font-size: 1rem;
+            font-weight: 600;
+        }
+
+        .study-item p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        /* ─── BELIEFS ─────────────────────────────────── */
+        .belief-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: box-shadow 0.25s ease;
+        }
+
+        .belief-card:hover { box-shadow: var(--shadow-md); }
+
+        .belief-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 32px;
+            height: 32px;
+            background: var(--gold);
+            color: var(--navy);
+            border-radius: 50%;
+            font-weight: 700;
+            font-size: 0.85rem;
+            margin-right: 0.75rem;
+            flex-shrink: 0;
+        }
+
+        .belief-card h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            font-size: 1.5rem;
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            font-weight: 700;
+        }
+
+        .belief-content {
+            padding-left: 2.5rem;
+        }
+
+        .belief-explanation {
+            color: var(--text-primary);
+            line-height: 1.8;
+            margin-bottom: 1.25rem;
+            font-size: 0.97rem;
+        }
+
+        .belief-why {
+            background: rgba(212, 165, 116, 0.08);
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            border-left: 3px solid var(--gold);
+        }
+
+        .belief-why strong {
+            color: var(--navy);
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .belief-why p { color: var(--text-secondary); font-size: 0.92rem; line-height: 1.7; }
+
+        /* ─── FILTER BAR ──────────────────────────────── */
+        .filter-bar {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filter-btn {
+            padding: 0.5rem 1.25rem;
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-weight: 500;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: var(--white);
+        }
+
+        /* ─── MEDIA ───────────────────────────────────── */
+        .media-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.75rem;
+            margin: 1.5rem 0;
+        }
+
+        .media-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: all 0.25s ease;
+        }
+
+        .media-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .media-embed {
+            width: 100%;
+            aspect-ratio: 16/9;
+            border: none;
+            display: block;
+        }
+
+        .media-info {
+            padding: 1.5rem;
+        }
+
+        .media-info h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .media-info p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.6;
+        }
+
+        .media-category {
+            display: inline-block;
+            background: rgba(212, 165, 116, 0.12);
+            color: var(--gold-dark);
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.75rem;
+        }
+
+        .spotify-embed {
+            border-radius: 8px;
+            width: 100%;
+            height: 152px;
+        }
+
+        .apple-music-embed {
+            border-radius: 8px;
+            width: 100%;
+            height: 175px;
+        }
+
+        .playlist-block {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .playlist-block h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        .playlist-desc {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+        }
+
+        .playlist-item-title {
+            color: var(--navy);
+            font-size: 0.92rem;
+            font-weight: 600;
+            margin-bottom: 0.65rem;
+        }
+
+        .playlist-item-desc {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-top: 0.6rem;
+        }
+
+        /* ─── RCIA ────────────────────────────────────── */
+        .rcia-hero {
+            background: var(--navy);
+            color: var(--white);
+            padding: 3rem;
+            border-radius: 12px;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .rcia-hero::before {
+            content: '✟';
+            position: absolute;
+            font-size: 14rem;
+            color: rgba(212, 165, 116, 0.06);
+            bottom: -2rem;
+            right: 2rem;
+            line-height: 1;
+        }
+
+        .rcia-hero h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.9rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            position: relative;
+        }
+
+        .rcia-hero p {
+            font-size: 1rem;
+            line-height: 1.8;
+            opacity: 0.85;
+            max-width: 800px;
+            position: relative;
+        }
+
+        .phase-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            transition: box-shadow 0.25s ease;
+        }
+
+        .phase-card:hover { box-shadow: var(--shadow-md); }
+
+        .phase-card::before {
+            content: '';
+            position: absolute;
+            left: 0; top: 0;
+            width: 4px; height: 100%;
+            background: linear-gradient(180deg, var(--gold), rgba(212, 165, 116, 0.3));
+        }
+
+        .phase-number {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px; height: 44px;
+            background: var(--gold);
+            color: var(--navy);
+            border-radius: 50%;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .phase-card h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            font-size: 1.4rem;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        .phase-card > p {
+            color: var(--text-primary);
+            line-height: 1.8;
+            margin-bottom: 1.25rem;
+            font-size: 0.97rem;
+        }
+
+        .phase-topics {
+            background: var(--off-white);
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+        }
+
+        .phase-topics strong {
+            color: var(--navy);
+            display: block;
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .phase-topics ul {
+            padding-left: 1.25rem;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .phase-topics li { margin-bottom: 0.4rem; line-height: 1.5; }
+
+        /* ─── DONATION ────────────────────────────────── */
+        .donation-hero {
+            background: var(--navy);
+            padding: 4rem 3rem;
+            border-radius: 12px;
+            color: var(--white);
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .donation-hero::before {
+            content: '✟';
+            position: absolute;
+            font-size: 18rem;
+            color: rgba(212, 165, 116, 0.05);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            line-height: 1;
+        }
+
+        .donation-hero h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            font-weight: 700;
+        }
+
+        .donation-hero p {
+            font-size: 1.05rem;
+            line-height: 1.85;
+            max-width: 820px;
+            margin: 0 auto 1rem;
+            position: relative;
+            opacity: 0.85;
+        }
+
+        .donation-hero em { color: var(--gold); font-style: italic; opacity: 1; }
+
+        .value-selector {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-bottom: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+        }
+
+        .value-selector h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .value-selector > p {
+            text-align: center;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .amount-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+        }
+
+        .amount-btn {
+            padding: 1.4rem 1rem;
+            border: 1.5px solid var(--border);
+            background: var(--white);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: center;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .amount-btn:hover {
+            border-color: var(--gold);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.25);
+        }
+
+        .amount-btn.selected {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: var(--white);
+        }
+
+        .amount-btn .amount {
+            font-size: 1.8rem;
+            font-weight: 700;
+            font-family: 'Playfair Display', serif;
+            display: block;
+            margin-bottom: 0.15rem;
+        }
+
+        .amount-btn .period { font-size: 0.8rem; opacity: 0.65; }
+
+        .custom-amount {
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+
+        .custom-amount label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .custom-amount input {
+            width: 100%;
+            max-width: 280px;
+            padding: 0.9rem;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 1.4rem;
+            text-align: center;
+            font-weight: 600;
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+        }
+
+        .custom-amount input:focus {
+            outline: none;
+            border-color: var(--navy);
+        }
+
+        /* ─── CHARITY CARDS ───────────────────────────── */
+        .admin-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 2rem;
+        }
+
+        .charity-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .charity-card {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1.5px solid var(--border);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            position: relative;
+        }
+
+        .charity-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--gold);
+        }
+
+        .charity-card.selected {
+            border-color: var(--navy);
+            background: rgba(26, 31, 54, 0.02);
+        }
+
+        .charity-card.selected::before {
+            content: '✓';
+            position: absolute;
+            top: 1rem; right: 1rem;
+            background: var(--navy);
+            color: var(--white);
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .charity-logo {
+            width: 64px; height: 64px;
+            background: var(--off-white);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem;
+            font-size: 2rem;
+        }
+
+        .charity-card h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            font-size: 1.15rem;
+            margin-bottom: 0.65rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .charity-card p {
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.6;
+            text-align: center;
+            margin-bottom: 1rem;
+        }
+
+        .charity-link {
+            display: block;
+            text-align: center;
+            color: var(--gold-dark);
+            font-size: 0.85rem;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .charity-link:hover { text-decoration: underline; }
+
+        .donate-btn {
+            display: block;
+            width: 100%;
+            max-width: 380px;
+            margin: 2.5rem auto 0;
+            padding: 1.25rem 3rem;
+            background: var(--gold);
+            color: var(--navy);
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 1.5px;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-transform: uppercase;
+        }
+
+        .donate-btn:hover {
+            background: var(--gold-dark);
+            color: var(--white);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(184, 137, 90, 0.4);
+        }
+
+        .donate-btn:disabled {
+            background: #d0d0d0;
+            color: #888;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .donation-summary {
+            background: var(--off-white);
+            padding: 1.75rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            border-left: 3px solid var(--gold);
+        }
+
+        .donation-summary h4 {
+            color: var(--navy);
+            margin-bottom: 0.75rem;
+            font-weight: 700;
+        }
+
+        .donation-summary p { color: var(--text-primary); margin-bottom: 0.4rem; font-size: 0.95rem; }
+        .donation-summary strong { color: var(--navy); }
+
+        /* ─── FORUMS ──────────────────────────────────── */
+        .forum-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 3rem;
+        }
+
+        .forum-category {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 1.75rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            border-top: 3px solid var(--gold);
+            cursor: pointer;
+            transition: all 0.25s ease;
+        }
+
+        .forum-category:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .forum-category h4 {
+            color: var(--navy);
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .forum-category p { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.55; }
+
+        .forum-stats {
+            display: flex;
+            gap: 1.25rem;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        .discussion-thread {
+            background: var(--white);
+            border-radius: 10px;
+            padding: 1.75rem;
+            margin-bottom: 1rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--gold);
+        }
+
+        .thread-title {
+            color: var(--navy);
+            font-size: 1.05rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .thread-meta {
+            display: flex;
+            gap: 1.25rem;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.75rem;
+        }
+
+        /* ─── BUTTONS ─────────────────────────────────── */
+        .btn {
+            display: inline-block;
+            padding: 0.75rem 1.75rem;
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            border-radius: 7px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+        }
+
+        .btn:hover {
+            background: var(--navy-light);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-outline {
+            background: transparent;
+            color: var(--navy);
+            border: 1.5px solid var(--navy);
+        }
+
+        .btn-outline:hover {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        /* ─── NOTICE BOX ──────────────────────────────── */
+        .notice-box {
+            text-align: center;
+            padding: 2.5rem;
+            background: var(--white);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+            margin-top: 2rem;
+        }
+
+        .notice-box p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .notice-box strong { color: var(--navy); }
+
+        /* ─── FOOTER SCRIPTURE ────────────────────────── */
+        .scripture-footer {
+            background: var(--off-white);
+            border-top: 1px solid var(--border);
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+
+        .scripture-footer p {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        .scripture-footer cite {
+            display: block;
+            font-family: 'Inter', sans-serif;
+            font-style: normal;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--gold-dark);
+            margin-top: 0.5rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* ─── LIBRARY ────────────────────────────────────── */
+        .library-hero {
+            background: var(--navy);
+            padding: 3rem 3rem;
+            border-radius: 12px;
+            margin-bottom: 2.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .library-hero::before {
+            content: '✦';
+            position: absolute;
+            font-size: 20rem;
+            right: 2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: rgba(212, 165, 116, 0.04);
+            line-height: 1;
+        }
+
+        .library-hero h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.9rem;
+            color: var(--white);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+            position: relative;
+        }
+
+        .library-hero p {
+            color: rgba(255,255,255,0.65);
+            font-size: 0.97rem;
+            line-height: 1.75;
+            max-width: 720px;
+            position: relative;
+        }
+
+        .library-hero .affiliate-note {
+            margin-top: 1.25rem;
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.3);
+            font-style: italic;
+            position: relative;
+        }
+
+        .library-filter-bar {
+            display: flex;
+            gap: 0.6rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .lib-filter-btn {
+            padding: 0.45rem 1.1rem;
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-size: 0.82rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .lib-filter-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold-dark);
+        }
+
+        .lib-filter-btn.active {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: var(--white);
+            font-weight: 600;
+        }
+
+        .book-shelf {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+            gap: 1.75rem;
+            margin-bottom: 3rem;
+        }
+
+        .book-card-wrap { position: relative; }
+
+        .book-card {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-gold);
+        }
+
+        .book-card.featured { border-color: var(--gold); border-width: 2px; }
+
+        .book-cover {
+            width: 100%;
+            aspect-ratio: 2/3;
+            object-fit: cover;
+            display: block;
+        }
+
+        .book-cover-placeholder {
+            width: 100%;
+            aspect-ratio: 2/3;
+            background: linear-gradient(160deg, var(--navy-mid) 0%, var(--navy-light) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 1.5rem;
+        }
+
+        .placeholder-cross { font-size: 2.5rem; color: var(--gold); opacity: 0.6; }
+
+        .placeholder-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.65);
+            text-align: center;
+            line-height: 1.4;
+        }
+
+        .book-info {
+            padding: 1.1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .book-category-tag {
+            font-size: 0.66rem;
+            font-weight: 700;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            margin-bottom: 0.35rem;
+        }
+
+        .book-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.92rem;
+            color: var(--navy);
+            font-weight: 700;
+            line-height: 1.35;
+            margin-bottom: 0.25rem;
+        }
+
+        .book-author {
+            font-size: 0.78rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .book-description {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            flex: 1;
+        }
+
+        .book-buy-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            margin-top: 0.85rem;
+            padding: 0.55rem;
+            background: var(--off-white);
+            border: 1.5px solid var(--border);
+            border-radius: 6px;
+            color: var(--navy);
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.3px;
+        }
+
+        .book-buy-btn:hover {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: var(--white);
+        }
+
+        .featured-badge {
+            position: absolute;
+            top: 0.55rem;
+            right: 0.55rem;
+            background: var(--gold);
+            color: var(--navy);
+            font-size: 0.62rem;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            z-index: 1;
+        }
+
+        /* Skeleton loading */
+        .book-skeleton {
+            background: var(--white);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+        }
+
+        .skeleton-cover {
+            width: 100%;
+            aspect-ratio: 2/3;
+            background: linear-gradient(90deg, #ececec 25%, #e0e0e0 50%, #ececec 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.4s infinite;
+        }
+
+        .skeleton-info { padding: 1.1rem; display: flex; flex-direction: column; gap: 0.55rem; }
+
+        .skeleton-line {
+            height: 0.7rem;
+            background: linear-gradient(90deg, #ececec 25%, #e0e0e0 50%, #ececec 75%);
+            background-size: 200% 100%;
+            animation: shimmer 1.4s infinite;
+            border-radius: 4px;
+        }
+
+        .skeleton-line.short { width: 50%; }
+        .skeleton-line.medium { width: 75%; }
+        .skeleton-line.full { width: 100%; }
+
+        @keyframes shimmer {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+
+        .library-empty {
+            text-align: center;
+            padding: 5rem 2rem;
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .library-empty .empty-icon { font-size: 3rem; margin-bottom: 1rem; opacity: 0.35; }
+
+        .library-empty h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .library-empty p { color: var(--text-muted); font-size: 0.88rem; }
+
+        /* ─── MODULE SHELF CARDS ──────────────────────────── */
+        .module-shelf-card {
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .module-shelf-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-gold);
+        }
+
+        .mscard-inner { padding: 1.75rem; flex: 1; }
+
+        .mscard-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.85rem;
+        }
+
+        .mscard-topic {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+        }
+
+        .mscard-xp {
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .mscard-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.6rem;
+            line-height: 1.3;
+        }
+
+        .mscard-desc {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 1.1rem;
+        }
+
+        .mscard-meta {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .mscard-grade {
+            display: inline-block;
+            background: rgba(212, 165, 116, 0.1);
+            color: var(--gold-dark);
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.7rem;
+            font-weight: 700;
+        }
+
+        .mscard-parts {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .mscard-footer {
+            padding: 0.9rem 1.75rem;
+            background: var(--navy);
+            color: var(--gold);
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            transition: background 0.2s ease;
+        }
+
+        .module-shelf-card:hover .mscard-footer {
+            background: var(--navy-light);
+        }
+
+        .mscard-games {
+            padding: 0.65rem 1.75rem;
+            background: rgba(212, 165, 116, 0.08);
+            border-top: 1px solid rgba(212, 165, 116, 0.15);
+            color: var(--gold-dark);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            transition: background 0.2s ease;
+            cursor: pointer;
+        }
+
+        .mscard-games:hover {
+            background: rgba(212, 165, 116, 0.18);
+        }
+
+        /* Completed state */
+        .module-shelf-card.completed {
+            border-color: #2e7d32;
+        }
+
+        .module-shelf-card.completed .mscard-footer {
+            background: #2e7d32;
+            color: #ffffff;
+        }
+
+        .module-shelf-card.completed:hover .mscard-footer {
+            background: #1b5e20;
+        }
+
+        .mscard-complete-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            background: #e8f5e9;
+            color: #2e7d32;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            padding: 0.2rem 0.55rem;
+            border-radius: 20px;
+            margin-left: 0.5rem;
+        }
+
+        .library-count {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-left: auto;
+            padding: 0.45rem 0;
+        }
+
+        /* ─── RESPONSIVE ──────────────────────────────── */
+        @media (max-width: 768px) {
+            .header-top {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+
+            .site-title { font-size: 1.9rem; letter-spacing: 4px; }
+
+            .hero-title { font-size: 2.4rem; }
+            .hero-verse { font-size: 1.15rem; }
+
+            .cta-strip { grid-template-columns: 1fr; }
+            .cta-tile { border-right: none; border-bottom: 1px solid rgba(255,255,255,0.06); }
+
+            .pathway-grid { grid-template-columns: 1fr; }
+            .pathway-tile { border-right: none; border-bottom: 1px solid var(--border); }
+
+            .card-grid { grid-template-columns: 1fr; }
+            .media-grid { grid-template-columns: 1fr; }
+            .forum-grid { grid-template-columns: 1fr; }
+            .book-shelf { grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+            .library-hero { padding: 2rem 1.5rem; }
+
+            .section-body { padding: 2rem 1.25rem; }
+        }
+
+        /* ─── ADULT MODULE SHELF ──────────────────────────── */
+        .adult-module-shelf {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .adult-module-card {
+            background: var(--white);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            padding: 1.5rem;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .active-module {
+            cursor: pointer;
+            border-color: var(--border-gold);
+        }
+
+        .active-module:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--gold);
+        }
+
+        .locked-module {
+            opacity: 0.55;
+            cursor: default;
+        }
+
+        .amc-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .amc-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--navy);
+            line-height: 1;
+            opacity: 0.15;
+        }
+
+        .amc-badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 0.25rem 0.7rem;
+            border-radius: 20px;
+        }
+
+        .amc-badge.available {
+            background: rgba(46,125,50,0.1);
+            color: #2e7d32;
+            border: 1px solid rgba(46,125,50,0.25);
+        }
+
+        .amc-badge.coming-soon {
+            background: rgba(26,31,54,0.06);
+            color: var(--text-muted);
+            border: 1px solid var(--border);
+        }
+
+        .amc-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        .amc-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin: 0;
+            flex: 1;
+        }
+
+        .amc-parts {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .amc-part {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            padding-left: 0.75rem;
+            border-left: 2px solid var(--border-gold);
+            line-height: 1.4;
+        }
+
+        .locked-module .amc-part {
+            border-left-color: var(--border);
+        }
+
+        .amc-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 0.75rem;
+            border-top: 1px solid var(--border);
+            margin-top: auto;
+        }
+
+        .amc-time {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        .amc-cta {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+        }
+
+        .locked-cta {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ─── OCIA CALLOUT ────────────────────────────────── */
+        .ocia-callout {
+            background: var(--navy);
+            border-radius: 12px;
+            padding: 1.75rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            flex-wrap: wrap;
+            margin-top: 0.5rem;
+        }
+
+        .ocia-callout h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+
+        .ocia-callout p {
+            font-size: 0.85rem;
+            color: rgba(255,255,255,0.6);
+            line-height: 1.6;
+            max-width: 560px;
+        }
+
+        .ocia-callout .btn {
+            background: var(--gold-dark);
+            color: var(--white);
+            border: none;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .ocia-callout .btn:hover {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        @media (max-width: 640px) {
+            .adult-module-shelf { grid-template-columns: 1fr; }
+            .ocia-callout { flex-direction: column; align-items: flex-start; }
+        }
+
+    </style>
+<!-- fresh-20260404003529-59537 -->
+<!-- deploy-20260404003932-180934 -->
+<!-- deploy-20260404122246-601136 -->
+<!-- v2026040412583235590 -->
+<!-- crux-version:bible-study-v1-20260404131331-948664 -->
+</head>
+<body>
+    <header>
+        <div class="header-top">
+            <div class="logo-lockup">
+                <h1 class="site-title">CRUX</h1>
+                <span class="site-subtitle">Catholic Faith Formation</span>
+            </div>
+            <div class="header-actions">
+                <button class="btn-challenges" onclick="window.location.href='crux-challenges.html'">⚔️ Challenges</button>
+                <button class="btn-account" onclick="window.location.href='crux-account.html'">
+                    <span id="accountBtnText">My Account</span>
+                </button>
+            </div>
+        </div>
+        <nav>
+            <div class="nav-inner">
+                <button class="nav-btn active" data-section="home">Home</button>
+                <button class="nav-btn" data-section="youth">Youth Formation</button>
+                <button class="nav-btn" data-section="bible">Bible Study</button>
+                <button class="nav-btn" data-section="beliefs">Core Beliefs</button>
+                <button class="nav-btn" data-section="videos">Videos</button>
+                <button class="nav-btn" data-section="music">Music</button>
+                <button class="nav-btn" data-section="library">Library</button>
+                <button class="nav-btn" onclick="window.location.href='crux-adult-formation.html'">Adult Formation</button>
+                <button class="nav-btn" data-section="donate">Support</button>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+
+        <!-- ═══ HOME ═══════════════════════════════════════ -->
+        <section id="home" class="section active">
+            <div class="hero">
+                <div class="hero-inner">
+                    <span class="hero-cross">✟</span>
+                    <span class="hero-eyebrow">Catholic Faith Formation</span>
+                    <h1 class="hero-title">The Cross Is Our Foundation</h1>
+                    <p class="hero-verse">"Be strong and courageous. Do not be afraid; do not be discouraged, for the Lord your God will be with you wherever you go."</p>
+                    <p class="hero-reference">— Joshua 1:9</p>
+                    <div class="gold-divider"></div>
+                    <div class="hero-body">
+                        <p><strong>CRUX</strong> (Latin: "Cross") is more than a name — it is the essence of our Catholic identity. The Cross is where heaven meets earth, where justice meets mercy, where God's love conquers death.</p>
+                        <p>In a world that challenges our beliefs, Catholics are called to be <strong>bold</strong>, <strong>knowledgeable</strong>, and <strong>courageous</strong>. We don't just believe — we understand why we believe. We don't just pray — we stand firm in truth.</p>
+                        <p><strong>This is your training ground.</strong> Equip yourself with the truth of Christ, understand what we believe and why, and join a community ready to stand firm together.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="cta-strip">
+                <div class="cta-tile" onclick="showSection('beliefs')">
+                    <span class="cta-icon">†</span>
+                    <h3>Know What You Believe</h3>
+                    <p>Equip yourself with the truth. Understand the foundations of Catholic faith and be ready to defend them with reason and love.</p>
+                    <span class="cta-arrow">Explore Core Beliefs →</span>
+                </div>
+                <div class="cta-tile" onclick="showSection('bible')">
+                    <span class="cta-icon">✦</span>
+                    <h3>Study Sacred Scripture</h3>
+                    <p>The Word of God is your sword and shield. Dive deep into Scripture to strengthen your faith and discern truth.</p>
+                    <span class="cta-arrow">Open Bible Study →</span>
+                </div>
+            </div>
+
+            <div class="courage-banner">
+                <div class="courage-banner-inner">
+                    <h2>The Cross: Our Call to Action</h2>
+                    <p>The Cross is not just a symbol we wear — it's a call to action. Following Christ means embracing the Cross in our own lives: standing for truth when it's difficult, loving sacrificially, and remaining faithful when the world pulls us away. At CRUX, we don't shy away from hard teachings or difficult questions. We embrace them. We dive deep into Scripture, study the richness of Catholic tradition, and equip believers to engage the culture with confidence and compassion. <strong>CRUX is where faith gets real.</strong></p>
+                </div>
+            </div>
+
+            <div class="pathway-grid">
+                <div class="pathway-tile" onclick="showSection('youth')">
+                    <div class="pathway-icon">✟</div>
+                    <h3>Youth Formation</h3>
+                    <p>Training the next generation of faithful Catholics</p>
+                    <span class="tag">Grades 3–8</span>
+                </div>
+                <div class="pathway-tile" onclick="showSection('library')">
+                    <div class="pathway-icon">✦</div>
+                    <h3>CRUX Library</h3>
+                    <p>Curated books to equip and deepen your faith</p>
+                    <span class="tag">Recommended Reading</span>
+                </div>
+                <div class="pathway-tile" onclick="window.location.href='crux-adult-formation.html'">
+                    <div class="pathway-icon">†</div>
+                    <h3>Adult Formation</h3>
+                    <p>For those seeking truth and deeper understanding</p>
+                    <span class="tag">Adults</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ YOUTH ════════════════════════════════════════ -->
+        <section id="youth" class="section">
+            <div class="section-body">
+                <div class="section-header">
+                    <span class="eyebrow">Faith Formation</span>
+                    <h2>Youth Formation — Grades 3–8</h2>
+                    <p>Structured learning modules with lessons, readings, and quizzes — two levels for every age</p>
+                </div>
+
+                <!-- Module shelf intro -->
+                <div style="background:var(--navy);border-radius:12px;padding:2.5rem 3rem;margin-bottom:2.5rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;">
+                    <div>
+                        <h3 style="font-family:'Playfair Display',serif;color:var(--white);font-size:1.5rem;font-weight:700;margin-bottom:0.5rem;">How Modules Work</h3>
+                        <p style="color:rgba(255,255,255,0.65);font-size:0.92rem;line-height:1.7;max-width:560px;">Each module has three parts: a <strong style="color:var(--gold);">Lesson</strong>, a <strong style="color:var(--gold);">Reading</strong> with reflection questions, and a <strong style="color:var(--gold);">Quiz</strong> to earn XP. Choose Beginner or Theologian level inside each module.</p>
+                    </div>
+                    <div style="display:flex;gap:1.5rem;flex-shrink:0;">
+                        <div style="text-align:center;">
+                            <div style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);font-weight:700;">5</div>
+                            <div style="font-size:0.72rem;color:rgba(255,255,255,0.45);font-weight:600;letter-spacing:0.5px;text-transform:uppercase;">Modules</div>
+                        </div>
+                        <div style="text-align:center;">
+                            <div style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);font-weight:700;">2</div>
+                            <div style="font-size:0.72rem;color:rgba(255,255,255,0.45);font-weight:600;letter-spacing:0.5px;text-transform:uppercase;">Levels</div>
+                        </div>
+                        <div style="text-align:center;">
+                            <div style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);font-weight:700;">260</div>
+                            <div style="font-size:0.72rem;color:rgba(255,255,255,0.45);font-weight:600;letter-spacing:0.5px;text-transform:uppercase;">Max XP</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Module cards -->
+                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;margin-bottom:2.5rem;">
+
+                    <div class="module-shelf-card" data-module="trinity" onclick="window.location.href='crux-modules.html?module=trinity'">
+                        <div class="mscard-inner">
+                            <div class="mscard-top">
+                                <span class="mscard-topic">Core Beliefs</span>
+                                <span class="mscard-xp">⭐ 50 XP</span>
+                            </div>
+                            <h3 class="mscard-title">The Holy Trinity</h3>
+                            <p class="mscard-desc">Understanding the central mystery of the Christian faith — one God in three divine Persons.</p>
+                            <div class="mscard-meta">
+                                <span class="mscard-grade">Grades 3–8</span>
+                                <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                            </div>
+                        </div>
+                        <div class="mscard-footer">
+                            Start Module →</div>
+                        <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=trinity'">
+                            🎮 Practice Games
+                        </div>
+                    </div>
+
+                    <div class="module-shelf-card" data-module="sacraments" onclick="window.location.href='crux-modules.html?module=sacraments'">
+                        <div class="mscard-inner">
+                            <div class="mscard-top">
+                                <span class="mscard-topic">Core Beliefs</span>
+                                <span class="mscard-xp">⭐ 50 XP</span>
+                            </div>
+                            <h3 class="mscard-title">The Seven Sacraments</h3>
+                            <p class="mscard-desc">Outward signs instituted by Christ that give grace — seven holy encounters with God across the span of a life.</p>
+                            <div class="mscard-meta">
+                                <span class="mscard-grade">Grades 3–8</span>
+                                <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                            </div>
+                        </div>
+                        <div class="mscard-footer">
+                            Start Module →</div>
+                        <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=sacraments'">
+                            🎮 Practice Games
+                        </div>
+                    </div>
+
+                    <div class="module-shelf-card" data-module="jesus" onclick="window.location.href='crux-modules.html?module=jesus'">
+                        <div class="mscard-inner">
+                            <div class="mscard-top">
+                                <span class="mscard-topic">Christology</span>
+                                <span class="mscard-xp">⭐ 50 XP</span>
+                            </div>
+                            <h3 class="mscard-title">Who is Jesus Christ?</h3>
+                            <p class="mscard-desc">The most important question ever asked — and the answer that changes everything.</p>
+                            <div class="mscard-meta">
+                                <span class="mscard-grade">Grades 3–8</span>
+                                <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                            </div>
+                        </div>
+                        <div class="mscard-footer">
+                            Start Module →</div>
+                        <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=jesus'">
+                            🎮 Practice Games
+                        </div>
+                    </div>
+
+                    <div class="module-shelf-card" data-module="mary" onclick="window.location.href='crux-modules.html?module=mary'">
+                        <div class="mscard-inner">
+                            <div class="mscard-top">
+                                <span class="mscard-topic">Catholic Life</span>
+                                <span class="mscard-xp">⭐ 50 XP</span>
+                            </div>
+                            <h3 class="mscard-title">Mary & the Saints</h3>
+                            <p class="mscard-desc">Why Catholics honor Mary and ask the saints to pray for us — and why this is not worship.</p>
+                            <div class="mscard-meta">
+                                <span class="mscard-grade">Grades 3–8</span>
+                                <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                            </div>
+                        </div>
+                        <div class="mscard-footer">
+                            Start Module →</div>
+                        <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=mary'">
+                            🎮 Practice Games
+                        </div>
+                    </div>
+
+                    <div class="module-shelf-card" data-module="conscience" onclick="window.location.href='crux-modules.html?module=conscience'">
+                        <div class="mscard-inner">
+                            <div class="mscard-top">
+                                <span class="mscard-topic">Moral Theology</span>
+                                <span class="mscard-xp">⭐ 60 XP</span>
+                            </div>
+                            <h3 class="mscard-title">Conscience & Moral Decision-Making</h3>
+                            <p class="mscard-desc">What the Church teaches about conscience — and why it is not a permission slip to do whatever you want.</p>
+                            <div class="mscard-meta">
+                                <span class="mscard-grade">Grades 6–8</span>
+                                <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                            </div>
+                        </div>
+                        <div class="mscard-footer">
+                            Start Module →</div>
+                        <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=conscience'">
+                            🎮 Practice Games
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="notice-box">
+                    <p>More modules coming soon. Each completed module awards XP toward your <strong>CRUX rank</strong> — from Seeker to Saint.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ BIBLE ════════════════════════════════════════ -->
+        <section id="bible" class="section">
+            <div class="section-body">
+                <div class="section-header">
+                    <span class="eyebrow" data-v="bible-study-v1-20260404131331-948664">Sacred Scripture</span>
+                    <h2>Bible Study Resources</h2>
+                    <p>Explore the living Word of God — studies written for every age, from first encounters with Scripture to deeper theological engagement</p>
+                </div>
+
+                <!-- ── GRADES 3–5 ── -->
+                <div class="category-block">
+                    <h3>For Younger Students <span style="font-size:0.85rem;font-weight:400;color:var(--text-muted);">Grades 3–5</span></h3>
+
+                    <div class="study-item">
+                        <h5>The Life of Jesus: A Journey Through the Gospels</h5>
+                        <p>Follow Jesus from His birth in Bethlehem to His resurrection on Easter morning. Each lesson uses a Gospel story, a simple reflection question, and a short prayer. Students discover that Jesus is not just a historical figure — He is someone who loves them personally.</p>
+                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">8 lessons</span>
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Matthew · Luke · John</span>
+                        </div>
+                    </div>
+
+                    <div class="study-item">
+                        <h5>Heroes of the Old Testament</h5>
+                        <p>Meet Noah, Abraham, Moses, David, Esther, and Daniel — people who trusted God even when it was hard. Each story shows how God keeps His promises and calls ordinary people to do extraordinary things. Students explore how these ancient stories speak to their lives today.</p>
+                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">6 lessons</span>
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Genesis · Exodus · Samuel · Esther · Daniel</span>
+                        </div>
+                    </div>
+
+                    <div class="study-item">
+                        <h5>The Psalms: Learning to Pray with Scripture</h5>
+                        <p>The Psalms are the prayer book of the Bible — songs of joy, cries for help, and hymns of praise that God's people have prayed for thousands of years. Students learn Psalms 23, 27, and 100 by heart and discover how to pray honestly with God in every situation.</p>
+                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">5 lessons</span>
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Psalms</span>
+                        </div>
+                    </div>
+
+                    <div class="study-item">
+                        <h5>The Sermon on the Mount: Jesus's Blueprint for Life</h5>
+                        <p>The Beatitudes, the Our Father, the Golden Rule — this study walks through Jesus's most famous teaching one section at a time. Students discover what it actually means to be "blessed" and how Jesus's words turn the world's values upside down in the best possible way.</p>
+                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">4 lessons</span>
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Matthew 5–7</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── GRADES 6–8 ── -->
+                <div class="category-block">
+                    <h3>For Older Students <span style="font-size:0.85rem;font-weight:400;color:var(--text-muted);">Grades 6–8</span></h3>
+
+                    <div class="study-item">
+                        <h5>The Gospel of Mark: Who Is Jesus?</h5>
+                        <p>Mark is the shortest and fastest Gospel — the word "immediately" appears 41 times. This chapter-by-chapter study asks the question that runs through every page: who is this man? Students wrestle with the same question the disciples asked in the boat: "Who is this, that even the wind and the sea obey him?"</p>
+                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">8 lessons</span>
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Mark 1–16</span>
+                        </div>
+                    </div>
+
+                    <div class="study-item">
+                        <h5>Acts of the Apostles: The Church Is Born</h5>
+                        <p>What happened after the Resurrection? This study follows the apostles from a locked upper room in Jerusalem to the streets of Rome, driven by a Holy Spirit that turns fishermen into preachers and persecutors into missionaries. Students see how the same Spirit is available to them today.</p>
+                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">6 lessons</span>
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Acts 1–28</span>
+                        </div>
+                    </div>
+
+                    <div class="study-item">
+                        <h5>Wisdom Literature: How to Actually Live Well</h5>
+                        <p>Proverbs, Ecclesiastes, and the Book of Wisdom address the questions students actually have: how do I make good decisions? What makes life meaningful? Why do bad things happen to good people? This study takes these ancient texts seriously as practical guides for navigating middle school and beyond.</p>
+                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">5 lessons</span>
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Proverbs · Ecclesiastes · Wisdom</span>
+                        </div>
+                    </div>
+
+                    <div class="study-item">
+                        <h5>The Passion Narratives: What Really Happened?</h5>
+                        <p>A close reading of the four Passion accounts — Matthew, Mark, Luke, and John — side by side. Students discover what each Gospel emphasizes and why the differences matter. At the center is the question every teenager eventually asks: why would anyone die for people who abandoned him?</p>
+                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">4 lessons</span>
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Matthew · Mark · Luke · John</span>
+                        </div>
+                    </div>
+
+                    <div class="study-item">
+                        <h5>The Letters of Paul: Faith in the Real World</h5>
+                        <p>Selected passages from Philippians, Colossians, and 1 Corinthians 13. Paul writes from prison, from conflict, from exhaustion — and every letter is about how to live as a Christian when it costs something. Students engage with Paul not as a distant theologian but as a man writing urgent letters to real communities.</p>
+                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">5 lessons</span>
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Philippians · Colossians · 1 Corinthians</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ── ADULTS ── -->
+                <div class="category-block">
+                    <h3>For Adults</h3>
+
+                    <div class="study-item">
+                        <h5>Romans: The Gospel Explained</h5>
+                        <p>The most systematic presentation of the Gospel in the New Testament. Paul moves from humanity's universal need for grace, through justification by faith, to the life of the Spirit, and finally to God's plan for all of history. This study follows the argument of Romans with the attention it deserves — not as a list of doctrines but as a unified case for why the Gospel changes everything.</p>
+                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">10 lessons</span>
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Romans 1–16</span>
+                        </div>
+                    </div>
+
+                    <div class="study-item">
+                        <h5>The Gospel of John: In the Beginning Was the Word</h5>
+                        <p>John's Gospel is different from the other three — slower, more theological, more concerned with identity than action. Seven signs. Seven "I Am" statements. One overriding question: do you believe? This study takes John seriously as a work of profound theological art, written so that you might believe that Jesus is the Christ, the Son of God, and that believing you might have life in his name.</p>
+                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">8 lessons</span>
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">John 1–21</span>
+                        </div>
+                    </div>
+
+                    <div class="study-item">
+                        <h5>Isaiah: The Prophet Who Saw Christ Coming</h5>
+                        <p>Isaiah is the most quoted Old Testament book in the New Testament — and for good reason. The Suffering Servant, the Virgin Birth, the Prince of Peace, the New Creation: Isaiah saw across seven centuries and described the Messiah with stunning precision. This study reads Isaiah through both its historical context and its fulfillment in Christ.</p>
+                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">7 lessons</span>
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Isaiah 1–66</span>
+                        </div>
+                    </div>
+
+                    <div class="study-item">
+                        <h5>The Psalms as Prayer: Learning the Language of the Soul</h5>
+                        <p>C.S. Lewis called the Psalms "the anatomy of the soul." This adult study treats them as a school of prayer — working through lament, praise, confession, trust, and thanksgiving as distinct modes of approaching God. Particular attention to the psalms the Church prays at Mass and in the Liturgy of the Hours.</p>
+                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">6 lessons</span>
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Selected Psalms</span>
+                        </div>
+                    </div>
+
+                    <div class="study-item">
+                        <h5>Genesis: In the Beginning</h5>
+                        <p>The foundational questions — where did we come from, why is there evil, what are we for — are all addressed in the first eleven chapters of Genesis. This study reads Genesis neither as a science textbook nor as mere myth but as the Catholic Church reads it: as inspired truth about God, humanity, and the human condition. Covers creation, the fall, Cain and Abel, the flood, Babel, and the call of Abraham.</p>
+                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">8 lessons</span>
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Genesis 1–25</span>
+                        </div>
+                    </div>
+
+                    <div class="study-item">
+                        <h5>The Sermon on the Mount: The Constitution of the Kingdom</h5>
+                        <p>Jesus's most extended teaching is also his most demanding. This adult study works through Matthew 5–7 with the help of the Catechism and the Church Fathers — taking seriously what Jesus actually said about anger, lust, oaths, enemies, prayer, wealth, and anxiety. Not a comfortable study, but an honest one.</p>
+                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">6 lessons</span>
+                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Matthew 5–7</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notice-box">
+                    <p>📖 <strong>More studies coming.</strong> Full lesson content, discussion guides, and progress tracking will be available as each study is completed. Check back regularly — new studies are added throughout the year.</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ═══ BELIEFS ══════════════════════════════════════ -->
+        <section id="beliefs" class="section">
+            <div class="section-body">
+                <div class="section-header">
+                    <span class="eyebrow">Catholic Doctrine</span>
+                    <h2>What Catholics Believe and Why</h2>
+                    <p>Clear explanations of the foundations of our faith</p>
+                </div>
+
+                <div class="belief-card">
+                    <h3><span class="belief-number">1</span> The Trinity</h3>
+                    <div class="belief-content">
+                        <p class="belief-explanation">Catholics believe in one God who exists as three persons: Father, Son, and Holy Spirit. This mystery is at the heart of our faith. God the Father creates and sustains all things. Jesus Christ, the Son, became human to save us. The Holy Spirit guides and strengthens the Church.</p>
+                        <div class="belief-why">
+                            <strong>Why does this matter?</strong>
+                            <p>Understanding the Trinity helps us know that God is a communion of love, and we're invited into that love. Our faith isn't about following rules, but about entering into a relationship with the living God who is Father, Son, and Holy Spirit.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="belief-card">
+                    <h3><span class="belief-number">2</span> Jesus Christ: True God and True Man</h3>
+                    <div class="belief-content">
+                        <p class="belief-explanation">Catholics believe Jesus is both fully divine and fully human. He was born of the Virgin Mary, lived a sinless life, died on the cross for our sins, rose from the dead on the third day, and ascended to heaven. Through His death and resurrection, He conquered sin and death.</p>
+                        <div class="belief-why">
+                            <strong>Why does this matter?</strong>
+                            <p>Because Jesus is both God and human, He perfectly bridges the gap between us and God. He understands our struggles because He lived as a human, and He can save us because He is God. His resurrection gives us hope for eternal life.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="belief-card">
+                    <h3><span class="belief-number">3</span> The Real Presence in the Eucharist</h3>
+                    <div class="belief-content">
+                        <p class="belief-explanation">Catholics believe that during Mass, the bread and wine truly become the Body and Blood of Jesus Christ. This isn't just a symbol — Jesus is really present in the Eucharist. We call this transubstantiation.</p>
+                        <div class="belief-why">
+                            <strong>Why does this matter?</strong>
+                            <p>The Eucharist is the "source and summit" of our faith because we actually receive Jesus Himself. This incredible gift allows us to be united with Christ and nourished for our journey. Jesus said, "This is my body" and "This is my blood," and we take Him at His word.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="belief-card">
+                    <h3><span class="belief-number">4</span> The Sacraments</h3>
+                    <div class="belief-content">
+                        <p class="belief-explanation">Catholics believe in seven sacraments: Baptism, Confirmation, Eucharist, Reconciliation (Confession), Anointing of the Sick, Holy Orders, and Matrimony. These are outward signs instituted by Christ that give us grace — God's life within us.</p>
+                        <div class="belief-why">
+                            <strong>Why does this matter?</strong>
+                            <p>The sacraments aren't just rituals; they're encounters with Jesus at key moments in our lives. Through them, we receive the grace we need to grow in holiness and live as disciples. They connect us to 2,000 years of Christian tradition.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="belief-card">
+                    <h3><span class="belief-number">5</span> The Church: One, Holy, Catholic, and Apostolic</h3>
+                    <div class="belief-content">
+                        <p class="belief-explanation">Catholics believe the Church is the Body of Christ on earth, founded by Jesus and built on the apostles. We believe in the authority of Scripture and Tradition, and that the Pope and bishops are successors of the apostles with authority to teach and guide the Church.</p>
+                        <div class="belief-why">
+                            <strong>Why does this matter?</strong>
+                            <p>Faith isn't meant to be lived alone. The Church is our family, our teacher, and our guide. The unbroken line from the apostles to today's bishops (apostolic succession) ensures we're receiving the authentic teaching of Christ, not just personal opinions.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="belief-card">
+                    <h3><span class="belief-number">6</span> Mary and the Saints</h3>
+                    <div class="belief-content">
+                        <p class="belief-explanation">Catholics honor Mary as the Mother of God and the greatest of all saints. We also ask Mary and the saints to pray for us, just as we ask our friends to pray for us. We don't worship them — we worship God alone — but we honor them as examples and ask for their intercession.</p>
+                        <div class="belief-why">
+                            <strong>Why does this matter?</strong>
+                            <p>Mary and the saints show us what it looks like to follow Jesus faithfully. They're part of the "great cloud of witnesses" cheering us on. Because death doesn't separate us from God's family, we can still ask our brothers and sisters in heaven to pray for us.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="belief-card">
+                    <h3><span class="belief-number">7</span> Life, Death, and Eternity</h3>
+                    <div class="belief-content">
+                        <p class="belief-explanation">Catholics believe every human life is sacred from conception to natural death. We believe in heaven (eternal life with God), hell (eternal separation from God), and purgatory (final purification before heaven). We believe in the resurrection of the body and that Christ will come again in glory.</p>
+                        <div class="belief-why">
+                            <strong>Why does this matter?</strong>
+                            <p>How we live matters because our choices have eternal consequences. But God's mercy is infinite, and He wants everyone to be saved. Understanding heaven, hell, and purgatory helps us take our moral choices seriously while trusting in God's loving plan for us.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ VIDEOS ═══════════════════════════════════════ -->
+        <section id="videos" class="section">
+            <div class="section-body">
+                <div class="section-header">
+                    <span class="eyebrow">Faith Formation</span>
+                    <h2>Faith Formation Videos</h2>
+                    <p>Curated content to inspire, challenge, and deepen your walk with Christ</p>
+                </div>
+
+                <div class="category-block">
+                    <h3>Culture & Apologetics</h3>
+                    <p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:1.5rem;">Movie clips, podcast interviews, cultural commentary, and apologetics — exploring faith in the modern world</p>
+                    <div class="media-grid">
+                        <!-- Videos load from Firebase -->
+                    </div>
+                </div>
+
+                <div class="category-block">
+                    <h3>Scripture & Theology</h3>
+                    <p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:1.5rem;">Bible studies, theological deep dives, and teachings on Catholic doctrine</p>
+                    <div class="media-grid">
+                        <!-- Videos load from Firebase -->
+                    </div>
+                </div>
+
+                <div class="category-block">
+                    <h3>For Youth & Families</h3>
+                    <p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:1.5rem;">Age-appropriate content for young Catholics navigating faith at school, home, and with friends</p>
+                    <div class="media-grid">
+                        <!-- Videos load from Firebase -->
+                    </div>
+                </div>
+
+                <div class="notice-box">
+                    <p><strong>Videos loading from Firebase.</strong> Add videos through the admin panel and they'll appear here automatically, organized by category.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ MUSIC ════════════════════════════════════════ -->
+        <section id="music" class="section">
+            <div class="section-body">
+                <div class="section-header">
+                    <span class="eyebrow">Worship</span>
+                    <h2>Sacred Music & Worship</h2>
+                    <p>Music that lifts the heart and mind to God</p>
+                </div>
+
+                <div class="playlist-block">
+                    <h3>Spotify Playlists</h3>
+                    <p class="playlist-desc">Curated collections of sacred music, contemporary Christian worship, and traditional Catholic hymns to enhance your prayer life.</p>
+                    <div class="media-grid">
+                        <div>
+                            <p class="playlist-item-title">Sacred Classics</p>
+                            <iframe class="spotify-embed"
+                                src="https://open.spotify.com/embed/playlist/37i9dQZF1DWWEJlAGA9gs0?utm_source=generator"
+                                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                loading="lazy">
+                            </iframe>
+                            <p class="playlist-item-desc">Timeless hymns and sacred choral music for meditation and prayer</p>
+                        </div>
+                        <div>
+                            <p class="playlist-item-title">Contemporary Worship</p>
+                            <iframe class="spotify-embed"
+                                src="https://open.spotify.com/embed/playlist/37i9dQZF1DWWEJlAGA9gs0?utm_source=generator"
+                                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                loading="lazy">
+                            </iframe>
+                            <p class="playlist-item-desc">Modern Catholic and Christian worship music for youth and young adults</p>
+                        </div>
+                        <div>
+                            <p class="playlist-item-title">Gregorian Chant</p>
+                            <iframe class="spotify-embed"
+                                src="https://open.spotify.com/embed/playlist/37i9dQZF1DWWEJlAGA9gs0?utm_source=generator"
+                                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+                                loading="lazy">
+                            </iframe>
+                            <p class="playlist-item-desc">Ancient chant of the Church — perfect for contemplative prayer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="playlist-block">
+                    <h3>Apple Music</h3>
+                    <p class="playlist-desc">Discover sacred music and Catholic artists on Apple Music.</p>
+                    <div class="media-grid">
+                        <div>
+                            <p class="playlist-item-title">Adoration & Prayer</p>
+                            <iframe class="apple-music-embed"
+                                allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
+                                sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
+                                src="https://embed.music.apple.com/us/playlist/christian-worship/pl.567a546681a34715a696c7460de50e82">
+                            </iframe>
+                            <p class="playlist-item-desc">Peaceful instrumental and vocal music for Eucharistic Adoration</p>
+                        </div>
+                        <div>
+                            <p class="playlist-item-title">Catholic Artists</p>
+                            <iframe class="apple-music-embed"
+                                allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
+                                sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
+                                src="https://embed.music.apple.com/us/playlist/christian-worship/pl.567a546681a34715a696c7460de50e82">
+                            </iframe>
+                            <p class="playlist-item-desc">Contemporary Catholic musicians bringing faith to life through song</p>
+                        </div>
+                        <div>
+                            <p class="playlist-item-title">Youth Favorites</p>
+                            <iframe class="apple-music-embed"
+                                allow="autoplay *; encrypted-media *; fullscreen *; clipboard-write"
+                                sandbox="allow-forms allow-popups allow-same-origin allow-scripts allow-storage-access-by-user-activation allow-top-navigation-by-user-activation"
+                                src="https://embed.music.apple.com/us/playlist/christian-worship/pl.567a546681a34715a696c7460de50e82">
+                            </iframe>
+                            <p class="playlist-item-desc">Uplifting Christian music popular with teens and young adults</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notice-box">
+                    <p><strong>How to update playlists:</strong> Go to Spotify or Apple Music → find your playlist → Share → Copy embed code → update through the admin panel.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ LIBRARY ══════════════════════════════════════ -->
+        <section id="library" class="section">
+            <div class="section-body">
+                <div class="section-header">
+                    <span class="eyebrow">Recommended Reading</span>
+                    <h2>The CRUX Library</h2>
+                    <p>Curated books to deepen your faith, sharpen your mind, and equip you to share what you believe</p>
+                </div>
+
+                <div class="library-hero">
+                    <h3>Books That Built the Faith</h3>
+                    <p>Every book here has been chosen because it does something rare: it makes the truth of Catholicism impossible to ignore. Whether you're new to the faith or have been Catholic your whole life, these books will challenge, equip, and inspire you.</p>
+                    <p class="affiliate-note">Links go to Amazon. As an affiliate, CRUX may earn a small commission at no extra cost to you — 100% of which supports keeping this platform free.</p>
+                </div>
+
+                <div class="library-filter-bar">
+                    <button class="lib-filter-btn active" onclick="filterBooks('all', event)">All Books</button>
+                    <button class="lib-filter-btn" onclick="filterBooks('Apologetics', event)">Apologetics</button>
+                    <button class="lib-filter-btn" onclick="filterBooks('Scripture', event)">Scripture</button>
+                    <button class="lib-filter-btn" onclick="filterBooks('Saints', event)">Saints</button>
+                    <button class="lib-filter-btn" onclick="filterBooks('Prayer & Spirituality', event)">Prayer & Spirituality</button>
+                    <button class="lib-filter-btn" onclick="filterBooks('Youth', event)">Youth</button>
+                    <button class="lib-filter-btn" onclick="filterBooks('Adult Formation', event)">Adult Formation</button>
+                    <span class="library-count" id="bookCount"></span>
+                </div>
+
+                <!-- Book shelf — populated by Firebase -->
+                <div class="book-shelf" id="bookShelf">
+                    <!-- Loading skeletons shown while Firebase loads -->
+                    <div class="book-skeleton">
+                        <div class="skeleton-cover"></div>
+                        <div class="skeleton-info">
+                            <div class="skeleton-line short"></div>
+                            <div class="skeleton-line medium"></div>
+                            <div class="skeleton-line full"></div>
+                            <div class="skeleton-line full"></div>
+                        </div>
+                    </div>
+                    <div class="book-skeleton">
+                        <div class="skeleton-cover"></div>
+                        <div class="skeleton-info">
+                            <div class="skeleton-line short"></div>
+                            <div class="skeleton-line medium"></div>
+                            <div class="skeleton-line full"></div>
+                            <div class="skeleton-line full"></div>
+                        </div>
+                    </div>
+                    <div class="book-skeleton">
+                        <div class="skeleton-cover"></div>
+                        <div class="skeleton-info">
+                            <div class="skeleton-line short"></div>
+                            <div class="skeleton-line medium"></div>
+                            <div class="skeleton-line full"></div>
+                            <div class="skeleton-line full"></div>
+                        </div>
+                    </div>
+                    <div class="book-skeleton">
+                        <div class="skeleton-cover"></div>
+                        <div class="skeleton-info">
+                            <div class="skeleton-line short"></div>
+                            <div class="skeleton-line medium"></div>
+                            <div class="skeleton-line full"></div>
+                            <div class="skeleton-line full"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notice-box" style="margin-top:0;">
+                    <p>Books are managed through the <strong>admin panel</strong>. Add a book to the <code>books</code> Firestore collection and it will appear here instantly — no code changes needed.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ DONATE ════════════════════════════════════════ -->
+        <section id="donate" class="section">
+            <div class="section-body">
+                <div class="donation-hero">
+                    <h2>Support Through Charity</h2>
+                    <p>CRUX is free for everyone. But if this resource has value to you, we invite you to make a monthly donation to a Catholic charity of your choice. Your generosity supports the Church's mission to serve the poor, defend life, and spread the Gospel.</p>
+                    <p><em>"Whatever you did for one of the least of these brothers and sisters of mine, you did for me." — Matthew 25:40</em></p>
+                </div>
+
+                <div class="value-selector">
+                    <h3>What is CRUX Worth to You?</h3>
+                    <p>Choose a monthly amount that reflects the value this resource brings to your faith journey</p>
+
+                    <div class="amount-options">
+                        <button class="amount-btn" onclick="selectAmount(5)">
+                            <span class="amount">$5</span>
+                            <span class="period">/month</span>
+                        </button>
+                        <button class="amount-btn" onclick="selectAmount(10)">
+                            <span class="amount">$10</span>
+                            <span class="period">/month</span>
+                        </button>
+                        <button class="amount-btn" onclick="selectAmount(25)">
+                            <span class="amount">$25</span>
+                            <span class="period">/month</span>
+                        </button>
+                        <button class="amount-btn" onclick="selectAmount(50)">
+                            <span class="amount">$50</span>
+                            <span class="period">/month</span>
+                        </button>
+                        <button class="amount-btn" onclick="selectAmount(100)">
+                            <span class="amount">$100</span>
+                            <span class="period">/month</span>
+                        </button>
+                    </div>
+
+                    <div class="custom-amount">
+                        <label>Or enter a custom amount:</label>
+                        <input type="number" id="customAmount" placeholder="$" min="1" onchange="selectCustomAmount()">
+                    </div>
+                </div>
+
+                <div class="admin-card">
+                    <h2 style="font-family:'Playfair Display',serif;color:var(--navy);text-align:center;font-size:1.8rem;margin-bottom:0.5rem;font-weight:700;">Choose Your Charity</h2>
+                    <p style="text-align:center;color:var(--text-secondary);margin-bottom:2.5rem;font-size:0.95rem;">Select the Catholic organization you'd like to support with your monthly donation</p>
+
+                    <div class="charity-grid">
+                        <div class="charity-card" onclick="selectCharity('catholic-charities', 'Catholic Charities USA', 'https://www.catholiccharitiesusa.org/donate/')">
+                            <div class="charity-logo">⛪</div>
+                            <h4>Catholic Charities USA</h4>
+                            <p>Serving those in poverty and upholding the dignity of every person through food assistance, housing, disaster relief, and more.</p>
+                            <a href="https://www.catholiccharitiesusa.org" target="_blank" class="charity-link">Learn More →</a>
+                        </div>
+                        <div class="charity-card" onclick="selectCharity('catholic-relief', 'Catholic Relief Services', 'https://support.crs.org/donate/')">
+                            <div class="charity-logo">🌍</div>
+                            <h4>Catholic Relief Services</h4>
+                            <p>International humanitarian agency serving the poor and vulnerable in over 100 countries worldwide.</p>
+                            <a href="https://www.crs.org" target="_blank" class="charity-link">Learn More →</a>
+                        </div>
+                        <div class="charity-card" onclick="selectCharity('prolifeacrossamerica', 'Pro-Life Across America', 'https://prolifeacrossamerica.org/donate/')">
+                            <div class="charity-logo">👶</div>
+                            <h4>Pro-Life Across America</h4>
+                            <p>Defending the sanctity of life from conception to natural death through education, advocacy, and support.</p>
+                            <a href="https://prolifeacrossamerica.org" target="_blank" class="charity-link">Learn More →</a>
+                        </div>
+                        <div class="charity-card" onclick="selectCharity('knights-of-columbus', 'Knights of Columbus Charities', 'https://www.kofc.org/en/what-we-do/charity/index.html')">
+                            <div class="charity-logo">🛡️</div>
+                            <h4>Knights of Columbus</h4>
+                            <p>Supporting Catholic education, disaster relief, and assistance for persecuted Christians worldwide.</p>
+                            <a href="https://www.kofc.org" target="_blank" class="charity-link">Learn More →</a>
+                        </div>
+                        <div class="charity-card" onclick="selectCharity('usccb', 'USCCB Humanitarian Aid', 'https://www.usccb.org/committees/catholic-relief-services-usccb')">
+                            <div class="charity-logo">✝️</div>
+                            <h4>USCCB Humanitarian Aid</h4>
+                            <p>U.S. Conference of Catholic Bishops' efforts to aid refugees, migrants, and those in crisis.</p>
+                            <a href="https://www.usccb.org" target="_blank" class="charity-link">Learn More →</a>
+                        </div>
+                        <div class="charity-card" onclick="selectCharity('st-vincent-de-paul', 'Society of St. Vincent de Paul', 'https://www.svdpusa.org/donate')">
+                            <div class="charity-logo">🤝</div>
+                            <h4>St. Vincent de Paul Society</h4>
+                            <p>Helping the poor through person-to-person service, providing food, shelter, and dignity.</p>
+                            <a href="https://www.svdpusa.org" target="_blank" class="charity-link">Learn More →</a>
+                        </div>
+                        <div class="charity-card" onclick="selectCharity('food-for-the-poor', 'Food For The Poor', 'https://www.foodforthepoor.org/donate/')">
+                            <div class="charity-logo">🍞</div>
+                            <h4>Food For The Poor</h4>
+                            <p>Largest international relief organization in the U.S., serving the poorest of the poor in Latin America and the Caribbean.</p>
+                            <a href="https://www.foodforthepoor.org" target="_blank" class="charity-link">Learn More →</a>
+                        </div>
+                        <div class="charity-card" onclick="selectCharity('missionaries-of-charity', 'Missionaries of Charity', 'https://www.motherteresa.org/donate.html')">
+                            <div class="charity-logo">❤️</div>
+                            <h4>Missionaries of Charity</h4>
+                            <p>Founded by St. Mother Teresa, serving the poorest of the poor with unconditional love.</p>
+                            <a href="https://www.motherteresa.org" target="_blank" class="charity-link">Learn More →</a>
+                        </div>
+                    </div>
+
+                    <div id="donationSummary" class="donation-summary" style="display: none;">
+                        <h4>Your Monthly Donation</h4>
+                        <p><strong>Amount:</strong> $<span id="summaryAmount">0</span>/month</p>
+                        <p><strong>Charity:</strong> <span id="summaryCharity">None selected</span></p>
+                    </div>
+
+                    <button id="donateButton" class="donate-btn" onclick="processDonation()" disabled>
+                        Continue to Donation
+                    </button>
+                </div>
+
+                <div class="category-block" style="margin-top:2rem;">
+                    <h3>Why Give Through Charity?</h3>
+                    <p style="color:var(--text-primary);line-height:1.8;margin-bottom:1rem;font-size:0.97rem;">
+                        CRUX exists to serve the Church and build up the faithful. We believe the best way to support this mission is not to keep donations, but to direct them toward organizations doing the essential work of the Gospel: feeding the hungry, sheltering the homeless, defending the unborn, and bringing Christ to the nations.
+                    </p>
+                    <p style="color:var(--text-primary);line-height:1.8;margin-bottom:1.5rem;font-size:0.97rem;">
+                        When you choose to donate through CRUX, 100% of your gift goes directly to the charity you select. We receive nothing — and that's exactly how we want it.
+                    </p>
+                    <p style="color:var(--gold-dark);line-height:1.8;font-weight:600;text-align:center;font-style:italic;font-family:'Playfair Display',serif;font-size:1.05rem;">
+                        "It is more blessed to give than to receive." — Acts 20:35
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- ═══ RCIA ══════════════════════════════════════════ -->
+        
+
+    </div>
+
+    <div class="scripture-footer">
+        <p>"I can do all things through Christ who strengthens me."</p>
+        <cite>— Philippians 4:13</cite>
+    </div>
+
+    <script>
+        // ── Navigation ──────────────────────────────────
+        function showSection(sectionId) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+            const target = document.getElementById(sectionId);
+            if (target) target.classList.add('active');
+            const btn = document.querySelector(`[data-section="${sectionId}"]`);
+            if (btn) btn.classList.add('active');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            // Load module completions whenever Youth tab is shown
+            if (sectionId === 'youth') loadModuleCompletions();
+        }
+
+        document.querySelectorAll('.nav-btn[data-section]').forEach(button => {
+            button.addEventListener('click', () => {
+                const section = button.getAttribute('data-section');
+                if (section) showSection(section);
+            });
+        });
+
+        // ── Youth Filtering ─────────────────────────────
+        function filterYouth(grade, event) {
+            const cards = document.querySelectorAll('.youth-content');
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            if (event && event.target) event.target.classList.add('active');
+            cards.forEach(card => {
+                const cardGrades = card.getAttribute('data-grades');
+                card.style.display = (grade === 'all' || cardGrades === grade) ? 'block' : 'none';
+            });
+        }
+
+        // ── Module Completions ──────────────────────────
+        // uid can be passed directly (from onAuthStateChanged) or resolved from window.currentUser
+        async function loadModuleCompletions(uid) {
+            if (!window.db || !window.firebaseModules) return;
+
+            // Resolve uid — accept direct arg, fall back to window.currentUser
+            const resolvedUid = uid || (window.currentUser && window.currentUser.uid);
+            if (!resolvedUid) return;
+
+            try {
+                const { doc, getDoc } = window.firebaseModules;
+                const snap = await getDoc(doc(window.db, 'userProgress', resolvedUid));
+                if (!snap.exists()) return;
+
+                const completed = snap.data().completedModules || [];
+                if (completed.length === 0) return;
+
+                completed.forEach(moduleId => {
+                    const card = document.querySelector(`.module-shelf-card[data-module="${moduleId}"]`);
+                    if (!card) return;
+
+                    // Guard against running twice on the same card
+                    if (card.classList.contains('completed')) return;
+
+                    card.classList.add('completed');
+
+                    const topicEl = card.querySelector('.mscard-topic');
+                    if (topicEl && !card.querySelector('.mscard-complete-badge')) {
+                        topicEl.insertAdjacentHTML('afterend',
+                            '<span class="mscard-complete-badge">✓ Completed</span>'
+                        );
+                    }
+
+                    const footer = card.querySelector('.mscard-footer');
+                    if (footer) footer.textContent = '✓ Completed — Review Module →';
+                });
+
+            } catch (e) {
+                console.error('Error loading module completions:', e);
+            }
+        }
+
+        // ── Firebase Dynamic Content ────────────────────
+        async function loadDynamicContent() {
+            await loadVideos();
+            await loadSpotifyPlaylists();
+            await loadAppleMusicPlaylists();
+            await loadBooks();
+        }
+
+        async function loadVideos() {
+            const { collection, getDocs, query, orderBy } = window.firebaseModules;
+            const db = window.db;
+            const videos = [];
+            try {
+                const q = query(collection(db, 'videos'), orderBy('createdAt', 'desc'));
+                const snapshot = await getDocs(q);
+                snapshot.forEach(doc => videos.push({ id: doc.id, ...doc.data() }));
+                console.log(`✅ Loaded ${videos.length} videos from Firebase`);
+            } catch (error) {
+                console.error('Error loading videos:', error);
+                return;
+            }
+
+            if (videos.length === 0) return;
+
+            const sections = {
+                'Culture & Apologetics': [],
+                'Scripture & Theology': [],
+                'For Youth & Families': []
+            };
+
+            videos.forEach(video => {
+                const section = video.category || 'Culture & Apologetics';
+                if (sections[section]) sections[section].push(video);
+                else sections['Culture & Apologetics'].push(video);
+            });
+
+            const videoSection = document.getElementById('videos');
+            if (!videoSection) return;
+
+            const categoryBlocks = videoSection.querySelectorAll('.category-block');
+            const sectionNames = ['Culture & Apologetics', 'Scripture & Theology', 'For Youth & Families'];
+
+            categoryBlocks.forEach((block, index) => {
+                const sectionName = sectionNames[index];
+                const sectionVideos = sections[sectionName];
+                if (sectionVideos && sectionVideos.length > 0) {
+                    const mediaGrid = block.querySelector('.media-grid');
+                    if (mediaGrid) {
+                        mediaGrid.innerHTML = '';
+                        sectionVideos.forEach(video => {
+                            const mediaCard = document.createElement('div');
+                            mediaCard.className = 'media-card';
+                            const iframe = document.createElement('iframe');
+                            iframe.className = 'media-embed';
+                            iframe.src = `https://www.youtube-nocookie.com/embed/${video.videoId}?rel=0&modestbranding=1`;
+                            iframe.title = video.title;
+                            iframe.frameBorder = '0';
+                            iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share');
+                            iframe.setAttribute('allowfullscreen', '');
+                            iframe.setAttribute('loading', 'lazy');
+                            const mediaInfo = document.createElement('div');
+                            mediaInfo.className = 'media-info';
+                            mediaInfo.innerHTML = `<h4>${video.title}</h4><p>${video.description}</p><span class="media-category">${video.category}</span>`;
+                            mediaCard.appendChild(iframe);
+                            mediaCard.appendChild(mediaInfo);
+                            mediaGrid.appendChild(mediaCard);
+                        });
+                    }
+                }
+            });
+        }
+
+        async function loadSpotifyPlaylists() {
+            const { collection, getDocs, query, orderBy } = window.firebaseModules;
+            const db = window.db;
+            try {
+                const q = query(collection(db, 'spotify'), orderBy('createdAt', 'desc'));
+                const snapshot = await getDocs(q);
+                const playlists = [];
+                snapshot.forEach(doc => playlists.push({ id: doc.id, ...doc.data() }));
+                if (playlists.length === 0) return;
+                const musicSection = document.getElementById('music');
+                if (!musicSection) return;
+                const playlistBlocks = musicSection.querySelectorAll('.playlist-block');
+                if (!playlistBlocks.length) return;
+                const spotifyBlock = playlistBlocks[0];
+                const mediaGrid = spotifyBlock.querySelector('.media-grid');
+                if (mediaGrid) {
+                    mediaGrid.innerHTML = playlists.map(playlist => `
+                        <div>
+                            <p class="playlist-item-title">${playlist.name}</p>
+                            ${playlist.embedCode}
+                            <p class="playlist-item-desc">${playlist.description}</p>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading Spotify playlists:', error);
+            }
+        }
+
+        async function loadAppleMusicPlaylists() {
+            const { collection, getDocs, query, orderBy } = window.firebaseModules;
+            const db = window.db;
+            try {
+                const q = query(collection(db, 'applemusic'), orderBy('createdAt', 'desc'));
+                const snapshot = await getDocs(q);
+                const playlists = [];
+                snapshot.forEach(doc => playlists.push({ id: doc.id, ...doc.data() }));
+                if (playlists.length === 0) return;
+                const musicSection = document.getElementById('music');
+                if (!musicSection) return;
+                const playlistBlocks = musicSection.querySelectorAll('.playlist-block');
+                if (playlistBlocks.length < 2) return;
+                const appleMusicBlock = playlistBlocks[1];
+                const mediaGrid = appleMusicBlock.querySelector('.media-grid');
+                if (mediaGrid) {
+                    mediaGrid.innerHTML = playlists.map(playlist => `
+                        <div>
+                            <p class="playlist-item-title">${playlist.name}</p>
+                            ${playlist.embedCode}
+                            <p class="playlist-item-desc">${playlist.description}</p>
+                        </div>
+                    `).join('');
+                }
+            } catch (error) {
+                console.error('Error loading Apple Music playlists:', error);
+            }
+        }
+
+        // ── Library / Books ──────────────────────────────
+        let allBooks = [];
+
+        async function loadBooks() {
+            const { collection, getDocs, query, orderBy } = window.firebaseModules;
+            const db = window.db;
+            const shelf = document.getElementById('bookShelf');
+            if (!shelf) return;
+
+            try {
+                const q = query(collection(db, 'books'), orderBy('createdAt', 'desc'));
+                const snapshot = await getDocs(q);
+                snapshot.forEach(doc => allBooks.push({ id: doc.id, ...doc.data() }));
+                console.log(`✅ Loaded ${allBooks.length} books from Firebase`);
+            } catch (error) {
+                console.error('Error loading books:', error);
+                shelf.innerHTML = `<div class="library-empty" style="grid-column:1/-1;">
+                    <div class="empty-icon">📚</div>
+                    <h4>Library Coming Soon</h4>
+                    <p>Add books in the admin panel to populate this shelf.</p>
+                </div>`;
+                return;
+            }
+
+            renderBooks(allBooks);
+        }
+
+        function renderBooks(books) {
+            const shelf = document.getElementById('bookShelf');
+            const countEl = document.getElementById('bookCount');
+            if (!shelf) return;
+
+            if (books.length === 0) {
+                shelf.innerHTML = `<div class="library-empty" style="grid-column:1/-1;">
+                    <div class="empty-icon">📚</div>
+                    <h4>No Books Found</h4>
+                    <p>Add books through the admin panel — they'll appear here instantly.</p>
+                </div>`;
+                if (countEl) countEl.textContent = '';
+                return;
+            }
+
+            if (countEl) countEl.textContent = `${books.length} book${books.length !== 1 ? 's' : ''}`;
+
+            // Featured books first
+            const sorted = [...books].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0));
+
+            shelf.innerHTML = sorted.map(book => {
+                const coverHtml = book.coverUrl
+                    ? `<img class="book-cover" src="${book.coverUrl}" alt="${book.title}" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+                       <div class="book-cover-placeholder" style="display:none;">
+                           <div class="placeholder-cross">✟</div>
+                           <div class="placeholder-title">${book.title}</div>
+                       </div>`
+                    : `<div class="book-cover-placeholder">
+                           <div class="placeholder-cross">✟</div>
+                           <div class="placeholder-title">${book.title}</div>
+                       </div>`;
+
+                const featuredBadge = book.featured
+                    ? `<span class="featured-badge">⭐ Featured</span>`
+                    : '';
+
+                const cardHref = book.amazonUrl || '#';
+
+                return `<div class="book-card-wrap" data-category="${book.category || ''}">
+                    ${featuredBadge}
+                    <a href="${cardHref}" target="_blank" rel="noopener noreferrer"
+                       class="book-card${book.featured ? ' featured' : ''}"
+                       style="text-decoration:none;">
+                        ${coverHtml}
+                        <div class="book-info">
+                            <span class="book-category-tag">${book.category || 'General'}</span>
+                            <div class="book-title">${book.title}</div>
+                            <div class="book-author">by ${book.author || 'Unknown'}</div>
+                            ${book.description ? `<div class="book-description">${book.description}</div>` : ''}
+                            ${book.amazonUrl ? `<div class="book-buy-btn">View on Amazon →</div>` : ''}
+                        </div>
+                    </a>
+                </div>`;
+            }).join('');
+        }
+
+        function filterBooks(category, event) {
+            // Update active button
+            document.querySelectorAll('.lib-filter-btn').forEach(b => b.classList.remove('active'));
+            if (event && event.target) event.target.classList.add('active');
+
+            const filtered = category === 'all'
+                ? allBooks
+                : allBooks.filter(b => b.category === category);
+
+            renderBooks(filtered);
+        }
+
+        // ── Donation ────────────────────────────────────
+        let selectedAmount = 0;
+        let selectedCharityId = '';
+        let selectedCharityName = '';
+        let selectedCharityUrl = '';
+
+        function selectAmount(amount) {
+            selectedAmount = amount;
+            document.getElementById('customAmount').value = '';
+            document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('selected'));
+            event.target.closest('.amount-btn').classList.add('selected');
+            updateDonationSummary();
+        }
+
+        function selectCustomAmount() {
+            const customValue = parseFloat(document.getElementById('customAmount').value);
+            if (customValue && customValue > 0) {
+                selectedAmount = customValue;
+                document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('selected'));
+                updateDonationSummary();
+            }
+        }
+
+        function selectCharity(charityId, charityName, donateUrl) {
+            selectedCharityId = charityId;
+            selectedCharityName = charityName;
+            selectedCharityUrl = donateUrl;
+            document.querySelectorAll('.charity-card').forEach(card => card.classList.remove('selected'));
+            event.target.closest('.charity-card').classList.add('selected');
+            updateDonationSummary();
+        }
+
+        function updateDonationSummary() {
+            const summaryDiv = document.getElementById('donationSummary');
+            const donateButton = document.getElementById('donateButton');
+            document.getElementById('summaryAmount').textContent = selectedAmount;
+            document.getElementById('summaryCharity').textContent = selectedCharityName || 'None selected';
+            if (selectedAmount > 0 && selectedCharityId) {
+                summaryDiv.style.display = 'block';
+                donateButton.disabled = false;
+            } else {
+                summaryDiv.style.display = 'none';
+                donateButton.disabled = true;
+            }
+        }
+
+        function processDonation() {
+            if (selectedAmount <= 0 || !selectedCharityId) {
+                alert('Please select both an amount and a charity.');
+                return;
+            }
+            const currentUser = JSON.parse(localStorage.getItem('crux_current_user') || 'null');
+            const donationRecord = {
+                amount: selectedAmount, charity: selectedCharityName, charityId: selectedCharityId,
+                charityUrl: selectedCharityUrl, date: new Date().toISOString(),
+                userId: currentUser ? currentUser.id : null
+            };
+            const donations = JSON.parse(localStorage.getItem('crux_donations') || '[]');
+            donations.push(donationRecord);
+            localStorage.setItem('crux_donations', JSON.stringify(donations));
+            const confirmMsg = `You're about to donate $${selectedAmount}/month to ${selectedCharityName}.\n\nYou'll be redirected to their secure donation page.\n\nThank you for your generosity!`;
+            if (confirm(confirmMsg)) {
+                window.open(selectedCharityUrl, '_blank');
+                let thankYouMsg = `Thank you for supporting ${selectedCharityName}!\n\nMay God bless your generosity.`;
+                if (!currentUser) thankYouMsg += '\n\nTip: Create an account to receive monthly reminders for your donations!';
+                alert(thankYouMsg);
+                selectedAmount = 0; selectedCharityId = ''; selectedCharityName = ''; selectedCharityUrl = '';
+                document.querySelectorAll('.amount-btn').forEach(btn => btn.classList.remove('selected'));
+                document.querySelectorAll('.charity-card').forEach(card => card.classList.remove('selected'));
+                document.getElementById('customAmount').value = '';
+                updateDonationSummary();
+            }
+        }
+
+        // ── Init ────────────────────────────────────────
+        window.addEventListener('load', () => {
+            loadDynamicContent();
+            const currentUser = JSON.parse(localStorage.getItem('crux_current_user') || 'null');
+            if (currentUser) {
+                const btn = document.getElementById('accountBtnText');
+                if (btn) btn.textContent = currentUser.username;
+            }
+            // If user lands directly on Youth tab, load completions
+            if (document.getElementById('youth').classList.contains('active')) {
+                loadModuleCompletions();
+            }
+        });
+    </script>
+<!-- /crux:bible-study-v1-20260404131331-948664 -->
+</body>
+</html>
