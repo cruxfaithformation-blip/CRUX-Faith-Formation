@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — The Miracles of Jesus</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --navy: #1a1f36;
+    --navy-light: #252b47;
+    --navy-mid: #2e3555;
+    --gold: #d4a574;
+    --gold-light: #e8c9a0;
+    --gold-pale: #f5ead8;
+    --cream: #faf7f2;
+    --white: #ffffff;
+    --off-white: #f4f3ef;
+    --border: rgba(26,31,54,0.1);
+    --border-gold: rgba(212,165,116,0.3);
+    --text-primary: #1a1f36;
+    --text-secondary: #5a6080;
+    --text-muted: #8a90aa;
+    --shadow-sm: 0 1px 4px rgba(0,0,0,0.07);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--text-primary);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--navy);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  }
+
+  .site-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    text-decoration: none;
+    letter-spacing: 4px;
+  }
+
+  .site-nav { list-style: none; display: flex; gap: 1.5rem; }
+  .site-nav a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.82rem; font-weight: 500; transition: color 0.2s; }
+  .site-nav a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  .module-hero {
+    background: var(--navy);
+    padding: 3.5rem 2rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .module-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(212,165,116,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .module-track {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .module-part-badge {
+    display: inline-block;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 0.25rem 0.85rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+  }
+
+  .module-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+    line-height: 1.2;
+  }
+
+  .module-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 1.25rem;
+  }
+
+  .module-meta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+    font-size: 0.78rem;
+    color: rgba(255,255,255,0.4);
+    font-weight: 500;
+  }
+
+  .module-grade-badge {
+    display: inline-block;
+    background: rgba(212,165,116,0.15);
+    border: 1px solid rgba(212,165,116,0.3);
+    color: var(--gold);
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 0.3rem 0.85rem;
+    border-radius: 20px;
+    margin-top: 1rem;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar {
+    background: var(--navy-light);
+    padding: 0.7rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+    position: sticky;
+    top: 57px;
+    z-index: 90;
+  }
+
+  .progress-label { font-size: 0.72rem; font-weight: 600; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+  .progress-track { flex: 1; height: 3px; background: var(--navy-mid); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 0; background: var(--gold); border-radius: 2px; transition: width 0.5s ease; }
+  .progress-count { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; }
+
+  /* ── LAYOUT ── */
+  .module-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+    align-items: start;
+  }
+
+  /* ── SECTION SYSTEM ── */
+  .module-section {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+  }
+
+  .module-section.locked .section-inner { filter: blur(3px); pointer-events: none; user-select: none; }
+  .module-section.locked .continue-btn-wrap { display: none; }
+
+  .lock-overlay {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 0.85rem 1.25rem;
+    background: rgba(250,247,242,0.92);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    backdrop-filter: blur(4px);
+  }
+
+  .module-section.locked .lock-overlay { display: flex; }
+  .lock-icon { font-size: 1rem; }
+
+  .section-sep { height: 1px; background: var(--border); margin: 2rem 0; }
+  .section-inner { padding: 2rem 0; }
+
+  .section-eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .section-number {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--gold);
+    font-size: 0.78rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .section-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .section-divider { flex: 1; height: 0.5px; background: var(--border); }
+
+  .section-body p {
+    font-size: 1rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: 1.1rem;
+  }
+  .section-body p:last-child { margin-bottom: 0; }
+
+  /* ── CONTENT BLOCKS ── */
+  .scripture-opening {
+    margin-bottom: 2rem;
+    padding: 1.75rem 2rem;
+    background: var(--navy);
+    border-radius: 8px;
+    border-left: 3px solid var(--gold);
+  }
+
+  .scripture-mark { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); line-height: 0; vertical-align: -0.4em; margin-right: 0.1em; }
+  .scripture-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.6; display: inline; }
+  .scripture-ref { display: block; font-size: 0.78rem; font-weight: 600; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 0.75rem; }
+
+  .pull-quote {
+    margin: 1.75rem 0;
+    padding: 1.5rem 1.75rem;
+    background: var(--navy);
+    border-radius: 8px;
+  }
+  .pull-quote p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.1rem;
+    color: rgba(255,255,255,0.85) !important;
+    line-height: 1.65;
+    margin: 0 !important;
+  }
+  .pull-quote cite {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-top: 0.6rem;
+    font-style: normal;
+  }
+
+  .scripture-callout {
+    display: flex;
+    gap: 14px;
+    background: var(--white);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin: 1.25rem 0;
+    align-items: flex-start;
+  }
+  .scripture-callout .sc-ref {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+    padding-top: 2px;
+    min-width: 64px;
+  }
+  .scripture-callout p {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 0.98rem;
+    color: var(--text-primary) !important;
+    line-height: 1.6;
+    margin: 0 !important;
+  }
+
+  .key-word-box {
+    background: var(--gold-pale);
+    border-radius: 8px;
+    padding: 1.5rem 1.75rem;
+    border: 0.5px solid var(--border-gold);
+    margin: 1.5rem 0;
+  }
+  .key-word-box h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--navy);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .key-word-box p {
+    font-size: 0.92rem;
+    color: var(--text-secondary);
+    line-height: 1.7;
+    margin-bottom: 0.5rem !important;
+  }
+
+  /* ── TODAY BOX — modern miracle counterpart ── */
+  .today-box {
+    background: var(--navy-light);
+    border-radius: 8px;
+    padding: 1.5rem 1.75rem;
+    margin: 1.5rem 0;
+    border-left: 3px solid var(--gold);
+  }
+  .today-box .today-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
+  }
+  .today-box h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--white);
+    font-weight: 700;
+    margin-bottom: 0.6rem;
+  }
+  .today-box p {
+    font-size: 0.92rem;
+    color: rgba(255,255,255,0.7) !important;
+    line-height: 1.7;
+    margin-bottom: 0.5rem !important;
+  }
+  .today-box p:last-child { margin-bottom: 0 !important; }
+
+  .theme-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin: 1rem 0 1.25rem;
+  }
+  .theme-list li {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    align-items: flex-start;
+    line-height: 1.6;
+  }
+  .theme-list li::before {
+    content: '✦';
+    color: var(--gold);
+    font-size: 0.65rem;
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+
+  .reflection-block {
+    background: var(--navy);
+    border-radius: 8px;
+    padding: 1.5rem 1.75rem;
+    margin-top: 1.25rem;
+  }
+  .reflection-block h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--gold);
+    font-weight: 700;
+    margin-bottom: 0.4rem;
+  }
+  .reflection-block p {
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.6) !important;
+    margin-bottom: 0.85rem !important;
+    line-height: 1.65;
+  }
+  .reflection-textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 0.5px solid rgba(255,255,255,0.15);
+    border-radius: 6px;
+    padding: 0.85rem 1rem;
+    color: rgba(255,255,255,0.85);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    line-height: 1.6;
+    resize: vertical;
+    min-height: 80px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .reflection-textarea:focus { border-color: var(--gold); }
+  .reflection-textarea::placeholder { color: rgba(255,255,255,0.25); }
+
+  .discussion-block {
+    background: var(--navy-light);
+    border-radius: 8px;
+    padding: 1.5rem 1.75rem;
+    margin: 1.25rem 0;
+  }
+  .discussion-block h4 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--white);
+    font-weight: 700;
+    margin-bottom: 0.75rem;
+  }
+  .discussion-block ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .discussion-block ul li {
+    font-size: 0.92rem;
+    color: rgba(255,255,255,0.65);
+    padding-left: 1.1rem;
+    border-left: 2px solid var(--gold);
+    line-height: 1.6;
+  }
+
+  .continue-btn-wrap { margin-top: 1.75rem; }
+  .continue-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    border-radius: 6px;
+    padding: 0.75rem 1.75rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .continue-btn:hover { background: var(--gold-light); }
+
+  .next-part-banner {
+    display: none;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    border: 1px solid var(--border-gold);
+    border-radius: 12px;
+    padding: 2rem;
+    margin-top: 1.5rem;
+    text-align: center;
+  }
+  .next-part-banner.visible { display: block; }
+  .next-part-banner h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--white); margin-bottom: 0.5rem; }
+  .next-part-banner p { font-size: 0.9rem; color: rgba(255,255,255,0.55); margin-bottom: 1.25rem; }
+  .next-part-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    border-radius: 6px;
+    padding: 0.85rem 2rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: background 0.2s;
+    letter-spacing: 0.03em;
+    text-decoration: none;
+  }
+  .next-part-btn:hover { background: var(--gold-light); }
+
+  /* ── SIDEBAR ── */
+  .module-sidebar { position: sticky; top: 110px; display: flex; flex-direction: column; gap: 1rem; }
+  .sidebar-card {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 1.25rem;
+    box-shadow: var(--shadow-sm);
+    border: 0.5px solid var(--border);
+  }
+  .sidebar-card-title {
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.85rem;
+  }
+
+  .sections-nav { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
+  .sections-nav li {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    padding: 0.35rem 0.5rem;
+    border-radius: 6px;
+    transition: all 0.2s;
+  }
+  .nav-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--border);
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .sections-nav li.s-active { color: var(--navy); font-weight: 600; background: var(--off-white); }
+  .sections-nav li.s-active .nav-dot { background: var(--gold); }
+  .sections-nav li.s-done { color: var(--text-secondary); }
+  .sections-nav li.s-done .nav-dot { background: #4caf50; }
+
+  .scripture-item { display: flex; gap: 0.6rem; margin-bottom: 0.5rem; align-items: baseline; }
+  .scripture-item-ref { font-size: 0.72rem; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; white-space: nowrap; min-width: 52px; }
+  .scripture-item-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+
+  .track-item { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; font-size: 0.82rem; }
+  .track-dot {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.65rem; font-weight: 700;
+    flex-shrink: 0;
+  }
+  .track-dot.current { background: var(--gold); color: var(--navy); }
+  .track-dot.done { background: #4caf50; color: var(--white); }
+  .track-dot.upcoming { background: var(--off-white); color: var(--text-muted); border: 1px solid var(--border); }
+  .current-item { color: var(--navy); font-weight: 600; }
+  .done-item { color: var(--text-secondary); }
+  .upcoming-item { color: var(--text-muted); }
+
+  .nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    position: sticky;
+    bottom: 0;
+  }
+  .nav-btn {
+    padding: 0.6rem 1.25rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    border: none;
+    transition: all 0.2s;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+  }
+  .nav-btn:not(.primary) { background: var(--off-white); color: var(--text-secondary); }
+  .nav-btn:not(.primary):hover { background: var(--border); }
+  .nav-btn.primary { background: var(--gold); color: var(--navy); }
+  .nav-btn.primary:hover { background: var(--gold-light); }
+
+  @media (max-width: 800px) {
+    .module-layout { grid-template-columns: 1fr; }
+    .module-sidebar { display: none; }
+    .site-nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="site-logo">CRUX</a>
+  <nav><ul class="site-nav">
+    <li><a href="crux-account.html">My Account</a></li>
+    <li><a href="index.html#bible">Bible Study</a></li>
+    <li><a href="crux-adult-formation.html">Adult Track</a></li>
+    <li><a href="index.html">Home</a></li>
+  </ul></nav>
+</header>
+
+<div class="module-hero">
+  <div class="module-track">Bible Study — Grades 6–8</div>
+  <div class="module-part-badge">Thematic Study — Older Students</div>
+  <h1 class="module-title">The Miracles of Jesus</h1>
+  <p class="module-subtitle">Signs, Wonders, and What They Mean — Then and Now</p>
+  <div class="module-meta">
+    <span>&#9679; 8 sections</span>
+    <span>&#9679; 5 reflection questions</span>
+    <span>&#9679; 10 scripture passages</span>
+    <span>&#9679; Discussion questions</span>
+  </div>
+  <div class="module-grade-badge">Grades 6–8</div>
+</div>
+
+<div class="progress-bar">
+  <span class="progress-label">Progress</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="progress-count" id="progressCount">0 of 8 sections complete</span>
+</div>
+
+<div class="module-layout">
+<main class="module-content">
+
+  <div class="scripture-opening">
+    <span class="scripture-mark">&ldquo;</span>
+    <p class="scripture-text">Jesus did many other things as well. If every one of them were written down, I suppose that even the whole world would not have room for the books that would be written.</p>
+    <span class="scripture-ref">John 21:25</span>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="module-section" id="s1">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">1</div>
+        <span class="section-label">What Is a Miracle?</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Before we look at any specific miracle, we need to think carefully about what the word actually means — because the popular definition and the theological definition are quite different, and the difference matters.</p>
+        <p>Popularly, a miracle is anything surprising or unlikely: a cancer going into remission, a car accident with no injuries, a last-minute goal. Used that way, the word just means "something good that I didn't expect." That's not what the Gospels mean.</p>
+
+        <div class="key-word-box">
+          <h4>The Theological Definition</h4>
+          <p>The Catholic tradition defines a miracle as an event that exceeds the productive power of all natural causes — something that nature, left entirely to itself, cannot produce. It is not merely unlikely. It is, by any natural accounting, impossible. The Church distinguishes miracles from extraordinary natural events and from extraordinary graces (which work within ordinary experience). A miracle is a specific interruption of the natural order by divine power.</p>
+          <p>The New Testament uses three Greek words for what Jesus does: <em>dynameis</em> (acts of power), <em>terata</em> (wonders), and <em>semeia</em> (signs). That last word — signs — is the most theologically loaded. A sign points beyond itself. The miracle is never just the event. It's what the event is pointing to.</p>
+        </div>
+
+        <p>This is crucial for reading the Gospels accurately. Jesus performs miracles, but he consistently refuses to perform them on demand — when the Pharisees ask for a "sign from heaven" to prove himself, he refuses. Why? Because a sign is only a sign if you have eyes to see what it's pointing at. Miracle-as-spectacle proves nothing. Miracle-as-sign requires faith to complete the circuit.</p>
+        <p>The Gospel of John structures its entire first half around seven specific miracles — calling them explicitly "signs." Each one is a window into who Jesus is and what he has come to do. We'll work through the main categories in this study, and in each section we'll ask the same question: what is this miracle a sign <em>of</em>?</p>
+
+        <div class="reflection-block">
+          <h4>Reflection</h4>
+          <p>Think about the difference between a miracle as a "wonder" and a miracle as a "sign." If you witnessed something you couldn't explain, what would it take for you to interpret it as a sign pointing to God — rather than just a strange coincidence or an unknown natural phenomenon?</p>
+          <textarea class="reflection-textarea" placeholder="Write your thoughts here..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(1)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- SECTION 2 -->
+  <div class="module-section locked" id="s2">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">2</div>
+        <span class="section-label">Miracles Over Nature</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Jesus calms a storm. He walks on water. He feeds five thousand people with five loaves and two fish, with twelve baskets of fragments left over. He turns water into wine — 120 to 180 gallons of it, and better wine than what had been served before. These are miracles of a particular kind: they demonstrate authority over the physical creation itself.</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Mk 4:39–41</span>
+          <p>"He got up, rebuked the wind and said to the waves, 'Quiet! Be still!' Then the wind died down and it was completely calm. He said to his disciples, 'Why are you so afraid? Do you still have no faith?' They were terrified and asked each other, 'Who is this? Even the wind and the waves obey him!'"</p>
+        </div>
+
+        <p>That question — "Who is this?" — is the one the nature miracles are designed to provoke. In the Jewish understanding of the Hebrew Scriptures, there was only one person who commanded the sea: God himself. Psalm 107 describes God stilling storms and calming waves. When Jesus does exactly that with a word, the disciples' terror is not just fear of something strange. It is the terror of people who suddenly suspect they're in the presence of the One who made the water.</p>
+        <p>The feeding of the five thousand operates the same way. It echoes the manna in the desert — God feeding his people miraculously in a wilderness. Jesus doesn't just feed people. He re-performs a defining act of God from Israel's history. Then, in the synagogue at Capernaum, he tells them plainly: <em>I am the bread of life.</em> The sign has pointed to the signified.</p>
+
+        <div class="today-box">
+          <div class="today-label">Then &amp; Now</div>
+          <h4>The Miracle of Lanciano — and Eucharistic Science</h4>
+          <p>In Lanciano, Italy, around the 8th century, a priest who had doubts about the Real Presence of Christ in the Eucharist watched the bread and wine transform visibly into what appeared to be flesh and blood during Mass. The relics were preserved. In 1970–71, they were submitted to scientific examination by Professor Odoardo Linoli, a professor of anatomy and pathological histology.</p>
+          <p>His findings: the flesh is genuine cardiac muscle tissue from a human heart. The blood is type AB — the same type found on the Shroud of Turin. There is no sign of any preservative agent despite more than twelve centuries. The scientific report has never been successfully disputed. The Church uses such physical evidence as one part of its discernment process — never the whole — for miracles of this kind. The question the Lanciano miracle raises is the same one the storm raised on the Sea of Galilee: <em>Who is this?</em></p>
+        </div>
+
+        <div class="discussion-block">
+          <h4>Discussion</h4>
+          <ul>
+            <li>Jesus twice rebukes his disciples for their fear rather than comforting them. What does that tell you about what he expected from them?</li>
+            <li>If the feeding of the 5,000 is a deliberate echo of the manna in the desert, what does that suggest about how Jesus understood his own identity?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(2)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- SECTION 3 -->
+  <div class="module-section locked" id="s3">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">3</div>
+        <span class="section-label">Miracles of Healing</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>The largest single category of Jesus's miracles is healing. He heals the blind, the deaf, the lame, the paralyzed, lepers, a woman with a hemorrhage that has lasted twelve years, a man born blind from birth. He heals at a distance (the centurion's servant), he heals with touch (the leper he reaches out and touches — making himself ritually unclean to do it), and he heals with mud and saliva and a command to go wash in a pool.</p>
+        <p>The variety of method is notable. Jesus is not a formula. He responds to each person as a person. But the theological content is consistent across all of them.</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Lk 5:20–21</span>
+          <p>"When Jesus saw their faith, he said, 'Friend, your sins are forgiven.' The Pharisees and the teachers of the law began thinking to themselves, 'Who is this fellow who speaks blasphemy? Who can forgive sins but God alone?'"</p>
+        </div>
+
+        <p>The Pharisees' objection is entirely valid — within their framework. Forgiveness of sins is God's prerogative, and no one disputes that. Jesus doesn't dispute it either. Instead, he offers them a test: which is easier to say, "your sins are forgiven" or "get up and walk"? The implication is devastating — both are impossible for a mere human being. He then heals the paralyzed man to demonstrate that he has authority to do both. The physical healing is a sign of the spiritual reality.</p>
+        <p>This is why the healing miracles are not primarily about Jesus being a wonder-worker or a healer. They are about his identity. Every healing is a small resurrection — a return from the diminishment of creation that should not be — and a declaration that the one doing it has authority over sin and death.</p>
+
+        <div class="today-box">
+          <div class="today-label">Then &amp; Now</div>
+          <h4>The Lourdes Medical Bureau</h4>
+          <p>Since 1858, when Bernadette Soubirous reported apparitions of the Virgin Mary at Lourdes, France, millions of pilgrims have visited, many of them sick. The Catholic Church established the Lourdes Medical Bureau in 1882 — a committee of physicians, including non-Catholics and non-believers, whose purpose is to examine reported healings with rigorous scientific scrutiny.</p>
+          <p>The Bureau's standard is demanding: the illness must be serious and organically verified; the cure must be instantaneous or very rapid; there must be no relapse; and the cure must be scientifically inexplicable. As of 2024, 70 cases have been officially declared miraculous by the Church after passing through both medical and theological investigation. Among them: Gabriel Gargam, a man with complete spinal paralysis who walked after visiting Lourdes in 1901; Vittorio Micheli, whose hip bone had been almost entirely destroyed by sarcoma and was fully restored within months of his visit in 1963 — the bone regrowth documented in X-rays. The Church does not claim Lourdes proves anything by itself. It claims it is a sign — and invites the same question the Gospels ask.</p>
+        </div>
+
+        <div class="reflection-block">
+          <h4>Reflection</h4>
+          <p>Jesus heals physical bodies and forgives sins in the same movement — as if they're connected. What does that suggest about how he sees the relationship between physical suffering and spiritual reality? Does that match or challenge how you think about suffering?</p>
+          <textarea class="reflection-textarea" placeholder="Write your thoughts here..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(3)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- SECTION 4 -->
+  <div class="module-section locked" id="s4">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">4</div>
+        <span class="section-label">Miracles Over Evil</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>The exorcisms in the Gospels are among the most uncomfortable miracles for modern readers, and that discomfort is worth examining directly. The Gospels present Jesus as encountering not just human illness, but a personal spiritual evil — beings that recognize him, fear him, and obey him. This is not primitive superstition that the Gospel writers failed to distinguish from mental illness. The text is careful: it distinguishes healings from exorcisms, and Luke — a physician — makes the distinction clearly.</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Mk 1:23–26</span>
+          <p>"Just then a man in their synagogue who was possessed by an impure spirit cried out, 'What do you want with us, Jesus of Nazareth? Have you come to destroy us? I know who you are — the Holy One of God!' 'Be quiet!' said Jesus sternly. 'Come out of him!' The impure spirit shook the man violently and came out of him with a shriek."</p>
+        </div>
+
+        <p>Notice what the demon knows that the disciples are still working out: the identity of Jesus. The supernatural world has no ambiguity about who Jesus is. The irony in Mark's Gospel is that the demons recognize him immediately while the disciples spend eight chapters asking the question.</p>
+        <p>The theological point of the exorcisms is Jesus's authority over the entire spiritual order — not just the physical one. He has not come merely to teach or to heal. He has come to destroy the works of evil. His arrival in history is an invasion. The exorcisms are the early skirmishes of a war whose decisive battle is the Cross.</p>
+
+        <div class="key-word-box">
+          <h4>What the Church Actually Teaches</h4>
+          <p>The Church does not encourage people to interpret every misfortune or mental illness as demonic activity — this is explicitly warned against in its own guidelines on exorcism. The Church maintains that genuine possession is rare and that its own formal rite of exorcism requires extensive psychological and medical evaluation first. What the Church does not do is deny the existence of spiritual evil as a reality — something that modern secular culture tends to assume, but the Gospels do not support.</p>
+        </div>
+
+        <div class="today-box">
+          <div class="today-label">Then &amp; Now</div>
+          <h4>The Church's Ongoing Discernment</h4>
+          <p>Every diocese in the Catholic Church is required to have a designated exorcist — a priest trained in both theology and psychology. The Vatican's chief exorcist, Father Gabriele Amorth, who served for decades until his death in 2016, consistently emphasized that the vast majority of cases referred to him were not possession but mental illness, and that his first action was always to refer people to psychiatrists. The Church's careful distinction between spiritual and psychological realities is itself a form of intellectual honesty: it refuses to reduce everything to the spiritual, and it refuses to reduce everything to the psychological.</p>
+        </div>
+
+        <div class="discussion-block">
+          <h4>Discussion</h4>
+          <ul>
+            <li>The demons in the Gospels always recognize Jesus immediately. What do you make of the fact that the supernatural world has no doubt about who he is, while the humans around him spend years figuring it out?</li>
+            <li>Modern culture tends to explain everything in purely psychological or neurological terms. What's gained by that approach? What might be lost?</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(4)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- SECTION 5 -->
+  <div class="module-section locked" id="s5">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">5</div>
+        <span class="section-label">Raising the Dead</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Three times in the Gospels Jesus raises the dead: Jairus's daughter, who has just died as Jesus is on his way to her; the widow of Nain's son, being carried to burial when Jesus stops the procession; and Lazarus, who has been in the tomb for four days when Jesus arrives. The three are arranged as if deliberately escalating — just died, just being buried, already decomposing.</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Jn 11:25–26</span>
+          <p>"Jesus said to her, 'I am the resurrection and the life. The one who believes in me will live, even though they die; and whoever lives by believing in me will never die. Do you believe this?'"</p>
+        </div>
+
+        <p>Jesus does not say <em>I will show you</em> the resurrection, or <em>I can bring about</em> resurrection. He says <em>I am</em> the resurrection. The miracle he is about to perform — calling Lazarus out of a sealed tomb — is not a demonstration of a power he possesses. It is the natural consequence of who he is. Where the Author of life goes, death retreats.</p>
+        <p>But notice what happens before the miracle. Mary, Lazarus's sister, falls at Jesus's feet weeping. And Jesus weeps. The shortest verse in the Bible — "Jesus wept" — is also one of the most theologically significant. He is about to raise Lazarus. He knows he is about to raise Lazarus. And he weeps anyway, because grief is real even when resurrection is coming. He does not stand at a distance from human pain and fix it from above. He enters it.</p>
+
+        <div class="today-box">
+          <div class="today-label">Then &amp; Now</div>
+          <h4>Canonization and the Miracle Standard</h4>
+          <p>For every canonization — the formal declaration that someone is a saint in heaven — the Catholic Church requires verification of two miracles occurring after the person's death and attributed to their intercession. These miracles are subjected to rigorous scientific and theological review by panels that include independent physicians, medical specialists, and theologians. The standard is essentially the same as the Lourdes Bureau: the cure must be instantaneous, complete, lasting, and scientifically inexplicable.</p>
+          <p>For the canonization of John Paul II in 2014, one verified miracle involved Floribeth Mora Díaz, a Costa Rican woman diagnosed with an inoperable cerebral aneurysm in 2011. She was given weeks to live. After her family prayed a novena to John Paul II and she fell asleep holding his image, she awoke the next morning with the headaches gone. Subsequent scans showed the aneurysm had disappeared. The panel of neurosurgeons reviewing her case unanimously agreed it was scientifically inexplicable. The Church declared it a miracle — not because science had failed, but because science, having done its full work, had nothing left to say.</p>
+        </div>
+
+        <div class="reflection-block">
+          <h4>Reflection</h4>
+          <p>Jesus weeps at the tomb of Lazarus even though he knows what he's about to do. What does that tell you about how God relates to human suffering? Does knowing that resurrection is coming eliminate the reality of grief?</p>
+          <textarea class="reflection-textarea" placeholder="Write your thoughts here..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(5)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- SECTION 6 -->
+  <div class="module-section locked" id="s6">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">6</div>
+        <span class="section-label">The Resurrection</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>The Resurrection is categorically different from the other miracles. Jairus's daughter, the widow's son, and Lazarus were all brought back to ordinary biological life — they would eventually die again. The Resurrection of Jesus is something else: a transformation into a mode of existence that death cannot touch. Paul calls the risen body "imperishable," "glorious," "spiritual" — not ghostly, but no longer subject to the limitations of ordinary matter.</p>
+        <p>The historical evidence for the Resurrection is also in a different category from the other miracles — not because it's weaker, but because we have more of it and it's more verifiable.</p>
+
+        <div class="key-word-box">
+          <h4>The Historical Case</h4>
+          <p>The resurrection claim is embarrassingly early. Paul's letter to the Corinthians, written around AD 55, quotes a creedal formula that historians date to within two to five years of the crucifixion — far too early for legend to develop. It lists resurrection appearances to Peter, to the twelve, to five hundred people at once (most of whom, Paul notes, are still alive and can be questioned), to James, and to Paul himself.</p>
+          <p>Three facts are accepted by virtually all historians, including skeptical ones: Jesus was crucified and died under Pontius Pilate; his tomb was found empty on the third day; and his disciples sincerely believed they had seen him alive afterward. The debate is not about these facts — it's about what explains them. The resurrection is the explanation the disciples themselves gave, and they died for it rather than recant.</p>
+        </div>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">1 Cor 15:17–19</span>
+          <p>"And if Christ has not been raised, your faith is futile; you are still in your sins. Then those also who have fallen asleep in Christ are lost. If only for this life we have hope in Christ, we are of all people most to be pitied."</p>
+        </div>
+
+        <p>Paul is ruthlessly clear: Christianity is not a philosophy or a way of life that works whether or not the resurrection happened. It is a historical claim that either happened or didn't, and if it didn't, the whole thing collapses. The resurrection is not the icing on the Christian cake. It is the foundation. Every other miracle in the Gospels is a sign pointing toward this one.</p>
+
+        <div class="today-box">
+          <div class="today-label">Then &amp; Now</div>
+          <h4>The Shroud of Turin</h4>
+          <p>The Shroud of Turin is a linen cloth bearing the faint image of a crucified man, preserved in Turin, Italy, and venerated as the burial cloth of Jesus. The image's properties are scientifically extraordinary: it appears to be a photographic negative (discovered when a negative photograph of it was taken in 1898), it shows detailed anatomical accuracy consistent with Roman crucifixion, and the bloodstains are genuine type AB human blood. The image itself has not been replicated by any known artistic or chemical process. The 1988 carbon-14 dating placed it in the medieval period — but this has been significantly disputed on grounds of sample contamination from a repaired section. The Church does not require belief in the Shroud's authenticity. It presents it as a matter for ongoing investigation — another instance of science and faith sitting with an open question rather than a closed one.</p>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(6)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- SECTION 7 -->
+  <div class="module-section locked" id="s7">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">7</div>
+        <span class="section-label">Faith and Miracles</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>There is a pattern in the healing miracles that is easy to miss but impossible to ignore once you see it: Jesus consistently connects healing to faith. "Your faith has healed you." "According to your faith, let it be done to you." When he returns to Nazareth, his hometown, Mark notes bluntly: "He could not do any miracles there, except lay his hands on a few sick people and heal them. He was amazed at their lack of faith."</p>
+        <p>That verse troubles people. Does it mean Jesus's power is limited by human belief? That sounds wrong — as if God's ability to act depends on our psychological state. But that's not the point. The point is that a sign requires a receiver. A miracle performed for someone who is absolutely closed to its meaning is not a sign — it's a spectacle, and Jesus refuses to be a spectacle.</p>
+
+        <div class="pull-quote">
+          <p>Miracles do not produce faith. Faith creates the conditions in which miracles become intelligible as signs rather than noise.</p>
+        </div>
+
+        <p>This is why the Pharisees, who witness the same miracles as the disciples, draw opposite conclusions. The disciples say: "Surely this is the Son of God." The Pharisees say: "He drives out demons by the prince of demons." Same data. Opposite interpretation. The difference is not intelligence — the Pharisees are brilliant. The difference is the posture they bring to the evidence.</p>
+        <p>C.S. Lewis made the point that a person who has decided in advance that miracles are impossible will always find a natural explanation for any event, however strained — because the conclusion is fixed before the evidence arrives. Faith is not the suspension of reason. It is the willingness to follow the evidence wherever it leads, including to conclusions that exceed what we can measure.</p>
+
+        <div class="reflection-block">
+          <h4>Reflection</h4>
+          <p>The Pharisees and the disciples see the same miracles and reach opposite conclusions. What is it — beyond the evidence itself — that determines which conclusion someone reaches? What does that mean for how you approach questions about God?</p>
+          <textarea class="reflection-textarea" placeholder="Write your thoughts here..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(7)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- SECTION 8 -->
+  <div class="module-section locked" id="s8">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">8</div>
+        <span class="section-label">Why Doesn't God Always Intervene?</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>This is the question that has to be asked, because everyone eventually asks it. If Jesus healed people in first-century Palestine, why does a child die of cancer today while her family prays? If God raised Lazarus, why didn't he stop the Holocaust? If miracles happen at Lourdes, why do most of the sick people who go there come home still sick?</p>
+        <p>There is no answer to this question that makes the pain go away. Anyone who tells you they have a clean theological solution to the problem of suffering is either lying or hasn't suffered enough yet. But there are some honest things that can be said.</p>
+
+        <div class="key-word-box">
+          <h4>What the Tradition Actually Claims</h4>
+          <p>The Church does not claim that God will intervene to prevent every suffering of every person who prays faithfully. It never has claimed this. What it claims is that God is present within suffering — not as the cause of it, but as the One who enters it, as Jesus entered it on the Cross. The Cross is not God watching suffering from a distance and occasionally fixing it. It is God taking the full weight of suffering on himself. That doesn't resolve the intellectual problem. But it changes what kind of problem it is.</p>
+        </div>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Rom 8:38–39</span>
+          <p>"For I am convinced that neither death nor life, neither angels nor demons, neither the present nor the future, nor any powers, neither height nor depth, nor anything else in all creation, will be able to separate us from the love of God that is in Christ Jesus our Lord."</p>
+        </div>
+
+        <p>Paul writes this from prison. He is not a man writing from comfort about the theoretical goodness of God. He has been beaten, shipwrecked, abandoned, and he will be executed. His conviction is not that God will prevent bad things from happening. It is that nothing that happens — including the worst things — can sever the relationship between a person and God.</p>
+        <p>The honest Christian position on miracles holds two things simultaneously: God does intervene, in ways that exceed natural explanation, and he does not always intervene, in ways we cannot fully understand. Both are true. The second doesn't cancel the first. The fact that most sick people at Lourdes are not physically healed does not mean nothing happens at Lourdes. Thousands of people who go there report not physical healing but something harder to measure — a peace, a capacity to bear what they could not bear before, a change in their relationship to their own suffering. The Church calls this a spiritual miracle. It is, in some ways, the harder kind.</p>
+
+        <div class="discussion-block">
+          <h4>Final Discussion Questions</h4>
+          <ul>
+            <li>If God could stop a child's suffering but doesn't, does that mean he doesn't care — or does the Cross suggest a different interpretation?</li>
+            <li>The Gospels record 37 distinct miracles of Jesus. He healed some people and walked past others who were equally sick. What does that tell us about how miracles work?</li>
+            <li>Paul says nothing can separate us from God's love — but he doesn't say nothing bad will happen to us. Is that distinction enough? Why or why not?</li>
+            <li>Has there been a moment in your own life or someone you know — a healing, a coincidence too specific to dismiss, a peace that made no rational sense — that felt like a sign? What did you do with it?</li>
+          </ul>
+        </div>
+
+        <div class="reflection-block">
+          <h4>Final Reflection</h4>
+          <p>We started by asking what a miracle is — not just an unexpected event, but a sign pointing beyond itself. Having worked through the miracles of Jesus and their modern counterparts, what do you think they are signs <em>of</em>? And what would it mean for you to take that seriously?</p>
+          <textarea class="reflection-textarea" placeholder="Write your thoughts here..." style="min-height: 100px;"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="completeStudy()">Complete Study &#10003;</button></div>
+  </div>
+
+  <!-- Completion Banner -->
+  <div class="next-part-banner" id="completionBanner">
+    <h3>&#10003; Study Complete</h3>
+    <p>The miracles of Jesus are signs — they point beyond themselves to who he is. The question they leave open is the same one the disciples asked on the Sea of Galilee: <em>Who is this?</em> You've done the work. Now sit with that question.</p>
+    <a href="index.html#bible" class="next-part-btn">&#8592; Back to Bible Study</a>
+  </div>
+
+</main>
+
+<!-- Sidebar -->
+<aside class="module-sidebar">
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Sections</div>
+    <ul class="sections-nav" id="sideNav">
+      <li class="s-active"><span class="nav-dot"></span>What Is a Miracle?</li>
+      <li class="s-locked"><span class="nav-dot"></span>Miracles Over Nature</li>
+      <li class="s-locked"><span class="nav-dot"></span>Miracles of Healing</li>
+      <li class="s-locked"><span class="nav-dot"></span>Miracles Over Evil</li>
+      <li class="s-locked"><span class="nav-dot"></span>Raising the Dead</li>
+      <li class="s-locked"><span class="nav-dot"></span>The Resurrection</li>
+      <li class="s-locked"><span class="nav-dot"></span>Faith and Miracles</li>
+      <li class="s-locked"><span class="nav-dot"></span>Why Doesn't God Intervene?</li>
+    </ul>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Scripture in this study</div>
+    <div class="scripture-item"><span class="scripture-item-ref">Jn 21:25</span><span class="scripture-item-desc">The world couldn't hold the books</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Mk 4:39–41</span><span class="scripture-item-desc">Calming the storm</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Lk 5:20–21</span><span class="scripture-item-desc">Healing and forgiveness</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Mk 1:23–26</span><span class="scripture-item-desc">The demon's recognition</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Jn 11:25–26</span><span class="scripture-item-desc">I am the resurrection</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">1 Cor 15:17–19</span><span class="scripture-item-desc">If Christ has not been raised</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Rom 8:38–39</span><span class="scripture-item-desc">Nothing can separate us</span></div>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Modern Miracles Examined</div>
+    <div class="scripture-item"><span class="scripture-item-ref" style="min-width:auto;margin-right:8px;">✦</span><span class="scripture-item-desc">Lanciano Eucharistic miracle (8th c. / examined 1971)</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref" style="min-width:auto;margin-right:8px;">✦</span><span class="scripture-item-desc">Lourdes Medical Bureau — 70 verified miracles</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref" style="min-width:auto;margin-right:8px;">✦</span><span class="scripture-item-desc">The Church's exorcism discernment process</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref" style="min-width:auto;margin-right:8px;">✦</span><span class="scripture-item-desc">Canonization miracle — Floribeth Mora Díaz (2014)</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref" style="min-width:auto;margin-right:8px;">✦</span><span class="scripture-item-desc">The Shroud of Turin</span></div>
+  </div>
+</aside>
+
+</div><!-- /module-layout -->
+
+<div class="nav-bar">
+  <button class="nav-btn" onclick="window.location.href='index.html#bible'">&#8592; Bible Study</button>
+  <button class="nav-btn primary" id="nextBtn" style="opacity:0.35;pointer-events:none;">Next Study &#8594;</button>
+</div>
+
+<script>
+  const TOTAL = 8;
+
+  function advance(n) {
+    const navItems = document.querySelectorAll('#sideNav li');
+    navItems[n - 1].classList.remove('s-active');
+    navItems[n - 1].classList.add('s-done');
+    updateProgress(n);
+    if (n < TOTAL) {
+      const next = document.getElementById('s' + (n + 1));
+      next.classList.remove('locked');
+      navItems[n].classList.remove('s-locked');
+      navItems[n].classList.add('s-active');
+      setTimeout(() => next.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+    }
+  }
+
+  function updateProgress(n) {
+    const pct = Math.round((n / TOTAL) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressCount').textContent = n + ' of ' + TOTAL + ' sections complete';
+  }
+
+  function completeStudy() {
+    const navItems = document.querySelectorAll('#sideNav li');
+    navItems[TOTAL - 1].classList.remove('s-active');
+    navItems[TOTAL - 1].classList.add('s-done');
+    updateProgress(TOTAL);
+    document.getElementById('completionBanner').classList.add('visible');
+    const btn = document.getElementById('nextBtn');
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+    setTimeout(() => document.getElementById('completionBanner').scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+  }
+</script>
+
+</body>
+</html>
