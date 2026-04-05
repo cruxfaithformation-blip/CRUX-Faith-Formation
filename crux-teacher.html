@@ -845,6 +845,207 @@
             .form-row { grid-template-columns: 1fr; }
             .modal { padding: 1.75rem 1.25rem; }
         }
+
+        /* ─── EMAIL COMPOSER ──────────────────────────────── */
+        .email-composer {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            align-items: start;
+        }
+
+        .composer-fields { display: flex; flex-direction: column; gap: 1.25rem; }
+
+        .composer-label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.35rem;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+
+        .composer-sublabel {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: var(--text-muted);
+            text-transform: none;
+            letter-spacing: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .composer-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            background: var(--white);
+            transition: border-color 0.2s;
+        }
+
+        .composer-input:focus { outline: none; border-color: var(--navy); }
+
+        .composer-textarea {
+            width: 100%;
+            padding: 0.85rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-size: 0.92rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            background: var(--white);
+            resize: vertical;
+            line-height: 1.6;
+            transition: border-color 0.2s;
+        }
+
+        .composer-textarea:focus { outline: none; border-color: var(--navy); }
+        .composer-textarea.short { min-height: 80px; }
+        .composer-textarea.tall  { min-height: 200px; }
+
+        .composer-field-group { display: flex; flex-direction: column; }
+
+        .video-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            cursor: pointer;
+            user-select: none;
+            margin-bottom: 0.75rem;
+            font-weight: 500;
+        }
+
+        .video-toggle input[type="checkbox"] {
+            width: 16px; height: 16px;
+            accent-color: var(--navy);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .video-url-row { display: none; }
+        .video-url-row.visible { display: block; }
+
+        .btn-send-email {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.85rem 1.75rem;
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-send-email:hover { background: var(--navy-light); transform: translateY(-1px); box-shadow: var(--shadow-md); }
+        .btn-send-email:disabled { background: #ccc; cursor: not-allowed; transform: none; box-shadow: none; }
+
+        .composer-send-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .email-recipient-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ── PREVIEW PANE ── */
+        .preview-pane { position: sticky; top: 90px; }
+
+        .preview-label {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.85rem;
+        }
+
+        .preview-frame-wrap {
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+            background: var(--white);
+            box-shadow: var(--shadow-md);
+        }
+
+        .preview-topbar {
+            background: #efefef;
+            padding: 0.6rem 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .preview-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+        .preview-dot.red   { background: #ff5f57; }
+        .preview-dot.amber { background: #ffbd2e; }
+        .preview-dot.green { background: #28c840; }
+
+        .preview-addr {
+            flex: 1;
+            background: var(--white);
+            border-radius: 4px;
+            padding: 0.2rem 0.75rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-left: 0.5rem;
+        }
+
+        #emailPreviewFrame {
+            width: 100%;
+            height: 600px;
+            border: none;
+            display: block;
+            background: #f5f5f5;
+        }
+
+        .email-send-status {
+            margin-top: 1rem;
+            padding: 0.85rem 1rem;
+            border-radius: 8px;
+            font-size: 0.88rem;
+            font-weight: 600;
+            display: none;
+        }
+
+        .email-send-status.success {
+            background: var(--green-light);
+            color: var(--green);
+            border-left: 3px solid var(--green);
+            display: block;
+        }
+
+        .email-send-status.error {
+            background: var(--red-light);
+            color: var(--red);
+            border-left: 3px solid var(--red);
+            display: block;
+        }
+
+        @media (max-width: 900px) {
+            .email-composer { grid-template-columns: 1fr; }
+            .preview-pane { position: static; }
+            #emailPreviewFrame { height: 420px; }
+        }
     </style>
 </head>
 <body>
@@ -983,6 +1184,80 @@
         <h3>🏅 Recent Awards</h3>
         <div id="recentAwards">
             <div class="no-students"><div class="icon">🏅</div>No awards given yet.</div>
+        </div>
+    </div>
+
+    <!-- Send Lesson Email -->
+    <div class="section-block">
+        <h3>📧 Send Lesson Email</h3>
+
+        <div class="email-composer">
+
+            <!-- LEFT: Composer fields -->
+            <div class="composer-fields">
+
+                <div class="composer-field-group">
+                    <label class="composer-label">Email Subject</label>
+                    <span class="composer-sublabel">Students will see this in their inbox</span>
+                    <input type="text" class="composer-input" id="emailSubject"
+                        placeholder="This week's lesson: The Sermon on the Mount"
+                        oninput="updateEmailPreview()">
+                </div>
+
+                <div class="composer-field-group">
+                    <label class="composer-label">Introduction</label>
+                    <span class="composer-sublabel">A brief personal note — context, encouragement, or a welcome to the lesson</span>
+                    <textarea class="composer-textarea short" id="emailIntro"
+                        placeholder="Hi everyone, this week we're diving into one of the most powerful teachings Jesus ever gave. I hope this lesson challenges and inspires you..."
+                        oninput="updateEmailPreview()"></textarea>
+                </div>
+
+                <div class="composer-field-group">
+                    <label class="composer-label">The Lesson</label>
+                    <span class="composer-sublabel">The main content — scripture, reflection, key points, questions to consider</span>
+                    <textarea class="composer-textarea tall" id="emailLesson"
+                        placeholder="Today we're looking at Matthew 5:1–12, the Beatitudes...&#10;&#10;Key point: Jesus turns the world's idea of 'blessed' upside down...&#10;&#10;Reflection question: Which Beatitude feels most challenging to you personally, and why?"
+                        oninput="updateEmailPreview()"></textarea>
+                </div>
+
+                <div class="composer-field-group">
+                    <label class="video-toggle">
+                        <input type="checkbox" id="includeVideo" onchange="toggleVideoField()">
+                        Include a video link
+                    </label>
+                    <div class="video-url-row" id="videoUrlRow">
+                        <span class="composer-sublabel" style="margin-bottom:0.5rem;display:block;">Paste a YouTube URL — it will appear as a watch button in the email</span>
+                        <input type="url" class="composer-input" id="emailVideoUrl"
+                            placeholder="https://www.youtube.com/watch?v=..."
+                            oninput="updateEmailPreview()">
+                    </div>
+                </div>
+
+                <div class="email-send-status" id="emailSendStatus"></div>
+
+                <div class="composer-send-row">
+                    <button class="btn-send-email" id="sendEmailBtn" onclick="sendLessonEmail()">
+                        📧 Send to All Students
+                    </button>
+                    <span class="email-recipient-note" id="recipientNote">Sign in to load your class list.</span>
+                </div>
+
+            </div>
+
+            <!-- RIGHT: Live preview -->
+            <div class="preview-pane">
+                <div class="preview-label">&#128065; Live Preview</div>
+                <div class="preview-frame-wrap">
+                    <div class="preview-topbar">
+                        <div class="preview-dot red"></div>
+                        <div class="preview-dot amber"></div>
+                        <div class="preview-dot green"></div>
+                        <div class="preview-addr">lesson email preview</div>
+                    </div>
+                    <iframe id="emailPreviewFrame" title="Email preview" sandbox="allow-same-origin"></iframe>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -1155,6 +1430,8 @@
                     <p>No students yet. Share your class code to get started.</p>
                 </div>`;
             currentStudents = [];
+            updateRecipientNote();
+            updateEmailPreview();
             return;
         }
 
@@ -1196,6 +1473,9 @@
                     </div>
                 </div>
             `).join('');
+
+            updateRecipientNote();
+            updateEmailPreview();
 
         } catch (err) {
             console.error('loadRoster error:', err);
@@ -1552,6 +1832,242 @@
         t.className = 'toast' + (type ? ` ${type}` : '');
         t.classList.add('show');
         setTimeout(() => t.classList.remove('show'), 3000);
+    }
+
+    // ── EMAIL COMPOSER ─────────────────────────────────────
+
+    // Replace with your deployed Firebase Cloud Function URL:
+    const SEND_EMAIL_FUNCTION_URL = 'https://us-central1-crux-faith-formation.cloudfunctions.net/sendLessonEmail';
+
+    window.toggleVideoField = function() {
+        const checked = document.getElementById('includeVideo').checked;
+        document.getElementById('videoUrlRow').classList.toggle('visible', checked);
+        updateEmailPreview();
+    };
+
+    function getYouTubeId(url) {
+        if (!url) return null;
+        const match = url.match(/(?:youtube\.com\/watch\?v=|youtu\.be\/)([\w-]{11})/);
+        return match ? match[1] : null;
+    }
+
+    function buildEmailHTML({ teacherName, school, subject, intro, lesson, videoUrl }) {
+        const lessonHtml = (lesson || '')
+            .split('\n')
+            .map(line => line.trim() === ''
+                ? '<div style="height:12px;"></div>'
+                : `<p style="margin:0 0 0 0;color:#3a3f5c;font-size:15px;line-height:1.75;">${line}</p>`)
+            .join('\n');
+
+        const introHtml = (intro || '')
+            .split('\n')
+            .map(line => line.trim() === ''
+                ? '<div style="height:10px;"></div>'
+                : `<p style="margin:0;color:#5a6282;font-size:14px;line-height:1.7;">${line}</p>`)
+            .join('\n');
+
+        const ytId = getYouTubeId(videoUrl);
+        const videoBlock = ytId ? `
+            <table width="100%" cellpadding="0" cellspacing="0" style="margin:28px 0;">
+                <tr>
+                    <td style="background:#1a1f36;border-radius:10px;padding:24px;text-align:center;">
+                        <p style="margin:0 0 6px;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.45);">Lesson Video</p>
+                        <p style="margin:0 0 16px;font-family:Georgia,serif;font-size:16px;font-style:italic;color:rgba(255,255,255,0.85);">${subject || 'Watch this week\'s video'}</p>
+                        <a href="https://www.youtube.com/watch?v=${ytId}"
+                           style="display:inline-block;background:#d4a574;color:#1a1f36;text-decoration:none;font-size:14px;font-weight:700;padding:12px 28px;border-radius:6px;letter-spacing:0.3px;">
+                            ▶ Watch on YouTube
+                        </a>
+                    </td>
+                </tr>
+            </table>` : '';
+
+        const teacherDisplay = teacherName || 'Your CRUX Teacher';
+        const schoolDisplay  = school ? `<span style="color:#8890b0;"> · ${school}</span>` : '';
+
+        return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${subject || 'Lesson from CRUX'}</title>
+</head>
+<body style="margin:0;padding:0;background:#f0ede8;font-family:'Inter',Arial,sans-serif;">
+
+<table width="100%" cellpadding="0" cellspacing="0" style="background:#f0ede8;padding:32px 16px;">
+<tr><td align="center">
+<table width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;">
+
+    <!-- HEADER -->
+    <tr>
+        <td style="background:#1a1f36;border-radius:12px 12px 0 0;padding:28px 36px;text-align:center;">
+            <p style="margin:0 0 6px;font-family:Georgia,'Playfair Display',serif;font-size:28px;font-weight:700;color:#d4a574;letter-spacing:8px;">CRUX</p>
+            <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:rgba(255,255,255,0.35);">Faith Formation</p>
+        </td>
+    </tr>
+
+    <!-- SUBJECT BAND -->
+    <tr>
+        <td style="background:#d4a574;padding:14px 36px;">
+            <p style="margin:0;font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:rgba(26,31,54,0.6);">Lesson from your teacher</p>
+            <p style="margin:4px 0 0;font-family:Georgia,'Playfair Display',serif;font-size:18px;font-weight:700;color:#1a1f36;">${subject || 'This Week\'s Lesson'}</p>
+        </td>
+    </tr>
+
+    <!-- BODY -->
+    <tr>
+        <td style="background:#ffffff;padding:36px 36px 28px;border-left:1px solid #e5e1da;border-right:1px solid #e5e1da;">
+
+            <!-- Intro -->
+            ${intro ? `<div style="background:#f8f7f4;border-left:3px solid #d4a574;border-radius:0 8px 8px 0;padding:16px 20px;margin-bottom:28px;">
+                ${introHtml}
+            </div>` : ''}
+
+            <!-- Lesson content -->
+            <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                    <td style="padding-bottom:8px;border-bottom:1px solid #ece9e3;">
+                        <p style="margin:0;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#b8895a;">The Lesson</p>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding-top:20px;">
+                        ${lessonHtml || '<p style="color:#8890b0;font-style:italic;font-size:14px;">Your lesson content will appear here.</p>'}
+                    </td>
+                </tr>
+            </table>
+
+            <!-- Video block -->
+            ${videoBlock}
+
+        </td>
+    </tr>
+
+    <!-- FOOTER -->
+    <tr>
+        <td style="background:#f8f7f4;border:1px solid #e5e1da;border-top:none;border-radius:0 0 12px 12px;padding:20px 36px;text-align:center;">
+            <p style="margin:0 0 4px;font-size:13px;font-weight:700;color:#1a1f36;">
+                ${teacherDisplay}${schoolDisplay}
+            </p>
+            <p style="margin:0;font-size:11px;color:#8890b0;">Sent via CRUX Faith Formation · <a href="https://cruxfaith.com" style="color:#b8895a;text-decoration:none;">cruxfaith.com</a></p>
+        </td>
+    </tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>`;
+    }
+
+    window.updateEmailPreview = function() {
+        const frame = document.getElementById('emailPreviewFrame');
+        if (!frame) return;
+
+        const includeVideo = document.getElementById('includeVideo').checked;
+        const html = buildEmailHTML({
+            teacherName: currentTeacher?.name || '',
+            school:      currentTeacher?.school || '',
+            subject:     document.getElementById('emailSubject').value,
+            intro:       document.getElementById('emailIntro').value,
+            lesson:      document.getElementById('emailLesson').value,
+            videoUrl:    includeVideo ? document.getElementById('emailVideoUrl').value : ''
+        });
+
+        const doc = frame.contentDocument || frame.contentWindow.document;
+        doc.open();
+        doc.write(html);
+        doc.close();
+    };
+
+    window.sendLessonEmail = async function() {
+        const statusEl = document.getElementById('emailSendStatus');
+        const btn      = document.getElementById('sendEmailBtn');
+
+        statusEl.className = 'email-send-status';
+        statusEl.textContent = '';
+
+        const subject = document.getElementById('emailSubject').value.trim();
+        const intro   = document.getElementById('emailIntro').value.trim();
+        const lesson  = document.getElementById('emailLesson').value.trim();
+
+        if (!subject) {
+            statusEl.textContent = 'Please add an email subject before sending.';
+            statusEl.className = 'email-send-status error';
+            return;
+        }
+        if (!lesson) {
+            statusEl.textContent = 'Please write the lesson content before sending.';
+            statusEl.className = 'email-send-status error';
+            return;
+        }
+
+        const recipients = currentStudents.filter(s => s.email);
+        if (recipients.length === 0) {
+            statusEl.textContent = 'No students with email addresses found in your class.';
+            statusEl.className = 'email-send-status error';
+            return;
+        }
+
+        if (!confirm(`Send this lesson email to ${recipients.length} student${recipients.length > 1 ? 's' : ''}?`)) return;
+
+        btn.disabled = true;
+        btn.textContent = '⏳ Sending…';
+
+        const includeVideo = document.getElementById('includeVideo').checked;
+        const html = buildEmailHTML({
+            teacherName: currentTeacher?.name || '',
+            school:      currentTeacher?.school || '',
+            subject, intro, lesson,
+            videoUrl: includeVideo ? document.getElementById('emailVideoUrl').value : ''
+        });
+
+        try {
+            const idToken = await auth.currentUser.getIdToken();
+
+            const res = await fetch(SEND_EMAIL_FUNCTION_URL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${idToken}`
+                },
+                body: JSON.stringify({
+                    subject,
+                    html,
+                    recipients: recipients.map(s => ({ email: s.email, name: s.name }))
+                })
+            });
+
+            if (!res.ok) {
+                const err = await res.json().catch(() => ({}));
+                throw new Error(err.message || `Server error ${res.status}`);
+            }
+
+            statusEl.textContent = `✅ Lesson email sent to ${recipients.length} student${recipients.length > 1 ? 's' : ''} successfully.`;
+            statusEl.className = 'email-send-status success';
+            showToast('📧 Lesson email sent!', 'gold');
+
+        } catch (err) {
+            console.error('sendLessonEmail error:', err);
+            statusEl.textContent = `❌ Could not send email: ${err.message}`;
+            statusEl.className = 'email-send-status error';
+        } finally {
+            btn.disabled = false;
+            btn.textContent = '📧 Send to All Students';
+        }
+    };
+
+    function updateRecipientNote() {
+        const note = document.getElementById('recipientNote');
+        if (!note) return;
+        const count = (currentStudents || []).filter(s => s.email).length;
+        const total = (currentStudents || []).length;
+        if (total === 0) {
+            note.textContent = 'No students in your class yet.';
+        } else if (count === 0) {
+            note.textContent = `${total} student${total > 1 ? 's' : ''} in class — no email addresses on file.`;
+        } else {
+            note.textContent = `Will send to ${count} of ${total} student${total > 1 ? 's' : ''} (those with email addresses).`;
+        }
     }
 </script>
 </body>
