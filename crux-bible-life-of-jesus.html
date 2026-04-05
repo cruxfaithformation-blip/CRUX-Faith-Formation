@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Life of Jesus — CRUX Bible Study</title>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a1f36;
+    --navy-light: #252b47;
+    --navy-dark: #12172a;
+    --gold: #d4a574;
+    --gold-pale: #f9f3eb;
+    --gold-dark: #b8864f;
+    --white: #ffffff;
+    --off-white: #fafaf8;
+    --text: #2c2c2c;
+    --text-light: #6b7280;
+    --border: #e5e7eb;
+    --shadow: 0 2px 12px rgba(26,31,54,0.10);
+    --shadow-lg: 0 8px 32px rgba(26,31,54,0.16);
+    --radius: 12px;
+    --sidebar-w: 280px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--off-white);
+    color: var(--text);
+    font-size: 16px;
+    line-height: 1.7;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--navy);
+    height: 57px;
+    display: flex; align-items: center;
+    padding: 0 24px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  }
+  .site-header .logo {
+    font-family: 'Playfair Display', serif;
+    color: var(--gold);
+    font-size: 1.5rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+  .site-header nav {
+    margin-left: auto;
+    display: flex; gap: 24px; align-items: center;
+  }
+  .site-header nav a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .site-header nav a:hover { color: var(--gold); }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar-wrap {
+    position: sticky; top: 57px; z-index: 90;
+    background: var(--navy-dark);
+    height: 5px;
+  }
+  .progress-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+    width: 12.5%;
+    transition: width 0.5s ease;
+  }
+
+  /* ── HERO ── */
+  .hero {
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    padding: 56px 24px 48px;
+    text-align: center;
+    color: var(--white);
+  }
+  .hero .track-label {
+    display: inline-block;
+    background: rgba(212,165,116,0.18);
+    border: 1px solid rgba(212,165,116,0.4);
+    color: var(--gold);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 20px;
+    margin-bottom: 16px;
+  }
+  .hero .study-badge {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy-dark);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-left: 8px;
+    vertical-align: middle;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 16px 0 10px;
+  }
+  .hero .subtitle {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.72);
+    font-style: italic;
+    font-family: 'Playfair Display', serif;
+    margin-bottom: 20px;
+  }
+  .hero-meta {
+    display: flex; justify-content: center; gap: 20px;
+    flex-wrap: wrap;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.55);
+    margin-bottom: 16px;
+  }
+  .hero-meta span { display: flex; align-items: center; gap: 5px; }
+  .grade-badge {
+    display: inline-block;
+    border: 1px solid rgba(212,165,116,0.5);
+    color: var(--gold);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 5px 16px;
+    border-radius: 20px;
+    letter-spacing: 0.06em;
+  }
+
+  /* ── MAIN LAYOUT ── */
+  .study-layout {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 36px 24px 120px;
+    display: grid;
+    grid-template-columns: 1fr var(--sidebar-w);
+    gap: 32px;
+    align-items: start;
+  }
+
+  /* ── SECTIONS ── */
+  .module-section {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    margin-bottom: 24px;
+    overflow: hidden;
+    position: relative;
+    transition: box-shadow 0.3s;
+  }
+  .module-section:not(.locked):hover { box-shadow: var(--shadow-lg); }
+
+  .lock-overlay {
+    display: none;
+    position: absolute; inset: 0;
+    background: rgba(26,31,54,0.6);
+    z-index: 10;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 12px;
+    border-radius: var(--radius);
+  }
+  .module-section.locked .lock-overlay { display: flex; }
+  .lock-icon { font-size: 2rem; }
+  .lock-overlay span {
+    color: rgba(255,255,255,0.85);
+    font-size: 0.88rem;
+    font-weight: 500;
+  }
+
+  .section-inner { padding: 32px 36px; }
+
+  .section-eyebrow {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 24px;
+  }
+  .section-number {
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--gold);
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    font-weight: 700;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .section-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-light);
+  }
+  .section-divider {
+    flex: 1; height: 1px; background: var(--border);
+  }
+
+  .section-body h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 16px;
+    line-height: 1.3;
+  }
+  .section-body p {
+    color: var(--text);
+    margin-bottom: 14px;
+    font-size: 1rem;
+  }
+  .section-body p:last-child { margin-bottom: 0; }
+
+  /* ── CONTENT BLOCKS ── */
+  .scripture-opening {
+    background: var(--navy);
+    border-left: 5px solid var(--gold);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin: 24px 0;
+    color: var(--white);
+  }
+  .scripture-opening .verse {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    color: rgba(255,255,255,0.92);
+  }
+  .scripture-opening .ref {
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .scripture-callout {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--gold);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 20px 0;
+  }
+  .scripture-callout .ref {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 6px;
+  }
+  .scripture-callout .verse {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.05rem;
+    color: var(--navy);
+    line-height: 1.6;
+    margin-bottom: 8px;
+  }
+  .scripture-callout .note {
+    font-size: 0.9rem;
+    color: var(--text-light);
+  }
+
+  .pull-quote {
+    background: var(--navy);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin: 24px 0;
+    text-align: center;
+  }
+  .pull-quote p {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    color: rgba(255,255,255,0.92);
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .key-word-box {
+    background: var(--gold-pale);
+    border: 1px solid rgba(212,165,116,0.4);
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin: 20px 0;
+  }
+  .key-word-box .kw-label {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold-dark);
+    margin-bottom: 6px;
+  }
+  .key-word-box .kw-term {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .key-word-box p {
+    font-size: 0.92rem;
+    color: var(--text);
+    margin: 0;
+  }
+
+  .reflection-block {
+    background: var(--navy);
+    border-radius: 8px;
+    padding: 24px 28px;
+    margin: 24px 0;
+  }
+  .reflection-block .rb-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  .reflection-block p {
+    color: rgba(255,255,255,0.88);
+    margin-bottom: 14px;
+  }
+  .reflection-block textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 6px;
+    color: var(--white);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    padding: 12px 14px;
+    resize: vertical;
+    min-height: 80px;
+    outline: none;
+  }
+  .reflection-block textarea::placeholder { color: rgba(255,255,255,0.4); }
+  .reflection-block textarea:focus { border-color: var(--gold); }
+
+  .discussion-block {
+    background: #f0f4ff;
+    border-radius: 8px;
+    padding: 20px 24px;
+    margin: 20px 0;
+  }
+  .discussion-block .db-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--navy);
+    margin-bottom: 12px;
+  }
+  .discussion-block ul {
+    list-style: none;
+    padding: 0;
+  }
+  .discussion-block ul li {
+    padding: 6px 0 6px 20px;
+    position: relative;
+    color: var(--text);
+    font-size: 0.95rem;
+  }
+  .discussion-block ul li::before {
+    content: '✦';
+    position: absolute; left: 0;
+    color: var(--gold-dark);
+    font-size: 0.7rem;
+    top: 10px;
+  }
+
+  .theme-list {
+    list-style: none; padding: 0;
+    margin: 16px 0;
+  }
+  .theme-list li {
+    padding: 6px 0 6px 22px;
+    position: relative;
+    font-size: 0.95rem;
+  }
+  .theme-list li::before {
+    content: '●';
+    position: absolute; left: 0;
+    color: var(--gold);
+    font-size: 0.6rem;
+    top: 11px;
+  }
+
+  /* ── CONTINUE BUTTON ── */
+  .continue-btn-wrap {
+    padding: 16px 36px 28px;
+    display: flex; justify-content: flex-end;
+  }
+  .continue-btn {
+    background: var(--navy);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    padding: 13px 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    letter-spacing: 0.02em;
+  }
+  .continue-btn:hover { background: var(--navy-light); transform: translateY(-1px); }
+  .continue-btn:active { transform: translateY(0); }
+
+  /* ── COMPLETION BANNER ── */
+  #completionBanner {
+    display: none;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    border-radius: var(--radius);
+    padding: 40px 36px;
+    text-align: center;
+    margin-bottom: 24px;
+    color: var(--white);
+    box-shadow: var(--shadow-lg);
+  }
+  #completionBanner .cb-star { font-size: 2.5rem; margin-bottom: 12px; }
+  #completionBanner h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--gold);
+    margin-bottom: 10px;
+  }
+  #completionBanner p {
+    color: rgba(255,255,255,0.8);
+    font-size: 1rem;
+    max-width: 480px;
+    margin: 0 auto 20px;
+  }
+  #completionBanner .cb-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--navy-dark);
+    font-weight: 700;
+    font-size: 0.9rem;
+    padding: 12px 28px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  #completionBanner .cb-btn:hover { background: var(--gold-dark); color: var(--white); }
+
+  /* ── SIDEBAR ── */
+  .sidebar { position: sticky; top: calc(57px + 5px + 36px); }
+
+  .sidebar-card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 22px 20px;
+    margin-bottom: 20px;
+  }
+  .sidebar-card h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 14px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  #sideNav { list-style: none; padding: 0; }
+  #sideNav li {
+    display: flex; align-items: center; gap: 10px;
+    padding: 7px 0;
+    font-size: 0.82rem;
+    color: var(--text-light);
+    border-bottom: 1px solid var(--border);
+  }
+  #sideNav li:last-child { border-bottom: none; }
+  .s-dot {
+    width: 20px; height: 20px; border-radius: 50%;
+    background: var(--border);
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--text-light);
+    transition: all 0.3s;
+  }
+  #sideNav li.s-active .s-dot { background: var(--navy); color: var(--gold); }
+  #sideNav li.s-done .s-dot { background: var(--gold); color: var(--navy-dark); }
+  #sideNav li.s-locked { opacity: 0.45; }
+  #sideNav li.s-active { color: var(--navy); font-weight: 600; }
+  #sideNav li.s-done { color: var(--text-light); }
+
+  .scripture-list { list-style: none; padding: 0; }
+  .scripture-list li {
+    font-size: 0.82rem;
+    padding: 5px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-light);
+    display: flex; align-items: center; gap: 8px;
+  }
+  .scripture-list li:last-child { border-bottom: none; }
+  .scripture-list li::before {
+    content: '✦';
+    color: var(--gold);
+    font-size: 0.6rem;
+    flex-shrink: 0;
+  }
+
+  .other-studies { list-style: none; padding: 0; }
+  .other-studies li {
+    font-size: 0.82rem;
+    padding: 6px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .other-studies li:last-child { border-bottom: none; }
+  .other-studies a {
+    color: var(--navy);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  .other-studies a:hover { color: var(--gold-dark); }
+  .other-studies .current-study {
+    color: var(--gold-dark);
+    font-weight: 700;
+    font-size: 0.82rem;
+  }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    padding: 12px 24px;
+    display: flex; justify-content: space-between; align-items: center;
+    z-index: 80;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
+  }
+  .bottom-nav a {
+    display: inline-flex; align-items: center; gap: 6px;
+    color: var(--navy);
+    text-decoration: none;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 8px 16px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  .bottom-nav a:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
+  .bottom-nav .study-title-nav {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--text-light);
+    text-align: center;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    .study-layout {
+      grid-template-columns: 1fr;
+      padding: 20px 16px 100px;
+    }
+    .sidebar { position: static; display: none; }
+    .section-inner { padding: 22px 20px; }
+    .continue-btn-wrap { padding: 12px 20px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="site-header">
+  <a href="index.html" class="logo">CRUX</a>
+  <nav>
+    <a href="crux-lessons.html">Lessons</a>
+    <a href="crux-challenges.html">Challenges</a>
+    <a href="crux-account.html">My Account</a>
+  </nav>
+</header>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar-wrap">
+  <div class="progress-bar-fill" id="progressFill"></div>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div>
+    <span class="track-label">Bible Study · Grades 3–5</span>
+    <span class="study-badge">Study 1 of 4</span>
+  </div>
+  <h1>The Life of Jesus</h1>
+  <div class="subtitle">A Journey Through the Gospels</div>
+  <div class="hero-meta">
+    <span>📖 Matthew · Luke · John</span>
+    <span>✦ 8 Sections</span>
+    <span>⏱ ~35 minutes</span>
+  </div>
+  <div class="grade-badge">Grades 3–5</div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="study-layout">
+
+  <!-- MAIN CONTENT -->
+  <main>
+
+    <!-- COMPLETION BANNER (hidden until study complete) -->
+    <div id="completionBanner">
+      <div class="cb-star">✦</div>
+      <h2>Study Complete!</h2>
+      <p>You followed Jesus all the way from Bethlehem to the empty tomb. That's the whole story — and it's your story now too.</p>
+      <a href="crux-bible-heroes-ot.html" class="cb-btn">Next Study: Heroes of the Old Testament →</a>
+    </div>
+
+    <!-- SECTION 1 — Unlocked by default -->
+    <div class="module-section" id="s1">
+      <div class="lock-overlay">
+        <div class="lock-icon">🔒</div>
+        <span>Complete the previous section to unlock.</span>
+      </div>
+      <div class="section-inner">
+        <div class="section-eyebrow">
+          <div class="section-number">1</div>
+          <span class="section-label">Introduction</span>
+          <div class="section-divider"></div>
+        </div>
+        <div class="section-body">
+          <h2>Who Is Jesus?</h2>
+
+          <p>You've probably heard the name Jesus before. Maybe at church. Maybe in a prayer. Maybe your family talks about him sometimes. But do you know who he actually <em>is</em>?</p>
+
+          <p>Here's something amazing: Jesus isn't just someone who lived a long time ago in a book. He's real. And according to Christians, he's alive <em>right now</em> — and he knows your name.</p>
+
+          <div class="scripture-opening">
+            <div class="verse">"For God so loved the world that he gave his only Son, so that everyone who believes in him may not perish but may have eternal life."</div>
+            <div class="ref">John 3:16 (NRSV)</div>
+          </div>
+
+          <p>That verse is one of the most famous sentences ever written. It says that God loves the <em>world</em> — and that means you. This whole study is about understanding that love better by getting to know Jesus: who he was, what he did, and why it matters today.</p>
+
+          <div class="key-word-box">
+            <div class="kw-label">Key Word</div>
+            <div class="kw-term">Gospel</div>
+            <p>The word "Gospel" means <strong>Good News</strong>. The four Gospels — Matthew, Mark, Luke, and John — are books in the Bible that tell the story of Jesus's life. In this study, we'll read from Matthew, Luke, and John.</p>
+          </div>
+
+          <p>In this study, you'll follow Jesus from the night he was born in a stable to the morning he rose from the dead. Along the way, you'll see what he taught, how he helped people, and why billions of people across history have believed he changed everything.</p>
+
+          <div class="reflection-block">
+            <div class="rb-label">Think About It</div>
+            <p>Before we start — what do you already know about Jesus? And what's one thing you're curious about?</p>
+            <textarea placeholder="Write your thoughts here..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="continue-btn-wrap">
+        <button class="continue-btn" onclick="advance(1)">Continue &#8594;</button>
+      </div>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="module-section locked" id="s2">
+      <div class="lock-overlay">
+        <div class="lock-icon">🔒</div>
+        <span>Complete the previous section to unlock.</span>
+      </div>
+      <div class="section-inner">
+        <div class="section-eyebrow">
+          <div class="section-number">2</div>
+          <span class="section-label">The Birth</span>
+          <div class="section-divider"></div>
+        </div>
+        <div class="section-body">
+          <h2>God Enters the World in Bethlehem</h2>
+
+          <p>Imagine the most powerful being in the universe deciding to become a tiny baby — helpless, crying, needing to be held. That's exactly what Christians believe happened on the first Christmas.</p>
+
+          <p>Jesus was born in Bethlehem, a small town in Israel, about 2,000 years ago. His mother was Mary, a young woman from a town called Nazareth. His father on earth was Joseph, a carpenter. But Christians believe Jesus also had a heavenly Father — God himself.</p>
+
+          <div class="scripture-callout">
+            <div class="ref">Luke 2:6–7</div>
+            <div class="verse">"While they were there, the time came for her to give birth. And she gave birth to her firstborn son and wrapped him in bands of cloth, and laid him in a manger, because there was no place for them in the inn."</div>
+            <div class="note">A manger is a feeding trough for animals — like a wooden box full of hay. Jesus was born in a stable, surrounded by animals, not in a palace. That tells us something important right away about who he came for.</div>
+          </div>
+
+          <p>Shepherds were the first people to hear the news. In those days, shepherds were considered low-class — not important people. But an angel appeared to them first, not to kings or priests. Later, wise men from far away followed a star to find the baby. They brought expensive gifts. Rich and poor, near and far: Jesus came for everyone.</p>
+
+          <div class="pull-quote">
+            <p>God didn't arrive in a palace. He arrived in a stable — so that no one would ever feel too poor or too small to find him.</p>
+          </div>
+
+          <div class="key-word-box">
+            <div class="kw-label">Key Word</div>
+            <div class="kw-term">Incarnation</div>
+            <p>This is the big word for what happened at Christmas. "Incarnation" means "God becoming flesh" — God becoming a real human being. Christians believe Jesus is both fully God <em>and</em> fully human at the same time. It's one of the most amazing ideas in history.</p>
+          </div>
+
+          <div class="reflection-block">
+            <div class="rb-label">Think About It</div>
+            <p>Why do you think God chose to be born as a baby instead of appearing as something more powerful and impressive? What does that tell you about God?</p>
+            <textarea placeholder="Write your thoughts here..."></textarea>
+          </div>
+
+          <div class="discussion-block">
+            <div class="db-label">Talk About It</div>
+            <ul>
+              <li>The shepherds were the first to hear — not kings or priests. Why might that be?</li>
+              <li>If God was going to be born as a human, what would you have chosen for him to be born into — a palace, a regular house, or a stable? Why?</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="continue-btn-wrap">
+        <button class="continue-btn" onclick="advance(2)">Continue &#8594;</button>
+      </div>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="module-section locked" id="s3">
+      <div class="lock-overlay">
+        <div class="lock-icon">🔒</div>
+        <span>Complete the previous section to unlock.</span>
+      </div>
+      <div class="section-inner">
+        <div class="section-eyebrow">
+          <div class="section-number">3</div>
+          <span class="section-label">Growing Up</span>
+          <div class="section-divider"></div>
+        </div>
+        <div class="section-body">
+          <h2>The Hidden Life in Nazareth</h2>
+
+          <p>Here's something surprising: we know almost nothing about the first 30 years of Jesus's life. The Bible tells us he was born, and then — almost nothing — until he was an adult. Jesus spent most of his life as an ordinary person.</p>
+
+          <p>He grew up in Nazareth, a small, not-very-important town. He learned carpentry from Joseph. He ate meals with his family. He went to synagogue on the Sabbath. He was a kid — just like you.</p>
+
+          <div class="scripture-callout">
+            <div class="ref">Luke 2:52</div>
+            <div class="verse">"And Jesus increased in wisdom and in years, and in divine and human favor."</div>
+            <div class="note">Jesus grew up. He learned things. He got taller and smarter over time — just like every human being does. This matters: Jesus knows what it's like to be young, to learn, to not know everything yet.</div>
+          </div>
+
+          <p>There is one story from his childhood: when Jesus was 12, his family traveled to Jerusalem for a big religious festival called Passover. On the way home, Mary and Joseph couldn't find him. They searched for three days — three terrifying days for any parent — and finally found him in the Temple, talking with the religious teachers.</p>
+
+          <div class="scripture-callout">
+            <div class="ref">Luke 2:49</div>
+            <div class="verse">"He said to them, 'Why were you searching for me? Did you not know that I must be in my Father's house?'"</div>
+            <div class="note">Even at 12, Jesus knew who his Father really was. But notice: after this, he went home with Mary and Joseph and was obedient to them. He honored his parents, even knowing he was the Son of God.</div>
+          </div>
+
+          <div class="key-word-box">
+            <div class="kw-label">Why It Matters</div>
+            <div class="kw-term">Jesus Was Really Human</div>
+            <p>Jesus didn't just <em>pretend</em> to be human. He really grew up. He really learned things. He knows what it's like to have homework, to feel hungry, to get tired, to miss people. He's not far away from your life — he lived one.</p>
+          </div>
+
+          <div class="reflection-block">
+            <div class="rb-label">Think About It</div>
+            <p>Have you ever had a moment where you felt really sure about something — like you knew exactly what you were supposed to do? Jesus had that at 12. What about you?</p>
+            <textarea placeholder="Write your thoughts here..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="continue-btn-wrap">
+        <button class="continue-btn" onclick="advance(3)">Continue &#8594;</button>
+      </div>
+    </div>
+
+    <!-- SECTION 4 -->
+    <div class="module-section locked" id="s4">
+      <div class="lock-overlay">
+        <div class="lock-icon">🔒</div>
+        <span>Complete the previous section to unlock.</span>
+      </div>
+      <div class="section-inner">
+        <div class="section-eyebrow">
+          <div class="section-number">4</div>
+          <span class="section-label">His Ministry Begins</span>
+          <div class="section-divider"></div>
+        </div>
+        <div class="section-body">
+          <h2>Baptism, Temptation, and the First Disciples</h2>
+
+          <p>When Jesus was about 30 years old, something changed. He left Nazareth and began his public life — the three years that would change the world forever.</p>
+
+          <p>It started at the Jordan River, where a man named John the Baptist was calling people to repent and be baptized. Jesus came to be baptized — not because he needed forgiveness (Christians believe he never sinned), but to show that he was on our side, standing with us in our need.</p>
+
+          <div class="scripture-opening">
+            <div class="verse">"And a voice came from heaven: 'You are my Son, the Beloved; with you I am well pleased.'"</div>
+            <div class="ref">Luke 3:22 (NRSV)</div>
+          </div>
+
+          <p>Right after his baptism, Jesus went alone into the desert for 40 days. He didn't eat. He prayed. And there, the devil came and tried to tempt him three times — offering him food, power, and fame. Jesus refused every time, using Scripture to respond.</p>
+
+          <div class="key-word-box">
+            <div class="kw-label">Why It Matters</div>
+            <div class="kw-term">Jesus Was Tempted Too</div>
+            <p>Jesus knows what it's like to be tempted — to be pressured to do something wrong. He didn't give in. And because he went through it, he understands when you're facing something hard.</p>
+          </div>
+
+          <p>After the desert, Jesus began calling people to follow him. He walked along the Sea of Galilee and saw two brothers — Peter and Andrew — fishing. He said simply: <em>"Follow me."</em> They dropped their nets and went. He said the same to James and John. Same response. These were the first disciples: ordinary working people, not religious scholars or wealthy men.</p>
+
+          <div class="discussion-block">
+            <div class="db-label">Talk About It</div>
+            <ul>
+              <li>Why do you think Jesus chose fishermen instead of priests or rulers to be his first followers?</li>
+              <li>If Jesus walked up to you and said "Follow me" — what do you think that would feel like?</li>
+              <li>Have you ever been tempted to do something wrong? What helped you say no?</li>
+            </ul>
+          </div>
+
+          <div class="reflection-block">
+            <div class="rb-label">Think About It</div>
+            <p>Peter, Andrew, James, and John left their jobs immediately to follow Jesus. What do you think made them do that? What would make you trust someone that much?</p>
+            <textarea placeholder="Write your thoughts here..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="continue-btn-wrap">
+        <button class="continue-btn" onclick="advance(4)">Continue &#8594;</button>
+      </div>
+    </div>
+
+    <!-- SECTION 5 -->
+    <div class="module-section locked" id="s5">
+      <div class="lock-overlay">
+        <div class="lock-icon">🔒</div>
+        <span>Complete the previous section to unlock.</span>
+      </div>
+      <div class="section-inner">
+        <div class="section-eyebrow">
+          <div class="section-number">5</div>
+          <span class="section-label">His Miracles</span>
+          <div class="section-divider"></div>
+        </div>
+        <div class="section-body">
+          <h2>What the Miracles Reveal About Who He Is</h2>
+
+          <p>During his three years of ministry, Jesus did things no one had ever seen before. He healed people who were sick. He made blind people see. He fed thousands of people with just five loaves of bread and two fish. He walked on water. He even raised people from the dead.</p>
+
+          <p>But here's the thing — the miracles aren't just impressive tricks. Each one says something about <em>who Jesus is</em> and <em>what he cares about</em>.</p>
+
+          <div class="scripture-callout">
+            <div class="ref">John 6:10–11</div>
+            <div class="verse">"Jesus said, 'Make the people sit down.' ... Jesus then took the loaves, and when he had given thanks, he distributed them to those who were seated; so also the fish, as much as they wanted."</div>
+            <div class="note">Five thousand people were hungry. Jesus fed them all — with a little boy's lunch. The miracle says: Jesus sees people who are in need, and he has more than enough to give.</div>
+          </div>
+
+          <ul class="theme-list">
+            <li><strong>Healing the sick</strong> — Jesus saw people others ignored. He touched people nobody wanted to touch. He cared about suffering bodies, not just souls.</li>
+            <li><strong>Calming a storm</strong> — The disciples were terrified. Jesus spoke to the storm and it stopped. He has authority over even the things that scare us most.</li>
+            <li><strong>Raising Lazarus</strong> — Jesus arrived after his friend Lazarus had died. He wept. Then he called Lazarus out of the tomb. Even death isn't bigger than Jesus.</li>
+          </ul>
+
+          <div class="pull-quote">
+            <p>Jesus didn't do miracles to show off. He did them because he saw real people with real pain — and he couldn't walk past without helping.</p>
+          </div>
+
+          <div class="scripture-callout">
+            <div class="ref">John 11:35</div>
+            <div class="verse">"Jesus wept."</div>
+            <div class="note">The shortest verse in the Bible. When Lazarus died, Jesus cried — even though he was about to raise him from the dead. He felt the sadness of the people who loved Lazarus. Jesus isn't distant from our grief. He enters it with us.</div>
+          </div>
+
+          <div class="reflection-block">
+            <div class="rb-label">Think About It</div>
+            <p>Have you ever felt afraid or sad and wished someone would just be <em>there</em> with you? Jesus wept with his friends. How does it feel to know he enters our pain like that?</p>
+            <textarea placeholder="Write your thoughts here..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="continue-btn-wrap">
+        <button class="continue-btn" onclick="advance(5)">Continue &#8594;</button>
+      </div>
+    </div>
+
+    <!-- SECTION 6 -->
+    <div class="module-section locked" id="s6">
+      <div class="lock-overlay">
+        <div class="lock-icon">🔒</div>
+        <span>Complete the previous section to unlock.</span>
+      </div>
+      <div class="section-inner">
+        <div class="section-eyebrow">
+          <div class="section-number">6</div>
+          <span class="section-label">His Teaching</span>
+          <div class="section-divider"></div>
+        </div>
+        <div class="section-body">
+          <h2>The Beatitudes and the Two Great Commandments</h2>
+
+          <p>Jesus was an extraordinary teacher. People came from all over to hear him — thousands of them, sitting on hillsides and lakeshores, hanging on every word. His teaching turned a lot of ideas upside down.</p>
+
+          <p>One of his most famous speeches is called the <strong>Sermon on the Mount</strong>. It begins with the Beatitudes — a list of surprising blessings.</p>
+
+          <div class="key-word-box">
+            <div class="kw-label">Key Word</div>
+            <div class="kw-term">Beatitude</div>
+            <p>"Beatitude" comes from a Latin word meaning <strong>happiness</strong> or <strong>blessing</strong>. But Jesus's idea of who is blessed is completely different from what the world usually says.</p>
+          </div>
+
+          <div class="scripture-callout">
+            <div class="ref">Matthew 5:3–6</div>
+            <div class="verse">"Blessed are the poor in spirit, for theirs is the kingdom of heaven. Blessed are those who mourn, for they will be comforted. Blessed are the meek, for they will inherit the earth. Blessed are those who hunger and thirst for righteousness, for they will be filled."</div>
+            <div class="note">The world says: blessed are the powerful, the popular, the rich. Jesus says: blessed are those who feel small, those who are sad, those who are kind. He's describing a completely different way of measuring a good life.</div>
+          </div>
+
+          <p>When someone asked Jesus what the most important commandment was, he didn't recite a long list. He said two things:</p>
+
+          <div class="pull-quote">
+            <p>"Love the Lord your God with all your heart, soul, and mind. And love your neighbor as yourself." — Matthew 22:37–39</p>
+          </div>
+
+          <p>That's it. Everything else — all 613 commandments in Jewish law — hangs on those two. Love God, love people. Jesus said if you get those two things right, everything else follows.</p>
+
+          <div class="discussion-block">
+            <div class="db-label">Talk About It</div>
+            <ul>
+              <li>Who is the most "meek" (gentle and humble) person you know? What is it like to be around them?</li>
+              <li>Who counts as your "neighbor" according to Jesus? Is it just people who live next door?</li>
+              <li>What would school look like if everyone followed the two great commandments?</li>
+            </ul>
+          </div>
+
+          <div class="reflection-block">
+            <div class="rb-label">Think About It</div>
+            <p>Which Beatitude feels most surprising to you — which one do you <em>not</em> expect God to say is "blessed"? Why?</p>
+            <textarea placeholder="Write your thoughts here..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="continue-btn-wrap">
+        <button class="continue-btn" onclick="advance(6)">Continue &#8594;</button>
+      </div>
+    </div>
+
+    <!-- SECTION 7 -->
+    <div class="module-section locked" id="s7">
+      <div class="lock-overlay">
+        <div class="lock-icon">🔒</div>
+        <span>Complete the previous section to unlock.</span>
+      </div>
+      <div class="section-inner">
+        <div class="section-eyebrow">
+          <div class="section-number">7</div>
+          <span class="section-label">The Cross</span>
+          <div class="section-divider"></div>
+        </div>
+        <div class="section-body">
+          <h2>Why Jesus Died</h2>
+
+          <p>This is the hardest part of the story. After three years of teaching and healing and calling people to follow him, Jesus was arrested, put on trial, and executed on a cross. His disciples ran away. His friends were devastated. It seemed like everything was over.</p>
+
+          <p>Why did this happen? The religious leaders felt threatened by him. The Roman governor, Pilate, gave in to pressure even though he thought Jesus was innocent. And Jesus himself didn't fight back — even though he could have.</p>
+
+          <div class="scripture-callout">
+            <div class="ref">Luke 23:34</div>
+            <div class="verse">"Jesus said, 'Father, forgive them; for they do not know what they are doing.'"</div>
+            <div class="note">Even while being crucified, Jesus prayed for the people doing it to him. That's not how people usually respond to being hurt. Christians believe this is what God's love actually looks like — it doesn't stop, not even in the worst moments.</div>
+          </div>
+
+          <p>Christians believe Jesus's death wasn't a mistake or a defeat. They believe he died to carry something for us — all the ways we've turned away from God, all the wrong things we've done, all the distance between us and him. The Cross is the place where that distance was closed forever.</p>
+
+          <div class="key-word-box">
+            <div class="kw-label">Key Word</div>
+            <div class="kw-term">Sacrifice</div>
+            <p>A sacrifice is when you give something precious so someone else doesn't have to suffer. Christians believe Jesus gave his life as a sacrifice — not because God was angry and needed to punish someone, but because love sometimes goes all the way to the end for the person it loves.</p>
+          </div>
+
+          <div class="pull-quote">
+            <p>Jesus didn't die because he had to. He died because he chose to — because he loved us that much.</p>
+          </div>
+
+          <div class="reflection-block">
+            <div class="rb-label">Think About It</div>
+            <p>Have you ever done something hard or uncomfortable because you loved someone and wanted to help them? That's a tiny glimpse of what Jesus did. How does it feel to think about someone doing that for you?</p>
+            <textarea placeholder="Write your thoughts here..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="continue-btn-wrap">
+        <button class="continue-btn" onclick="advance(7)">Continue &#8594;</button>
+      </div>
+    </div>
+
+    <!-- SECTION 8 -->
+    <div class="module-section locked" id="s8">
+      <div class="lock-overlay">
+        <div class="lock-icon">🔒</div>
+        <span>Complete the previous section to unlock.</span>
+      </div>
+      <div class="section-inner">
+        <div class="section-eyebrow">
+          <div class="section-number">8</div>
+          <span class="section-label">The Resurrection</span>
+          <div class="section-divider"></div>
+        </div>
+        <div class="section-body">
+          <h2>The Empty Tomb — and What It Means for Us</h2>
+
+          <p>Three days after Jesus died and was buried, some of his followers went to the tomb early on Sunday morning. They expected to find a body. Instead, the tomb was empty. The stone had been rolled away. And then — they saw Jesus. Alive.</p>
+
+          <div class="scripture-opening">
+            <div class="verse">"He is not here; for he has been raised, as he said. Come, see the place where he lay."</div>
+            <div class="ref">Matthew 28:6 (NRSV)</div>
+          </div>
+
+          <p>The disciples were terrified at first. Then overwhelmed. Then filled with a joy they couldn't explain. Over the next 40 days, Jesus appeared to hundreds of people — eating with them, talking with them, showing them his wounds so they'd know it was really him.</p>
+
+          <p>Christians call this the Resurrection — and they believe it's the most important event in all of history. Why? Because if death couldn't hold Jesus, then death doesn't have the final word for anyone who belongs to him.</p>
+
+          <div class="key-word-box">
+            <div class="kw-label">Key Word</div>
+            <div class="kw-term">Resurrection</div>
+            <p>Resurrection means coming back to life — not like a ghost, but with a real body. Jesus's resurrection wasn't like a near-death experience or a spiritual vision. Christians believe he was <em>physically</em> raised from the dead, and that this is the guarantee of our own future resurrection.</p>
+          </div>
+
+          <p>And here's what makes it personal: the first person Jesus spoke to after the resurrection was Mary Magdalene — alone, weeping in a garden, thinking everything was lost. He called her by name. Just her name. And everything changed.</p>
+
+          <div class="pull-quote">
+            <p>Jesus called her by name. He knows your name too. That's what the whole story has been pointing toward.</p>
+          </div>
+
+          <ul class="theme-list">
+            <li><strong>The empty tomb means</strong> — death doesn't win. Love does.</li>
+            <li><strong>The resurrection means</strong> — Jesus is alive <em>right now</em>, not just in history.</li>
+            <li><strong>For you it means</strong> — the person who died for you is also the person who is present with you today.</li>
+          </ul>
+
+          <div class="discussion-block">
+            <div class="db-label">Talk About It</div>
+            <ul>
+              <li>Why do you think Jesus called Mary Magdalene by <em>name</em> instead of just appearing to everyone at once?</li>
+              <li>If the resurrection really happened, what difference should it make for how we live today?</li>
+              <li>What's the most important thing you've learned about Jesus in this whole study?</li>
+            </ul>
+          </div>
+
+          <div class="reflection-block">
+            <div class="rb-label">Final Reflection</div>
+            <p>At the beginning we asked: who is Jesus? Now that you've followed his whole story — what would you say? Who is he to you?</p>
+            <textarea placeholder="Write your thoughts here..." style="min-height:100px;"></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="continue-btn-wrap">
+        <button class="continue-btn" onclick="completeStudy()">Complete Study ✦</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <!-- Card 1: Section Nav -->
+    <div class="sidebar-card">
+      <h3>✦ Sections</h3>
+      <ul id="sideNav">
+        <li class="s-active"><span class="s-dot">1</span> Introduction</li>
+        <li class="s-locked"><span class="s-dot">2</span> The Birth</li>
+        <li class="s-locked"><span class="s-dot">3</span> Growing Up</li>
+        <li class="s-locked"><span class="s-dot">4</span> Ministry Begins</li>
+        <li class="s-locked"><span class="s-dot">5</span> His Miracles</li>
+        <li class="s-locked"><span class="s-dot">6</span> His Teaching</li>
+        <li class="s-locked"><span class="s-dot">7</span> The Cross</li>
+        <li class="s-locked"><span class="s-dot">8</span> The Resurrection</li>
+      </ul>
+    </div>
+
+    <!-- Card 2: Scripture in This Study -->
+    <div class="sidebar-card">
+      <h3>📖 Scripture in This Study</h3>
+      <ul class="scripture-list">
+        <li>John 3:16</li>
+        <li>Luke 2:6–7 · 2:49 · 2:52</li>
+        <li>Luke 3:22</li>
+        <li>John 6:10–11</li>
+        <li>John 11:35</li>
+        <li>Matthew 5:3–6</li>
+        <li>Matthew 22:37–39</li>
+        <li>Luke 23:34</li>
+        <li>Matthew 28:6</li>
+      </ul>
+    </div>
+
+    <!-- Card 3: Other Studies -->
+    <div class="sidebar-card">
+      <h3>📚 Other Studies · Grades 3–5</h3>
+      <ul class="other-studies">
+        <li><span class="current-study">✦ The Life of Jesus (current)</span></li>
+        <li><a href="crux-bible-heroes-ot.html">Heroes of the Old Testament</a></li>
+        <li><a href="crux-bible-psalms.html">The Psalms: Learning to Pray</a></li>
+        <li><a href="crux-bible-sermon-mount-35.html">The Sermon on the Mount</a></li>
+      </ul>
+    </div>
+
+  </aside>
+</div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <a href="crux-lessons.html">&#8592; Back to Studies</a>
+  <span class="study-title-nav">The Life of Jesus</span>
+  <a href="crux-bible-heroes-ot.html">Next Study &#8594;</a>
+</nav>
+
+<script>
+  const TOTAL = 8;
+
+  function updateProgress(n) {
+    const pct = (n / TOTAL) * 100;
+    document.getElementById('progressFill').style.width = pct + '%';
+  }
+
+  function advance(n) {
+    const navItems = document.querySelectorAll('#sideNav li');
+    navItems[n - 1].classList.remove('s-active');
+    navItems[n - 1].classList.add('s-done');
+    navItems[n - 1].querySelector('.s-dot').textContent = '✓';
+    updateProgress(n);
+
+    if (n < TOTAL) {
+      const next = document.getElementById('s' + (n + 1));
+      next.classList.remove('locked');
+      navItems[n].classList.remove('s-locked');
+      navItems[n].classList.add('s-active');
+      setTimeout(() => next.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+    }
+  }
+
+  function completeStudy() {
+    const navItems = document.querySelectorAll('#sideNav li');
+    navItems[TOTAL - 1].classList.remove('s-active');
+    navItems[TOTAL - 1].classList.add('s-done');
+    navItems[TOTAL - 1].querySelector('.s-dot').textContent = '✓';
+    updateProgress(TOTAL);
+
+    const banner = document.getElementById('completionBanner');
+    banner.style.display = 'block';
+    setTimeout(() => banner.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+  }
+</script>
+
+</body>
+</html>
