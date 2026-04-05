@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — Romans: The Gospel Explained</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --navy: #1a1f36;
+    --navy-light: #252b47;
+    --navy-mid: #2e3555;
+    --gold: #d4a574;
+    --gold-light: #e8c9a0;
+    --gold-pale: #f5ead8;
+    --cream: #faf7f2;
+    --white: #ffffff;
+    --off-white: #f4f3ef;
+    --border: rgba(26,31,54,0.1);
+    --border-gold: rgba(212,165,116,0.3);
+    --text-primary: #1a1f36;
+    --text-secondary: #5a6080;
+    --text-muted: #8a90aa;
+    --shadow-sm: 0 1px 4px rgba(0,0,0,0.07);
+    --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
+  }
+
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--text-primary);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* ── HEADER ── */
+  .site-header {
+    background: var(--navy);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  }
+
+  .site-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    text-decoration: none;
+    letter-spacing: 4px;
+  }
+
+  .site-nav { list-style: none; display: flex; gap: 1.5rem; }
+  .site-nav a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.82rem; font-weight: 500; transition: color 0.2s; }
+  .site-nav a:hover { color: var(--gold); }
+
+  /* ── HERO ── */
+  .module-hero {
+    background: var(--navy);
+    padding: 3.5rem 2rem 3rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .module-hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(212,165,116,0.1) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .module-track { font-size: 0.68rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+
+  .module-part-badge {
+    display: inline-block;
+    font-size: 0.72rem; font-weight: 600;
+    color: rgba(255,255,255,0.5);
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 20px;
+    padding: 0.25rem 0.85rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.5px;
+  }
+
+  .module-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 5vw, 2.8rem);
+    font-weight: 700; color: var(--white);
+    margin-bottom: 0.5rem; line-height: 1.2;
+  }
+
+  .module-subtitle {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-size: 1.1rem;
+    color: rgba(255,255,255,0.55); margin-bottom: 1.25rem;
+  }
+
+  .module-meta {
+    display: flex; align-items: center; justify-content: center;
+    gap: 1rem; flex-wrap: wrap;
+    font-size: 0.78rem; color: rgba(255,255,255,0.4); font-weight: 500;
+  }
+
+  .module-grade-badge {
+    display: inline-block;
+    background: rgba(212,165,116,0.15);
+    border: 1px solid rgba(212,165,116,0.3);
+    color: var(--gold);
+    font-size: 0.7rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 0.3rem 0.85rem; border-radius: 20px; margin-top: 1rem;
+  }
+
+  /* ── PROGRESS BAR ── */
+  .progress-bar {
+    background: var(--navy-light);
+    padding: 0.7rem 2rem;
+    display: flex; align-items: center; gap: 1rem;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+    position: sticky; top: 57px; z-index: 90;
+  }
+
+  .progress-label { font-size: 0.72rem; font-weight: 600; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+  .progress-track { flex: 1; height: 3px; background: var(--navy-mid); border-radius: 2px; overflow: hidden; }
+  .progress-fill { height: 100%; width: 0; background: var(--gold); border-radius: 2px; transition: width 0.5s ease; }
+  .progress-count { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; }
+
+  /* ── LAYOUT ── */
+  .module-layout {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+    align-items: start;
+  }
+
+  /* ── SECTION SYSTEM ── */
+  .module-section { position: relative; border-radius: 10px; overflow: hidden; margin-bottom: 0.5rem; }
+  .module-section.locked .section-inner { filter: blur(3px); pointer-events: none; user-select: none; }
+  .module-section.locked .continue-btn-wrap { display: none; }
+
+  .lock-overlay {
+    display: none;
+    align-items: center; gap: 10px;
+    padding: 0.85rem 1.25rem;
+    background: rgba(250,247,242,0.92);
+    border: 0.5px solid var(--border);
+    border-radius: 8px; margin-bottom: 1rem;
+    color: var(--text-muted); font-size: 0.82rem;
+    backdrop-filter: blur(4px);
+  }
+  .module-section.locked .lock-overlay { display: flex; }
+  .lock-icon { font-size: 1rem; }
+
+  .section-sep { height: 1px; background: var(--border); margin: 2rem 0; }
+  .section-inner { padding: 2rem 0; }
+
+  .section-eyebrow { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .section-number {
+    width: 28px; height: 28px; border-radius: 50%;
+    background: var(--navy); color: var(--gold);
+    font-size: 0.78rem; font-weight: 700;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .section-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-muted); }
+  .section-divider { flex: 1; height: 0.5px; background: var(--border); }
+
+  .section-body p { font-size: 1rem; color: var(--text-secondary); line-height: 1.8; margin-bottom: 1.1rem; }
+  .section-body p:last-child { margin-bottom: 0; }
+
+  /* ── CONTENT BLOCKS ── */
+  .scripture-opening {
+    margin-bottom: 2rem; padding: 1.75rem 2rem;
+    background: var(--navy); border-radius: 8px; border-left: 3px solid var(--gold);
+  }
+  .scripture-mark { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--gold); line-height: 0; vertical-align: -0.4em; margin-right: 0.1em; }
+  .scripture-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.6; display: inline; }
+  .scripture-ref { display: block; font-size: 0.78rem; font-weight: 600; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 0.75rem; }
+
+  .pull-quote { margin: 1.75rem 0; padding: 1.5rem 1.75rem; background: var(--navy); border-radius: 8px; }
+  .pull-quote p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.1rem; color: rgba(255,255,255,0.85) !important; line-height: 1.65; margin: 0 !important; }
+  .pull-quote cite { display: block; font-size: 0.75rem; font-weight: 600; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; margin-top: 0.6rem; font-style: normal; }
+
+  .scripture-callout {
+    display: flex; gap: 14px;
+    background: var(--white); border: 0.5px solid var(--border);
+    border-radius: 8px; padding: 1rem 1.25rem; margin: 1.25rem 0; align-items: flex-start;
+  }
+  .scripture-callout .sc-ref { font-size: 0.72rem; font-weight: 700; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; padding-top: 2px; min-width: 64px; }
+  .scripture-callout p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.98rem; color: var(--text-primary) !important; line-height: 1.6; margin: 0 !important; }
+
+  .key-word-box { background: var(--gold-pale); border-radius: 8px; padding: 1.5rem 1.75rem; border: 0.5px solid var(--border-gold); margin: 1.5rem 0; }
+  .key-word-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--navy); font-weight: 700; margin-bottom: 0.75rem; }
+  .key-word-box p { font-size: 0.92rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 0.5rem !important; }
+
+  .theme-list { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; margin: 1rem 0 1.25rem; }
+  .theme-list li { display: flex; gap: 0.75rem; font-size: 0.95rem; color: var(--text-secondary); align-items: flex-start; line-height: 1.6; }
+  .theme-list li::before { content: '✦'; color: var(--gold); font-size: 0.65rem; flex-shrink: 0; margin-top: 5px; }
+
+  .reflection-block { background: var(--navy); border-radius: 8px; padding: 1.5rem 1.75rem; margin-top: 1.25rem; }
+  .reflection-block h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--gold); font-weight: 700; margin-bottom: 0.4rem; }
+  .reflection-block p { font-size: 0.9rem; color: rgba(255,255,255,0.6) !important; margin-bottom: 0.85rem !important; line-height: 1.65; }
+  .reflection-textarea {
+    width: 100%; background: rgba(255,255,255,0.06); border: 0.5px solid rgba(255,255,255,0.15);
+    border-radius: 6px; padding: 0.85rem 1rem; color: rgba(255,255,255,0.85);
+    font-family: 'Inter', sans-serif; font-size: 0.9rem; line-height: 1.6;
+    resize: vertical; min-height: 80px; outline: none; transition: border-color 0.2s;
+  }
+  .reflection-textarea:focus { border-color: var(--gold); }
+  .reflection-textarea::placeholder { color: rgba(255,255,255,0.25); }
+
+  .discussion-block { background: var(--navy-light); border-radius: 8px; padding: 1.5rem 1.75rem; margin: 1.25rem 0; }
+  .discussion-block h4 { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--white); font-weight: 700; margin-bottom: 0.75rem; }
+  .discussion-block ul { list-style: none; display: flex; flex-direction: column; gap: 0.6rem; }
+  .discussion-block ul li { font-size: 0.92rem; color: rgba(255,255,255,0.65); padding-left: 1.1rem; border-left: 2px solid var(--gold); line-height: 1.6; }
+
+  /* ── AUGUSTINE BOX — patristic / tradition voice ── */
+  .tradition-box {
+    background: var(--off-white);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem 1.75rem;
+    margin: 1.5rem 0;
+  }
+  .tradition-box .tradition-label {
+    font-size: 0.68rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+    color: var(--text-muted); margin-bottom: 0.6rem;
+  }
+  .tradition-box blockquote {
+    font-family: 'Playfair Display', serif;
+    font-style: italic; font-size: 1rem;
+    color: var(--text-primary); line-height: 1.7;
+    margin-bottom: 0.6rem;
+    padding-left: 1rem;
+    border-left: 2px solid var(--gold);
+  }
+  .tradition-box .tradition-attr {
+    font-size: 0.78rem; font-weight: 600; color: var(--text-muted);
+    letter-spacing: 0.5px;
+  }
+
+  .continue-btn-wrap { margin-top: 1.75rem; }
+  .continue-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--gold); color: var(--navy);
+    border: none; border-radius: 6px; padding: 0.75rem 1.75rem;
+    font-size: 0.85rem; font-weight: 600; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: background 0.2s; letter-spacing: 0.03em;
+  }
+  .continue-btn:hover { background: var(--gold-light); }
+
+  .next-part-banner {
+    display: none;
+    background: linear-gradient(135deg, var(--navy) 0%, var(--navy-light) 100%);
+    border: 1px solid var(--border-gold); border-radius: 12px;
+    padding: 2rem; margin-top: 1.5rem; text-align: center;
+  }
+  .next-part-banner.visible { display: block; }
+  .next-part-banner h3 { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--white); margin-bottom: 0.5rem; }
+  .next-part-banner p { font-size: 0.9rem; color: rgba(255,255,255,0.55); margin-bottom: 1.25rem; }
+  .next-part-btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    background: var(--gold); color: var(--navy); border: none; border-radius: 6px;
+    padding: 0.85rem 2rem; font-size: 0.85rem; font-weight: 700; cursor: pointer;
+    font-family: 'Inter', sans-serif; transition: background 0.2s; letter-spacing: 0.03em; text-decoration: none;
+  }
+  .next-part-btn:hover { background: var(--gold-light); }
+
+  /* ── SIDEBAR ── */
+  .module-sidebar { position: sticky; top: 110px; display: flex; flex-direction: column; gap: 1rem; }
+  .sidebar-card { background: var(--white); border-radius: 10px; padding: 1.25rem; box-shadow: var(--shadow-sm); border: 0.5px solid var(--border); }
+  .sidebar-card-title { font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.85rem; }
+
+  .sections-nav { list-style: none; display: flex; flex-direction: column; gap: 0.35rem; }
+  .sections-nav li { display: flex; align-items: center; gap: 0.6rem; font-size: 0.82rem; color: var(--text-muted); padding: 0.35rem 0.5rem; border-radius: 6px; transition: all 0.2s; }
+  .nav-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); flex-shrink: 0; transition: all 0.2s; }
+  .sections-nav li.s-active { color: var(--navy); font-weight: 600; background: var(--off-white); }
+  .sections-nav li.s-active .nav-dot { background: var(--gold); }
+  .sections-nav li.s-done { color: var(--text-secondary); }
+  .sections-nav li.s-done .nav-dot { background: #4caf50; }
+
+  .scripture-item { display: flex; gap: 0.6rem; margin-bottom: 0.5rem; align-items: baseline; }
+  .scripture-item-ref { font-size: 0.72rem; font-weight: 700; color: var(--gold); letter-spacing: 0.5px; white-space: nowrap; min-width: 52px; }
+  .scripture-item-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.4; }
+
+  .track-item { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; font-size: 0.82rem; }
+  .track-dot { width: 22px; height: 22px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.65rem; font-weight: 700; flex-shrink: 0; }
+  .track-dot.current { background: var(--gold); color: var(--navy); }
+  .track-dot.upcoming { background: var(--off-white); color: var(--text-muted); border: 1px solid var(--border); }
+  .current-item { color: var(--navy); font-weight: 600; }
+  .upcoming-item { color: var(--text-muted); }
+
+  .nav-bar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 2rem; background: var(--white);
+    border-top: 1px solid var(--border); position: sticky; bottom: 0;
+  }
+  .nav-btn {
+    padding: 0.6rem 1.25rem; border-radius: 6px; font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; font-family: 'Inter', sans-serif; border: none; transition: all 0.2s;
+    text-decoration: none; display: inline-flex; align-items: center;
+  }
+  .nav-btn:not(.primary) { background: var(--off-white); color: var(--text-secondary); }
+  .nav-btn:not(.primary):hover { background: var(--border); }
+  .nav-btn.primary { background: var(--gold); color: var(--navy); }
+  .nav-btn.primary:hover { background: var(--gold-light); }
+
+  @media (max-width: 800px) {
+    .module-layout { grid-template-columns: 1fr; }
+    .module-sidebar { display: none; }
+    .site-nav { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <a href="index.html" class="site-logo">CRUX</a>
+  <nav><ul class="site-nav">
+    <li><a href="crux-account.html">My Account</a></li>
+    <li><a href="index.html#bible">Bible Study</a></li>
+    <li><a href="crux-adult-formation.html">Adult Track</a></li>
+    <li><a href="index.html">Home</a></li>
+  </ul></nav>
+</header>
+
+<div class="module-hero">
+  <div class="module-track">Bible Study — Adults</div>
+  <div class="module-part-badge">Study 1 of 3 — Adult Track</div>
+  <h1 class="module-title">Romans</h1>
+  <p class="module-subtitle">The Gospel Explained — Paul's Systematic Case for the Christian Faith</p>
+  <div class="module-meta">
+    <span>&#9679; 8 sections</span>
+    <span>&#9679; 5 reflection questions</span>
+    <span>&#9679; 10 scripture passages</span>
+    <span>&#9679; Discussion questions</span>
+  </div>
+  <div class="module-grade-badge">Adult</div>
+</div>
+
+<div class="progress-bar">
+  <span class="progress-label">Progress</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="progress-count" id="progressCount">0 of 8 sections complete</span>
+</div>
+
+<div class="module-layout">
+<main class="module-content">
+
+  <div class="scripture-opening">
+    <span class="scripture-mark">&ldquo;</span>
+    <p class="scripture-text">I am not ashamed of the gospel, because it is the power of God that brings salvation to everyone who believes — first to the Jew, then to the Gentile. For in the gospel the righteousness of God is revealed — a righteousness that is by faith from first to last.</p>
+    <span class="scripture-ref">Romans 1:16–17</span>
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="module-section" id="s1">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">1</div>
+        <span class="section-label">Why Romans?</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Paul's letter to the Romans is not a letter in the ordinary sense. It is a systematic theological treatise sent to a church he has never visited, written to introduce himself and his gospel before he arrives. It is the most carefully argued, most theologically comprehensive document in the New Testament — possibly in all of Christian literature.</p>
+        <p>Its influence is extraordinary and disproportionate. Augustine of Hippo was converted reading it. Martin Luther's reading of it ignited the Reformation. John Wesley felt his heart "strangely warmed" hearing it read aloud. Karl Barth's commentary on Romans in 1919 is widely credited with ending liberal Protestantism's comfortable accommodation with modernity. No other text of comparable length has reshaped Western history as many times.</p>
+        <p>For Catholic readers, Romans requires some care. It has been read selectively — particularly chapters 1–8 — by Protestant traditions in ways that seem to set faith against works, grace against law, Paul against James. We'll work through the whole letter, which tells a more coherent and more Catholic story than the excerpts suggest.</p>
+
+        <div class="key-word-box">
+          <h4>The Letter's Structure</h4>
+          <p><strong>Chapters 1–3:</strong> The problem — all humanity stands under judgment, Jew and Gentile alike. No one is righteous before God on their own merits.</p>
+          <p><strong>Chapters 3–5:</strong> The solution — justification by faith through the redemption accomplished in Jesus Christ. Abraham as the model.</p>
+          <p><strong>Chapters 6–8:</strong> The life of grace — freedom from sin, life in the Spirit, and the extraordinary chapter 8 on suffering and hope.</p>
+          <p><strong>Chapters 9–11:</strong> The mystery of Israel — God's faithfulness to his covenant people and the place of the Gentiles in his plan.</p>
+          <p><strong>Chapters 12–16:</strong> The practical implications — what the gospel looks like in the body, in the community, in the city.</p>
+        </div>
+
+        <p>Paul writes to a mixed congregation — Jewish Christians and Gentile Christians who have theological tensions between them. His letter is, among other things, an act of pastoral diplomacy: he is trying to hold together a community that is fracturing along ethnic and theological lines. That context shapes everything he writes.</p>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(1)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- SECTION 2 -->
+  <div class="module-section locked" id="s2">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">2</div>
+        <span class="section-label">The Universal Indictment</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Paul's opening move is deliberately unsettling. Before he can announce the gospel, he has to establish the problem the gospel addresses. And the problem, he argues, is universal and total: every human being stands under the judgment of God, and no one — not the pagan philosopher, not the moral person of good conscience, not the devout Jew — is exempt.</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Rom 3:10–12</span>
+          <p>"There is no one righteous, not even one; there is no one who understands; there is no one who seeks God. All have turned away, they have together become worthless; there is no one who does good, not even one."</p>
+        </div>
+
+        <p>This is Paul's quotation of Psalm 14, and it is as bleak as anything in Scripture. But it's important to understand what he is and isn't claiming. He is not saying that all human beings are maximally evil, or that no one does anything decent. He is saying that when measured against the standard of God's perfect righteousness, no human being's moral performance earns them a standing before God. The gap between human goodness at its best and divine righteousness is not a small gap that effort can close. It is an infinite gap.</p>
+        <p>Paul's indictment runs in three movements. First, Gentiles: they have rejected the knowledge of God available in creation (natural law) and descended into idolatry. Second, the moral person who judges others: they do the same things they condemn. Third — and most surprising to his Jewish readers — Israel itself: having the law is not the same as keeping the law, and circumcision of the heart is what God has always sought, not circumcision of the flesh.</p>
+
+        <div class="tradition-box">
+          <div class="tradition-label">From the Tradition</div>
+          <blockquote>"Our heart is restless until it rests in Thee."</blockquote>
+          <p class="tradition-attr">— Augustine of Hippo, <em>Confessions</em>, Book I. Augustine understood Romans to be describing the human condition before his own conversion: a restlessness that no finite good could satisfy, a disorder that ran deeper than behavior into desire itself.</p>
+        </div>
+
+        <div class="reflection-block">
+          <h4>Reflection</h4>
+          <p>Paul's universal indictment is designed to remove every ground of self-justification before God — not to crush the reader, but to clear the ground for grace. Where do you most naturally locate your sense of being "okay" before God? What would it mean to surrender that ground?</p>
+          <textarea class="reflection-textarea" placeholder="Write your thoughts here..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(2)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- SECTION 3 -->
+  <div class="module-section locked" id="s3">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">3</div>
+        <span class="section-label">Justification by Faith</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Having established that no one stands righteous before God by their own merit, Paul announces the solution — and it comes entirely from outside the human person:</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Rom 3:21–24</span>
+          <p>"But now apart from the law the righteousness of God has been made known, to which the Law and the Prophets testify. This righteousness is given through faith in Jesus Christ to all who believe. There is no difference between Jew and Gentile, for all have sinned and fall short of the glory of God, and all are justified freely by his grace through the redemption that came by Christ Jesus."</p>
+        </div>
+
+        <p>The word "justified" — <em>dikaioō</em> in Greek — is a legal term. It means to be declared righteous, to have a verdict of acquittal pronounced over you. Paul's claim is that God pronounces this verdict over sinners — not because they have earned it, but because Jesus has earned it on their behalf, and faith is the means by which that righteousness is credited to the believer's account.</p>
+
+        <div class="key-word-box">
+          <h4>A Catholic Reading of Justification</h4>
+          <p>The Catholic and Protestant traditions have debated justification since the Reformation, but the distance between them is often overstated. Catholic teaching affirms that justification is entirely God's gift — it cannot be earned or merited from a neutral starting point (Council of Trent, Session VI). Where Catholic teaching differs is in understanding justification not merely as a legal declaration but as a real transformation of the person — an infusion of righteousness, not merely an imputation of it. Grace does not just cover sin; it begins to heal it. The Joint Declaration on the Doctrine of Justification, signed by the Catholic Church and Lutheran World Federation in 1999, affirmed a substantial consensus on the core of the doctrine.</p>
+        </div>
+
+        <p>Paul's proof text is Abraham — the great ancestor of Israel, who was counted righteous by God before circumcision, before the Mosaic law, before any of the ritual markers of Jewish identity. Abraham "believed God, and it was credited to him as righteousness" (Romans 4:3, quoting Genesis 15:6). This means the principle of faith-righteousness predates the law. The law was never meant to be the mechanism of salvation — it was meant to reveal the need for a salvation that could only come from elsewhere.</p>
+
+        <div class="tradition-box">
+          <div class="tradition-label">From the Tradition</div>
+          <blockquote>"Grace is given not because we have done good works, but in order that we may be able to do them."</blockquote>
+          <p class="tradition-attr">— Augustine of Hippo, <em>On Grace and Free Will</em>. This is the Catholic position in a sentence: grace precedes and enables the good works that follow from it. Works do not earn grace; grace produces works.</p>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(3)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- SECTION 4 -->
+  <div class="module-section locked" id="s4">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">4</div>
+        <span class="section-label">Sin, Death, and Adam</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>In chapter 5, Paul steps back from the individual and addresses the human condition as a whole. Why is the situation he described in chapters 1–3 the situation? Why is universal sinfulness not just a collective bad habit but something that seems built into the structure of human existence? His answer involves one of the most important — and most contested — passages in the New Testament:</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Rom 5:12</span>
+          <p>"Therefore, just as sin entered the world through one man, and death through sin, and in this way death came to all people, because all sinned..."</p>
+        </div>
+
+        <p>Paul's argument is typological: Adam and Christ are two representative heads of humanity. Through Adam's disobedience, sin and death entered the human condition — not merely as external influences but as something now woven into what it means to be human. Through Christ's obedience, grace and life are given — not merely to those who imitate Christ's virtue, but to all who are incorporated into him.</p>
+        <p>The parallel is deliberate and breathtaking in its scope. Adam's one act spread death to all who descend from him. Christ's one act — the Cross — spreads life to all who are united to him by faith and baptism. And the asymmetry runs in grace's favor: where sin increased, grace increased all the more.</p>
+
+        <div class="key-word-box">
+          <h4>Original Sin — What the Church Actually Teaches</h4>
+          <p>The doctrine of original sin does not claim that human beings are born guilty of Adam's personal act, but that they are born into a condition of disorder — a deprivation of the original holiness and righteousness that humanity was created for. The Catechism describes it as a "sin contracted, not committed" (CCC 404). This condition is universal, it affects the will and intellect, and it is the reason why human beings consistently choose lesser goods over God — not because they are compelled to, but because their desiring faculty is disordered. Baptism removes the guilt of original sin but leaves the tendency to sin — what the tradition calls <em>concupiscence</em> — which is why the Christian life is a lifelong project of grace.</p>
+        </div>
+
+        <div class="reflection-block">
+          <h4>Reflection</h4>
+          <p>Paul's account of original sin explains why moral effort alone — however sincere — cannot fix the human problem. It's a structural disorder, not just a behavioral one. Does that match your experience of trying to change something fundamental about yourself? What does it suggest about where transformation actually comes from?</p>
+          <textarea class="reflection-textarea" placeholder="Write your thoughts here..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(4)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- SECTION 5 -->
+  <div class="module-section locked" id="s5">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">5</div>
+        <span class="section-label">Life in the Spirit</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Chapters 6–8 are the heart of Romans for many readers. Having established what Christ has done, Paul now addresses what happens in the person who receives it. And his answer is not merely that sins are forgiven and heaven is secured — it is that the believer is transferred from one order of existence to another.</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Rom 6:3–4</span>
+          <p>"Or don't you know that all of us who were baptized into Christ Jesus were baptized into his death? We were therefore buried with him through baptism into death in order that, just as Christ was raised from the dead through the glory of the Father, we too may live a new life."</p>
+        </div>
+
+        <p>Baptism, for Paul, is not a ceremony marking a private decision. It is a death and resurrection — a real participation in Christ's own death and rising. The old self — defined by its captivity to sin and death — goes under the water. What comes up is someone whose fundamental identity is now defined by the risen Christ. This is why Paul can say, "sin shall no longer be your master" — not as a command, but as a statement about what is now true of the baptized person.</p>
+        <p>Chapter 7 is one of the most psychologically honest passages in Scripture. Paul describes the experience of moral struggle with harrowing precision: the good I want to do, I do not do; the evil I do not want to do, I keep doing. Scholars debate whether he is describing pre-conversion or post-conversion experience. The answer is probably: both, in different registers. The law can reveal sin; it cannot defeat it. Only the Spirit can.</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Rom 8:1–2</span>
+          <p>"Therefore, there is now no condemnation for those who are in Christ Jesus, because through Christ Jesus the law of the Spirit who gives life has set you free from the law of sin and death."</p>
+        </div>
+
+        <p>Chapter 8 is Paul's high-water mark. It moves from the Spirit's indwelling to the adoption of believers as children of God, to the groaning of all creation awaiting renewal, to the extraordinary claim that all things — including suffering — are being worked together for good for those who love God, to the passage that has consoled more people in grief than almost anything else ever written:</p>
+
+        <div class="pull-quote">
+          <p>"For I am convinced that neither death nor life, neither angels nor demons, neither the present nor the future, nor any powers, neither height nor depth, nor anything else in all creation, will be able to separate us from the love of God that is in Christ Jesus our Lord."</p>
+          <cite>— Romans 8:38–39</cite>
+        </div>
+
+        <div class="reflection-block">
+          <h4>Reflection</h4>
+          <p>Paul's description of moral struggle in chapter 7 — "the good I want to do, I don't do" — is among the most recognizable sentences in the New Testament. How does his diagnosis change if the solution is the Spirit rather than greater effort or willpower? What difference does that make practically?</p>
+          <textarea class="reflection-textarea" placeholder="Write your thoughts here..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(5)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- SECTION 6 -->
+  <div class="module-section locked" id="s6">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">6</div>
+        <span class="section-label">The Mystery of Israel</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Chapters 9–11 are among the most theologically demanding in all of Paul's letters, and among the most neglected in popular Christianity. They address a question that Paul feels personally: if salvation is by faith in Jesus, and most of Israel has not accepted Jesus, does that mean God's covenant promises to Israel have failed?</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Rom 9:1–3</span>
+          <p>"I speak the truth in Christ — I am not lying, my conscience confirms it through the Holy Spirit — I have great sorrow and unceasing anguish in my heart. For I could wish that I myself were cursed and cut off from Christ for the sake of my people, those of my own race, the people of Israel."</p>
+        </div>
+
+        <p>This is not a detached theological treatise. Paul is in agony about his own people. His answer unfolds across three chapters. God has not failed — because God's election was never simply ethnic. Within Israel itself, there was always a remnant chosen by grace, not by birth or merit. The hardening of part of Israel is not permanent — it serves a purpose in the inclusion of the Gentiles, which will in turn provoke Israel to "jealousy" and ultimately to salvation. The whole arc of history is going somewhere.</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Rom 11:33–36</span>
+          <p>"Oh, the depth of the riches of the wisdom and knowledge of God! How unsearchable his judgments, and his paths beyond tracing out! Who has known the mind of the Lord? Or who has been his counselor? ... For from him and through him and for him are all things. To him be the glory forever! Amen."</p>
+        </div>
+
+        <p>Paul ends the section not with a neat answer but with an act of worship. He has traced the logic as far as human reason can go — and then he stops, because the depths exceed him. This is intellectual honesty at its most theologically mature: knowing when the argument has reached its limit and doxology is the only appropriate response.</p>
+
+        <div class="tradition-box">
+          <div class="tradition-label">From the Tradition</div>
+          <blockquote>"The gifts and calling of God are irrevocable." Paul's words in Romans 11:29 are cited by the Second Vatican Council's <em>Nostra Aetate</em> as the basis for the Church's renewed understanding of its relationship to Judaism — an ongoing covenant, not a superseded one.</blockquote>
+          <p class="tradition-attr">— <em>Nostra Aetate</em> §4, Second Vatican Council, 1965</p>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(6)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- SECTION 7 -->
+  <div class="module-section locked" id="s7">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">7</div>
+        <span class="section-label">The Gospel in the Body</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Chapter 12 is where Romans pivots from doctrine to life — and the pivot is one of the most important sentences in the letter:</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Rom 12:1–2</span>
+          <p>"Therefore, I urge you, brothers and sisters, in view of God's mercy, to offer your bodies as a living sacrifice, holy and pleasing to God — this is your true and proper worship. Do not conform to the pattern of this world, but be transformed by the renewing of your mind."</p>
+        </div>
+
+        <p>The word "therefore" is doing enormous theological work. Everything in chapters 12–16 flows from everything in chapters 1–11. The practical ethics Paul is about to outline are not a separate moral code. They are the natural consequence of the gospel — what a person looks like when they have genuinely absorbed the reality of what God has done for them in Christ.</p>
+        <p>"Living sacrifice" is a deliberate paradox. In the Temple, sacrifices were killed. Paul is asking for something harder: a life given over to God while still being lived. This is the definition of Christian worship in its fullest sense — not just what happens in the liturgy but what happens at work, in relationships, in the use of money, in the treatment of enemies.</p>
+
+        <ul class="theme-list">
+          <li><strong>Romans 12:9–21</strong> — Love that hates evil, honors others, perseveres in prayer, shares with those in need, blesses persecutors, refuses to repay evil with evil.</li>
+          <li><strong>Romans 13:1–7</strong> — The complex and much-debated passage on governing authorities — written under Nero, and not a blank check to any government.</li>
+          <li><strong>Romans 13:8–10</strong> — The entire law fulfilled in one commandment: love your neighbor as yourself.</li>
+          <li><strong>Romans 14–15</strong> — How the strong and the weak in faith are to receive one another — the most practical application of the doctrine of justification: if God has accepted them, who are you to reject them?</li>
+        </ul>
+
+        <div class="reflection-block">
+          <h4>Reflection</h4>
+          <p>Paul says "do not conform to the pattern of this world, but be transformed by the renewing of your mind." Transformation, not just behavior change. What is the difference between those two things in your own experience? What has actually changed your mind about something important, rather than just your actions?</p>
+          <textarea class="reflection-textarea" placeholder="Write your thoughts here..."></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="advance(7)">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- SECTION 8 -->
+  <div class="module-section locked" id="s8">
+    <div class="lock-overlay"><div class="lock-icon">&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">8</div>
+        <span class="section-label">The Power of the Gospel</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Paul ends his letter with personal greetings — twenty-nine named individuals in a church he has never visited, which tells you something about how he gathered intelligence and how carefully he attended to particular people. But before those greetings, he states his apostolic ambition with striking clarity:</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Rom 15:18–19</span>
+          <p>"I will not venture to speak of anything except what Christ has accomplished through me in leading the Gentiles to obey God by what I have said and done — by the power of signs and wonders, through the power of the Spirit of God. So from Jerusalem all the way around to Illyricum, I have fully proclaimed the gospel of Christ."</p>
+        </div>
+
+        <p>From Jerusalem to Illyricum is roughly the entire eastern Mediterranean — thousands of miles of travel, dozens of cities, countless beatings, imprisonments, and shipwrecks — all in service of a message Paul summarized in chapter 1: the gospel is the power of God for the salvation of everyone who believes.</p>
+        <p>Step back and consider what Romans has accomplished in sixteen chapters. It has diagnosed the human problem at its deepest level — not behavioral but structural, not just personal but universal. It has announced the solution — not human moral effort but divine righteousness given as a gift, received through faith, enacted in baptism, sustained by the Spirit. It has traced the implications through history (Israel and the Gentiles), through the individual life (chapters 6–8), and through the community (chapters 12–15). And it has done all of this while naming real people, attending to real conflicts, and reaching always toward doxology when the argument exceeds its own grasp.</p>
+
+        <div class="pull-quote">
+          <p>Romans is not a theology textbook. It is a love letter — written by a man who has staked everything on the truth of one claim, to a community he has never met, in a city that will eventually execute him for saying it.</p>
+        </div>
+
+        <div class="discussion-block">
+          <h4>Final Discussion Questions</h4>
+          <ul>
+            <li>Paul's opening thesis is that the gospel is "the power of God for salvation." Not the wisdom of God, not the plan of God — the <em>power</em>. What does it mean for a theological argument to be a form of power rather than just information?</li>
+            <li>The Catholic reading of justification holds that grace truly transforms the person rather than merely covering them. How does that affect the way you understand the Christian life — as ongoing transformation versus secured status?</li>
+            <li>Romans 7's account of moral struggle — "I do not do the good I want" — is one of the most honest passages in Scripture. Does it describe your experience? What does Paul's answer in chapter 8 actually offer that chapter 7 can't provide on its own?</li>
+            <li>Paul ends chapters 9–11 with an act of worship rather than a neat conclusion. When has theology led you to worship rather than just understanding? Is that a failure of argument or its completion?</li>
+          </ul>
+        </div>
+
+        <div class="reflection-block">
+          <h4>Final Reflection</h4>
+          <p>Paul says he is "not ashamed of the gospel." Shame implies social cost — it implies that saying this out loud in public carries a risk. In what ways do you find the gospel costly to hold? And what in Romans, if anything, has made you more willing to hold it at that cost?</p>
+          <textarea class="reflection-textarea" placeholder="Write your thoughts here..." style="min-height: 100px;"></textarea>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn" onclick="completeStudy()">Complete Study &#10003;</button></div>
+  </div>
+
+  <!-- Completion Banner -->
+  <div class="next-part-banner" id="completionBanner">
+    <h3>&#10003; Study Complete</h3>
+    <p>You've worked through Paul's most systematic account of the gospel — from universal indictment to the love that nothing in all creation can separate us from. The letter is complete. The argument holds. What you do with it is the next chapter.</p>
+    <a href="index.html#bible" class="next-part-btn">&#8592; Back to Bible Study</a>
+  </div>
+
+</main>
+
+<!-- Sidebar -->
+<aside class="module-sidebar">
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Sections</div>
+    <ul class="sections-nav" id="sideNav">
+      <li class="s-active"><span class="nav-dot"></span>Why Romans?</li>
+      <li class="s-locked"><span class="nav-dot"></span>The Universal Indictment</li>
+      <li class="s-locked"><span class="nav-dot"></span>Justification by Faith</li>
+      <li class="s-locked"><span class="nav-dot"></span>Sin, Death, and Adam</li>
+      <li class="s-locked"><span class="nav-dot"></span>Life in the Spirit</li>
+      <li class="s-locked"><span class="nav-dot"></span>The Mystery of Israel</li>
+      <li class="s-locked"><span class="nav-dot"></span>The Gospel in the Body</li>
+      <li class="s-locked"><span class="nav-dot"></span>The Power of the Gospel</li>
+    </ul>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Scripture in this study</div>
+    <div class="scripture-item"><span class="scripture-item-ref">Rom 1:16–17</span><span class="scripture-item-desc">The gospel as God's power</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Rom 3:10–12</span><span class="scripture-item-desc">No one is righteous</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Rom 3:21–24</span><span class="scripture-item-desc">Justification by faith</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Rom 5:12</span><span class="scripture-item-desc">Sin through Adam</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Rom 6:3–4</span><span class="scripture-item-desc">Baptism into Christ's death</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Rom 8:1–2</span><span class="scripture-item-desc">No condemnation in Christ</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Rom 8:38–39</span><span class="scripture-item-desc">Nothing can separate us</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Rom 9:1–3</span><span class="scripture-item-desc">Paul's anguish for Israel</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Rom 11:33–36</span><span class="scripture-item-desc">Doxology beyond argument</span></div>
+    <div class="scripture-item"><span class="scripture-item-ref">Rom 12:1–2</span><span class="scripture-item-desc">Living sacrifice</span></div>
+  </div>
+
+  <div class="sidebar-card">
+    <div class="sidebar-card-title">Other studies — Adults</div>
+    <div class="track-item current-item"><div class="track-dot current">1</div><span>Romans</span></div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">2</div><span>The Gospel of John</span></div>
+    <div class="track-item upcoming-item"><div class="track-dot upcoming">3</div><span>Isaiah: Prophet of the Messiah</span></div>
+  </div>
+</aside>
+
+</div><!-- /module-layout -->
+
+<div class="nav-bar">
+  <button class="nav-btn" onclick="window.location.href='index.html#bible'">&#8592; Bible Study</button>
+  <button class="nav-btn primary" id="nextBtn" style="opacity:0.35;pointer-events:none;">Next Study &#8594;</button>
+</div>
+
+<script>
+  const TOTAL = 8;
+
+  function advance(n) {
+    const navItems = document.querySelectorAll('#sideNav li');
+    navItems[n - 1].classList.remove('s-active');
+    navItems[n - 1].classList.add('s-done');
+    updateProgress(n);
+    if (n < TOTAL) {
+      const next = document.getElementById('s' + (n + 1));
+      next.classList.remove('locked');
+      navItems[n].classList.remove('s-locked');
+      navItems[n].classList.add('s-active');
+      setTimeout(() => next.scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+    }
+  }
+
+  function updateProgress(n) {
+    const pct = Math.round((n / TOTAL) * 100);
+    document.getElementById('progressFill').style.width = pct + '%';
+    document.getElementById('progressCount').textContent = n + ' of ' + TOTAL + ' sections complete';
+  }
+
+  function completeStudy() {
+    const navItems = document.querySelectorAll('#sideNav li');
+    navItems[TOTAL - 1].classList.remove('s-active');
+    navItems[TOTAL - 1].classList.add('s-done');
+    updateProgress(TOTAL);
+    document.getElementById('completionBanner').classList.add('visible');
+    const btn = document.getElementById('nextBtn');
+    btn.style.opacity = '1';
+    btn.style.pointerEvents = 'auto';
+    setTimeout(() => document.getElementById('completionBanner').scrollIntoView({ behavior: 'smooth', block: 'start' }), 150);
+  }
+</script>
+
+</body>
+</html>
