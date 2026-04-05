@@ -596,6 +596,38 @@
             line-height: 1.6;
         }
 
+        .study-item.available {
+            cursor: pointer;
+            border-left-color: var(--gold);
+        }
+
+        .study-item.available:hover {
+            background: rgba(212, 165, 116, 0.10);
+            transform: translateX(4px);
+        }
+
+        .study-item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 0.4rem;
+        }
+
+        .study-badge-available {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            background: rgba(212, 165, 116, 0.18);
+            color: var(--gold-dark, #b8864f);
+            border: 1px solid rgba(212, 165, 116, 0.45);
+            padding: 3px 9px;
+            border-radius: 20px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
         /* ─── BELIEFS ─────────────────────────────────── */
         .belief-card {
             background: var(--white);
@@ -1957,7 +1989,7 @@
 <!-- fresh-20260404003529-59537 -->
 <!-- deploy-20260404003932-180934 -->
 <!-- deploy-20260404122246-601136 -->
-<!-- v2026040422573453681 -->
+<!-- v2026040412460767635 -->
 </head>
 <body>
     <header>
@@ -2200,178 +2232,59 @@
                 <div class="section-header">
                     <span class="eyebrow">Sacred Scripture</span>
                     <h2>Bible Study Resources</h2>
-                    <p>Explore the living Word of God — studies written for every age, from first encounters with Scripture to deeper theological engagement</p>
+                    <p>Explore the living Word of God</p>
                 </div>
 
-                <!-- ── GRADES 3–5 ── -->
                 <div class="category-block">
-                    <h3>For Younger Students <span style="font-size:0.85rem;font-weight:400;color:var(--text-muted);">Grades 3–5</span></h3>
-
-                    <div class="study-item">
-                        <span style="display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8890b0;background:rgba(26,31,54,0.06);border:1px solid rgba(26,31,54,0.1);padding:0.2rem 0.6rem;border-radius:20px;margin-bottom:0.5rem;">Coming Soon</span><br>
-                        <h5>The Life of Jesus: A Journey Through the Gospels</h5>
-                        <p>Follow Jesus from His birth in Bethlehem to His resurrection on Easter morning. Each lesson uses a Gospel story, a simple reflection question, and a short prayer. Students discover that Jesus is not just a historical figure — He is someone who loves them personally.</p>
-                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">8 lessons</span>
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Matthew · Luke · John</span>
+                    <h3>For Younger Students (Grades 3–5)</h3>
+                    <div class="study-item available" onclick="window.location.href='crux-bible-life-of-jesus.html'">
+                        <div class="study-item-header">
+                            <h5>The Life of Jesus: A Journey Through the Gospels</h5>
+                            <span class="study-badge-available">Available Now</span>
                         </div>
+                        <p>Follow Jesus from His birth to His resurrection with simplified Gospel stories, reflection questions, and activities. Learn about His miracles, parables, and teachings.</p>
                     </div>
-
                     <div class="study-item">
-                        <span style="display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8890b0;background:rgba(26,31,54,0.06);border:1px solid rgba(26,31,54,0.1);padding:0.2rem 0.6rem;border-radius:20px;margin-bottom:0.5rem;">Coming Soon</span><br>
                         <h5>Heroes of the Old Testament</h5>
-                        <p>Meet Noah, Abraham, Moses, David, Esther, and Daniel — people who trusted God even when it was hard. Each story shows how God keeps His promises and calls ordinary people to do extraordinary things. Students explore how these ancient stories speak to their lives today.</p>
-                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">6 lessons</span>
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Genesis · Exodus · Samuel · Esther · Daniel</span>
-                        </div>
+                        <p>Meet Moses, David, Ruth, and other faithful people who trusted God. Discover how their stories connect to your life today.</p>
                     </div>
-
                     <div class="study-item">
-                        <span style="display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8890b0;background:rgba(26,31,54,0.06);border:1px solid rgba(26,31,54,0.1);padding:0.2rem 0.6rem;border-radius:20px;margin-bottom:0.5rem;">Coming Soon</span><br>
-                        <h5>The Psalms: Learning to Pray with Scripture</h5>
-                        <p>The Psalms are the prayer book of the Bible — songs of joy, cries for help, and hymns of praise that God's people have prayed for thousands of years. Students learn Psalms 23, 27, and 100 by heart and discover how to pray honestly with God in every situation.</p>
-                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">5 lessons</span>
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Psalms</span>
-                        </div>
-                    </div>
-
-                    <div class="study-item">
-                        <span style="display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8890b0;background:rgba(26,31,54,0.06);border:1px solid rgba(26,31,54,0.1);padding:0.2rem 0.6rem;border-radius:20px;margin-bottom:0.5rem;">Coming Soon</span><br>
-                        <h5>The Sermon on the Mount: Jesus's Blueprint for Life</h5>
-                        <p>The Beatitudes, the Our Father, the Golden Rule — this study walks through Jesus's most famous teaching one section at a time. Students discover what it actually means to be "blessed" and how Jesus's words turn the world's values upside down in the best possible way.</p>
-                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">4 lessons</span>
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Matthew 5–7</span>
-                        </div>
+                        <h5>The Psalms: Prayers from the Heart</h5>
+                        <p>Learn how the Psalms teach us to pray in every situation — joy, sadness, worry, and thanksgiving.</p>
                     </div>
                 </div>
 
-                <!-- ── GRADES 6–8 ── -->
                 <div class="category-block">
-                    <h3>For Older Students <span style="font-size:0.85rem;font-weight:400;color:var(--text-muted);">Grades 6–8</span></h3>
-
-                    <div class="study-item" onclick="window.location.href='crux-bible-mark.html'" style="cursor:pointer;">
-                        <h5>The Gospel of Mark: Who Is Jesus? <span style="font-size:0.72rem;font-weight:600;color:var(--gold-dark);margin-left:0.5rem;">→ Begin</span></h5>
-                        <p>Mark is the shortest and fastest Gospel — the word "immediately" appears 41 times. This chapter-by-chapter study asks the question that runs through every page: who is this man? Students wrestle with the same question the disciples asked in the boat: "Who is this, that even the wind and the sea obey him?"</p>
-                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:#2e7d32;background:rgba(46,125,50,0.1);padding:0.2rem 0.6rem;border-radius:20px;border:1px solid rgba(46,125,50,0.2);">Available Now</span>
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">8 lessons</span>
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Mark 1–16</span>
-                        </div>
-                    </div>
-
+                    <h3>For Older Students (Grades 6–8)</h3>
                     <div class="study-item">
-                        <span style="display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8890b0;background:rgba(26,31,54,0.06);border:1px solid rgba(26,31,54,0.1);padding:0.2rem 0.6rem;border-radius:20px;margin-bottom:0.5rem;">Coming Soon</span><br>
-                        <h5>Acts of the Apostles: The Church Is Born</h5>
-                        <p>What happened after the Resurrection? This study follows the apostles from a locked upper room in Jerusalem to the streets of Rome, driven by a Holy Spirit that turns fishermen into preachers and persecutors into missionaries. Students see how the same Spirit is available to them today.</p>
-                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">6 lessons</span>
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Acts 1–28</span>
-                        </div>
+                        <h5>The Gospel of Mark: Who is Jesus?</h5>
+                        <p>A chapter-by-chapter study of Mark's Gospel with deeper discussion questions about Jesus's identity and mission.</p>
                     </div>
-
                     <div class="study-item">
-                        <span style="display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8890b0;background:rgba(26,31,54,0.06);border:1px solid rgba(26,31,54,0.1);padding:0.2rem 0.6rem;border-radius:20px;margin-bottom:0.5rem;">Coming Soon</span><br>
-                        <h5>Wisdom Literature: How to Actually Live Well</h5>
-                        <p>Proverbs, Ecclesiastes, and the Book of Wisdom address the questions students actually have: how do I make good decisions? What makes life meaningful? Why do bad things happen to good people? This study takes these ancient texts seriously as practical guides for navigating middle school and beyond.</p>
-                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">5 lessons</span>
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Proverbs · Ecclesiastes · Wisdom</span>
-                        </div>
+                        <h5>Acts of the Apostles: The Church Begins</h5>
+                        <p>Discover how the early Church spread and what it means to be filled with the Holy Spirit today.</p>
                     </div>
-
                     <div class="study-item">
-                        <span style="display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8890b0;background:rgba(26,31,54,0.06);border:1px solid rgba(26,31,54,0.1);padding:0.2rem 0.6rem;border-radius:20px;margin-bottom:0.5rem;">Coming Soon</span><br>
-                        <h5>The Passion Narratives: What Really Happened?</h5>
-                        <p>A close reading of the four Passion accounts — Matthew, Mark, Luke, and John — side by side. Students discover what each Gospel emphasizes and why the differences matter. At the center is the question every teenager eventually asks: why would anyone die for people who abandoned him?</p>
-                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">4 lessons</span>
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Matthew · Mark · Luke · John</span>
-                        </div>
-                    </div>
-
-                    <div class="study-item">
-                        <span style="display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8890b0;background:rgba(26,31,54,0.06);border:1px solid rgba(26,31,54,0.1);padding:0.2rem 0.6rem;border-radius:20px;margin-bottom:0.5rem;">Coming Soon</span><br>
-                        <h5>The Letters of Paul: Faith in the Real World</h5>
-                        <p>Selected passages from Philippians, Colossians, and 1 Corinthians 13. Paul writes from prison, from conflict, from exhaustion — and every letter is about how to live as a Christian when it costs something. Students engage with Paul not as a distant theologian but as a man writing urgent letters to real communities.</p>
-                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">5 lessons</span>
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Philippians · Colossians · 1 Corinthians</span>
-                        </div>
+                        <h5>Wisdom Literature: Living Well</h5>
+                        <p>Explore Proverbs, Ecclesiastes, and Wisdom to find God's guidance for everyday decisions and relationships.</p>
                     </div>
                 </div>
 
-                <!-- ── ADULTS ── -->
                 <div class="category-block">
                     <h3>For Adults</h3>
-
                     <div class="study-item">
-                        <span style="display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8890b0;background:rgba(26,31,54,0.06);border:1px solid rgba(26,31,54,0.1);padding:0.2rem 0.6rem;border-radius:20px;margin-bottom:0.5rem;">Coming Soon</span><br>
                         <h5>Romans: The Gospel Explained</h5>
-                        <p>The most systematic presentation of the Gospel in the New Testament. Paul moves from humanity's universal need for grace, through justification by faith, to the life of the Spirit, and finally to God's plan for all of history. This study follows the argument of Romans with the attention it deserves — not as a list of doctrines but as a unified case for why the Gospel changes everything.</p>
-                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">10 lessons</span>
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Romans 1–16</span>
-                        </div>
+                        <p>Paul's profound letter examining sin, grace, faith, and salvation. A systematic exploration of core Christian theology.</p>
                     </div>
-
                     <div class="study-item">
-                        <span style="display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8890b0;background:rgba(26,31,54,0.06);border:1px solid rgba(26,31,54,0.1);padding:0.2rem 0.6rem;border-radius:20px;margin-bottom:0.5rem;">Coming Soon</span><br>
-                        <h5>The Gospel of John: In the Beginning Was the Word</h5>
-                        <p>John's Gospel is different from the other three — slower, more theological, more concerned with identity than action. Seven signs. Seven "I Am" statements. One overriding question: do you believe? This study takes John seriously as a work of profound theological art, written so that you might believe that Jesus is the Christ, the Son of God, and that believing you might have life in his name.</p>
-                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">8 lessons</span>
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">John 1–21</span>
-                        </div>
+                        <h5>The Gospel of John: Encountering the Word</h5>
+                        <p>The most theological Gospel invites us into deep reflection on Christ's divinity and mission of love.</p>
                     </div>
-
                     <div class="study-item">
-                        <span style="display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8890b0;background:rgba(26,31,54,0.06);border:1px solid rgba(26,31,54,0.1);padding:0.2rem 0.6rem;border-radius:20px;margin-bottom:0.5rem;">Coming Soon</span><br>
-                        <h5>Isaiah: The Prophet Who Saw Christ Coming</h5>
-                        <p>Isaiah is the most quoted Old Testament book in the New Testament — and for good reason. The Suffering Servant, the Virgin Birth, the Prince of Peace, the New Creation: Isaiah saw across seven centuries and described the Messiah with stunning precision. This study reads Isaiah through both its historical context and its fulfillment in Christ.</p>
-                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">7 lessons</span>
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Isaiah 1–66</span>
-                        </div>
-                    </div>
-
-                    <div class="study-item">
-                        <span style="display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8890b0;background:rgba(26,31,54,0.06);border:1px solid rgba(26,31,54,0.1);padding:0.2rem 0.6rem;border-radius:20px;margin-bottom:0.5rem;">Coming Soon</span><br>
-                        <h5>The Psalms as Prayer: Learning the Language of the Soul</h5>
-                        <p>C.S. Lewis called the Psalms "the anatomy of the soul." This adult study treats them as a school of prayer — working through lament, praise, confession, trust, and thanksgiving as distinct modes of approaching God. Particular attention to the psalms the Church prays at Mass and in the Liturgy of the Hours.</p>
-                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">6 lessons</span>
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Selected Psalms</span>
-                        </div>
-                    </div>
-
-                    <div class="study-item">
-                        <span style="display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8890b0;background:rgba(26,31,54,0.06);border:1px solid rgba(26,31,54,0.1);padding:0.2rem 0.6rem;border-radius:20px;margin-bottom:0.5rem;">Coming Soon</span><br>
-                        <h5>Genesis: In the Beginning</h5>
-                        <p>The foundational questions — where did we come from, why is there evil, what are we for — are all addressed in the first eleven chapters of Genesis. This study reads Genesis neither as a science textbook nor as mere myth but as the Catholic Church reads it: as inspired truth about God, humanity, and the human condition. Covers creation, the fall, Cain and Abel, the flood, Babel, and the call of Abraham.</p>
-                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">8 lessons</span>
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Genesis 1–25</span>
-                        </div>
-                    </div>
-
-                    <div class="study-item">
-                        <span style="display:inline-block;font-size:0.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8890b0;background:rgba(26,31,54,0.06);border:1px solid rgba(26,31,54,0.1);padding:0.2rem 0.6rem;border-radius:20px;margin-bottom:0.5rem;">Coming Soon</span><br>
-                        <h5>The Sermon on the Mount: The Constitution of the Kingdom</h5>
-                        <p>Jesus's most extended teaching is also his most demanding. This adult study works through Matthew 5–7 with the help of the Catechism and the Church Fathers — taking seriously what Jesus actually said about anger, lust, oaths, enemies, prayer, wealth, and anxiety. Not a comfortable study, but an honest one.</p>
-                        <div style="margin-top:0.75rem;display:flex;gap:0.5rem;flex-wrap:wrap;">
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--gold-dark);background:rgba(212,165,116,0.1);padding:0.2rem 0.6rem;border-radius:20px;">6 lessons</span>
-                            <span style="font-size:0.72rem;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);background:var(--off-white);padding:0.2rem 0.6rem;border-radius:20px;">Matthew 5–7</span>
-                        </div>
+                        <h5>Isaiah: Prophet of the Messiah</h5>
+                        <p>Understand the prophecies of Christ and God's plan of salvation revealed in this major prophet.</p>
                     </div>
                 </div>
-
-                <div class="notice-box">
-                    <p>📖 <strong>More studies coming.</strong> Full lesson content, discussion guides, and progress tracking will be available as each study is completed. Check back regularly — new studies are added throughout the year.</p>
-                </div>
-
             </div>
         </section>
 
@@ -2491,6 +2404,14 @@
                 <div class="category-block">
                     <h3>For Youth & Families</h3>
                     <p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:1.5rem;">Age-appropriate content for young Catholics navigating faith at school, home, and with friends</p>
+                    <div class="media-grid">
+                        <!-- Videos load from Firebase -->
+                    </div>
+                </div>
+
+                <div class="category-block">
+                    <h3>Christian Music Videos</h3>
+                    <p style="color:var(--text-secondary);font-size:0.88rem;margin-bottom:1.5rem;">Worship music, Catholic artists, and contemporary Christian songs to accompany prayer and reflection</p>
                     <div class="media-grid">
                         <!-- Videos load from Firebase -->
                     </div>
