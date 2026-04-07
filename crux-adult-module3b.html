@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — What Is the Church? Part B</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.header-right { display:flex; align-items:center; gap:0.75rem; }
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── MODULE BANNER ── */
+.module-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.module-banner::before {
+  content: 'ROMA';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 16rem;
+  font-weight: 900;
+  color: rgba(212,165,116,0.03);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  line-height: 1;
+  pointer-events: none;
+  letter-spacing: -4px;
+}
+
+.module-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.module-tag::before, .module-tag::after {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.module-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.module-banner .part-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.module-banner p.intro {
+  color: rgba(255,255,255,0.55);
+  font-size: 1rem;
+  line-height: 1.75;
+  max-width: 580px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ── PART NAV ── */
+.part-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  gap: 0;
+  overflow-x: auto;
+}
+
+.part-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--subtle);
+}
+
+.part-tab.active { color: var(--navy); border-bottom-color: var(--gold-mid); }
+.part-tab.complete { color: var(--muted); }
+.part-tab:hover:not(.active) { color: var(--muted); }
+
+.part-tab .part-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(26,31,54,0.07);
+  color: var(--subtle);
+  flex-shrink: 0;
+}
+
+.part-tab.complete .part-num { background: rgba(46,125,50,0.15); color: #2e7d32; }
+.part-tab.active .part-num { background: var(--gold-mid); color: var(--white); }
+
+/* ── CONTENT ── */
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 8rem;
+}
+
+.recap-block {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2.75rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.recap-block p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+.recap-block p strong { color: var(--navy); font-weight: 600; }
+
+.hook-block p.opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong { color: var(--navy); font-weight: 600; }
+.body-text p em { font-style: italic; }
+
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Dark block */
+.dark-block {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2.75rem 2.5rem;
+  margin: 2.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-block::before {
+  content: '✟';
+  position: absolute;
+  font-size: 18rem;
+  color: rgba(255,255,255,0.02);
+  right: -2rem;
+  bottom: -3rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.dark-block .block-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.dark-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.dark-block p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.dark-block p:last-child { margin-bottom: 0; }
+.dark-block p strong { color: var(--white); font-weight: 600; }
+.dark-block p em { font-style: italic; }
+
+/* Nicaea block — gold accent */
+.nicaea-block {
+  background: rgba(212,165,116,0.07);
+  border: 1px solid rgba(212,165,116,0.22);
+  border-radius: 14px;
+  padding: 2rem 2.25rem;
+  margin: 2.5rem 0;
+}
+
+.nicaea-block .nic-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.75rem;
+}
+
+.nicaea-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+}
+
+.nicaea-block p {
+  font-size: 0.93rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.nicaea-block p:last-child { margin-bottom: 0; }
+.nicaea-block p strong { color: var(--navy); font-weight: 600; }
+.nicaea-block p em { font-style: italic; }
+
+/* Scripture */
+.scripture-block {
+  margin: 2.5rem 0;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+.scripture-block::before {
+  content: '"';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem;
+  color: var(--gold-dim);
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 1;
+}
+
+.scripture-block p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.6rem;
+  position: relative;
+}
+
+.scripture-block cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Community cards — the "why together" section */
+.community-cards {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--white);
+  margin: 1.75rem 0 2.25rem;
+}
+
+.community-card {
+  padding: 1.75rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.community-card:last-child { border-bottom: none; }
+
+.community-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--gold-dim);
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: -4px;
+}
+
+.community-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.5rem;
+}
+
+.community-content p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.community-content p strong { color: var(--navy); font-weight: 600; }
+
+/* For you block */
+.for-you-block {
+  background: rgba(212,165,116,0.07);
+  border: 1px solid rgba(212,165,116,0.2);
+  border-radius: 14px;
+  padding: 2rem 2.25rem;
+  margin: 2.5rem 0;
+}
+
+.for-you-block .fy-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.75rem;
+}
+
+.for-you-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+}
+
+.for-you-block p {
+  font-size: 0.93rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.for-you-block p:last-child { margin-bottom: 0; }
+.for-you-block p strong { color: var(--navy); font-weight: 600; }
+
+/* Complete footer */
+.complete-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--navy);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 90;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.2);
+}
+
+.complete-info { display: flex; flex-direction: column; gap: 0.2rem; }
+
+.complete-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.complete-title {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
+}
+
+.btn-row { display: flex; gap: 0.75rem; align-items: center; }
+
+.btn-modules {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.25rem;
+  background: transparent;
+  color: rgba(255,255,255,0.5);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-modules:hover { color: var(--white); border-color: rgba(255,255,255,0.4); }
+
+.btn-next-module {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--gold-mid);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-next-module:hover { background: var(--gold); color: var(--navy); }
+
+@media (max-width: 640px) {
+  .module-banner h1 { font-size: 2rem; }
+  .content-wrap { padding: 2.5rem 1.25rem 8rem; }
+  .hook-block p.opener { font-size: 1.2rem; }
+  .dark-block { padding: 2rem 1.5rem; }
+  .dark-block h3 { font-size: 1.2rem; }
+  .complete-footer { padding: 1rem; flex-wrap: wrap; }
+  .complete-footer .btn-row { width: 100%; justify-content: flex-end; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <div class="header-right">
+    <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+  </div>
+</header>
+
+<div class="module-banner">
+  <div class="module-tag">Module 3 · Adult Formation</div>
+  <div class="part-label">Part B of 2</div>
+  <h1>What Is the Church?</h1>
+  <p class="intro">The Church came out of hiding and immediately had to figure out what it believed. What emerged from that process is what Catholics belong to today.</p>
+</div>
+
+<div class="part-nav">
+  <a href="crux-adult-module3a.html" class="part-tab complete">
+    <span class="part-num">✓</span>
+    From Upper Room to Empire
+  </a>
+  <a href="crux-adult-module3b.html" class="part-tab active">
+    <span class="part-num">B</span>
+    Two Thousand Years to Here
+  </a>
+</div>
+
+<div class="content-wrap">
+
+  <div class="recap-block">
+    <div>←</div>
+    <p><strong>In Part A</strong> we followed the early Church from Pentecost through three centuries of survival underground: house churches, the martyrdoms, Ignatius of Antioch writing on his way to the arena, the catacombs. It ended with Constantine and the Edict of Milan in 313 AD. Part B picks up the morning after.</p>
+  </div>
+
+  <!-- HOOK -->
+  <div class="hook-block">
+    <p class="opener">When the persecution ended, the Church faced a new kind of problem. For three centuries its identity had been forged under pressure and clarified by martyrdom. Suddenly it was legal, resourced, and the emperor himself was asking theological questions. It turned out that not everyone had the same answers.</p>
+  </div>
+
+  <!-- SECTION: NICAEA -->
+  <div class="section-label"><span>Nicaea — The Church Defines What It Believes</span></div>
+
+  <div class="body-text">
+    <p>Within twelve years of the Edict of Milan, a controversy had spread through the Church serious enough that Constantine convened a council to resolve it. A priest from Alexandria named Arius was teaching that Jesus, while exalted and divine in some sense, was nonetheless a created being — the first and greatest of God's creations, but not co-equal with the Father. "There was a time when he was not," Arius taught. The formula was memorable and it spread fast.</p>
+    <p>In 325 AD, Constantine summoned roughly 300 bishops to the city of Nicaea in modern Turkey. Many still bore scars from the Diocletianic persecution a decade earlier. Men who had survived torture and imprisonment for their faith were now sitting in an imperial hall debating the precise relationship between the Father and the Son.</p>
+  </div>
+
+  <div class="nicaea-block">
+    <div class="nic-label">Nicaea · 325 AD · The First Ecumenical Council</div>
+    <h3>The council produced a statement that Catholics still recite at Mass every Sunday.</h3>
+    <p>The Nicene Creed — <em>We believe in one God, the Father almighty... and in one Lord Jesus Christ, the only Son of God, eternally begotten of the Father, God from God, Light from Light, true God from true God, begotten not made, consubstantial with the Father</em> — was the council's answer to Arius. Consubstantial: of the same substance as the Father, not a created being of lesser rank. The word was argued over bitterly, and it settled something the Church has held as foundational ever since.</p>
+    <p>What Nicaea represents in the longer story is a striking transformation. The communities that had survived underground, passing letters between house churches, were now capable of convening an empire-wide council and producing a creed that would bind Christians across centuries and continents. <strong>The Church that had broken bread in secret in borrowed rooms had become something with the institutional weight to define doctrine for the world.</strong></p>
+    <p>That shift came with complications. Constantine's involvement tangled imperial politics with theological questions in ways that would cause difficulties for centuries. But Nicaea also demonstrated what the Church could accomplish when it gathered its full mind: a statement of faith that has lasted seventeen hundred years and is still recited at Mass every Sunday.</p>
+  </div>
+
+  <!-- SECTION: STRUCTURE EMERGING -->
+  <div class="section-label"><span>How the Church Took Its Current Shape</span></div>
+
+  <div class="body-text">
+    <p>The structure Catholics recognize today — pope, bishops, priests, deacons — didn't appear fully formed on the day of Pentecost. It developed over the first several centuries in response to pastoral needs, theological disputes, and the practical demands of a growing community spread across a vast empire.</p>
+    <p>The earliest communities were led by figures the New Testament calls <em>episkopoi</em> (overseers, later bishops), <em>presbyteroi</em> (elders, later priests), and <em>diakonoi</em> (servants, deacons). As the Church spread, the bishop of each city became the anchor of the local community: the one who guaranteed continuity with the Apostles' teaching, presided at the Eucharist, and settled disputes when they arose. Ignatius of Antioch, writing in 108 AD, already treated this structure as non-negotiable.</p>
+    <p>The Bishop of Rome gradually came to hold a special authority — first among equals, then increasingly understood as the successor of Peter, the rock on whom Christ said he would build his Church. The Eastern and Western churches would eventually divide over this in 1054, a rupture that has never fully healed. But the basic structure of apostolic succession — ordained leadership tracing back to the Apostles in an unbroken chain — was established within the first few generations.</p>
+    <p><strong>Apostolic succession isn't about prestige.</strong> It's about continuity across time. The parish that gathers on a Sunday morning in a suburb of Cleveland is connected by an unbroken line of ordination to the communities that prayed in the catacombs and kept the faith alive by hand. The structure exists to protect that connection.</p>
+  </div>
+
+  <div class="pull-quote">
+    <p>Wherever the bishop appears, let the congregation be present; just as wherever Jesus Christ is, there is the Catholic Church.</p>
+    <cite>— Ignatius of Antioch, Letter to the Smyrnaeans, c. 108 AD</cite>
+  </div>
+
+  <!-- SECTION: WHY TOGETHER -->
+  <div class="section-label"><span>Why Together — The Question Every Seeker Asks</span></div>
+
+  <div class="body-text">
+    <p>Almost everyone drawn to faith eventually asks some version of this: why do I need the Church? Can't I follow Jesus on my own terms, without the institution?</p>
+    <p>The answer starts not with doctrine but with what Jesus actually did. He didn't walk alone. He called twelve people and walked with them — ate with them, argued with them, washed their feet, sent them out in pairs, prayed with them in a garden the night before he died. When he rose, he appeared to them together. When the Holy Spirit came at Pentecost, it came to a room full of people gathered in common prayer.</p>
+    <p><strong>Jesus never modeled solitary faith.</strong> He modeled faith in community, because he understood something about human beings that we tend to forget when things are going well: we were not built to carry the weight of belief alone. Other people — people who have gone further, people who are struggling alongside us, people who challenge and correct us — are not optional accessories to faith. They are part of how it works.</p>
+  </div>
+
+  <div class="scripture-block">
+    <p>"As iron sharpens iron, so one person sharpens another."</p>
+    <cite>— Proverbs 27:17</cite>
+  </div>
+
+  <div class="community-cards">
+    <div class="community-card">
+      <div class="community-num">1</div>
+      <div class="community-content">
+        <h4>The Church carries what you can't carry alone</h4>
+        <p>Two thousand years of Scripture, theology, prayer, art, music, and hard-won wisdom about how to live and how to die. No individual generates that on their own. You inherit it when you enter the Church: the accumulated experience of every person who struggled with the same questions before you and left something behind. Private faith reinvents the wheel every generation. The Church remembers.</p>
+      </div>
+    </div>
+    <div class="community-card">
+      <div class="community-num">2</div>
+      <div class="community-content">
+        <h4>Community sharpens what isolation softens</h4>
+        <p>Left entirely to ourselves, faith tends to become a mirror, reflecting back what we already believe and confirming what we already want. Other people, especially people unlike us, push back on that. The community of believers contains people who pray differently, suffer differently, and understand God differently than you do. That friction is part of the formation, not a flaw in it.</p>
+      </div>
+    </div>
+    <div class="community-card">
+      <div class="community-num">3</div>
+      <div class="community-content">
+        <h4>Worship was never meant to be private</h4>
+        <p>The Mass is communal by definition — a meal at a shared table, a body assembled, not an individual act that happens to occur near other people. The earliest Christians understood this in their bones. They risked their lives to gather for the breaking of bread because they knew something essential happened at that table that couldn't happen alone. <strong>The Eucharist is inherently a we, not an I.</strong></p>
+      </div>
+    </div>
+    <div class="community-card">
+      <div class="community-num">4</div>
+      <div class="community-content">
+        <h4>You join something larger than your own lifetime</h4>
+        <p>When you enter the Church, you don't just join the people in the building around you. You join everyone who has ever been part of this body across every century and country. Ignatius of Antioch is your brother. Cecilia is your sister. The people who painted fish on the walls of the catacombs are your family. Private faith ends when you do. The Church is longer than any one life.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: WHAT IT IS -->
+  <div class="section-label"><span>So What Is It, Finally?</span></div>
+
+  <div class="dark-block">
+    <div class="block-label">The Definition That Has Lasted</div>
+    <h3>The Church is the Body of Christ, which means it is human and divine, glorious and broken, simultaneously.</h3>
+    <p>The Second Vatican Council described the Church as simultaneously a human institution and a divine mystery: a visible structure carrying an invisible reality. The human part has failed, sometimes catastrophically. It has been led by saints and by scoundrels. It produced the Sistine Chapel and it produced the Inquisition. Its history is not a story of uninterrupted virtue, and anyone who tells you otherwise hasn't read it.</p>
+    <p>But through all of it, the sacraments have been celebrated continuously since the upper room. Scripture has been read aloud at every gathering for two thousand years. The saints keep appearing in every era to show what a fully human life given to God looks like. Through the corruption of the Borgias and the horror of the abuse crisis and every scandal in between, the Eucharist has been offered, the poor have been served, the dying have been accompanied, and the faith has been passed on.</p>
+    <p><strong>The Church is the people of God gathered around Christ</strong> — which is exactly what it was in that first room in Jerusalem, and what it remains in every generation that receives it and passes it on.</p>
+  </div>
+
+  <div class="for-you-block">
+    <div class="fy-label">Where This Leaves You</div>
+    <h3>You're not joining an organization. You're entering a story.</h3>
+    <p>The people who built the early Church didn't have much. They had a conviction, a set of practices, and each other. They met in borrowed rooms, prayed over the graves of their martyrs, copied letters by hand, and passed the faith to the next person who asked about it. They were ordinary people who took an extraordinary claim seriously and let it change everything about how they lived.</p>
+    <p>That is still what the Church is asking of you. The catechumenate — the process of formation before baptism — has always begun with a single question: <em>What do you seek?</em></p>
+    <p>If the answer is something like "God" or "truth" or even "I'm not sure but I want to find out," that has always been enough to begin.</p>
+  </div>
+
+</div>
+
+<div class="complete-footer">
+  <div class="complete-info">
+    <div class="complete-label">✓ Module 3 Complete</div>
+    <div class="complete-title">What Is the Church?</div>
+  </div>
+  <div class="btn-row">
+    <a href="crux-adult-formation.html" class="btn-modules">All Modules</a>
+    <a href="crux-adult-formation.html" class="btn-next-module">Next Module →</a>
+  </div>
+</div>
+
+</body>
+</html>

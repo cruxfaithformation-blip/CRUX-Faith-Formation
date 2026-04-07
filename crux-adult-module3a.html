@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — What Is the Church? Part A</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.header-right { display: flex; align-items: center; gap: 0.75rem; }
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+.module-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.module-banner::before {
+  content: 'ΕΚΚΛΗΣΙΑ';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 6rem;
+  font-weight: 900;
+  color: rgba(212,165,116,0.03);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+  pointer-events: none;
+  white-space: nowrap;
+  letter-spacing: 4px;
+}
+
+.module-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.module-tag::before, .module-tag::after {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.module-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.module-banner .part-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.module-banner p.intro {
+  color: rgba(255,255,255,0.55);
+  font-size: 1rem;
+  line-height: 1.75;
+  max-width: 580px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.part-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  overflow-x: auto;
+}
+
+.part-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--subtle);
+}
+
+.part-tab.active { color: var(--navy); border-bottom-color: var(--gold-mid); }
+.part-tab:hover:not(.active) { color: var(--muted); }
+
+.part-tab .part-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(26,31,54,0.07);
+  color: var(--subtle);
+  flex-shrink: 0;
+}
+
+.part-tab.active .part-num { background: var(--gold-mid); color: var(--white); }
+
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 6rem;
+}
+
+.hook-block { margin-bottom: 3rem; }
+
+.hook-block p.opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.hook-block p {
+  font-size: 0.97rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong { color: var(--navy); font-weight: 600; }
+.body-text p em { font-style: italic; }
+
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.narrative-block {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2.75rem 2.5rem;
+  margin: 2.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.narrative-block::before {
+  content: '✟';
+  position: absolute;
+  font-size: 18rem;
+  color: rgba(255,255,255,0.02);
+  right: -2rem;
+  bottom: -3rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.narrative-block .block-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.narrative-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.narrative-block p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.narrative-block p:last-child { margin-bottom: 0; }
+.narrative-block p strong { color: var(--white); font-weight: 600; }
+.narrative-block p em { font-style: italic; }
+
+.practice-cards {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--white);
+  margin: 1.75rem 0 2.25rem;
+}
+
+.practice-card {
+  padding: 1.6rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.practice-card:last-child { border-bottom: none; }
+
+.practice-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--gold-dim);
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: -4px;
+}
+
+.practice-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.5rem;
+}
+
+.practice-content p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.practice-content p strong { color: var(--navy); font-weight: 600; }
+
+.martyr-block {
+  background: rgba(26,31,54,0.04);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--navy);
+  border-radius: 0 12px 12px 0;
+  padding: 1.75rem 2rem;
+  margin: 2.5rem 0;
+}
+
+.martyr-block .martyr-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.5rem;
+}
+
+.martyr-block .martyr-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.85rem;
+}
+
+.martyr-block p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.75;
+  margin-bottom: 0.75rem;
+}
+
+.martyr-block p:last-child { margin-bottom: 0; }
+.martyr-block p strong { color: var(--navy); font-weight: 600; }
+
+.scripture-block {
+  margin: 2.5rem 0;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+.scripture-block::before {
+  content: '"';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem;
+  color: var(--gold-dim);
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 1;
+}
+
+.scripture-block p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.6rem;
+  position: relative;
+}
+
+.scripture-block cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.constantine-block {
+  background: rgba(212,165,116,0.07);
+  border: 1px solid rgba(212,165,116,0.2);
+  border-radius: 14px;
+  padding: 2rem 2.25rem;
+  margin: 2.5rem 0;
+}
+
+.constantine-block .c-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.75rem;
+}
+
+.constantine-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+}
+
+.constantine-block p {
+  font-size: 0.93rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.constantine-block p:last-child { margin-bottom: 0; }
+.constantine-block p strong { color: var(--navy); font-weight: 600; }
+
+.continue-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 90;
+  box-shadow: 0 -4px 24px rgba(26,31,54,0.08);
+}
+
+.continue-bar .progress-info {
+  font-size: 0.78rem;
+  color: var(--subtle);
+  font-weight: 500;
+}
+
+.continue-bar .progress-info strong { color: var(--navy); }
+
+.btn-continue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--navy);
+  color: var(--gold);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.btn-continue:hover { background: var(--gold-mid); color: var(--white); }
+
+@media (max-width: 640px) {
+  .module-banner h1 { font-size: 2rem; }
+  .module-banner::before { font-size: 3rem; }
+  .content-wrap { padding: 2.5rem 1.25rem 7rem; }
+  .hook-block p.opener { font-size: 1.2rem; }
+  .narrative-block { padding: 2rem 1.5rem; }
+  .narrative-block h3 { font-size: 1.2rem; }
+  .continue-bar { padding: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <div class="header-right">
+    <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+  </div>
+</header>
+
+<div class="module-banner">
+  <div class="module-tag">Module 3 · Adult Formation</div>
+  <div class="part-label">Part A of 2</div>
+  <h1>What Is the Church?</h1>
+  <p class="intro">Before asking whether the Church deserves trust today, it's worth understanding what it actually is — and what it cost the people who built it.</p>
+</div>
+
+<div class="part-nav">
+  <a href="crux-adult-module3a.html" class="part-tab active">
+    <span class="part-num">A</span>
+    From the Upper Room to the Underground
+  </a>
+  <a href="crux-adult-module3b.html" class="part-tab">
+    <span class="part-num">B</span>
+    Two Thousand Years to Here
+  </a>
+</div>
+
+<div class="content-wrap">
+
+  <!-- HOOK -->
+  <div class="hook-block">
+    <p class="opener">Fifty days after the Resurrection, a group of frightened people were locked in a room in Jerusalem. They had watched their leader executed. Most of them had run when it happened. They had no buildings, no institution, no budget, no plan.</p>
+    <p>What came out of that room became the largest organization in human history — over a billion members on every continent, 2,000 years of continuous existence, the most complex theological, philosophical, and artistic tradition the world has ever produced.</p>
+    <p>How that happened is one of the most remarkable stories ever told. It begins not with power, but with hiding.</p>
+  </div>
+
+  <!-- SECTION: PENTECOST -->
+  <div class="section-label"><span>The Beginning — Pentecost</span></div>
+
+  <div class="body-text">
+    <p>Acts of the Apostles describes what happened to those people in the upper room on the fiftieth day after Passover, the Jewish feast of Shavuot. A sound like wind filled the house. Tongues of fire appeared over each of them. They began speaking in languages they didn't know, and people from across the Roman world who had gathered in Jerusalem for the feast heard them, each in their own language.</p>
+    <p>Peter, who had denied knowing Jesus three times seven weeks earlier, walked outside and preached to the crowd. Three thousand people were baptized that day.</p>
+    <p>The word the early Christians used for their gathering was the Greek <em>ekklesia</em> — the word ghosted behind the title above. It simply meant "assembly," or "gathering of those called out." No connotation of buildings or hierarchy. Just: people who have been called together by something larger than themselves.</p>
+  </div>
+
+  <div class="scripture-block">
+    <p>"They devoted themselves to the apostles' teaching and to fellowship, to the breaking of bread and to prayer."</p>
+    <cite>— Acts 2:42 · The first description of Christian worship</cite>
+  </div>
+
+  <!-- SECTION: WHAT THEY ACTUALLY DID -->
+  <div class="section-label"><span>What Early Christian Worship Looked Like</span></div>
+
+  <div class="body-text">
+    <p>The earliest Christians had no church buildings. No liturgical calendar as we know it, no ordained priesthood in its developed form, no catechism. What they had was the memory of Jesus, the letters circulating between communities, and a set of practices that would become the recognizable skeleton of Catholic worship today.</p>
+  </div>
+
+  <div class="practice-cards">
+    <div class="practice-card">
+      <div class="practice-num">1</div>
+      <div class="practice-content">
+        <h4>The Breaking of Bread</h4>
+        <p>The Eucharist was the center of everything from the beginning. Early Christians gathered in private homes to share a meal that became the re-presentation of the Last Supper. <strong>The Didache</strong>, a church manual written around 90 AD and possibly the oldest Christian document outside the New Testament, gives detailed instructions for the Eucharistic prayer, including who may and may not receive. The form would be recognizable to anyone at Mass today.</p>
+      </div>
+    </div>
+    <div class="practice-card">
+      <div class="practice-num">2</div>
+      <div class="practice-content">
+        <h4>Scripture and Teaching</h4>
+        <p>Paul's letters were written to be read aloud at gatherings and then passed to other communities. Before the New Testament existed as a compiled document, individual churches received and shared these texts as they arrived. The reading of Scripture followed by preaching was inherited directly from synagogue practice and has been part of Christian worship since the first generation.</p>
+      </div>
+    </div>
+    <div class="practice-card">
+      <div class="practice-num">3</div>
+      <div class="practice-content">
+        <h4>Baptism</h4>
+        <p>Initiation into the community was by water from the start. The Didache specifies running water if possible, still water if not, and even pouring water over the head three times as a valid alternative — the earliest description of a practice still in use today. Baptism was the door into the community, and the community was the context in which faith was lived.</p>
+      </div>
+    </div>
+    <div class="practice-card">
+      <div class="practice-num">4</div>
+      <div class="practice-content">
+        <h4>Care for the Poor</h4>
+        <p>This is often overlooked as a liturgical practice, but early sources treat it as inseparable from worship. Justin Martyr, writing around 155 AD, describes the Sunday assembly this way: after the Eucharist, a collection is taken, and the leader distributes it to orphans, widows, the sick, prisoners, and strangers passing through. <strong>The charity was part of the liturgy, not an afterthought to it.</strong></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: PERSECUTION -->
+  <div class="section-label"><span>Why They Were Hiding</span></div>
+
+  <div class="body-text">
+    <p>Christianity was an illegal religion in the Roman Empire for most of its first three centuries. The reasons were less theological than political. Romans were generally tolerant of foreign religions — their pantheon was crowded enough to accommodate most additions. The problem with Christians was that they refused to participate in the imperial cult: the ritual acknowledgment of the emperor's divinity that served as the civic glue of Roman society.</p>
+    <p>To decline that ritual was not just personal piety. It was a public statement that Caesar was not Lord. In a world where religion and political loyalty were inseparable, that made Christians dangerous. Accusations of atheism — because they rejected the Roman gods — and rumors of cannibalism, based on distorted reports of the Eucharist, spread quickly and stuck.</p>
+    <p><strong>The persecutions were not continuous or empire-wide.</strong> They were sporadic, local, and often driven by individual governors or emperors with particular grievances. But when they came, they were methodical — and they were designed to be as public as possible.</p>
+  </div>
+
+  <div class="narrative-block">
+    <div class="block-label">The Cost of the Faith</div>
+    <h3>They were not simply willing to die. They were willing to die in ways designed to make the watching crowd enjoy it.</h3>
+    <p>Nero, after the great fire of Rome in 64 AD, needed a scapegoat and chose the Christians. What followed was not execution. It was spectacle. Christians were sewn into animal skins and torn apart by dogs in the arena. They were crucified along the main roads into the city. Some were coated in pitch and set alight after dark to serve as living torches in Nero's gardens while he rode past in a carriage.</p>
+    <p>The point was not simply to kill them. It was to humiliate, dehumanize, and warn anyone in the crowd who might be considering the same allegiance. <strong>The fact that people kept converting anyway is one of the most remarkable sociological facts of the ancient world.</strong></p>
+    <p>Later emperors refined the process. Under Diocletian in the early 300s — the last and most systematic of the persecutions — churches were demolished, scriptures burned, and clergy imprisoned and tortured until they handed over the sacred texts. Those who complied were called <em>traditores</em>: the ones who handed things over. The English word "traitor" comes from them.</p>
+  </div>
+
+  <!-- IGNATIUS -->
+  <div class="section-label"><span>A Voice from the Road — Ignatius of Antioch</span></div>
+
+  <div class="body-text">
+    <p>Of all the witnesses from the early Church, Ignatius of Antioch gives us the most intimate window into what it actually meant to be a Christian in the age of persecution — because he wrote his most important letters while being marched to his own death.</p>
+  </div>
+
+  <div class="martyr-block">
+    <div class="martyr-label">Bishop · Martyr · c. 35–108 AD</div>
+    <div class="martyr-name">Ignatius of Antioch</div>
+    <p>Ignatius was the Bishop of Antioch, the city where followers of Jesus were first called "Christians." Around 108 AD, under the Emperor Trajan, he was arrested and sentenced to be executed in Rome. The sentence required transporting him from Syria on foot and by ship, a journey of months, under military guard.</p>
+    <p>During that journey he wrote seven letters to churches along the route. They are extraordinary documents: pastoral, urgent, strikingly personal. He begged the Roman Christians not to intervene to save him. He wanted to die. Not from despair, but from a conviction that to be killed for Christ was to be most fully joined to Christ. As he wrote, he wanted to be ground by the teeth of wild beasts into bread worthy of God.</p>
+    <p><strong>He also used those letters to teach.</strong> He defended the physical reality of the Eucharist against those who said Christ's presence in the bread was merely symbolic. He insisted on the authority of the bishop as the center of the local church. He articulated a vision of Christian community that remains recognizably Catholic seventeen centuries later.</p>
+    <p>When he arrived in Rome, he was thrown to the lions in the arena. The only remains found afterward were his largest bones. His letters survived intact.</p>
+  </div>
+
+  <div class="pull-quote">
+    <p>I am the wheat of God, and am ground by the teeth of wild beasts, that I may be found the pure bread of God.</p>
+    <cite>— Ignatius of Antioch, Letter to the Romans, c. 108 AD</cite>
+  </div>
+
+  <div class="body-text">
+    <p>Ignatius is not exceptional. He is representative. Polycarp of Smyrna, his contemporary and a man who had known the Apostle John personally, was burned alive in his eighties and reportedly did not cry out. Perpetua, a young noblewoman in Carthage with a nursing infant, was gored by a wild cow in the arena in 203 AD, guided the shaking hand of the executioner to her own throat, and died at 22. She had kept a diary in prison. It survives.</p>
+    <p>These people were not dying for an abstraction. They were dying for a person they believed to be alive — the same person they had received in the Eucharist the Sunday before their arrest, and the Sunday before that, gathered in some private home with the doors locked.</p>
+  </div>
+
+  <!-- SECTION: THE CATACOMBS -->
+  <div class="section-label"><span>The Underground Church</span></div>
+
+  <div class="body-text">
+    <p>Beneath Rome, carved into soft volcanic rock called tufa, runs a network of tunnels stretching for hundreds of miles. These are the catacombs, and they tell the story of how the early Church buried its dead and, in periods of active persecution, practiced its faith out of sight.</p>
+    <p>Christians rejected cremation — they buried their dead whole, in the belief that the body would be raised. Because burial space inside Rome's walls was prohibited, they dug outside the city, eventually creating multilevel labyrinths of burial niches stacked four and five deep on either side of narrow corridors. The walls are covered in the earliest surviving Christian art: fish symbols, the Chi-Rho monogram, the Good Shepherd, the breaking of bread, Jonah and the whale, Daniel in the lions' den.</p>
+    <p><strong>Persecution did not stop the Church. It accelerated it.</strong> This mystified Roman authorities and was documented by early Christian writers. Tertullian, a North African theologian writing around 200 AD, put it plainly: the blood of martyrs is seed. Every public execution designed to frighten people away from Christianity instead showed watching crowds what kind of people Christians were, and what they believed their faith was worth.</p>
+  </div>
+
+  <!-- SECTION: CONSTANTINE -->
+  <div class="section-label"><span>The Emperor Who Changed Everything</span></div>
+
+  <div class="body-text">
+    <p>In 312 AD, the Roman general Constantine was marching on Rome to fight his rival Maxentius for control of the western empire. By every military calculation, he was the underdog. The night before the battle at the Milvian Bridge, according to his own account recorded by his biographer Eusebius, Constantine saw a vision in the sky: a cross of light, with the words <em>In hoc signo vinces</em>. In this sign, conquer.</p>
+    <p>He ordered his soldiers to paint the Chi-Rho symbol on their shields. He won. Maxentius drowned in the Tiber.</p>
+  </div>
+
+  <div class="constantine-block">
+    <div class="c-label">313 AD · The Edict of Milan</div>
+    <h3>What made the most powerful man in the world kneel before a crucified carpenter?</h3>
+    <p>That question has no single clean answer, and historians have debated Constantine's sincerity for centuries. What is not in dispute is what he did. Within a year of his victory, he issued the Edict of Milan, granting Christians full legal toleration and ordering the return of all confiscated church property.</p>
+    <p>The man who controlled the Roman Empire had not just stopped killing Christians. He was funding them. Building them basilicas. Summoning bishops to imperial councils. In 325 AD he presided over the Council of Nicaea, where the Church worked out its definition of the relationship between the Father and the Son in the language that became the Nicene Creed — still recited at Mass every Sunday.</p>
+    <p><strong>Whether Constantine's faith was genuine, politically motivated, or some mixture of both — and it was probably all three — the effect was irreversible.</strong> The Church that had spent 250 years meeting in secret, burying its dead in tunnels, watching its bishops marched to arenas, now had basilicas bearing the emperor's name. It had come out of the ground.</p>
+    <p>That emergence was not without complication — Part B names those honestly. But the fact itself deserves a moment. The faith that Nero tried to extinguish by turning human beings into garden torches had, within three centuries, reached the throne of Rome. Even people who didn't share the faith had to account for that.</p>
+  </div>
+
+  <div class="pull-quote">
+    <p>The blood of martyrs is seed.</p>
+    <cite>— Tertullian, Apologeticus, c. 197 AD</cite>
+  </div>
+
+  <!-- BRIDGE -->
+  <div class="section-label"><span>What Part B Takes Up</span></div>
+
+  <div class="body-text">
+    <p>The Church that emerged from the catacombs in the fourth century was not the finished institution we know today. It had the Eucharist, the Scriptures, the bishops, and the memory of the martyrs. What it didn't yet have was a settled canon of Scripture, the liturgical year in its current form, the papacy as a defined institution, or any of the organizational architecture people associate with Catholicism now.</p>
+    <p>Part B traces how those things developed over the following seventeen centuries — including the parts that went badly wrong. The Church that came out of the catacombs was made of the same imperfect material it has always been made of. What the martyrs died for was not a perfect institution. It was a presence: the same presence Job encountered, the same one that cried out from the Cross, the same one that met Mary Magdalene in the garden on the third day.</p>
+    <p>Two thousand years of human beings trying to stay faithful to that presence, with varying degrees of success, is what Part B is about.</p>
+  </div>
+
+</div>
+
+<div class="continue-bar">
+  <div class="progress-info">
+    Module 3 · <strong>Part A complete</strong> — The Early Church
+  </div>
+  <a href="crux-adult-module3b.html" class="btn-continue">Continue to Part B →</a>
+</div>
+
+</body>
+</html>
