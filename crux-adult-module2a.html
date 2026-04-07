@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — Why Is There Suffering? Part A</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.header-right { display:flex; align-items:center; gap:0.75rem; }
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── MODULE BANNER ── */
+.module-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.module-banner::before {
+  content: '?';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 28rem;
+  font-weight: 900;
+  color: rgba(212,165,116,0.03);
+  right: -2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.module-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+
+.module-tag::before, .module-tag::after {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.module-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.module-banner .part-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.module-banner p.intro {
+  color: rgba(255,255,255,0.55);
+  font-size: 1rem;
+  line-height: 1.75;
+  max-width: 580px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ── PART NAV ── */
+.part-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  gap: 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.part-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--subtle);
+}
+
+.part-tab.active {
+  color: var(--navy);
+  border-bottom-color: var(--gold-mid);
+}
+
+.part-tab:hover:not(.active) {
+  color: var(--muted);
+}
+
+.part-tab .part-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(26,31,54,0.07);
+  color: var(--subtle);
+  flex-shrink: 0;
+}
+
+.part-tab.active .part-num {
+  background: var(--gold-mid);
+  color: var(--white);
+}
+
+/* ── CONTENT ── */
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 6rem;
+}
+
+/* Opening hook */
+.hook-block {
+  margin-bottom: 3rem;
+}
+
+.hook-block p.opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.hook-block p {
+  font-size: 0.97rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+}
+
+/* Section dividers */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Body copy */
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+/* Pull quote */
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* The three types — card row */
+.type-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1.75rem 0 2.25rem;
+}
+
+.type-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.type-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.type-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.4rem;
+}
+
+.type-content p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* Callout block — honest admission */
+.honest-block {
+  background: var(--navy);
+  border-radius: 14px;
+  padding: 2rem 2.25rem;
+  margin: 2.5rem 0;
+}
+
+.honest-block .honest-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+
+.honest-block p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.honest-block p:last-child { margin-bottom: 0; }
+
+.honest-block p strong {
+  color: var(--white);
+  font-weight: 600;
+}
+
+/* What the arguments do / don't do */
+.verdict-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin: 1.75rem 0;
+}
+
+.verdict-col {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.verdict-col .verdict-head {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.verdict-col.can .verdict-head { color: #2e7d32; }
+.verdict-col.cannot .verdict-head { color: #b71c1c; }
+
+.verdict-col ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.verdict-col ul li {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.55;
+  padding-left: 1.1rem;
+  position: relative;
+}
+
+.verdict-col.can ul li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: #2e7d32;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.verdict-col.cannot ul li::before {
+  content: '✕';
+  position: absolute;
+  left: 0;
+  color: #b71c1c;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+/* Scripture */
+.scripture-block {
+  margin: 2.5rem 0;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+.scripture-block::before {
+  content: '"';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem;
+  color: var(--gold-dim);
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 1;
+}
+
+.scripture-block p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.6rem;
+  position: relative;
+}
+
+.scripture-block cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ── CONTINUE FOOTER ── */
+.continue-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 90;
+  box-shadow: 0 -4px 24px rgba(26,31,54,0.08);
+}
+
+.continue-bar .progress-info {
+  font-size: 0.78rem;
+  color: var(--subtle);
+  font-weight: 500;
+}
+
+.continue-bar .progress-info strong {
+  color: var(--navy);
+}
+
+.btn-continue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--navy);
+  color: var(--gold);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.btn-continue:hover {
+  background: var(--gold-mid);
+  color: var(--white);
+}
+
+@media (max-width: 640px) {
+  .module-banner h1 { font-size: 2rem; }
+  .content-wrap { padding: 2.5rem 1.25rem 7rem; }
+  .verdict-row { grid-template-columns: 1fr; }
+  .hook-block p.opener { font-size: 1.2rem; }
+  .continue-bar { padding: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <div class="header-right">
+    <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+  </div>
+</header>
+
+<div class="module-banner">
+  <div class="module-tag">Module 2 · Adult Formation</div>
+  <div class="part-label">Part A of 2</div>
+  <h1>Why Is There Suffering?</h1>
+  <p class="intro">The oldest question. The hardest question. Before we can offer any answer, we have to take the question seriously.</p>
+</div>
+
+<div class="part-nav">
+  <a href="crux-adult-module2a.html" class="part-tab active">
+    <span class="part-num">A</span>
+    The Question
+  </a>
+  <a href="crux-adult-module2b.html" class="part-tab">
+    <span class="part-num">B</span>
+    The Cross as Answer
+  </a>
+</div>
+
+<div class="content-wrap">
+
+  <!-- HOOK -->
+  <div class="hook-block">
+    <p class="opener">If there is a God, and he is good, and he is powerful — why does a child get cancer? Why do tsunamis kill thousands of innocents? Why do good people suffer and cruel people flourish?</p>
+    <p>This is not a question invented by atheists to make Christians uncomfortable. It is a question that sits at the center of the Bible itself. Job asks it. The Psalms ask it. Jesus asks it — from the Cross.</p>
+    <p>If you're sitting with this question, you're in good company. This module won't pretend the answer is easy. What it will do is take the question seriously — and then offer what the Catholic tradition has to say, which is stranger and more honest than most people expect.</p>
+  </div>
+
+  <!-- SECTION: THE QUESTION HAS WEIGHT -->
+  <div class="section-label"><span>Why the Question Has Weight</span></div>
+
+  <div class="body-text">
+    <p>The philosopher's version of the problem goes like this: <strong>If God is all-powerful, he could prevent suffering. If God is all-good, he would want to prevent suffering. Suffering exists. Therefore, an all-powerful, all-good God does not exist.</strong></p>
+    <p>This argument has serious force. It is not enough to respond with platitudes. "God has a plan" or "everything happens for a reason" — said too quickly, to someone in real pain — is not theology. It is dismissal dressed up as comfort.</p>
+    <p>The first thing Catholic tradition asks us to do is sit with the weight of the question. Not to explain it away. Not to solve it with a formula. To feel what is actually being asked.</p>
+  </div>
+
+  <div class="pull-quote">
+    <p>The question of suffering is, at its root, a question about whether love is real. If a God of love created this world, what does this world say about that love?</p>
+    <cite>— A central tension of the Book of Job</cite>
+  </div>
+
+  <!-- SECTION: THREE KINDS -->
+  <div class="section-label"><span>Three Kinds of Suffering</span></div>
+
+  <div class="body-text">
+    <p>Not all suffering is the same, and collapsing them together makes the problem harder to think about clearly. Catholic theology distinguishes between three broad categories:</p>
+  </div>
+
+  <div class="type-cards">
+    <div class="type-card">
+      <div class="type-icon">⚡</div>
+      <div class="type-content">
+        <h4>Moral Evil</h4>
+        <p>Suffering caused by human choices — violence, betrayal, injustice, war, cruelty. A person hurts another person. This suffering has a clear cause: human freedom, used badly. God did not will the Holocaust. Human beings did.</p>
+      </div>
+    </div>
+    <div class="type-card">
+      <div class="type-icon">🌊</div>
+      <div class="type-content">
+        <h4>Natural Evil</h4>
+        <p>Suffering that comes from the physical world — earthquakes, disease, floods, genetic illness. No human chose this. It just happens. This is the harder kind to account for, and the one that tests faith most sharply.</p>
+      </div>
+    </div>
+    <div class="type-card">
+      <div class="type-icon">🕯</div>
+      <div class="type-content">
+        <h4>Redemptive Suffering</h4>
+        <p>A category Catholic theology takes seriously that secular frameworks often don't: suffering that is somehow, mysteriously, transformed. Not explained away — transformed. This is the direction Part B will take.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: WHAT WE CAN AND CAN'T SAY -->
+  <div class="section-label"><span>What Philosophy Can and Can't Do</span></div>
+
+  <div class="body-text">
+    <p>Theologians and philosophers have offered responses to the problem of suffering for centuries. Some of them are genuinely useful. But it's important to be honest about what they accomplish — and what they don't.</p>
+  </div>
+
+  <div class="verdict-row">
+    <div class="verdict-col can">
+      <div class="verdict-head">What arguments can do</div>
+      <ul>
+        <li>Show that suffering is logically compatible with a good God</li>
+        <li>Explain why free will requires the possibility of evil</li>
+        <li>Challenge the assumption that a good God would eliminate all pain</li>
+        <li>Demonstrate that the problem isn't as simple as the objection sounds</li>
+      </ul>
+    </div>
+    <div class="verdict-col cannot">
+      <div class="verdict-head">What arguments can't do</div>
+      <ul>
+        <li>Make suffering hurt less</li>
+        <li>Justify a specific child's death in a specific accident</li>
+        <li>Produce the feeling of being held by God in the dark</li>
+        <li>Replace what is actually needed: presence, not explanation</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="body-text">
+    <p>The most important theodicy — the most important "defense of God" in the face of suffering — is not a philosophical argument. It is the Cross. That is where Catholic theology goes, and we'll get there in Part B.</p>
+    <p>But first: the free will argument, because it's the most common response, and it's worth understanding what it actually says.</p>
+  </div>
+
+  <!-- SECTION: FREE WILL -->
+  <div class="section-label"><span>The Free Will Argument</span></div>
+
+  <div class="body-text">
+    <p>The most common philosophical response to the problem of moral evil goes like this: God gave human beings genuine freedom. Real freedom — not the kind that only permits right choices, but the kind that can genuinely choose wrong. Without that, love would be impossible. A programmed response to God is not love. It is a machine running its code.</p>
+    <p><strong>The problem with creating a world with real freedom is that real freedom can be used to do real harm.</strong> God, on this account, is not the author of evil — he is the author of freedom, and freedom has been used against itself and against others throughout human history.</p>
+    <p>This accounts well for moral evil. It is less satisfying for natural evil — the child with leukemia didn't suffer because someone made a bad choice. The tradition has responses here too, but they are more speculative: that a physical world capable of sustaining life requires the same natural laws that can also produce earthquakes; that this world is not the final word; that eternity changes the calculus in ways we cannot yet see.</p>
+    <p>These are honest responses. They are not complete ones. And Catholic intellectual honesty acknowledges that.</p>
+  </div>
+
+  <!-- HONEST BLOCK -->
+  <div class="honest-block">
+    <div class="honest-label">An honest admission</div>
+    <p>No philosophical argument fully explains why <em>this</em> suffering happened to <em>this</em> person. Theodicy can show that God's existence is not logically disproven by the existence of suffering. It cannot provide a specific justification for every specific grief.</p>
+    <p><strong>The Catholic tradition does not pretend otherwise.</strong> The Book of Job ends not with an explanation, but with an encounter. God does not explain Job's suffering to him. God shows up.</p>
+    <p>That distinction — between explanation and presence — is the heart of where Part B is going.</p>
+  </div>
+
+  <!-- SECTION: JOB -->
+  <div class="section-label"><span>What Job Actually Teaches</span></div>
+
+  <div class="body-text">
+    <p>The Book of Job is one of the most extraordinary texts in the Bible — and one of the most misunderstood. Popular religion often turns Job into a story about patience rewarded: Job suffered, Job was patient, Job got everything back. That reading flattens something much stranger and more honest.</p>
+    <p>Job argues with God. He demands an answer. He rejects the explanations his friends offer — that he must have sinned, that there must be a reason, that he should just accept it. God, at the end of the book, tells Job's friends that they were <em>wrong</em> and Job was <em>right</em>. The man who wrestled and demanded and refused easy comfort was closer to the truth than the ones offering tidy explanations.</p>
+    <p><strong>God's response to Job is not an answer. It is a presence.</strong> An overwhelming, humbling, awe-inducing presence that doesn't explain the suffering — but somehow, mysteriously, is enough.</p>
+    <p>That pattern — presence rather than explanation — runs through the whole of Catholic theology on suffering. It reaches its fullest expression in one place.</p>
+  </div>
+
+  <div class="scripture-block">
+    <p>"Where were you when I laid the foundation of the earth?"</p>
+    <cite>— Job 38:4 · God's answer to Job</cite>
+  </div>
+
+  <div class="body-text">
+    <p>This is not God dismissing Job. It is God inviting Job into a reality larger than the frame Job has been using. The suffering hasn't been explained. But something has shifted. Job has encountered the living God — not a theory about God, not a defense of God, but God himself.</p>
+    <p>That is the move Part B makes. Not a philosophical argument. A crucified God.</p>
+  </div>
+
+</div>
+
+<!-- CONTINUE BAR -->
+<div class="continue-bar">
+  <div class="progress-info">
+    Module 2 · <strong>Part A complete</strong> — The Question
+  </div>
+  <a href="crux-adult-module2b.html" class="btn-continue">Continue to Part B →</a>
+</div>
+
+</body>
+</html>

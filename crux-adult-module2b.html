@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — Why Is There Suffering? Part B</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.header-right { display:flex; align-items:center; gap:0.75rem; }
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── MODULE BANNER ── */
+.module-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.module-banner::before {
+  content: '✟';
+  position: absolute;
+  font-size: 24rem;
+  color: rgba(212,165,116,0.04);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.module-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.module-tag::before, .module-tag::after {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.module-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.module-banner .part-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.module-banner p.intro {
+  color: rgba(255,255,255,0.55);
+  font-size: 1rem;
+  line-height: 1.75;
+  max-width: 580px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ── PART NAV ── */
+.part-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  gap: 0;
+}
+
+.part-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--subtle);
+}
+
+.part-tab.active {
+  color: var(--navy);
+  border-bottom-color: var(--gold-mid);
+}
+
+.part-tab:hover:not(.active) {
+  color: var(--muted);
+}
+
+.part-tab .part-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(26,31,54,0.07);
+  color: var(--subtle);
+  flex-shrink: 0;
+}
+
+.part-tab.complete .part-num {
+  background: rgba(46,125,50,0.15);
+  color: #2e7d32;
+}
+
+.part-tab.active .part-num {
+  background: var(--gold-mid);
+  color: var(--white);
+}
+
+.part-tab.complete {
+  color: var(--muted);
+}
+
+/* ── CONTENT ── */
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 7rem;
+}
+
+/* Opening recap */
+.recap-block {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2.75rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.recap-icon {
+  font-size: 1.1rem;
+  margin-top: 2px;
+  flex-shrink: 0;
+}
+
+.recap-block p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.recap-block p strong {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+/* Section label */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+/* Hook */
+.hook-block p.opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+/* Body copy */
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+/* Pull quote */
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* The pivot — dark/cross section */
+.cross-section {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2.75rem 2.5rem;
+  margin: 2.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.cross-section::before {
+  content: '✟';
+  position: absolute;
+  font-size: 18rem;
+  color: rgba(255,255,255,0.02);
+  right: -2rem;
+  bottom: -3rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.cross-section .cross-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.cross-section h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.cross-section p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.8;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.cross-section p:last-child { margin-bottom: 0; }
+
+.cross-section p strong {
+  color: var(--white);
+  font-weight: 600;
+}
+
+/* The cry from the cross — dramatic scripture */
+.cry-block {
+  margin: 3rem 0;
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+}
+
+.cry-block .cry-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--subtle);
+  margin-bottom: 1.25rem;
+}
+
+.cry-block p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+.cry-block cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* What the Cross does — three points */
+.cross-points {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 1.75rem 0 2.25rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--white);
+}
+
+.cross-point {
+  padding: 1.75rem 2rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  border-bottom: 1px solid var(--border);
+}
+
+.cross-point:last-child { border-bottom: none; }
+
+.point-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--gold-dim);
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: -4px;
+}
+
+.point-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.5rem;
+}
+
+.point-content p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+/* Resurrection section */
+.resurrection-block {
+  background: rgba(212,165,116,0.08);
+  border: 1px solid rgba(212,165,116,0.2);
+  border-radius: 14px;
+  padding: 2rem 2.25rem;
+  margin: 2.5rem 0;
+}
+
+.resurrection-block .res-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.75rem;
+}
+
+.resurrection-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+}
+
+.resurrection-block p {
+  font-size: 0.93rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.resurrection-block p:last-child { margin-bottom: 0; }
+
+.resurrection-block p strong {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+/* Scripture block */
+.scripture-block {
+  margin: 2.5rem 0;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+.scripture-block::before {
+  content: '"';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem;
+  color: var(--gold-dim);
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 1;
+}
+
+.scripture-block p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.6rem;
+  position: relative;
+}
+
+.scripture-block cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Closing reflection */
+.closing-block {
+  margin-top: 2.75rem;
+}
+
+.closing-block p.closer {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.7;
+  margin-bottom: 1.25rem;
+}
+
+.closing-block p {
+  font-size: 0.97rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+}
+
+.closing-block p strong {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+/* ── MODULE COMPLETE FOOTER ── */
+.complete-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: var(--navy);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 90;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.2);
+}
+
+.complete-footer .complete-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.complete-footer .complete-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.complete-footer .complete-title {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
+}
+
+.complete-footer .btn-row {
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.btn-modules {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.25rem;
+  background: transparent;
+  color: rgba(255,255,255,0.5);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-modules:hover { color: var(--white); border-color: rgba(255,255,255,0.4); }
+
+.btn-next-module {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--gold-mid);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-next-module:hover { background: var(--gold); color: var(--navy); }
+
+@media (max-width: 640px) {
+  .module-banner h1 { font-size: 2rem; }
+  .content-wrap { padding: 2.5rem 1.25rem 8rem; }
+  .hook-block p.opener { font-size: 1.2rem; }
+  .cross-section { padding: 2rem 1.5rem; }
+  .cross-section h3 { font-size: 1.25rem; }
+  .cry-block p { font-size: 1.3rem; }
+  .complete-footer { padding: 1rem; flex-wrap: wrap; }
+  .complete-footer .btn-row { width: 100%; justify-content: flex-end; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <div class="header-right">
+    <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+  </div>
+</header>
+
+<div class="module-banner">
+  <div class="module-tag">Module 2 · Adult Formation</div>
+  <div class="part-label">Part B of 2</div>
+  <h1>The Cross as Answer</h1>
+  <p class="intro">Philosophy can show that suffering is compatible with God. Only the Cross can show that God is present in it.</p>
+</div>
+
+<div class="part-nav">
+  <a href="crux-adult-module2a.html" class="part-tab complete">
+    <span class="part-num">✓</span>
+    The Question
+  </a>
+  <a href="crux-adult-module2b.html" class="part-tab active">
+    <span class="part-num">B</span>
+    The Cross as Answer
+  </a>
+</div>
+
+<div class="content-wrap">
+
+  <!-- RECAP -->
+  <div class="recap-block">
+    <div class="recap-icon">←</div>
+    <p><strong>In Part A</strong> we looked at what the problem of suffering actually claims, the three kinds of suffering, and what philosophy can and can't do. We ended with the Book of Job — where God's answer to suffering was not an explanation but an encounter. Part B picks up there.</p>
+  </div>
+
+  <!-- HOOK -->
+  <div class="hook-block">
+    <p class="opener">The most important thing Christianity says about suffering is not a doctrine. It's a fact: God entered it.</p>
+  </div>
+
+  <div class="body-text">
+    <p>The central claim of Christianity is the Incarnation — that God became a human being in Jesus Christ. If that is true, then everything that follows is different. Including suffering.</p>
+    <p>A God who watches suffering from outside it — who designed it, permitted it, or decreed it from an infinite safe distance — is one kind of problem. A God who became human and suffered himself is a different situation entirely. It doesn't explain suffering. But it changes what can be said about it.</p>
+  </div>
+
+  <!-- THE CRY FROM THE CROSS -->
+  <div class="section-label"><span>The Cry from the Cross</span></div>
+
+  <div class="body-text">
+    <p>At the moment of his death, Jesus does something that has troubled and sustained Christians for two thousand years. He quotes the opening line of Psalm 22:</p>
+  </div>
+
+  <div class="cry-block">
+    <div class="cry-label">Matthew 27:46 · Mark 15:34</div>
+    <p>"My God, my God, why have you forsaken me?"</p>
+    <cite>— Jesus on the Cross</cite>
+  </div>
+
+  <div class="body-text">
+    <p>This is not a slip. This is not doubt edited out by later copyists. It is in two Gospels, in Aramaic, preserved exactly. The early Church did not hide it — they proclaimed it.</p>
+    <p><strong>Jesus, dying, asks the same question every human being in extremity asks.</strong> Not: "I understand why this is happening." Not: "This is part of a plan." But: <em>Why? Where are you?</em></p>
+    <p>The Catholic tradition does not explain this away. It sits in it. A God who cried out in abandonment can never be accused of not understanding what abandonment feels like. He is not a distant observer of human anguish. He descended into it.</p>
+  </div>
+
+  <!-- THE CROSS SECTION — DARK BLOCK -->
+  <div class="cross-section">
+    <div class="cross-label">The Pivot</div>
+    <h3>God did not send an explanation.<br>He sent his Son.</h3>
+    <p>This is the Catholic answer to theodicy — not a philosophical argument, but a person. When the question is <em>"where is God in suffering?"</em> Christianity points to the Cross and says: <strong>there.</strong></p>
+    <p>Not causing it. Not watching it from a distance. Not explaining it. Present in it. Bearing it. Transformed by it — because after the Cross came something no theodicy argument predicted: an empty tomb.</p>
+    <p>The Resurrection does not undo the suffering of the Cross. The wounds of the risen Christ are still visible in the resurrection appearances — Thomas touches them. But they are no longer the last word. That changes everything.</p>
+  </div>
+
+  <!-- WHAT THE CROSS DOES -->
+  <div class="section-label"><span>What the Cross Actually Does</span></div>
+
+  <div class="body-text">
+    <p>The Cross is not a logical solution to the problem of suffering. It is something more specific, and in some ways more useful. Here is what it actually accomplishes theologically:</p>
+  </div>
+
+  <div class="cross-points">
+    <div class="cross-point">
+      <div class="point-num">1</div>
+      <div class="point-content">
+        <h4>It proves God is not indifferent</h4>
+        <p>The oldest objection to a good God is not that suffering exists, but that God doesn't seem to care. The Cross is the definitive answer to that objection. Whatever else can be said about the Cross, indifference cannot be said. A God who dies for love is not a God who doesn't care.</p>
+      </div>
+    </div>
+    <div class="cross-point">
+      <div class="point-num">2</div>
+      <div class="point-content">
+        <h4>It makes suffering a place of encounter, not just endurance</h4>
+        <p>Catholic theology on suffering — developed richly by figures like John Paul II in <em>Salvifici Doloris</em> — holds that suffering can be united to the suffering of Christ. Not that the pain is good, or that it must be sought, but that it need not be meaningless. Those who suffer in union with Christ participate in something larger than their own pain.</p>
+      </div>
+    </div>
+    <div class="cross-point">
+      <div class="point-num">3</div>
+      <div class="point-content">
+        <h4>It points to a final word that hasn't been spoken yet</h4>
+        <p>The Resurrection means that suffering, however real, is not the final state of anything. Catholic hope is not optimism — it is not the belief that things will get better. It is the belief that even death has been entered and exited, and that the last word belongs to Life.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- REDEMPTIVE SUFFERING -->
+  <div class="section-label"><span>Redemptive Suffering — What It Does and Doesn't Mean</span></div>
+
+  <div class="body-text">
+    <p>The Catholic concept of redemptive suffering is one of the most misunderstood ideas in the tradition — and also one of the most comforting when properly understood. It needs to be said carefully, because it has been said badly in ways that have caused harm.</p>
+    <p><strong>Redemptive suffering does not mean: suffering is good, you should seek it out, or that God is making you suffer for a reason.</strong> It does not mean that abuse, illness, or grief are gifts. It does not mean that sick people should refuse pain medication to be more holy, or that victims should not seek justice.</p>
+    <p>What it means is narrower and stranger: that suffering, when freely united to the suffering of Christ, is not wasted. That the anguish of a person dying with cancer, or grieving the loss of a child, or enduring injustice, is not a void — it can be a participation. Not in the sense of adding to Christ's redemption, which is complete. But in the sense of being caught up in it.</p>
+  </div>
+
+  <div class="pull-quote">
+    <p>Man can put himself in this situation — his suffering — alongside Christ. He can put his human suffering in this divine suffering. He thus becomes a sharer in the redemptive suffering of Christ.</p>
+    <cite>— John Paul II, Salvifici Doloris, 1984</cite>
+  </div>
+
+  <div class="body-text">
+    <p>The practical implication: people in suffering are not abandoned by God and excluded from his work. They may be, mysteriously, at the center of it. This is not consolation-prize theology. The mystics and saints who knew suffering most deeply — Teresa of Ávila, John of the Cross, Thérèse of Lisieux, the martyrs — testify to something real here, not something invented to make people accept pain quietly.</p>
+  </div>
+
+  <!-- RESURRECTION SECTION -->
+  <div class="resurrection-block">
+    <div class="res-label">The Final Word</div>
+    <h3>The Resurrection changes the tense of everything</h3>
+    <p>If there is no resurrection, then suffering is just suffering. Paul, writing to the Corinthians, says exactly this: <em>"If Christ has not been raised, your faith is futile"</em> (1 Cor 15:17). He does not soften it. If the tomb is not empty, none of this holds.</p>
+    <p>But if the Resurrection happened — and Module 1 of this track is devoted to why that claim deserves serious consideration — then something fundamental has shifted. <strong>Death has been walked through. Suffering has been entered and exited. The last word has been spoken, and it is not darkness.</strong></p>
+    <p>This is not a philosophical argument that suffering doesn't matter. It is the claim that suffering is real, and that there is something realer. The wounds of Christ in his resurrection body are not healed — they are glorified. That is the Catholic vision of the end of suffering: not its erasure, but its transformation.</p>
+  </div>
+
+  <!-- CLOSING -->
+  <div class="section-label"><span>Where This Leaves You</span></div>
+
+  <div class="closing-block">
+    <p class="closer">You may have come to this module with a specific grief. A death, an illness, a betrayal, a life that didn't go the way it was supposed to.</p>
+
+    <div class="body-text">
+      <p>If so, what the Catholic tradition offers is not an answer that makes the pain make sense. It is a person who descended into pain and came out the other side. It is a God who asked "why have you forsaken me?" and was answered — not with words, but with resurrection.</p>
+      <p>The philosopher Albert Camus, who was not a Christian, wrote that the only serious philosophical question is whether life is worth living. The Resurrection is Christianity's answer to that question — not a proof, but a claim, staked at the cost of everything, that love is stronger than death and that it is worth it.</p>
+      <p><strong>That claim does not explain your specific suffering. But it accompanies it. And for many people, across many centuries and many griefs, that has been enough to keep going.</strong></p>
+    </div>
+  </div>
+
+  <div class="scripture-block">
+    <p>"I consider that our present sufferings are not worth comparing with the glory that will be revealed in us."</p>
+    <cite>— Romans 8:18</cite>
+  </div>
+
+</div>
+
+<!-- COMPLETE FOOTER -->
+<div class="complete-footer">
+  <div class="complete-info">
+    <div class="complete-label">✓ Module 2 Complete</div>
+    <div class="complete-title">Why Is There Suffering?</div>
+  </div>
+  <div class="btn-row">
+    <a href="crux-adult-formation.html" class="btn-modules">All Modules</a>
+    <a href="crux-adult-formation.html" class="btn-next-module">Next Module →</a>
+  </div>
+</div>
+
+</body>
+</html>
