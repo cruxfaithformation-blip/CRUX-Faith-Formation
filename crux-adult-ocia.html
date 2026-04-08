@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>CRUX — Your OCIA Guide</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  color-scheme: light;
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── LOADING STATE ── */
+#loading-view {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 2rem;
+}
+
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.spinner-ring {
+  width: 40px;
+  height: 40px;
+  border: 3px solid var(--border);
+  border-top-color: var(--gold-mid);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.loading-spinner p {
+  font-size: 0.82rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* ── LOCKED VIEW ── */
+#locked-view {
+  display: none;
+  flex: 1;
+}
+
+.lock-wrap {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem 5rem;
+  text-align: center;
+  max-width: 560px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.lock-icon {
+  width: 72px;
+  height: 72px;
+  background: var(--navy);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  margin: 0 auto 2rem;
+}
+
+.lock-eyebrow {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.75rem;
+}
+
+.lock-wrap h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.25;
+  margin-bottom: 1rem;
+}
+
+.lock-wrap .lock-desc {
+  font-size: 0.97rem;
+  color: var(--navy);
+  line-height: 1.75;
+  margin-bottom: 1rem;
+}
+
+.lock-wrap .lock-desc strong { color: var(--navy); font-weight: 600; }
+
+.progress-track {
+  width: 100%;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 1.5rem 1.75rem;
+  margin: 2rem 0;
+  text-align: left;
+}
+
+.progress-track h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1.25rem;
+}
+
+.module-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.module-row:last-child { border-bottom: none; }
+
+.module-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.module-dot.complete { background: rgba(46,125,50,0.15); color: #2e7d32; }
+.module-dot.incomplete { background: rgba(26,31,54,0.07); color: var(--muted); }
+
+.module-row-title {
+  font-size: 0.88rem;
+  font-weight: 500;
+  color: var(--navy);
+  flex: 1;
+}
+
+.module-row-status {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--muted);
+}
+
+.module-row-status.done { color: #2e7d32; }
+
+.preview-strip {
+  width: 100%;
+  background: var(--navy);
+  border-radius: 14px;
+  padding: 1.75rem 2rem;
+  text-align: left;
+  margin-bottom: 2rem;
+}
+
+.preview-strip .pre-label {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+
+.preview-strip h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 1rem;
+  line-height: 1.3;
+}
+
+.preview-items { display: flex; flex-direction: column; gap: 0.5rem; }
+
+.preview-item {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.6);
+}
+
+.preview-item::before {
+  content: '—';
+  color: var(--gold-mid);
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.btn-return {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  background: var(--navy);
+  color: var(--gold);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+.btn-return:hover { background: var(--gold-mid); color: var(--white); }
+
+/* ── UNLOCKED VIEW ── */
+#unlocked-view {
+  display: none;
+  flex: 1;
+  flex-direction: column;
+}
+
+.page-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.page-banner::before {
+  content: '✟';
+  position: absolute;
+  font-size: 22rem;
+  color: rgba(212,165,116,0.03);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.banner-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.banner-eyebrow::before, .banner-eyebrow::after {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.page-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.page-banner p {
+  color: rgba(255,255,255,0.55);
+  font-size: 1rem;
+  line-height: 1.75;
+  max-width: 560px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.completion-strip {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.completion-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #2e7d32;
+}
+
+.completion-badge .badge-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #2e7d32;
+  flex-shrink: 0;
+}
+
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 5rem;
+  width: 100%;
+}
+
+.hook-block { margin-bottom: 3rem; }
+
+.hook-block p.opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.hook-block p {
+  font-size: 0.97rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong { color: var(--navy); font-weight: 600; }
+.body-text p em { font-style: italic; }
+
+.dark-block {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2.75rem 2.5rem;
+  margin: 2.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-block::before {
+  content: '✟';
+  position: absolute;
+  font-size: 16rem;
+  color: rgba(255,255,255,0.02);
+  right: -2rem;
+  bottom: -3rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.dark-block .block-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.dark-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.dark-block p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.dark-block p:last-child { margin-bottom: 0; }
+.dark-block p strong { color: var(--white); font-weight: 600; }
+
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+.ocia-stages {
+  display: flex;
+  flex-direction: column;
+  margin: 1.75rem 0 2.25rem;
+  position: relative;
+}
+
+.ocia-stages::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 10px;
+  bottom: 10px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--gold-mid), var(--gold-dim));
+}
+
+.stage-item {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  padding-bottom: 2rem;
+  position: relative;
+}
+
+.stage-item:last-child { padding-bottom: 0; }
+
+.stage-dot {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--navy);
+  border: 2px solid var(--gold-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.stage-content { padding-top: 0.5rem; }
+
+.stage-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.35rem;
+}
+
+.stage-content .stage-meta {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.5rem;
+}
+
+.stage-content p {
+  font-size: 0.88rem;
+  color: var(--navy);
+  line-height: 1.75;
+}
+
+.faq-stack { display: flex; flex-direction: column; gap: 1rem; margin: 1.75rem 0; }
+
+.faq-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+}
+
+.faq-card h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.6rem;
+}
+
+.faq-card p {
+  font-size: 0.88rem;
+  color: var(--navy);
+  line-height: 1.75;
+}
+
+.faq-card p strong { font-weight: 600; }
+
+.baptized-block {
+  background: rgba(212,165,116,0.07);
+  border: 1px solid rgba(212,165,116,0.22);
+  border-radius: 14px;
+  padding: 2rem 2.25rem;
+  margin: 2.5rem 0;
+}
+
+.baptized-block .b-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.75rem;
+}
+
+.baptized-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+}
+
+.baptized-block p {
+  font-size: 0.93rem;
+  color: var(--navy);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.baptized-block p:last-child { margin-bottom: 0; }
+
+.parish-block {
+  background: var(--navy);
+  border-radius: 14px;
+  padding: 2rem 2.5rem;
+  margin: 2.5rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.parish-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--gold);
+  font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+
+.parish-block p {
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.65;
+  max-width: 400px;
+}
+
+.btn-parish {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.75rem 1.5rem;
+  background: var(--gold-mid);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.btn-parish:hover { background: var(--gold); color: var(--navy); }
+
+.prayer-block {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2.25rem 2rem;
+  text-align: center;
+  margin: 2.5rem 0;
+}
+
+.prayer-block .prayer-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 1.25rem;
+}
+
+.prayer-block p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--navy);
+  line-height: 1.8;
+  margin-bottom: 0.5rem;
+}
+
+.prayer-block .prayer-attr {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 1rem;
+  font-family: 'Inter', sans-serif;
+  display: block;
+}
+
+.scripture-block {
+  margin: 2.5rem 0;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+.scripture-block::before {
+  content: '"';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem;
+  color: var(--gold-dim);
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 1;
+}
+
+.scripture-block p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.6rem;
+  position: relative;
+}
+
+.scripture-block cite {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+.scripture-footer {
+  background: var(--navy);
+  text-align: center;
+  padding: 2.5rem 2rem;
+}
+
+.scripture-footer p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: rgba(255,255,255,0.5);
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.scripture-footer cite {
+  font-size: 0.75rem;
+  color: rgba(212,165,116,0.5);
+  font-style: normal;
+  letter-spacing: 1px;
+}
+
+/* ── MOBILE ── */
+@media (max-width: 640px) {
+  header { padding: 1rem 1.25rem; }
+  .logo { font-size: 1.3rem; letter-spacing: 3px; }
+  .btn-back { font-size: 0.75rem; padding: 0.4rem 0.75rem; }
+
+  /* Locked */
+  .lock-wrap { padding: 2.5rem 1.25rem 4rem; }
+  .lock-wrap h1 { font-size: 1.6rem; }
+  .lock-icon { width: 60px; height: 60px; font-size: 1.5rem; margin-bottom: 1.5rem; }
+  .progress-track { padding: 1.25rem; }
+  .preview-strip { padding: 1.5rem 1.25rem; }
+
+  /* Unlocked */
+  .page-banner { padding: 2.5rem 1.25rem 2rem; }
+  .page-banner::before { font-size: 8rem; }
+  .page-banner h1 { font-size: 1.75rem; }
+  .content-wrap { padding: 2rem 1.1rem 4rem; }
+  .hook-block p.opener { font-size: 1.15rem; line-height: 1.55; }
+  .body-text p { font-size: 0.93rem; line-height: 1.75; }
+  .dark-block { padding: 1.75rem 1.25rem; border-radius: 12px; }
+  .dark-block h3 { font-size: 1.15rem; }
+  .dark-block p { font-size: 0.9rem; }
+  .pull-quote { padding: 1.5rem 1.25rem; }
+  .pull-quote p { font-size: 1.05rem; }
+  .ocia-stages::before { left: 16px; }
+  .stage-dot { width: 34px; height: 34px; font-size: 0.85rem; }
+  .stage-item { gap: 1rem; }
+  .stage-content h4 { font-size: 1rem; }
+  .stage-content p { font-size: 0.84rem; }
+  .faq-card { padding: 1.25rem; }
+  .faq-card h4 { font-size: 0.95rem; }
+  .faq-card p { font-size: 0.84rem; }
+  .baptized-block { padding: 1.5rem 1.25rem; }
+  .parish-block { padding: 1.5rem 1.25rem; flex-direction: column; align-items: flex-start; }
+  .scripture-block::before { font-size: 5rem; }
+  .scripture-block p { font-size: 1.05rem; }
+  .prayer-block { padding: 1.75rem 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+</header>
+
+<!-- ── LOADING ── -->
+<div id="loading-view">
+  <div class="loading-spinner">
+    <div class="spinner-ring"></div>
+    <p>Loading your progress...</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     LOCKED VIEW
+     Shown when fewer than 7 modules complete
+     ══════════════════════════════════════════ -->
+<div id="locked-view">
+  <div class="lock-wrap">
+
+    <div class="lock-icon">🔒</div>
+    <div class="lock-eyebrow">Adult Formation · Final Step</div>
+    <h1>Your OCIA Guide</h1>
+
+    <p class="lock-desc">This guide unlocks when you complete all 7 formation modules. It's designed to walk you from curious to ready — what OCIA actually involves, what to expect at your first meeting, how to find a parish, and what the journey into the Church looks like from the inside.</p>
+
+    <p class="lock-desc"><strong>You've completed <span id="modules-done">0</span> of 7 modules.</strong> Keep going — you're nearly there.</p>
+
+    <div class="progress-track">
+      <h3>Your Progress</h3>
+      <div class="module-row" id="row-module1">
+        <div class="module-dot incomplete" id="dot-module1">1</div>
+        <div class="module-row-title">Who Is This Man?</div>
+        <div class="module-row-status" id="status-module1">Not started</div>
+      </div>
+      <div class="module-row" id="row-module2">
+        <div class="module-dot incomplete" id="dot-module2">2</div>
+        <div class="module-row-title">Why Is There Suffering?</div>
+        <div class="module-row-status" id="status-module2">Not started</div>
+      </div>
+      <div class="module-row" id="row-module3">
+        <div class="module-dot incomplete" id="dot-module3">3</div>
+        <div class="module-row-title">What Is the Church?</div>
+        <div class="module-row-status" id="status-module3">Not started</div>
+      </div>
+      <div class="module-row" id="row-module4">
+        <div class="module-dot incomplete" id="dot-module4">4</div>
+        <div class="module-row-title">The Sacraments</div>
+        <div class="module-row-status" id="status-module4">Not started</div>
+      </div>
+      <div class="module-row" id="row-module5">
+        <div class="module-dot incomplete" id="dot-module5">5</div>
+        <div class="module-row-title">How Do I Pray?</div>
+        <div class="module-row-status" id="status-module5">Not started</div>
+      </div>
+      <div class="module-row" id="row-module6">
+        <div class="module-dot incomplete" id="dot-module6">6</div>
+        <div class="module-row-title">Mary &amp; the Saints</div>
+        <div class="module-row-status" id="status-module6">Not started</div>
+      </div>
+      <div class="module-row" id="row-module7">
+        <div class="module-dot incomplete" id="dot-module7">7</div>
+        <div class="module-row-title">Now What? — Next Steps</div>
+        <div class="module-row-status" id="status-module7">Not started</div>
+      </div>
+    </div>
+
+    <div class="preview-strip">
+      <div class="pre-label">What's inside when you unlock it</div>
+      <h3>Everything you need to walk through the door.</h3>
+      <div class="preview-items">
+        <div class="preview-item">What OCIA is — and what it isn't</div>
+        <div class="preview-item">What to expect at your first meeting</div>
+        <div class="preview-item">How to find a parish near you</div>
+        <div class="preview-item">The Easter Vigil and what happens there</div>
+        <div class="preview-item">What full initiation into the Church means</div>
+        <div class="preview-item">What to do if you were already baptized</div>
+      </div>
+    </div>
+
+    <a href="crux-adult-formation.html" class="btn-return">Continue Formation →</a>
+
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     UNLOCKED VIEW
+     Shown when all 7 modules are complete
+     ══════════════════════════════════════════ -->
+<div id="unlocked-view">
+
+  <div class="page-banner">
+    <div class="banner-eyebrow">Adult Formation · Final Step</div>
+    <h1>Your OCIA Guide</h1>
+    <p>You've completed all 7 modules. Here is everything you need to take the next step.</p>
+  </div>
+
+  <div class="completion-strip">
+    <div class="completion-badge">
+      <div class="badge-dot"></div>
+      All 7 modules complete · Formation track finished
+    </div>
+  </div>
+
+  <div class="content-wrap">
+
+    <div class="hook-block">
+      <p class="opener">You've spent time with the hardest questions — who Jesus is, why suffering exists, what the Church is, how the sacraments work. Now the question is simpler: what do you actually do next?</p>
+      <p>OCIA — the Order of Christian Initiation of Adults — is the Church's answer to that question. It's not a class you pass or fail. It's a process of accompaniment, designed to walk you from curious to ready at whatever pace you actually need.</p>
+    </div>
+
+    <div class="section-label"><span>What OCIA Actually Is</span></div>
+
+    <div class="body-text">
+      <p>The Order of Christian Initiation of Adults replaced the older "RCIA" name in 2021 — same process, updated terminology. It is the standard pathway by which adults enter the Catholic Church, and it has been the Church's formal welcoming process since the early centuries, restored to its ancient form by the Second Vatican Council.</p>
+      <p>What it is not: a theological exam, a loyalty test, or a process that requires you to have everything figured out before you begin. The catechumenate has always begun with a single question — <em>What do you seek?</em> — and the honest answer to that has always been enough to get started.</p>
+      <p><strong>Most parishes run OCIA from the fall through Easter.</strong> It typically meets once a week, usually on a weeknight or Sunday morning. You attend, listen, ask questions, and participate as much or as little as you're ready to. You are not making a commitment by showing up. You make a commitment when you decide you're ready, and not before.</p>
+    </div>
+
+    <div class="dark-block">
+      <div class="block-label">The Important Thing to Know</div>
+      <h3>You can attend OCIA for an entire year and walk away at the end. No one will pressure you to stay.</h3>
+      <p>The Church's tradition has always been that initiation requires genuine freedom. The catechumenate exists precisely so that people can take the time they need — to ask questions, to sit with doubts, to experience the community — before making a decision that is meant to last a lifetime.</p>
+      <p>Some people go through OCIA and are received into the Church at Easter. Some take multiple years. Some attend and decide the Catholic Church is not where they belong. <strong>The process is designed to honor your freedom at every stage.</strong></p>
+    </div>
+
+    <div class="section-label"><span>The Four Stages of OCIA</span></div>
+
+    <div class="ocia-stages">
+      <div class="stage-item">
+        <div class="stage-dot">①</div>
+        <div class="stage-content">
+          <div class="stage-meta">The First Period</div>
+          <h4>Inquiry</h4>
+          <p>The opening period has no formal commitment. You come with your questions and the Church listens. This is the stage for people who are curious but not yet sure — exploring whether Catholicism is even something they want to pursue. There are no wrong questions and no pressure to move forward until you're ready.</p>
+        </div>
+      </div>
+      <div class="stage-item">
+        <div class="stage-dot">②</div>
+        <div class="stage-content">
+          <div class="stage-meta">The Second Period</div>
+          <h4>The Catechumenate</h4>
+          <p>Those who decide to continue are welcomed formally as catechumens in the Rite of Acceptance. The catechumenate is the longest period — often most of the year — focused on formation in Scripture, Catholic teaching, prayer, and life in the community. A sponsor walks alongside you throughout.</p>
+        </div>
+      </div>
+      <div class="stage-item">
+        <div class="stage-dot">③</div>
+        <div class="stage-content">
+          <div class="stage-meta">The Third Period · Lent</div>
+          <h4>Purification and Enlightenment</h4>
+          <p>At the Rite of Election on the First Sunday of Lent, the bishop formally accepts those ready to receive the sacraments at Easter. The Lenten period that follows is one of deeper prayer, fasting, and final preparation. The scrutinies — three Masses with specific rites of prayer — take place during this time.</p>
+        </div>
+      </div>
+      <div class="stage-item">
+        <div class="stage-dot">④</div>
+        <div class="stage-content">
+          <div class="stage-meta">The Fourth Period · After Easter</div>
+          <h4>Mystagogy</h4>
+          <p>The word means "entering the mystery." In the weeks after Easter, the newly initiated reflect on the sacraments they've received and begin to understand, from the inside, what they have entered. The mystagogical period lasts through Pentecost and is the beginning of a lifetime of deepening.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label"><span>The Easter Vigil</span></div>
+
+    <div class="body-text">
+      <p>For most people who complete OCIA, the destination is the Easter Vigil — the holiest night of the Church's year, celebrated after dark on Holy Saturday. The Vigil begins in darkness outside the church. A fire is lit. The Paschal candle is blessed and carried in procession, with each person lighting their own candle from it as the light spreads through the congregation.</p>
+      <p>The readings that follow span the whole of salvation history from Genesis to the Resurrection. Then, at the heart of the night, the elect are called forward. <strong>Those being baptized are immersed or have water poured over them three times.</strong> Those baptized in another Christian tradition are received into full communion. Everyone receives their first Eucharist at the same Mass.</p>
+      <p>People who have been through it consistently describe the Easter Vigil as one of the most significant nights of their lives. It has to be experienced to be understood.</p>
+    </div>
+
+    <div class="pull-quote">
+      <p>The Easter Vigil is the mother of all vigils — the night above all nights, when the Church keeps watch for the resurrection of the Lord.</p>
+      <cite>— Roman Missal, Exsultet</cite>
+    </div>
+
+    <div class="baptized-block">
+      <div class="b-label">If You Were Already Baptized</div>
+      <h3>The path is slightly different — and just as welcome.</h3>
+      <p>If you were baptized in another Christian tradition, you are not re-baptized. Baptism is permanent and unrepeatable. What you receive instead is reception into full communion with the Catholic Church, along with Confirmation and first Eucharist.</p>
+      <p>If you were baptized Catholic as an infant but never received the other sacraments, a simpler process of preparation typically applies. Talk to your parish — they will know exactly what you need.</p>
+    </div>
+
+    <div class="section-label"><span>Questions People Actually Ask</span></div>
+
+    <div class="faq-stack">
+      <div class="faq-card">
+        <h4>Do I have to believe everything before I begin?</h4>
+        <p>No. The catechumenate exists precisely for people who are still working through what they believe. You are expected to be seeking sincerely — not to have arrived. Doubt is not disqualifying.</p>
+      </div>
+      <div class="faq-card">
+        <h4>What if I've been divorced?</h4>
+        <p>Divorce alone does not prevent anyone from entering the Church. If you are in a second marriage after a divorce, there may be additional questions around the annulment process. Talk honestly with your OCIA director — this situation is common and the Church has pastoral resources for it.</p>
+      </div>
+      <div class="faq-card">
+        <h4>What if I have a same-sex partner?</h4>
+        <p>The Church welcomes anyone who sincerely seeks God, and OCIA is open to everyone. The Church's teaching on sexual ethics is something you will encounter honestly during formation. How that intersects with your specific situation is a conversation best had with your priest or OCIA director in person.</p>
+      </div>
+      <div class="faq-card">
+        <h4>Can I bring my spouse or partner?</h4>
+        <p>Yes, and many people do. Even if your spouse or partner has no intention of entering the Church, attending as a support person is welcomed at most parishes.</p>
+      </div>
+      <div class="faq-card">
+        <h4>What if I miss sessions?</h4>
+        <p>Missing a session or two is not a problem. If you need to pause entirely, talk to your OCIA director. <strong>The process will wait for you.</strong></p>
+      </div>
+      <div class="faq-card">
+        <h4>Do I have to go to Confession before I'm received?</h4>
+        <p>For those being baptized for the first time, Baptism itself forgives all sins — Confession is not required beforehand. For those already baptized being received into full communion, Confession is typically encouraged. Your OCIA director will guide you through what applies to you.</p>
+      </div>
+    </div>
+
+    <div class="section-label"><span>Finding a Parish</span></div>
+
+    <div class="body-text">
+      <p>Most parishes list their OCIA schedule on their website. If you call and ask to speak with the OCIA director or pastor, any good parish will make time for that conversation. You don't need to arrive with paperwork or a commitment — just your presence and your question.</p>
+      <p><strong>If the first parish you visit doesn't feel right, try another.</strong> Catholic parishes vary enormously in character and community. Finding the right fit sometimes takes more than one attempt.</p>
+    </div>
+
+    <div class="parish-block">
+      <div>
+        <h3>Find a Catholic parish near you</h3>
+        <p>The Catholic Directory covers every diocese in the United States. Search by zip code to find parishes and their OCIA contact information.</p>
+      </div>
+      <a href="https://www.catholicdirectory.org" target="_blank" rel="noopener" class="btn-parish">Find a Parish →</a>
+    </div>
+
+    <div class="scripture-block">
+      <p>"Come and see."</p>
+      <cite>— John 1:39 · Jesus's first invitation to his disciples</cite>
+    </div>
+
+    <div class="section-label"><span>A Final Word</span></div>
+
+    <div class="body-text">
+      <p>You've spent real time with serious questions. The Church you are considering entering is not a perfect institution — you know that by now. It is human and divine simultaneously, capable of extraordinary witness and serious failure, sustained for two thousand years by people who were in the same position you are now: asking hard questions, carrying real doubts, deciding whether to walk through the door anyway.</p>
+      <p><strong>The invitation that has gone out since the very beginning is still the same one.</strong> Come and see. Bring what you have, bring your questions, and let the community that has gathered around this table for two thousand years be what it has always been: a home for people who are still becoming what God is calling them to be.</p>
+    </div>
+
+    <div class="prayer-block">
+      <div class="prayer-label">A Prayer for the Journey</div>
+      <p>Lord, you know what I am seeking, even when I cannot name it clearly. You know the doubts I carry and the questions I haven't asked yet. Lead me where you want me to go. Give me the courage to keep asking. And if this is the door you are opening, give me the grace to walk through it — not because I am ready, but because you are calling.</p>
+      <span class="prayer-attr">A prayer for those in discernment</span>
+    </div>
+
+  </div>
+
+  <div class="scripture-footer">
+    <p>"I came that they may have life and have it abundantly."</p>
+    <cite>— John 10:10</cite>
+  </div>
+
+</div><!-- end #unlocked-view -->
+
+<!-- ══════════════════════════════════════════
+     FIREBASE DETECTION
+     Reads completedModules from Firestore
+     and shows the correct view
+     ══════════════════════════════════════════ -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = { projectId: "crux-faith-formation" };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  const MODULES = [
+    "module1", "module2", "module3", "module4",
+    "module5", "module6", "module7"
+  ];
+
+  const MODULE_TITLES = {
+    module1: "Who Is This Man?",
+    module2: "Why Is There Suffering?",
+    module3: "What Is the Church?",
+    module4: "The Sacraments",
+    module5: "How Do I Pray?",
+    module6: "Mary & the Saints",
+    module7: "Now What? — Next Steps"
+  };
+
+  function showUnlocked() {
+    document.getElementById("loading-view").style.display = "none";
+    document.getElementById("locked-view").style.display = "none";
+    document.getElementById("unlocked-view").style.display = "flex";
+  }
+
+  function showLocked(completed) {
+    document.getElementById("loading-view").style.display = "none";
+    document.getElementById("unlocked-view").style.display = "none";
+
+    const count = MODULES.filter(m => completed[m]).length;
+    document.getElementById("modules-done").textContent = count;
+
+    // Update each module row dynamically
+    MODULES.forEach(moduleKey => {
+      const isDone = !!completed[moduleKey];
+      const dot = document.getElementById("dot-" + moduleKey);
+      const status = document.getElementById("status-" + moduleKey);
+      if (dot) {
+        dot.className = "module-dot " + (isDone ? "complete" : "incomplete");
+        dot.textContent = isDone ? "✓" : moduleKey.replace("module", "");
+      }
+      if (status) {
+        status.className = "module-row-status" + (isDone ? " done" : "");
+        status.textContent = isDone ? "Complete" : "In development";
+      }
+    });
+
+    document.getElementById("locked-view").style.display = "block";
+  }
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) {
+      // Not logged in — show locked with zero progress
+      showLocked({});
+      return;
+    }
+
+    try {
+      const snap = await getDoc(doc(db, "users", user.uid));
+      const completed = snap.exists()
+        ? (snap.data().completedModules || {})
+        : {};
+
+      const allDone = MODULES.every(m => completed[m]);
+
+      if (allDone) {
+        showUnlocked();
+      } else {
+        showLocked(completed);
+      }
+    } catch (err) {
+      console.error("Firestore read failed:", err);
+      showLocked({});
+    }
+  });
+</script>
+
+</body>
+</html>
