@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>CRUX — How Do I Pray? Part B</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  color-scheme: light;
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.header-right { display:flex; align-items:center; gap:0.75rem; }
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── BANNER ── */
+.module-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.module-banner::before {
+  content: '✝';
+  position: absolute;
+  font-size: 24rem;
+  color: rgba(212,165,116,0.03);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.module-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.module-tag::before, .module-tag::after {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.module-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.module-banner .part-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.module-banner p.intro {
+  color: rgba(255,255,255,0.55);
+  font-size: 1rem;
+  line-height: 1.75;
+  max-width: 580px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ── PART NAV ── */
+.part-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  overflow-x: auto;
+}
+
+.part-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.part-tab.active { color: var(--navy); border-bottom-color: var(--gold-mid); }
+.part-tab.complete { color: var(--muted); }
+.part-tab:hover:not(.active) { color: var(--navy); }
+
+.part-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(26,31,54,0.07);
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.part-tab.complete .part-num { background: rgba(46,125,50,0.15); color: #2e7d32; }
+.part-tab.active .part-num { background: var(--gold-mid); color: var(--white); }
+
+/* ── CONTENT ── */
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 8rem;
+}
+
+.recap-block {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2.75rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.recap-block p { font-size: 0.88rem; color: var(--navy); line-height: 1.7; }
+.recap-block p strong { color: var(--navy); font-weight: 600; }
+
+.hook-block { margin-bottom: 3rem; }
+
+.hook-block p.opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.hook-block p {
+  font-size: 0.97rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong { color: var(--navy); font-weight: 600; }
+.body-text p em { font-style: italic; }
+
+/* Video embed */
+.video-block {
+  margin: 2.5rem 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--navy);
+  box-shadow: 0 4px 24px rgba(26,31,54,0.15);
+}
+
+.video-label {
+  padding: 1rem 1.5rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.video-label .v-tag {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.video-label .v-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+}
+
+.video-label .v-source {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.35);
+  margin-left: auto;
+}
+
+.video-ratio {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+}
+
+.video-ratio iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Pull quote */
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Voice card */
+.voice-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold-mid);
+  border-radius: 0 14px 14px 0;
+  padding: 1.75rem 2rem;
+  margin: 2.25rem 0;
+}
+
+.voice-card .voice-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.75rem;
+}
+
+.voice-card p {
+  font-size: 0.93rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 0.85rem;
+  font-style: italic;
+}
+
+.voice-card p:last-child { margin-bottom: 0; }
+.voice-card p strong { font-style: normal; font-weight: 600; }
+
+/* Dark block */
+.dark-block {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2.75rem 2.5rem;
+  margin: 2.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-block::before {
+  content: '✝';
+  position: absolute;
+  font-size: 16rem;
+  color: rgba(255,255,255,0.02);
+  right: -2rem;
+  bottom: -3rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.dark-block .block-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.dark-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.dark-block p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.dark-block p:last-child { margin-bottom: 0; }
+.dark-block p strong { color: var(--white); font-weight: 600; }
+.dark-block p em { font-style: italic; }
+
+/* Lectio divina steps */
+.lectio-steps {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--white);
+  margin: 1.75rem 0 2.25rem;
+}
+
+.lectio-step {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.lectio-step:last-child { border-bottom: none; }
+
+.step-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: var(--gold-dim);
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: -2px;
+}
+
+.step-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.35rem;
+}
+
+.step-content .step-latin {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.5rem;
+}
+
+.step-content p {
+  font-size: 0.875rem;
+  color: var(--navy);
+  line-height: 1.75;
+}
+
+/* Prayer forms cards */
+.prayer-forms {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin: 1.75rem 0 2.25rem;
+}
+
+.prayer-form-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.form-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.form-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.4rem;
+}
+
+.form-content p {
+  font-size: 0.875rem;
+  color: var(--navy);
+  line-height: 1.75;
+}
+
+.form-content p strong { font-weight: 600; }
+
+/* Scripture */
+.scripture-block {
+  margin: 2.5rem 0;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+.scripture-block::before {
+  content: '"';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem;
+  color: var(--gold-dim);
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 1;
+}
+
+.scripture-block p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.6rem;
+  position: relative;
+}
+
+.scripture-block cite {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* For you / closing block */
+.for-you-block {
+  background: rgba(212,165,116,0.07);
+  border: 1px solid rgba(212,165,116,0.2);
+  border-radius: 14px;
+  padding: 2rem 2.25rem;
+  margin: 2.5rem 0;
+}
+
+.for-you-block .fy-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.75rem;
+}
+
+.for-you-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+}
+
+.for-you-block p {
+  font-size: 0.93rem;
+  color: var(--navy);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.for-you-block p:last-child { margin-bottom: 0; }
+.for-you-block p strong { font-weight: 600; }
+
+/* Complete footer */
+.complete-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--navy);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 90;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.2);
+}
+
+.complete-info { display: flex; flex-direction: column; gap: 0.2rem; }
+
+.complete-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.complete-title {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.6);
+  font-weight: 500;
+}
+
+.btn-row { display: flex; gap: 0.75rem; align-items: center; }
+
+.btn-modules {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.25rem;
+  background: transparent;
+  color: rgba(255,255,255,0.6);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-modules:hover { color: var(--white); border-color: rgba(255,255,255,0.5); }
+
+.btn-next-module {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--gold-mid);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-next-module:hover { background: var(--gold); color: var(--navy); }
+
+@media (max-width: 640px) {
+  header { padding: 1rem 1.25rem; }
+  .logo { font-size: 1.3rem; letter-spacing: 3px; }
+  .btn-back { font-size: 0.75rem; padding: 0.4rem 0.75rem; }
+  .module-banner { padding: 2.5rem 1.25rem 2rem; }
+  .module-banner::before { font-size: 8rem; }
+  .module-banner h1 { font-size: 1.75rem; line-height: 1.2; }
+  .part-nav { padding: 0 0.75rem; }
+  .part-tab { padding: 0.85rem 1rem; font-size: 0.75rem; }
+  .content-wrap { padding: 2rem 1.1rem 8rem; }
+  .recap-block { padding: 1.1rem 1rem; }
+  .recap-block p { font-size: 0.84rem; }
+  .hook-block p.opener { font-size: 1.15rem; line-height: 1.55; }
+  .body-text p { font-size: 0.93rem; line-height: 1.75; margin-bottom: 1rem; }
+  .section-label { margin: 2rem 0 1.25rem; }
+  .pull-quote { padding: 1.5rem 1.25rem; }
+  .pull-quote p { font-size: 1.05rem; }
+  .voice-card { padding: 1.5rem 1.25rem; }
+  .voice-card p { font-size: 0.88rem; }
+  .dark-block { padding: 1.75rem 1.25rem; border-radius: 12px; }
+  .dark-block h3 { font-size: 1.15rem; }
+  .dark-block p { font-size: 0.9rem; }
+  .lectio-steps { border-radius: 12px; }
+  .lectio-step { padding: 1.25rem 1rem; gap: 1rem; }
+  .step-num { font-size: 1.4rem; }
+  .step-content h4 { font-size: 0.95rem; }
+  .step-content p { font-size: 0.84rem; }
+  .prayer-form-card { padding: 1.25rem 1rem; gap: 0.9rem; }
+  .form-icon { width: 36px; height: 36px; font-size: 0.95rem; }
+  .form-content h4 { font-size: 0.95rem; }
+  .form-content p { font-size: 0.84rem; }
+  .scripture-block { padding: 1.75rem 1rem; }
+  .scripture-block::before { font-size: 5rem; }
+  .scripture-block p { font-size: 1.05rem; }
+  .for-you-block { padding: 1.5rem 1.25rem; }
+  .for-you-block h3 { font-size: 1.05rem; }
+  .for-you-block p { font-size: 0.9rem; }
+  .video-label { padding: 0.85rem 1.1rem 0.6rem; flex-wrap: wrap; gap: 0.3rem; }
+  .video-label .v-source { margin-left: 0; }
+  .complete-footer { padding: 0.85rem 1.1rem; flex-wrap: wrap; }
+  .complete-footer .btn-row { width: 100%; justify-content: flex-end; }
+  .btn-modules { font-size: 0.75rem; padding: 0.6rem 1rem; }
+  .btn-next-module { font-size: 0.8rem; padding: 0.65rem 1.1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <div class="header-right">
+    <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+  </div>
+</header>
+
+<div class="module-banner">
+  <div class="module-tag">Module 5 · Adult Formation</div>
+  <div class="part-label">Part B of 2</div>
+  <h1>How Do I Pray?</h1>
+  <p class="intro">The forms Catholic prayer takes, how to pray with Scripture, what it means to actually listen — and how to build a rhythm that holds.</p>
+</div>
+
+<div class="part-nav">
+  <a href="crux-adult-module5a.html" class="part-tab complete">
+    <span class="part-num">✓</span>
+    Learning to Actually Talk to Him
+  </a>
+  <a href="crux-adult-module5b.html" class="part-tab active">
+    <span class="part-num">B</span>
+    Going Deeper
+  </a>
+</div>
+
+<div class="content-wrap">
+
+  <div class="recap-block">
+    <div>←</div>
+    <p><strong>In Part A</strong> we covered the shift from reciting prayers to actually knowing who you're talking to, what a real daily prayer rhythm looks like, and the honest truth about dry seasons. Part B gets into the specific tools — how to pray with Scripture, what the Rosary is actually for, and how to go deeper once the basics are in place.</p>
+  </div>
+
+  <!-- HOOK -->
+  <div class="hook-block">
+    <p class="opener">Once you understand that prayer is a relationship, the next question is: how do you actually deepen it?</p>
+    <p>The Catholic tradition has developed a rich set of forms and practices for exactly this — not as requirements to fulfill, but as different ways of entering the same conversation. Think of them as rooms in a house. You don't have to use every room every day. But knowing they exist, and what each one is for, gives you more places to go when you need them.</p>
+  </div>
+
+  <!-- SECTION: PRAYING WITH SCRIPTURE -->
+  <div class="section-label"><span>Praying With Scripture — Lectio Divina</span></div>
+
+  <div class="body-text">
+    <p>The most ancient method of Catholic prayer with the Bible has a Latin name — <em>lectio divina</em>, meaning "divine reading" — and it is far simpler than it sounds. It's not Bible study in the academic sense, where you analyze a text to extract information. It's slower, more receptive, and aimed at something different: not understanding the passage but allowing the passage to speak to you.</p>
+    <p>The method has been practiced in monasteries since the 6th century and was formalized by St. Benedict. It moves through four movements, each building on the last.</p>
+  </div>
+
+  <div class="lectio-steps">
+    <div class="lectio-step">
+      <div class="step-num">1</div>
+      <div class="step-content">
+        <div class="step-latin">Lectio · Read</div>
+        <h4>Read a short passage slowly</h4>
+        <p>Not a chapter — a few verses. Read it once, then read it again. Read it a third time if needed. The point isn't coverage. You're looking for the word or phrase that catches your attention, the thing that lands differently today than it has before.</p>
+      </div>
+    </div>
+    <div class="lectio-step">
+      <div class="step-num">2</div>
+      <div class="step-content">
+        <div class="step-latin">Meditatio · Meditate</div>
+        <h4>Sit with what caught you</h4>
+        <p>Don't analyze it. Just stay with it. Turn it over. Let it interact with whatever you're carrying that day — the worry, the decision, the thing you haven't resolved. The passage doesn't need to solve it. It just needs to be present with it.</p>
+      </div>
+    </div>
+    <div class="lectio-step">
+      <div class="step-num">3</div>
+      <div class="step-content">
+        <div class="step-latin">Oratio · Pray</div>
+        <h4>Respond to God from what you've received</h4>
+        <p>Now you speak. Not a prepared prayer — a response to what the passage stirred. Gratitude, a question, a confession, a request. The Scripture has opened something; the prayer is your honest reaction to it.</p>
+      </div>
+    </div>
+    <div class="lectio-step">
+      <div class="step-num">4</div>
+      <div class="step-content">
+        <div class="step-latin">Contemplatio · Rest</div>
+        <h4>Be still and receive</h4>
+        <p>This is the listening part. After you've read and reflected and spoken, you stop and rest in God's presence. No agenda, no more words. Just availability. This is where the Holy Spirit does the work your effort can't accomplish. Even five minutes of this is worth practicing.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIDEO -->
+  <div class="video-block">
+    <div class="video-label">
+      <span class="v-tag">Watch</span>
+      <span class="v-title">How Do You Pray with the Bible? — Fr. Mike Schmitz</span>
+      <span class="v-source">Ascension Presents · 8 min</span>
+    </div>
+    <div class="video-ratio">
+      <iframe
+        src="https://www.youtube.com/embed/Fthhy59rxWo"
+        title="How Do You Pray with the Bible? — Fr. Mike Schmitz"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
+  <div class="voice-card">
+    <div class="voice-label">From a CRUX Member</div>
+    <p>The moments that stop me in morning prayer are almost never the passages I expected. I'll be reading something I've read a dozen times before, and suddenly a single line lands completely differently. It speaks directly to something I walked in carrying without even planning to pray about. That's not coincidence — that's the Word doing what the Word does when you slow down enough to let it.</p>
+    <p>Fr. Mike's analogy about skipping stones is exactly right: <strong>not every morning will give you the perfect rock, but a good-enough rock still skips.</strong> You don't need a revelation every time you open the Bible. You need to keep opening it.</p>
+  </div>
+
+  <!-- SECTION: THE LISTENING SIDE -->
+  <div class="section-label"><span>Learning to Listen</span></div>
+
+  <div class="body-text">
+    <p>Prayer is a conversation, which means it has two sides. Most people who pray are reasonably comfortable with the speaking side — asking, thanking, confessing, hoping. The listening side is harder, and it gets less attention.</p>
+    <p>Listening in prayer doesn't mean waiting for an audible voice. Most people, even those with deep prayer lives, never hear God speak in a way that sounds like human speech. What it means is creating space — quiet, receptive, unhurried — for the Holy Spirit to work on your heart rather than just your words.</p>
+  </div>
+
+  <div class="dark-block">
+    <div class="block-label">How God Speaks</div>
+    <h3>You build a relationship with God the same way you build one with anyone: you spend time, you pay attention, and you start to recognize the voice.</h3>
+    <p>After years of prayer, most serious Catholics describe the same experience: as they pray, they become aware of a clarity about something they walked in confused about. A sense of what needs to be done that they didn't have before. A peace about a decision, or a growing unease about one they'd been rationalizing.</p>
+    <p>This is not the same as your own preferences dressed up as divine guidance — though that confusion is real and worth being honest about. The difference, over time, is that <strong>what God seems to be saying often isn't what you walked in hoping to hear.</strong> If every answer you receive in prayer conveniently confirms what you already wanted, that's worth examining. Genuine listening produces surprises.</p>
+    <p>The simplest practice: after you've spoken, stop. Set a timer for five minutes if you need to. Sit in silence and notice what arrives. Don't reach for it. Don't analyze it. Just be available, and pay attention to what the Spirit brings to the surface.</p>
+  </div>
+
+  <!-- SECTION: FORMS OF PRAYER -->
+  <div class="section-label"><span>The Forms Catholic Prayer Takes</span></div>
+
+  <div class="body-text">
+    <p>The Catholic tradition offers more forms of prayer than most Catholics have ever tried. Each one has a different character and serves a different need. None of them is the only right way. All of them are ways of orienting yourself toward the same God.</p>
+  </div>
+
+  <div class="prayer-forms">
+    <div class="prayer-form-card">
+      <div class="form-icon">📖</div>
+      <div class="form-content">
+        <h4>Scripture</h4>
+        <p>The Bible read prayerfully rather than studiously. A passage a day, with a commentary alongside to help you understand what you're reading. <strong>Don't just read over the words — let them read you.</strong> Ask what God is saying to you through this text today, in your specific situation. The answer is usually there.</p>
+      </div>
+    </div>
+    <div class="prayer-form-card">
+      <div class="form-icon">📿</div>
+      <div class="form-content">
+        <h4>The Rosary</h4>
+        <p>Often misunderstood as repetitive word-recitation, the Rosary is actually a meditative prayer focused on the life of Christ. The Hail Marys are not the point — they're the rhythm that frees your mind to contemplate the mysteries: the Annunciation, the Crucifixion, the Resurrection. Mary is not the destination; she's pointing you toward her Son. The Rosary is a way of sitting with the whole Gospel, one mystery at a time.</p>
+      </div>
+    </div>
+    <div class="prayer-form-card">
+      <div class="form-icon">⛪</div>
+      <div class="form-content">
+        <h4>The Liturgy of the Hours</h4>
+        <p>The Church's official daily prayer — psalms, Scripture readings, and intercessions spread across seven prayer times throughout the day. Most Catholics use just Morning Prayer and Evening Prayer. The app <em>iBreviary</em> or <em>Hallow</em> make this accessible without a physical breviary. Praying the Hours connects your private prayer to the prayer of the whole Church worldwide, at the same hours, every day.</p>
+      </div>
+    </div>
+    <div class="prayer-form-card">
+      <div class="form-icon">✍️</div>
+      <div class="form-content">
+        <h4>Prayer Journaling</h4>
+        <p>Writing your prayers rather than just thinking them. Slower, more deliberate, and — for many people — more honest. The act of writing forces you to finish sentences you might let trail off in your head. <strong>What you discover as you write is often different from what you thought you felt before you started.</strong> Many people find that journaling after Scripture is where the real prayer happens.</p>
+      </div>
+    </div>
+    <div class="prayer-form-card">
+      <div class="form-icon">🕯</div>
+      <div class="form-content">
+        <h4>Adoration</h4>
+        <p>Sitting in silence before the Blessed Sacrament — the consecrated Eucharist exposed in a monstrance. Many parishes have perpetual adoration chapels open around the clock. There is no script. You simply come and be present to Christ present to you. For people who find their prayer life is mostly talking, an hour in adoration teaches the listening side faster than almost anything else.</p>
+      </div>
+    </div>
+    <div class="prayer-form-card">
+      <div class="form-icon">🗣</div>
+      <div class="form-content">
+        <h4>Spontaneous Prayer</h4>
+        <p>The open-mic conversation with God that happens in the middle of an ordinary day. Driving. Walking. Before a hard meeting. After something goes unexpectedly well. No form, no script, no special language required. Just the turning of your attention toward God in the moment. This is what "pray without ceasing" actually looks like in practice — not hours of formal prayer, but a life where God is never far from the conversation.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: CLOSING WITH A FORMAL PRAYER -->
+  <div class="section-label"><span>Why Formal Prayers Still Matter</span></div>
+
+  <div class="body-text">
+    <p>Everything in this module has pushed toward spontaneity and relationship — away from rote recitation and toward genuine conversation. So it's worth naming clearly why the Church's formal prayers remain valuable, even for people who have moved well beyond needing them as a script.</p>
+    <p>Formal prayers — the Our Father, the Hail Mary, Psalm 23, the Glory Be — carry centuries of theology in compact form. They were crafted by people who knew God deeply and distilled that knowledge into words that work across every emotional state. On the mornings when you have nothing to say, when the dry season has settled in and your own words feel hollow, a prayer that is not yours to generate is a gift. You receive it rather than produce it.</p>
+    <p><strong>Psalm 23 in particular deserves its reputation.</strong> "The Lord is my shepherd" — six short verses that move from provision to presence to accompaniment through the darkest valley to the table set for you in front of your enemies. Prayed at the end of a day, it reorients everything that happened in light of who is actually in charge of your life. It is one of the most complete prayers ever written, and saying it every night before you sleep is never the wrong choice.</p>
+  </div>
+
+  <div class="pull-quote">
+    <p>Even if I walk through the valley of the shadow of death, I will fear no evil — for you are with me.</p>
+    <cite>— Psalm 23:4</cite>
+  </div>
+
+  <!-- SECTION: BUILDING A RHYTHM -->
+  <div class="section-label"><span>Building a Rhythm That Holds</span></div>
+
+  <div class="body-text">
+    <p>A prayer life isn't built in a single decision. It's built in small repeated choices — showing up on the mornings when it feels like nothing, coming back after the weeks when you drifted, adjusting the rhythm when life changes instead of abandoning it entirely.</p>
+    <p>The practical question is: what can you actually sustain? A five-minute morning prayer that happens every day is worth more than a forty-five-minute prayer that happens twice a month. Start smaller than you think you should. A single Scripture verse read slowly, a minute of silence, one honest sentence to God. Do that every morning for a month. Then add.</p>
+    <p><strong>The goal is not impressive prayer.</strong> The goal is a life in which God is someone you actually know — someone you turn to when things are hard, thank when things are good, and talk to in the in-between moments because the relationship has become real enough that the silence feels wrong without him.</p>
+  </div>
+
+  <div class="scripture-block">
+    <p>"Ask and it will be given to you; seek and you will find; knock and the door will be opened to you."</p>
+    <cite>— Matthew 7:7</cite>
+  </div>
+
+  <div class="for-you-block">
+    <div class="fy-label">Where to Start</div>
+    <h3>You don't need to do all of this. You need to do one thing, consistently.</h3>
+    <p>Pick one practice from this module and try it for two weeks. Morning Scripture with a journal. Five minutes of silence after your evening prayer. One decade of the Rosary before bed. An hour in adoration once a week.</p>
+    <p>The point isn't the specific form. The point is the consistent turning toward God — the habit of showing up, week after week, until the relationship deepens on its own. That's how every real relationship works. Prayer is no different.</p>
+    <p><strong>He already knows you.</strong> The prayer life you're building is you learning to know him back.</p>
+  </div>
+
+</div>
+
+<div class="complete-footer">
+  <div class="complete-info">
+    <div class="complete-label">✓ Module 5 Complete</div>
+    <div class="complete-title">How Do I Pray?</div>
+  </div>
+  <div class="btn-row">
+    <a href="crux-adult-formation.html" class="btn-modules">All Modules</a>
+    <a href="crux-adult-formation.html" class="btn-next-module">Next Module →</a>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+    authDomain: "crux-faith-formation.firebaseapp.com",
+    projectId: "crux-faith-formation",
+    storageBucket: "crux-faith-formation.firebasestorage.app",
+    messagingSenderId: "838141015985",
+    appId: "1:838141015985:web:2655e570663e182d75ef90",
+    measurementId: "G-LQ35DLTVKY"
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) return;
+    await setDoc(
+      doc(db, "users", user.uid),
+      { completedModules: { module5: true } },
+      { merge: true }
+    );
+  });
+</script>
+
+</body>
+</html>

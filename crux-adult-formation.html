@@ -19,9 +19,7 @@
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
 
-:root {
-  color-scheme: light;
-}
+:root { color-scheme: light; }
 
 body {
   font-family: 'Inter', sans-serif;
@@ -397,8 +395,6 @@ header {
   .ocia-block { flex-direction: column; align-items: flex-start; }
   .page-wrap { padding: 2rem 1rem 4rem; }
 }
-
-/* ── SAINTS SHELF ── */
 .saints-shelf-header { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:1.75rem; flex-wrap:wrap; gap:0.5rem; }
 .saints-shelf-header h2 { font-family:'Playfair Display',serif; font-size:1.5rem; color:#1a1f36; font-weight:700; }
 .saints-shelf-header span { font-size:0.8rem; color:#8890b0; font-weight:500; }
@@ -447,7 +443,7 @@ header {
 
   <div class="shelf-header">
     <h2>Formation Modules</h2>
-    <span>4 of 7 available now</span>
+    <span>5 of 7 available now</span>
   </div>
 
   <div class="module-grid">
@@ -532,18 +528,22 @@ header {
       </div>
     </div>
 
-    <!-- MODULE 5 -->
-    <div class="module-card locked">
+    <!-- MODULE 5 — AVAILABLE -->
+    <div class="module-card available" onclick="window.location.href='crux-adult-module5a.html'">
       <div class="module-num">05</div>
       <div class="module-body">
         <div class="module-top">
           <div class="module-title">How Do I Pray?</div>
-          <span class="module-badge coming-soon">Coming Soon</span>
+          <span class="module-badge available">Available Now</span>
         </div>
-        <div class="module-desc">An honest guide to Catholic prayer for adults who find it awkward or unfamiliar. Scripture, the Rosary, liturgy, and personal prayer.</div>
+        <div class="module-desc">An honest guide to Catholic prayer — what it actually looks like in practice, how to pray with Scripture, and how to build a rhythm that holds across the dry seasons and the alive ones.</div>
+        <div class="module-parts">
+          <span class="module-part">Part A: Learning to Actually Talk to Him</span>
+          <span class="module-part">Part B: Going Deeper</span>
+        </div>
         <div class="module-footer">
-          <span class="module-meta">In development</span>
-          <span class="module-cta">🔒 Locked</span>
+          <span class="module-meta">⏱ 50–60 min · 2 parts</span>
+          <span class="module-cta">Begin Module →</span>
         </div>
       </div>
     </div>
@@ -590,86 +590,43 @@ header {
     </div>
     <span>3 available now</span>
   </div>
-
   <p class="saints-intro">The saints are not plaster figures. They are people who encountered Christ and were changed by it — fishermen, soldiers, emperors, peasants, and sinners. Each one answers the question: what does a human life look like when it's given fully to God?</p>
-
   <div class="saint-grid">
-
     <div class="saint-card" onclick="window.location.href='crux-adult-saint-longinus-a.html'">
-      <div class="saint-era">
-        <div class="era-cross">✟</div>
-        <div class="era-text">1st Cent.</div>
-      </div>
+      <div class="saint-era"><div class="era-cross">✟</div><div class="era-text">1st Cent.</div></div>
       <div class="saint-body">
-        <div class="saint-top">
-          <div class="saint-name">St. Longinus</div>
-          <span class="saint-badge">Available Now</span>
-        </div>
+        <div class="saint-top"><div class="saint-name">St. Longinus</div><span class="saint-badge">Available Now</span></div>
         <div class="saint-tagline">The soldier who pierced Christ's side — and was never the same.</div>
         <div class="saint-desc">A Roman centurion present at the Crucifixion. One lance thrust. What happened next is one of the most extraordinary conversion stories in Christian history.</div>
-        <div class="saint-footer">
-          <span class="saint-meta">⏱ 30–40 min · Feast Day: March 15</span>
-          <span class="saint-cta">Read His Story →</span>
-        </div>
+        <div class="saint-footer"><span class="saint-meta">⏱ 30–40 min · Feast Day: March 15</span><span class="saint-cta">Read His Story →</span></div>
       </div>
     </div>
-
     <div class="saint-card" onclick="window.location.href='crux-adult-saint-cecilia-a.html'">
-      <div class="saint-era">
-        <div class="era-cross">♪</div>
-        <div class="era-text">2nd–3rd Cent.</div>
-      </div>
+      <div class="saint-era"><div class="era-cross">♪</div><div class="era-text">2nd–3rd Cent.</div></div>
       <div class="saint-body">
-        <div class="saint-top">
-          <div class="saint-name">St. Cecilia</div>
-          <span class="saint-badge">Available Now</span>
-        </div>
+        <div class="saint-top"><div class="saint-name">St. Cecilia</div><span class="saint-badge">Available Now</span></div>
         <div class="saint-tagline">She sang to God in her heart on her wedding day. She went to her death singing.</div>
         <div class="saint-desc">Patron of musicians, Roman martyr, and the woman whose interior prayer at her own wedding has shaped the Church's understanding of sacred music for fifteen centuries.</div>
-        <div class="saint-footer">
-          <span class="saint-meta">⏱ 30–40 min · Feast Day: November 22</span>
-          <span class="saint-cta">Read Her Story →</span>
-        </div>
+        <div class="saint-footer"><span class="saint-meta">⏱ 30–40 min · Feast Day: November 22</span><span class="saint-cta">Read Her Story →</span></div>
       </div>
     </div>
-
     <div class="saint-card" onclick="window.location.href='crux-adult-saint-francis-a.html'">
-      <div class="saint-era">
-        <div class="era-cross">☩</div>
-        <div class="era-text">13th Cent.</div>
-      </div>
+      <div class="saint-era"><div class="era-cross">☩</div><div class="era-text">13th Cent.</div></div>
       <div class="saint-body">
-        <div class="saint-top">
-          <div class="saint-name">St. Francis of Assisi</div>
-          <span class="saint-badge">Available Now</span>
-        </div>
+        <div class="saint-top"><div class="saint-name">St. Francis of Assisi</div><span class="saint-badge">Available Now</span></div>
         <div class="saint-tagline">He threw his clothes at his father in the public square and walked away with nothing.</div>
         <div class="saint-desc">Wealthy merchant's son, failed soldier, radical penitent. Francis took the Sermon on the Mount as a set of instructions — and it changed the Church.</div>
-        <div class="saint-footer">
-          <span class="saint-meta">⏱ 30–40 min · Feast Day: October 4</span>
-          <span class="saint-cta">Read His Story →</span>
-        </div>
+        <div class="saint-footer"><span class="saint-meta">⏱ 30–40 min · Feast Day: October 4</span><span class="saint-cta">Read His Story →</span></div>
       </div>
     </div>
-
     <div class="saint-card locked">
-      <div class="saint-era">
-        <div class="era-cross">✟</div>
-        <div class="era-text">More<br>Coming</div>
-      </div>
+      <div class="saint-era"><div class="era-cross">✟</div><div class="era-text">More<br>Coming</div></div>
       <div class="saint-body">
-        <div class="saint-top">
-          <div class="saint-name">More Saints Coming Soon</div>
-          <span class="saint-badge coming-soon">In Development</span>
-        </div>
+        <div class="saint-top"><div class="saint-name">More Saints Coming Soon</div><span class="saint-badge coming-soon">In Development</span></div>
         <div class="saint-desc">New saint profiles are added regularly. Each one is written to help you encounter a real person, not a legend.</div>
-        <div class="saint-footer">
-          <span class="saint-meta">&nbsp;</span>
-          <span class="saint-cta" style="color:#8890b0;font-weight:400;">🔒 Locked</span>
-        </div>
+        <div class="saint-footer"><span class="saint-meta">&nbsp;</span><span class="saint-cta" style="color:#8890b0;font-weight:400;">🔒 Locked</span></div>
       </div>
     </div>
-
   </div>
 
   <!-- OCIA callout -->
