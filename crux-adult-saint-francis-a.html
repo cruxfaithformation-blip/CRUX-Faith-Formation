@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — St. Francis of Assisi · Part A</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --earth: #5c4033;
+  --earth-soft: rgba(92,64,51,0.07);
+  --earth-border: rgba(92,64,51,0.18);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── BANNER ── */
+.saint-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.saint-banner::before {
+  content: '☩';
+  position: absolute;
+  font-size: 26rem;
+  color: rgba(212,165,116,0.03);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.saint-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.saint-tag::before, .saint-tag::after {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.feast-line {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 0.85rem;
+  position: relative;
+}
+
+.saint-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.saint-banner .part-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.saint-banner p.tagline {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.5);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.65;
+  position: relative;
+}
+
+/* ── PART NAV ── */
+.part-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+}
+
+.part-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--subtle);
+}
+
+.part-tab.active { color: var(--navy); border-bottom-color: var(--gold-mid); }
+
+.part-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(26,31,54,0.07);
+  color: var(--subtle);
+  flex-shrink: 0;
+}
+
+.part-tab.active .part-num { background: var(--gold-mid); color: var(--white); }
+
+/* ── FAST FACTS ── */
+.facts-strip {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 1.25rem 2rem;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.fact-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  text-align: center;
+}
+
+.fact-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--subtle);
+}
+
+.fact-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--navy);
+  font-family: 'Playfair Display', serif;
+}
+
+/* ── CONTENT ── */
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 7rem;
+}
+
+.hook-block p.opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong { color: var(--navy); font-weight: 600; }
+.body-text p em { font-style: italic; }
+
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* The before — party years block */
+.before-block {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2.75rem 2.5rem;
+  margin: 2.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.before-block::before {
+  content: '1181';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 7rem;
+  font-weight: 900;
+  color: rgba(255,255,255,0.025);
+  right: 1rem;
+  bottom: 0.5rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.before-block .block-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.before-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.before-block p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.before-block p:last-child { margin-bottom: 0; }
+.before-block p strong { color: var(--white); font-weight: 600; }
+
+/* The turn — earthy accent */
+.turn-block {
+  background: var(--earth-soft);
+  border: 1px solid var(--earth-border);
+  border-radius: 14px;
+  padding: 2rem 2.25rem;
+  margin: 2.5rem 0;
+}
+
+.turn-block .turn-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--earth);
+  margin-bottom: 0.75rem;
+}
+
+.turn-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+}
+
+.turn-block p {
+  font-size: 0.93rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.turn-block p:last-child { margin-bottom: 0; }
+.turn-block p strong { color: var(--navy); font-weight: 600; }
+
+/* Scene block — the public square moment */
+.scene-block {
+  margin: 2.5rem 0;
+  padding: 2.25rem 2.5rem;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+
+.scene-block .scene-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--subtle);
+  margin-bottom: 1.25rem;
+  font-family: 'Inter', sans-serif;
+}
+
+.scene-block p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.7;
+  max-width: 560px;
+  margin: 0 auto 0.75rem;
+}
+
+.scene-block cite {
+  font-size: 0.72rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Timeline */
+.timeline {
+  margin: 1.75rem 0 2.25rem;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 18px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--gold-mid), var(--gold-dim));
+}
+
+.timeline-item {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  padding-bottom: 1.75rem;
+  position: relative;
+}
+
+.timeline-item:last-child { padding-bottom: 0; }
+
+.timeline-dot {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--gold-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.timeline-content p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* Scripture */
+.scripture-block {
+  margin: 2.5rem 0;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+.scripture-block::before {
+  content: '"';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem;
+  color: var(--gold-dim);
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 1;
+}
+
+.scripture-block p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.6rem;
+  position: relative;
+}
+
+.scripture-block cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ── CONTINUE BAR ── */
+.continue-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 90;
+  box-shadow: 0 -4px 24px rgba(26,31,54,0.08);
+}
+
+.continue-bar .progress-info {
+  font-size: 0.78rem;
+  color: var(--subtle);
+  font-weight: 500;
+}
+
+.continue-bar .progress-info strong { color: var(--navy); }
+
+.btn-continue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--navy);
+  color: var(--gold);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-continue:hover { background: var(--gold-mid); color: var(--white); }
+
+@media (max-width: 640px) {
+  .saint-banner h1 { font-size: 2.1rem; }
+  .content-wrap { padding: 2.5rem 1.25rem 7rem; }
+  .facts-strip { gap: 1.25rem; }
+  .before-block { padding: 2rem 1.5rem; }
+  .hook-block p.opener { font-size: 1.2rem; }
+  .scene-block { padding: 1.75rem 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+</header>
+
+<div class="saint-banner">
+  <div class="saint-tag">Lives of the Saints · 13th Century</div>
+  <div class="feast-line">Feast Day · October 4</div>
+  <h1>Saint Francis of Assisi</h1>
+  <div class="part-label">Part A of 2 · Life & Story</div>
+  <p class="tagline">He was the son of a wealthy merchant who threw his clothes at his father in the public square and walked away with nothing. What happened next changed the Church.</p>
+</div>
+
+<div class="part-nav">
+  <a href="crux-adult-saint-francis-a.html" class="part-tab active">
+    <span class="part-num">A</span>
+    Life & Story
+  </a>
+  <a href="crux-adult-saint-francis-b.html" class="part-tab">
+    <span class="part-num">B</span>
+    Theological Significance
+  </a>
+</div>
+
+<div class="facts-strip">
+  <div class="fact-item">
+    <div class="fact-label">Born</div>
+    <div class="fact-value">c. 1181 · Assisi, Italy</div>
+  </div>
+  <div class="fact-item">
+    <div class="fact-label">Died</div>
+    <div class="fact-value">1226 · Porziuncola</div>
+  </div>
+  <div class="fact-item">
+    <div class="fact-label">Feast Day</div>
+    <div class="fact-value">October 4</div>
+  </div>
+  <div class="fact-item">
+    <div class="fact-label">Patron of</div>
+    <div class="fact-value">Ecology, Animals, Italy, Merchants</div>
+  </div>
+</div>
+
+<div class="content-wrap">
+
+  <!-- HOOK -->
+  <div class="hook-block">
+    <p class="opener">You think you know Francis. The birds. The prayer. The gentle friar in the garden. You don't know Francis — or rather, you know the statue, not the man.</p>
+  </div>
+
+  <div class="body-text">
+    <p>The real Francis was the spoiled son of one of Assisi's richest merchants, who spent his youth drinking, partying, and dreaming of military glory. He was imprisoned for a year during a regional war, returned home sick and broken, and had a series of encounters with God so disorienting that he ended up stripping naked in the town square, handing his clothes back to his furious father, and walking out of the city with nothing.</p>
+    <p>He was twenty-five years old. He would live another twenty years, rebuild a corrupt Church almost single-handedly through the force of radical example, and die — deliberately, joyfully — lying naked on the bare earth, having asked his brothers to take off even the rough habit he wore so he could meet death with nothing, as he had lived.</p>
+    <p>The birds-and-flowers Francis is real. He gets to the birds and flowers through here.</p>
+  </div>
+
+  <!-- SECTION: BEFORE -->
+  <div class="section-label"><span>Before — The Merchant's Son</span></div>
+
+  <div class="before-block">
+    <div class="block-label">Assisi, c. 1181–1204</div>
+    <h3>He was everything the world told him to want — and he wanted all of it.</h3>
+    <p>Pietro Bernardone was a cloth merchant who dealt in fine French fabrics — one of the most lucrative trades of 12th-century Italy. He was wealthy, ambitious, and socially climbing. His son Giovanni was born while Pietro was away on a business trip to France; when Pietro returned, he renamed the boy Francesco — "the Frenchman" — after the country where his fortune was made.</p>
+    <p>Francis grew up with money, and he spent it. He was the life of every party in Assisi — generous, charming, extravagant. He picked up the tab. He wore the finest clothes. He dreamed of becoming a knight, winning glory in battle, earning a noble title. <strong>He was not a bad young man. He was a very ordinary young man who had absorbed completely the values of his world.</strong></p>
+    <p>He went to war against the neighboring city of Perugia in 1202. Assisi lost. Francis was captured and held prisoner for a year. He returned home ill, changed in ways he couldn't name, and found that the life he had loved suddenly tasted like nothing.</p>
+  </div>
+
+  <!-- SECTION: THE TURNING -->
+  <div class="section-label"><span>The Turning — Three Encounters</span></div>
+
+  <div class="body-text">
+    <p>Francis's conversion did not happen in a single moment. It happened through a series of encounters over two to three years that progressively dismantled everything he had been.</p>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot">①</div>
+      <div class="timeline-content">
+        <h4>The leper on the road</h4>
+        <p>Francis had always had a visceral revulsion to leprosy — the disease was disfiguring, contagious by reputation, and those who had it were social outcasts, required to ring a bell to warn people away. One day on horseback outside Assisi, he encountered a leper on the road. Something — he would later say it was grace — made him stop, dismount, and embrace him. When he turned back, the leper was gone. He never forgot it. He later wrote that what had seemed bitter to him became sweet, and what had seemed sweet became bitter.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">②</div>
+      <div class="timeline-content">
+        <h4>The voice from the crucifix at San Damiano</h4>
+        <p>Francis had taken to praying alone in ruined chapels outside Assisi. In the crumbling chapel of San Damiano, before a painted Byzantine crucifix, he heard — or understood, or received — three words: <em>"Francis, go repair my house, which, as you see, is falling into ruin."</em> He took it literally at first. He went home, stole a bolt of his father's finest cloth, sold it, and brought the money to the priest at San Damiano to fund repairs. The priest refused to take stolen money. Francis threw it through a window.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">③</div>
+      <div class="timeline-content">
+        <h4>The confrontation with his father</h4>
+        <p>Pietro Bernardone had had enough. His son was giving away his merchandise, embarrassing the family, and disappearing for days to pray in ruins. He dragged Francis before the Bishop of Assisi to demand the money back and formally disinherit him. In front of the bishop, the town, and his father, Francis stripped off every garment he was wearing, handed them to Pietro, and said: "Until now I called you my father. From now on I can say without reserve: Our Father, who art in heaven." The bishop covered him with his own cloak. Francis walked out of Assisi owning nothing.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="scene-block">
+    <div class="scene-label">Assisi · c. 1206 · The Public Square</div>
+    <p>"Until now I called you my father. From now on I can say without reserve: Our Father, who art in heaven."</p>
+    <cite>— Francis of Assisi, to his father Pietro Bernardone</cite>
+  </div>
+
+  <!-- SECTION: REBUILDING -->
+  <div class="section-label"><span>Rebuilding — Stone by Stone, Then Soul by Soul</span></div>
+
+  <div class="body-text">
+    <p>For the first years after leaving Assisi, Francis did exactly what the voice had said: he repaired ruined churches, physically, with his own hands, begging for stones in the streets of Assisi. The townspeople thought he had lost his mind. His father thought so too.</p>
+    <p>Then one morning at Mass in the chapel of the Porziuncola — a tiny church he had repaired — he heard the Gospel of Matthew read: <em>"Go, preach, saying the kingdom of heaven is at hand. Provide neither gold nor silver nor brass in your purses, nor scrip for your journey, neither two coats, neither shoes, nor yet a staff."</em> He looked up. He said: "This is what I want. This is what I was seeking."</p>
+    <p>He took off his shoes. He put down his staff. He began to preach.</p>
+  </div>
+
+  <div class="turn-block">
+    <div class="turn-label">The Movement Begins</div>
+    <h3>Within a year, men were following him.</h3>
+    <p>The first was Bernard of Quintavalle — one of Assisi's wealthiest citizens, who sold everything he had, gave it to the poor, and joined Francis on the road. Then Pietro Catanii. Then Giles. Within a few years there were a dozen. Within a decade there were thousands. Within Francis's own lifetime, the Franciscan Order had spread across Europe and into the Middle East.</p>
+    <p><strong>No one planned this. Francis explicitly did not want an institution.</strong> He wanted brothers — <em>fratelli</em> — living alongside the poor, working with their hands, owning nothing, preaching by example. The tension between that vision and the organizational reality of a rapidly growing religious order would trouble him for the rest of his life.</p>
+  </div>
+
+  <!-- SECTION: THE RADICAL LIFE -->
+  <div class="section-label"><span>What His Life Actually Looked Like</span></div>
+
+  <div class="body-text">
+    <p>The popular image of Francis — gentle, serene, surrounded by animals — flattens a life that was physically brutal and socially scandalous by any standard.</p>
+    <p>Francis and his early brothers worked as day laborers when they could find work, and begged when they couldn't — not for themselves, but to feed others. They lived in huts and abandoned buildings. They dressed in the cheapest possible cloth — the rough grey-brown habit that became the Franciscan habit, originally just the cast-off clothing of Umbrian peasants. They cared for lepers, living with them in the leper colonies outside city walls that no one else would enter.</p>
+    <p><strong>He went to Egypt in 1219, during the Fifth Crusade, and walked unarmed across enemy lines to meet Sultan Malik al-Kamil</strong> — an act that everyone around him regarded as suicidal. The Sultan received him, listened to him preach for days, and sent him back unharmed with gifts. Francis returned having accomplished nothing militarily and everything humanly.</p>
+    <p>In 1224, two years before his death, Francis received the stigmata on Mount La Verna — the wounds of Christ appearing in his hands, feet, and side. He hid them for the rest of his life. His eyes, already failing, gave out almost entirely in his last years. He was in constant physical pain.</p>
+  </div>
+
+  <div class="scripture-block">
+    <p>"Go, sell everything you have and give to the poor, and you will have treasure in heaven. Then come, follow me."</p>
+    <cite>— Mark 10:21 · The verse Francis heard as addressed to him personally</cite>
+  </div>
+
+  <!-- SECTION: DEATH -->
+  <div class="section-label"><span>The Death He Chose</span></div>
+
+  <div class="body-text">
+    <p>Francis died on the evening of October 3, 1226, at the Porziuncola — the tiny chapel where his movement had begun. He asked his brothers to lay him on the bare ground and remove his habit so he could die as he had lived: owning nothing, touching the earth.</p>
+    <p>He asked that the Gospel of John be read aloud — the Last Supper discourse. He blessed his brothers. According to the accounts, larks — birds that normally avoid the dark — flew in great circles above the Porziuncola that evening, singing, though it was after sunset.</p>
+    <p>He was forty-four years old. He was canonized less than two years later — one of the fastest canonizations in Church history. The Pope who canonized him said that Francis was, in his own person, the image of the perfect Christian.</p>
+    <p>That is the man behind the garden statue. Part B asks what his life means — and why the Church has never stopped looking at it.</p>
+  </div>
+
+</div>
+
+<div class="continue-bar">
+  <div class="progress-info">
+    St. Francis of Assisi · <strong>Part A complete</strong> — Life & Story
+  </div>
+  <a href="crux-adult-saint-francis-b.html" class="btn-continue">Continue to Part B →</a>
+</div>
+
+</body>
+</html>

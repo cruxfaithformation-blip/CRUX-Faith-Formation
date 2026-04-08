@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — St. Longinus · Part B</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── BANNER ── */
+.saint-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.saint-banner::before {
+  content: '✟';
+  position: absolute;
+  font-size: 26rem;
+  color: rgba(212,165,116,0.03);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.saint-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.saint-tag::before, .saint-tag::after {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.feast-line {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 0.85rem;
+  position: relative;
+}
+
+.saint-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.saint-banner .part-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.saint-banner p.tagline {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.5);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.65;
+  position: relative;
+}
+
+/* ── PART NAV ── */
+.part-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+}
+
+.part-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--subtle);
+}
+
+.part-tab.active { color: var(--navy); border-bottom-color: var(--gold-mid); }
+.part-tab.complete { color: var(--muted); }
+
+.part-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(26,31,54,0.07);
+  color: var(--subtle);
+  flex-shrink: 0;
+}
+
+.part-tab.complete .part-num { background: rgba(46,125,50,0.15); color: #2e7d32; }
+.part-tab.active .part-num { background: var(--gold-mid); color: var(--white); }
+
+/* ── CONTENT ── */
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 8rem;
+}
+
+.recap-block {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2.75rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.recap-block p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.recap-block p strong { color: var(--navy); font-weight: 600; }
+
+.hook-block p.opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong { color: var(--navy); font-weight: 600; }
+.body-text p em { font-style: italic; }
+
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Scripture */
+.scripture-block {
+  margin: 2.5rem 0;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+.scripture-block::before {
+  content: '"';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem;
+  color: var(--gold-dim);
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 1;
+}
+
+.scripture-block p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.6rem;
+  position: relative;
+}
+
+.scripture-block cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Theological significance cards */
+.theo-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--white);
+  margin: 1.75rem 0 2.25rem;
+}
+
+.theo-card {
+  padding: 1.75rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.theo-card:last-child { border-bottom: none; }
+
+.theo-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--gold-dim);
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: -4px;
+}
+
+.theo-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.5rem;
+}
+
+.theo-content p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.theo-content p strong { color: var(--navy); font-weight: 600; }
+
+/* Central dark block */
+.center-block {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2.75rem 2.5rem;
+  margin: 2.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.center-block::before {
+  content: '†';
+  position: absolute;
+  font-size: 20rem;
+  color: rgba(255,255,255,0.015);
+  right: -2rem;
+  bottom: -4rem;
+  line-height: 1;
+  pointer-events: none;
+  font-family: serif;
+}
+
+.center-block .block-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.center-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.center-block p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.center-block p:last-child { margin-bottom: 0; }
+.center-block p strong { color: var(--white); font-weight: 600; }
+
+/* What Longinus means for us */
+.for-you-block {
+  background: rgba(212,165,116,0.07);
+  border: 1px solid rgba(212,165,116,0.2);
+  border-radius: 14px;
+  padding: 2rem 2.25rem;
+  margin: 2.5rem 0;
+}
+
+.for-you-block .fy-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.75rem;
+}
+
+.for-you-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+}
+
+.for-you-block p {
+  font-size: 0.93rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.for-you-block p:last-child { margin-bottom: 0; }
+.for-you-block p strong { color: var(--navy); font-weight: 600; }
+
+/* Closing prayer */
+.prayer-block {
+  margin: 2.75rem 0 0;
+  padding: 2.25rem 2rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--white);
+  text-align: center;
+}
+
+.prayer-block .prayer-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--subtle);
+  margin-bottom: 1.25rem;
+}
+
+.prayer-block p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--navy);
+  line-height: 1.8;
+  margin-bottom: 0.5rem;
+}
+
+.prayer-block .pray-attribution {
+  font-size: 0.72rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 1rem;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── COMPLETE FOOTER ── */
+.complete-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--navy);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 90;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.2);
+}
+
+.complete-info { display: flex; flex-direction: column; gap: 0.2rem; }
+
+.complete-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.complete-title {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
+}
+
+.btn-row { display: flex; gap: 0.75rem; align-items: center; }
+
+.btn-modules {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.25rem;
+  background: transparent;
+  color: rgba(255,255,255,0.5);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-modules:hover { color: var(--white); border-color: rgba(255,255,255,0.4); }
+
+.btn-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--gold-mid);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-next:hover { background: var(--gold); color: var(--navy); }
+
+@media (max-width: 640px) {
+  .saint-banner h1 { font-size: 2.1rem; }
+  .content-wrap { padding: 2.5rem 1.25rem 8rem; }
+  .center-block { padding: 2rem 1.5rem; }
+  .center-block h3 { font-size: 1.2rem; }
+  .complete-footer { padding: 1rem; flex-wrap: wrap; }
+  .btn-row { width: 100%; justify-content: flex-end; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+</header>
+
+<div class="saint-banner">
+  <div class="saint-tag">Lives of the Saints · 1st Century</div>
+  <div class="feast-line">Feast Day · March 15</div>
+  <h1>Saint Longinus</h1>
+  <div class="part-label">Part B of 2 · Theological Significance</div>
+  <p class="tagline">What the wound he made means for every person who has ever felt far from God.</p>
+</div>
+
+<div class="part-nav">
+  <a href="crux-adult-saint-longinus-a.html" class="part-tab complete">
+    <span class="part-num">✓</span>
+    Life & Story
+  </a>
+  <a href="crux-adult-saint-longinus-b.html" class="part-tab active">
+    <span class="part-num">B</span>
+    Theological Significance
+  </a>
+</div>
+
+<div class="content-wrap">
+
+  <div class="recap-block">
+    <div>←</div>
+    <p><strong>In Part A</strong> we followed Longinus from Golgotha through his conversion, his baptism, and his martyrdom. Part B asks what his story means — what the Church sees in it, and what it might mean for you.</p>
+  </div>
+
+  <div class="hook-block">
+    <p class="opener">The man who wounded Christ became one of the first people healed by him. That is not a coincidence. It is a pattern.</p>
+  </div>
+
+  <div class="body-text">
+    <p>The story of Longinus is not simply a remarkable historical conversion. The Catholic tradition has drawn from it for two thousand years because it illuminates something central about how God works — and who God works through. Longinus is, in a sense, an extreme case that reveals the ordinary rule.</p>
+  </div>
+
+  <!-- SECTION: THE WOUND -->
+  <div class="section-label"><span>The Wound and What Came Out</span></div>
+
+  <div class="body-text">
+    <p>John's Gospel records the lance thrust with a specific detail: <em>"immediately blood and water came out"</em> (John 19:34). John then does something unusual — he breaks his own narrative to testify to this personally: <em>"He who saw it has borne witness — his testimony is true, and he knows that he is telling the truth — that you also may believe"</em> (John 19:35).</p>
+    <p>Something about what came from that wound mattered enormously to John. He wanted it recorded precisely. The Church has been reading it carefully ever since.</p>
+  </div>
+
+  <div class="theo-cards">
+    <div class="theo-card">
+      <div class="theo-num">1</div>
+      <div class="theo-content">
+        <h4>Blood and Water as the Sacraments</h4>
+        <p>The dominant patristic reading — from Augustine, from Chrysostom, from the Church Fathers broadly — is that the blood and water from Christ's side represent the Eucharist and Baptism: the two great sacraments that constitute the Church. <strong>The Church was born from the wound Longinus made.</strong> He did not know he was doing it. He was verifying a death. And the living water of the Church poured out.</p>
+      </div>
+    </div>
+    <div class="theo-card">
+      <div class="theo-num">2</div>
+      <div class="theo-content">
+        <h4>The Fulfillment of Zechariah</h4>
+        <p>John likely intends an echo of Zechariah 12:10: <em>"They will look on the one they have pierced."</em> The prophet wrote of a future moment when Israel would look upon a pierced figure and mourn. John sees this fulfilled at the Cross — and specifically, in the lance thrust. <strong>Longinus, a Roman Gentile, is the instrument of a prophecy he had never read.</strong> Grace does not require the vessel to understand what it carries.</p>
+      </div>
+    </div>
+    <div class="theo-card">
+      <div class="theo-num">3</div>
+      <div class="theo-content">
+        <h4>The First Gentile Confessor After the Resurrection</h4>
+        <p>Mark's Gospel records a centurion at the Cross saying: <em>"Truly this man was the Son of God"</em> (Mark 15:39). Whether or not this is definitively Longinus, the tradition associates the confession with him. If so, he is the first Gentile to confess Christ's divinity — and he does it at the moment of apparent defeat, not triumph. <strong>He sees a dead man and confesses a God.</strong> That is faith in its most elemental form.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE CENTRAL CLAIM -->
+  <div class="center-block">
+    <div class="block-label">The Pattern</div>
+    <h3>God chose the man who wounded him to be his witness.</h3>
+    <p>This is not the only time this pattern appears. Paul persecuted and killed Christians before the Damascus road. Peter denied Christ three times before becoming the rock of the Church. The pattern of the Gospel is consistently this: <strong>God does not wait for you to be worthy before he reaches for you. He reaches for you in the act of your worst.</strong></p>
+    <p>Longinus was, at the moment of the lance thrust, an instrument of Rome's violence against an innocent man. By the time he died a martyr's death, he was a saint. The distance between those two moments is grace — and the tradition holds that the first movement of that grace was blood and water on his failing eyes.</p>
+    <p>You do not have to be standing in the right place, at the right time, with the right intentions, for God to find you. Longinus was not.</p>
+  </div>
+
+  <!-- THE WOUND THAT HEALS -->
+  <div class="section-label"><span>The Wound That Heals</span></div>
+
+  <div class="body-text">
+    <p>There is a paradox at the center of Longinus's story that the mystics have lingered over: the wound he inflicted became the source of his healing. The tradition holds his eyes were restored by the very blood and water he caused to flow. He harmed; what came from that harm healed him.</p>
+    <p>This is not meant to romanticize violence or suggest that harm done to others is secretly fine. It is a specific claim about what Christ's suffering accomplishes: <strong>that even the damage done to him becomes, in his hands, a source of healing for the one who did it.</strong></p>
+    <p>Augustine put it plainly: the lance opened Christ's side so that the Church might come forth, as Eve came forth from the side of the sleeping Adam. The wound is not an ending. It is a birth.</p>
+  </div>
+
+  <div class="scripture-block">
+    <p>"One of the soldiers pierced his side with a spear, and immediately blood and water came out."</p>
+    <cite>— John 19:34 · The verse the tradition has never stopped reading</cite>
+  </div>
+
+  <!-- WHY THE CHURCH VENERATES HIM -->
+  <div class="section-label"><span>Why the Church Venerates Him</span></div>
+
+  <div class="body-text">
+    <p>Longinus is venerated in both Eastern and Western Christianity. His feast appears in the Roman Martyrology. He is a figure in Eastern Orthodox tradition, in the Armenian Apostolic Church, and in the Ethiopian Church. That breadth across traditions is significant — it suggests his veneration predates the divisions of Christianity and was part of the early Church's shared memory.</p>
+    <p>The Church does not venerate Longinus because he was a good man who did good things. He was a Roman soldier who killed people professionally and was present at an execution. The Church venerates him because <strong>he was found by grace in the most unlikely place and was transformed by it</strong> — and because that transformation cost him everything. He died for what he encountered at Golgotha.</p>
+    <p>The saints are not held up as models of virtue who earned their way to God. They are held up as witnesses to what God does. Longinus's witness is this: no one is too far. No one is too complicit. No one is standing in the wrong place for grace to reach them.</p>
+  </div>
+
+  <!-- FOR YOU -->
+  <div class="for-you-block">
+    <div class="fy-label">What This Means for You</div>
+    <h3>The patron of unlikely encounters</h3>
+    <p>If you are reading this and feel like someone who is on the wrong side of the story — who has done damage, who has been complicit in things they regret, who came to faith too late or from too dark a place — Longinus is your saint.</p>
+    <p>He did not approach Christ. He was sent to verify Christ was dead. And in that moment, without seeking it, without deserving it, without even understanding what was happening, <strong>he was found.</strong></p>
+    <p>The tradition of praying to saints is not about asking the dead for favors. It is about asking people who have already arrived where we are trying to go to accompany us on the way. Longinus walked the road from Golgotha to martyrdom. He knows what it costs to be changed by an encounter you didn't ask for. He is a useful companion for anyone on that road.</p>
+  </div>
+
+  <!-- CLOSING PRAYER -->
+  <div class="prayer-block">
+    <div class="prayer-label">A Prayer Through Saint Longinus</div>
+    <p>Saint Longinus, you stood at the Cross as an instrument of violence and left it changed forever. Pray for those of us who find ourselves in places we did not expect, doing things we did not plan, suddenly aware that something larger is happening than we understood. Pray for those who feel too far from God to be found. You were found at the worst moment. Intercede for us.</p>
+    <div class="pray-attribution">Traditional · adapted</div>
+  </div>
+
+</div>
+
+<!-- COMPLETE FOOTER -->
+<div class="complete-footer">
+  <div class="complete-info">
+    <div class="complete-label">✓ St. Longinus Complete</div>
+    <div class="complete-title">Life & Story · Theological Significance</div>
+  </div>
+  <div class="btn-row">
+    <a href="crux-adult-formation.html" class="btn-modules">All Modules</a>
+    <a href="crux-adult-formation.html" class="btn-next">Back to Formation →</a>
+  </div>
+</div>
+
+</body>
+</html>

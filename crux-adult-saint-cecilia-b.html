@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="em">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — St. Cecilia · Part B</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --rose: #8a3a4a;
+  --rose-soft: rgba(138,58,74,0.07);
+  --rose-border: rgba(138,58,74,0.18);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── BANNER ── */
+.saint-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.saint-banner::before {
+  content: '♪';
+  position: absolute;
+  font-size: 26rem;
+  color: rgba(212,165,116,0.03);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.saint-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.saint-tag::before, .saint-tag::after {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.feast-line {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 0.85rem;
+  position: relative;
+}
+
+.saint-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.saint-banner .part-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.saint-banner p.tagline {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.5);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.65;
+  position: relative;
+}
+
+/* ── PART NAV ── */
+.part-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+}
+
+.part-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--subtle);
+}
+
+.part-tab.active { color: var(--navy); border-bottom-color: var(--gold-mid); }
+.part-tab.complete { color: var(--muted); }
+
+.part-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(26,31,54,0.07);
+  color: var(--subtle);
+  flex-shrink: 0;
+}
+
+.part-tab.complete .part-num { background: rgba(46,125,50,0.15); color: #2e7d32; }
+.part-tab.active .part-num { background: var(--gold-mid); color: var(--white); }
+
+/* ── CONTENT ── */
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 8rem;
+}
+
+.recap-block {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2.75rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.recap-block p {
+  font-size: 0.88rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.recap-block p strong { color: var(--navy); font-weight: 600; }
+
+.hook-block p.opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong { color: var(--navy); font-weight: 600; }
+.body-text p em { font-style: italic; }
+
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Theological significance cards */
+.theo-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--white);
+  margin: 1.75rem 0 2.25rem;
+}
+
+.theo-card {
+  padding: 1.75rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.theo-card:last-child { border-bottom: none; }
+
+.theo-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--gold-dim);
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: -4px;
+}
+
+.theo-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.5rem;
+}
+
+.theo-content p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.75;
+}
+
+.theo-content p strong { color: var(--navy); font-weight: 600; }
+
+/* Interior music — central dark block */
+.interior-block {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2.75rem 2.5rem;
+  margin: 2.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.interior-block::before {
+  content: '♪';
+  position: absolute;
+  font-size: 18rem;
+  color: rgba(255,255,255,0.02);
+  right: -1rem;
+  bottom: -2rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.interior-block .block-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.interior-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.interior-block p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.interior-block p:last-child { margin-bottom: 0; }
+.interior-block p strong { color: var(--white); font-weight: 600; }
+
+/* The home becoming a church */
+.home-block {
+  background: var(--rose-soft);
+  border: 1px solid var(--rose-border);
+  border-radius: 14px;
+  padding: 2rem 2.25rem;
+  margin: 2.5rem 0;
+}
+
+.home-block .home-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--rose);
+  margin-bottom: 0.75rem;
+}
+
+.home-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+}
+
+.home-block p {
+  font-size: 0.93rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.home-block p:last-child { margin-bottom: 0; }
+.home-block p strong { color: var(--navy); font-weight: 600; }
+
+/* For you block */
+.for-you-block {
+  background: rgba(212,165,116,0.07);
+  border: 1px solid rgba(212,165,116,0.2);
+  border-radius: 14px;
+  padding: 2rem 2.25rem;
+  margin: 2.5rem 0;
+}
+
+.for-you-block .fy-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.75rem;
+}
+
+.for-you-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+}
+
+.for-you-block p {
+  font-size: 0.93rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.for-you-block p:last-child { margin-bottom: 0; }
+.for-you-block p strong { color: var(--navy); font-weight: 600; }
+
+/* Closing prayer */
+.prayer-block {
+  margin: 2.75rem 0 0;
+  padding: 2.25rem 2rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--white);
+  text-align: center;
+}
+
+.prayer-block .prayer-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--subtle);
+  margin-bottom: 1.25rem;
+}
+
+.prayer-block p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--navy);
+  line-height: 1.8;
+  margin-bottom: 0.5rem;
+}
+
+.prayer-block .pray-attribution {
+  font-size: 0.72rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 1rem;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── COMPLETE FOOTER ── */
+.complete-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--navy);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 90;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.2);
+}
+
+.complete-info { display: flex; flex-direction: column; gap: 0.2rem; }
+
+.complete-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.complete-title {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.5);
+  font-weight: 500;
+}
+
+.btn-row { display: flex; gap: 0.75rem; align-items: center; }
+
+.btn-modules {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.25rem;
+  background: transparent;
+  color: rgba(255,255,255,0.5);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-modules:hover { color: var(--white); border-color: rgba(255,255,255,0.4); }
+
+.btn-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--gold-mid);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-next:hover { background: var(--gold); color: var(--navy); }
+
+@media (max-width: 640px) {
+  .saint-banner h1 { font-size: 2.1rem; }
+  .content-wrap { padding: 2.5rem 1.25rem 8rem; }
+  .interior-block { padding: 2rem 1.5rem; }
+  .interior-block h3 { font-size: 1.2rem; }
+  .complete-footer { padding: 1rem; flex-wrap: wrap; }
+  .btn-row { width: 100%; justify-content: flex-end; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+</header>
+
+<div class="saint-banner">
+  <div class="saint-tag">Lives of the Saints · 2nd–3rd Century</div>
+  <div class="feast-line">Feast Day · November 22</div>
+  <h1>Saint Cecilia</h1>
+  <div class="part-label">Part B of 2 · Theological Significance</div>
+  <p class="tagline">What an interior song at a wedding has meant to the Church's understanding of prayer, music, and the hidden life of faith.</p>
+</div>
+
+<div class="part-nav">
+  <a href="crux-adult-saint-cecilia-a.html" class="part-tab complete">
+    <span class="part-num">✓</span>
+    Life & Story
+  </a>
+  <a href="crux-adult-saint-cecilia-b.html" class="part-tab active">
+    <span class="part-num">B</span>
+    Theological Significance
+  </a>
+</div>
+
+<div class="content-wrap">
+
+  <div class="recap-block">
+    <div>←</div>
+    <p><strong>In Part A</strong> we followed Cecilia from her wedding through her martyrdom, and noted how her patronage of musicians arose from a mistranslation — she sang not with instruments but <em>in her heart</em>. Part B asks what the Church has drawn from that, and what Cecilia's particular witness means for the interior life of faith.</p>
+  </div>
+
+  <div class="hook-block">
+    <p class="opener">The most theologically rich thing about Cecilia is not her martyrdom. It is that single image: a young woman at her own wedding, surrounded by music she did not choose, making different music inside.</p>
+  </div>
+
+  <div class="body-text">
+    <p>That image has sustained a thousand years of reflection on what prayer is, what sacred music is for, and what it means to live a hidden Christian life in a world that does not share your faith. Part B draws those threads out fully.</p>
+  </div>
+
+  <!-- SECTION: WHAT THE CHURCH DRAWS FROM HER -->
+  <div class="section-label"><span>What the Church Has Drawn From Her</span></div>
+
+  <div class="theo-cards">
+    <div class="theo-card">
+      <div class="theo-num">1</div>
+      <div class="theo-content">
+        <h4>The Primacy of Interior Prayer</h4>
+        <p>Cecilia's wedding scene is a compressed theology of prayer. The instruments play — the external world is loud, demanding, celebratory, indifferent to her interior life. And underneath it all, she sings to God. <strong>The Catholic tradition has always held that prayer is first and fundamentally interior</strong> — not the recitation of words but the orientation of the whole self toward God. Cecilia embodies this. She could not stop the wedding. She could not silence the music. She could pray.</p>
+      </div>
+    </div>
+    <div class="theo-card">
+      <div class="theo-num">2</div>
+      <div class="theo-content">
+        <h4>Sacred Music as Participation, Not Performance</h4>
+        <p>The Second Vatican Council's document on the liturgy, <em>Sacrosanctum Concilium</em>, teaches that sacred music is not ornament added to worship but an integral part of it — that sung prayer is prayer doubled, as Augustine put it. Cecilia's patronage consecrates all sacred music to the principle she embodied: <strong>music in worship is not performance for an audience but offering to God.</strong> The moment musicians forget this distinction, her patronage becomes a rebuke.</p>
+      </div>
+    </div>
+    <div class="theo-card">
+      <div class="theo-num">3</div>
+      <div class="theo-content">
+        <h4>Faith Held Privately in a Hostile World</h4>
+        <p>Cecilia lived her Christian faith in a household, in a marriage, in a social world that was not Christian. She could not simply announce what she believed without consequence. Her faith was interior before it became public — and when it became public, it cost her everything. <strong>She is the patron of every Christian who has had to hold faith quietly</strong>, in a workplace or a family or a culture that would not welcome it, singing to God in their heart while the instruments of the world play around them.</p>
+      </div>
+    </div>
+    <div class="theo-card">
+      <div class="theo-num">4</div>
+      <div class="theo-content">
+        <h4>The Apostolate of Witness</h4>
+        <p>Cecilia converted her husband, her brother-in-law, and members of the prefect's household. She did this not through argument or conquest but through the quality of her witness — through what she was, and the coherence between what she believed and how she lived. This is the model of evangelization that <em>Evangelii Gaudium</em> describes: <strong>the first proclamation is always the witness of a life</strong>. Words follow. Cecilia's words, when they came, were credible because her life had made them so.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE INTERIOR MUSIC BLOCK -->
+  <div class="interior-block">
+    <div class="block-label">The Central Claim</div>
+    <h3>Every Christian life has an interior music the world cannot hear.</h3>
+    <p>This is what Cecilia's image gives the tradition. Not the music of the liturgy — though that matters enormously — but the deeper music of a life oriented toward God. Augustine's famous formulation applies here: <em>"our heart is restless until it rests in Thee."</em> The restlessness is the instrument. Prayer is the learning to play it.</p>
+    <p>Cecilia did not achieve this effortlessly. She was a young woman in an arranged marriage who had made a vow she could not publicly keep, in a religion she could not publicly practice, surrounded by people who did not share her faith. <strong>Her interior song was not easy music. It was the music of someone holding on.</strong></p>
+    <p>The saints are not held up because they found faith simple. They are held up because they found it worth holding onto when it was hard. Cecilia's particular witness is to the person who cannot make the external circumstances of their life match their interior convictions — who has to sing in their heart because that is the only place they can sing freely.</p>
+  </div>
+
+  <!-- THE HOME AS CHURCH -->
+  <div class="section-label"><span>The Home That Became a Church</span></div>
+
+  <div class="home-block">
+    <div class="home-label">Santa Cecilia in Trastevere</div>
+    <h3>She gave her house to God — and the Church has kept it ever since.</h3>
+    <p>The Basilica of Santa Cecilia in Trastevere is one of Rome's oldest churches, standing on the site of what early Christians believed to be Cecilia's home. This is historically significant: the practice of building churches over martyrs' homes or burial sites was widespread in the early Church, and it reflects a specific theological conviction.</p>
+    <p><strong>The home is a domestic church.</strong> This language is used explicitly in the Catechism (CCC 1655-1658) and in <em>Lumen Gentium</em> — the family home is the first place where faith is transmitted, where prayer is practiced, where the Church takes its most intimate form. Cecilia's house becoming a church is not just a historical accident. It is a symbol the tradition has ratified: <em>her domestic life was already a form of church</em>. The basilica made visible what was already real.</p>
+    <p>When Maderno sculpted her in 1600 — lying on the ground of that same basilica, in the position she was found — he placed her beneath the altar. Her body, in the tradition's imagination, is the foundation the altar rests on. That is not sentiment. It is theology: the martyrs are the foundation of the Church's worship.</p>
+  </div>
+
+  <!-- SECTION: VIRGINITY -->
+  <div class="section-label"><span>A Word on the Vow of Virginity</span></div>
+
+  <div class="body-text">
+    <p>Cecilia's consecrated virginity is central to her story and requires honest treatment, because it is the element most likely to puzzle or alienate adult seekers today.</p>
+    <p>The Church's teaching on consecrated virginity is not a statement that marriage is inferior or that sexuality is dangerous. It is a specific eschatological sign — a way of living that points toward the kingdom of heaven, where, as Jesus says, people "neither marry nor are given in marriage" (Matthew 22:30). Those who consecrate their virginity are not rejecting human love but choosing a particular form of it: undivided love directed entirely toward God, as a sign of what all love is ultimately pointed toward.</p>
+    <p><strong>Cecilia's vow, in this frame, is not a rejection of Valerian. It is an invitation.</strong> She does not simply refuse him — she brings him to baptism. She does not keep her faith private from him — she shares it, and he is transformed by it. The vow that might have ended their relationship becomes the beginning of his conversion. That is an unusual kind of marriage. It is also a powerful image of what it means to love someone with their eternal life in mind.</p>
+  </div>
+
+  <div class="pull-quote">
+    <p>The tradition does not present Cecilia's vow as a rejection of love but as its redirection — toward the source from which all love comes.</p>
+    <cite>— A consistent thread in patristic and medieval reflection on her story</cite>
+  </div>
+
+  <!-- FOR YOU -->
+  <div class="for-you-block">
+    <div class="fy-label">What This Means for You</div>
+    <h3>The patron of the hidden life</h3>
+    <p>Cecilia is for everyone who has ever had to hold faith in a place that didn't make room for it. The person who believes but can't say so at work. The person who prays but feels embarrassed to. The person who sits in a family gathering that is entirely secular and feels the distance between their interior life and the conversation around them.</p>
+    <p>She is also for everyone who has ever wondered whether prayer counts if it's not formal or public or impressive. <strong>Her prayer was silent and interior, made at a wedding while instruments played.</strong> The tradition considers it sufficient. More than sufficient — it is the prayer the Church has been reflecting on for fifteen centuries.</p>
+    <p>And she is for musicians and artists of every kind, who know the difference between performance and offering — who have felt, at least once, the moment when what they were playing or singing stopped being for the room and became, briefly and unexpectedly, for God alone.</p>
+  </div>
+
+  <!-- CLOSING PRAYER -->
+  <div class="prayer-block">
+    <div class="prayer-label">A Prayer Through Saint Cecilia</div>
+    <p>Saint Cecilia, you sang to God in your heart when the world around you was loud with other music. Pray for those of us who are trying to hold an interior life in circumstances that do not support it. Pray for those who make music in worship, that they would remember whose ear they are really playing for. And pray for those who feel the distance between who they are inside and what the world around them requires — that they would find, as you did, that the song in the heart is enough.</p>
+    <div class="pray-attribution">Traditional · adapted</div>
+  </div>
+
+</div>
+
+<!-- COMPLETE FOOTER -->
+<div class="complete-footer">
+  <div class="complete-info">
+    <div class="complete-label">✓ St. Cecilia Complete</div>
+    <div class="complete-title">Life & Story · Theological Significance</div>
+  </div>
+  <div class="btn-row">
+    <a href="crux-adult-formation.html" class="btn-modules">All Modules</a>
+    <a href="crux-adult-formation.html" class="btn-next">Back to Formation →</a>
+  </div>
+</div>
+
+</body>
+</html>

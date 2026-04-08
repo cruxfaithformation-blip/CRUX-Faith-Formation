@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — St. Cecilia · Part A</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --rose: #8a3a4a;
+  --rose-soft: rgba(138,58,74,0.07);
+  --rose-border: rgba(138,58,74,0.18);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── BANNER ── */
+.saint-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.saint-banner::before {
+  content: '♪';
+  position: absolute;
+  font-size: 26rem;
+  color: rgba(212,165,116,0.03);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.saint-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.saint-tag::before, .saint-tag::after {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.feast-line {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 0.85rem;
+  position: relative;
+}
+
+.saint-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.saint-banner .part-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.saint-banner p.tagline {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.5);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.65;
+  position: relative;
+}
+
+/* ── PART NAV ── */
+.part-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+}
+
+.part-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--subtle);
+}
+
+.part-tab.active { color: var(--navy); border-bottom-color: var(--gold-mid); }
+
+.part-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(26,31,54,0.07);
+  color: var(--subtle);
+  flex-shrink: 0;
+}
+
+.part-tab.active .part-num { background: var(--gold-mid); color: var(--white); }
+
+/* ── FAST FACTS ── */
+.facts-strip {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 1.25rem 2rem;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.fact-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  text-align: center;
+}
+
+.fact-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--subtle);
+}
+
+.fact-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--navy);
+  font-family: 'Playfair Display', serif;
+}
+
+/* ── CONTENT ── */
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 7rem;
+}
+
+.hook-block p.opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong { color: var(--navy); font-weight: 600; }
+.body-text p em { font-style: italic; }
+
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Source note */
+.source-note {
+  background: rgba(26,31,54,0.04);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin: 2rem 0;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.source-note p {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.source-note p strong { color: var(--navy); font-weight: 600; }
+
+/* The Rome block — dark atmospheric */
+.rome-block {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2.75rem 2.5rem;
+  margin: 2.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.rome-block::before {
+  content: 'ROMA';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem;
+  font-weight: 900;
+  color: rgba(255,255,255,0.02);
+  right: -1rem;
+  bottom: 0.5rem;
+  line-height: 1;
+  pointer-events: none;
+  letter-spacing: -4px;
+}
+
+.rome-block .block-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.rome-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.rome-block p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.rome-block p:last-child { margin-bottom: 0; }
+.rome-block p strong { color: var(--white); font-weight: 600; }
+
+/* The music moment — rose accent */
+.music-block {
+  background: var(--rose-soft);
+  border: 1px solid var(--rose-border);
+  border-radius: 14px;
+  padding: 2rem 2.25rem;
+  margin: 2.5rem 0;
+}
+
+.music-block .music-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--rose);
+  margin-bottom: 0.75rem;
+}
+
+.music-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+}
+
+.music-block p {
+  font-size: 0.93rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.music-block p:last-child { margin-bottom: 0; }
+.music-block p strong { color: var(--navy); font-weight: 600; }
+
+/* The wedding night scene */
+.scene-block {
+  margin: 2.5rem 0;
+  padding: 2.25rem 2.5rem;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  text-align: center;
+}
+
+.scene-block .scene-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--subtle);
+  margin-bottom: 1.25rem;
+}
+
+.scene-block p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.7;
+  max-width: 560px;
+  margin: 0 auto 0.75rem;
+}
+
+.scene-block cite {
+  font-size: 0.72rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Timeline */
+.timeline {
+  margin: 1.75rem 0 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 18px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--gold-mid), var(--gold-dim));
+}
+
+.timeline-item {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  padding-bottom: 1.75rem;
+  position: relative;
+}
+
+.timeline-item:last-child { padding-bottom: 0; }
+
+.timeline-dot {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--gold-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.timeline-content p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* ── CONTINUE BAR ── */
+.continue-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 90;
+  box-shadow: 0 -4px 24px rgba(26,31,54,0.08);
+}
+
+.continue-bar .progress-info {
+  font-size: 0.78rem;
+  color: var(--subtle);
+  font-weight: 500;
+}
+
+.continue-bar .progress-info strong { color: var(--navy); }
+
+.btn-continue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--navy);
+  color: var(--gold);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-continue:hover { background: var(--gold-mid); color: var(--white); }
+
+@media (max-width: 640px) {
+  .saint-banner h1 { font-size: 2.1rem; }
+  .content-wrap { padding: 2.5rem 1.25rem 7rem; }
+  .facts-strip { gap: 1.25rem; }
+  .rome-block { padding: 2rem 1.5rem; }
+  .hook-block p.opener { font-size: 1.2rem; }
+  .scene-block { padding: 1.75rem 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+</header>
+
+<div class="saint-banner">
+  <div class="saint-tag">Lives of the Saints · 2nd–3rd Century</div>
+  <div class="feast-line">Feast Day · November 22</div>
+  <h1>Saint Cecilia</h1>
+  <div class="part-label">Part A of 2 · Life & Story</div>
+  <p class="tagline">She sang to God in her heart on her wedding day. She went to her death singing.</p>
+</div>
+
+<div class="part-nav">
+  <a href="crux-adult-saint-cecilia-a.html" class="part-tab active">
+    <span class="part-num">A</span>
+    Life & Story
+  </a>
+  <a href="crux-adult-saint-cecilia-b.html" class="part-tab">
+    <span class="part-num">B</span>
+    Theological Significance
+  </a>
+</div>
+
+<div class="facts-strip">
+  <div class="fact-item">
+    <div class="fact-label">Era</div>
+    <div class="fact-value">2nd–3rd Century Rome</div>
+  </div>
+  <div class="fact-item">
+    <div class="fact-label">Feast Day</div>
+    <div class="fact-value">November 22</div>
+  </div>
+  <div class="fact-item">
+    <div class="fact-label">Patron of</div>
+    <div class="fact-value">Musicians, Singers, Church Music</div>
+  </div>
+  <div class="fact-item">
+    <div class="fact-label">Basilica</div>
+    <div class="fact-value">Santa Cecilia in Trastevere, Rome</div>
+  </div>
+</div>
+
+<div class="content-wrap">
+
+  <!-- HOOK -->
+  <div class="hook-block">
+    <p class="opener">She is one of the most beloved saints in the history of the Church. Patron of musicians, subject of poetry by Chaucer and Dryden, inspiration for centuries of sacred music — and we know almost nothing about her with historical certainty.</p>
+  </div>
+
+  <div class="body-text">
+    <p>What we do know is this: there was a Roman Christian woman named Cecilia. A basilica was built over what was believed to be her home in the Trastevere district of Rome, almost certainly in the 4th or 5th century — a practice reserved for the homes of martyrs. Her name appears in the Roman Canon of the Mass, the ancient Eucharistic prayer, alongside Peter, Paul, and the Apostles. She was real, she was venerated early, and she died for her faith.</p>
+    <p>Everything else — the music, the wedding, the angel, the three sword blows — comes from a single source written centuries after her death. And yet the Church has told her story, sung her story, and built her story in stone for over a thousand years. What the tradition has made of Cecilia is as worth understanding as the woman herself.</p>
+  </div>
+
+  <div class="source-note">
+    <div>📜</div>
+    <p><strong>A note on sources:</strong> Cecilia's detailed story comes primarily from the <em>Passio Sanctae Caeciliae</em>, a 5th-century hagiographic text written two to three centuries after her death. Historical scholars treat its specific details — the wedding, Valerian, the angel, the martyrdom — as pious legend rather than biography. The historical core is firm: a Roman Christian martyr, venerated very early, whose home became one of Rome's oldest basilicas. This module treats the legendary account fully and honestly, because the tradition built on it is itself real and significant.</p>
+  </div>
+
+  <!-- SECTION: ROME -->
+  <div class="section-label"><span>Rome in Her Time</span></div>
+
+  <div class="rome-block">
+    <div class="block-label">The World She Lived In</div>
+    <h3>To be a Christian in 2nd–3rd century Rome was to risk everything.</h3>
+    <p>Christianity was an illegal religion under Roman law for most of the first three centuries. Adherence to it could mean loss of property, loss of status, exile, or death — depending on the emperor, the region, and one's visibility. Roman aristocratic families who converted faced particular exposure: their wealth and prominence made them useful targets for persecution and their property confiscable.</p>
+    <p>Cecilia, according to tradition, was of a noble Roman family. <strong>Her choice to live as a Christian was not a private spiritual preference. It was a public act of political and social defiance</strong> — one that her entire household would eventually pay for.</p>
+    <p>The Trastevere district where she lived was already home to a significant Christian community, including Jewish Christians who had settled there. It was not the aristocratic heart of Rome. It was a working neighborhood across the Tiber — and that is where her basilica still stands today.</p>
+  </div>
+
+  <!-- SECTION: THE LEGEND -->
+  <div class="section-label"><span>The Story the Tradition Tells</span></div>
+
+  <div class="body-text">
+    <p>The <em>Passio</em> presents Cecilia as a young Roman noblewoman who had consecrated her virginity to God from an early age — a vow her family did not know about. She was given in marriage to a young pagan Roman named Valerian. The wedding was arranged. Cecilia had no choice in the matter.</p>
+    <p>On the day of her wedding, while instruments played and guests celebrated, Cecilia sang to God silently in her heart — asking him to keep her pure. This is the image that became iconic: a young bride at her own wedding, surrounded by music, making music of a different kind inwardly.</p>
+  </div>
+
+  <div class="music-block">
+    <div class="music-label">The Origin of a Patronage</div>
+    <h3>Why Cecilia became patron of musicians</h3>
+    <p>The irony of her patronage is often missed. Cecilia is patron of musicians not because she played an instrument beautifully or composed sacred music. The <em>Passio</em> text says she sang <em>in her heart</em> while the wedding instruments played — the Latin reads <em>cantantibus organis, illa in corde suo soli Domino decantabat</em>: "while the instruments played, she sang in her heart to God alone."</p>
+    <p><strong>Her music was interior. It was prayer.</strong> Medieval artists misread the Latin and began depicting her playing an organ — which is why virtually every painting of Cecilia shows her at a keyboard instrument. The mistranslation became tradition. The tradition became patronage. And the patronage, for fifteen centuries, has consecrated all sacred music to the memory of a woman who may never have played a note.</p>
+    <p>There is something fitting in that. The Church's music has always been most itself when it is, underneath the instruments, a heart singing to God alone.</p>
+  </div>
+
+  <!-- THE WEDDING NIGHT -->
+  <div class="section-label"><span>The Wedding Night</span></div>
+
+  <div class="body-text">
+    <p>According to the <em>Passio</em>, on their wedding night Cecilia told Valerian her secret: she had consecrated her virginity to God, and an angel guarded her. She asked him to respect this. Valerian, rather than being angry, asked to see the angel. Cecilia told him he would need to be baptized first.</p>
+    <p>He went — the account says guided by Cecilia to the Via Appia, outside the city walls, to find the elderly Pope Urban I, who was hiding in the catacombs with the Christian community. Valerian was instructed, believed, and was baptized. When he returned to Cecilia, the angel was there — holding two crowns of lilies and roses, one for each of them. Crowns of martyrdom, though neither of them knew it yet.</p>
+    <p>Valerian's brother Tiburtius came to visit, smelled the fragrance of the flowers though he could not see them, and asked what it was. Valerian told him. Tiburtius also converted.</p>
+  </div>
+
+  <div class="scene-block">
+    <div class="scene-label">From the Passio Sanctae Caeciliae · 5th Century</div>
+    <p>"While the instruments played at her wedding, Cecilia sang in her heart to God alone, saying: O Lord, keep my heart and body undefiled, that I may not be confounded."</p>
+    <cite>— Passio Sanctae Caeciliae</cite>
+  </div>
+
+  <!-- MARTYRDOM TIMELINE -->
+  <div class="section-label"><span>The Martyrdom</span></div>
+
+  <div class="body-text">
+    <p>The three — Cecilia, Valerian, and Tiburtius — began caring for the bodies of Christian martyrs, burying them at personal risk. This was itself a capital offense. The brothers were arrested, refused to sacrifice to the Roman gods, and were executed. Cecilia buried them herself.</p>
+    <p>Then she was arrested. According to the <em>Passio</em>, the Roman prefect Almachius tried first to confiscate her property, then to compel her to sacrifice. She refused both, argued with him, and converted members of his own household.</p>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot">①</div>
+      <div class="timeline-content">
+        <h4>The attempt by suffocation</h4>
+        <p>The prefect ordered Cecilia locked in the bathhouse of her own home with the fires stoked to full heat — a method of execution that left no visible marks. According to the <em>Passio</em>, she survived an entire day and night unharmed. The fires did not touch her.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">②</div>
+      <div class="timeline-content">
+        <h4>Three blows of the sword</h4>
+        <p>An executioner was sent. Roman law permitted a maximum of three sword blows for a beheading. The executioner struck three times and failed to sever her head. He fled, leaving her alive and bleeding. She lived for three more days.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">③</div>
+      <div class="timeline-content">
+        <h4>Three days, and the gift of the house</h4>
+        <p>In those three days, still alive with three neck wounds, Cecilia received visitors, gave away her possessions, and formally gifted her home to Pope Urban I — the same pope who had baptized Valerian — asking that it be made into a church. She died on the third day.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">④</div>
+      <div class="timeline-content">
+        <h4>The basilica</h4>
+        <p>The Basilica of Santa Cecilia in Trastevere stands on what is believed to be the site of that house. It was established no later than the 5th century. Her body was rediscovered in 820 AD and transferred there by Pope Paschal I, who reported finding it incorrupt. In 1599, when the tomb was reopened during renovations, the sculptor Stefano Maderno was present and created his famous marble sculpture depicting her exactly as she was found — lying on her side, head turned, three fingers extended.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pull-quote">
+    <p>Maderno's sculpture does not show a triumphant martyr. It shows a young woman lying on the ground. The three extended fingers are her testimony: she died confessing the Trinity. The turned-away face is not defeat. It is privacy — a soul in its last moment with God.</p>
+    <cite>— On Stefano Maderno's Santa Cecilia, 1600, Basilica of Santa Cecilia in Trastevere</cite>
+  </div>
+
+  <!-- BRIDGE TO PART B -->
+  <div class="section-label"><span>What Her Story Raises</span></div>
+
+  <div class="body-text">
+    <p>Cecilia raises questions that the tradition has been answering for centuries. Why does a woman who sang interiorly become the patron of musicians? What does it mean that her home — not a church, not a martyrium built for the purpose, but her actual home — became one of Rome's oldest places of Christian worship? What is the Church saying when it names a virgin martyr as the queen of sacred music?</p>
+    <p>And underneath all of it: what does her story say about what it means to hold faith privately, interiorly, in a world that demands you either perform allegiance to its gods or face the consequences?</p>
+    <p><strong>Part B follows those questions where they lead.</strong></p>
+  </div>
+
+</div>
+
+<div class="continue-bar">
+  <div class="progress-info">
+    St. Cecilia · <strong>Part A complete</strong> — Life & Story
+  </div>
+  <a href="crux-adult-saint-cecilia-b.html" class="btn-continue">Continue to Part B →</a>
+</div>
+
+</body>
+</html>

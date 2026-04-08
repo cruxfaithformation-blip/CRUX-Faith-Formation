@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — St. Francis of Assisi · Part B</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --earth: #5c4033;
+  --earth-soft: rgba(92,64,51,0.07);
+  --earth-border: rgba(92,64,51,0.18);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── BANNER ── */
+.saint-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.saint-banner::before {
+  content: '☩';
+  position: absolute;
+  font-size: 26rem;
+  color: rgba(212,165,116,0.03);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.saint-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.saint-tag::before, .saint-tag::after {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.feast-line {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 0.85rem;
+  position: relative;
+}
+
+.saint-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.saint-banner .part-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.saint-banner p.tagline {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.5);
+  max-width: 540px;
+  margin: 0 auto;
+  line-height: 1.65;
+  position: relative;
+}
+
+/* ── PART NAV ── */
+.part-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+}
+
+.part-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--subtle);
+}
+
+.part-tab.active { color: var(--navy); border-bottom-color: var(--gold-mid); }
+.part-tab.complete { color: var(--muted); }
+
+.part-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(26,31,54,0.07);
+  color: var(--subtle);
+  flex-shrink: 0;
+}
+
+.part-tab.complete .part-num { background: rgba(46,125,50,0.15); color: #2e7d32; }
+.part-tab.active .part-num { background: var(--gold-mid); color: var(--white); }
+
+/* ── CONTENT ── */
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 8rem;
+}
+
+.recap-block {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2.75rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.recap-block p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+.recap-block p strong { color: var(--navy); font-weight: 600; }
+
+.hook-block p.opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong { color: var(--navy); font-weight: 600; }
+.body-text p em { font-style: italic; }
+
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Theo cards */
+.theo-cards {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--white);
+  margin: 1.75rem 0 2.25rem;
+}
+
+.theo-card {
+  padding: 1.75rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.theo-card:last-child { border-bottom: none; }
+
+.theo-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 900;
+  color: var(--gold-dim);
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: -4px;
+}
+
+.theo-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.5rem;
+}
+
+.theo-content p { font-size: 0.875rem; color: var(--muted); line-height: 1.75; }
+.theo-content p strong { color: var(--navy); font-weight: 600; }
+
+/* Central dark block */
+.center-block {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2.75rem 2.5rem;
+  margin: 2.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.center-block::before {
+  content: 'PAUPER';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 5.5rem;
+  font-weight: 900;
+  color: rgba(255,255,255,0.02);
+  right: -0.5rem;
+  bottom: 0.5rem;
+  line-height: 1;
+  pointer-events: none;
+  letter-spacing: -2px;
+}
+
+.center-block .block-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.center-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.center-block p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.center-block p:last-child { margin-bottom: 0; }
+.center-block p strong { color: var(--white); font-weight: 600; }
+
+/* Creation block */
+.creation-block {
+  background: var(--earth-soft);
+  border: 1px solid var(--earth-border);
+  border-radius: 14px;
+  padding: 2rem 2.25rem;
+  margin: 2.5rem 0;
+}
+
+.creation-block .creation-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--earth);
+  margin-bottom: 0.75rem;
+}
+
+.creation-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+}
+
+.creation-block p {
+  font-size: 0.93rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.creation-block p:last-child { margin-bottom: 0; }
+.creation-block p strong { color: var(--navy); font-weight: 600; }
+
+/* For you */
+.for-you-block {
+  background: rgba(212,165,116,0.07);
+  border: 1px solid rgba(212,165,116,0.2);
+  border-radius: 14px;
+  padding: 2rem 2.25rem;
+  margin: 2.5rem 0;
+}
+
+.for-you-block .fy-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.75rem;
+}
+
+.for-you-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+}
+
+.for-you-block p {
+  font-size: 0.93rem;
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.for-you-block p:last-child { margin-bottom: 0; }
+.for-you-block p strong { color: var(--navy); font-weight: 600; }
+
+/* Prayer */
+.prayer-block {
+  margin: 2.75rem 0 0;
+  padding: 2.25rem 2rem;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  background: var(--white);
+  text-align: center;
+}
+
+.prayer-block .prayer-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--subtle);
+  margin-bottom: 1.25rem;
+}
+
+.prayer-block p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--navy);
+  line-height: 1.8;
+  margin-bottom: 0.5rem;
+}
+
+.prayer-block .pray-attribution {
+  font-size: 0.72rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 1rem;
+  font-family: 'Inter', sans-serif;
+}
+
+/* ── COMPLETE FOOTER ── */
+.complete-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--navy);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 90;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.2);
+}
+
+.complete-info { display: flex; flex-direction: column; gap: 0.2rem; }
+.complete-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+.complete-title { font-size: 0.82rem; color: rgba(255,255,255,0.5); font-weight: 500; }
+.btn-row { display: flex; gap: 0.75rem; align-items: center; }
+
+.btn-modules {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.25rem;
+  background: transparent;
+  color: rgba(255,255,255,0.5);
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+.btn-modules:hover { color: var(--white); border-color: rgba(255,255,255,0.4); }
+
+.btn-next {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--gold-mid);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+.btn-next:hover { background: var(--gold); color: var(--navy); }
+
+@media (max-width: 640px) {
+  .saint-banner h1 { font-size: 2.1rem; }
+  .content-wrap { padding: 2.5rem 1.25rem 8rem; }
+  .center-block { padding: 2rem 1.5rem; }
+  .center-block h3 { font-size: 1.2rem; }
+  .complete-footer { padding: 1rem; flex-wrap: wrap; }
+  .btn-row { width: 100%; justify-content: flex-end; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+</header>
+
+<div class="saint-banner">
+  <div class="saint-tag">Lives of the Saints · 13th Century</div>
+  <div class="feast-line">Feast Day · October 4</div>
+  <h1>Saint Francis of Assisi</h1>
+  <div class="part-label">Part B of 2 · Theological Significance</div>
+  <p class="tagline">What a merchant's son with nothing to his name has to say about wealth, creation, the Church — and what it costs to take the Gospel literally.</p>
+</div>
+
+<div class="part-nav">
+  <a href="crux-adult-saint-francis-a.html" class="part-tab complete">
+    <span class="part-num">✓</span>
+    Life & Story
+  </a>
+  <a href="crux-adult-saint-francis-b.html" class="part-tab active">
+    <span class="part-num">B</span>
+    Theological Significance
+  </a>
+</div>
+
+<div class="content-wrap">
+
+  <div class="recap-block">
+    <div>←</div>
+    <p><strong>In Part A</strong> we followed Francis from the merchant's household through the public disinheritance, the rebuilding years, and his death on bare ground at forty-four. Part B asks what the Church draws from his life — and why it remains disturbing in all the right ways eight centuries later.</p>
+  </div>
+
+  <div class="hook-block">
+    <p class="opener">Francis is the most beloved saint in the world. He is also the one the Church finds hardest to actually follow — because he took the Gospel at face value, and it is very difficult to argue with someone who does that.</p>
+  </div>
+
+  <div class="body-text">
+    <p>Every generation domesticates Francis a little more. The medieval Church made him into an institution. The Renaissance made him into art. The modern world made him into an environmentalist mascot. Each taming is understandable. The real Francis is too uncomfortable to keep at full strength.</p>
+    <p>Part B tries to keep him at full strength.</p>
+  </div>
+
+  <!-- SECTION: WHAT THE CHURCH DRAWS FROM HIM -->
+  <div class="section-label"><span>What the Church Has Drawn From Him</span></div>
+
+  <div class="theo-cards">
+    <div class="theo-card">
+      <div class="theo-num">1</div>
+      <div class="theo-content">
+        <h4>Poverty as Prophetic Act, Not Lifestyle Choice</h4>
+        <p>Francis did not choose poverty because he was ascetic by temperament or because he found possessions burdensome. He chose it because he read Matthew 19:21 — "sell everything and follow me" — and concluded that Jesus meant it. <strong>His poverty was not a spiritual discipline. It was a critique.</strong> A walking, breathing critique of a Church that had grown wealthy, politically powerful, and institutionally comfortable. When a poor man with nothing preaches the Gospel, it is harder to dismiss than when a bishop preaches it from a throne. Francis knew this. He used it.</p>
+      </div>
+    </div>
+    <div class="theo-card">
+      <div class="theo-num">2</div>
+      <div class="theo-content">
+        <h4>Reform from Within, Not Rebellion</h4>
+        <p>Francis lived in a Church rife with corruption — simony, clerical wealth, moral scandal, political manipulation. He was furious about it, in the way only someone who loves something deeply can be furious. And his response was not to leave or to condemn, but to demonstrate. <strong>He reformed the Church by becoming what the Church was supposed to be</strong> — not by arguing about it, writing about it, or staging a protest, but by living it so visibly that people followed him. Pope Innocent III, who could have suppressed the Franciscan movement as a threat, instead had a dream of Francis holding up the collapsing Lateran Basilica. He approved the Order.</p>
+      </div>
+    </div>
+    <div class="theo-card">
+      <div class="theo-num">3</div>
+      <div class="theo-content">
+        <h4>The Body as Good — Creation as Sacred</h4>
+        <p>The medieval world had a significant strain of dualism running through it — the idea that the spiritual is good and the material is corrupt, that the body is a trap and the physical world is an obstacle. Francis was the most powerful antidote to this the Church produced. <strong>His Canticle of the Creatures — possibly the first poem written in Italian — praises Brother Sun, Sister Moon, Brother Wind, Sister Water, Brother Fire, Sister Earth.</strong> He called them his siblings. The physical world, for Francis, was not an obstacle to God — it was saturated with God, speaking God at every turn. This is not pantheism. It is the full logic of the Incarnation: if God became matter, matter is forever dignified.</p>
+      </div>
+    </div>
+    <div class="theo-card">
+      <div class="theo-num">4</div>
+      <div class="theo-content">
+        <h4>The Stigmata — Conformity to Christ</h4>
+        <p>The wounds Francis received on La Verna in 1224 are the first stigmata recorded in Church history. Whatever one makes of the phenomenon medically or spiritually, the theological significance the tradition draws from it is clear: <strong>Francis had so completely conformed his life to Christ's that his body began to bear the marks.</strong> The exterior mirrored the interior. He had spent twenty years trying to live exactly as Jesus lived — poor, itinerant, close to the suffering, indifferent to comfort. The stigmata are the tradition's way of saying: he succeeded.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE CENTRAL CLAIM -->
+  <div class="center-block">
+    <div class="block-label">The Uncomfortable Core</div>
+    <h3>He believed the Sermon on the Mount was a set of instructions, not a set of ideals.</h3>
+    <p>This is the thing that makes Francis permanently uncomfortable for every Christian, in every century, regardless of where they sit on the political or theological spectrum. He read "blessed are the poor" and became poor. He read "go and sell all you have" and sold everything. He read "love your enemies" and walked unarmed into a war zone to meet the Sultan.</p>
+    <p>He was not naive. He was not simple. He was one of the most psychologically complex and spiritually sophisticated people of his era — a man who wrestled deeply with God, who cried, who doubted, who fought bitter institutional battles over the future of his own Order. <strong>He took the Gospel literally not because he was unsophisticated but because he was paying attention.</strong></p>
+    <p>The question his life poses to every Christian is not "do you admire Francis?" Almost everyone does. The question is: do you think he was right? Because if he was right, a great many comfortable lives — including most lives in the modern West, including the lives of most churchgoing Christians — look quite different in his light.</p>
+  </div>
+
+  <!-- CREATION AND ECOLOGY -->
+  <div class="section-label"><span>Francis and the Natural World</span></div>
+
+  <div class="creation-block">
+    <div class="creation-label">Laudato Si' — and What Came Before It</div>
+    <h3>"Praise be to you, my Lord, through all your creatures."</h3>
+    <p>Pope Francis — who took his name deliberately — issued an encyclical on the environment in 2015 titled <em>Laudato Si'</em>, its opening words taken directly from Francis of Assisi's Canticle of the Creatures. The document is remarkable: a major papal teaching document grounded in a 13th-century Italian poem about the brotherhood of all created things.</p>
+    <p>The choice was not incidental. The Catholic vision of ecology is not primarily about carbon emissions or policy — it begins with a theological claim about what creation is: <strong>not a resource to be consumed but a community of creatures reflecting their Creator, to be received with gratitude and cared for as a gift.</strong> Francis of Assisi is the exemplar of that vision because he felt it in his bones before anyone had articulated it theologically.</p>
+    <p>He named the sun his brother and the earth his sister because he believed, deeply and practically, that everything that exists shares a common Father. That conviction led him to preach to birds, release a captured rabbit, and ask that the brothers tend their gardens not only for food but for beauty — so that anyone who looked at a flower might be reminded that God is beautiful.</p>
+  </div>
+
+  <!-- THE SULTAN -->
+  <div class="section-label"><span>The Visit to the Sultan — Dialogue Before Its Time</span></div>
+
+  <div class="body-text">
+    <p>In 1219, Francis crossed enemy lines during the Fifth Crusade and met Sultan Malik al-Kamil of Egypt. He preached Christ to him. The Sultan listened — genuinely listened, for days — and sent him back with gifts and safe conduct. Neither man converted. Both were changed.</p>
+    <p>This encounter has become increasingly significant to the Church's understanding of interreligious dialogue. <strong>Francis went not to argue, not to negotiate, not to score a point for Christendom — but to witness.</strong> To be present. To speak what he believed with love, and to respect what he encountered. The Sultan's response was not conversion but it was openness — a genuine exchange between two men of faith who recognized something real in each other.</p>
+    <p><em>Nostra Aetate</em>, the Second Vatican Council's declaration on non-Christian religions, points toward exactly this kind of encounter as the model for Christian engagement with other faiths. Francis embodied it seven centuries earlier, at a moment when the entire surrounding culture was organizing itself around the premise that the only appropriate posture toward Islam was military.</p>
+  </div>
+
+  <div class="pull-quote">
+    <p>He went to the Sultan not to win an argument but to bear witness. The difference between those two postures is the whole of what Francis was trying to teach.</p>
+    <cite>— On Francis's encounter with Sultan Malik al-Kamil, 1219</cite>
+  </div>
+
+  <!-- FOR YOU -->
+  <div class="for-you-block">
+    <div class="fy-label">What This Means for You</div>
+    <h3>The saint for anyone suffocating under their own possessions</h3>
+    <p>Francis is not only for those who can or should give everything away. Most people cannot and should not — they have families, responsibilities, obligations. The tradition does not require everyone to be Francis. What it does invite is what Francis's own life demonstrates: <strong>a loosening of the grip.</strong></p>
+    <p>The question Francis poses is not "do you own things?" but "do your things own you?" The anxiety, the accumulation, the sense that security is something you construct around yourself with enough wealth, enough status, enough insurance — he walked out of all of it in his mid-twenties and found it lighter on the other side. His life is an invitation to examine what you are holding, and why, and whether it is holding you back.</p>
+    <p>He is also for anyone who loves the natural world and wants a theological reason to. Creation care is not a liberal political cause that Catholics awkwardly adopted. It is rooted in the oldest Franciscan conviction: that the world is a gift from a generous God, and gifts are to be received with gratitude, tended with care, and shared — not hoarded, exploited, or depleted.</p>
+    <p>And he is — perhaps most of all — for anyone who suspects that <strong>the Church is not living up to what it claims to believe.</strong> Francis felt that with full force, in a Church far more corrupted than ours, and his answer was not to leave. It was to become, in his own person, what the Church was supposed to be. That remains one of the most radical and hopeful responses to institutional failure ever attempted.</p>
+  </div>
+
+  <!-- PRAYER -->
+  <div class="prayer-block">
+    <div class="prayer-label">The Prayer of Saint Francis</div>
+    <p>Lord, make me an instrument of your peace. Where there is hatred, let me sow love; where there is injury, pardon; where there is doubt, faith; where there is despair, hope; where there is darkness, light; where there is sadness, joy. O Divine Master, grant that I may not so much seek to be consoled as to console; to be understood as to understand; to be loved as to love. For it is in giving that we receive; it is in pardoning that we are pardoned; and it is in dying that we are born to eternal life.</p>
+    <div class="pray-attribution">Attributed to St. Francis of Assisi · 13th Century</div>
+  </div>
+
+</div>
+
+<div class="complete-footer">
+  <div class="complete-info">
+    <div class="complete-label">✓ St. Francis of Assisi Complete</div>
+    <div class="complete-title">Life & Story · Theological Significance</div>
+  </div>
+  <div class="btn-row">
+    <a href="crux-adult-formation.html" class="btn-modules">All Modules</a>
+    <a href="crux-adult-formation.html" class="btn-next">Back to Formation →</a>
+  </div>
+</div>
+
+</body>
+</html>

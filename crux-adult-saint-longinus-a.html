@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — St. Longinus · Part A</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --crimson: #7a1c1c;
+  --crimson-soft: rgba(122,28,28,0.08);
+  --crimson-border: rgba(122,28,28,0.2);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── BANNER ── */
+.saint-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.saint-banner::before {
+  content: '✟';
+  position: absolute;
+  font-size: 26rem;
+  color: rgba(212,165,116,0.03);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+  line-height: 1;
+}
+
+.saint-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.saint-tag::before, .saint-tag::after {
+  content: '';
+  width: 20px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.feast-line {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 0.85rem;
+  position: relative;
+}
+
+.saint-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.8rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+
+.saint-banner .part-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.3);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.saint-banner p.tagline {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.5);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.65;
+  position: relative;
+}
+
+/* ── PART NAV ── */
+.part-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+}
+
+.part-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--subtle);
+}
+
+.part-tab.active {
+  color: var(--navy);
+  border-bottom-color: var(--gold-mid);
+}
+
+.part-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(26,31,54,0.07);
+  color: var(--subtle);
+  flex-shrink: 0;
+}
+
+.part-tab.active .part-num {
+  background: var(--gold-mid);
+  color: var(--white);
+}
+
+/* ── FAST FACTS ── */
+.facts-strip {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 1.25rem 2rem;
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.fact-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  text-align: center;
+}
+
+.fact-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--subtle);
+}
+
+.fact-value {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--navy);
+  font-family: 'Playfair Display', serif;
+}
+
+/* ── CONTENT ── */
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 7rem;
+}
+
+.hook-block p.opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--muted);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+.body-text p em {
+  font-style: italic;
+}
+
+/* Pull quote */
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* The moment — dark dramatic block */
+.moment-block {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2.75rem 2.5rem;
+  margin: 2.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.moment-block::before {
+  content: '†';
+  position: absolute;
+  font-size: 20rem;
+  color: rgba(255,255,255,0.015);
+  right: -2rem;
+  bottom: -4rem;
+  line-height: 1;
+  pointer-events: none;
+  font-family: serif;
+}
+
+.moment-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.moment-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.moment-block p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.moment-block p:last-child { margin-bottom: 0; }
+
+.moment-block p strong { color: var(--white); font-weight: 600; }
+
+/* Scripture */
+.scripture-block {
+  margin: 2.5rem 0;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+.scripture-block::before {
+  content: '"';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem;
+  color: var(--gold-dim);
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 1;
+}
+
+.scripture-block p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.6rem;
+  position: relative;
+}
+
+.scripture-block cite {
+  font-size: 0.75rem;
+  color: var(--subtle);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Tradition vs history block */
+.source-note {
+  background: rgba(26,31,54,0.04);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin: 2rem 0;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.source-note-icon {
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.source-note p {
+  font-size: 0.82rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+.source-note p strong {
+  color: var(--navy);
+  font-weight: 600;
+}
+
+/* Timeline */
+.timeline {
+  margin: 1.75rem 0 2.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  position: relative;
+}
+
+.timeline::before {
+  content: '';
+  position: absolute;
+  left: 18px;
+  top: 8px;
+  bottom: 8px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--gold-mid), var(--gold-dim));
+}
+
+.timeline-item {
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+  padding-bottom: 1.75rem;
+  position: relative;
+}
+
+.timeline-item:last-child { padding-bottom: 0; }
+
+.timeline-dot {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--gold-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.timeline-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.35rem;
+  margin-top: 0.5rem;
+}
+
+.timeline-content p {
+  font-size: 0.875rem;
+  color: var(--muted);
+  line-height: 1.7;
+}
+
+/* ── CONTINUE BAR ── */
+.continue-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 90;
+  box-shadow: 0 -4px 24px rgba(26,31,54,0.08);
+}
+
+.continue-bar .progress-info {
+  font-size: 0.78rem;
+  color: var(--subtle);
+  font-weight: 500;
+}
+
+.continue-bar .progress-info strong { color: var(--navy); }
+
+.btn-continue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--navy);
+  color: var(--gold);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-continue:hover { background: var(--gold-mid); color: var(--white); }
+
+@media (max-width: 640px) {
+  .saint-banner h1 { font-size: 2.1rem; }
+  .content-wrap { padding: 2.5rem 1.25rem 7rem; }
+  .facts-strip { gap: 1.25rem; }
+  .moment-block { padding: 2rem 1.5rem; }
+  .hook-block p.opener { font-size: 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+</header>
+
+<div class="saint-banner">
+  <div class="saint-tag">Lives of the Saints · 1st Century</div>
+  <div class="feast-line">Feast Day · March 15</div>
+  <h1>Saint Longinus</h1>
+  <div class="part-label">Part A of 2 · Life & Story</div>
+  <p class="tagline">He drove the lance into Christ's side. What came out changed him forever.</p>
+</div>
+
+<div class="part-nav">
+  <a href="crux-adult-saint-longinus-a.html" class="part-tab active">
+    <span class="part-num">A</span>
+    Life & Story
+  </a>
+  <a href="crux-adult-saint-longinus-b.html" class="part-tab">
+    <span class="part-num">B</span>
+    Theological Significance
+  </a>
+</div>
+
+<div class="facts-strip">
+  <div class="fact-item">
+    <div class="fact-label">Died</div>
+    <div class="fact-value">c. 45 AD · Caesarea</div>
+  </div>
+  <div class="fact-item">
+    <div class="fact-label">Feast Day</div>
+    <div class="fact-value">March 15</div>
+  </div>
+  <div class="fact-item">
+    <div class="fact-label">Patron of</div>
+    <div class="fact-value">Soldiers, Mantua, Eye Conditions</div>
+  </div>
+  <div class="fact-item">
+    <div class="fact-label">Canonized</div>
+    <div class="fact-value">Pre-Congregation · Ancient</div>
+  </div>
+</div>
+
+<div class="content-wrap">
+
+  <!-- HOOK -->
+  <div class="hook-block">
+    <p class="opener">Of all the people present at the Crucifixion, the one you might least expect to become a saint is the Roman soldier who drove a spear into the side of the already-dead Christ.</p>
+  </div>
+
+  <div class="body-text">
+    <p>And yet the Catholic Church venerates Longinus — the centurion of Golgotha — as a saint and martyr. His feast day is March 15. His relics have been claimed by Mantua and by Rome. The lance he carried, the Holy Lance, is counted among the most significant relics in Christendom.</p>
+    <p>His story begins at the worst moment of human history, and ends in one of its most unexpected conversions.</p>
+  </div>
+
+  <div class="source-note">
+    <div class="source-note-icon">📜</div>
+    <p><strong>A note on sources:</strong> Longinus is not named in the canonical Gospels. His name appears in the Acts of Pilate (a non-canonical early Christian text) and the later Golden Legend. His story is part of sacred tradition — venerated by the Church across centuries — rather than documented biography. This is true of many early saints. The theological significance of what the Gospels do record is treated fully in Part B.</p>
+  </div>
+
+  <!-- SECTION: THE MAN -->
+  <div class="section-label"><span>The Man at the Cross</span></div>
+
+  <div class="body-text">
+    <p>Longinus was, by all accounts, a Roman soldier — most likely a centurion commanding the execution detail at Golgotha on the day of the Crucifixion. Roman soldiers carried out crucifixions routinely. It was brutal, administrative work. Longinus had almost certainly overseen executions before.</p>
+    <p>Tradition holds that Longinus suffered from poor eyesight — some accounts say near-blindness in one or both eyes, possibly from a condition acquired during his military service. This detail becomes significant later.</p>
+    <p>On the day of Christ's death, his unit was responsible for ensuring that the condemned men were dead before the Sabbath began. Standard procedure for a crucified man who appeared to have died was to break the legs — <em>crurifragium</em> — to prevent him from pushing up to breathe, accelerating death. When the soldiers came to Jesus, they found he was already dead. No need to break his legs.</p>
+  </div>
+
+  <div class="scripture-block">
+    <p>"But one of the soldiers pierced his side with a spear, and immediately blood and water came out."</p>
+    <cite>— John 19:34</cite>
+  </div>
+
+  <div class="body-text">
+    <p>That soldier, according to the Church's ancient tradition, was Longinus. The lance thrust was likely a final verification of death — a standard Roman practice. What came out of the wound was not what he expected.</p>
+  </div>
+
+  <!-- THE MOMENT -->
+  <div class="moment-block">
+    <div class="moment-label">The Moment</div>
+    <h3>"Truly this man was the Son of God."</h3>
+    <p>The Gospel of Mark records that at the moment of Christ's death — before the lance thrust — a centurion standing facing Jesus said these words (Mark 15:39). Whether this is Longinus or another soldier, it is the first proclamation of Christ's divinity after his death, and it comes from a Roman soldier — a pagan, an instrument of the Empire that killed him.</p>
+    <p>Tradition fuses these accounts: the centurion who confessed, the soldier who pierced the side. <strong>Whatever precisely happened, something at Golgotha broke through the professional detachment of a Roman soldier and produced a confession of faith.</strong></p>
+    <p>Tradition adds one more detail: that blood and water from the wound splashed on Longinus's eyes, and that his sight — long failing — was immediately restored. He could see. In more than one sense.</p>
+  </div>
+
+  <!-- SECTION: AFTER -->
+  <div class="section-label"><span>After the Cross</span></div>
+
+  <div class="body-text">
+    <p>What happens to Longinus after Golgotha is told in early Christian tradition, not in Scripture. The accounts vary in detail, but share a consistent arc.</p>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <div class="timeline-dot">①</div>
+      <div class="timeline-content">
+        <h4>He leaves the military</h4>
+        <p>Tradition holds that Longinus left Roman military service shortly after the Crucifixion — an extraordinary act for a Roman soldier, which would have carried real personal cost and risk. Whatever he had witnessed, he could not continue as before.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">②</div>
+      <div class="timeline-content">
+        <h4>He is baptized</h4>
+        <p>According to tradition, Longinus received instruction from the Apostles and was baptized — becoming a Christian in the first generation of the Church, when doing so was genuinely dangerous for a former Roman soldier known at the scene of the Crucifixion.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">③</div>
+      <div class="timeline-content">
+        <h4>He withdraws to Caesarea in Cappadocia</h4>
+        <p>After some years of Christian life — accounts vary on whether he lived as a monk, a hermit, or an active evangelist — Longinus settled in Caesarea, in modern-day Turkey, where he is said to have lived quietly and evangelized his community.</p>
+      </div>
+    </div>
+    <div class="timeline-item">
+      <div class="timeline-dot">④</div>
+      <div class="timeline-content">
+        <h4>He is martyred — by Rome</h4>
+        <p>The Church records Longinus as a martyr, executed by Roman authorities around 45 AD. The soldier of Rome died at Rome's hands for the faith of the man whose death he had helped carry out. He was beheaded — a Roman death for a Roman soldier turned Christian.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: THE LANCE -->
+  <div class="section-label"><span>The Holy Lance</span></div>
+
+  <div class="body-text">
+    <p>The spear Longinus carried — the lance that pierced Christ's side — became one of the most venerated and disputed relics in Christian history. It is known variously as the Holy Lance, the Spear of Destiny, or the Lance of Longinus.</p>
+    <p>Multiple objects have been claimed as the original lance throughout history. The Vatican holds one. Vienna holds another, which was treasured by the Holy Roman Emperors and was famously sought by Napoleon. There are others. The Church does not authenticate all relic claims — venerating a relic is an act of faith toward the person it represents, not a declaration of physical authenticity.</p>
+    <p><strong>What all these claims share is a recognition that the lance of Golgotha mattered.</strong> The wound it made is cited in Revelation. It became a symbol of the moment when heaven and earth met at a Roman execution, and a pagan soldier found himself changed by what came out.</p>
+  </div>
+
+  <div class="pull-quote">
+    <p>The veneration of Longinus across Eastern and Western Christianity — across fifteen centuries — is not sentiment. It is the Church's recognition that conversion can happen anywhere, to anyone, even at the foot of an execution.</p>
+    <cite>— The witness of the tradition</cite>
+  </div>
+
+  <!-- CLOSING BRIDGE -->
+  <div class="section-label"><span>What His Story Raises</span></div>
+
+  <div class="body-text">
+    <p>Longinus raises a set of questions that Part B is designed to explore directly. If this account is true — or even substantially true — what does it mean that the first person to pierce the body of Christ was the first Gentile to confess his divinity? What does it mean that the wound he made became, in Christian theology, the source of the sacraments? What does it mean that a soldier present at the worst act of human history became a saint?</p>
+    <p>These are not just historical curiosities. They go to the heart of what the Catholic tradition believes about grace — that it operates in the most unlikely places, through the most unlikely people, at the most unlikely moments.</p>
+    <p><strong>Longinus was not looking for God at Golgotha. He was doing his job. And God found him anyway.</strong></p>
+  </div>
+
+</div>
+
+<div class="continue-bar">
+  <div class="progress-info">
+    St. Longinus · <strong>Part A complete</strong> — Life & Story
+  </div>
+  <a href="crux-adult-saint-longinus-b.html" class="btn-continue">Continue to Part B →</a>
+</div>
+
+</body>
+</html>
