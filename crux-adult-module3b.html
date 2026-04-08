@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
 <title>CRUX — What Is the Church? Part B</title>
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
@@ -19,6 +20,7 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 
 :root {
+  color-scheme: light;
   --navy: #1a1f36;
   --gold: #d4a574;
   --gold-mid: #b8895a;
@@ -562,13 +564,78 @@ header {
 .btn-next-module:hover { background: var(--gold); color: var(--navy); }
 
 @media (max-width: 640px) {
-  .module-banner h1 { font-size: 2rem; }
-  .content-wrap { padding: 2.5rem 1.25rem 8rem; }
-  .hook-block p.opener { font-size: 1.2rem; }
-  .dark-block { padding: 2rem 1.5rem; }
-  .dark-block h3 { font-size: 1.2rem; }
-  .complete-footer { padding: 1rem; flex-wrap: wrap; }
+  /* Header */
+  header { padding: 1rem 1.25rem; }
+  .logo { font-size: 1.3rem; letter-spacing: 3px; }
+  .btn-back { font-size: 0.75rem; padding: 0.4rem 0.75rem; }
+
+  /* Banner */
+  .module-banner { padding: 2.5rem 1.25rem 2rem; }
+  .module-banner::before { font-size: 6rem; }
+  .module-banner h1 { font-size: 1.75rem; line-height: 1.2; }
+  .module-banner p.intro { font-size: 0.9rem; }
+  .module-banner .part-label { font-size: 0.7rem; }
+
+  /* Part nav */
+  .part-nav { padding: 0 0.75rem; }
+  .part-tab { padding: 0.85rem 1rem; font-size: 0.75rem; }
+
+  /* Content */
+  .content-wrap { padding: 2rem 1.1rem 8rem; }
+
+  /* Recap block */
+  .recap-block { padding: 1.1rem 1rem; }
+  .recap-block p { font-size: 0.84rem; }
+
+  /* Hook */
+  .hook-block p.opener { font-size: 1.15rem; line-height: 1.55; }
+
+  /* Section labels */
+  .section-label { margin: 2rem 0 1.25rem; }
+  .section-label span { font-size: 0.6rem; letter-spacing: 2px; }
+
+  /* Body text */
+  .body-text p { font-size: 0.93rem; line-height: 1.75; margin-bottom: 1rem; }
+
+  /* Pull quote */
+  .pull-quote { padding: 1.5rem 1.25rem; margin: 1.75rem 0; }
+  .pull-quote p { font-size: 1.05rem; }
+
+  /* Dark block */
+  .dark-block { padding: 1.75rem 1.25rem; border-radius: 12px; margin: 1.75rem 0; }
+  .dark-block::before { font-size: 8rem; }
+  .dark-block h3 { font-size: 1.1rem; line-height: 1.3; margin-bottom: 1rem; }
+  .dark-block p { font-size: 0.9rem; line-height: 1.75; }
+
+  /* Nicaea block */
+  .nicaea-block { padding: 1.5rem 1.25rem; border-radius: 12px; }
+  .nicaea-block h3 { font-size: 1.05rem; }
+  .nicaea-block p { font-size: 0.9rem; line-height: 1.75; }
+
+  /* Community cards */
+  .community-cards { border-radius: 12px; }
+  .community-card { padding: 1.25rem 1rem; gap: 0.75rem; }
+  .community-num { font-size: 1.5rem; }
+  .community-content h4 { font-size: 0.95rem; }
+  .community-content p { font-size: 0.84rem; line-height: 1.7; }
+
+  /* Scripture */
+  .scripture-block { padding: 1.75rem 1rem; }
+  .scripture-block::before { font-size: 5rem; }
+  .scripture-block p { font-size: 1.05rem; }
+
+  /* For you block */
+  .for-you-block { padding: 1.5rem 1.25rem; border-radius: 12px; }
+  .for-you-block h3 { font-size: 1.05rem; }
+  .for-you-block p { font-size: 0.9rem; line-height: 1.75; }
+
+  /* Complete footer */
+  .complete-footer { padding: 0.85rem 1.1rem; flex-wrap: wrap; }
   .complete-footer .btn-row { width: 100%; justify-content: flex-end; }
+  .complete-label { font-size: 0.6rem; }
+  .complete-title { font-size: 0.75rem; }
+  .btn-modules { font-size: 0.75rem; padding: 0.6rem 1rem; }
+  .btn-next-module { font-size: 0.8rem; padding: 0.65rem 1.1rem; }
 }
 </style>
 </head>

@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>CRUX — The Sacraments · Part B</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  color-scheme: light;
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.header-right { display:flex; align-items:center; gap:0.75rem; }
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── BANNER ── */
+.module-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.module-banner::before {
+  content: '✟';
+  position: absolute;
+  font-size: 26rem;
+  color: rgba(212,165,116,0.03);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.module-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.module-tag::before, .module-tag::after {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.module-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.module-banner .part-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.module-banner p.intro {
+  color: rgba(255,255,255,0.55);
+  font-size: 1rem;
+  line-height: 1.75;
+  max-width: 580px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ── PART NAV ── */
+.part-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  overflow-x: auto;
+}
+
+.part-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.part-tab.active { color: var(--navy); border-bottom-color: var(--gold-mid); }
+.part-tab.complete { color: var(--muted); }
+.part-tab:hover:not(.active) { color: var(--navy); }
+
+.part-tab .part-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(26,31,54,0.07);
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.part-tab.complete .part-num { background: rgba(46,125,50,0.15); color: #2e7d32; }
+.part-tab.active .part-num { background: var(--gold-mid); color: var(--white); }
+
+/* ── CONTENT ── */
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 8rem;
+}
+
+.recap-block {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2.75rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.recap-block p { font-size: 0.88rem; color: var(--navy); line-height: 1.7; }
+.recap-block p strong { color: var(--navy); font-weight: 600; }
+
+.hook-block { margin-bottom: 3rem; }
+
+.hook-block p.opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.hook-block p {
+  font-size: 0.97rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong { color: var(--navy); font-weight: 600; }
+.body-text p em { font-style: italic; }
+
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Dark block */
+.dark-block {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2.75rem 2.5rem;
+  margin: 2.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-block::before {
+  content: '✟';
+  position: absolute;
+  font-size: 18rem;
+  color: rgba(255,255,255,0.02);
+  right: -2rem;
+  bottom: -3rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.dark-block .block-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.dark-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.dark-block p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.dark-block p:last-child { margin-bottom: 0; }
+.dark-block p strong { color: var(--white); font-weight: 600; }
+.dark-block p em { font-style: italic; }
+
+/* Sacrament detail cards — each one its own block */
+.sacrament-block {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 2rem 0;
+}
+
+.sacrament-header {
+  background: var(--navy);
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.sacrament-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.sacrament-title-group { flex: 1; }
+
+.sacrament-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+}
+
+.sacrament-subtitle {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 0.2rem;
+}
+
+.sacrament-body {
+  padding: 1.75rem 2rem;
+}
+
+.sacrament-body p {
+  font-size: 0.93rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+}
+
+.sacrament-body p:last-child { margin-bottom: 0; }
+.sacrament-body p strong { color: var(--navy); font-weight: 600; }
+.sacrament-body p em { font-style: italic; }
+
+/* Confession — special treatment */
+.confession-block {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  margin: 2rem 0;
+}
+
+.confession-header {
+  background: var(--navy);
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.confession-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 8px;
+  background: rgba(255,255,255,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+  flex-shrink: 0;
+}
+
+.confession-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.confession-subtitle {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 0.2rem;
+}
+
+.confession-body {
+  padding: 1.75rem 2rem;
+}
+
+.confession-body p {
+  font-size: 0.93rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+}
+
+.confession-body p:last-child { margin-bottom: 0; }
+.confession-body p strong { color: var(--navy); font-weight: 600; }
+.confession-body p em { font-style: italic; }
+
+.confession-reframe {
+  background: rgba(212,165,116,0.07);
+  border: 1px solid rgba(212,165,116,0.2);
+  border-radius: 10px;
+  padding: 1.25rem 1.5rem;
+  margin: 1.25rem 0 0;
+}
+
+.confession-reframe p {
+  font-size: 0.88rem;
+  color: var(--navy);
+  line-height: 1.75;
+  margin-bottom: 0;
+  font-style: italic;
+}
+
+.confession-reframe p strong {
+  font-style: normal;
+  color: var(--navy);
+  font-weight: 700;
+}
+
+/* Scripture */
+.scripture-block {
+  margin: 2.5rem 0;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+.scripture-block::before {
+  content: '"';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem;
+  color: var(--gold-dim);
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 1;
+}
+
+.scripture-block p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.6rem;
+  position: relative;
+}
+
+.scripture-block cite {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* For you block */
+.for-you-block {
+  background: rgba(212,165,116,0.07);
+  border: 1px solid rgba(212,165,116,0.2);
+  border-radius: 14px;
+  padding: 2rem 2.25rem;
+  margin: 2.5rem 0;
+}
+
+.for-you-block .fy-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.75rem;
+}
+
+.for-you-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+}
+
+.for-you-block p {
+  font-size: 0.93rem;
+  color: var(--navy);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.for-you-block p:last-child { margin-bottom: 0; }
+.for-you-block p strong { color: var(--navy); font-weight: 600; }
+
+/* Complete footer */
+.complete-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--navy);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 90;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.2);
+}
+
+.complete-info { display: flex; flex-direction: column; gap: 0.2rem; }
+
+.complete-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.complete-title {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.6);
+  font-weight: 500;
+}
+
+.btn-row { display: flex; gap: 0.75rem; align-items: center; }
+
+.btn-modules {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.25rem;
+  background: transparent;
+  color: rgba(255,255,255,0.6);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-modules:hover { color: var(--white); border-color: rgba(255,255,255,0.5); }
+
+.btn-next-module {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--gold-mid);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-next-module:hover { background: var(--gold); color: var(--navy); }
+
+@media (max-width: 640px) {
+  /* Header */
+  header { padding: 1rem 1.25rem; }
+  .logo { font-size: 1.3rem; letter-spacing: 3px; }
+  .btn-back { font-size: 0.75rem; padding: 0.4rem 0.75rem; }
+
+  /* Banner */
+  .module-banner { padding: 2.5rem 1.25rem 2rem; }
+  .module-banner::before { font-size: 8rem; }
+  .module-banner h1 { font-size: 1.75rem; line-height: 1.2; }
+  .module-banner p.intro { font-size: 0.9rem; }
+
+  /* Part nav */
+  .part-nav { padding: 0 0.75rem; }
+  .part-tab { padding: 0.85rem 1rem; font-size: 0.75rem; }
+
+  /* Content */
+  .content-wrap { padding: 2rem 1.1rem 8rem; }
+
+  /* Recap */
+  .recap-block { padding: 1.1rem 1rem; }
+  .recap-block p { font-size: 0.84rem; }
+
+  /* Hook */
+  .hook-block p.opener { font-size: 1.15rem; line-height: 1.55; }
+  .hook-block p { font-size: 0.93rem; }
+
+  /* Section labels */
+  .section-label { margin: 2rem 0 1.25rem; }
+  .section-label span { font-size: 0.6rem; letter-spacing: 2px; }
+
+  /* Body text */
+  .body-text p { font-size: 0.93rem; line-height: 1.75; margin-bottom: 1rem; }
+
+  /* Pull quote */
+  .pull-quote { padding: 1.5rem 1.25rem; margin: 1.75rem 0; }
+  .pull-quote p { font-size: 1.05rem; }
+
+  /* Dark block */
+  .dark-block { padding: 1.75rem 1.25rem; border-radius: 12px; margin: 1.75rem 0; }
+  .dark-block::before { font-size: 8rem; }
+  .dark-block h3 { font-size: 1.15rem; line-height: 1.3; margin-bottom: 1rem; }
+  .dark-block p { font-size: 0.9rem; line-height: 1.75; }
+
+  /* Sacrament blocks */
+  .sacrament-block { border-radius: 12px; margin: 1.5rem 0; }
+  .sacrament-header { padding: 1.25rem 1.1rem; gap: 0.75rem; }
+  .sacrament-icon { width: 38px; height: 38px; font-size: 1.1rem; }
+  .sacrament-title { font-size: 1.05rem; }
+  .sacrament-body { padding: 1.25rem 1.1rem; }
+  .sacrament-body p { font-size: 0.88rem; line-height: 1.75; }
+
+  /* Confession block */
+  .confession-block { border-radius: 12px; margin: 1.5rem 0; }
+  .confession-header { padding: 1.25rem 1.1rem; gap: 0.75rem; }
+  .confession-icon { width: 38px; height: 38px; font-size: 1.1rem; }
+  .confession-title { font-size: 1.05rem; }
+  .confession-body { padding: 1.25rem 1.1rem; }
+  .confession-body p { font-size: 0.88rem; line-height: 1.75; }
+  .confession-reframe { padding: 1rem 1.1rem; }
+  .confession-reframe p { font-size: 0.84rem; }
+
+  /* Scripture */
+  .scripture-block { padding: 1.75rem 1rem; }
+  .scripture-block::before { font-size: 5rem; }
+  .scripture-block p { font-size: 1.05rem; }
+
+  /* For you block */
+  .for-you-block { padding: 1.5rem 1.25rem; border-radius: 12px; }
+  .for-you-block h3 { font-size: 1.05rem; }
+  .for-you-block p { font-size: 0.9rem; line-height: 1.75; }
+
+  /* Complete footer */
+  .complete-footer { padding: 0.85rem 1.1rem; flex-wrap: wrap; }
+  .complete-footer .btn-row { width: 100%; justify-content: flex-end; }
+  .complete-label { font-size: 0.6rem; }
+  .complete-title { font-size: 0.75rem; }
+  .btn-modules { font-size: 0.75rem; padding: 0.6rem 1rem; }
+  .btn-next-module { font-size: 0.8rem; padding: 0.65rem 1.1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <div class="header-right">
+    <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+  </div>
+</header>
+
+<div class="module-banner">
+  <div class="module-tag">Module 4 · Adult Formation</div>
+  <div class="part-label">Part B of 2</div>
+  <h1>The Sacraments</h1>
+  <p class="intro">Four sacraments accompany the whole arc of a human life — from the moments we fall to the moments we can't go on alone.</p>
+</div>
+
+<div class="part-nav">
+  <a href="crux-adult-module4a.html" class="part-tab complete">
+    <span class="part-num">✓</span>
+    Why Physical Things Matter
+  </a>
+  <a href="crux-adult-module4b.html" class="part-tab active">
+    <span class="part-num">B</span>
+    The Sacraments of Daily Life
+  </a>
+</div>
+
+<div class="content-wrap">
+
+  <div class="recap-block">
+    <div>←</div>
+    <p><strong>In Part A</strong> we covered the Incarnation logic behind the sacraments and the three sacraments of initiation: Baptism, Confirmation, and the Eucharist. Part B covers the four that accompany the rest of a life.</p>
+  </div>
+
+  <!-- HOOK -->
+  <div class="hook-block">
+    <p class="opener">Initiation gets you into the Church. The other four sacraments are what the Church does with you once you're there.</p>
+    <p>They map onto the full shape of a human life: the failures that need healing, the relationships that need blessing, the vocations that need consecrating, the dying that needs accompanying. The Catholic sacramental system doesn't abandon you between the font and the grave. It meets you at every major turning point along the way.</p>
+  </div>
+
+  <!-- SECTION: CONFESSION -->
+  <div class="section-label"><span>Reconciliation — The Sacrament People Fear Most</span></div>
+
+  <div class="body-text">
+    <p>More people avoid Confession than any other sacrament. The idea of speaking your failures out loud to another human being — even a priest bound by absolute confidentiality — produces a particular kind of dread that keeps a lot of Catholics in the parking lot and a lot of seekers skeptical.</p>
+    <p>That dread usually comes from a misunderstanding of what the sacrament is for. Confession isn't a tribunal. The priest isn't a judge scoring your moral record. The better image, and the one the Church itself uses, is a physician.</p>
+  </div>
+
+  <div class="confession-block">
+    <div class="confession-header">
+      <div class="confession-icon">🕊</div>
+      <div>
+        <div class="confession-title">Reconciliation (Confession)</div>
+        <div class="confession-subtitle">The Sacrament of Healing</div>
+      </div>
+    </div>
+    <div class="confession-body">
+      <p>When you go to Confession, the priest is not there to evaluate you. He is there the way a doctor is in an exam room: listening, diagnosing, and offering what is needed to heal. You don't go to a doctor to be judged for getting sick. You go because something is wrong and you want it treated. <strong>The confessional operates on the same logic.</strong></p>
+      <p>What you are actually doing in Confession is standing before Christ — the priest acting in his person — and acknowledging that you have wandered from the path God intends for you. Repentance in the Catholic tradition isn't about feeling guilty until the guilt goes away on its own. It's an active agreement: this thing I did is not who I want to be, and I am asking for the grace to change direction.</p>
+      <p>The penance the priest assigns isn't punishment. It's more like the physical therapy after the surgery — the practical work of reorientation. And the absolution, the words the priest speaks at the end, are not a formality. The Church teaches that in that moment, through the priest, Christ himself speaks: <em>your sins are forgiven.</em></p>
+      <p><strong>You leave lighter.</strong> Every person who has returned to Confession after a long absence says some version of the same thing: they didn't expect it to feel like that. The weight they had been carrying, some of it for years, was simply gone.</p>
+
+      <div class="confession-reframe">
+        <p><strong>The question Confession is really asking:</strong> not "are you a bad person?" but "are you willing to be honest about where you've fallen short, and to turn back toward what God is calling you to?" That has always been enough to begin.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pull-quote">
+    <p>Those who approach the sacrament of Penance obtain pardon from God's mercy for the offense committed against him, and are, at the same time, reconciled with the Church.</p>
+    <cite>— Catechism of the Catholic Church, §1422</cite>
+  </div>
+
+  <!-- SECTION: MARRIAGE -->
+  <div class="section-label"><span>Marriage — The Sacrament the Couple Gives Each Other</span></div>
+
+  <div class="body-text">
+    <p>Catholic marriage is unusual among the sacraments in one striking way: the ministers of the sacrament are not the priest but the couple themselves. The priest witnesses and blesses. The spouses are the ones who confer the sacrament on each other through their vows.</p>
+    <p>This means that what happens at a Catholic wedding is understood as more than a legal contract or even a beautiful promise. The couple's love for each other becomes a sacramental sign — a visible image of how Christ loves the Church. That's a large claim to make about any marriage, and the Church means it seriously.</p>
+  </div>
+
+  <div class="sacrament-block">
+    <div class="sacrament-header">
+      <div class="sacrament-icon">💍</div>
+      <div class="sacrament-title-group">
+        <div class="sacrament-title">Marriage</div>
+        <div class="sacrament-subtitle">Covenant, Not Contract</div>
+      </div>
+    </div>
+    <div class="sacrament-body">
+      <p>The Catholic distinction between covenant and contract matters here. A contract is an exchange of goods or services, dissoluble when the terms aren't met. A covenant is a gift of persons — total, permanent, open to life. When Catholics marry, they are not making a very serious contract. They are entering a covenant modeled on the one God made with Israel, and that Christ sealed with his own blood.</p>
+      <p>This is why the Church holds that a valid sacramental marriage cannot be dissolved. Not because it is indifferent to unhappy marriages, but because it takes seriously what the couple actually vowed: total, faithful, fruitful love, for life. The Church's annulment process doesn't dissolve marriages — it investigates whether the conditions for a valid sacramental marriage were actually present at the time of the wedding.</p>
+      <p><strong>The grace of the sacrament doesn't disappear after the wedding day.</strong> The Church teaches that married couples continuously receive the grace of their sacrament throughout their marriage — that the love they practice, including in its hardest seasons, is itself a participation in the love of Christ.</p>
+    </div>
+  </div>
+
+  <!-- SECTION: HOLY ORDERS -->
+  <div class="section-label"><span>Holy Orders — The Sacrament of Apostolic Continuity</span></div>
+
+  <div class="sacrament-block">
+    <div class="sacrament-header">
+      <div class="sacrament-icon">✋</div>
+      <div class="sacrament-title-group">
+        <div class="sacrament-title">Holy Orders</div>
+        <div class="sacrament-subtitle">Deacon, Priest, Bishop</div>
+      </div>
+    </div>
+    <div class="sacrament-body">
+      <p>Holy Orders is the sacrament by which men are ordained as deacons, priests, or bishops — configured to Christ in a specific way that allows them to act in his person, particularly at the Eucharist. When a priest speaks the words of consecration at Mass, the Church teaches that it is not the priest's own words but Christ's, spoken through him.</p>
+      <p>The laying on of hands at ordination connects every priest to an unbroken chain going back to the Apostles — and through them to Christ himself. This is what apostolic succession means in practice: not a bureaucratic credential but a living transmission of authority and mission across two thousand years.</p>
+      <p><strong>Holy Orders exists to serve.</strong> The priest at the altar, the bishop in the diocese, the deacon at the margins of society — each is ordained not to a position of prestige but to a form of self-giving that mirrors Christ's own. The priesthood is best understood not as a rank but as a vocation to pour yourself out for others, repeatedly, without keeping score.</p>
+    </div>
+  </div>
+
+  <!-- SECTION: ANOINTING -->
+  <div class="section-label"><span>Anointing of the Sick — The Sacrament at the Edge</span></div>
+
+  <div class="body-text">
+    <p>For much of Christian history this sacrament was called Last Rites and administered only to the dying, which gave it a fearful reputation — the priest arriving meant the end was near. The Church recovered a broader and more honest understanding: Anointing of the Sick is for anyone facing serious illness, surgery, or the diminishments of old age. It does not require that death be imminent.</p>
+  </div>
+
+  <div class="sacrament-block">
+    <div class="sacrament-header">
+      <div class="sacrament-icon">🕯</div>
+      <div class="sacrament-title-group">
+        <div class="sacrament-title">Anointing of the Sick</div>
+        <div class="sacrament-subtitle">Grace at the Limit of Human Endurance</div>
+      </div>
+    </div>
+    <div class="sacrament-body">
+      <p>The priest anoints the forehead and hands with the oil of the sick, praying for healing of body and soul. The healing isn't always physical — sometimes the grace works on what suffering does to a person's faith, their peace, their sense of God's presence or absence in a dark moment. The sacrament meets people at the place where human endurance runs out and offers something that endurance alone cannot provide.</p>
+      <p>James 5:14-15 is the scriptural anchor: <em>"Is anyone among you sick? Let him call for the elders of the Church, and let them pray over him, anointing him with oil in the name of the Lord. And the prayer of faith will save the one who is sick."</em> The early Church took this literally from the beginning, and it remains one of the most quietly powerful moments in Catholic pastoral life.</p>
+      <p><strong>For those who have watched someone receive this sacrament, the experience is often striking.</strong> Something shifts in the room. The person being anointed frequently reports a peace that does not track with the circumstances — a settling that has no natural explanation. The Church doesn't make extravagant claims about what the sacrament guarantees. It simply offers the presence of Christ at the moment when that presence is most needed.</p>
+    </div>
+  </div>
+
+  <!-- SECTION: THE WHOLE PICTURE -->
+  <div class="section-label"><span>Seven Sacraments, One Life</span></div>
+
+  <div class="dark-block">
+    <div class="block-label">The Full Arc</div>
+    <h3>Seven moments where the physical and divine meet — from birth to death and everything between.</h3>
+    <p>Baptism marks the beginning. Confirmation seals it. The Eucharist feeds it week after week. Confession heals the repeated failures. Marriage or Holy Orders consecrates the primary vocation. Anointing accompanies the end.</p>
+    <p>No other institution in the world offers this. A system of grace designed to accompany a human being through every major turning point of existence — not with platitudes or general encouragement, but with specific physical acts through which the Church believes God is concretely present and active.</p>
+    <p><strong>The sacraments are the Church's answer to the fact that human beings are not purely spiritual.</strong> We live in bodies, in time, in specific moments of joy and failure and fear. We need grace that meets us where we actually are — not in the abstract, but in the particular. Water poured. Oil pressed into skin. Bread placed on a tongue. Words spoken over a dying person. God coming through the physical, because that is where we are, and that is how he chose to reach us.</p>
+  </div>
+
+  <div class="scripture-block">
+    <p>"Grace was given to each of us according to the measure of Christ's gift."</p>
+    <cite>— Ephesians 4:7</cite>
+  </div>
+
+  <div class="for-you-block">
+    <div class="fy-label">Where This Leaves You</div>
+    <h3>You don't have to have all seven figured out before you begin.</h3>
+    <p>Most people entering the Catholic Church through OCIA receive three sacraments at once — Baptism, Confirmation, and first Eucharist — at the Easter Vigil. The others come with time, vocation, and need. You don't sign up for all seven on day one. You begin where you are.</p>
+    <p>If one of these sacraments is the thing keeping you from the door — the fear of Confession, the uncertainty about marriage teaching, the questions about the Eucharist — bring that specific thing. The Church has been fielding these questions for two thousand years and hasn't run out of patience yet. Neither have the people who will walk through OCIA with you.</p>
+    <p><strong>The sacraments are not a reward for having your faith in perfect order. They are the means by which faith gets ordered.</strong> You receive them not because you are ready, but because Christ offers them to people who are still becoming ready — which is all of us, at every stage.</p>
+  </div>
+
+</div>
+
+<div class="complete-footer">
+  <div class="complete-info">
+    <div class="complete-label">✓ Module 4 Complete</div>
+    <div class="complete-title">The Sacraments</div>
+  </div>
+  <div class="btn-row">
+    <a href="crux-adult-formation.html" class="btn-modules">All Modules</a>
+    <a href="crux-adult-formation.html" class="btn-next-module">Next Module →</a>
+  </div>
+</div>
+
+</body>
+</html>

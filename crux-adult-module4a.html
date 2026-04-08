@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>CRUX — The Sacraments · Part A</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  color-scheme: light;
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.header-right { display:flex; align-items:center; gap:0.75rem; }
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── BANNER ── */
+.module-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.module-banner::before {
+  content: '✟';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 26rem;
+  font-weight: 900;
+  color: rgba(212,165,116,0.03);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.module-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.module-tag::before, .module-tag::after {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.module-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.module-banner .part-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.module-banner p.intro {
+  color: rgba(255,255,255,0.55);
+  font-size: 1rem;
+  line-height: 1.75;
+  max-width: 580px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ── PART NAV ── */
+.part-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  overflow-x: auto;
+}
+
+.part-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--subtle);
+}
+
+.part-tab.active { color: var(--navy); border-bottom-color: var(--gold-mid); }
+.part-tab:hover:not(.active) { color: var(--muted); }
+
+.part-tab .part-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(26,31,54,0.07);
+  color: var(--subtle);
+  flex-shrink: 0;
+}
+
+.part-tab.active .part-num { background: var(--gold-mid); color: var(--white); }
+
+/* ── CONTENT ── */
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 6rem;
+}
+
+.hook-block { margin-bottom: 3rem; }
+
+.hook-block p.opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.hook-block p {
+  font-size: 0.97rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong { color: var(--navy); font-weight: 600; }
+.body-text p em { font-style: italic; }
+
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Dark block */
+.dark-block {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2.75rem 2.5rem;
+  margin: 2.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-block::before {
+  content: '✟';
+  position: absolute;
+  font-size: 18rem;
+  color: rgba(255,255,255,0.02);
+  right: -2rem;
+  bottom: -3rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.dark-block .block-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.dark-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.dark-block p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.65);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.dark-block p:last-child { margin-bottom: 0; }
+.dark-block p strong { color: var(--white); font-weight: 600; }
+.dark-block p em { font-style: italic; }
+
+/* Sacrament of initiation cards */
+.initiation-cards {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--white);
+  margin: 1.75rem 0 2.25rem;
+}
+
+.initiation-card {
+  padding: 1.75rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+}
+
+.initiation-card:last-child { border-bottom: none; }
+
+.initiation-icon {
+  width: 42px;
+  height: 42px;
+  border-radius: 8px;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.initiation-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.4rem;
+}
+
+.initiation-content p {
+  font-size: 0.875rem;
+  color: var(--navy);
+  line-height: 1.75;
+}
+
+.initiation-content p strong { color: var(--navy); font-weight: 600; }
+.initiation-content p em { font-style: italic; }
+
+/* Eucharist spotlight block */
+.eucharist-block {
+  background: rgba(212,165,116,0.07);
+  border: 1px solid rgba(212,165,116,0.22);
+  border-radius: 14px;
+  padding: 2.25rem 2.5rem;
+  margin: 2.5rem 0;
+}
+
+.eucharist-block .eu-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.75rem;
+}
+
+.eucharist-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+  line-height: 1.35;
+}
+
+.eucharist-block p {
+  font-size: 0.93rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 0.85rem;
+}
+
+.eucharist-block p:last-child { margin-bottom: 0; }
+.eucharist-block p strong { color: var(--navy); font-weight: 600; }
+.eucharist-block p em { font-style: italic; }
+
+/* Scripture */
+.scripture-block {
+  margin: 2.5rem 0;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+.scripture-block::before {
+  content: '"';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem;
+  color: var(--gold-dim);
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 1;
+}
+
+.scripture-block p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.6rem;
+  position: relative;
+}
+
+.scripture-block cite {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Continue bar */
+.continue-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 90;
+  box-shadow: 0 -4px 24px rgba(26,31,54,0.08);
+}
+
+.continue-bar .progress-info {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.continue-bar .progress-info strong { color: var(--navy); }
+
+.btn-continue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--navy);
+  color: var(--gold);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.btn-continue:hover { background: var(--gold-mid); color: var(--white); }
+
+@media (max-width: 640px) {
+  /* Header */
+  header { padding: 1rem 1.25rem; }
+  .logo { font-size: 1.3rem; letter-spacing: 3px; }
+  .btn-back { font-size: 0.75rem; padding: 0.4rem 0.75rem; }
+
+  /* Banner */
+  .module-banner { padding: 2.5rem 1.25rem 2rem; }
+  .module-banner::before { font-size: 10rem; }
+  .module-banner h1 { font-size: 1.75rem; line-height: 1.2; }
+  .module-banner p.intro { font-size: 0.9rem; }
+  .module-banner .part-label { font-size: 0.7rem; }
+
+  /* Part nav */
+  .part-nav { padding: 0 0.75rem; }
+  .part-tab { padding: 0.85rem 1rem; font-size: 0.75rem; }
+
+  /* Content */
+  .content-wrap { padding: 2rem 1.1rem 7rem; }
+
+  /* Hook */
+  .hook-block { margin-bottom: 2rem; }
+  .hook-block p.opener { font-size: 1.15rem; line-height: 1.55; margin-bottom: 1rem; }
+  .hook-block p { font-size: 0.93rem; line-height: 1.75; }
+
+  /* Section labels */
+  .section-label { margin: 2rem 0 1.25rem; }
+  .section-label span { font-size: 0.6rem; letter-spacing: 2px; }
+
+  /* Body text */
+  .body-text p { font-size: 0.93rem; line-height: 1.75; margin-bottom: 1rem; }
+
+  /* Pull quote */
+  .pull-quote { padding: 1.5rem 1.25rem; margin: 1.75rem 0; }
+  .pull-quote p { font-size: 1.05rem; }
+
+  /* Dark block */
+  .dark-block { padding: 1.75rem 1.25rem; border-radius: 12px; margin: 1.75rem 0; }
+  .dark-block::before { font-size: 8rem; }
+  .dark-block h3 { font-size: 1.15rem; line-height: 1.3; margin-bottom: 1rem; }
+  .dark-block p { font-size: 0.9rem; line-height: 1.75; }
+
+  /* Initiation cards */
+  .initiation-cards { border-radius: 12px; }
+  .initiation-card { padding: 1.25rem 1rem; gap: 0.9rem; }
+  .initiation-icon { width: 36px; height: 36px; font-size: 0.95rem; flex-shrink: 0; }
+  .initiation-content h4 { font-size: 0.95rem; }
+  .initiation-content p { font-size: 0.84rem; line-height: 1.7; }
+
+  /* Eucharist block */
+  .eucharist-block { padding: 1.5rem 1.25rem; border-radius: 12px; margin: 1.75rem 0; }
+  .eucharist-block h3 { font-size: 1.05rem; line-height: 1.35; }
+  .eucharist-block p { font-size: 0.9rem; line-height: 1.75; }
+
+  /* Scripture */
+  .scripture-block { padding: 1.75rem 1rem; }
+  .scripture-block::before { font-size: 5rem; }
+  .scripture-block p { font-size: 1.05rem; }
+
+  /* Continue bar */
+  .continue-bar { padding: 0.85rem 1.1rem; }
+  .continue-bar .progress-info { font-size: 0.72rem; }
+  .btn-continue { padding: 0.65rem 1.25rem; font-size: 0.82rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <div class="header-right">
+    <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+  </div>
+</header>
+
+<div class="module-banner">
+  <div class="module-tag">Module 4 · Adult Formation</div>
+  <div class="part-label">Part A of 2</div>
+  <h1>The Sacraments</h1>
+  <p class="intro">God uses physical things to reach us. Water, oil, bread, words. This is not accidental — it is the logic of a God who became flesh.</p>
+</div>
+
+<div class="part-nav">
+  <a href="crux-adult-module4a.html" class="part-tab active">
+    <span class="part-num">A</span>
+    Why Physical Things Matter
+  </a>
+  <a href="crux-adult-module4b.html" class="part-tab">
+    <span class="part-num">B</span>
+    The Sacraments of Daily Life
+  </a>
+</div>
+
+<div class="content-wrap">
+
+  <!-- HOOK -->
+  <div class="hook-block">
+    <p class="opener">Religion has a reputation for being abstract. Creeds, doctrines, invisible realities you're asked to accept on faith. Catholicism is all of those things — and also, stubbornly, concretely physical.</p>
+    <p>Water poured over a head. Oil pressed into skin. Bread placed on a tongue. Hands laid on shoulders. Words spoken over a dying person. The Catholic sacraments are not symbols pointing toward spiritual realities the way a sign points toward a city. They are moments where the physical and spiritual worlds actually meet — where grace enters through matter, because a God who became matter decided that matter was a worthy vehicle for his presence.</p>
+    <p>Understanding the sacraments means understanding why that isn't strange. It starts with the Incarnation.</p>
+  </div>
+
+  <!-- SECTION: WHY PHYSICAL -->
+  <div class="section-label"><span>The Logic of the Incarnation</span></div>
+
+  <div class="body-text">
+    <p>When God became human in Jesus Christ, he made a permanent statement about physical reality. Matter is not an obstacle to God. It is not a lesser thing to be escaped or transcended. God chose to enter it, live in it, and redeem it from the inside.</p>
+    <p>That decision has consequences that run all the way through Catholic practice. If God became flesh, then flesh can carry God. If the eternal entered time, then time can be the location of eternal encounters. <strong>The sacraments are the continuation of that logic.</strong> They are the places where, in ordinary physical acts — washing, eating, touching — something is happening that exceeds the physical act entirely.</p>
+    <p>The Catholic tradition uses the word <em>ex opere operato</em> to describe this: the sacraments work by the act itself, not by the worthiness of the priest performing them or the depth of feeling in the person receiving them. A baptism administered by a struggling priest to a distracted infant is still a real baptism. The grace flows through the channel regardless of the condition of the pipes. This is either very strange or very reassuring, depending on where you're standing — and for most people, once they've been through a few difficult seasons of life, it becomes reassuring.</p>
+  </div>
+
+  <div class="dark-block">
+    <div class="block-label">The Two Worlds Touching</div>
+    <h3>Every sacrament is an ordinary thing made extraordinary by what God has decided to do with it.</h3>
+    <p>Water is just water. But water over which the trinitarian formula has been spoken, poured in faith on a person entering the Church, becomes the water of new birth — the same water the early Christians risked their lives to receive, the same water that has marked the boundary between outside and inside the Body of Christ for two thousand years.</p>
+    <p>Bread is just bread — wheat, water, heat. But bread that has been consecrated at the Eucharist is, in the Catholic understanding, no longer bread at all. The substance has changed. What looks and feels and tastes like bread has become the Body of Christ, because Jesus said so at the Last Supper and the Church has taken him at his word ever since.</p>
+    <p><strong>The sacraments ask you to believe that the visible world is thinner than it appears</strong> — that at certain moments, in certain acts, the barrier between the physical and the divine becomes permeable. That is a large claim. It is also the claim that has sustained the faith of billions of people across every culture and century who found, at the altar or the font or the sickbed, that something real was happening.</p>
+  </div>
+
+  <!-- SECTION: SACRAMENTS OF INITIATION -->
+  <div class="section-label"><span>The Sacraments of Initiation</span></div>
+
+  <div class="body-text">
+    <p>Three sacraments together constitute what the Church calls Christian initiation: Baptism, Confirmation, and the Eucharist. They are the sacraments of becoming — the process by which a person moves from outside the Body of Christ to inside it, from seeker to member, from observer to participant. In the early Church they were received together at the Easter Vigil, in a single night of fire and water and bread. The weight of that sequence — death to the old life, sealing by the Spirit, first communion at the table — was designed to be felt all at once.</p>
+  </div>
+
+  <div class="initiation-cards">
+    <div class="initiation-card">
+      <div class="initiation-icon">💧</div>
+      <div class="initiation-content">
+        <h4>Baptism — The Beginning</h4>
+        <p>Baptism is the door. Everything else in sacramental life depends on it. Water is poured or immersed in the name of the Father, Son, and Holy Spirit, and something happens that the Church understands as both death and birth simultaneously: the old self goes under the water, and a new self comes up. Original sin is washed away. The person becomes a member of the Body of Christ.</p>
+        <p>The early Church baptized adults who had gone through the catechumenate — sometimes years of formation. The Church also baptizes infants, trusting that the faith of the parents and the community surrounds the child until they are old enough to claim it personally. <strong>Baptism can happen at any point in a life.</strong> The OCIA process exists precisely for adults who find their way to the font later — and the Church has always considered that arrival, whenever it comes, cause for celebration rather than anything less.</p>
+      </div>
+    </div>
+    <div class="initiation-card">
+      <div class="initiation-icon">🕊</div>
+      <div class="initiation-content">
+        <h4>Confirmation — The Strengthening</h4>
+        <p>Confirmation completes what Baptism began. The bishop anoints the forehead with chrism oil and lays hands on the person, and the gifts of the Holy Spirit are sealed more fully into a life already marked by Baptism. In the Western Church, Confirmation typically comes in adolescence for those baptized as infants, or at the same time as Baptism for those entering as adults.</p>
+        <p>The chrism used at Confirmation is the same oil used at Baptism and at the ordination of priests and bishops. That continuity is deliberate: <strong>the confirmed person is being anointed into the same priestly, prophetic, and kingly mission that runs through the whole Body of Christ.</strong> Confirmation is not a graduation from faith. It is a commissioning into it.</p>
+      </div>
+    </div>
+    <div class="initiation-card">
+      <div class="initiation-icon">🍞</div>
+      <div class="initiation-content">
+        <h4>The Eucharist — The Source and Summit</h4>
+        <p>The Second Vatican Council called the Eucharist "the source and summit of the Christian life" — the sacrament from which everything else flows and toward which everything else points. Of all seven sacraments, this is the one the Church returns to most often: not once at baptism or once at confirmation, but every Sunday, every day in parishes around the world, the same act repeated since the night Jesus first performed it.</p>
+        <p>What happens at the Eucharist is addressed in its own section below, because it deserves more than a card.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: THE EUCHARIST -->
+  <div class="section-label"><span>The Eucharist — What Is Actually Happening</span></div>
+
+  <div class="body-text">
+    <p>At the Last Supper, the night before he was crucified, Jesus took bread, broke it, and said: <em>"This is my body, which is given for you. Do this in remembrance of me."</em> Then he took wine and said: <em>"This cup that is poured out for you is the new covenant in my blood."</em> He was not speaking metaphorically. He was instituting something.</p>
+    <p>The Catholic Church has held from the beginning that when a priest speaks those same words over bread and wine at Mass, the same thing happens that happened in that upper room. The bread and wine become the Body and Blood of Christ. The appearances — the taste, the texture, the look — remain. The substance changes. This is what the Church means by the Real Presence, and by transubstantiation: a precise philosophical attempt to describe something that exceeds philosophical description.</p>
+    <p>It sounds strange. Jesus knew it would. In John 6, when he first taught this, many of his disciples walked away. He turned to the Twelve and asked if they were leaving too. Peter answered: <em>"Lord, to whom shall we go? You have the words of eternal life."</em> That has been the Catholic answer to the strangeness ever since. Not that it's easy to believe, but that Jesus said it, and there is nowhere better to go.</p>
+  </div>
+
+  <div class="eucharist-block">
+    <div class="eu-label">The Mass as Calvary Made Present</div>
+    <h3>Every Mass is not a recreation of the Last Supper. It is the Last Supper — and the Crucifixion — made present across time.</h3>
+    <p>This is the harder thing to grasp, and the more important one. The Eucharist is not a memorial service held in honor of something that happened two thousand years ago. Catholic theology understands the Mass as the same sacrifice of Calvary, made present here and now. Christ does not die again at every Mass — his death was once and sufficient. But that single event exists outside of time in a way that allows it to be truly present at every altar where it is celebrated.</p>
+    <p>Which means that when you receive the Eucharist, you are not remembering the Crucifixion the way you might remember a historical event. You are standing at the foot of the Cross. You have the chance to be there the way John was — the one disciple who didn't flee, who stood with Jesus in the worst of it, who looked at the suffering and didn't look away. The others ran. John stayed. Every person who receives communion is being invited into that same posture: to stand with Christ, to embrace what he went through, to receive him fully rather than keep a safe theological distance.</p>
+    <p><strong>The Eucharist is Jesus's new covenant made tangible every single week.</strong> He told us to eat his body and drink his blood not because it is easy to understand, but because he meant it — and because following what he actually taught means receiving what he actually gave. The Mass is the place where that gift is available, where the Cross is not a past event but a present reality, and where the invitation to stand with him rather than flee is extended again.</p>
+  </div>
+
+  <div class="scripture-block">
+    <p>"Do this in remembrance of me."</p>
+    <cite>— Luke 22:19 · Jesus at the Last Supper</cite>
+  </div>
+
+  <div class="body-text">
+    <p>The word Jesus uses — <em>anamnesis</em> in Greek — does not mean "think about this occasionally." It means to make present again, to re-actualize. The early Christians understood that distinction immediately. They did not gather weekly to remember a dead teacher. They gathered to encounter a risen Lord who had told them exactly how he wanted to be encountered: in the breaking of the bread.</p>
+    <p>That is what has happened at Catholic altars every day for two thousand years. It is why the Eucharist is called the source and summit. Everything else in Catholic life flows from it and returns to it, because it is the place where Christ is most fully and tangibly present — not as a feeling or an idea, but as a person, offering himself again.</p>
+  </div>
+
+</div>
+
+<div class="continue-bar">
+  <div class="progress-info">
+    Module 4 · <strong>Part A complete</strong> — Why Physical Things Matter
+  </div>
+  <a href="crux-adult-module4b.html" class="btn-continue">Continue to Part B →</a>
+</div>
+
+</body>
+</html>
