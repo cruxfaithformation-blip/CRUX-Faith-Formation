@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>CRUX — Now What? · Part A</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  color-scheme: light;
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.header-right { display:flex; align-items:center; gap:0.75rem; }
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── BANNER ── */
+.module-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.module-banner::before {
+  content: '✟';
+  position: absolute;
+  font-size: 24rem;
+  color: rgba(212,165,116,0.03);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.module-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.module-tag::before, .module-tag::after {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.module-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.module-banner .part-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.module-banner p.intro {
+  color: rgba(255,255,255,0.55);
+  font-size: 1rem;
+  line-height: 1.75;
+  max-width: 580px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ── PART NAV ── */
+.part-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  overflow-x: auto;
+}
+
+.part-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.part-tab.active { color: var(--navy); border-bottom-color: var(--gold-mid); }
+.part-tab:hover:not(.active) { color: var(--navy); }
+
+.part-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(26,31,54,0.07);
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.part-tab.active .part-num { background: var(--gold-mid); color: var(--white); }
+
+/* ── CONTENT ── */
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 6rem;
+}
+
+.hook-block { margin-bottom: 3rem; }
+
+.hook-block p.opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.hook-block p {
+  font-size: 0.97rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong { font-weight: 600; }
+.body-text p em { font-style: italic; }
+
+/* Video embed */
+.video-block {
+  margin: 2.5rem 0;
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--navy);
+  box-shadow: 0 4px 24px rgba(26,31,54,0.15);
+}
+
+.video-label {
+  padding: 1rem 1.5rem 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.video-label .v-tag {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.video-label .v-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+}
+
+.video-label .v-source {
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.35);
+  margin-left: auto;
+}
+
+.video-ratio {
+  position: relative;
+  padding-bottom: 56.25%;
+  height: 0;
+}
+
+.video-ratio iframe {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%;
+  height: 100%;
+  border: none;
+}
+
+/* Pull quote */
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Dark block */
+.dark-block {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2.75rem 2.5rem;
+  margin: 2.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-block::before {
+  content: '✟';
+  position: absolute;
+  font-size: 16rem;
+  color: rgba(255,255,255,0.02);
+  right: -2rem;
+  bottom: -3rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.dark-block .block-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.dark-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.dark-block p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.dark-block p:last-child { margin-bottom: 0; }
+.dark-block p strong { color: var(--white); font-weight: 600; }
+.dark-block p em { font-style: italic; }
+
+/* Argument chain */
+.argument-chain {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 1.75rem 0 2.25rem;
+  position: relative;
+}
+
+.argument-chain::before {
+  content: '';
+  position: absolute;
+  left: 20px;
+  top: 24px;
+  bottom: 24px;
+  width: 2px;
+  background: linear-gradient(to bottom, var(--gold-mid), var(--gold-dim));
+}
+
+.arg-step {
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  padding: 1.25rem 0;
+  position: relative;
+}
+
+.arg-dot {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: var(--white);
+  border: 2px solid var(--gold-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--gold-mid);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+  font-family: 'Playfair Display', serif;
+}
+
+.arg-content { padding-top: 0.4rem; }
+
+.arg-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.4rem;
+}
+
+.arg-content p {
+  font-size: 0.88rem;
+  color: var(--navy);
+  line-height: 1.75;
+}
+
+/* Scripture */
+.scripture-block {
+  margin: 2.5rem 0;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+.scripture-block::before {
+  content: '"';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem;
+  color: var(--gold-dim);
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 1;
+}
+
+.scripture-block p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.6rem;
+  position: relative;
+}
+
+.scripture-block cite {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Continue bar */
+.continue-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 90;
+  box-shadow: 0 -4px 24px rgba(26,31,54,0.08);
+}
+
+.continue-bar .progress-info {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.continue-bar .progress-info strong { color: var(--navy); }
+
+.btn-continue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--navy);
+  color: var(--gold);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.btn-continue:hover { background: var(--gold-mid); color: var(--white); }
+
+@media (max-width: 640px) {
+  header { padding: 1rem 1.25rem; }
+  .logo { font-size: 1.3rem; letter-spacing: 3px; }
+  .btn-back { font-size: 0.75rem; padding: 0.4rem 0.75rem; }
+  .module-banner { padding: 2.5rem 1.25rem 2rem; }
+  .module-banner::before { font-size: 8rem; }
+  .module-banner h1 { font-size: 1.75rem; }
+  .part-nav { padding: 0 0.75rem; }
+  .part-tab { padding: 0.85rem 1rem; font-size: 0.75rem; }
+  .content-wrap { padding: 2rem 1.1rem 7rem; }
+  .hook-block p.opener { font-size: 1.15rem; line-height: 1.55; }
+  .hook-block p { font-size: 0.93rem; }
+  .section-label { margin: 2rem 0 1.25rem; }
+  .body-text p { font-size: 0.93rem; line-height: 1.75; margin-bottom: 1rem; }
+  .pull-quote { padding: 1.5rem 1.25rem; }
+  .pull-quote p { font-size: 1.05rem; }
+  .dark-block { padding: 1.75rem 1.25rem; border-radius: 12px; }
+  .dark-block h3 { font-size: 1.15rem; }
+  .dark-block p { font-size: 0.9rem; }
+  .argument-chain::before { left: 16px; }
+  .arg-dot { width: 34px; height: 34px; font-size: 0.68rem; }
+  .arg-step { gap: 1rem; }
+  .arg-content h4 { font-size: 0.97rem; }
+  .arg-content p { font-size: 0.84rem; }
+  .scripture-block { padding: 1.75rem 1rem; }
+  .scripture-block::before { font-size: 5rem; }
+  .scripture-block p { font-size: 1.05rem; }
+  .continue-bar { padding: 0.85rem 1.1rem; }
+  .continue-bar .progress-info { font-size: 0.72rem; }
+  .btn-continue { padding: 0.65rem 1.25rem; font-size: 0.82rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <div class="header-right">
+    <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+  </div>
+</header>
+
+<div class="module-banner">
+  <div class="module-tag">Module 7 · Adult Formation</div>
+  <div class="part-label">Part A of 2</div>
+  <h1>Now What?</h1>
+  <p class="intro">Six modules in. Here is what they add up to — and the question they leave you with.</p>
+</div>
+
+<div class="part-nav">
+  <a href="crux-adult-module7a.html" class="part-tab active">
+    <span class="part-num">A</span>
+    The Case, Complete
+  </a>
+  <a href="crux-adult-module7b.html" class="part-tab">
+    <span class="part-num">B</span>
+    The Decision in Front of You
+  </a>
+</div>
+
+<div class="content-wrap">
+
+  <!-- HOOK -->
+  <div class="hook-block">
+    <p class="opener">Somewhere around Module 3, a pattern started to emerge. The evidence wasn't pointing in multiple directions. It was pointing in one.</p>
+    <p>Not because Catholicism is self-evidently true in the way that two plus two is four. But because the claims of the Catholic faith, taken seriously and examined honestly, turn out to have a remarkable amount of historical, philosophical, and theological weight behind them — more than most people who haven't looked closely would expect.</p>
+    <p>This module doesn't recap what you've covered. It asks a different question: when you lay the whole picture out, what does it add up to?</p>
+  </div>
+
+  <!-- VIDEO -->
+  <div class="video-block">
+    <div class="video-label">
+      <span class="v-tag">Watch First</span>
+      <span class="v-title">Why Be Catholic and Not Just Christian? — Trent Horn</span>
+      <span class="v-source">Catholic Answers · Truthly</span>
+    </div>
+    <div class="video-ratio">
+      <iframe
+        src="https://www.youtube.com/embed/PUAemPFpAYg"
+        title="Why Be Catholic and Not Just Christian? — Trent Horn"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen>
+      </iframe>
+    </div>
+  </div>
+
+  <!-- SECTION: THE CUMULATIVE CASE -->
+  <div class="section-label"><span>What the Evidence Actually Shows</span></div>
+
+  <div class="body-text">
+    <p>The case for Catholicism doesn't rest on any single argument. It rests on a cumulative one — a set of claims that, taken together, are harder to dismiss than any one of them individually. What follows is that case laid out as a whole, not as a summary of what you've read, but as the argument itself.</p>
+  </div>
+
+  <div class="argument-chain">
+
+    <div class="arg-step">
+      <div class="arg-dot">I</div>
+      <div class="arg-content">
+        <h4>Jesus was a real historical figure who made claims no sane person makes about himself</h4>
+        <p>The historicity of Jesus is not seriously disputed by scholars. What he claimed about himself — to forgive sins, to be one with the Father, to be the resurrection and the life — is either true, delusional, or a deliberate lie. The Resurrection is the event that forces the question. It is the most well-attested miracle in the ancient world, documented by hostile witnesses as well as friendly ones, and it is the hinge on which everything else turns. If the Resurrection happened, the implications are unavoidable. If it didn't, none of the rest of this matters.</p>
+      </div>
+    </div>
+
+    <div class="arg-step">
+      <div class="arg-dot">II</div>
+      <div class="arg-content">
+        <h4>The Church that built itself on that claim did so at enormous personal cost</h4>
+        <p>The first Christians didn't gain money, power, or social standing by following Jesus. They gained persecution, exile, and in many cases death. Eleven of the twelve Apostles were martyred. The early Church spread not through coercion but through witness — people who had seen something, or who knew people who had seen something, and who refused to recant it even under torture. People do not die for what they know to be a lie. The willingness of the first generation to die for the Resurrection is itself a significant piece of evidence for it.</p>
+      </div>
+    </div>
+
+    <div class="arg-step">
+      <div class="arg-dot">III</div>
+      <div class="arg-content">
+        <h4>That Church has an unbroken line back to the Apostles themselves</h4>
+        <p>Every Catholic bishop today can trace his ordination through an unbroken chain of laying-on-of-hands back to the Apostles. This is not a symbolic claim — it is a documented historical one. The Catholic Church did not emerge from the Reformation in the sixteenth century, or from a nineteenth-century revival, or from a founder's personal interpretation of Scripture. It is the original community, continuous with the one Jesus established when he said to Peter: "On this rock I will build my Church." Every other Christian denomination traces its origins back through the Catholic Church, because there was no other Christian Church for the first fifteen centuries of Christianity.</p>
+      </div>
+    </div>
+
+    <div class="arg-step">
+      <div class="arg-dot">IV</div>
+      <div class="arg-content">
+        <h4>The sacramental system it developed encodes the logic of the Incarnation</h4>
+        <p>God became physical. He took on a body, ate food, touched lepers, wept at a tomb. The Catholic insistence that grace comes through physical means — water, oil, bread, words spoken by a human voice — is not primitive superstition. It is the consistent application of the Incarnation's logic. If God was willing to enter matter to save us, it makes sense that he would continue to work through matter. The sacraments are the Incarnation extended forward through time.</p>
+      </div>
+    </div>
+
+    <div class="arg-step">
+      <div class="arg-dot">V</div>
+      <div class="arg-content">
+        <h4>The prayer life it teaches is a relationship, not a ritual</h4>
+        <p>Catholic prayer at its best is not rote recitation. It is conversation with a God who knows you by name, who invites you to bring everything — the gratitude, the failure, the hope, the unanswered question — and who responds not always in the way you expect but in ways that, over time, shape a person unmistakably. The tradition has produced more serious people of prayer than any other in human history. That is not an accident of culture. It is the fruit of a genuine encounter with a real God.</p>
+      </div>
+    </div>
+
+    <div class="arg-step">
+      <div class="arg-dot">VI</div>
+      <div class="arg-content">
+        <h4>The communion it offers extends across death itself</h4>
+        <p>You are not joining a local community of a few hundred people. You are joining the Body of Christ — everyone who has ever been baptized into it, living and dead. The saints are not legends. They are your brothers and sisters who finished the race before you, who are already where you are trying to go, and who are available to pray for you from the most advantageous position possible: the presence of God himself. The Church is larger than it appears from the outside. Much larger.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SECTION: THE QUESTION -->
+  <div class="section-label"><span>The Question This Leaves You With</span></div>
+
+  <div class="dark-block">
+    <div class="block-label">What the Evidence Points To</div>
+    <h3>At some point the question stops being "is this plausible?" and becomes "what am I going to do about it?"</h3>
+    <p>Lewis put it this way: Christianity, if false, is of no importance. If true, it is of infinite importance. The one thing it cannot be is moderately important. You cannot treat the Resurrection as an interesting historical curiosity and go on with your life unchanged. Either it happened — in which case everything is different — or it didn't, and none of this matters at all.</p>
+    <p>The cumulative case for Catholicism doesn't prove anything in the way a mathematical proof does. It never will. Faith is not the conclusion of a logical syllogism. It is a response to evidence — historical evidence, philosophical evidence, the evidence of two thousand years of transformed lives — made by a person willing to act on what the evidence suggests rather than waiting for certainty that will never come.</p>
+    <p><strong>No one has ever had certainty. Not the Apostles, not Augustine, not Thomas Aquinas.</strong> What they had was a preponderance of evidence, a response to the person of Jesus, and the willingness to say yes. That is still what is being asked. Not certainty. Willingness.</p>
+  </div>
+
+  <div class="pull-quote">
+    <p>I believe in Christianity as I believe that the sun has risen: not only because I see it, but because by it I see everything else.</p>
+    <cite>— C.S. Lewis, "Is Theology Poetry?" 1944</cite>
+  </div>
+
+  <div class="body-text">
+    <p>Part B addresses the two people who may be reading this right now. The person deciding whether to take the next step toward the Church — and the person who is already confirmed and came to this track to go deeper. Both of you have something in front of you. Part B is about what that actually looks like.</p>
+  </div>
+
+</div>
+
+<div class="continue-bar">
+  <div class="progress-info">
+    Module 7 · <strong>Part A complete</strong> — The Case, Complete
+  </div>
+  <a href="crux-adult-module7b.html" class="btn-continue">Continue to Part B →</a>
+</div>
+
+</body>
+</html>

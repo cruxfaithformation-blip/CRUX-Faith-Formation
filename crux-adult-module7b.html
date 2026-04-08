@@ -1,0 +1,713 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>CRUX — Now What? · Part B</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  color-scheme: light;
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.header-right { display:flex; align-items:center; gap:0.75rem; }
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── BANNER ── */
+.module-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.module-banner::before {
+  content: '✟';
+  position: absolute;
+  font-size: 24rem;
+  color: rgba(212,165,116,0.03);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.module-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.module-tag::before, .module-tag::after {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.module-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.module-banner .part-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.module-banner p.intro {
+  color: rgba(255,255,255,0.55);
+  font-size: 1rem;
+  line-height: 1.75;
+  max-width: 580px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ── PART NAV ── */
+.part-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  overflow-x: auto;
+}
+
+.part-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.part-tab.active { color: var(--navy); border-bottom-color: var(--gold-mid); }
+.part-tab.complete { color: var(--muted); }
+.part-tab:hover:not(.active) { color: var(--navy); }
+
+.part-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(26,31,54,0.07);
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.part-tab.complete .part-num { background: rgba(46,125,50,0.15); color: #2e7d32; }
+.part-tab.active .part-num { background: var(--gold-mid); color: var(--white); }
+
+/* ── CONTENT ── */
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 8rem;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong { font-weight: 600; }
+.body-text p em { font-style: italic; }
+
+/* Reader address blocks */
+.reader-block {
+  border-radius: 16px;
+  overflow: hidden;
+  margin: 2.5rem 0;
+}
+
+.reader-header {
+  background: var(--navy);
+  padding: 1.5rem 2rem;
+}
+
+.reader-header .reader-tag {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.6rem;
+}
+
+.reader-header h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.35;
+}
+
+.reader-body {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-top: none;
+  padding: 2rem 2.25rem;
+  border-radius: 0 0 16px 16px;
+}
+
+.reader-body p {
+  font-size: 0.93rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+}
+
+.reader-body p:last-child { margin-bottom: 0; }
+.reader-body p strong { font-weight: 600; }
+.reader-body p em { font-style: italic; }
+
+/* Pull quote */
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Resources block */
+.resources-block {
+  background: rgba(26,31,54,0.04);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2rem 2.25rem;
+  margin: 2rem 0;
+}
+
+.resources-block .res-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.75rem;
+}
+
+.resources-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1.25rem;
+}
+
+.resource-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+
+.resource-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.resource-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  background: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.resource-item-body h4 {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 0.2rem;
+}
+
+.resource-item-body p {
+  font-size: 0.8rem;
+  color: var(--muted);
+  line-height: 1.55;
+}
+
+/* OCIA unlock block */
+.ocia-unlock {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2.5rem 2.5rem;
+  margin: 2.5rem 0;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.ocia-unlock::before {
+  content: '✟';
+  position: absolute;
+  font-size: 14rem;
+  color: rgba(255,255,255,0.02);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  pointer-events: none;
+}
+
+.ocia-unlock .unlock-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.ocia-unlock h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.3;
+  margin-bottom: 0.85rem;
+  position: relative;
+}
+
+.ocia-unlock p {
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.75;
+  max-width: 480px;
+  margin: 0 auto 1.75rem;
+  position: relative;
+}
+
+.btn-ocia {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.85rem 2rem;
+  background: var(--gold-mid);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+}
+
+.btn-ocia:hover { background: var(--gold); color: var(--navy); }
+
+/* Closing scripture footer */
+.scripture-footer {
+  background: var(--navy);
+  text-align: center;
+  padding: 2.5rem 2rem;
+  margin-top: 3rem;
+}
+
+.scripture-footer p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  color: rgba(255,255,255,0.5);
+  font-size: 1rem;
+  margin-bottom: 0.4rem;
+}
+
+.scripture-footer cite {
+  font-size: 0.75rem;
+  color: rgba(212,165,116,0.5);
+  font-style: normal;
+  letter-spacing: 1px;
+}
+
+/* Complete footer */
+.complete-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--navy);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 90;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.2);
+}
+
+.complete-info { display: flex; flex-direction: column; gap: 0.2rem; }
+
+.complete-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.complete-title {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.6);
+  font-weight: 500;
+}
+
+.btn-row { display: flex; gap: 0.75rem; align-items: center; }
+
+.btn-modules {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.25rem;
+  background: transparent;
+  color: rgba(255,255,255,0.6);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-modules:hover { color: var(--white); border-color: rgba(255,255,255,0.5); }
+
+.btn-ocia-footer {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--gold-mid);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-ocia-footer:hover { background: var(--gold); color: var(--navy); }
+
+@media (max-width: 640px) {
+  header { padding: 1rem 1.25rem; }
+  .logo { font-size: 1.3rem; letter-spacing: 3px; }
+  .btn-back { font-size: 0.75rem; padding: 0.4rem 0.75rem; }
+  .module-banner { padding: 2.5rem 1.25rem 2rem; }
+  .module-banner::before { font-size: 8rem; }
+  .module-banner h1 { font-size: 1.75rem; }
+  .part-nav { padding: 0 0.75rem; }
+  .part-tab { padding: 0.85rem 1rem; font-size: 0.75rem; }
+  .content-wrap { padding: 2rem 1.1rem 8rem; }
+  .section-label { margin: 2rem 0 1.25rem; }
+  .body-text p { font-size: 0.93rem; line-height: 1.75; }
+  .reader-header { padding: 1.25rem 1.5rem; }
+  .reader-header h3 { font-size: 1.1rem; }
+  .reader-body { padding: 1.5rem 1.25rem; }
+  .reader-body p { font-size: 0.9rem; }
+  .pull-quote { padding: 1.5rem 1.25rem; }
+  .pull-quote p { font-size: 1.05rem; }
+  .resources-block { padding: 1.5rem 1.25rem; }
+  .ocia-unlock { padding: 2rem 1.25rem; }
+  .ocia-unlock h3 { font-size: 1.25rem; }
+  .ocia-unlock p { font-size: 0.85rem; }
+  .complete-footer { padding: 0.85rem 1.1rem; flex-wrap: wrap; }
+  .complete-footer .btn-row { width: 100%; justify-content: flex-end; }
+  .btn-modules { font-size: 0.75rem; padding: 0.6rem 1rem; }
+  .btn-ocia-footer { font-size: 0.8rem; padding: 0.65rem 1.1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <div class="header-right">
+    <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+  </div>
+</header>
+
+<div class="module-banner">
+  <div class="module-tag">Module 7 · Adult Formation</div>
+  <div class="part-label">Part B of 2</div>
+  <h1>Now What?</h1>
+  <p class="intro">Two different people may be reading this. Both of them have something in front of them.</p>
+</div>
+
+<div class="part-nav">
+  <a href="crux-adult-module7a.html" class="part-tab complete">
+    <span class="part-num">✓</span>
+    The Case, Complete
+  </a>
+  <a href="crux-adult-module7b.html" class="part-tab active">
+    <span class="part-num">B</span>
+    The Decision in Front of You
+  </a>
+</div>
+
+<div class="content-wrap">
+
+  <!-- FOR THE SEEKER -->
+  <div class="reader-block">
+    <div class="reader-header">
+      <div class="reader-tag">If you've been exploring and are not yet Catholic</div>
+      <h3>What saying yes actually means — and what it doesn't require</h3>
+    </div>
+    <div class="reader-body">
+      <p>You don't need certainty to take the next step. You never will have it — not the kind that removes all doubt, not the kind that makes faith unnecessary. What the Church asks is not that you arrive with every question answered. It asks whether you are willing to keep pursuing the answers from the inside rather than the outside.</p>
+      <p>Saying yes to the Catholic faith means saying yes to a community, a sacramental life, a prayer practice, and a set of moral commitments that will cost you something. It is worth being honest about that. The Church does not ask for nominal membership. It asks for your actual life — your time, your money, your habits, your willingness to be formed by something larger than your own preferences and instincts.</p>
+      <p>What it gives in return is harder to describe but not hard to verify. Ask anyone who has spent years inside the faith — not nominal Catholics going through the motions, but people who actually pray, actually receive the sacraments, actually engage the tradition — and they will tell you the same thing: it works. Not in the sense that life gets easier. In the sense that it becomes more meaningful, more oriented, more anchored. The suffering doesn't go away. The confusion doesn't disappear. But you are no longer facing it alone, and you are no longer without a framework for making sense of it.</p>
+      <p><strong>The door is open.</strong> It has been open for two thousand years. It opens the same way it always has: you walk through it. The OCIA guide below is your next step. It will tell you what to expect, how to find a parish, and what the journey actually looks like from the inside. You don't have to be ready. You just have to be willing.</p>
+    </div>
+  </div>
+
+  <div class="pull-quote">
+    <p>You have made us for yourself, O Lord, and our hearts are restless until they rest in you.</p>
+    <cite>— St. Augustine, Confessions, 397 AD</cite>
+  </div>
+
+  <!-- FOR THE ALREADY CONFIRMED -->
+  <div class="reader-block">
+    <div class="reader-header">
+      <div class="reader-tag">If you're already Catholic and used this track to go deeper</div>
+      <h3>The formation track ends here. The formation doesn't.</h3>
+    </div>
+    <div class="reader-body">
+      <p>If you came to this track as a confirmed Catholic looking to understand your faith more deeply — welcome to the other side of it. The seven modules you've completed are a foundation, not a ceiling. The tradition you belong to is inexhaustibly deep. There are people who have given their entire lives to studying a single aspect of it and still felt they had barely begun.</p>
+      <p>The best thing this track can do for a confirmed Catholic is remind you that the faith is worth thinking about seriously — that the questions skeptics ask have real answers, that the history is genuinely extraordinary, that the sacraments mean something, that prayer is a relationship and not a ritual. If any of that landed differently than you expected, that's the point.</p>
+      <p><strong>There is more to explore on CRUX.</strong> The Bible study modules, videos, and playlists on this site are built for exactly what you're doing — going deeper, going further, taking the faith seriously as an adult. More content is being added regularly. Come back.</p>
+    </div>
+  </div>
+
+  <!-- RESOURCES FOR CONFIRMED CATHOLICS -->
+  <div class="resources-block">
+    <div class="res-label">Keep Going — On CRUX</div>
+    <h3>What's available on cruxfaith.com right now</h3>
+    <div class="resource-list">
+      <div class="resource-item">
+        <div class="resource-icon">📖</div>
+        <div class="resource-item-body">
+          <h4>Bible Study Modules</h4>
+          <p>Structured Scripture study for grades 3–8 and adult learners. Start with the Gospel of Mark or the Acts of the Apostles.</p>
+        </div>
+      </div>
+      <div class="resource-item">
+        <div class="resource-icon">▶️</div>
+        <div class="resource-item-body">
+          <h4>Video Library</h4>
+          <p>Curated videos from Fr. Mike Schmitz, Bishop Barron, and others — organized by topic and updated regularly.</p>
+        </div>
+      </div>
+      <div class="resource-item">
+        <div class="resource-icon">🎵</div>
+        <div class="resource-item-body">
+          <h4>Playlists</h4>
+          <p>Catholic music and audio playlists for prayer, study, and the liturgical seasons. Available on Spotify and Apple Music.</p>
+        </div>
+      </div>
+      <div class="resource-item">
+        <div class="resource-icon">✦</div>
+        <div class="resource-item-body">
+          <h4>Lives of the Saints</h4>
+          <p>In-depth profiles of individual saints — the real people behind the plaster figures. New profiles added regularly.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- OCIA UNLOCK -->
+  <div class="ocia-unlock">
+    <div class="unlock-badge">✓ Formation Complete · Unlocked</div>
+    <h3>Your OCIA Guide is ready.</h3>
+    <p>You've completed all 7 modules. The full OCIA guide — what to expect, how to find a parish, what the Easter Vigil looks like, and what entering the Church actually involves — is now unlocked.</p>
+    <a href="crux-adult-ocia.html" class="btn-ocia">Open Your OCIA Guide →</a>
+  </div>
+
+</div>
+
+<div class="scripture-footer">
+  <p>"Come to me, all you who are weary and burdened, and I will give you rest."</p>
+  <cite>— Matthew 11:28</cite>
+</div>
+
+<div class="complete-footer">
+  <div class="complete-info">
+    <div class="complete-label">✓ Formation Track Complete</div>
+    <div class="complete-title">All 7 modules finished</div>
+  </div>
+  <div class="btn-row">
+    <a href="crux-adult-formation.html" class="btn-modules">All Modules</a>
+    <a href="crux-adult-ocia.html" class="btn-ocia-footer">Your OCIA Guide →</a>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+    authDomain: "crux-faith-formation.firebaseapp.com",
+    projectId: "crux-faith-formation",
+    storageBucket: "crux-faith-formation.firebasestorage.app",
+    messagingSenderId: "838141015985",
+    appId: "1:838141015985:web:2655e570663e182d75ef90",
+    measurementId: "G-LQ35DLTVKY"
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) return;
+    await setDoc(
+      doc(db, "users", user.uid),
+      { completedModules: { module7: true } },
+      { merge: true }
+    );
+  });
+</script>
+
+</body>
+</html>
