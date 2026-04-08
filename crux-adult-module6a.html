@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>CRUX — Mary & the Saints · Part A</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  color-scheme: light;
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.header-right { display:flex; align-items:center; gap:0.75rem; }
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── BANNER ── */
+.module-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.module-banner::before {
+  content: '✦';
+  position: absolute;
+  font-size: 22rem;
+  color: rgba(212,165,116,0.03);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.module-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.module-tag::before, .module-tag::after {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.module-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.module-banner .part-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.module-banner p.intro {
+  color: rgba(255,255,255,0.55);
+  font-size: 1rem;
+  line-height: 1.75;
+  max-width: 580px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ── PART NAV ── */
+.part-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  overflow-x: auto;
+}
+
+.part-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.part-tab.active { color: var(--navy); border-bottom-color: var(--gold-mid); }
+.part-tab:hover:not(.active) { color: var(--navy); }
+
+.part-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(26,31,54,0.07);
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.part-tab.active .part-num { background: var(--gold-mid); color: var(--white); }
+
+/* ── CONTENT ── */
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 6rem;
+}
+
+.hook-block { margin-bottom: 3rem; }
+
+.hook-block p.opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.hook-block p {
+  font-size: 0.97rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong { color: var(--navy); font-weight: 600; }
+.body-text p em { font-style: italic; }
+
+/* Pull quote */
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Lewis block — distinctive treatment */
+.lewis-block {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2.75rem 2.5rem;
+  margin: 2.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.lewis-block::before {
+  content: '"';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 20rem;
+  color: rgba(255,255,255,0.025);
+  right: -1rem;
+  top: -3rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.lewis-block .lewis-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.lewis-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.lewis-block p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.lewis-block p:last-child { margin-bottom: 0; }
+.lewis-block p strong { color: var(--white); font-weight: 600; }
+.lewis-block p em { font-style: italic; }
+
+/* Voice card */
+.voice-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold-mid);
+  border-radius: 0 14px 14px 0;
+  padding: 1.75rem 2rem;
+  margin: 2.25rem 0;
+}
+
+.voice-card .voice-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.75rem;
+}
+
+.voice-card p {
+  font-size: 0.93rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 0.85rem;
+  font-style: italic;
+}
+
+.voice-card p:last-child { margin-bottom: 0; }
+.voice-card p strong { font-style: normal; font-weight: 600; }
+
+/* Mary block — gold accent */
+.mary-block {
+  background: rgba(212,165,116,0.07);
+  border: 1px solid rgba(212,165,116,0.22);
+  border-radius: 14px;
+  padding: 2.25rem 2.5rem;
+  margin: 2.5rem 0;
+}
+
+.mary-block .mary-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.75rem;
+}
+
+.mary-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+  line-height: 1.35;
+}
+
+.mary-block p {
+  font-size: 0.93rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 0.85rem;
+}
+
+.mary-block p:last-child { margin-bottom: 0; }
+.mary-block p strong { font-weight: 600; }
+.mary-block p em { font-style: italic; }
+
+/* Scripture */
+.scripture-block {
+  margin: 2.5rem 0;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+.scripture-block::before {
+  content: '"';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem;
+  color: var(--gold-dim);
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 1;
+}
+
+.scripture-block p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.6rem;
+  position: relative;
+}
+
+.scripture-block cite {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Continue bar */
+.continue-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--white);
+  border-top: 1px solid var(--border);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 90;
+  box-shadow: 0 -4px 24px rgba(26,31,54,0.08);
+}
+
+.continue-bar .progress-info {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+.continue-bar .progress-info strong { color: var(--navy); }
+
+.btn-continue {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--navy);
+  color: var(--gold);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.5px;
+}
+
+.btn-continue:hover { background: var(--gold-mid); color: var(--white); }
+
+@media (max-width: 640px) {
+  header { padding: 1rem 1.25rem; }
+  .logo { font-size: 1.3rem; letter-spacing: 3px; }
+  .btn-back { font-size: 0.75rem; padding: 0.4rem 0.75rem; }
+  .module-banner { padding: 2.5rem 1.25rem 2rem; }
+  .module-banner::before { font-size: 8rem; }
+  .module-banner h1 { font-size: 1.75rem; line-height: 1.2; }
+  .module-banner p.intro { font-size: 0.9rem; }
+  .part-nav { padding: 0 0.75rem; }
+  .part-tab { padding: 0.85rem 1rem; font-size: 0.75rem; }
+  .content-wrap { padding: 2rem 1.1rem 7rem; }
+  .hook-block p.opener { font-size: 1.15rem; line-height: 1.55; }
+  .hook-block p { font-size: 0.93rem; }
+  .section-label { margin: 2rem 0 1.25rem; }
+  .body-text p { font-size: 0.93rem; line-height: 1.75; margin-bottom: 1rem; }
+  .pull-quote { padding: 1.5rem 1.25rem; }
+  .pull-quote p { font-size: 1.05rem; }
+  .lewis-block { padding: 1.75rem 1.25rem; border-radius: 12px; }
+  .lewis-block h3 { font-size: 1.15rem; }
+  .lewis-block p { font-size: 0.9rem; }
+  .voice-card { padding: 1.5rem 1.25rem; }
+  .voice-card p { font-size: 0.88rem; }
+  .mary-block { padding: 1.75rem 1.25rem; border-radius: 12px; }
+  .mary-block h3 { font-size: 1.1rem; }
+  .mary-block p { font-size: 0.9rem; }
+  .scripture-block { padding: 1.75rem 1rem; }
+  .scripture-block::before { font-size: 5rem; }
+  .scripture-block p { font-size: 1.05rem; }
+  .continue-bar { padding: 0.85rem 1.1rem; }
+  .continue-bar .progress-info { font-size: 0.72rem; }
+  .btn-continue { padding: 0.65rem 1.25rem; font-size: 0.82rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <div class="header-right">
+    <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+  </div>
+</header>
+
+<div class="module-banner">
+  <div class="module-tag">Module 6 · Adult Formation</div>
+  <div class="part-label">Part A of 2</div>
+  <h1>Mary & the Saints</h1>
+  <p class="intro">The most misunderstood part of Catholicism — and, once understood, one of the most beautiful.</p>
+</div>
+
+<div class="part-nav">
+  <a href="crux-adult-module6a.html" class="part-tab active">
+    <span class="part-num">A</span>
+    Why Mary, Why the Saints
+  </a>
+  <a href="crux-adult-module6b.html" class="part-tab">
+    <span class="part-num">B</span>
+    The Communion of Saints
+  </a>
+</div>
+
+<div class="content-wrap">
+
+  <!-- HOOK -->
+  <div class="hook-block">
+    <p class="opener">Everyone has heroes. The question isn't whether you admire someone — it's whether that admiration is displacing God.</p>
+    <p>Growing up, you had them too. A favorite athlete, a superhero, a musician, a parent. You wore their jersey or their face on a t-shirt. You talked about them, thought about them, tried to emulate them. Nobody accused you of idolatry for any of that, because nobody thought you were confusing Tom Brady with God.</p>
+    <p>The Catholic relationship with Mary and the saints works on the same basic logic — and gets confused for the same basic reason. People see the statues, the medals, the candles, the prayers addressed to someone other than God, and they assume Catholics have made the same mistake pagans made: elevating creatures to the level of the Creator. It's a reasonable concern. It's also based on a misreading of what's actually happening.</p>
+  </div>
+
+  <!-- SECTION: THE OBJECTION ANSWERED -->
+  <div class="section-label"><span>The Objection — Answered Directly</span></div>
+
+  <div class="body-text">
+    <p>The most common challenge goes like this: the New Testament says there is "one mediator between God and mankind, the man Christ Jesus" (1 Timothy 2:5). If Jesus is the one mediator, why are Catholics asking Mary and the saints to intercede? Doesn't that bypass Christ entirely?</p>
+    <p>It's a serious argument and it deserves a serious answer rather than a wave of the hand.</p>
+  </div>
+
+  <div class="lewis-block">
+    <div class="lewis-label">The Lewis Argument</div>
+    <h3>You ask your friends to pray for you. No one accuses you of bypassing Christ when you do.</h3>
+    <p>C.S. Lewis, writing from outside the Catholic tradition as an Anglican, found the theological objection to the intercession of saints remarkably weak — not because the concern about idolatry is wrong, but because the argument against asking saints to pray doesn't survive its own logic.</p>
+    <p>When you ask a friend to pray for you, you are not suggesting your friend is a co-mediator with Christ. You are not implying that God needs a human intermediary to hear your request. You are simply doing what Paul explicitly asks the Corinthians to do — asking another member of the Body of Christ to bring your need before God in prayer. The whole point is that the prayer goes to God through Christ. Your friend is just joining you in making it.</p>
+    <p><strong>The saints are friends who happen to be further along the road than we are.</strong> They are not dead — the Catholic Church holds that those in heaven are more alive than we are, not less. They are with Christ, in his presence, which makes them if anything better positioned to pray than we are. Asking them to intercede is not an alternative to going to Christ. It is one more way of going to Christ, through people who love him and are already at his side.</p>
+    <p>Lewis himself put it plainly: he could not see why death would sever the communion of prayer any more than distance does. If you can ask a friend in another city to pray for you, why not a friend in heaven?</p>
+  </div>
+
+  <div class="pull-quote">
+    <p>I am not sure that the distinction between praying to God and asking a saint to pray to God for you is theologically as sharp as it seems.</p>
+    <cite>— C.S. Lewis, Letters to Malcolm: Chiefly on Prayer, 1964</cite>
+  </div>
+
+  <!-- SECTION: WORSHIP VS VENERATION -->
+  <div class="section-label"><span>Worship and Veneration Are Not the Same Thing</span></div>
+
+  <div class="body-text">
+    <p>The Catholic tradition makes a distinction that often gets lost in translation. <em>Latria</em> — worship, adoration, the total self-giving that belongs to God alone — is owed exclusively to the Trinity. To offer it to anyone or anything else is idolatry, full stop. The Church has taught this consistently since the beginning.</p>
+    <p><em>Dulia</em> — veneration, honor, the respect owed to holy persons — is different in kind, not just degree. You can honor your parents, revere a great teacher, admire a saint, without confusing any of them with God. The veneration Catholics offer Mary and the saints is this second kind. It is not worship. It never was.</p>
+    <p><strong>The confusion between the two is real, and Catholics bear some responsibility for it.</strong> Statues, candles, medals, shrines — these can look from the outside like the trappings of worship. They are not. They are the same impulse that makes you keep a photograph of someone you love: a way of keeping the person present, of honoring a relationship, of remembering what holiness looks like when it walks around in a human body.</p>
+  </div>
+
+  <div class="voice-card">
+    <div class="voice-label">From a CRUX Member</div>
+    <p>Nobody should be worshiping Mary or any saint as equal to Jesus. The Father, Son, and Holy Spirit are one — there's no room for interpretation there. What we're doing when we honor Mary is something entirely different. We're asking her to intercede for us. We're recognizing what she went through and who she carried. <strong>That's not worship. That's love and respect, rightly ordered.</strong></p>
+  </div>
+
+  <!-- SECTION: MARY -->
+  <div class="section-label"><span>Mary — Who She Actually Is</span></div>
+
+  <div class="body-text">
+    <p>Before anything else can be said about Mary, two very common confusions need to be cleared up — because they derail the conversation before it begins.</p>
+    <p>The <strong>Immaculate Conception</strong> does not refer to Jesus's conception. It refers to Mary's own conception — the Catholic teaching that Mary was preserved from original sin from the moment of her conception, in anticipation of her role as the mother of Christ. This is a Marian doctrine, not a doctrine about Jesus's birth. Confusing the two is one of the most common misunderstandings in Catholic-Protestant dialogue.</p>
+    <p>The <strong>Virgin Birth</strong> — the miraculous conception of Jesus by the Holy Spirit — is a separate doctrine, held in common by Catholics and most Protestant traditions alike. Mary's perpetual virginity is the specifically Catholic position, but the Virgin Birth itself is simply orthodox Christianity.</p>
+    <p>With that cleared up: who is Mary, and why does she occupy such a singular place in Catholic devotion?</p>
+  </div>
+
+  <div class="mary-block">
+    <div class="mary-label">The Miracle of All Miracles</div>
+    <h3>Every saint has a miracle attributed to their name. Mary needs no further proof than Jesus.</h3>
+    <p>Think about what that sentence actually means. Bringing God to life in human form — the eternal, uncreated Word taking on flesh and blood and a mother's face — is the miracle that makes every other miracle possible. All of salvation history turns on it. The Incarnation is the hinge of everything. And Mary is the woman who said yes to it.</p>
+    <p>She didn't just carry Jesus in the way a vessel carries its contents. She formed him. His hands, his eyes, the sound of his voice — these came from her. She nursed him, taught him to walk, tended to his scraped knees. She watched him grow into the man who would turn the world upside down. And then she watched him die.</p>
+    <p>That last part deserves to be held for a moment. A mother watching her son executed is already one of the most devastating things a human being can experience. Now add to that: she knew exactly who he was. She knew he was innocent in a way no one else on earth could know. She had heard the angel. She had held the infant. She had watched the miracles. And she stood at the foot of the Cross anyway — she did not flee — and watched the Incarnation, the miracle of all miracles, die on a piece of wood while a crowd mocked him.</p>
+    <p><strong>Catholics love Mary because a son's mother is something sacred.</strong> Because what she endured for our sake was extraordinary. Because she carried the weight of salvation in her body and then watched it suffer, and she bore both with a faithfulness that no other human being has been asked to match. The honor the Church gives her is not excessive. It is simply honest about what she went through and who she is.</p>
+  </div>
+
+  <div class="scripture-block">
+    <p>"Blessed are you among women, and blessed is the fruit of your womb."</p>
+    <cite>— Luke 1:42 · Elizabeth to Mary</cite>
+  </div>
+
+  <!-- SECTION: WHAT WE'RE ACTUALLY ASKING -->
+  <div class="section-label"><span>What We're Actually Asking When We Pray to Mary</span></div>
+
+  <div class="body-text">
+    <p>The Hail Mary ends with a request: <em>pray for us sinners, now and at the hour of our death.</em> That's it. We're not asking Mary to heal the sick, perform miracles, or act in God's place. We're asking her to pray for us — the same thing we'd ask any holy person to do. The difference is that she is the mother of the one we're asking her to bring our prayers to.</p>
+    <p>Think about the first miracle Jesus performed — the wedding at Cana. Mary notices the wine has run out. She goes to Jesus. He says, essentially, that it isn't his time yet. She turns to the servants and says: "Do whatever he tells you." She doesn't perform the miracle. She brings the need to her Son and then points everyone back toward him. He does the rest.</p>
+    <p>That is the pattern of every Marian intercession in Catholic theology. Mary doesn't compete with Christ. She points to him. She always has. <strong>Every prayer that passes through her hands is going to the same place — to her Son, who is one with the Father and the Spirit, who is the only one who can actually do anything about it.</strong></p>
+    <p>She is not the destination. She is the most direct route to the one who is.</p>
+  </div>
+
+  <div class="pull-quote">
+    <p>His mother said to the servants, "Do whatever he tells you."</p>
+    <cite>— John 2:5 · Mary at the wedding at Cana</cite>
+  </div>
+
+  <div class="body-text">
+    <p>Part B takes the same question — why ask anyone other than God directly? — and applies it to the saints as a whole. How they become saints, what the Church is actually claiming when it canonizes someone, and why asking them to pray for you is not superstition but a very reasonable extension of something Christians have always believed about the Church.</p>
+  </div>
+
+</div>
+
+<div class="continue-bar">
+  <div class="progress-info">
+    Module 6 · <strong>Part A complete</strong> — Why Mary, Why the Saints
+  </div>
+  <a href="crux-adult-module6b.html" class="btn-continue">Continue to Part B →</a>
+</div>
+
+</body>
+</html>

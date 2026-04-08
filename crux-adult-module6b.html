@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
+<title>CRUX — Mary & the Saints · Part B</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  color-scheme: light;
+  --navy: #1a1f36;
+  --gold: #d4a574;
+  --gold-mid: #b8895a;
+  --gold-dim: rgba(212,165,116,0.25);
+  --off-white: #f8f7f4;
+  --white: #ffffff;
+  --muted: #5a6282;
+  --subtle: #8890b0;
+  --border: rgba(26,31,54,0.1);
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--off-white);
+  color: var(--navy);
+  min-height: 100vh;
+}
+
+header {
+  background: var(--navy);
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+}
+
+.logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--gold);
+  letter-spacing: 5px;
+  text-decoration: none;
+}
+
+.header-right { display:flex; align-items:center; gap:0.75rem; }
+
+.btn-back {
+  color: rgba(255,255,255,0.55);
+  font-size: 0.82rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.45rem 1rem;
+  border-radius: 6px;
+  transition: all 0.2s;
+}
+.btn-back:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── BANNER ── */
+.module-banner {
+  background: var(--navy);
+  padding: 3.5rem 2rem 3rem;
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.module-banner::before {
+  content: '✦';
+  position: absolute;
+  font-size: 22rem;
+  color: rgba(212,165,116,0.03);
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%,-50%);
+  line-height: 1;
+  pointer-events: none;
+}
+
+.module-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.module-tag::before, .module-tag::after {
+  content: '';
+  width: 24px;
+  height: 1px;
+  background: var(--gold-dim);
+}
+
+.module-banner h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.6rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.2;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.module-banner .part-label {
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.35);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.module-banner p.intro {
+  color: rgba(255,255,255,0.55);
+  font-size: 1rem;
+  line-height: 1.75;
+  max-width: 580px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* ── PART NAV ── */
+.part-nav {
+  background: var(--white);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+  display: flex;
+  overflow-x: auto;
+}
+
+.part-tab {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 1.5rem;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  border-bottom: 2.5px solid transparent;
+  transition: all 0.2s;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+.part-tab.active { color: var(--navy); border-bottom-color: var(--gold-mid); }
+.part-tab.complete { color: var(--muted); }
+.part-tab:hover:not(.active) { color: var(--navy); }
+
+.part-num {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.65rem;
+  font-weight: 700;
+  background: rgba(26,31,54,0.07);
+  color: var(--muted);
+  flex-shrink: 0;
+}
+
+.part-tab.complete .part-num { background: rgba(46,125,50,0.15); color: #2e7d32; }
+.part-tab.active .part-num { background: var(--gold-mid); color: var(--white); }
+
+/* ── CONTENT ── */
+.content-wrap {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 3.5rem 2rem 8rem;
+}
+
+.recap-block {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin-bottom: 2.75rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.recap-block p { font-size: 0.88rem; color: var(--navy); line-height: 1.7; }
+.recap-block p strong { font-weight: 600; }
+
+.hook-block { margin-bottom: 3rem; }
+
+.hook-block p.opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.45rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 1.5rem;
+}
+
+.hook-block p {
+  font-size: 0.97rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+}
+
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.75rem 0 1.5rem;
+}
+
+.section-label span {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  white-space: nowrap;
+}
+
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.body-text p {
+  font-size: 0.97rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 1.25rem;
+}
+
+.body-text p strong { font-weight: 600; }
+.body-text p em { font-style: italic; }
+
+/* Pull quote */
+.pull-quote {
+  margin: 2.5rem 0;
+  padding: 2rem 2.5rem;
+  border-left: 3px solid var(--gold-mid);
+  background: rgba(212,165,116,0.06);
+  border-radius: 0 10px 10px 0;
+}
+
+.pull-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.5rem;
+}
+
+.pull-quote cite {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+}
+
+/* Dark block */
+.dark-block {
+  background: var(--navy);
+  border-radius: 16px;
+  padding: 2.75rem 2.5rem;
+  margin: 2.5rem 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.dark-block::before {
+  content: '✦';
+  position: absolute;
+  font-size: 16rem;
+  color: rgba(255,255,255,0.02);
+  right: -2rem;
+  bottom: -3rem;
+  line-height: 1;
+  pointer-events: none;
+}
+
+.dark-block .block-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.dark-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--white);
+  line-height: 1.35;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.dark-block p {
+  font-size: 0.93rem;
+  color: rgba(255,255,255,0.75);
+  line-height: 1.85;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.dark-block p:last-child { margin-bottom: 0; }
+.dark-block p strong { color: var(--white); font-weight: 600; }
+.dark-block p em { font-style: italic; }
+
+/* Voice card */
+.voice-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold-mid);
+  border-radius: 0 14px 14px 0;
+  padding: 1.75rem 2rem;
+  margin: 2.25rem 0;
+}
+
+.voice-card .voice-label {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold-mid);
+  margin-bottom: 0.75rem;
+}
+
+.voice-card p {
+  font-size: 0.93rem;
+  color: var(--navy);
+  line-height: 1.85;
+  margin-bottom: 0.85rem;
+  font-style: italic;
+}
+
+.voice-card p:last-child { margin-bottom: 0; }
+.voice-card p strong { font-style: normal; font-weight: 600; }
+
+/* Canonization steps */
+.canon-steps {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+  background: var(--white);
+  margin: 1.75rem 0 2.25rem;
+}
+
+.canon-step {
+  padding: 1.5rem 2rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  gap: 1.25rem;
+  align-items: flex-start;
+}
+
+.canon-step:last-child { border-bottom: none; }
+
+.canon-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.75rem;
+  font-weight: 900;
+  color: var(--gold-dim);
+  line-height: 1;
+  flex-shrink: 0;
+  margin-top: -2px;
+}
+
+.canon-content h4 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.35rem;
+}
+
+.canon-content p {
+  font-size: 0.875rem;
+  color: var(--navy);
+  line-height: 1.75;
+}
+
+.canon-content p strong { font-weight: 600; }
+
+/* Saint examples — quote spotlights */
+.saint-quote {
+  background: rgba(26,31,54,0.04);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 1.5rem 1.75rem;
+  margin: 1.25rem 0;
+}
+
+.saint-quote .sq-name {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.6rem;
+}
+
+.saint-quote p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+}
+
+/* For you block */
+.for-you-block {
+  background: rgba(212,165,116,0.07);
+  border: 1px solid rgba(212,165,116,0.2);
+  border-radius: 14px;
+  padding: 2rem 2.25rem;
+  margin: 2.5rem 0;
+}
+
+.for-you-block .fy-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.75rem;
+}
+
+.for-you-block h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 1rem;
+}
+
+.for-you-block p {
+  font-size: 0.93rem;
+  color: var(--navy);
+  line-height: 1.8;
+  margin-bottom: 0.75rem;
+}
+
+.for-you-block p:last-child { margin-bottom: 0; }
+.for-you-block p strong { font-weight: 600; }
+
+/* Scripture */
+.scripture-block {
+  margin: 2.5rem 0;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  position: relative;
+}
+
+.scripture-block::before {
+  content: '"';
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 8rem;
+  color: var(--gold-dim);
+  top: -1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  line-height: 1;
+}
+
+.scripture-block p {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-style: italic;
+  color: var(--navy);
+  line-height: 1.65;
+  margin-bottom: 0.6rem;
+  position: relative;
+}
+
+.scripture-block cite {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: normal;
+  font-weight: 600;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Complete footer */
+.complete-footer {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  background: var(--navy);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  z-index: 90;
+  box-shadow: 0 -4px 24px rgba(0,0,0,0.2);
+}
+
+.complete-info { display: flex; flex-direction: column; gap: 0.2rem; }
+
+.complete-label {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.complete-title {
+  font-size: 0.82rem;
+  color: rgba(255,255,255,0.6);
+  font-weight: 500;
+}
+
+.btn-row { display: flex; gap: 0.75rem; align-items: center; }
+
+.btn-modules {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.7rem 1.25rem;
+  background: transparent;
+  color: rgba(255,255,255,0.6);
+  border: 1.5px solid rgba(255,255,255,0.2);
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-modules:hover { color: var(--white); border-color: rgba(255,255,255,0.5); }
+
+.btn-next-module {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--gold-mid);
+  color: var(--white);
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.2s;
+  font-family: 'Inter', sans-serif;
+}
+
+.btn-next-module:hover { background: var(--gold); color: var(--navy); }
+
+@media (max-width: 640px) {
+  header { padding: 1rem 1.25rem; }
+  .logo { font-size: 1.3rem; letter-spacing: 3px; }
+  .btn-back { font-size: 0.75rem; padding: 0.4rem 0.75rem; }
+  .module-banner { padding: 2.5rem 1.25rem 2rem; }
+  .module-banner::before { font-size: 8rem; }
+  .module-banner h1 { font-size: 1.75rem; line-height: 1.2; }
+  .part-nav { padding: 0 0.75rem; }
+  .part-tab { padding: 0.85rem 1rem; font-size: 0.75rem; }
+  .content-wrap { padding: 2rem 1.1rem 8rem; }
+  .recap-block { padding: 1.1rem 1rem; }
+  .recap-block p { font-size: 0.84rem; }
+  .hook-block p.opener { font-size: 1.15rem; line-height: 1.55; }
+  .hook-block p { font-size: 0.93rem; }
+  .section-label { margin: 2rem 0 1.25rem; }
+  .body-text p { font-size: 0.93rem; line-height: 1.75; margin-bottom: 1rem; }
+  .pull-quote { padding: 1.5rem 1.25rem; }
+  .pull-quote p { font-size: 1.05rem; }
+  .dark-block { padding: 1.75rem 1.25rem; border-radius: 12px; }
+  .dark-block h3 { font-size: 1.15rem; }
+  .dark-block p { font-size: 0.9rem; }
+  .voice-card { padding: 1.5rem 1.25rem; }
+  .voice-card p { font-size: 0.88rem; }
+  .canon-steps { border-radius: 12px; }
+  .canon-step { padding: 1.25rem 1rem; gap: 1rem; }
+  .canon-num { font-size: 1.4rem; }
+  .canon-content h4 { font-size: 0.95rem; }
+  .canon-content p { font-size: 0.84rem; }
+  .saint-quote { padding: 1.25rem; }
+  .saint-quote p { font-size: 0.93rem; }
+  .for-you-block { padding: 1.5rem 1.25rem; }
+  .for-you-block h3 { font-size: 1.05rem; }
+  .for-you-block p { font-size: 0.9rem; }
+  .scripture-block { padding: 1.75rem 1rem; }
+  .scripture-block::before { font-size: 5rem; }
+  .scripture-block p { font-size: 1.05rem; }
+  .complete-footer { padding: 0.85rem 1.1rem; flex-wrap: wrap; }
+  .complete-footer .btn-row { width: 100%; justify-content: flex-end; }
+  .btn-modules { font-size: 0.75rem; padding: 0.6rem 1rem; }
+  .btn-next-module { font-size: 0.8rem; padding: 0.65rem 1.1rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://cruxfaith.com" class="logo">CRUX</a>
+  <div class="header-right">
+    <a href="crux-adult-formation.html" class="btn-back">← All Modules</a>
+  </div>
+</header>
+
+<div class="module-banner">
+  <div class="module-tag">Module 6 · Adult Formation</div>
+  <div class="part-label">Part B of 2</div>
+  <h1>Mary & the Saints</h1>
+  <p class="intro">Why we ask the saints to pray for us, how they become saints, and what it means to be part of a community that stretches across death itself.</p>
+</div>
+
+<div class="part-nav">
+  <a href="crux-adult-module6a.html" class="part-tab complete">
+    <span class="part-num">✓</span>
+    Why Mary, Why the Saints
+  </a>
+  <a href="crux-adult-module6b.html" class="part-tab active">
+    <span class="part-num">B</span>
+    The Communion of Saints
+  </a>
+</div>
+
+<div class="content-wrap">
+
+  <div class="recap-block">
+    <div>←</div>
+    <p><strong>In Part A</strong> we answered the idolatry objection directly, distinguished worship from veneration, and looked at Mary specifically — who she is, what her role actually is, and why every prayer that passes through her hands points back to her Son. Part B asks the broader question: why ask the saints to pray for us at all, and what is the Church actually claiming when it names someone a saint?</p>
+  </div>
+
+  <!-- HOOK -->
+  <div class="hook-block">
+    <p class="opener">There is more prayer available to you than you are probably using.</p>
+    <p>Most Christians pray alone, or occasionally ask a friend to pray with them. The Catholic tradition takes a larger view. The Church is not just the people gathered in a building on Sunday morning. It is everyone who has ever been joined to Christ — the living, the dead, and those already in glory. The saints are the third group. They are not gone. They are further along.</p>
+  </div>
+
+  <!-- SECTION: WHY ASK THE SAINTS -->
+  <div class="section-label"><span>Why Ask the Saints at All</span></div>
+
+  <div class="body-text">
+    <p>The "prayer in numbers" logic is real and worth taking seriously on its own terms. When someone you love is in the hospital, you don't just pray yourself — you call people. You ask your community to bring the same need before God. There is something about shared prayer, about many voices turning toward the same petition, that has weight. Paul asks the churches repeatedly to pray for him. James tells the elders to pray over the sick. The New Testament assumes communal intercession as normal practice.</p>
+    <p>The saints extend that logic. They are members of the same Body of Christ we belong to. They are not separated from us by death — they are separated from us by distance, and the Catholic tradition holds that distance is no barrier to prayer, as Lewis observed. <strong>They are already in the presence of the one we're praying to.</strong> If you could choose between asking someone across the street to pray for you and asking someone already standing next to the person you're trying to reach, the second option is not obviously weaker.</p>
+  </div>
+
+  <div class="voice-card">
+    <div class="voice-label">From a CRUX Member</div>
+    <p>Think about it practically. If I can get my community around me praying for something, and on top of that the saints who are already in heaven at Jesus's side can ask him to help me as well — why wouldn't I want that? <strong>That's not superstition. That's prayer in numbers, and the numbers include people who are already where we're trying to get.</strong></p>
+  </div>
+
+  <!-- SECTION: THE COMMUNION OF SAINTS -->
+  <div class="section-label"><span>What "The Communion of Saints" Actually Means</span></div>
+
+  <div class="dark-block">
+    <div class="block-label">The Creed's Most Underappreciated Line</div>
+    <h3>Every Catholic recites it at Mass: "I believe in the communion of saints." Most people have never stopped to think about what they're saying.</h3>
+    <p>The phrase appears in the Apostles' Creed, one of the oldest summaries of Christian belief. It describes something specific: the living union between all members of Christ's Body — those still on earth, those being purified after death, and those already in glory. Three states. One Body. One ongoing communion.</p>
+    <p>This is not a metaphor about feeling spiritually connected to people who died a long time ago. It is a claim about reality — that the Church is not divided by death, that the bond formed in Baptism is not severed when someone leaves this life, that the prayers of those in glory are genuinely available to those still struggling through it.</p>
+    <p><strong>The saints are not heroes we remember. They are members of our family we can still talk to.</strong> When a Catholic asks Francis of Assisi to intercede, they are not performing a ritual or making a wish. They are asking a brother to pray. The fact that Francis is no longer alive in the way we are alive does not change the relationship — it changes its character, and arguably deepens it.</p>
+  </div>
+
+  <div class="scripture-block">
+    <p>"Since we are surrounded by so great a cloud of witnesses, let us run with endurance the race set before us."</p>
+    <cite>— Hebrews 12:1</cite>
+  </div>
+
+  <div class="body-text">
+    <p>The author of Hebrews is describing exactly this. The "cloud of witnesses" — the faithful who have gone before us — are not passive spectators watching from a distance. They are witnesses in the active sense: people whose lives bear testimony, who surround us as we run, whose faith is available to us as evidence that the race can be finished.</p>
+  </div>
+
+  <!-- SECTION: HOW SOMEONE BECOMES A SAINT -->
+  <div class="section-label"><span>How Someone Becomes a Saint</span></div>
+
+  <div class="body-text">
+    <p>The word "saint" in the New Testament simply means a holy person — a member of God's people set apart for him. Paul addresses his letters to "the saints in Corinth," meaning the Christians there. In that broad sense, every baptized Christian is called to be a saint.</p>
+    <p>When Catholics talk about a specific saint — Saint Francis, Saint Cecilia, Saint Thomas More — they mean something more precise: a person the Church has formally recognized as being in heaven and as a worthy model of Christian life. The process of that recognition is called canonization, and it is one of the most rigorous investigative processes any institution conducts.</p>
+  </div>
+
+  <div class="canon-steps">
+    <div class="canon-step">
+      <div class="canon-num">1</div>
+      <div class="canon-content">
+        <h4>Servant of God</h4>
+        <p>The process begins locally, often years or decades after someone's death. A diocese investigates whether a person lived a life of heroic virtue — not just a good life, but a life marked by extraordinary faithfulness. If the investigation supports it, the cause is opened and the person receives the title Servant of God.</p>
+      </div>
+    </div>
+    <div class="canon-step">
+      <div class="canon-num">2</div>
+      <div class="canon-content">
+        <h4>Venerable</h4>
+        <p>The cause moves to Rome, where the Dicastery for the Causes of Saints examines the evidence in depth. If the person is found to have lived a life of heroic virtue confirmed by rigorous scrutiny, the Pope declares them Venerable. No miracle is required at this stage — just the verified evidence of an extraordinary life.</p>
+      </div>
+    </div>
+    <div class="canon-step">
+      <div class="canon-num">3</div>
+      <div class="canon-content">
+        <h4>Beatification — Blessed</h4>
+        <p>For beatification, one verified miracle is required (for martyrs, this requirement is waived — their death is considered sufficient evidence of heroic faith). The miracle must be medically inexplicable and directly attributed to the intercession of the candidate. A panel of doctors, theologians, and cardinals examines it independently. The person is declared Blessed and may be publicly venerated in their home region.</p>
+      </div>
+    </div>
+    <div class="canon-step">
+      <div class="canon-num">4</div>
+      <div class="canon-content">
+        <h4>Canonization — Saint</h4>
+        <p>A second verified miracle, occurring after beatification, is required for canonization. The Pope then declares — not decides, but declares — that the person is definitively in heaven and is a saint for the universal Church. <strong>The Church is not making someone a saint by canonizing them. It is recognizing what God has already done.</strong> The declaration carries the weight of papal infallibility: the Church is certain this person is with God.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION: WHAT MIRACLES ACTUALLY MEAN -->
+  <div class="section-label"><span>What the Miracles Are Actually About</span></div>
+
+  <div class="body-text">
+    <p>The miracles required for canonization are not proof that the saint performed them. Saints don't perform miracles — God does. The miracles are evidence that God is responding to prayers made in that saint's name, which the Church takes as confirmation that the saint is in his presence and that intercessory prayer through them is working.</p>
+    <p>This is the key distinction your understanding of the whole system depends on. <strong>A miracle attributed to Saint Thérèse of Lisieux is not Thérèse doing something. It is God doing something in response to prayer made through Thérèse.</strong> The saint is not the source. The saint is the channel — the friend in the room with the person you're trying to reach, who brought your request to them and whose relationship with God is such that God moved in response.</p>
+    <p>Every miracle ever attributed to a saint ultimately points back to Christ. That is the whole point. The saints are not destinations. They are, like Mary at Cana, people who bring the need to Jesus and then step aside.</p>
+  </div>
+
+  <!-- SAINT QUOTES -->
+  <div class="section-label"><span>Voices from the Communion</span></div>
+
+  <div class="body-text">
+    <p>The saints are not plaster figures or historical curiosities. They are people who lived the same faith you are considering, in different circumstances, and left behind evidence of what it looks like when a human life is given fully to God. A few of their voices:</p>
+  </div>
+
+  <div class="saint-quote">
+    <div class="sq-name">St. Augustine of Hippo · 354–430 AD</div>
+    <p>"You have made us for yourself, O Lord, and our hearts are restless until they rest in you."</p>
+  </div>
+
+  <div class="saint-quote">
+    <div class="sq-name">St. Thérèse of Lisieux · 1873–1897</div>
+    <p>"I will spend my heaven doing good on earth. I will let fall a shower of roses."</p>
+  </div>
+
+  <div class="saint-quote">
+    <div class="sq-name">St. Thomas More · 1478–1535</div>
+    <p>"I die the King's good servant — but God's first."</p>
+  </div>
+
+  <div class="saint-quote">
+    <div class="sq-name">St. Francis of Assisi · 1181–1226</div>
+    <p>"Preach the Gospel at all times. When necessary, use words."</p>
+  </div>
+
+  <div class="body-text">
+    <p>These are not people who had it easy or who found faith without cost. Augustine spent decades running from God before turning. Thérèse died at twenty-four of tuberculosis after years of spiritual darkness. More went to the executioner's block rather than sign his name to a lie. Francis gave away everything he owned and died on bare ground at forty-four.</p>
+    <p>What they share is not a charmed life but a specific orientation: toward God, in every circumstance, without conditions. That is what the Church is pointing to when it canonizes someone. Not a perfect person — none of them were. A person who, in the end, chose God over everything else, and whose life shows the rest of us what that actually looks like.</p>
+  </div>
+
+  <!-- FOR YOU -->
+  <div class="for-you-block">
+    <div class="fy-label">Where This Leaves You</div>
+    <h3>You already have heroes. Now you have a roster of the best ones humanity has ever produced.</h3>
+    <p>The communion of saints is not an abstract doctrine. It is a practical resource. You can ask Francis of Assisi to pray for you when you're drowning in possessions and anxiety. You can ask Thomas More to intercede when you're being pressured to compromise something you know is true. You can ask Thérèse when suffering feels purposeless. You can ask Mary when you need a mother.</p>
+    <p>None of them will do what only God can do. All of them will bring your need to the one who can. And all of them know, from the inside, what it costs to keep faith in a world that makes it difficult. They are not above the struggle. They finished it. <strong>That's exactly who you want praying for you.</strong></p>
+    <p>The Church you are considering entering is not just the people in the building on Sunday. It is this entire company — everyone who has ever been washed in the same water, fed at the same table, and sustained by the same Spirit. You would be joining a family that stretches back two thousand years and forward into eternity. The size of that communion is, once you feel it, genuinely staggering.</p>
+  </div>
+
+  <div class="pull-quote">
+    <p>Ask for our Lady's intercession. Not because you are not worthy to go to God directly — you always are — but because she loves you, and love offered is love that should be received.</p>
+    <cite>— A pastoral reflection on Marian devotion</cite>
+  </div>
+
+</div>
+
+<div class="complete-footer">
+  <div class="complete-info">
+    <div class="complete-label">✓ Module 6 Complete</div>
+    <div class="complete-title">Mary & the Saints</div>
+  </div>
+  <div class="btn-row">
+    <a href="crux-adult-formation.html" class="btn-modules">All Modules</a>
+    <a href="crux-adult-formation.html" class="btn-next-module">Next Module →</a>
+  </div>
+</div>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
+  import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+    authDomain: "crux-faith-formation.firebaseapp.com",
+    projectId: "crux-faith-formation",
+    storageBucket: "crux-faith-formation.firebasestorage.app",
+    messagingSenderId: "838141015985",
+    appId: "1:838141015985:web:2655e570663e182d75ef90",
+    measurementId: "G-LQ35DLTVKY"
+  };
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  const db = getFirestore(app);
+
+  onAuthStateChanged(auth, async (user) => {
+    if (!user) return;
+    await setDoc(
+      doc(db, "users", user.uid),
+      { completedModules: { module6: true } },
+      { merge: true }
+    );
+  });
+</script>
+
+</body>
+</html>
