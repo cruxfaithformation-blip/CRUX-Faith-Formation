@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
 <title>CRUX — Adult Formation</title>
 
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
@@ -17,6 +18,10 @@
 
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  color-scheme: light;
+}
 
 body {
   font-family: 'Inter', sans-serif;
@@ -392,6 +397,31 @@ header {
   .ocia-block { flex-direction: column; align-items: flex-start; }
   .page-wrap { padding: 2rem 1rem 4rem; }
 }
+
+/* ── SAINTS SHELF ── */
+.saints-shelf-header { display:flex; align-items:baseline; justify-content:space-between; margin-bottom:1.75rem; flex-wrap:wrap; gap:0.5rem; }
+.saints-shelf-header h2 { font-family:'Playfair Display',serif; font-size:1.5rem; color:#1a1f36; font-weight:700; }
+.saints-shelf-header span { font-size:0.8rem; color:#8890b0; font-weight:500; }
+.saints-eyebrow { font-size:0.68rem; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:#b8895a; margin-bottom:0.4rem; }
+.saints-intro { font-size:0.88rem; color:#5a6282; line-height:1.65; max-width:600px; margin-bottom:2rem; }
+.saint-grid { display:flex; flex-direction:column; gap:1.25rem; margin-bottom:3rem; }
+.saint-card { background:#ffffff; border-radius:14px; border:1px solid rgba(212,165,116,0.2); box-shadow:0 2px 8px rgba(26,31,54,0.06); overflow:hidden; display:flex; cursor:pointer; transition:all 0.25s ease; }
+.saint-card:hover { transform:translateY(-2px); box-shadow:0 6px 24px rgba(26,31,54,0.12); border-color:rgba(212,165,116,0.5); }
+.saint-card.locked { opacity:0.55; cursor:default; }
+.saint-card.locked:hover { transform:none; box-shadow:0 2px 8px rgba(26,31,54,0.06); }
+.saint-era { width:72px; flex-shrink:0; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.25rem; background:linear-gradient(160deg,#b8895a,#8a6240); padding:1rem 0.5rem; }
+.saint-era .era-cross { font-size:1.2rem; color:rgba(255,255,255,0.5); line-height:1; }
+.saint-era .era-text { font-size:0.55rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.65); text-align:center; line-height:1.4; }
+.saint-body { flex:1; padding:1.5rem 1.75rem; display:flex; flex-direction:column; gap:0.5rem; }
+.saint-top { display:flex; align-items:flex-start; justify-content:space-between; gap:1rem; }
+.saint-name { font-family:'Playfair Display',serif; font-size:1.2rem; color:#1a1f36; font-weight:700; line-height:1.3; }
+.saint-badge { font-size:0.65rem; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; padding:0.25rem 0.75rem; border-radius:20px; flex-shrink:0; margin-top:3px; background:rgba(184,137,90,0.1); color:#b8895a; border:1px solid rgba(184,137,90,0.25); }
+.saint-badge.coming-soon { background:rgba(26,31,54,0.05); color:#8890b0; border:1px solid rgba(26,31,54,0.1); }
+.saint-tagline { font-size:0.78rem; font-weight:600; color:#b8895a; font-style:italic; font-family:'Playfair Display',serif; }
+.saint-desc { font-size:0.875rem; color:#5a6282; line-height:1.65; }
+.saint-footer { display:flex; align-items:center; justify-content:space-between; padding-top:0.75rem; border-top:1px solid rgba(26,31,54,0.07); margin-top:0.25rem; }
+.saint-meta { font-size:0.75rem; color:#8890b0; font-weight:500; }
+.saint-cta { font-size:0.82rem; font-weight:700; color:#b8895a; }
 </style>
 </head>
 <body>
@@ -552,13 +582,103 @@ header {
 
   </div>
 
+  <!-- SAINTS SHELF -->
+  <div class="saints-shelf-header">
+    <div>
+      <div class="saints-eyebrow">Lives of the Saints</div>
+      <h2>Saints & Their Stories</h2>
+    </div>
+    <span>3 available now</span>
+  </div>
+
+  <p class="saints-intro">The saints are not plaster figures. They are people who encountered Christ and were changed by it — fishermen, soldiers, emperors, peasants, and sinners. Each one answers the question: what does a human life look like when it's given fully to God?</p>
+
+  <div class="saint-grid">
+
+    <div class="saint-card" onclick="window.location.href='crux-adult-saint-longinus-a.html'">
+      <div class="saint-era">
+        <div class="era-cross">✟</div>
+        <div class="era-text">1st Cent.</div>
+      </div>
+      <div class="saint-body">
+        <div class="saint-top">
+          <div class="saint-name">St. Longinus</div>
+          <span class="saint-badge">Available Now</span>
+        </div>
+        <div class="saint-tagline">The soldier who pierced Christ's side — and was never the same.</div>
+        <div class="saint-desc">A Roman centurion present at the Crucifixion. One lance thrust. What happened next is one of the most extraordinary conversion stories in Christian history.</div>
+        <div class="saint-footer">
+          <span class="saint-meta">⏱ 30–40 min · Feast Day: March 15</span>
+          <span class="saint-cta">Read His Story →</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="saint-card" onclick="window.location.href='crux-adult-saint-cecilia-a.html'">
+      <div class="saint-era">
+        <div class="era-cross">♪</div>
+        <div class="era-text">2nd–3rd Cent.</div>
+      </div>
+      <div class="saint-body">
+        <div class="saint-top">
+          <div class="saint-name">St. Cecilia</div>
+          <span class="saint-badge">Available Now</span>
+        </div>
+        <div class="saint-tagline">She sang to God in her heart on her wedding day. She went to her death singing.</div>
+        <div class="saint-desc">Patron of musicians, Roman martyr, and the woman whose interior prayer at her own wedding has shaped the Church's understanding of sacred music for fifteen centuries.</div>
+        <div class="saint-footer">
+          <span class="saint-meta">⏱ 30–40 min · Feast Day: November 22</span>
+          <span class="saint-cta">Read Her Story →</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="saint-card" onclick="window.location.href='crux-adult-saint-francis-a.html'">
+      <div class="saint-era">
+        <div class="era-cross">☩</div>
+        <div class="era-text">13th Cent.</div>
+      </div>
+      <div class="saint-body">
+        <div class="saint-top">
+          <div class="saint-name">St. Francis of Assisi</div>
+          <span class="saint-badge">Available Now</span>
+        </div>
+        <div class="saint-tagline">He threw his clothes at his father in the public square and walked away with nothing.</div>
+        <div class="saint-desc">Wealthy merchant's son, failed soldier, radical penitent. Francis took the Sermon on the Mount as a set of instructions — and it changed the Church.</div>
+        <div class="saint-footer">
+          <span class="saint-meta">⏱ 30–40 min · Feast Day: October 4</span>
+          <span class="saint-cta">Read His Story →</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="saint-card locked">
+      <div class="saint-era">
+        <div class="era-cross">✟</div>
+        <div class="era-text">More<br>Coming</div>
+      </div>
+      <div class="saint-body">
+        <div class="saint-top">
+          <div class="saint-name">More Saints Coming Soon</div>
+          <span class="saint-badge coming-soon">In Development</span>
+        </div>
+        <div class="saint-desc">New saint profiles are added regularly. Each one is written to help you encounter a real person, not a legend.</div>
+        <div class="saint-footer">
+          <span class="saint-meta">&nbsp;</span>
+          <span class="saint-cta" style="color:#8890b0;font-weight:400;">🔒 Locked</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
   <!-- OCIA callout -->
   <div class="ocia-block">
     <div>
       <h3>Ready to take the next step?</h3>
-      <p>The Order of Christian Initiation of Adults (OCIA) is the Church's welcoming process for adults exploring Catholicism. Most parishes run OCIA in the fall — you can attend and listen before making any commitment.</p>
+      <p>The Order of Christian Initiation of Adults (OCIA) is the Church's welcoming process for adults exploring Catholicism. Complete all 7 modules to unlock your full OCIA guide — what to expect, how to find a parish, and what the journey into the Church actually looks like.</p>
     </div>
-    <a href="https://www.usccb.org/beliefs-and-teachings/who-we-teach/adult-faith-formation" target="_blank" class="btn-ocia">Learn about OCIA →</a>
+    <a href="crux-adult-ocia.html" class="btn-ocia">Your OCIA Guide →</a>
   </div>
 
 </div>
