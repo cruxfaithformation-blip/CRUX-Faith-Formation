@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light">
-    <title>CRUX — Learning Modules</title>
+    <title>CRUX — The Holy Trinity</title>
 
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
@@ -985,157 +985,278 @@
 
 <header>
     <div class="header-left">
-        <button class="back-btn" onclick="window.location.href='index.html#youth'">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
             ← Back
         </button>
         <a href="index.html" class="header-logo">CRUX</a>
     </div>
     <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
         <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
     </div>
 </header>
 
-<div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
 
 <div class="module-wrap">
 
-    <!-- Landing screen — shown when no ?module= param -->
-    <div id="landingScreen" style="display:none;">
-        <div style="margin-bottom:2.5rem;">
-            <div style="display:inline-block;color:var(--gold-dark);font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.75rem;">Faith Formation</div>
-            <h1 style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:0.75rem;">Learning Modules</h1>
-            <p style="color:var(--text-secondary);font-size:1rem;max-width:560px;">Each module has a Lesson, a Reading with reflection questions, and a Quiz to earn XP. Choose Beginner or Theologian level inside any module.</p>
-        </div>
+    <!-- Loading state — shown while a module loads -->
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
 
-        <!-- Core Beliefs -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">✟</span>
-                <span class="landing-group-title">Core Beliefs</span>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=trinity'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Holy Trinity</h3>
-                    <p class="landing-card-desc">One God in three divine Persons — the central mystery of the Christian faith.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=jesus'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Who Is Jesus Christ?</h3>
-                    <p class="landing-card-desc">The most important question ever asked — and the answer that changes everything.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=sacraments'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Seven Sacraments</h3>
-                    <p class="landing-card-desc">Seven holy encounters with God — outward signs that give grace across the span of a life.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=mary'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Mary &amp; the Saints</h3>
-                    <p class="landing-card-desc">Why Catholics honor Mary and ask the saints to pray for us — and why this is not worship.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
+    <!-- Step indicator -->
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
         </div>
-
-        <!-- Prayer -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">🙏</span>
-                <span class="landing-group-title">Prayer</span>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=lords_prayer'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–5</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Lord's Prayer</h3>
-                    <p class="landing-card-desc">Seven petitions that teach us everything about how to speak to God.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
         </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
 
-        <!-- Sacred Scripture -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">📖</span>
-                <span class="landing-group-title">Sacred Scripture</span>
+    <!-- Module header -->
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">Grades 3–8</span>
+            <span class="topic-tag" id="topicTag">Faith Formation</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <!-- Level toggle -->
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions — you can review your answers before submitting.</p>
+            <div id="quizQuestions">
+                <!-- Populated by JS -->
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=bible_geography'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Geography of the Bible</h3>
-                    <p class="landing-card-desc">These events didn't happen in a story — they happened in real places you can visit today.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
             </div>
         </div>
+    </div>
 
-        <!-- Moral Theology -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">⚖️</span>
-                <span class="landing-group-title">Moral Theology</span>
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You've completed this lesson. Keep going — the faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=conscience'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 6–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Conscience &amp; Moral Decision-Making</h3>
-                    <p class="landing-card-desc">What the Church teaches about conscience — and why it is not a permission slip to do whatever you want.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    ← Back to CRUX
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
             </div>
         </div>
     </div>
 
 </div>
 
+
+<script src="crux-module-engine.js"></script>
 <script>
-// ── ROUTER ─────────────────────────────────────────────────
-// If a ?module= param is present, redirect to the standalone file.
-// This preserves all existing links without any changes to index.html.
-(function() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('module');
-    if (!id) return; // No param — show landing screen below
-    const routes = {
-        'lords_prayer': 'crux-module-lords-prayer.html',
-        'bible_geography': 'crux-module-geography.html',
-        'trinity': 'crux-module-trinity.html',
-        'sacraments': 'crux-module-sacraments.html',
-        'jesus': 'crux-module-jesus.html',
-        'mary': 'crux-module-mary.html',
-        'conscience': 'crux-module-conscience.html',
-    };
-    const dest = routes[id];
-    if (dest) {
-        window.location.replace(dest);
+// Module data for: trinity
+const MODULE_DATA = {
+    trinity: {
+        id: 'trinity',
+        title: 'The Holy Trinity',
+        subtitle: 'Understanding the central mystery of the Christian faith — one God in three divine Persons.',
+        gradeTag: 'Grades 3–8',
+        topic: 'Core Beliefs',
+        xpReward: 50,
+        nextModule: 'jesus',
+
+        lesson: {
+            beginner: `
+                <h2>The Holy Trinity — Lesson</h2>
+                <p>The <span class="key-term">Trinity</span> is one of the most important beliefs in Christianity. It means that there is <strong>one God</strong>, but God exists as <strong>three Persons</strong>: the Father, the Son (Jesus), and the Holy Spirit.</p>
+
+                <h3>One God, Three Persons</h3>
+                <p>Think of it this way: a triangle has three corners, but it is still one triangle. God is one, but He has three distinct Persons. Each Person is fully God — not a piece of God, but completely God.</p>
+                <ul>
+                    <li><strong>God the Father</strong> created everything and loves us like a perfect parent.</li>
+                    <li><strong>God the Son</strong> (Jesus) came to earth as a human being to save us.</li>
+                    <li><strong>God the Holy Spirit</strong> lives in our hearts and helps us follow Jesus.</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>"Go and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit."</p>
+                    <cite>— Matthew 28:19</cite>
+                </div>
+
+                <h3>Why Does This Matter?</h3>
+                <p>The Trinity tells us something amazing: <strong>God is love by nature</strong>. Love requires someone to love. The Father, Son, and Holy Spirit have been loving each other forever — and they invite us into that love.</p>
+                <p>When we are baptized, we are baptized "in the name of the Father, and of the Son, and of the Holy Spirit." We are welcomed into the family of God — the Trinity.</p>
+            `,
+            theologian: `
+                <h2>The Holy Trinity — Theologian Level</h2>
+                <p>The doctrine of the <span class="key-term">Trinity</span> is the central mystery of the Christian faith: <em>one God subsisting in three co-equal, co-eternal divine Persons</em> — Father, Son, and Holy Spirit. Each Person is distinct yet identical in nature, will, and being.</p>
+
+                <h3>The Development of Trinitarian Doctrine</h3>
+                <p>The Church did not invent the Trinity — She articulated what Scripture reveals. The Council of Nicaea (325 AD) defined that the Son is <span class="key-term">homoousios</span> (of the same substance) as the Father, refuting Arianism's claim that the Son was a created being. The Council of Constantinople (381 AD) extended this to affirm the full divinity of the Holy Spirit.</p>
+
+                <h3>The Processions and Relations</h3>
+                <p>Catholic theology distinguishes the Persons by their <em>relations of origin</em>:</p>
+                <ul>
+                    <li>The <strong>Father</strong> is unbegotten — the first principle of the Godhead.</li>
+                    <li>The <strong>Son</strong> is eternally begotten of the Father (not made in time).</li>
+                    <li>The <strong>Holy Spirit</strong> proceeds from the Father and the Son (<em>filioque</em>).</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>"The Father and I are one."</p>
+                    <cite>— John 10:30</cite>
+                </div>
+
+                <h3>Immanent vs. Economic Trinity</h3>
+                <p>Theologians distinguish the <span class="key-term">immanent Trinity</span> (God as He is in Himself — three Persons in eternal communion) from the <span class="key-term">economic Trinity</span> (God as He acts in salvation history). The principle of Rahner's Rule states: "The economic Trinity is the immanent Trinity, and vice versa." In other words, the God who acts in history is the same God who exists eternally.</p>
+
+                <p>This mystery is not a contradiction but a <em>superabundance</em> of being. God is not a solitary monad but an eternal communion of love — which is why John can simply say: <em>"God is love"</em> (1 John 4:8).</p>
+            `
+        },
+
+        reading: {
+            beginner: `
+                <h2>Reading: What the Church Says About the Trinity</h2>
+                <div class="reading-meta">Catechism of the Catholic Church, paragraphs 253–255 (simplified)</div>
+                <div class="reading-body">
+                    <p>The Trinity is One. We do not say that there are three Gods, but one God. The three Persons are truly different from one another. "He is not the Father who is the Son, nor is the Son he who is the Father." But together they are one God.</p>
+                    <p>The three divine Persons are inseparable in what they are and what they do. When the Bible mentions God speaking, creating, saving, or loving — it is always the whole Trinity at work, even when one Person is mentioned by name.</p>
+                    <p>The whole Christian life is a relationship with each of the three Persons. We pray to the Father, through the Son, in the Holy Spirit. Every Mass begins and ends with the Trinity. We bless ourselves in the name of the Trinity. The Trinity is not a puzzle to solve — it is a family to belong to.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Reflect on These Questions</h4>
+                    <ol>
+                        <li>How does knowing God is three Persons help you understand what love really means?</li>
+                        <li>Which Person of the Trinity feels most real or close to you right now — the Father, Jesus, or the Holy Spirit? Why?</li>
+                        <li>How might believing in the Trinity change the way you pray?</li>
+                    </ol>
+                </div>
+            `,
+            theologian: `
+                <h2>Reading: The Trinitarian Controversies and Nicaea</h2>
+                <div class="reading-meta">Historical theology — Councils of Nicaea (325 AD) and Constantinople (381 AD)</div>
+                <div class="reading-body">
+                    <p>In the early fourth century, a priest named Arius taught that the Son of God was the greatest of all created beings — but a creature nonetheless. His slogan: "There was a time when He was not." This heresy spread rapidly through the Eastern Church and threatened to fracture Christianity permanently.</p>
+                    <p>Emperor Constantine called the Council of Nicaea in 325 AD — the first ecumenical council in Church history. Over 300 bishops gathered. After fierce debate, the council affirmed that the Son is <em>homoousios</em> — of the same substance as the Father. Not similar (<em>homoiousios</em>), but the same. The difference of a single Greek letter carried the weight of everything: either Jesus is fully God, or salvation is impossible.</p>
+                    <p>The Nicene Creed we recite at Mass is the direct result. When we say "God from God, Light from Light, true God from true God, begotten not made, consubstantial with the Father," we are standing with those bishops, rejecting Arianism, and professing the full divinity of Christ.</p>
+                    <p>The Council of Constantinople (381 AD) completed the work by affirming that the Holy Spirit is also "the Lord and giver of life, who proceeds from the Father and the Son, who together with the Father and Son is worshiped and glorified." The doctrine of the Trinity was not invented at these councils — it was defined, protected, and handed on.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Theological Reflection</h4>
+                    <ol>
+                        <li>Why does it matter whether Jesus is "of the same substance" as the Father rather than merely "similar"? What is at stake for salvation?</li>
+                        <li>How does the Nicene Creed function as a boundary marker — a statement of what the Church will and will not accept?</li>
+                        <li>Arius's position seems logically tidy. Why do you think the Church resisted it so forcefully?</li>
+                    </ol>
+                </div>
+            `
+        },
+
+        quiz: [
+            {
+                q: "How many Persons are there in the Holy Trinity?",
+                options: ["One", "Two", "Three", "Seven"],
+                correct: 2,
+                explanation: "The Trinity is one God in three Persons: Father, Son, and Holy Spirit. Each Person is fully God."
+            },
+            {
+                q: "Which council in 325 AD defined that Jesus is 'of the same substance' as the Father?",
+                options: ["Council of Jerusalem", "Council of Nicaea", "Council of Trent", "Council of Ephesus"],
+                correct: 1,
+                explanation: "The Council of Nicaea (325 AD) defined that the Son is homoousios — of the same substance as the Father — refuting Arianism."
+            },
+            {
+                q: "What does it mean that 'God is love' (1 John 4:8) in light of the Trinity?",
+                options: ["God has feelings like humans", "God became love after creating the world", "The Father, Son, and Holy Spirit have loved each other eternally", "Love is more important than God"],
+                correct: 2,
+                explanation: "Because God is eternally three Persons, love is not something God does — it's what God IS. The Persons have been in a communion of love from all eternity."
+            },
+            {
+                q: "When we are baptized, we are baptized in the name of:",
+                options: ["Jesus only", "The Father alone", "The Father, Son, and Holy Spirit", "The Church and the Pope"],
+                correct: 2,
+                explanation: "Matthew 28:19 — 'Go and baptize in the name of the Father and of the Son and of the Holy Spirit.' Baptism initiates us into the Trinitarian family of God."
+            },
+            {
+                q: "The word 'homoousios' used at Nicaea means:",
+                options: ["Of similar substance", "Of the same substance", "Created by God", "Equal in power only"],
+                correct: 1,
+                explanation: "Homoousios means 'of the same substance' — not merely similar. This single word was the crux of the Nicene definition: Jesus is fully and truly God."
+            }
+        ]
     }
-    // Unknown module ID — fall through to landing screen
-})();
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
+    initModule(MODULE_DATA);
+});
 </script>
 
 </body>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light">
-    <title>CRUX — Learning Modules</title>
+    <title>CRUX — The Lord's Prayer</title>
 
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
@@ -985,157 +985,299 @@
 
 <header>
     <div class="header-left">
-        <button class="back-btn" onclick="window.location.href='index.html#youth'">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
             ← Back
         </button>
         <a href="index.html" class="header-logo">CRUX</a>
     </div>
     <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
         <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
     </div>
 </header>
 
-<div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
 
 <div class="module-wrap">
 
-    <!-- Landing screen — shown when no ?module= param -->
-    <div id="landingScreen" style="display:none;">
-        <div style="margin-bottom:2.5rem;">
-            <div style="display:inline-block;color:var(--gold-dark);font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.75rem;">Faith Formation</div>
-            <h1 style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:0.75rem;">Learning Modules</h1>
-            <p style="color:var(--text-secondary);font-size:1rem;max-width:560px;">Each module has a Lesson, a Reading with reflection questions, and a Quiz to earn XP. Choose Beginner or Theologian level inside any module.</p>
-        </div>
+    <!-- Loading state — shown while a module loads -->
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
 
-        <!-- Core Beliefs -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">✟</span>
-                <span class="landing-group-title">Core Beliefs</span>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=trinity'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Holy Trinity</h3>
-                    <p class="landing-card-desc">One God in three divine Persons — the central mystery of the Christian faith.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=jesus'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Who Is Jesus Christ?</h3>
-                    <p class="landing-card-desc">The most important question ever asked — and the answer that changes everything.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=sacraments'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Seven Sacraments</h3>
-                    <p class="landing-card-desc">Seven holy encounters with God — outward signs that give grace across the span of a life.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=mary'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Mary &amp; the Saints</h3>
-                    <p class="landing-card-desc">Why Catholics honor Mary and ask the saints to pray for us — and why this is not worship.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
+    <!-- Step indicator -->
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
         </div>
-
-        <!-- Prayer -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">🙏</span>
-                <span class="landing-group-title">Prayer</span>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=lords_prayer'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–5</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Lord's Prayer</h3>
-                    <p class="landing-card-desc">Seven petitions that teach us everything about how to speak to God.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
         </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
 
-        <!-- Sacred Scripture -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">📖</span>
-                <span class="landing-group-title">Sacred Scripture</span>
+    <!-- Module header -->
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">Grades 3–8</span>
+            <span class="topic-tag" id="topicTag">Faith Formation</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <!-- Level toggle -->
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions — you can review your answers before submitting.</p>
+            <div id="quizQuestions">
+                <!-- Populated by JS -->
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=bible_geography'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Geography of the Bible</h3>
-                    <p class="landing-card-desc">These events didn't happen in a story — they happened in real places you can visit today.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
             </div>
         </div>
+    </div>
 
-        <!-- Moral Theology -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">⚖️</span>
-                <span class="landing-group-title">Moral Theology</span>
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You've completed this lesson. Keep going — the faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=conscience'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 6–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Conscience &amp; Moral Decision-Making</h3>
-                    <p class="landing-card-desc">What the Church teaches about conscience — and why it is not a permission slip to do whatever you want.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    ← Back to CRUX
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
             </div>
         </div>
     </div>
 
 </div>
 
+
+<script src="crux-module-engine.js"></script>
 <script>
-// ── ROUTER ─────────────────────────────────────────────────
-// If a ?module= param is present, redirect to the standalone file.
-// This preserves all existing links without any changes to index.html.
-(function() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('module');
-    if (!id) return; // No param — show landing screen below
-    const routes = {
-        'lords_prayer': 'crux-module-lords-prayer.html',
-        'bible_geography': 'crux-module-geography.html',
-        'trinity': 'crux-module-trinity.html',
-        'sacraments': 'crux-module-sacraments.html',
-        'jesus': 'crux-module-jesus.html',
-        'mary': 'crux-module-mary.html',
-        'conscience': 'crux-module-conscience.html',
-    };
-    const dest = routes[id];
-    if (dest) {
-        window.location.replace(dest);
+// Module data for: lords_prayer
+const MODULE_DATA = {
+    lords_prayer: {
+        id: 'lords_prayer',
+        title: 'The Lord\'s Prayer',
+        subtitle: 'The prayer Jesus gave us — seven petitions that teach us everything about how to speak to God.',
+        gradeTag: 'Grades 3–5',
+        topic: 'Prayer',
+        xpReward: 50,
+        nextModule: 'jesus',
+
+        lesson: {
+            beginner: `
+                <h2>The Lord's Prayer — Lesson</h2>
+                <p>One day, Jesus's disciples asked Him: <em>"Lord, teach us to pray."</em> He didn't give them a long lecture. He gave them a prayer. We call it the <span class="key-term">Our Father</span>, or the Lord's Prayer — and it's been prayed by Christians every single day for two thousand years.</p>
+
+                <div class="highlight-box">
+                    <p>"Our Father, who art in heaven, hallowed be thy name; thy kingdom come, thy will be done on earth as it is in heaven. Give us this day our daily bread; and forgive us our trespasses, as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil."</p>
+                    <cite>— Matthew 6:9–13</cite>
+                </div>
+
+                <h3>What Each Part Means</h3>
+                <p>The prayer has seven parts, called <span class="key-term">petitions</span>. The first three are about God. The last four are about us.</p>
+
+                <h3>Part 1 — "Our Father, who art in heaven"</h3>
+                <p>Jesus teaches us to call God <em>Father</em> — not a distant ruler, but a dad. And not just "my Father" but <em>our</em> Father. Every person who prays this prayer is your brother or sister.</p>
+
+                <h3>Part 2 — "Hallowed be thy name"</h3>
+                <p>To <em>hallow</em> means to treat as holy. We are asking that God's name be recognized as sacred — by us and by the whole world. This is a prayer for the whole human race to come to know who God is.</p>
+
+                <h3>Part 3 — "Thy kingdom come, thy will be done"</h3>
+                <p>We're asking for God's way of doing things to take over — in our hearts first, then in the world. This is one of the most courageous petitions: we're asking God to change us so that His will becomes our will.</p>
+
+                <h3>Part 4 — "Give us this day our daily bread"</h3>
+                <p>We ask for what we need — just for today. Not a year's supply, not a guarantee. Just today. This teaches us to trust God day by day, the way the Israelites trusted Him for manna in the desert.</p>
+
+                <h3>Part 5 — "Forgive us our trespasses, as we forgive those who trespass against us"</h3>
+                <p>This petition comes with a condition — the only one in the prayer. God will forgive us the same way we forgive others. Jesus means it: <em>if we hold grudges, we are asking God to hold them against us too.</em></p>
+
+                <h3>Part 6 — "Lead us not into temptation"</h3>
+                <p>We're asking God to keep us out of situations where we'd be likely to fall. We're admitting we're not strong enough on our own. That honesty is itself a form of prayer.</p>
+
+                <h3>Part 7 — "But deliver us from evil"</h3>
+                <p>The last petition is the widest: rescue us from everything that destroys — sin, suffering, death, the devil. It's a cry of trust from people who know they need saving.</p>
+
+                <h3>Why Does This Matter?</h3>
+                <p>The Lord's Prayer is not a magic formula. It's a <em>shape</em> for prayer — showing us what to care about, in what order. When you pray it slowly, one petition at a time, it teaches you how to think about God, yourself, and the world.</p>
+            `,
+            theologian: `
+                <h2>The Lord's Prayer — Theologian Level</h2>
+                <p>The <span class="key-term">Our Father</span> appears in two forms in the New Testament: Matthew 6:9–13 (seven petitions, liturgical form) and Luke 11:2–4 (shorter, five petitions). Both emerge from the same teaching context — a disciple's request to learn prayer as John taught his disciples. The Matthean form, embedded in the Sermon on the Mount, is the version the Church has prayed liturgically from its earliest centuries.</p>
+
+                <h3>Jewish Liturgical Background</h3>
+                <p>The prayer cannot be understood apart from its Jewish context. It shares structural and verbal parallels with the <span class="key-term">Kaddish</span> — the Aramaic doxology prayed in synagogue worship whose opening petitions ("May His great name be exalted and hallowed... may His kingdom come") are almost identical to the first half of the Our Father. Jesus was not inventing new religious language; He was taking the deepest longings of Jewish prayer and placing them in a new key — addressed to a Father rather than a sovereign, and explicitly conditional on forgiveness extended to others.</p>
+
+                <h3>Augustine's Taxonomy of the Seven Petitions</h3>
+                <p>In his <em>Letter 130</em> to Proba (c. 412 AD), Augustine argued that the Lord's Prayer contains, explicitly or implicitly, every legitimate object of Christian prayer. Whatever we rightly ask God for, it can be mapped onto one of the seven petitions. The prayer is not one prayer among others but the <em>form</em> of all Christian prayer.</p>
+
+                <p>Augustine divides the petitions into two groups:</p>
+                <ul>
+                    <li><strong>Petitions 1–3</strong> (hallowed be thy name / kingdom come / will be done) — oriented toward <em>God's glory</em>, pointing toward eternal life</li>
+                    <li><strong>Petitions 4–7</strong> (daily bread / forgiveness / temptation / evil) — oriented toward <em>human need</em> in temporal life</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>"Run through all the words of holy prayers, and I think you will find nothing that is not contained in the Lord's Prayer."</p>
+                    <cite>— Augustine, Letter 130 to Proba</cite>
+                </div>
+
+                <h3>The Eschatological Dimension</h3>
+                <p>The petition "thy kingdom come" carries an urgency that modern readers often miss. In first-century Jewish thought, the <span class="key-term">Kingdom of God</span> was not a metaphor for inner peace but an expected historical irruption — God's definitive act of setting the world right. Jesus announces that this kingdom has <em>already</em> arrived in His person (Luke 17:21) but is <em>not yet</em> consummated. The petition holds both: the kingdom is here, and we pray for its fullness. The Catechism calls this the "already but not yet" structure of Christian hope (CCC §2816).</p>
+
+                <h3>The Conditionality of Forgiveness</h3>
+                <p>The fifth petition is unique: it is the only petition in the prayer with a built-in condition. We ask to be forgiven "as we forgive." Matthew 6:14–15 drives it home immediately after the prayer: "If you forgive others their transgressions, your heavenly Father will forgive you. But if you do not forgive others, neither will your Father forgive your transgressions." The <span class="key-term">Catechism</span> calls this petition "astonishing" (CCC §2838) — it is the only place in the Gospels where our response to God is made an explicit condition of His response to us. This does not make forgiveness transactional but reveals that a closed heart cannot receive what it is not willing to give.</p>
+
+                <h3>The Doxology</h3>
+                <p>The concluding doxology — "For thine is the kingdom, the power, and the glory, forever and ever" — does not appear in the oldest manuscripts of Matthew and is absent from Luke entirely. It entered Christian liturgical use through the <em>Didache</em> (c. 90–100 AD), the earliest Christian liturgical document outside the New Testament. The Catholic Mass omits the doxology from the Our Father itself, inserting it after an embolism ("Deliver us, Lord...") as a separate priestly and congregational acclamation — preserving both the scriptural text and the ancient doxological tradition.</p>
+            `
+        },
+
+        reading: {
+            beginner: `
+                <h2>Reading: The Sermon on the Mount — Why Jesus Taught This Prayer</h2>
+                <div class="reading-meta">Matthew 6:5–13 — Jesus on prayer</div>
+                <div class="reading-body">
+                    <p>Just before Jesus gave His disciples the Lord's Prayer, He warned them about two wrong ways to pray. The first wrong way: praying loudly in public just to impress people. "They have received their reward," He said — meaning that human applause is all they'll get. The second wrong way: piling up empty words, thinking that longer prayers are better prayers.</p>
+                    <p>Then He said something surprising: "Your Father knows what you need before you ask him." So why pray at all? Not to inform God of things He doesn't know. Not to change His mind. But to align our minds and hearts with His. Prayer is not sending God instructions — it is turning toward Him.</p>
+                    <p>The Lord's Prayer is short on purpose. Every word carries weight. Jesus gives us seven requests, and every one of them matters. Three for God's glory. Four for our real needs. Not a word wasted. Not a syllable to impress anyone.</p>
+                    <p>When you pray the Our Father, pray it slowly. One line at a time. Mean each word. Jesus didn't give us a formula to recite — He gave us a way of thinking about everything that matters.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Reflect on These Questions</h4>
+                    <ol>
+                        <li>Jesus says God already knows what we need before we ask. Why do you think He still wants us to pray?</li>
+                        <li>Which petition of the Our Father is hardest for you personally? Why?</li>
+                        <li>Try praying the Lord's Prayer one line at a time, pausing after each one. What did you notice?</li>
+                    </ol>
+                </div>
+            `,
+            theologian: `
+                <h2>Reading: Augustine on the Lord's Prayer</h2>
+                <div class="reading-meta">Augustine of Hippo, Letter 130 to Proba — c. 412 AD (paraphrased)</div>
+                <div class="reading-body">
+                    <p>A wealthy widow named Proba wrote to Augustine asking how to pray rightly. His response became one of the most important treatments of Christian prayer in the tradition. His central argument: all legitimate Christian prayer is already contained in the Lord's Prayer. If you find yourself wanting to ask God for something, you should be able to locate that desire in one of the seven petitions — or ask yourself why you cannot.</p>
+                    <p>Augustine distinguishes between what we <em>think</em> we want and what we truly need. We may pray for health, wealth, success, or the removal of suffering — and these are not wrong desires. But Augustine argues that we are really asking, underneath all of it, for the blessed life: union with God. The seven petitions map our deepest desire perfectly. The petition for "daily bread" covers not just food but everything necessary for life. The petition for deliverance from evil covers everything that blocks our union with God.</p>
+                    <p>His most striking claim is about the relationship between prayer and desire. God does not need our words. What prayer does is expand our desire — stretch our hearts so they can receive what God longs to give. "Our heart is restless until it rests in Thee," he wrote in the Confessions. Prayer is the practice of that restlessness being oriented rightly.</p>
+                    <p>This means the Lord's Prayer is not merely a formula but a school. To pray it well is to be formed by it — to have your desires gradually reshaped until they match the seven petitions perfectly: God's glory first, then human need, with forgiveness as the hinge between the two.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Theological Reflection</h4>
+                    <ol>
+                        <li>Augustine claims that all legitimate prayer can be mapped onto the Lord's Prayer. Do you think this is true? What would it mean for a prayer that cannot be mapped there?</li>
+                        <li>What does Augustine mean when he says prayer "expands our desire"? How does that change what you think prayer is for?</li>
+                        <li>How does the structure of the Our Father — God's glory first, human need second — shape what we should prioritize in life?</li>
+                    </ol>
+                </div>
+            `
+        },
+
+        quiz: [
+            {
+                q: "How many petitions are in the Lord's Prayer as found in Matthew 6?",
+                options: ["Five", "Six", "Seven", "Ten"],
+                correct: 2,
+                explanation: "Matthew 6:9–13 contains seven petitions. The first three concern God's glory; the last four concern human need."
+            },
+            {
+                q: "Which petition of the Lord's Prayer includes a condition — the only one in the prayer?",
+                options: ["Thy kingdom come", "Give us this day our daily bread", "Forgive us our trespasses, as we forgive those who trespass against us", "Deliver us from evil"],
+                correct: 2,
+                explanation: "The forgiveness petition is the only one with a built-in condition: we ask to be forgiven in the same measure as we forgive others. Matthew 6:14–15 underlines this immediately after the prayer."
+            },
+            {
+                q: "The Jewish prayer with the closest parallels to the Lord's Prayer — including 'may His name be hallowed' and 'may His kingdom come' — is called the:",
+                options: ["Shema", "Kaddish", "Hallel", "Amidah"],
+                correct: 1,
+                explanation: "The Kaddish is an Aramaic synagogue doxology whose opening petitions are strikingly similar to the first half of the Our Father. Jesus drew on the deepest language of Jewish worship."
+            },
+            {
+                q: "Augustine argued in his Letter to Proba that the Lord's Prayer:",
+                options: ["Should only be prayed in Latin", "Contains all legitimate objects of Christian prayer", "Was meant only for the Apostles", "Should be supplemented with longer personal prayers"],
+                correct: 1,
+                explanation: "Augustine argued that every legitimate Christian desire can be mapped onto one of the seven petitions. The Lord's Prayer is the form of all Christian prayer, not one prayer among many."
+            },
+            {
+                q: "The petition 'thy kingdom come' reflects what theological concept about God's kingdom?",
+                options: ["The kingdom exists only in heaven and not on earth", "The kingdom will only arrive after death", "The kingdom is already present in Christ but not yet fully consummated", "The kingdom refers only to the Catholic Church"],
+                correct: 2,
+                explanation: "The 'already but not yet' structure: Jesus announces the kingdom has arrived in His person (Luke 17:21), but its fullness is still awaited. We pray for the completion of what has already begun. (CCC §2816)"
+            }
+        ]
     }
-    // Unknown module ID — fall through to landing screen
-})();
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
+    initModule(MODULE_DATA);
+});
 </script>
 
 </body>

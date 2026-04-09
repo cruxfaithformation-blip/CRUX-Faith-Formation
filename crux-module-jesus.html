@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light">
-    <title>CRUX — Learning Modules</title>
+    <title>CRUX — Who Is Jesus Christ?</title>
 
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
@@ -985,157 +985,280 @@
 
 <header>
     <div class="header-left">
-        <button class="back-btn" onclick="window.location.href='index.html#youth'">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
             ← Back
         </button>
         <a href="index.html" class="header-logo">CRUX</a>
     </div>
     <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
         <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
     </div>
 </header>
 
-<div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
 
 <div class="module-wrap">
 
-    <!-- Landing screen — shown when no ?module= param -->
-    <div id="landingScreen" style="display:none;">
-        <div style="margin-bottom:2.5rem;">
-            <div style="display:inline-block;color:var(--gold-dark);font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.75rem;">Faith Formation</div>
-            <h1 style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:0.75rem;">Learning Modules</h1>
-            <p style="color:var(--text-secondary);font-size:1rem;max-width:560px;">Each module has a Lesson, a Reading with reflection questions, and a Quiz to earn XP. Choose Beginner or Theologian level inside any module.</p>
-        </div>
+    <!-- Loading state — shown while a module loads -->
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
 
-        <!-- Core Beliefs -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">✟</span>
-                <span class="landing-group-title">Core Beliefs</span>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=trinity'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Holy Trinity</h3>
-                    <p class="landing-card-desc">One God in three divine Persons — the central mystery of the Christian faith.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=jesus'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Who Is Jesus Christ?</h3>
-                    <p class="landing-card-desc">The most important question ever asked — and the answer that changes everything.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=sacraments'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Seven Sacraments</h3>
-                    <p class="landing-card-desc">Seven holy encounters with God — outward signs that give grace across the span of a life.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=mary'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Mary &amp; the Saints</h3>
-                    <p class="landing-card-desc">Why Catholics honor Mary and ask the saints to pray for us — and why this is not worship.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
+    <!-- Step indicator -->
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
         </div>
-
-        <!-- Prayer -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">🙏</span>
-                <span class="landing-group-title">Prayer</span>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=lords_prayer'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–5</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Lord's Prayer</h3>
-                    <p class="landing-card-desc">Seven petitions that teach us everything about how to speak to God.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
         </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
 
-        <!-- Sacred Scripture -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">📖</span>
-                <span class="landing-group-title">Sacred Scripture</span>
+    <!-- Module header -->
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">Grades 3–8</span>
+            <span class="topic-tag" id="topicTag">Faith Formation</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <!-- Level toggle -->
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions — you can review your answers before submitting.</p>
+            <div id="quizQuestions">
+                <!-- Populated by JS -->
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=bible_geography'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Geography of the Bible</h3>
-                    <p class="landing-card-desc">These events didn't happen in a story — they happened in real places you can visit today.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
             </div>
         </div>
+    </div>
 
-        <!-- Moral Theology -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">⚖️</span>
-                <span class="landing-group-title">Moral Theology</span>
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You've completed this lesson. Keep going — the faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=conscience'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 6–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Conscience &amp; Moral Decision-Making</h3>
-                    <p class="landing-card-desc">What the Church teaches about conscience — and why it is not a permission slip to do whatever you want.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    ← Back to CRUX
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
             </div>
         </div>
     </div>
 
 </div>
 
+
+<script src="crux-module-engine.js"></script>
 <script>
-// ── ROUTER ─────────────────────────────────────────────────
-// If a ?module= param is present, redirect to the standalone file.
-// This preserves all existing links without any changes to index.html.
-(function() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('module');
-    if (!id) return; // No param — show landing screen below
-    const routes = {
-        'lords_prayer': 'crux-module-lords-prayer.html',
-        'bible_geography': 'crux-module-geography.html',
-        'trinity': 'crux-module-trinity.html',
-        'sacraments': 'crux-module-sacraments.html',
-        'jesus': 'crux-module-jesus.html',
-        'mary': 'crux-module-mary.html',
-        'conscience': 'crux-module-conscience.html',
-    };
-    const dest = routes[id];
-    if (dest) {
-        window.location.replace(dest);
+// Module data for: jesus
+const MODULE_DATA = {
+    jesus: {
+        id: 'jesus',
+        title: 'Who is Jesus Christ?',
+        subtitle: 'The most important question ever asked — and the answer that changes everything.',
+        gradeTag: 'Grades 3–8',
+        topic: 'Christology',
+        xpReward: 50,
+        nextModule: 'mary',
+
+        lesson: {
+            beginner: `
+                <h2>Who is Jesus Christ? — Lesson</h2>
+                <p>Jesus asked His disciples: <em>"Who do you say that I am?"</em> (Matthew 16:15). It is still the most important question anyone can answer. The Catholic Church teaches that Jesus is <strong>true God and true man</strong> — fully divine and fully human at the same time.</p>
+
+                <h3>True God</h3>
+                <p>Jesus is the Second Person of the Trinity — God the Son who has existed forever. He is not a great teacher who became God, or an angel sent to help us. He is God Himself who entered human history.</p>
+
+                <h3>True Man</h3>
+                <p>Jesus was also completely human. He had a real body. He got tired, hungry, and sad. He had a mother named Mary and grew up in Nazareth. He experienced everything we experience — except sin.</p>
+
+                <div class="highlight-box">
+                    <p>"And the Word became flesh and lived among us, and we have seen his glory."</p>
+                    <cite>— John 1:14</cite>
+                </div>
+
+                <h3>Why Did Jesus Come?</h3>
+                <ul>
+                    <li>To reveal who God really is — a Father who loves us</li>
+                    <li>To save us from sin and death through His death and resurrection</li>
+                    <li>To show us how to live and what it means to love</li>
+                    <li>To give us a share in His own divine life</li>
+                </ul>
+
+                <p>The Resurrection is the proof of everything. If Jesus rose from the dead, then He really is who He claimed to be. And if He is who He claimed to be, then everything He said matters eternally.</p>
+            `,
+            theologian: `
+                <h2>Who is Jesus Christ? — Theologian Level</h2>
+                <p>The Church's answer to "Who is Jesus?" is expressed in the doctrine of the <span class="key-term">Hypostatic Union</span>: Jesus Christ is one divine Person (the eternal Son of God) subsisting in two complete natures — one divine, one human. This was defined at the Council of Chalcedon (451 AD).</p>
+
+                <h3>The Chalcedonian Definition</h3>
+                <p>Chalcedon declared that Christ's two natures exist "without confusion, without change, without division, without separation." The natures are distinct but united in one Person. This refuted two persistent heresies:</p>
+                <ul>
+                    <li><span class="key-term">Nestorianism</span> — claimed Jesus was two persons loosely joined (Mary is not Theotokos, "Mother of God")</li>
+                    <li><span class="key-term">Monophysitism</span> — claimed Christ had only one (divine) nature, absorbing the human</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>"One and the same Christ, Son, Lord, Only-begotten, recognized in two natures, without confusion, without change, without division, without separation."</p>
+                    <cite>— Council of Chalcedon, 451 AD</cite>
+                </div>
+
+                <h3>The Communicatio Idiomatum</h3>
+                <p>Because Christ is one Person, attributes of either nature can be predicated of the whole Person. We can say "God suffered" (attributing a human experience to the divine Person) and "Mary is the Mother of God" (Theotokos). This <span class="key-term">communicatio idiomatum</span> (communication of idioms) is not loose language but a precise theological conclusion of the Hypostatic Union.</p>
+
+                <h3>The Soteriological Stakes</h3>
+                <p>The doctrine is not abstract — it is salvific. Gregory of Nazianzus stated the principle: <em>"What has not been assumed has not been healed."</em> If Jesus did not take on a complete human nature — body, soul, will, intellect — then that aspect of our humanity remains unredeemed. The fullness of Christ's humanity is required for the fullness of our salvation.</p>
+            `
+        },
+
+        reading: {
+            beginner: `
+                <h2>Reading: The Resurrection Changes Everything</h2>
+                <div class="reading-meta">Based on 1 Corinthians 15:14–20 and early Church testimony</div>
+                <div class="reading-body">
+                    <p>St. Paul wrote something stunning: "If Christ has not been raised, your faith is futile." He didn't say the Resurrection is a nice story or a helpful symbol. He said it is the hinge on which everything turns. Either it happened, or Christianity is nothing.</p>
+                    <p>Here is what we know from history: Jesus was executed publicly by Roman crucifixion — a method designed to leave no doubt of death. He was buried. Three days later, the tomb was empty. The disciples, who had fled in fear, suddenly became willing to die rather than deny that they had seen Him risen.</p>
+                    <p>People die for things they believe are true. But people rarely die for things they know are false. The disciples were in a position to know whether they had seen the risen Christ or invented the story. They insisted it was real — and most of them died for that insistence. That is extraordinary evidence.</p>
+                    <p>The Resurrection is not just proof that Jesus survived death. It is proof that He has power over death — which means He can share that power with us. "Because I live, you also will live" (John 14:19).</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Reflect on These Questions</h4>
+                    <ol>
+                        <li>Why does Paul say faith is "futile" if the Resurrection isn't real? What does that tell you about how central it is?</li>
+                        <li>What do you find most compelling about the historical evidence for the Resurrection?</li>
+                        <li>If Jesus really rose from the dead, what difference should that make to how you live today?</li>
+                    </ol>
+                </div>
+            `,
+            theologian: `
+                <h2>Reading: The Council of Chalcedon and the Hypostatic Union</h2>
+                <div class="reading-meta">Historical theology — Council of Chalcedon, 451 AD</div>
+                <div class="reading-body">
+                    <p>By the fifth century, the Church had defined that Jesus is fully divine (Nicaea, 325) and that His humanity is complete enough that Mary can rightly be called Theotokos, Mother of God (Ephesus, 431). The remaining question was: how do these two natures relate in the one Person of Christ?</p>
+                    <p>Eutyches, an archimandrite in Constantinople, taught that Christ had only one nature after the Incarnation — a blend in which the human was absorbed into the divine "like a drop of honey in the ocean." This Monophysitism seemed pious, protecting Christ's divinity, but it gutted His humanity. Pope Leo I responded with his celebrated Tome, insisting that each nature retains its proper operations: the divine does what is divine, the human does what is human, while both meet in the one Person of the Son.</p>
+                    <p>The Council of Chalcedon (451 AD), attended by over 500 bishops, adopted Leo's framework. The Definition speaks of Christ in two natures "without confusion, without change" (against Eutyches) and "without division, without separation" (against Nestorius). These four adverbs are the precise formulation of two millennia of Christological faith.</p>
+                    <p>The pastoral implication is enormous. A Christ who is not fully human cannot fully redeem our humanity. A Christ who is not fully divine cannot give us divine life. Chalcedon protects both the medicine and the physician — ensuring that the Incarnation is truly a meeting of God and man, not the elimination of one by the other.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Theological Reflection</h4>
+                    <ol>
+                        <li>Why does Gregory of Nazianzus's principle — "What has not been assumed has not been healed" — make Monophysitism a soteriological problem, not just an abstract error?</li>
+                        <li>How does the communicatio idiomatum follow logically from the Hypostatic Union?</li>
+                        <li>Why might a well-meaning believer be drawn to Monophysitism? What does it get right, and where does it go wrong?</li>
+                    </ol>
+                </div>
+            `
+        },
+
+        quiz: [
+            {
+                q: "The Catholic Church teaches that Jesus is:",
+                options: ["A great prophet but not God", "Only divine, not truly human", "Fully God and fully human", "Half God and half human"],
+                correct: 2,
+                explanation: "The Hypostatic Union — defined at Chalcedon (451 AD) — teaches that Jesus is one Person with two complete natures: fully divine and fully human."
+            },
+            {
+                q: "Which council in 451 AD defined the doctrine of Christ's two natures?",
+                options: ["Council of Nicaea", "Council of Trent", "Council of Chalcedon", "Council of Jerusalem"],
+                correct: 2,
+                explanation: "The Council of Chalcedon (451 AD) defined that Christ exists in two natures 'without confusion, without change, without division, without separation.'"
+            },
+            {
+                q: "What heresy taught that Christ had only one nature — a divine nature that absorbed the human?",
+                options: ["Arianism", "Nestorianism", "Monophysitism", "Gnosticism"],
+                correct: 2,
+                explanation: "Monophysitism (from Greek: 'one nature') taught that Christ's human nature was absorbed into His divine nature. The Church rejected this at Chalcedon."
+            },
+            {
+                q: "St. Paul says 'if Christ has not been raised, your faith is ___.'",
+                options: ["Incomplete", "Futile", "Still valid", "Symbolic"],
+                correct: 1,
+                explanation: "1 Corinthians 15:17 — 'If Christ has not been raised, your faith is futile.' Paul makes the Resurrection the non-negotiable foundation of Christian faith."
+            },
+            {
+                q: "Gregory of Nazianzus said: 'What has not been assumed has not been ___.'",
+                options: ["Forgiven", "Revealed", "Healed", "Sanctified"],
+                correct: 2,
+                explanation: "'What has not been assumed has not been healed.' Jesus had to take on complete human nature — body, soul, will, intellect — for our complete redemption."
+            }
+        ]
     }
-    // Unknown module ID — fall through to landing screen
-})();
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
+    initModule(MODULE_DATA);
+});
 </script>
 
 </body>

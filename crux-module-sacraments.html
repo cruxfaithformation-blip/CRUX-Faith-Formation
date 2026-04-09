@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light">
-    <title>CRUX — Learning Modules</title>
+    <title>CRUX — The Seven Sacraments</title>
 
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
@@ -985,157 +985,284 @@
 
 <header>
     <div class="header-left">
-        <button class="back-btn" onclick="window.location.href='index.html#youth'">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
             ← Back
         </button>
         <a href="index.html" class="header-logo">CRUX</a>
     </div>
     <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
         <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
     </div>
 </header>
 
-<div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
 
 <div class="module-wrap">
 
-    <!-- Landing screen — shown when no ?module= param -->
-    <div id="landingScreen" style="display:none;">
-        <div style="margin-bottom:2.5rem;">
-            <div style="display:inline-block;color:var(--gold-dark);font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.75rem;">Faith Formation</div>
-            <h1 style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:0.75rem;">Learning Modules</h1>
-            <p style="color:var(--text-secondary);font-size:1rem;max-width:560px;">Each module has a Lesson, a Reading with reflection questions, and a Quiz to earn XP. Choose Beginner or Theologian level inside any module.</p>
-        </div>
+    <!-- Loading state — shown while a module loads -->
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
 
-        <!-- Core Beliefs -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">✟</span>
-                <span class="landing-group-title">Core Beliefs</span>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=trinity'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Holy Trinity</h3>
-                    <p class="landing-card-desc">One God in three divine Persons — the central mystery of the Christian faith.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=jesus'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Who Is Jesus Christ?</h3>
-                    <p class="landing-card-desc">The most important question ever asked — and the answer that changes everything.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=sacraments'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Seven Sacraments</h3>
-                    <p class="landing-card-desc">Seven holy encounters with God — outward signs that give grace across the span of a life.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=mary'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Mary &amp; the Saints</h3>
-                    <p class="landing-card-desc">Why Catholics honor Mary and ask the saints to pray for us — and why this is not worship.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
+    <!-- Step indicator -->
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
         </div>
-
-        <!-- Prayer -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">🙏</span>
-                <span class="landing-group-title">Prayer</span>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=lords_prayer'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–5</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Lord's Prayer</h3>
-                    <p class="landing-card-desc">Seven petitions that teach us everything about how to speak to God.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
         </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
 
-        <!-- Sacred Scripture -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">📖</span>
-                <span class="landing-group-title">Sacred Scripture</span>
+    <!-- Module header -->
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">Grades 3–8</span>
+            <span class="topic-tag" id="topicTag">Faith Formation</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <!-- Level toggle -->
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions — you can review your answers before submitting.</p>
+            <div id="quizQuestions">
+                <!-- Populated by JS -->
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=bible_geography'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Geography of the Bible</h3>
-                    <p class="landing-card-desc">These events didn't happen in a story — they happened in real places you can visit today.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
             </div>
         </div>
+    </div>
 
-        <!-- Moral Theology -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">⚖️</span>
-                <span class="landing-group-title">Moral Theology</span>
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You've completed this lesson. Keep going — the faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=conscience'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 6–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Conscience &amp; Moral Decision-Making</h3>
-                    <p class="landing-card-desc">What the Church teaches about conscience — and why it is not a permission slip to do whatever you want.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    ← Back to CRUX
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
             </div>
         </div>
     </div>
 
 </div>
 
+
+<script src="crux-module-engine.js"></script>
 <script>
-// ── ROUTER ─────────────────────────────────────────────────
-// If a ?module= param is present, redirect to the standalone file.
-// This preserves all existing links without any changes to index.html.
-(function() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('module');
-    if (!id) return; // No param — show landing screen below
-    const routes = {
-        'lords_prayer': 'crux-module-lords-prayer.html',
-        'bible_geography': 'crux-module-geography.html',
-        'trinity': 'crux-module-trinity.html',
-        'sacraments': 'crux-module-sacraments.html',
-        'jesus': 'crux-module-jesus.html',
-        'mary': 'crux-module-mary.html',
-        'conscience': 'crux-module-conscience.html',
-    };
-    const dest = routes[id];
-    if (dest) {
-        window.location.replace(dest);
+// Module data for: sacraments
+const MODULE_DATA = {
+    sacraments: {
+        id: 'sacraments',
+        title: 'The Seven Sacraments',
+        subtitle: 'Outward signs instituted by Christ that give grace — seven holy encounters with God across the span of a life.',
+        gradeTag: 'Grades 3–8',
+        topic: 'Core Beliefs',
+        xpReward: 50,
+        nextModule: 'jesus',
+
+        lesson: {
+            beginner: `
+                <h2>The Seven Sacraments — Lesson</h2>
+                <p>A <span class="key-term">sacrament</span> is an outward sign — something we can see, hear, or touch — that gives us God's grace on the inside. Jesus gave the Church seven sacraments, one for each major moment of our spiritual life.</p>
+
+                <h3>The Seven Sacraments</h3>
+                <ul>
+                    <li><strong>Baptism</strong> — We are born into God's family and sin is washed away.</li>
+                    <li><strong>Confirmation</strong> — We receive the Holy Spirit to strengthen our faith.</li>
+                    <li><strong>Eucharist</strong> — We receive Jesus Himself in Holy Communion.</li>
+                    <li><strong>Reconciliation (Confession)</strong> — Our sins are forgiven by God through the priest.</li>
+                    <li><strong>Anointing of the Sick</strong> — God heals and comforts those who are ill or dying.</li>
+                    <li><strong>Holy Orders</strong> — Men are ordained as deacons, priests, or bishops.</li>
+                    <li><strong>Matrimony</strong> — A man and woman are united in a lifelong covenant of love.</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>"I came that they may have life, and have it abundantly."</p>
+                    <cite>— John 10:10</cite>
+                </div>
+
+                <h3>Sacraments of Initiation, Healing, and Service</h3>
+                <p>The sacraments are grouped into three categories:</p>
+                <ul>
+                    <li><strong>Initiation</strong> (Baptism, Confirmation, Eucharist) — these make us full members of the Church</li>
+                    <li><strong>Healing</strong> (Reconciliation, Anointing of the Sick) — these restore and strengthen us</li>
+                    <li><strong>Service</strong> (Holy Orders, Matrimony) — these build up the Church and family</li>
+                </ul>
+                <p>The sacraments aren't rituals we perform — they are moments when Jesus meets us and gives us exactly what we need.</p>
+            `,
+            theologian: `
+                <h2>The Seven Sacraments — Theologian Level</h2>
+                <p>The Council of Trent (1547) definitively defined that Christ instituted exactly seven sacraments, each conferring the grace it signifies <em>ex opere operato</em> — by the very performance of the act, not by the merit of the minister or recipient. This distinguishes Catholic sacramentology from both Protestant ordinances and magic.</p>
+
+                <h3>Matter, Form, and Minister</h3>
+                <p>Scholastic theology, following Aristotle's hylomorphism, analyzes each sacrament according to:</p>
+                <ul>
+                    <li><span class="key-term">Matter</span> — the physical element (water, oil, bread, wine, hands)</li>
+                    <li><span class="key-term">Form</span> — the words pronounced that give the action its meaning</li>
+                    <li><span class="key-term">Minister</span> — the person who performs the sacramental action with proper intention</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>"Sacraments are perceptible signs (words and actions) accessible to our human nature. By the action of Christ and the power of the Holy Spirit they make present efficaciously the grace that they signify."</p>
+                    <cite>— Catechism of the Catholic Church, §1084</cite>
+                </div>
+
+                <h3>Character and Res et Sacramentum</h3>
+                <p>Three sacraments — Baptism, Confirmation, and Holy Orders — imprint an indelible <span class="key-term">sacramental character</span> on the soul, which is why they cannot be repeated. The character configures the recipient to Christ in a permanent way: as sharer in His priesthood (Baptism/Confirmation) or as ordained minister of His priesthood (Holy Orders).</p>
+
+                <h3>Sacraments and Salvation</h3>
+                <p>While the Church teaches that the sacraments are the ordinary means of salvation, Catholic theology also affirms <em>baptism of desire</em> — those who, through no fault of their own, do not receive the sacrament but sincerely seek God can be saved. Grace is not imprisoned in the sacraments; rather, the sacraments are the privileged channels through which grace normally flows.</p>
+            `
+        },
+
+        reading: {
+            beginner: `
+                <h2>Reading: Sacraments as Encounters with Christ</h2>
+                <div class="reading-meta">From the Catechism of the Catholic Church, §§1113–1116 (simplified)</div>
+                <div class="reading-body">
+                    <p>The sacraments of the Church were instituted by Christ. They are his gift to us. There are seven sacraments: Baptism, Confirmation, Eucharist, Penance, Anointing of the Sick, Holy Orders, and Matrimony.</p>
+                    <p>The sacraments touch all the stages and important moments of Christian life. They give us the grace we need at each stage. They make the Church, and the Church makes them. Through the sacraments, Jesus continues his work of saving and healing us today — not just two thousand years ago in Palestine, but right here, right now.</p>
+                    <p>Each sacrament uses physical things — water, oil, bread, wine, words, hands — because we are physical people. God meets us where we are. He comes to us through things we can experience with our senses, and through them, He changes us on the inside.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Reflect on These Questions</h4>
+                    <ol>
+                        <li>Which sacrament have you received that meant the most to you? What made it meaningful?</li>
+                        <li>Why do you think God uses physical things (water, bread, oil) rather than just words alone?</li>
+                        <li>How might knowing that Jesus meets you in the sacraments change how you prepare for Mass or Confession?</li>
+                    </ol>
+                </div>
+            `,
+            theologian: `
+                <h2>Reading: Ex Opere Operato and the Council of Trent</h2>
+                <div class="reading-meta">Historical and dogmatic theology — Council of Trent, Session VII (1547)</div>
+                <div class="reading-body">
+                    <p>One of the most important — and most misunderstood — principles of Catholic sacramental theology is the phrase <em>ex opere operato</em>: "from the work worked." The Council of Trent defined this against the Protestant reformers who argued that the effectiveness of a sacrament depended entirely on the faith of the recipient.</p>
+                    <p>The Catholic position is more subtle and more robust: the sacraments work because of Christ's action, not ours. A Baptism performed by an unworthy priest is still a valid Baptism, because it is Christ who baptizes. A priest in a state of mortal sin who consecrates the Eucharist still confects a valid Eucharist. The grace is real regardless of human failure — because the source is divine, not human.</p>
+                    <p>This does not mean faith and disposition are irrelevant. The Catechism clarifies that the sacrament works <em>ex opere operato</em> with respect to its validity, but the <em>fruitfulness</em> of the sacrament — how much grace actually takes root in the soul — depends on the recipient's dispositions. A person who approaches Communion in mortal sin commits a sacrilege and receives no grace, though the sacrament remains valid.</p>
+                    <p>This distinction is pastorally important: it grounds the Church's sacramental ministry in the reliability of Christ, not the holiness of the minister. It is also the theological foundation for why the Church takes sacramental form and matter so seriously — a priest who changes the words of consecration jeopardizes validity, not merely aesthetics.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Theological Reflection</h4>
+                    <ol>
+                        <li>Why might the Protestant emphasis on faith as the source of sacramental efficacy seem appealing — and what does Catholic theology offer in response?</li>
+                        <li>What is the difference between the validity of a sacrament and its fruitfulness? Why does this distinction matter practically?</li>
+                        <li>How does ex opere operato protect the faithful from dependence on the holiness of their priests?</li>
+                    </ol>
+                </div>
+            `
+        },
+
+        quiz: [
+            {
+                q: "How many sacraments did Jesus give the Church?",
+                options: ["Five", "Six", "Seven", "Ten"],
+                correct: 2,
+                explanation: "Christ instituted exactly seven sacraments, definitively defined by the Council of Trent in 1547."
+            },
+            {
+                q: "Which three sacraments make up the 'Sacraments of Initiation'?",
+                options: ["Baptism, Matrimony, Holy Orders", "Baptism, Confirmation, Eucharist", "Confession, Anointing, Confirmation", "Eucharist, Holy Orders, Anointing"],
+                correct: 1,
+                explanation: "Baptism, Confirmation, and Eucharist are the Sacraments of Initiation — they make us full members of the Body of Christ."
+            },
+            {
+                q: "The phrase 'ex opere operato' means the sacraments work because of:",
+                options: ["The faith of the recipient", "The holiness of the priest", "Christ's action, not human merit", "The bishop's approval"],
+                correct: 2,
+                explanation: "Ex opere operato means 'from the work worked' — the sacrament's validity comes from Christ's action, not the minister's or recipient's holiness."
+            },
+            {
+                q: "Which three sacraments imprint an indelible mark on the soul and cannot be repeated?",
+                options: ["Eucharist, Reconciliation, Anointing", "Matrimony, Holy Orders, Confirmation", "Baptism, Confirmation, Holy Orders", "Baptism, Eucharist, Matrimony"],
+                correct: 2,
+                explanation: "Baptism, Confirmation, and Holy Orders each imprint a permanent sacramental character — configuring the recipient to Christ in an unrepeatable way."
+            },
+            {
+                q: "A sacrament uses physical elements (water, oil, bread) because:",
+                options: ["Traditions required it", "God meets physical people through physical things", "The words alone are not holy enough", "It makes the ceremony longer"],
+                correct: 1,
+                explanation: "We are embodied beings. God meets us where we are — through things we can see, touch, and taste — and through them works an interior transformation."
+            }
+        ]
     }
-    // Unknown module ID — fall through to landing screen
-})();
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
+    initModule(MODULE_DATA);
+});
 </script>
 
 </body>

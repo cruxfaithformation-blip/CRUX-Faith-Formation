@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light">
-    <title>CRUX — Learning Modules</title>
+    <title>CRUX — Conscience & Moral Decision-Making</title>
 
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
@@ -985,157 +985,287 @@
 
 <header>
     <div class="header-left">
-        <button class="back-btn" onclick="window.location.href='index.html#youth'">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
             ← Back
         </button>
         <a href="index.html" class="header-logo">CRUX</a>
     </div>
     <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
         <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
     </div>
 </header>
 
-<div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
 
 <div class="module-wrap">
 
-    <!-- Landing screen — shown when no ?module= param -->
-    <div id="landingScreen" style="display:none;">
-        <div style="margin-bottom:2.5rem;">
-            <div style="display:inline-block;color:var(--gold-dark);font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.75rem;">Faith Formation</div>
-            <h1 style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:0.75rem;">Learning Modules</h1>
-            <p style="color:var(--text-secondary);font-size:1rem;max-width:560px;">Each module has a Lesson, a Reading with reflection questions, and a Quiz to earn XP. Choose Beginner or Theologian level inside any module.</p>
-        </div>
+    <!-- Loading state — shown while a module loads -->
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
 
-        <!-- Core Beliefs -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">✟</span>
-                <span class="landing-group-title">Core Beliefs</span>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=trinity'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Holy Trinity</h3>
-                    <p class="landing-card-desc">One God in three divine Persons — the central mystery of the Christian faith.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=jesus'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Who Is Jesus Christ?</h3>
-                    <p class="landing-card-desc">The most important question ever asked — and the answer that changes everything.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=sacraments'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Seven Sacraments</h3>
-                    <p class="landing-card-desc">Seven holy encounters with God — outward signs that give grace across the span of a life.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=mary'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Mary &amp; the Saints</h3>
-                    <p class="landing-card-desc">Why Catholics honor Mary and ask the saints to pray for us — and why this is not worship.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
+    <!-- Step indicator -->
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
         </div>
-
-        <!-- Prayer -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">🙏</span>
-                <span class="landing-group-title">Prayer</span>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=lords_prayer'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–5</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Lord's Prayer</h3>
-                    <p class="landing-card-desc">Seven petitions that teach us everything about how to speak to God.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
         </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
 
-        <!-- Sacred Scripture -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">📖</span>
-                <span class="landing-group-title">Sacred Scripture</span>
+    <!-- Module header -->
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">Grades 3–8</span>
+            <span class="topic-tag" id="topicTag">Faith Formation</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <!-- Level toggle -->
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions — you can review your answers before submitting.</p>
+            <div id="quizQuestions">
+                <!-- Populated by JS -->
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=bible_geography'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Geography of the Bible</h3>
-                    <p class="landing-card-desc">These events didn't happen in a story — they happened in real places you can visit today.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
             </div>
         </div>
+    </div>
 
-        <!-- Moral Theology -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">⚖️</span>
-                <span class="landing-group-title">Moral Theology</span>
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You've completed this lesson. Keep going — the faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=conscience'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 6–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Conscience &amp; Moral Decision-Making</h3>
-                    <p class="landing-card-desc">What the Church teaches about conscience — and why it is not a permission slip to do whatever you want.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    ← Back to CRUX
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
             </div>
         </div>
     </div>
 
 </div>
 
+
+<script src="crux-module-engine.js"></script>
 <script>
-// ── ROUTER ─────────────────────────────────────────────────
-// If a ?module= param is present, redirect to the standalone file.
-// This preserves all existing links without any changes to index.html.
-(function() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('module');
-    if (!id) return; // No param — show landing screen below
-    const routes = {
-        'lords_prayer': 'crux-module-lords-prayer.html',
-        'bible_geography': 'crux-module-geography.html',
-        'trinity': 'crux-module-trinity.html',
-        'sacraments': 'crux-module-sacraments.html',
-        'jesus': 'crux-module-jesus.html',
-        'mary': 'crux-module-mary.html',
-        'conscience': 'crux-module-conscience.html',
-    };
-    const dest = routes[id];
-    if (dest) {
-        window.location.replace(dest);
+// Module data for: conscience
+const MODULE_DATA = {
+    conscience: {
+        id: 'conscience',
+        title: 'Conscience & Moral Decision-Making',
+        subtitle: 'What the Catholic Church teaches about conscience — and why it is not a permission slip to do whatever you want.',
+        gradeTag: 'Grades 6–8',
+        topic: 'Moral Theology',
+        xpReward: 60,
+        nextModule: null,
+
+        lesson: {
+            beginner: `
+                <h2>Conscience & Moral Decision-Making — Lesson</h2>
+                <p>Everyone has a <span class="key-term">conscience</span> — that inner voice that tells you when something is right or wrong. But what exactly is conscience, and can you always trust it?</p>
+
+                <h3>What Conscience Is</h3>
+                <p>The Catholic Church teaches that conscience is <strong>the voice of God speaking in our hearts</strong> — our ability to judge whether an action is good or evil. It is a gift from God built into every human being. When you feel guilty after doing something wrong, or feel at peace after doing something good, that is your conscience working.</p>
+
+                <h3>What Conscience Is Not</h3>
+                <p>Conscience is <em>not</em> just "whatever I feel like." A conscience can be:</p>
+                <ul>
+                    <li><strong>Wrong</strong> — if you were taught badly or never learned right from wrong</li>
+                    <li><strong>Dulled</strong> — if you keep ignoring it, it gets quieter over time</li>
+                    <li><strong>Manipulated</strong> — by peer pressure, culture, or self-deception</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>"Deep within his conscience man discovers a law which he has not laid upon himself but which he must obey."</p>
+                    <cite>— Gaudium et Spes, §16</cite>
+                </div>
+
+                <h3>Forming a Good Conscience</h3>
+                <p>Because conscience can be wrong, we have a duty to <strong>form it well</strong>. This means:</p>
+                <ul>
+                    <li>Learning what the Church teaches about right and wrong</li>
+                    <li>Reading Scripture and praying for wisdom</li>
+                    <li>Seeking advice from wise and holy people</li>
+                    <li>Examining our motives honestly</li>
+                </ul>
+                <p>You must always obey a certain conscience — but you must also always work to make sure your conscience is well-formed and aligned with truth.</p>
+            `,
+            theologian: `
+                <h2>Conscience & Moral Decision-Making — Theologian Level</h2>
+                <p>The Catholic doctrine of conscience is one of the most nuanced — and most misappropriated — areas of moral theology. Vatican II's <em>Gaudium et Spes</em> §16 defines conscience as "the most secret core and sanctuary of a person" where one is "alone with God, whose voice echoes in one's depths." This is not a license for autonomy but a description of the site of moral obligation.</p>
+
+                <h3>The Three Senses of Conscience</h3>
+                <p>The tradition distinguishes:</p>
+                <ul>
+                    <li><span class="key-term">Synderesis</span> — the innate habit of knowing basic moral principles ("do good, avoid evil")</li>
+                    <li><span class="key-term">Conscientia</span> — the act of applying those principles to particular situations</li>
+                    <li><span class="key-term">Moral sense</span> — the emotional-intuitive dimension of moral perception</li>
+                </ul>
+
+                <h3>Certain vs. Doubtful Conscience</h3>
+                <p>A <span class="key-term">certain conscience</span> judges an act to be obligatory, permissible, or forbidden without prudent fear of error. One must always act according to a certain conscience — even if it is objectively wrong. A person acting in invincible ignorance (unable through no fault of their own to know the truth) is not morally culpable.</p>
+                <p>A <span class="key-term">doubtful conscience</span> involves genuine uncertainty. The principle <em>agere contra conscientiam semper est malum</em> — to act against conscience is always evil — means one may not act when doubtful of the lawfulness of an action. One must first resolve the doubt.</p>
+
+                <div class="highlight-box">
+                    <p>"Conscience is the proximate norm of morality, but it must itself be judged by objective moral truth."</p>
+                    <cite>— John Paul II, Veritatis Splendor, §60</cite>
+                </div>
+
+                <h3>The Obligation to Form Conscience</h3>
+                <p>In <em>Veritatis Splendor</em>, John Paul II forcefully rejected the notion of "fundamental option" theories that would allow conscience to override specific moral norms. Conscience is not creative — it does not generate moral truth but <em>perceives</em> it. The obligation to form conscience according to objective moral truth and Church teaching is not optional: an erroneous conscience formed through culpable negligence does not excuse.</p>
+            `
+        },
+
+        reading: {
+            beginner: `
+                <h2>Reading: Conscience in the Catechism</h2>
+                <div class="reading-meta">Catechism of the Catholic Church, §§1776–1782 (simplified)</div>
+                <div class="reading-body">
+                    <p>Conscience is present at the heart of every person. It commands him at the right moment: do this, shun that. When he listens to his conscience, a prudent man hears God speaking to him.</p>
+                    <p>Conscience must be informed and moral judgment enlightened. A well-formed conscience is upright and truthful. It formulates its judgments according to reason, in conformity with the true good willed by the wisdom of the Creator. Everyone must avail himself of the means to form his conscience.</p>
+                    <p>Faced with a moral choice, conscience can make either a right judgment in accordance with reason and the divine law, or conversely, an erroneous judgment that departs from them. A human being must always obey the certain judgment of his conscience. If he were deliberately to act against it, he would condemn himself.</p>
+                    <p>Yet it can happen that moral conscience remains in ignorance and makes erroneous judgments about acts to be performed or already committed. This ignorance can often be imputed to personal responsibility. This is the case when a man takes little trouble to find out what is true and good, or when conscience is little by little almost blinded through the habit of committing sin.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Reflect on These Questions</h4>
+                    <ol>
+                        <li>What does it mean that conscience can be "blinded" over time? Have you ever noticed your sense of right and wrong shifting?</li>
+                        <li>What does the Church say are our responsibilities for forming our conscience well?</li>
+                        <li>Describe a situation where someone might have a sincere but wrong conscience. How should we respond to such a person?</li>
+                    </ol>
+                </div>
+            `,
+            theologian: `
+                <h2>Reading: Veritatis Splendor and the Limits of Conscience</h2>
+                <div class="reading-meta">John Paul II, Veritatis Splendor (1993), §§54–64</div>
+                <div class="reading-body">
+                    <p>In <em>Veritatis Splendor</em> (1993), John Paul II addressed the crisis of moral relativism that had entered even Catholic moral theology in the post-conciliar period. Some theologians had argued that conscience possessed a "creative" function — able to determine moral truth independently, particularly regarding specific norms the Magisterium had declared intrinsically evil.</p>
+                    <p>John Paul II rejected this systematically. Conscience, he insisted, is not a "tribunal" that stands above the moral law but one that bears witness to it. The famous dictum of Cardinal Newman — "I toast the Pope, but I toast conscience first" — is frequently misread to mean that personal conscience trumps the Magisterium. John Paul II noted that Newman himself meant precisely the opposite: he was defending the objective claims of conscience against social pressure and utilitarianism, not against revealed truth.</p>
+                    <p>The encyclical's most significant moral category is the <em>intrinsece malum</em> — the intrinsically evil act. Certain acts (torture, murder of innocents, adultery) are evil not because of circumstances or intentions but because of their object. No good intention, no pastoral exception, no sincere conscience can render them good. This is the point at which the popular phrase "follow your conscience" requires the most careful handling: a conscience that approves an intrinsically evil act has not been well formed, regardless of its sincerity.</p>
+                    <p>The encyclical thus establishes a hierarchy: objective moral truth → Church teaching (which authoritatively interprets natural law and revelation) → formed conscience → particular judgment. Conscience is indispensable and must be obeyed, but it is not the origin of moral truth.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Theological Reflection</h4>
+                    <ol>
+                        <li>How does John Paul II's reading of Newman challenge the popular use of "follow your conscience" to justify departures from Church teaching?</li>
+                        <li>What is an intrinsece malum, and why does its existence set limits on what conscience can legitimately approve?</li>
+                        <li>How do you reconcile the claim that one must always follow their conscience with the claim that conscience can be wrong and must be formed?</li>
+                    </ol>
+                </div>
+            `
+        },
+
+        quiz: [
+            {
+                q: "According to Catholic teaching, conscience is best described as:",
+                options: ["Whatever feels right to me", "A social construct shaped by culture", "The inner voice where God's law is perceived", "The rules the Church gives us"],
+                correct: 2,
+                explanation: "Gaudium et Spes §16 describes conscience as the inner sanctuary where one is 'alone with God, whose voice echoes in one's depths.' It is where God's law is perceived, not invented."
+            },
+            {
+                q: "The term 'synderesis' refers to:",
+                options: ["The emotional feeling of guilt", "The innate habit of knowing basic moral principles", "The act of going to Confession", "Church teaching on sexuality"],
+                correct: 1,
+                explanation: "Synderesis is the innate, habitual knowledge of the most basic moral principle: 'do good and avoid evil.' It is the foundation from which conscience reasons about specific situations."
+            },
+            {
+                q: "John Paul II's Veritatis Splendor (1993) teaches that certain acts are intrinsically evil, meaning:",
+                options: ["They are evil only if you intend harm", "They can be justified by sufficiently good intentions", "They are evil because of their object, regardless of intention", "They are evil only in most circumstances"],
+                correct: 2,
+                explanation: "Intrinsece malum — intrinsically evil acts — are evil because of what they are, not because of circumstances or intentions. No intention can render them good."
+            },
+            {
+                q: "A person acting with an 'invincibly ignorant' conscience:",
+                options: ["Is always morally culpable", "Is not morally culpable for the error", "Should be punished by the Church", "Has no real conscience"],
+                correct: 1,
+                explanation: "Invincible ignorance means one cannot know the truth through no fault of their own. Such a person acting sincerely on their (incorrect) conscience is not morally culpable for the error."
+            },
+            {
+                q: "The principle 'agere contra conscientiam semper est malum' means:",
+                options: ["Conscience is always correct", "To act against conscience is always evil", "The Church's law overrides conscience", "Good intentions excuse all actions"],
+                correct: 1,
+                explanation: "'To act against conscience is always evil.' One must always follow their certain conscience — but this is why forming it correctly according to truth is so important."
+            }
+        ]
     }
-    // Unknown module ID — fall through to landing screen
-})();
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
+    initModule(MODULE_DATA);
+});
 </script>
 
 </body>

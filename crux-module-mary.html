@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light">
-    <title>CRUX — Learning Modules</title>
+    <title>CRUX — Mary & the Saints</title>
 
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
@@ -985,157 +985,275 @@
 
 <header>
     <div class="header-left">
-        <button class="back-btn" onclick="window.location.href='index.html#youth'">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
             ← Back
         </button>
         <a href="index.html" class="header-logo">CRUX</a>
     </div>
     <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
         <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
     </div>
 </header>
 
-<div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
 
 <div class="module-wrap">
 
-    <!-- Landing screen — shown when no ?module= param -->
-    <div id="landingScreen" style="display:none;">
-        <div style="margin-bottom:2.5rem;">
-            <div style="display:inline-block;color:var(--gold-dark);font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.75rem;">Faith Formation</div>
-            <h1 style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:0.75rem;">Learning Modules</h1>
-            <p style="color:var(--text-secondary);font-size:1rem;max-width:560px;">Each module has a Lesson, a Reading with reflection questions, and a Quiz to earn XP. Choose Beginner or Theologian level inside any module.</p>
-        </div>
+    <!-- Loading state — shown while a module loads -->
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
 
-        <!-- Core Beliefs -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">✟</span>
-                <span class="landing-group-title">Core Beliefs</span>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=trinity'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Holy Trinity</h3>
-                    <p class="landing-card-desc">One God in three divine Persons — the central mystery of the Christian faith.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=jesus'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Who Is Jesus Christ?</h3>
-                    <p class="landing-card-desc">The most important question ever asked — and the answer that changes everything.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=sacraments'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Seven Sacraments</h3>
-                    <p class="landing-card-desc">Seven holy encounters with God — outward signs that give grace across the span of a life.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=mary'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Mary &amp; the Saints</h3>
-                    <p class="landing-card-desc">Why Catholics honor Mary and ask the saints to pray for us — and why this is not worship.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
+    <!-- Step indicator -->
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
         </div>
-
-        <!-- Prayer -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">🙏</span>
-                <span class="landing-group-title">Prayer</span>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=lords_prayer'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–5</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Lord's Prayer</h3>
-                    <p class="landing-card-desc">Seven petitions that teach us everything about how to speak to God.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
         </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
 
-        <!-- Sacred Scripture -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">📖</span>
-                <span class="landing-group-title">Sacred Scripture</span>
+    <!-- Module header -->
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">Grades 3–8</span>
+            <span class="topic-tag" id="topicTag">Faith Formation</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <!-- Level toggle -->
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions — you can review your answers before submitting.</p>
+            <div id="quizQuestions">
+                <!-- Populated by JS -->
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=bible_geography'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Geography of the Bible</h3>
-                    <p class="landing-card-desc">These events didn't happen in a story — they happened in real places you can visit today.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
             </div>
         </div>
+    </div>
 
-        <!-- Moral Theology -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">⚖️</span>
-                <span class="landing-group-title">Moral Theology</span>
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You've completed this lesson. Keep going — the faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=conscience'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 6–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Conscience &amp; Moral Decision-Making</h3>
-                    <p class="landing-card-desc">What the Church teaches about conscience — and why it is not a permission slip to do whatever you want.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    ← Back to CRUX
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
             </div>
         </div>
     </div>
 
 </div>
 
+
+<script src="crux-module-engine.js"></script>
 <script>
-// ── ROUTER ─────────────────────────────────────────────────
-// If a ?module= param is present, redirect to the standalone file.
-// This preserves all existing links without any changes to index.html.
-(function() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('module');
-    if (!id) return; // No param — show landing screen below
-    const routes = {
-        'lords_prayer': 'crux-module-lords-prayer.html',
-        'bible_geography': 'crux-module-geography.html',
-        'trinity': 'crux-module-trinity.html',
-        'sacraments': 'crux-module-sacraments.html',
-        'jesus': 'crux-module-jesus.html',
-        'mary': 'crux-module-mary.html',
-        'conscience': 'crux-module-conscience.html',
-    };
-    const dest = routes[id];
-    if (dest) {
-        window.location.replace(dest);
+// Module data for: mary
+const MODULE_DATA = {
+    mary: {
+        id: 'mary',
+        title: 'Mary & the Saints',
+        subtitle: 'Why Catholics honor Mary and ask the saints to pray for us — and why this is not worship.',
+        gradeTag: 'Grades 3–8',
+        topic: 'Catholic Life',
+        xpReward: 50,
+        nextModule: 'conscience',
+
+        lesson: {
+            beginner: `
+                <h2>Mary & the Saints — Lesson</h2>
+                <p>One of the most common questions people ask about Catholics is: <em>"Why do you pray to Mary and the saints? Isn't that worship?"</em> The short answer is: we don't worship them — we <strong>ask them to pray for us</strong>, just like we ask our friends to pray for us.</p>
+
+                <h3>Who is Mary?</h3>
+                <p>Mary is the mother of Jesus. She said "yes" to God when the angel Gabriel asked her to carry the Son of God. Because Jesus is God, Mary is rightly called <span class="key-term">Theotokos</span> — the Mother of God. She is the greatest of all saints and the closest human being to Jesus who ever lived.</p>
+
+                <div class="highlight-box">
+                    <p>"Hail, full of grace, the Lord is with you!"</p>
+                    <cite>— Luke 1:28 (the Angel Gabriel to Mary)</cite>
+                </div>
+
+                <h3>What Do Catholics Believe About Mary?</h3>
+                <ul>
+                    <li><strong>Immaculate Conception</strong> — Mary was preserved from original sin from the moment of her conception</li>
+                    <li><strong>Perpetual Virginity</strong> — Mary remained a virgin her whole life</li>
+                    <li><strong>Assumption</strong> — At the end of her life, Mary was taken body and soul into heaven</li>
+                </ul>
+
+                <h3>Who Are the Saints?</h3>
+                <p>Saints are people in heaven who lived holy lives on earth. They are not dead in the way we fear death — they are <em>more alive</em> than we are. And because they are with God, they can intercede for us. Asking a saint to pray for you is like asking your most faithful friend to pray for you — except they are with God right now.</p>
+            `,
+            theologian: `
+                <h2>Mary & the Saints — Theologian Level</h2>
+                <p>Catholic Marian doctrine has four defined dogmas, each with precise theological content. Understanding them requires distinguishing <span class="key-term">latria</span> (worship due to God alone), <span class="key-term">hyperdulia</span> (the unique veneration given to Mary), and <span class="key-term">dulia</span> (honor given to the saints).</p>
+
+                <h3>The Four Marian Dogmas</h3>
+                <ul>
+                    <li><strong>Theotokos (431)</strong> — Mary is the Mother of God. Defined at Ephesus primarily to protect Christology: since Jesus is one Person, His mother is the mother of that Person who is God.</li>
+                    <li><strong>Perpetual Virginity (649)</strong> — Mary was virgin before, during, and after the birth of Christ. The Lateran Council defined this against those who read "brothers of Jesus" as biological siblings.</li>
+                    <li><strong>Immaculate Conception (1854)</strong> — Mary was preserved from original sin from the first moment of her conception by a singular grace of God, in view of the merits of Christ. Defined by Pius IX in <em>Ineffabilis Deus</em>.</li>
+                    <li><strong>Assumption (1950)</strong> — At the end of her earthly life, Mary was assumed body and soul into heavenly glory. Defined by Pius XII in <em>Munificentissimus Deus</em> — the most recent ex cathedra definition.</li>
+                </ul>
+
+                <div class="highlight-box">
+                    <p>"All generations will call me blessed, for the Mighty One has done great things for me."</p>
+                    <cite>— Luke 1:48–49</cite>
+                </div>
+
+                <h3>Mediatrix and the Communion of Saints</h3>
+                <p>Mary's role as <span class="key-term">Mediatrix</span> (not yet a defined dogma, but strong theological tradition) does not compete with Christ's unique mediation (1 Tim 2:5) but participates in it — as all intercession does. The Communion of Saints is the doctrine that the Church is one body spanning heaven, purgatory, and earth. The saints in heaven are not cut off from us; they intercede for us before the throne of God. Their intercession is effective precisely because it flows through and is united to Christ's own intercession.</p>
+            `
+        },
+
+        reading: {
+            beginner: `
+                <h2>Reading: The Magnificat — Mary's Prayer</h2>
+                <div class="reading-meta">Luke 1:46–55</div>
+                <div class="reading-body">
+                    <p>When Mary visited her cousin Elizabeth, who was pregnant with John the Baptist, Elizabeth greeted her with joy. Mary responded with one of the most beautiful prayers in Scripture — the Magnificat. It reveals Mary's heart: humble, faithful, overflowing with love for God.</p>
+                    <p><em>"My soul magnifies the Lord, and my spirit rejoices in God my Savior, for He has looked with favor on the lowliness of His servant. Surely, from now on all generations will call me blessed; for the Mighty One has done great things for me, and holy is His name."</em></p>
+                    <p>Notice what Mary does here: she doesn't take credit for anything. She points everything back to God. "He has done great things for me." This is why Catholics love Mary — not because she replaces Jesus, but because she leads us to Jesus better than anyone else. Her whole life was a pointing toward her Son.</p>
+                    <p>The saints do the same. Every saint, in their own way, lived the Magnificat — giving all glory to God and showing us what it looks like to say yes to Him completely.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Reflect on These Questions</h4>
+                    <ol>
+                        <li>What does Mary's prayer tell you about her character and her relationship with God?</li>
+                        <li>How is asking Mary to pray for you different from worshiping her?</li>
+                        <li>Is there a saint whose story has inspired you? What about their life speaks to you?</li>
+                    </ol>
+                </div>
+            `,
+            theologian: `
+                <h2>Reading: The Immaculate Conception — Ineffabilis Deus (1854)</h2>
+                <div class="reading-meta">Pope Pius IX, Apostolic Constitution — December 8, 1854</div>
+                <div class="reading-body">
+                    <p>The Immaculate Conception is one of the most misunderstood Catholic doctrines. It does not refer to the virginal conception of Jesus but to the conception of Mary herself — the claim that she was preserved from original sin from the first instant of her existence.</p>
+                    <p>The definition from <em>Ineffabilis Deus</em> reads: "The most Blessed Virgin Mary, in the first instance of her conception, by a singular grace and privilege granted by Almighty God, in view of the merits of Jesus Christ, the Savior of the human race, was preserved free from all stain of original sin."</p>
+                    <p>The critical phrase is "in view of the merits of Jesus Christ." Mary was not exempt from needing redemption — she was redeemed, but preemptively. Theologians call this <em>redemptio praeservativa</em> (preservative redemption) rather than <em>redemptio liberativa</em> (liberative redemption). Christ's saving grace, applied retroactively in time, preserved her from contracting the stain that the rest of humanity inherits.</p>
+                    <p>This was debated in the medieval period between Franciscans (who supported it, led by Duns Scotus) and Dominicans (who opposed it, following Thomas Aquinas's concern that it would exempt Mary from needing redemption). Scotus's solution — that prevention is a greater grace than cure — ultimately won the day and became the theological basis for Pius IX's definition.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Theological Reflection</h4>
+                    <ol>
+                        <li>How does the phrase "in view of the merits of Jesus Christ" protect the doctrine from the objection that Mary didn't need a Savior?</li>
+                        <li>Why do you think this doctrine was debated for so long before being defined? What theological concerns were at stake?</li>
+                        <li>What is the relationship between Mary's Immaculate Conception and her role as Mother of God?</li>
+                    </ol>
+                </div>
+            `
+        },
+
+        quiz: [
+            {
+                q: "The word 'Theotokos' means:",
+                options: ["Holy Woman", "Mother of God", "Queen of Heaven", "Immaculate One"],
+                correct: 1,
+                explanation: "Theotokos (Greek) means 'God-bearer' or 'Mother of God.' It was defined at the Council of Ephesus (431 AD) — primarily to protect the doctrine that Jesus is one Person who is God."
+            },
+            {
+                q: "The Immaculate Conception refers to:",
+                options: ["Jesus being conceived without a human father", "Mary being conceived without original sin", "Mary conceiving Jesus as a virgin", "The Church being founded without sin"],
+                correct: 1,
+                explanation: "The Immaculate Conception is the doctrine that Mary was preserved from original sin from the first instant of her conception — defined by Pope Pius IX in 1854."
+            },
+            {
+                q: "In Catholic theology, the worship due to God alone is called:",
+                options: ["Dulia", "Hyperdulia", "Latria", "Veneration"],
+                correct: 2,
+                explanation: "Latria is the adoration owed to God alone. Hyperdulia is the special veneration given to Mary. Dulia is the honor given to saints. Catholics give latria only to God."
+            },
+            {
+                q: "The Assumption (1950) teaches that Mary was taken into heaven:",
+                options: ["Only in spirit, not body", "After a period in purgatory", "Body and soul", "Symbolically, not literally"],
+                correct: 2,
+                explanation: "Defined by Pope Pius XII in Munificentissimus Deus (1950) — Mary was assumed body and soul into heavenly glory at the end of her earthly life."
+            },
+            {
+                q: "Duns Scotus's solution that made the Immaculate Conception theologically defensible was:",
+                options: ["Mary did not need redemption", "Prevention is a greater grace than cure", "Original sin does not apply to women", "The Pope has authority to exempt saints from sin"],
+                correct: 1,
+                explanation: "Scotus argued that to prevent someone from falling into sin is a greater act of redemption than rescuing them after. This resolved the concern that the doctrine exempted Mary from needing a Savior."
+            }
+        ]
     }
-    // Unknown module ID — fall through to landing screen
-})();
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
+    initModule(MODULE_DATA);
+});
 </script>
 
 </body>
