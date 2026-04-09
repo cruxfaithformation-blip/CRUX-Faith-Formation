@@ -14,7 +14,8 @@
         gtag('config', 'G-LQ35DLTVKY');
     </script>
     
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=Mulish:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <meta name="color-scheme" content="light">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Firebase SDK v10 -->
     <script type="module">
@@ -40,305 +41,363 @@
     </script>
     
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --navy: #1a1f36;
+            --navy-mid: #242a45;
+            --navy-light: #2f3659;
+            --gold: #d4a574;
+            --gold-light: #e8c9a0;
+            --gold-dark: #b8895a;
+            --white: #ffffff;
+            --off-white: #f8f7f4;
+            --text-primary: #1a1f36;
+            --text-secondary: #5a6282;
+            --text-muted: #8890b0;
+            --border: rgba(26, 31, 54, 0.1);
+            --border-gold: rgba(212, 165, 116, 0.25);
+            --shadow-sm: 0 2px 8px rgba(26, 31, 54, 0.08);
+            --shadow-md: 0 4px 20px rgba(26, 31, 54, 0.12);
+            --shadow-lg: 0 8px 40px rgba(26, 31, 54, 0.16);
+            color-scheme: light;
         }
 
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
         body {
-            font-family: 'Mulish', sans-serif;
-            background: linear-gradient(135deg, #2D1B4E 0%, #4B0082 100%);
+            font-family: 'Inter', sans-serif;
+            background: var(--navy);
             min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            padding: 2rem;
+            justify-content: flex-start;
+            padding: 3rem 1.5rem 4rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Subtle cross watermark behind everything */
+        body::before {
+            content: '✟';
+            position: fixed;
+            font-size: 32rem;
+            color: rgba(212, 165, 116, 0.03);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            line-height: 1;
+            z-index: 0;
         }
 
         .account-container {
-            max-width: 500px;
+            max-width: 520px;
             width: 100%;
+            position: relative;
+            z-index: 1;
         }
 
+        /* ─── LOGO ─────────────────────────────────────── */
         .logo {
             text-align: center;
-            margin-bottom: 2rem;
+            margin-bottom: 2.5rem;
         }
 
         .logo h1 {
-            font-family: 'Cinzel', serif;
-            font-size: 3rem;
-            color: #C19A6B;
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--gold);
             letter-spacing: 8px;
-            margin-bottom: 0.5rem;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            margin-bottom: 0.4rem;
+            line-height: 1;
         }
 
         .logo p {
-            color: rgba(255, 255, 255, 0.9);
-            font-size: 1rem;
+            color: rgba(255, 255, 255, 0.45);
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-transform: uppercase;
         }
 
-        .auth-card {
-            background: white;
+        /* ─── CARDS ─────────────────────────────────────── */
+        .auth-card,
+        .dashboard {
+            background: var(--off-white);
             border-radius: 12px;
             padding: 2.5rem;
-            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
+            box-shadow: var(--shadow-lg);
         }
 
-        .auth-card h2 {
-            font-family: 'Cinzel', serif;
-            color: #4B0082;
-            font-size: 1.8rem;
+        .auth-card h2,
+        .dashboard h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            font-size: 1.75rem;
+            font-weight: 700;
             margin-bottom: 1.5rem;
             text-align: center;
-            letter-spacing: 2px;
         }
 
+        /* ─── FIREBASE BADGE ────────────────────────────── */
+        .firebase-badge {
+            background: rgba(26, 31, 54, 0.06);
+            color: var(--text-secondary);
+            border: 1px solid var(--border);
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            display: inline-block;
+            margin-bottom: 1.25rem;
+        }
+
+        /* ─── FORMS ─────────────────────────────────────── */
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
         }
 
         .form-group label {
             display: block;
             font-weight: 600;
-            color: #2C2C2C;
-            margin-bottom: 0.5rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
         }
 
         .form-group input {
             width: 100%;
-            padding: 0.875rem;
-            border: 2px solid #ddd;
+            padding: 0.85rem 1rem;
+            border: 1.5px solid var(--border);
             border-radius: 8px;
-            font-size: 1rem;
-            transition: border-color 0.3s ease;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            background: var(--white);
+            transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .form-group input:focus {
             outline: none;
-            border-color: #4B0082;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.15);
         }
 
+        /* ─── BUTTONS ───────────────────────────────────── */
         .btn {
             width: 100%;
-            padding: 1rem;
+            padding: 0.95rem;
             border: none;
             border-radius: 8px;
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-size: 0.95rem;
+            font-weight: 700;
             cursor: pointer;
-            transition: all 0.3s ease;
-            font-family: 'Mulish', sans-serif;
+            transition: all 0.2s ease;
+            font-family: 'Inter', sans-serif;
+            letter-spacing: 0.4px;
         }
 
         .btn-primary {
-            background: #4B0082;
-            color: white;
+            background: var(--navy);
+            color: var(--gold);
         }
 
         .btn-primary:hover {
-            background: #6A3BA3;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 15px rgba(75, 0, 130, 0.3);
+            background: var(--navy-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 16px rgba(26, 31, 54, 0.25);
         }
 
         .btn-secondary {
-            background: #C19A6B;
-            color: white;
-            margin-top: 1rem;
+            background: var(--gold);
+            color: var(--navy);
+            margin-top: 0.75rem;
         }
 
         .btn-secondary:hover {
-            background: #8B6F47;
+            background: var(--gold-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.4);
         }
 
         .btn-logout {
-            background: #dc3545;
-            color: white;
-            margin-top: 1rem;
+            background: transparent;
+            color: var(--text-muted);
+            border: 1.5px solid var(--border);
+            margin-top: 0.75rem;
         }
 
         .btn-logout:hover {
-            background: #c82333;
+            border-color: #dc3545;
+            color: #dc3545;
+            background: rgba(220, 53, 69, 0.05);
         }
 
+        /* ─── TOGGLE AUTH LINK ──────────────────────────── */
         .toggle-auth {
             text-align: center;
             margin-top: 1.5rem;
-            color: #5A5A5A;
+            color: var(--text-muted);
+            font-size: 0.875rem;
         }
 
         .toggle-auth a {
-            color: #4B0082;
+            color: var(--gold-dark);
             cursor: pointer;
             font-weight: 600;
             text-decoration: none;
         }
 
-        .toggle-auth a:hover {
-            text-decoration: underline;
-        }
+        .toggle-auth a:hover { text-decoration: underline; }
 
+        /* ─── MESSAGES ──────────────────────────────────── */
         .error-message {
-            background: #f8d7da;
-            color: #721c24;
-            padding: 0.875rem;
+            background: #fff1f2;
+            color: #9b1c1c;
+            padding: 0.85rem 1rem;
             border-radius: 8px;
             margin-bottom: 1rem;
-            border-left: 4px solid #dc3545;
+            border-left: 3px solid #dc3545;
+            font-size: 0.875rem;
         }
 
         .success-message {
-            background: #d4edda;
-            color: #155724;
-            padding: 0.875rem;
+            background: #f0fdf4;
+            color: #14532d;
+            padding: 0.85rem 1rem;
             border-radius: 8px;
             margin-bottom: 1rem;
-            border-left: 4px solid #28a745;
+            border-left: 3px solid #22c55e;
+            font-size: 0.875rem;
         }
 
-        .dashboard {
-            background: white;
-            border-radius: 12px;
-            padding: 2.5rem;
-            box-shadow: 0 10px 50px rgba(0,0,0,0.3);
-        }
-
-        .dashboard h2 {
-            font-family: 'Cinzel', serif;
-            color: #4B0082;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-            letter-spacing: 2px;
-        }
-
+        /* ─── DASHBOARD PROFILE ─────────────────────────── */
         .user-info {
-            background: #f9f9f9;
-            border-left: 4px solid #4B0082;
+            background: var(--navy);
+            border-radius: 10px;
             padding: 1.5rem;
-            border-radius: 8px;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
 
         .user-info p {
-            margin-bottom: 0.75rem;
-            color: #2C2C2C;
+            margin-bottom: 0.6rem;
+            color: rgba(255,255,255,0.65);
+            font-size: 0.9rem;
         }
+
+        .user-info p:last-of-type { margin-bottom: 0.75rem; }
 
         .user-info strong {
-            color: #4B0082;
-        }
-
-        .loading {
-            text-align: center;
-            padding: 2rem;
-            color: #5A5A5A;
-        }
-
-        .firebase-badge {
-            background: #d4edda;
-            color: #155724;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            display: inline-block;
-            margin-bottom: 1rem;
-        }
-
-        /* ── NEW: XP, Classes, Join Class, Awards ── */
-
-        .section-card {
-            background: #f9f9f9;
-            border-left: 4px solid #4B0082;
-            border-radius: 8px;
-            padding: 1.25rem 1.5rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .section-card h3 {
-            font-family: 'Cinzel', serif;
-            color: #4B0082;
-            font-size: 1rem;
-            letter-spacing: 1px;
-            margin-bottom: 1rem;
+            color: var(--gold);
+            font-weight: 600;
         }
 
         .level-badge {
             display: inline-block;
-            background: linear-gradient(135deg, #4B0082, #7B2FBE);
-            color: #C19A6B;
-            font-family: 'Cinzel', serif;
-            font-size: 0.8rem;
+            background: rgba(212, 165, 116, 0.15);
+            color: var(--gold);
+            border: 1px solid rgba(212, 165, 116, 0.3);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.78rem;
+            font-weight: 700;
             padding: 0.3rem 0.9rem;
             border-radius: 20px;
-            letter-spacing: 1px;
-            margin-top: 0.35rem;
+            letter-spacing: 0.5px;
+            margin-top: 0.25rem;
         }
 
+        /* ─── SECTION CARDS ─────────────────────────────── */
+        .section-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-top: 3px solid var(--gold);
+            border-radius: 8px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-card h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--navy);
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        /* ─── XP PILLS ──────────────────────────────────── */
         .xp-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 0.75rem;
+            gap: 0.6rem;
             margin-bottom: 1rem;
         }
 
         .xp-pill {
-            background: #EDE9FE;
+            background: var(--off-white);
+            border: 1px solid var(--border);
             border-radius: 8px;
             padding: 0.75rem 1rem;
             text-align: center;
         }
 
         .xp-pill .xp-label {
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             font-weight: 700;
-            letter-spacing: 0.06em;
+            letter-spacing: 0.08em;
             text-transform: uppercase;
-            color: #6B7280;
+            color: var(--text-muted);
             margin-bottom: 0.25rem;
         }
 
         .xp-pill .xp-value {
-            font-family: 'Cinzel', serif;
+            font-family: 'Playfair Display', serif;
             font-size: 1.3rem;
-            color: #4B0082;
+            font-weight: 700;
+            color: var(--navy);
         }
 
         .xp-pill.xp-total {
             grid-column: 1 / -1;
-            background: linear-gradient(135deg, #EDE9FE, #DDD6FE);
+            background: var(--navy);
+            border-color: transparent;
         }
+
+        .xp-pill.xp-total .xp-label { color: rgba(255,255,255,0.5); }
 
         .xp-pill.xp-total .xp-value {
             font-size: 1.55rem;
-            color: #2D0057;
+            color: var(--gold);
         }
 
+        /* ─── PROGRESS BAR ──────────────────────────────── */
         .progress-label-row {
             display: flex;
             justify-content: space-between;
-            font-size: 0.78rem;
-            color: #6B7280;
+            font-size: 0.75rem;
+            color: var(--text-muted);
             margin-bottom: 0.4rem;
         }
 
         .progress-track {
-            height: 10px;
-            background: #E5E7EB;
+            height: 8px;
+            background: var(--off-white);
             border-radius: 10px;
             overflow: hidden;
+            border: 1px solid var(--border);
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, #4B0082, #7B2FBE);
+            background: linear-gradient(90deg, var(--navy), var(--gold));
             border-radius: 10px;
             transition: width 0.6s ease;
         }
 
+        /* ─── CLASS LIST ────────────────────────────────── */
         .class-list {
             list-style: none;
             margin: 0;
@@ -349,17 +408,18 @@
             display: flex;
             align-items: center;
             gap: 0.6rem;
-            padding: 0.6rem 0.75rem;
-            background: #fff;
-            border: 1px solid #E9E3F5;
+            padding: 0.65rem 0.85rem;
+            background: var(--off-white);
+            border: 1px solid var(--border);
             border-radius: 8px;
             margin-bottom: 0.5rem;
-            font-size: 0.9rem;
+            font-size: 0.875rem;
         }
 
-        .class-item .teacher-name { font-weight: 700; color: #2C2C2C; }
-        .class-item .teacher-school { font-size: 0.82rem; color: #6B7280; }
+        .class-item .teacher-name { font-weight: 700; color: var(--text-primary); }
+        .class-item .teacher-school { font-size: 0.8rem; color: var(--text-muted); }
 
+        /* ─── JOIN ROW ──────────────────────────────────── */
         .join-row {
             display: flex;
             gap: 0.6rem;
@@ -373,29 +433,36 @@
 
         .join-row .form-group input {
             text-transform: uppercase;
-            letter-spacing: 0.1em;
+            letter-spacing: 0.12em;
+            font-weight: 600;
         }
 
         .btn-join {
-            padding: 0.875rem 1.25rem;
-            background: #C19A6B;
-            color: white;
+            padding: 0.85rem 1.25rem;
+            background: var(--gold);
+            color: var(--navy);
             border: none;
             border-radius: 8px;
-            font-family: 'Mulish', sans-serif;
-            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
             font-weight: 700;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s ease;
             white-space: nowrap;
+            letter-spacing: 0.3px;
         }
 
-        .btn-join:hover { background: #8B6F47; }
-        .btn-join:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-join:hover {
+            background: var(--gold-light);
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.4);
+        }
+
+        .btn-join:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
 
         .join-feedback {
             margin-top: 0.6rem;
-            font-size: 0.875rem;
+            font-size: 0.85rem;
             font-weight: 600;
             display: none;
         }
@@ -403,16 +470,17 @@
         .join-feedback.success { color: #15803d; display: block; }
         .join-feedback.error   { color: #b91c1c; display: block; }
 
+        /* ─── AWARD CARDS ───────────────────────────────── */
         .award-card {
-            background: #fff;
-            border: 1px solid #E9E3F5;
+            background: var(--off-white);
+            border: 1px solid var(--border);
             border-radius: 10px;
             padding: 1rem 1.1rem;
             margin-bottom: 0.75rem;
             transition: box-shadow 0.2s;
         }
 
-        .award-card:hover { box-shadow: 0 4px 12px rgba(75,0,130,0.1); }
+        .award-card:hover { box-shadow: var(--shadow-sm); }
 
         .award-top {
             display: flex;
@@ -421,77 +489,83 @@
             margin-bottom: 0.4rem;
         }
 
-        .award-stars { font-size: 1.05rem; letter-spacing: 0.04em; }
+        .award-stars { font-size: 1rem; letter-spacing: 0.04em; }
 
         .award-xp {
-            font-family: 'Cinzel', serif;
+            font-family: 'Playfair Display', serif;
             font-size: 0.85rem;
-            color: #4B0082;
-            background: #EDE9FE;
+            font-weight: 700;
+            color: var(--navy);
+            background: rgba(212, 165, 116, 0.15);
+            border: 1px solid var(--border-gold);
             padding: 0.2rem 0.55rem;
             border-radius: 6px;
         }
 
         .award-title {
             font-weight: 700;
-            font-size: 0.95rem;
-            color: #2C2C2C;
+            font-size: 0.9rem;
+            color: var(--text-primary);
             margin-bottom: 0.2rem;
         }
 
         .award-from {
-            font-size: 0.8rem;
-            color: #6B7280;
+            font-size: 0.78rem;
+            color: var(--text-muted);
             margin-bottom: 0.35rem;
         }
 
         .award-notes {
-            font-size: 0.85rem;
-            color: #4B0082;
+            font-size: 0.83rem;
+            color: var(--gold-dark);
             font-style: italic;
-            background: #F3F0FF;
+            background: rgba(212, 165, 116, 0.08);
+            border-left: 2px solid var(--gold);
             padding: 0.35rem 0.65rem;
-            border-radius: 6px;
+            border-radius: 0 6px 6px 0;
             margin-bottom: 0.3rem;
         }
 
         .award-date {
-            font-size: 0.75rem;
-            color: #9CA3AF;
+            font-size: 0.73rem;
+            color: var(--text-muted);
             text-align: right;
         }
 
         .no-data {
-            font-size: 0.875rem;
-            color: #6B7280;
+            font-size: 0.85rem;
+            color: var(--text-muted);
             font-style: italic;
             text-align: center;
             padding: 0.75rem;
         }
 
-        /* Role toggle on register form */
+        /* ─── ROLE TOGGLE ───────────────────────────────── */
         .role-option {
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 0.2rem;
             padding: 0.85rem 0.5rem;
-            border: 2px solid #E5E7EB;
+            border: 1.5px solid var(--border);
             border-radius: 10px;
             text-align: center;
             transition: all 0.2s;
-            background: #fff;
+            background: var(--white);
+            cursor: pointer;
         }
-        .role-option.role-active {
-            border-color: #4B0082;
-            background: #F3F0FF;
-        }
-        .role-option:hover { border-color: #7B2FBE; }
 
-        /* Teacher class code display */
+        .role-option.role-active {
+            border-color: var(--gold);
+            background: rgba(212, 165, 116, 0.08);
+        }
+
+        .role-option:hover { border-color: var(--gold-dark); }
+
+        /* ─── CLASS CODE DISPLAY ────────────────────────── */
         .class-code-display {
-            background: #1a1f36;
-            color: #d4a574;
+            background: var(--navy);
+            color: var(--gold);
             font-family: 'Courier New', monospace;
             font-size: 2rem;
             font-weight: 700;
@@ -504,10 +578,42 @@
             transition: opacity 0.2s;
             user-select: all;
         }
+
         .class-code-display:hover { opacity: 0.85; }
-        .class-code-hint { font-size: 0.78rem; color: #6B7280; text-align: center; margin-top: 0.3rem; }
+        .class-code-hint { font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-top: 0.3rem; }
+
+        /* ─── TEACHER SETUP CARD VARIANTS ───────────────── */
+        #teacherSetupCard {
+            background: rgba(26, 31, 54, 0.04) !important;
+            border-top-color: var(--navy) !important;
+        }
+
+        #teacherSetupCard h3 { color: var(--navy) !important; }
+
+        #becomeTeacherCard {
+            background: rgba(212, 165, 116, 0.06) !important;
+            border-top-color: var(--gold-dark) !important;
+        }
+
+        #becomeTeacherCard h3 { color: var(--gold-dark) !important; }
+
+        /* ─── BACK LINK ─────────────────────────────────── */
+        .back-link {
+            display: block;
+            text-align: center;
+            margin-top: 1.5rem;
+            color: rgba(255,255,255,0.3);
+            font-size: 0.8rem;
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            transition: color 0.2s;
+        }
+
+        .back-link:hover { color: var(--gold); }
 
         @media (max-width: 480px) {
+            body { padding: 2rem 1rem 3rem; }
+            .auth-card, .dashboard { padding: 1.75rem 1.25rem; }
             .xp-grid { grid-template-columns: 1fr; }
             .xp-pill.xp-total { grid-column: auto; }
             .join-row { flex-direction: column; }
@@ -575,13 +681,13 @@
                             <input type="radio" name="role" value="student" id="roleStudent" checked style="display:none;">
                             <span style="font-size:1.3rem;display:block;">&#127891;</span>
                             <span style="font-weight:700;display:block;">Student</span>
-                            <span style="font-size:0.78rem;color:#6B7280;">Earn XP &amp; join a class</span>
+                            <span style="font-size:0.78rem;color:var(--text-muted);">Earn XP &amp; join a class</span>
                         </label>
                         <label id="roleTeacherLabel" class="role-option" style="cursor:pointer;" onclick="selectRole('teacher')">
                             <input type="radio" name="role" value="teacher" id="roleTeacher" style="display:none;">
                             <span style="font-size:1.3rem;display:block;">&#128203;</span>
                             <span style="font-weight:700;display:block;">Teacher</span>
-                            <span style="font-size:0.78rem;color:#6B7280;">Create a class &amp; award XP</span>
+                            <span style="font-size:0.78rem;color:var(--text-muted);">Create a class &amp; award XP</span>
                         </label>
                     </div>
                 </div>
@@ -666,18 +772,18 @@
             </div>
 
             <!-- Teacher Setup Card (shown only for teacher accounts) -->
-            <div class="section-card" id="teacherSetupCard" style="display:none;background:#f0f9ff;border-left-color:#0369a1;">
-                <h3 style="color:#0369a1;">&#128203; Teacher Setup</h3>
+            <div class="section-card" id="teacherSetupCard" style="display:none;">
+                <h3>&#128203; Teacher Setup</h3>
                 <div id="teacherSetupContent">
                     <!-- Populated by JS: either "set up your class" form or "your class code" display -->
                 </div>
             </div>
 
             <!-- Become a Teacher (shown for student accounts) -->
-            <div class="section-card" id="becomeTeacherCard" style="display:none;background:#fefce8;border-left-color:#ca8a04;">
-                <h3 style="color:#ca8a04;">&#128203; Are You a Teacher?</h3>
-                <p style="font-size:0.875rem;color:#6B7280;margin-bottom:1rem;">If you teach faith formation, upgrade your account to create a class code and award XP to students.</p>
-                <button class="btn-join" style="background:#ca8a04;width:100%;" onclick="upgradeToTeacher()">Set Up Teacher Account</button>
+            <div class="section-card" id="becomeTeacherCard" style="display:none;">
+                <h3>&#128203; Are You a Teacher?</h3>
+                <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:1rem;">If you teach faith formation, upgrade your account to create a class code and award XP to students.</p>
+                <button class="btn-join" style="width:100%;" onclick="upgradeToTeacher()">Set Up Teacher Account</button>
                 <div id="upgradeTeacherFeedback" class="join-feedback"></div>
             </div>
 
@@ -773,31 +879,31 @@
             if (teacherData && teacherData.classCode) {
                 // Already set up — show the code
                 content.innerHTML = `
-                    <p style="font-size:0.875rem;color:#6B7280;margin-bottom:0.5rem;">
-                        <strong style="color:#0369a1;">${teacherData.name || 'Your'}</strong> class at
-                        <strong style="color:#0369a1;">${teacherData.school || 'your school'}</strong>
+                    <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:0.5rem;">
+                        <strong style="color:var(--navy);">${teacherData.name || 'Your'}</strong> class at
+                        <strong style="color:var(--navy);">${teacherData.school || 'your school'}</strong>
                     </p>
-                    <p style="font-size:0.82rem;color:#6B7280;margin-bottom:0.3rem;">Share this code with your students:</p>
+                    <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.3rem;">Share this code with your students:</p>
                     <div class="class-code-display" onclick="copyCode('${teacherData.classCode}')" title="Click to copy">${teacherData.classCode}</div>
                     <p class="class-code-hint">Click the code to copy it to your clipboard</p>
-                    <p style="font-size:0.78rem;color:#6B7280;margin-top:0.75rem;">
-                        Students enrolled: <strong style="color:#0369a1;">${(teacherData.students || []).length}</strong>
+                    <p style="font-size:0.78rem;color:var(--text-muted);margin-top:0.75rem;">
+                        Students enrolled: <strong style="color:var(--navy);">${(teacherData.students || []).length}</strong>
                         &nbsp;&#183;&nbsp;
-                        <a href="crux-teacher.html" style="color:#0369a1;font-weight:700;">Open Teacher Dashboard &#8594;</a>
+                        <a href="crux-teacher.html" style="color:var(--gold-dark);font-weight:700;">Open Teacher Dashboard &#8594;</a>
                     </p>`;
             } else {
                 // Needs setup
                 content.innerHTML = `
-                    <p style="font-size:0.875rem;color:#6B7280;margin-bottom:1rem;">Complete your teacher profile to generate a class code your students can use to join.</p>
+                    <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:1rem;">Complete your teacher profile to generate a class code your students can use to join.</p>
                     <div class="form-group">
                         <label>Your Full Name</label>
-                        <input type="text" id="setupTeacherName" placeholder="e.g. Mrs. Sullivan" style="width:100%;padding:0.75rem;border:2px solid #ddd;border-radius:8px;font-size:0.95rem;">
+                        <input type="text" id="setupTeacherName" placeholder="e.g. Mrs. Sullivan" style="width:100%;padding:0.75rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.95rem;font-family:Inter,sans-serif;">
                     </div>
                     <div class="form-group">
                         <label>School / Parish</label>
-                        <input type="text" id="setupSchool" placeholder="e.g. St. Patrick's School" style="width:100%;padding:0.75rem;border:2px solid #ddd;border-radius:8px;font-size:0.95rem;">
+                        <input type="text" id="setupSchool" placeholder="e.g. St. Patrick's School" style="width:100%;padding:0.75rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.95rem;font-family:Inter,sans-serif;">
                     </div>
-                    <button class="btn-join" style="background:#0369a1;width:100%;padding:0.875rem;" onclick="saveTeacherSetup()">Generate My Class Code</button>
+                    <button class="btn-join" style="width:100%;padding:0.875rem;" onclick="saveTeacherSetup()">Generate My Class Code</button>
                     <div id="setupFeedback" class="join-feedback"></div>`;
             }
         }
@@ -884,11 +990,6 @@
         }
 
         // Show register form
-        // Auto-show register form if #register hash is present
-        if (window.location.hash === '#register') {
-            window.showRegister();
-        }
-
         window.showRegister = function() {
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('registerForm').style.display = 'block';
