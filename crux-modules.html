@@ -771,13 +771,221 @@
             .nav-bar { flex-direction: column-reverse; }
             .nav-bar .btn-primary, .nav-bar .btn-secondary { width: 100%; justify-content: center; }
         }
+
+        /* ─── GEOGRAPHY MODULE — LOCATION CARDS ──────────── */
+        /* ─── GEO CARDS (Bible Geography module) ─────────── */
+        .geo-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin: 1.25rem 0;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .geo-card:hover { box-shadow: var(--shadow-md); }
+
+        .geo-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.9rem 1.25rem;
+            background: var(--navy);
+            flex-wrap: wrap;
+        }
+
+        .geo-names {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .geo-ancient {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .geo-arrow {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+        }
+
+        .geo-modern {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.85);
+        }
+
+        .geo-era-tag {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            background: rgba(212,165,116,0.15);
+            border: 1px solid rgba(212,165,116,0.3);
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .geo-body {
+            padding: 1.1rem 1.25rem 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .geo-body p {
+            font-size: 0.92rem;
+            line-height: 1.75;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .geo-then-now {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .geo-then {
+            padding: 1rem 1.25rem;
+            border-right: 1px solid var(--border);
+            background: rgba(212,165,116,0.04);
+        }
+
+        .geo-now {
+            padding: 1rem 1.25rem;
+            background: rgba(26,31,54,0.03);
+        }
+
+        .geo-tn-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .geo-then p, .geo-now p {
+            font-size: 0.88rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* ─── LANDING SCREEN ──────────────────────────────── */
+        .landing-group {
+            margin-bottom: 2.5rem;
+        }
+
+        .landing-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .landing-group-icon {
+            font-size: 1.1rem;
+        }
+
+        .landing-group-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: 0.3px;
+        }
+
+        .landing-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+        }
+
+        .landing-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .landing-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-gold);
+        }
+
+        .landing-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+
+        .landing-card-grade {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: var(--gold-dark);
+            background: rgba(212,165,116,0.12);
+            padding: 0.15rem 0.55rem;
+            border-radius: 20px;
+        }
+
+        .landing-card-xp {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .landing-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.3;
+        }
+
+        .landing-card-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .landing-card-footer {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+            margin-top: 0.5rem;
+        }
+
+        .landing-card:hover .landing-card-footer {
+            color: var(--navy);
+        }
+
     </style>
 </head>
 <body>
 
 <header>
     <div class="header-left">
-        <button class="back-btn" onclick="window.location.href='index.html#youth'">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
             ← Back
         </button>
         <a href="index.html" class="header-logo">CRUX</a>
@@ -794,8 +1002,120 @@
 
 <div class="module-wrap">
 
-    <!-- Loading state -->
-    <div class="loading-state" id="loadingState">
+    <!-- Landing screen — shown when no ?module= param -->
+    <div id="landingScreen" style="display:none;">
+        <div style="margin-bottom:2.5rem;">
+            <div style="display:inline-block;color:var(--gold-dark);font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.75rem;">Faith Formation</div>
+            <h1 style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:0.75rem;">Learning Modules</h1>
+            <p style="color:var(--text-secondary);font-size:1rem;max-width:560px;">Each module has a Lesson, a Reading with reflection questions, and a Quiz to earn XP. Choose Beginner or Theologian level inside any module.</p>
+        </div>
+
+        <!-- Core Beliefs -->
+        <div class="landing-group">
+            <div class="landing-group-header">
+                <span class="landing-group-icon">✟</span>
+                <span class="landing-group-title">Core Beliefs</span>
+            </div>
+            <div class="landing-card-grid">
+                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=trinity'">
+                    <div class="landing-card-top">
+                        <span class="landing-card-grade">Grades 3–8</span>
+                        <span class="landing-card-xp">⭐ 50 XP</span>
+                    </div>
+                    <h3 class="landing-card-title">The Holy Trinity</h3>
+                    <p class="landing-card-desc">One God in three divine Persons — the central mystery of the Christian faith.</p>
+                    <div class="landing-card-footer">Start →</div>
+                </div>
+                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=jesus'">
+                    <div class="landing-card-top">
+                        <span class="landing-card-grade">Grades 3–8</span>
+                        <span class="landing-card-xp">⭐ 50 XP</span>
+                    </div>
+                    <h3 class="landing-card-title">Who Is Jesus Christ?</h3>
+                    <p class="landing-card-desc">The most important question ever asked — and the answer that changes everything.</p>
+                    <div class="landing-card-footer">Start →</div>
+                </div>
+                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=sacraments'">
+                    <div class="landing-card-top">
+                        <span class="landing-card-grade">Grades 3–8</span>
+                        <span class="landing-card-xp">⭐ 50 XP</span>
+                    </div>
+                    <h3 class="landing-card-title">The Seven Sacraments</h3>
+                    <p class="landing-card-desc">Seven holy encounters with God — outward signs that give grace across the span of a life.</p>
+                    <div class="landing-card-footer">Start →</div>
+                </div>
+                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=mary'">
+                    <div class="landing-card-top">
+                        <span class="landing-card-grade">Grades 3–8</span>
+                        <span class="landing-card-xp">⭐ 50 XP</span>
+                    </div>
+                    <h3 class="landing-card-title">Mary &amp; the Saints</h3>
+                    <p class="landing-card-desc">Why Catholics honor Mary and ask the saints to pray for us — and why this is not worship.</p>
+                    <div class="landing-card-footer">Start →</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Prayer -->
+        <div class="landing-group">
+            <div class="landing-group-header">
+                <span class="landing-group-icon">🙏</span>
+                <span class="landing-group-title">Prayer</span>
+            </div>
+            <div class="landing-card-grid">
+                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=lords_prayer'">
+                    <div class="landing-card-top">
+                        <span class="landing-card-grade">Grades 3–5</span>
+                        <span class="landing-card-xp">⭐ 50 XP</span>
+                    </div>
+                    <h3 class="landing-card-title">The Lord's Prayer</h3>
+                    <p class="landing-card-desc">Seven petitions that teach us everything about how to speak to God.</p>
+                    <div class="landing-card-footer">Start →</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Sacred Scripture -->
+        <div class="landing-group">
+            <div class="landing-group-header">
+                <span class="landing-group-icon">📖</span>
+                <span class="landing-group-title">Sacred Scripture</span>
+            </div>
+            <div class="landing-card-grid">
+                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=bible_geography'">
+                    <div class="landing-card-top">
+                        <span class="landing-card-grade">Grades 3–8</span>
+                        <span class="landing-card-xp">⭐ 60 XP</span>
+                    </div>
+                    <h3 class="landing-card-title">The Geography of the Bible</h3>
+                    <p class="landing-card-desc">These events didn't happen in a story — they happened in real places you can visit today.</p>
+                    <div class="landing-card-footer">Start →</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Moral Theology -->
+        <div class="landing-group">
+            <div class="landing-group-header">
+                <span class="landing-group-icon">⚖️</span>
+                <span class="landing-group-title">Moral Theology</span>
+            </div>
+            <div class="landing-card-grid">
+                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=conscience'">
+                    <div class="landing-card-top">
+                        <span class="landing-card-grade">Grades 6–8</span>
+                        <span class="landing-card-xp">⭐ 60 XP</span>
+                    </div>
+                    <h3 class="landing-card-title">Conscience &amp; Moral Decision-Making</h3>
+                    <p class="landing-card-desc">What the Church teaches about conscience — and why it is not a permission slip to do whatever you want.</p>
+                    <div class="landing-card-footer">Start →</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading state — shown while a module loads -->
+    <div class="loading-state" id="loadingState" style="display:none;">
         <div class="loading-spinner"></div>
         <p>Loading module...</p>
     </div>
@@ -837,7 +1157,7 @@
     </div>
 
     <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
-    <div class="panel active" id="panelLesson">
+    <div class="panel" id="panelLesson">
         <div class="lesson-card" id="lessonContent">
             <!-- Populated by JS -->
         </div>
@@ -1064,6 +1384,605 @@ const MODULES = {
             }
         ]
     },
+
+    bible_geography: {
+        id: 'bible_geography',
+        title: 'The Geography of the Bible',
+        subtitle: 'These events didn\'t happen in a story. They happened on this earth — in real places you can visit today.',
+        gradeTag: 'Grades 3–8',
+        topic: 'Sacred Scripture',
+        xpReward: 60,
+        nextModule: null,
+
+        lesson: {
+            beginner: `
+                <h2>The Geography of the Bible — Lesson</h2>
+                <p>Here is something that might surprise you: <strong>every story in the Bible happened in a real place.</strong> Not an imaginary kingdom. Not a land far, far away. Real cities, real rivers, real mountains — most of which still exist today and have people living in them right now.</p>
+                <p>When you know where a Bible story happened, it stops feeling like a fairy tale and starts feeling like history. Because it is history.</p>
+                <p>Let's travel through four eras of the Bible and find out where everything happened.</p>
+
+                <div style="margin: 2rem 0; padding: 1.25rem 1.5rem; background: rgba(212,165,116,0.08); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0;">
+                    <p style="margin:0; font-size: 0.88rem; color: var(--text-secondary); font-style: italic;">Each location below shows you the <strong style="color:var(--navy);">ancient name</strong> from the Bible and the <strong style="color:var(--navy);">modern name</strong> of that same place today.</p>
+                </div>
+
+                <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--navy); font-weight:700; margin: 2.5rem 0 0.5rem; padding-bottom:0.5rem; border-bottom: 2px solid var(--gold);">&#10022; Era 1 — The Exodus</h3>
+                <p>God's people were slaves in Egypt. Moses led them out through the desert toward the land God promised them. This journey — called the <strong>Exodus</strong> — is one of the most important events in all of history.</p>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Egypt</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Egypt &#127466;&#127468;</span>
+                        </div>
+                        <span class="geo-era-tag">Exodus</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>What happened here:</strong> God's people — the Israelites — were slaves in Egypt for 400 years. Moses confronted Pharaoh with ten plagues. God parted the Red Sea. The Israelites walked out of slavery toward freedom. (Exodus 1–14)</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>Ancient Egypt was one of the most powerful empires on earth. The pyramids of Giza were already 1,000 years old when Moses was born. Pharaoh's palace was in the Nile Delta region.</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>Egypt is a country of 105 million people. Cairo is its capital — one of the largest cities in Africa. The Nile River still flows. The pyramids still stand. You can visit them today.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Mount Sinai</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Sinai Peninsula, Egypt &#127466;&#127468;</span>
+                        </div>
+                        <span class="geo-era-tag">Exodus</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>What happened here:</strong> After crossing the Red Sea, Moses climbed a mountain called Sinai. God appeared to him in fire and gave him the Ten Commandments — the law that would shape all of Western civilization. (Exodus 19–20)</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>The Israelites camped at the base of the mountain for months. God's presence appeared as fire and smoke. The ground shook. The people were terrified to get too close.</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>Jebel Musa ("Mountain of Moses") in the Sinai Peninsula of Egypt is traditionally identified as Mount Sinai. A monastery called St. Catherine's — one of the oldest in the world — sits at its base. Pilgrims still climb it before dawn today.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--navy); font-weight:700; margin: 2.5rem 0 0.5rem; padding-bottom:0.5rem; border-bottom: 2px solid var(--gold);">&#10022; Era 2 — The Promised Land</h3>
+                <p>After 40 years in the desert, God's people entered the land He had promised them. This land — called Canaan — is roughly the same land as modern-day Israel and Palestine.</p>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Jericho</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Jericho, West Bank &#127477;&#127480;</span>
+                        </div>
+                        <span class="geo-era-tag">Promised Land</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>What happened here:</strong> The first city the Israelites conquered in the Promised Land. Joshua led the army to march around its walls seven times while the priests blew trumpets — and the walls fell. (Joshua 6)</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>Jericho was a heavily fortified city with massive walls. Archaeologists have found evidence of the ancient city — it is one of the oldest continuously inhabited cities on earth, dating back over 10,000 years.</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>Jericho is a Palestinian city in the West Bank, about 15 miles northeast of Jerusalem. Around 25,000 people live there today. The archaeological site of ancient Jericho is open to visitors.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Jerusalem</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Jerusalem &#127470;&#127473;</span>
+                        </div>
+                        <span class="geo-era-tag">Promised Land</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>What happened here:</strong> King David made Jerusalem the capital of Israel around 1000 BC. His son Solomon built the first Temple there — the house of God. Jerusalem would go on to be the city where Jesus was crucified and rose from the dead. (2 Samuel 5, 1 Kings 6)</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>Ancient Jerusalem sat on a small ridge called the City of David. Solomon's Temple stood on a platform called the Temple Mount. The Temple was destroyed twice — by the Babylonians in 587 BC and by the Romans in 70 AD.</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>Jerusalem is holy to Jews, Christians, and Muslims. The Temple Mount still stands. The Western Wall — the last remaining wall of the Temple area — is Judaism's holiest site. The Church of the Holy Sepulchre marks where Jesus was crucified and buried.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--navy); font-weight:700; margin: 2.5rem 0 0.5rem; padding-bottom:0.5rem; border-bottom: 2px solid var(--gold);">&#10022; Era 3 — The Life of Jesus</h3>
+                <p>Jesus was born, grew up, did all His miracles, was crucified, and rose from the dead — all in a very small area. If you drove across the region where Jesus lived, it would take about three hours. Everything happened close together, in real towns that still exist.</p>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Bethlehem</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Bethlehem, West Bank &#127477;&#127480;</span>
+                        </div>
+                        <span class="geo-era-tag">Life of Jesus</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>What happened here:</strong> Jesus was born here. Mary and Joseph traveled from Nazareth — about 90 miles — because Caesar Augustus ordered a census. There was no room at the inn. Jesus was born in a stable. (Luke 2:1–7)</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>Bethlehem was a small village about 5 miles south of Jerusalem. It was the birthplace of King David, which is why the prophet Micah predicted the Messiah would be born there. (Micah 5:2)</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>Bethlehem is a Palestinian city of about 30,000 people in the West Bank. The Church of the Nativity — built over the traditional site of Jesus's birth — is one of the oldest churches in the world, built by Emperor Constantine in 326 AD. Thousands of pilgrims visit every Christmas.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Nazareth</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Nazareth, Israel &#127470;&#127473;</span>
+                        </div>
+                        <span class="geo-era-tag">Life of Jesus</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>What happened here:</strong> Jesus grew up here. From age 12 until about age 30, Jesus lived as a carpenter in this small town. When He returned to preach, the townspeople said: "Isn't this the carpenter's son?" (Matthew 13:55, Luke 4:16–22)</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>Ancient Nazareth was a tiny village — archaeologists estimate it had only 200–400 people. It was so obscure that Nathanael asked: "Can anything good come from Nazareth?" (John 1:46). For most of His life, Jesus was simply a working-class tradesman in a forgotten town.</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>Nazareth is a city of about 77,000 people in northern Israel. The Basilica of the Annunciation marks where the angel Gabriel appeared to Mary. Nazareth Village is an open-air museum recreating 1st-century village life.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Capernaum &amp; the Sea of Galilee</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Northern Israel &#127470;&#127473;</span>
+                        </div>
+                        <span class="geo-era-tag">Life of Jesus</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>What happened here:</strong> Jesus called His first disciples — fishermen — from the shores of this lake. He calmed a storm on its waters. He walked on it. Capernaum, on its northern shore, was His home base for most of His ministry. (Matthew 4:18–22, Mark 4:35–41)</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>The Sea of Galilee was a busy fishing region. Peter, Andrew, James, and John were professional fishermen here. Jesus performed more miracles in the Galilee region than anywhere else.</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>The Sea of Galilee is a freshwater lake still fished and swum in today. A modern church in Capernaum is built over Peter's excavated house — you can see the ancient stone floor through the glass floor of the church above it.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Gethsemane &amp; Calvary</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Jerusalem, Israel &#127470;&#127473;</span>
+                        </div>
+                        <span class="geo-era-tag">Life of Jesus</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>What happened here:</strong> On the night before He died, Jesus prayed in the Garden of Gethsemane until He sweat blood. He was arrested there. The next day He was crucified on a hill called Golgotha — and buried in a nearby tomb. Three days later, He rose. (Luke 22:39–46, John 19:17–42)</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>Gethsemane was an olive grove at the foot of the Mount of Olives, just outside Jerusalem's walls. Golgotha was a rocky hill near the city gate — a public place where crucifixions happened as a warning to passersby.</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>The Garden of Gethsemane still has olive trees — some carbon-dated to over 900 years old, possibly rooted in trees standing when Jesus prayed. The Church of the Holy Sepulchre marks both Golgotha and the empty tomb and has been a place of Christian pilgrimage for 1,700 years.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--navy); font-weight:700; margin: 2.5rem 0 0.5rem; padding-bottom:0.5rem; border-bottom: 2px solid var(--gold);">&#10022; Era 4 — Paul's Journeys</h3>
+                <p>After Jesus rose from the dead, His followers spread the Good News across the whole Roman Empire. Paul traveled thousands of miles — from Jerusalem to Rome — planting churches in cities that still exist today.</p>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Damascus</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Damascus, Syria &#127480;&#127486;</span>
+                        </div>
+                        <span class="geo-era-tag">Paul's Journeys</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>What happened here:</strong> Paul (then called Saul) was traveling to Damascus to arrest Christians when he was knocked to the ground by a blinding light. Jesus spoke to him from heaven. Saul became Paul — the greatest missionary in Church history. (Acts 9:1–19)</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>Damascus was already one of the oldest cities in the world when Paul traveled there. The "street called Straight" mentioned in Acts 9:11 — where Paul stayed after his conversion — is a real street that archaeologists have confirmed.</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>Damascus is the capital of Syria and one of the oldest continuously inhabited cities on earth. Despite years of conflict in Syria, the old city remains, and the street called Straight still runs through it. The Chapel of Ananias — where Paul was baptized — is still venerated by Christians today.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Corinth</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Corinth, Greece &#127468;&#127479;</span>
+                        </div>
+                        <span class="geo-era-tag">Paul's Journeys</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>What happened here:</strong> Paul lived in Corinth for 18 months and founded a church there. He later wrote two letters to this community — 1 and 2 Corinthians. The famous passage about love ("Love is patient, love is kind...") was written to this church. (Acts 18:1–18, 1 Corinthians 13)</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>Ancient Corinth was one of the richest, most cosmopolitan cities in the Roman Empire — a major port city at the crossroads of trade. Its reputation for moral laxity was well known, which is why Paul had so much to write to the church there.</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>Ancient Corinth's ruins are an archaeological site in southern Greece. The stone platform where Paul stood before the Roman governor Gallio (Acts 18:12) has been excavated and can be visited today. The Temple of Apollo — seven columns still standing — dates to 600 BC and was ancient even in Paul's time.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="margin-top: 2.5rem;">
+                    <p><strong>The bottom line:</strong> The Bible is not set in "a land far away." It is set in Egypt, Israel, Palestine, Syria, and Greece — countries on the map today, with real people living in them. When you read Scripture, you are reading history that happened on this earth.</p>
+                </div>
+            `,
+
+            theologian: `
+                <h2>The Geography of the Bible — Theologian Level</h2>
+                <p>The Christian faith makes an extraordinary claim: that God — the eternal, uncreated, omnipotent creator of the universe — entered human history at a specific time, in a specific place, in a specific body. This is not incidental to Christianity. It is the heart of it. The <span class="key-term">Incarnation</span> is the anti-gnostic move: God did not merely appear to have a body, or communicate through a vision — He was born in Bethlehem, raised in Nazareth, and crucified outside Jerusalem. The geography is not backdrop. It is theology.</p>
+
+                <div class="highlight-box">
+                    <p>"The Word became flesh and dwelt among us."</p>
+                    <cite>— John 1:14</cite>
+                </div>
+
+                <div style="margin: 2rem 0; padding: 1.25rem 1.5rem; background: rgba(212,165,116,0.08); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0;">
+                    <p style="margin:0; font-size: 0.88rem; color: var(--text-secondary); font-style: italic;">Each location below includes <strong style="color:var(--navy);">archaeological evidence</strong> and the <strong style="color:var(--navy);">present-day political reality</strong> of the site.</p>
+                </div>
+
+                <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--navy); font-weight:700; margin: 2.5rem 0 0.5rem; padding-bottom:0.5rem; border-bottom: 2px solid var(--gold);">&#10022; Era 1 — The Exodus</h3>
+                <p>The Exodus narrative is the foundational event of the Hebrew Bible — the lens through which Israel understood its entire relationship with God. Its historicity has been debated extensively, but recent archaeological and Egyptological work has shifted scholarly discussion toward accepting a historical kernel, likely during the 13th century BC under Ramesses II.</p>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Egypt (Goshen / Pi-Ramesses)</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Nile Delta, Egypt &#127466;&#127468;</span>
+                        </div>
+                        <span class="geo-era-tag">Exodus</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>Biblical significance:</strong> The Israelites lived in Goshen, in the eastern Nile Delta, building the store cities of Pithom and Ramesses (Exodus 1:11). The city of Pi-Ramesses — capital of Ramesses II — has been excavated at Tell el-Dab'a / Qantir, where archaeologists have found evidence of a large Semitic laboring population from the correct period.</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>Egyptian court records from this period show no mention of the Exodus — which is unsurprising, since no ancient empire recorded its own defeats. What archaeologists have found is a sudden absence: a large Semitic settlement in the Delta that stops around the 13th century BC. The silence is itself suggestive.</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>The Nile Delta remains one of Egypt's most densely populated regions. Excavations at Tell el-Dab'a continue. Egypt has a Coptic Christian minority whose liturgical tradition preserves elements going back to the earliest centuries of the Church — a living witness to Christianity's ancient roots in Africa.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Mount Sinai (Horeb)</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Sinai Peninsula, Egypt &#127466;&#127468;</span>
+                        </div>
+                        <span class="geo-era-tag">Exodus</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>Biblical significance:</strong> The <span class="key-term">theophany</span> at Sinai — God's self-revelation in fire, smoke, earthquake, and voice — is the constitutive moment of Israel's covenant with God. The Decalogue given here forms the foundation of legal and moral thought across the Western world. Sinai is also called Horeb; it is where Elijah fled after defeating the prophets of Baal (1 Kings 19), creating a deliberate typological parallel between the two great prophets.</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>The exact location of biblical Sinai is debated. The traditional site — Jebel Musa in the southern Sinai — was identified by early Christian pilgrims and has been venerated since at least the 3rd century. Some scholars propose sites in northwestern Arabia (Midian) based on the volcanic imagery in Exodus 19. The debate remains open.</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>St. Catherine's Monastery, founded by Emperor Justinian in 565 AD, is one of the oldest continuously operating Christian monasteries in the world. It houses an extraordinary collection of ancient manuscripts — including the Codex Sinaiticus, one of the oldest complete New Testament manuscripts ever found, discovered there in 1844.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--navy); font-weight:700; margin: 2.5rem 0 0.5rem; padding-bottom:0.5rem; border-bottom: 2px solid var(--gold);">&#10022; Era 2 — The Promised Land</h3>
+                <p>The land of Canaan — roughly equivalent to modern Israel, Palestine, and parts of Jordan — was the geographical stage for nearly the entire Old Testament. Its position at the intersection of three continents made it perpetually contested, which is why it has been conquered by Egyptians, Assyrians, Babylonians, Persians, Greeks, Romans, Byzantines, Arabs, Crusaders, Ottomans, and modern nation-states. Biblical history and geopolitical history are inseparable here.</p>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Jericho (Tell es-Sultan)</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Jericho, West Bank &#127477;&#127480;</span>
+                        </div>
+                        <span class="geo-era-tag">Promised Land</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>Biblical significance:</strong> The conquest of Jericho (Joshua 6) is the first military engagement in Canaan. Its theological function is clear: the walls fell not by military strategy but by liturgical obedience — marching, blowing trumpets, and shouting on God's command. The archaeological debate about Jericho's walls has been ongoing since Kathleen Kenyon's excavations in the 1950s, when she found no Late Bronze Age destruction layer. Bryant Wood's subsequent reanalysis challenged Kenyon's dating, arguing the relevant destruction layer was misassigned. The debate continues — but no one disputes that Jericho is among the oldest cities on earth.</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>Jericho sits 846 feet below sea level — the lowest city on earth — in the Jordan Valley. Its perennial spring made it an oasis and therefore a strategic prize for every power that controlled the region. The biblical account of Rahab hiding the spies (Joshua 2) reflects the actual geography: houses built into the city wall, exactly as archaeologists have found at the site.</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>Jericho is in Area A of the Palestinian Authority — under full Palestinian civil and security control. The archaeological site of Tell es-Sultan is a UNESCO World Heritage Site under Palestinian administration. Access for archaeologists and pilgrims fluctuates with the security situation. The political complexity of the region means that doing archaeology here is never purely academic.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Jerusalem (Yerushalayim / Al-Quds)</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Jerusalem &#127470;&#127473;</span>
+                        </div>
+                        <span class="geo-era-tag">Promised Land</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>Biblical significance:</strong> Jerusalem is the theological center of Scripture — city of David, site of Solomon's Temple, location of the Crucifixion and Resurrection, and the image of the eschatological City of God in Revelation 21. The City of David excavations have yielded artifacts dating to the Davidic period. The Siloam Tunnel, carved on Hezekiah's orders around 700 BC (2 Kings 20:20), still carries water today and can be walked through — one of the most tangible physical connections to the Old Testament world.</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>The Temple Mount's archaeological record is politically fraught: Israeli authorities have historically restricted excavation on the mount itself out of sensitivity to Muslim concerns about the Al-Aqsa Mosque and Dome of the Rock built there. The Waqf's construction projects have periodically disturbed ancient layers. What has been excavated confirms the Herodian platform and finds consistent with the biblical account of the Temple period.</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>Jerusalem's political status is one of the most contested questions in international law — Israel claims it as its undivided capital; Palestinians claim East Jerusalem as the capital of a future state. The Temple Mount is administered by the Jordanian Islamic Waqf. It is simultaneously a living city of 900,000 people and one of the most excavated urban sites on earth. Every archaeological dig is also a political act.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--navy); font-weight:700; margin: 2.5rem 0 0.5rem; padding-bottom:0.5rem; border-bottom: 2px solid var(--gold);">&#10022; Era 3 — The Life of Jesus</h3>
+                <p>The geographical concentration of Jesus's ministry is itself theologically significant. He operated almost entirely within a 70-mile radius — Galilee in the north, Jerusalem in the south. This is not a universal mythology; it is the story of a specific man in a specific province of the Roman Empire at a specific moment in history. The non-Christian sources — Tacitus, Pliny the Younger, Josephus, Suetonius — all independently corroborate the existence of Jesus and the early movement He founded.</p>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Bethlehem (Beit Lahm)</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Bethlehem, West Bank &#127477;&#127480;</span>
+                        </div>
+                        <span class="geo-era-tag">Life of Jesus</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>Biblical significance:</strong> Both Matthew and Luke locate Jesus's birth in Bethlehem, fulfilling Micah 5:2. The census mechanism in Luke (2:1–5) is consistent with Roman administrative practice, though the specific census of Quirinius presents a well-known chronological difficulty that scholars continue to work through. Origen, writing around 248 AD, mentions the cave as the accepted birth site — evidence the tradition predates Constantine's building program by at least a century.</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>The Church of the Nativity was built by Constantine in 326 AD over the traditional birth cave. It survived the Persian invasion of 614 AD reportedly because its exterior mosaic depicted the Magi in Persian dress — the invaders recognized their own people and spared the building. It is one of the few structures in the region to survive the Persian destruction.</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>The Church of the Nativity is jointly administered by the Greek Orthodox, Armenian Apostolic, and Roman Catholic churches under the Ottoman-era Status Quo — an arrangement producing ongoing disputes about cleaning rights. Bethlehem is in Area A of the Palestinian Authority; Israeli citizens are generally prohibited from entering. Pilgrimage requires navigating both theological and geopolitical complexity.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Capernaum (Kfar Nahum)</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Northern Sea of Galilee, Israel &#127470;&#127473;</span>
+                        </div>
+                        <span class="geo-era-tag">Life of Jesus</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>Biblical significance:</strong> Capernaum is Jesus's operational base — more miracles are recorded here than anywhere else. Excavations have confirmed a 1st-century fishing village at the site. A house identified by graffiti mentioning "Peter" going back to the 1st and 2nd centuries has been excavated beneath a later Byzantine church — the closest archaeology can get to physical evidence of Peter's actual home. The adjacent 4th-century synagogue sits directly over a 1st-century synagogue where Jesus almost certainly taught.</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>Jesus pronounces judgment on Capernaum for rejecting Him despite its miracles: "And you, Capernaum, will you be exalted to heaven? You will be brought down to Hades." (Matthew 11:23). The town was subsequently abandoned in the 7th century and remained a ruin for 1,300 years. The prophecy and the archaeology match.</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>Capernaum is administered by the Franciscan Custody of the Holy Land. A striking modern church hovers on columns directly over the excavated remains of Peter's house — visitors look through its glass floor at the 1st-century stone below. The site is one of the most archaeologically evocative in all of Israel.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Golgotha / Garden Tomb</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Jerusalem, Israel &#127470;&#127473;</span>
+                        </div>
+                        <span class="geo-era-tag">Life of Jesus</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>Biblical significance:</strong> The Church of the Holy Sepulchre has the stronger archaeological and historical claim for both the Crucifixion site and the empty tomb. Eusebius records that Hadrian built a temple to Venus over the site around 135 AD — a pagan desecration that ironically preserved the location's memory. Constantine demolished it in 326 AD. Archaeological work confirms the site was outside the 1st-century city walls and contains rock-cut tombs consistent with the Gospel description. The "Immovable Ladder" — a ladder placed on a ledge in the 18th century that no denomination will move without the others' consent — remains there to this day, a symbol of Christian disunity at the holiest site in Christendom.</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>John 19:41 specifies a garden near the crucifixion site, outside the city walls, with a new tomb. The Church of the Holy Sepulchre satisfies these conditions. The competing Garden Tomb, promoted by General Charles Gordon in 1883 because it looked more like what he imagined, has weaker archaeological credentials but appeals to Protestant pilgrims uncomfortable with the incense-laden atmosphere of the Holy Sepulchre.</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>The Church of the Holy Sepulchre is jointly administered by six Christian denominations under the Status Quo. The building requires ongoing structural repairs; a major restoration of the Edicule (the structure over the tomb) was completed in 2017 — the first in 200 years — by a rare act of cooperation between the denominations. Inside the tomb chamber, archaeologists found a marble slab dating to at least 345 AD covering a limestone burial bed — the earliest physical evidence of veneration of the site.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3 style="font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--navy); font-weight:700; margin: 2.5rem 0 0.5rem; padding-bottom:0.5rem; border-bottom: 2px solid var(--gold);">&#10022; Era 4 — Paul's Journeys</h3>
+                <p>Paul's three missionary journeys and his journey to Rome cover roughly 10,000 miles across the eastern Mediterranean. Every city he visited can be pinpointed on a map, and many retain remarkable evidence of the 1st-century world he inhabited. His letters — written before any of the Gospels were composed — are the earliest documentary evidence for the Christian movement.</p>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Damascus</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Damascus, Syria &#127480;&#127486;</span>
+                        </div>
+                        <span class="geo-era-tag">Paul's Journeys</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>Biblical significance:</strong> Paul's Damascus Road conversion (Acts 9) is historically among the most verifiable events in the New Testament. Paul himself describes it in first-person in Galatians 1:15–17, written within 20 years of the event — earlier than any Gospel. The "street called Straight" (Acts 9:11) has been confirmed as the Roman decumanus of ancient Damascus. After his conversion Paul escaped over the city wall in a basket when the governor sought to arrest him (2 Corinthians 11:32–33) — a detail specific enough to suggest genuine memory.</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>Roman Damascus was a prosperous city of the Decapolis, about 135 miles northeast of Jerusalem with a significant Jewish community. Paul's pre-conversion mission — traveling to arrest members of "the Way" in its synagogues — tells us that the Christian movement had already spread from Jerusalem to Damascus within a few years of the Resurrection, suggesting rapid early growth.</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>Damascus is one of the oldest continuously inhabited cities on earth. The Syrian Civil War (2011–present) has caused severe damage to the country. The old city of Damascus, a UNESCO World Heritage Site, contains the Chapel of Ananias — where Paul was baptized — still venerated by Christians. The street called Straight still runs through the old city.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="geo-card">
+                    <div class="geo-card-header">
+                        <div class="geo-names">
+                            <span class="geo-ancient">Corinth (Korinthos)</span>
+                            <span class="geo-arrow">&#8594;</span>
+                            <span class="geo-modern">Corinth, Greece &#127468;&#127479;</span>
+                        </div>
+                        <span class="geo-era-tag">Paul's Journeys</span>
+                    </div>
+                    <div class="geo-body">
+                        <p><strong>Biblical significance:</strong> Paul's 18 months in Corinth produced the most extensive pastoral correspondence in the New Testament. The Bema (judgment seat) where Paul stood before the proconsul Gallio (Acts 18:12) has been excavated — and an inscription found at Delphi dates Gallio's proconsulship to 51–52 AD, giving Pauline chronology one of its most precise anchors. The letters to the Corinthians are the primary window into the social life of an early Gentile Christian community: their struggles with division, sexuality, class, and worship are recognizably human across twenty centuries.</p>
+                    </div>
+                    <div class="geo-then-now">
+                        <div class="geo-then">
+                            <div class="geo-tn-label">&#128220; Then</div>
+                            <p>Ancient Corinth controlled two ports — making it an extraordinary commercial hub and a place of constant cultural mixing. The <span class="key-term">Erastus inscription</span>, found in a Corinthian pavement dating to the 1st century, reads "Erastus, commissioner of public works, laid this pavement at his own expense" — very likely the same Erastus Paul mentions in Romans 16:23 as "the city's director of public works."</p>
+                        </div>
+                        <div class="geo-now">
+                            <div class="geo-tn-label">&#127758; Now</div>
+                            <p>Ancient Corinth is an open-air archaeological museum in the Peloponnese. The Temple of Apollo — seven columns still standing — dates to 550 BC and was already 500 years old when Paul arrived. The site museum contains artifacts from the Roman period consistent with the commercial world Paul describes. The Erastus inscription is displayed in situ near the theater.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="highlight-box" style="margin-top: 2.5rem;">
+                    <p>The philosopher Gotthold Lessing called it "the ugly broad ditch" — the gap between contingent historical facts and eternal theological truth. Christianity does not promise to bridge that ditch with archaeology. What it does claim is that the events described are the kind that <em>leave a ditch to cross</em> — real events, in real places, involving real people. The geography is not proof. It is the shape of the claim.</p>
+                </div>
+            `
+        },
+
+        reading: {
+            beginner: `
+                <h2>Reading: Why Place Matters — "The Word Became Flesh"</h2>
+                <div class="reading-meta">John 1:1–14 and Luke 2:1–7 — The God who chose an address</div>
+                <div class="reading-body">
+                    <p>Most religions have sacred stories that happen "somewhere." Christianity is different. The New Testament goes out of its way to be specific about exactly where and when things happened.</p>
+                    <p>Luke doesn't just say "Jesus was born." He says: "In those days a decree went out from Caesar Augustus that all the world should be registered. This was the first registration when Quirinius was governor of Syria." He's giving us a date. He's naming the Roman emperor. He's naming the governor of the province. He's saying: this is history. Go check.</p>
+                    <p>When John says "the Word became flesh," the word he uses for "dwelt among us" literally means pitched a tent — moved in, set up an address. God chose a location. He was born in Bethlehem, which you can find on a map right now. He grew up in Nazareth, which is still a city with a grocery store and a traffic jam. He was crucified outside the walls of Jerusalem, and you can go stand at the spot today.</p>
+                    <p>This matters because the Christian faith is not asking you to believe in a beautiful story. It is asking you to believe that something happened — in real places, to real people, in the same world you live in. The geography is not decoration. It is the evidence that this is not a fairy tale.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Reflect on These Questions</h4>
+                    <ol>
+                        <li>Did it surprise you that you can visit the places where Bible stories happened? What changes for you knowing these are real places?</li>
+                        <li>Why do you think Luke mentioned Caesar Augustus and Quirinius when telling the Christmas story?</li>
+                        <li>If you could visit one biblical site today, which would it be and why?</li>
+                    </ol>
+                </div>
+            `,
+            theologian: `
+                <h2>Reading: The Scandal of Particularity</h2>
+                <div class="reading-meta">On why the Incarnation requires a specific place — and why that is philosophically difficult</div>
+                <div class="reading-body">
+                    <p>The philosopher Gotthold Lessing articulated what he called "the ugly broad ditch" of Christian faith: that no matter how reliable the historical evidence for the life of Jesus, the gap between contingent historical facts and eternal religious truth can never be bridged by history alone. "Accidental truths of history," he wrote, "can never become the proof of necessary truths of reason."</p>
+                    <p>Lessing identified something real. Christianity makes a claim that sounds philosophically reckless: that the eternal God was born in Bethlehem around 6 BC. Not in Rome. Not in Athens. Not in every culture simultaneously as a universal principle. In a specific stable, in a specific province, under a specific emperor. Theologians call this the <em>scandal of particularity</em> — the offense that God would show up in one place and one time rather than everywhere and always.</p>
+                    <p>But this particularity is not a weakness of Christian theology; it is its central claim. The Incarnation is the permanent refutation of Gnosticism — the recurring heresy that matter is evil or irrelevant and that salvation is about escaping the physical world. The Incarnation says the opposite: God endorsed this earth by entering it. He chose a geography. He was tired in Capernaum. He wept at a tomb in Bethany. He bled on a rocky hill outside Jerusalem. These are not metaphors. They are the content of salvation.</p>
+                    <p>The geographical specificity of Scripture is therefore not just a matter of historical interest. It is a theological argument embedded in the narrative form itself. When Luke situates the birth of Jesus in the context of a Roman census, he is making a claim about the kind of event the Incarnation is: the kind that leaves a paper trail, the kind that Caesar's bureaucrats would have recorded, the kind that intersects with the ordinary machinery of empire. God did not appear in a vision or a myth. He appeared in a census record.</p>
+                    <p>This is why Christian pilgrimage has always mattered in a way that pilgrimage to mythological sites cannot. Standing at the Church of the Holy Sepulchre is not the same as visiting a shrine to Zeus. It is standing at the coordinates where the central event in human history either happened or did not. The geography is not backdrop — it is the claim itself, made in stone and soil.</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Theological Reflection</h4>
+                    <ol>
+                        <li>What is Lessing's "ugly broad ditch," and why does the Incarnation make it sharper — or more interesting — than it would be for a non-historical religion?</li>
+                        <li>How does the geographical specificity of the Gospels function as a theological argument against Gnosticism?</li>
+                        <li>What is the "scandal of particularity," and why might it be experienced as a stumbling block by someone approaching Christianity philosophically? What is the best response to that stumbling block?</li>
+                    </ol>
+                </div>
+            `
+        },
+
+        quiz: [
+            {
+                q: "Jesus grew up — working as a carpenter until about age 30 — in which city?",
+                options: ["Bethlehem", "Jerusalem", "Nazareth", "Capernaum"],
+                correct: 2,
+                explanation: "Jesus grew up in Nazareth — a tiny village of only 200–400 people in Galilee. It was so obscure that Nathanael asked, 'Can anything good come from Nazareth?' (John 1:46). Today Nazareth is a city of 77,000 in northern Israel."
+            },
+            {
+                q: "The Jordan River — where Jesus was baptized — forms the border between which two modern countries?",
+                options: ["Israel and Egypt", "Israel and Syria", "Israel and Jordan", "Lebanon and Jordan"],
+                correct: 2,
+                explanation: "The Jordan River forms the border between Israel and Jordan. The traditional baptism site can be visited from both sides of the river. Joshua's crossing of this same river into the Promised Land makes it doubly significant."
+            },
+            {
+                q: "Paul was converted on the road to Damascus. Damascus is the capital of which country today?",
+                options: ["Jordan", "Lebanon", "Iraq", "Syria"],
+                correct: 3,
+                explanation: "Damascus is the capital of Syria — and one of the oldest continuously inhabited cities in the world. The 'street called Straight' mentioned in Acts 9:11 has been archaeologically confirmed as the Roman decumanus of the ancient city."
+            },
+            {
+                q: "The traditional site of Mount Sinai — where God gave Moses the Ten Commandments — is located in:",
+                options: ["Southern Israel, near Eilat", "The Sinai Peninsula, Egypt", "Northern Saudi Arabia", "The Jordan Valley"],
+                correct: 1,
+                explanation: "Jebel Musa ('Mountain of Moses') in the Sinai Peninsula of Egypt is the traditional site. St. Catherine's Monastery has stood at its base since 565 AD — one of the oldest continuously operating monasteries in the world. It houses the Codex Sinaiticus, one of the oldest complete New Testament manuscripts."
+            },
+            {
+                q: "The 'scandal of particularity' refers to the theological claim that:",
+                options: ["The Bible contains difficult or offensive passages", "God entered history in one specific time and place, not universally", "Christians are too exclusive about salvation", "The four Gospels disagree on certain historical details"],
+                correct: 1,
+                explanation: "The scandal of particularity is the philosophically striking claim that the eternal God was born in Bethlehem around 6 BC — a specific coordinate in history, not a universal principle. Rather than weakening Christian theology, this specificity is its central claim: the Incarnation means God truly entered the physical world."
+            }
+        ]
+    },
+
 
     trinity: {
         id: 'trinity',
@@ -1729,6 +2648,7 @@ const MODULES = {
         ]
     }
 
+
 }; // end MODULES
 
 // ── STATE ──────────────────────────────────────────────────
@@ -1748,28 +2668,36 @@ function goToPracticeGames() {
 
 window.addEventListener('DOMContentLoaded', () => {
     const params = new URLSearchParams(window.location.search);
-    const moduleId = params.get('module') || 'trinity';
-    loadModule(moduleId);
+    const moduleId = params.get('module');
+    if (!moduleId) {
+        // Show landing screen
+        document.getElementById('landingScreen').style.display = 'block';
+        document.getElementById('backBtn').onclick = () => window.location.href = 'index.html#youth';
+        document.title = 'CRUX — Learning Modules';
+    } else {
+        document.getElementById('loadingState').style.display = 'flex';
+        document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
+        loadModule(moduleId);
+    }
 });
 
 function loadModule(moduleId) {
     currentModule = MODULES[moduleId];
     if (!currentModule) {
-        document.getElementById('loadingState').innerHTML = `
-            <div style="text-align:center;padding:3rem;">
-                <p style="color:var(--text-muted);font-size:1.1rem;">Module not found.</p>
-                <button class="btn-primary" style="margin-top:1.5rem;" onclick="window.location.href='index.html'">← Back to CRUX</button>
-            </div>`;
+        document.getElementById('loadingState').style.display = 'none';
+        document.getElementById('landingScreen').style.display = 'block';
         return;
     }
 
     document.title = `CRUX — ${currentModule.title}`;
 
-    // Show UI
+    // Show UI, hide landing
     document.getElementById('loadingState').style.display = 'none';
+    document.getElementById('landingScreen').style.display = 'none';
     document.getElementById('stepIndicator').style.display = 'flex';
     document.getElementById('moduleHeader').style.display = 'block';
     document.getElementById('levelToggleWrap').style.display = 'block';
+    document.getElementById('panelLesson').classList.add('active');
 
     // Populate header
     document.getElementById('gradeTag').textContent = currentModule.gradeTag;
@@ -1836,7 +2764,6 @@ function selectAnswer(qi, oi) {
     if (quizSubmitted) return;
     quizAnswers[qi] = oi;
 
-    // Clear selection state for this question
     currentModule.quiz[qi].options.forEach((_, i) => {
         const btn = document.getElementById(`opt${qi}_${i}`);
         btn.classList.remove('selected');
@@ -1859,7 +2786,6 @@ function submitQuiz() {
         const isCorrect = chosen === q.correct;
         if (isCorrect) correct++;
 
-        // Style all buttons
         q.options.forEach((_, oi) => {
             const btn = document.getElementById(`opt${qi}_${oi}`);
             btn.disabled = true;
@@ -1868,7 +2794,6 @@ function submitQuiz() {
             else if (oi === chosen && !isCorrect) btn.classList.add('incorrect');
         });
 
-        // Show feedback
         const fb = document.getElementById(`feedback${qi}`);
         fb.style.display = 'block';
         fb.className = `answer-feedback ${isCorrect ? 'correct' : 'incorrect'}`;
@@ -1877,10 +2802,7 @@ function submitQuiz() {
             : `✗ The correct answer is "${q.options[q.correct]}." ${q.explanation}`;
     });
 
-    // Scroll to top of quiz
     document.getElementById('panelQuiz').scrollIntoView({ behavior: 'smooth' });
-
-    // Wait a moment then show completion
     setTimeout(() => showCompletion(correct), 1800);
 }
 
@@ -1946,18 +2868,15 @@ async function showCompletion(correct) {
             ? `You answered every question correctly. Outstanding work on "${currentModule.title}."`
             : `You scored ${correct} out of ${total} on the quiz. Review the lesson and try again to improve your score.`;
 
-    // Show practice games button
     const gamesBtn = document.getElementById('practiceGamesBtn');
     if (gamesBtn) gamesBtn.style.display = 'inline-flex';
 
-    // Show next module button if available
     if (currentModule.nextModule && MODULES[currentModule.nextModule]) {
         const nextBtn = document.getElementById('nextModuleBtn');
         nextBtn.style.display = 'inline-flex';
         nextBtn.textContent = `Next: ${MODULES[currentModule.nextModule].title} →`;
     }
 
-    // Award XP if logged in
     if (window.currentUser && pct >= 60) {
         document.getElementById('xpAwardDisplay').style.display = 'inline-flex';
         document.getElementById('xpEarned').textContent = xp;
