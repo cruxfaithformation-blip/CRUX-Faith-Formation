@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light">
-    <title>CRUX — Learning Modules</title>
+    <title>CRUX — The Prodigal Son</title>
 
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
@@ -985,167 +985,337 @@
 
 <header>
     <div class="header-left">
-        <button class="back-btn" onclick="window.location.href='index.html#youth'">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
             ← Back
         </button>
         <a href="index.html" class="header-logo">CRUX</a>
     </div>
     <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
         <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
     </div>
 </header>
 
-<div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
 
 <div class="module-wrap">
 
-    <!-- Landing screen — shown when no ?module= param -->
-    <div id="landingScreen" style="display:none;">
-        <div style="margin-bottom:2.5rem;">
-            <div style="display:inline-block;color:var(--gold-dark);font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.75rem;">Faith Formation</div>
-            <h1 style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:0.75rem;">Learning Modules</h1>
-            <p style="color:var(--text-secondary);font-size:1rem;max-width:560px;">Each module has a Lesson, a Reading with reflection questions, and a Quiz to earn XP. Choose Beginner or Theologian level inside any module.</p>
-        </div>
+    <!-- Loading state — shown while a module loads -->
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
 
-        <!-- Core Beliefs -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">✟</span>
-                <span class="landing-group-title">Core Beliefs</span>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=trinity'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Holy Trinity</h3>
-                    <p class="landing-card-desc">One God in three divine Persons — the central mystery of the Christian faith.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=jesus'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Who Is Jesus Christ?</h3>
-                    <p class="landing-card-desc">The most important question ever asked — and the answer that changes everything.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=sacraments'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Seven Sacraments</h3>
-                    <p class="landing-card-desc">Seven holy encounters with God — outward signs that give grace across the span of a life.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=mary'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Mary &amp; the Saints</h3>
-                    <p class="landing-card-desc">Why Catholics honor Mary and ask the saints to pray for us — and why this is not worship.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
+    <!-- Step indicator -->
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
         </div>
-
-        <!-- Prayer -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">🙏</span>
-                <span class="landing-group-title">Prayer</span>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=lords_prayer'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–5</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Lord's Prayer</h3>
-                    <p class="landing-card-desc">Seven petitions that teach us everything about how to speak to God.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
         </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
 
-        <!-- Sacred Scripture -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">📖</span>
-                <span class="landing-group-title">Sacred Scripture</span>
+    <!-- Module header -->
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">Grades 3–8</span>
+            <span class="topic-tag" id="topicTag">Faith Formation</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <!-- Level toggle -->
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions — you can review your answers before submitting.</p>
+            <div id="quizQuestions">
+                <!-- Populated by JS -->
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=bible_geography'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Geography of the Bible</h3>
-                    <p class="landing-card-desc">These events didn't happen in a story — they happened in real places you can visit today.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=prodigal_son'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Prodigal Son</h3>
-                    <p class="landing-card-desc">Jesus told this parable to people who thought they were the good ones. That changes everything.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
             </div>
         </div>
+    </div>
 
-        <!-- Moral Theology -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">⚖️</span>
-                <span class="landing-group-title">Moral Theology</span>
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You've completed this lesson. Keep going — the faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=conscience'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 6–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Conscience &amp; Moral Decision-Making</h3>
-                    <p class="landing-card-desc">What the Church teaches about conscience — and why it is not a permission slip to do whatever you want.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    ← Back to CRUX
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
             </div>
         </div>
     </div>
 
 </div>
 
+
+<script src="crux-module-engine.js"></script>
 <script>
-// ── ROUTER ─────────────────────────────────────────────────
-// If a ?module= param is present, redirect to the standalone file.
-// This preserves all existing links without any changes to index.html.
-(function() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('module');
-    if (!id) return; // No param — show landing screen below
-    const routes = {
-        'lords_prayer': 'crux-module-lords-prayer.html',
-        'bible_geography': 'crux-module-geography.html',
-        'trinity': 'crux-module-trinity.html',
-        'sacraments': 'crux-module-sacraments.html',
-        'jesus': 'crux-module-jesus.html',
-        'mary': 'crux-module-mary.html',
-        'conscience': 'crux-module-conscience.html',
-        'prodigal_son': 'crux-module-prodigal-son.html',
-    };
-    const dest = routes[id];
-    if (dest) {
-        window.location.replace(dest);
-    }
-    // Unknown module ID — fall through to landing screen
-})();
+const MODULE_DATA = {
+    id: 'prodigal_son',
+    title: 'The Prodigal Son',
+    subtitle: 'Jesus told this parable to people who thought they were the good ones. That changes everything.',
+    gradeTag: 'Grades 3–8',
+    topic: 'Sacred Scripture',
+    xpReward: 60,
+    nextModule: 'conscience',
+
+    lesson: {
+        beginner: `
+            <h2>The Prodigal Son — Lesson</h2>
+            <p>You've probably heard this story before. A son takes his father's money, wastes it all, ends up eating with pigs, and finally comes home. His father runs to meet him. Everyone cries. The end.</p>
+            <p>But Jesus didn't tell this story to people who needed to be reminded that God forgives sinners. He told it to people who were <em>angry</em> that God forgives sinners.</p>
+
+            <div class="highlight-box">
+                <p>"Now the tax collectors and sinners were all drawing near to hear him. And the Pharisees and the scribes grumbled, saying, 'This man receives sinners and eats with them.'"</p>
+                <cite>— Luke 15:1–2</cite>
+            </div>
+
+            <p>That's who Jesus is talking to. Not the sinners. The <strong>Pharisees</strong> — the most religiously serious people of their day — who are furious that Jesus keeps welcoming the wrong kind of people. So He tells them a story. And by the end of it, the person who looks most like the Pharisees in the room isn't the younger son. It's the older one.</p>
+
+            <h3>The Younger Son</h3>
+            <p>The younger son does something shocking. Asking your father for your inheritance while he's still alive was essentially saying: <em>"I wish you were dead."</em> The father gives it to him anyway. The son runs off, wastes everything, and ends up so desperate he's feeding pigs — which for a Jewish boy was about as low as it gets.</p>
+            <p>Then he "comes to himself." He doesn't come home because he loves his father. He comes home because he's hungry. His speech is rehearsed: <em>"Make me like one of your servants."</em> He's not expecting grace — he's negotiating for survival.</p>
+            <p>But before he finishes the speech, his father is already running toward him.</p>
+
+            <h3>The Father Runs</h3>
+            <p>This is the scandalous moment. In the ancient Middle East, a dignified older man <em>did not run</em>. Running meant lifting your robe, showing your legs — it was undignified, embarrassing. But the father sees his son "while he was still a long way off" and sprints. He doesn't wait for the apology. He doesn't let his son finish the speech. He throws a robe on him, a ring on his finger, sandals on his feet, and throws a party.</p>
+            <p>The robe, the ring, the sandals: these aren't just nice gifts. They are signs of full restoration to sonship. The father isn't making him a servant. He's giving him everything back.</p>
+
+            <h3>The Older Son</h3>
+            <p>Now the story shifts. The older brother comes home from working in the fields and hears music. He refuses to go in. His father comes out to plead with him — and now we hear what the older brother has been carrying all along:</p>
+
+            <div class="highlight-box">
+                <p>"Look, these many years I have served you, and I never disobeyed your command, yet you never gave me a young goat, that I might celebrate with my friends."</p>
+                <cite>— Luke 15:29</cite>
+            </div>
+
+            <p>Notice the words he uses: <em>served</em>, <em>obeyed</em>, <em>command</em>. He doesn't talk about love. He talks about work. He has been living in his father's house like an employee, not a son. He's been obedient — but not out of love. Out of duty. And somewhere under all that duty, a deep resentment has been building.</p>
+            <p>He also says: <em>"your son"</em> — not "my brother." He refuses to claim the relationship.</p>
+
+            <h3>The Story Ends Without an Ending</h3>
+            <p>Jesus ends the story there. We never find out if the older brother goes in. That's deliberate. Because the Pharisees listening are the older brother — and Jesus is leaving the ending open for them to write themselves.</p>
+            <p>The father's answer to the older son is one of the most tender lines in all of Scripture:</p>
+
+            <div class="highlight-box">
+                <p>"Son, you are always with me, and everything I have is yours."</p>
+                <cite>— Luke 15:31</cite>
+            </div>
+
+            <p>He has always had everything. He just couldn't enjoy it because his heart was closed.</p>
+
+            <h3>Why Does This Matter?</h3>
+            <p>Most of us, if we're honest, have more of the older brother in us than we like to admit. We follow the rules. We show up. We do the work. And sometimes, deep down, we resent people who don't — and then seem to get away with it anyway.</p>
+            <p>Jesus isn't only telling this story to people who've walked away from God. He's telling it to people who've never left — and asking them whether they've actually come home.</p>
+        `,
+        theologian: `
+            <h2>The Prodigal Son — Theologian Level</h2>
+            <p>The parable of the Prodigal Son (Luke 15:11–32) is almost always read as a story about repentance and divine forgiveness. That reading is correct but incomplete. Timothy Keller's exegesis in <em>The Prodigal God</em> makes the decisive observation: the parable's primary audience determines its primary meaning. Jesus tells this story not to wayward sinners but to the Pharisees and scribes who are offended by his table fellowship with sinners (Luke 15:1–2). The parable is addressed to the morally serious, the religiously observant, the self-identified righteous — and its climax is directed entirely at them.</p>
+
+            <h3>The Exegetical Key: Audience</h3>
+            <p>Luke 15 is a triptych — the lost sheep, the lost coin, the lost son — all told in direct response to the Pharisaic grumbling of 15:1–2. The younger son represents the tax collectors and sinners. The older son represents the Pharisees. The father represents God. This is not allegorical speculation; it is the structural logic of the narrative. The parable ends not with the younger son's restoration — which is resolved by verse 24 — but with the older son standing outside the feast, confronted by his father. That is where Jesus leaves his audience.</p>
+
+            <h3>Two Ways to Be Lost</h3>
+            <p>Keller's central contribution is identifying two distinct modes of lostness within the parable. The younger son is lost through <span class="key-term">irreligion</span> — the explicit rejection of the father's authority in pursuit of autonomous self-definition. His lostness is visible, dramatic, and socially legible. The older son is lost through <span class="key-term">religion</span> — the performance of filial duty without filial love, obedience without relationship. His lostness is invisible, self-concealing, and far more dangerous precisely because it wears the mask of virtue.</p>
+
+            <p>The older brother's speech in verse 29 is devastating in its self-revelation: <em>"These many years I have served you... I never disobeyed your command."</em> The Greek word translated "served" is <span class="key-term">douleuō</span> — slave-service. He has been living as a slave in his father's house, keeping the law out of fear and pride rather than love. He has remained physically present while being relationally absent. In Augustine's terms, his heart has found a counterfeit rest — not in dissipation like his brother, but in self-righteousness — and both are equally exilic.</p>
+
+            <h3>The Father's Scandalous Grace</h3>
+            <p>The father commits three acts of social impropriety that a first-century audience would have found shocking. First, he <em>runs</em> — no dignified Middle Eastern patriarch ran; it required lifting the robe and exposing the legs, a gesture of self-abasement. Second, he restores the younger son not to servant status but to full sonship: the robe is the best robe (covering shame), the ring is a signet ring (restoring authority), the sandals mark him as son rather than barefoot servant. Third, he <em>goes out</em> to plead with the older son — when the socially expected action was to summon him in and rebuke him. The father absorbs the older son's contempt and offers grace he has done nothing to merit.</p>
+
+            <div class="highlight-box">
+                <p>"Son, you are always with me, and everything I have is yours."</p>
+                <cite>— Luke 15:31</cite>
+            </div>
+
+            <p>This line reveals the older son's tragedy: he has possessed everything and enjoyed nothing. The <span class="key-term">elder-brother spirit</span> — Keller's term — produces a person who is technically inside the covenant but experientially outside the feast. His resentment at his brother's restoration exposes that he never understood what the feast was for. He wanted the father's things. He never wanted the father.</p>
+
+            <h3>The Open Ending as Rhetorical Trap</h3>
+            <p>The parable ends without resolution — we never learn whether the older brother enters the feast. This is exegetically significant. Jesus is not delivering a morality tale with a tidy conclusion; he is placing his audience in the narrative and leaving them to write the ending. The Pharisees must decide whether they are the older brother, and if so, whether they will respond to the father's plea or remain outside, justified in their own eyes while the feast goes on without them.</p>
+            <p>This open ending also points forward in Luke's gospel. The Pharisees do not enter the feast. They will eventually ensure that the father-figure in the story — Jesus himself — is crucified. The cross is where the cost of the father's running becomes fully legible: grace is not free; it is borne by the one who gives it.</p>
+
+            <h3>The Christological Dimension</h3>
+            <p>Keller notes that the true "prodigal" — the one who spends lavishly, recklessly, without counting the cost — is the father himself. <span class="key-term">Prodigal</span> means extravagant, wasteful of resources. The father is prodigal with grace. And in the gospel's logic, the Father's prodigality reaches its fullest expression in the Incarnation and Passion: God does not wait for humanity to return; He runs. He does not maintain his dignity; He empties himself (Philippians 2:7). The parable is not merely an ethical story about forgiveness. It is a compressed Christology.</p>
+        `
+    },
+
+    reading: {
+        beginner: `
+            <h2>Reading: Read the Parable Again — As the Older Brother</h2>
+            <div class="reading-meta">Luke 15:11–32 — with a new set of eyes</div>
+            <div class="reading-body">
+                <p>Most people read this parable and identify with the younger son. We've all felt lost. We've all needed to come home. That identification is real and good.</p>
+                <p>But Jesus told this story to people who had never left. People who had been faithful, obedient, and dutiful their whole lives — and who were, quietly, furious that God seemed to love everyone equally regardless of what they'd done.</p>
+                <p>So read it again. This time, as you read, ask yourself: have I ever felt any of what the older son felt?</p>
+                <p><em>Have I ever worked hard and felt like it wasn't noticed?</em></p>
+                <p><em>Have I ever watched someone who didn't deserve something receive it anyway — and felt a flash of anger?</em></p>
+                <p><em>Have I ever served out of duty rather than love, and not realized it until something pushed against me?</em></p>
+                <p>The older son's problem isn't that he worked hard. It's that he had been doing everything for the wrong reason. He wanted his father's approval, his father's estate, his father's recognition — but not his father. When his brother got a party, the mask came off.</p>
+                <p>The father's response to the older son is everything: "Son, you are always with me, and everything I have is yours." He doesn't rebuke him. He doesn't shame him. He tells him the truth about what he's had all along — and invites him to finally enjoy it.</p>
+                <p>The question Jesus leaves hanging at the end of the parable isn't about the younger son. He's already home. The question is whether the older brother will walk through the door.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Reflect on These Questions</h4>
+                <ol>
+                    <li>When you read the parable this time, did you recognize any of the older brother's feelings in yourself? Be honest.</li>
+                    <li>The older son says he "served" his father for years. What's the difference between serving someone out of duty and loving them? Can you tell the difference in your own life?</li>
+                    <li>The father goes outside to plead with the older son rather than command him. What does that tell you about how God deals with people who are religious but hard-hearted?</li>
+                </ol>
+            </div>
+        `,
+        theologian: `
+            <h2>Reading: Two Kinds of Restlessness</h2>
+            <div class="reading-meta">Augustine's restless heart, Keller's two lost sons, and what the parable reveals about self-righteous lostness</div>
+            <div class="reading-body">
+                <p>Augustine opens the <em>Confessions</em> with the most famous sentence in Christian autobiography: "Our heart is restless until it rests in Thee." The restlessness he describes is the engine of his entire spiritual journey — a longing that could not be satisfied by pleasure, ambition, Manichean philosophy, or Neoplatonism, and that finally found its object only in God.</p>
+                <p>Augustine's restlessness is recognizably the younger son's. It is restlessness that manifests outwardly — in dissipation, in wandering, in the far country. It is painful and visible. It eventually drives the younger son "to himself" (Luke 15:17, eis heauton elthōn — "coming to himself"), which is the moment of conversion: a return to the self that is only possible when the false self built on autonomous desire collapses.</p>
+                <p>But there is another kind of restlessness — one that does not manifest, does not collapse, does not produce a crisis. It is the restlessness of the older brother. He has never left. He has never wasted anything. His heart is equally far from rest, but the distance is invisible because it is masked by performance. He has spent years accumulating obedience as though it were currency he could eventually cash in for recognition. When the younger son returns and receives not a servant's wage but a feast, the older brother's investment theory of religion is exposed as false — and the resentment that surfaces has apparently been there all along.</p>
+                <p>Keller identifies this as the more dangerous form of lostness precisely because it is self-concealing. The younger son's lostness produces suffering that eventually becomes the occasion for return. The older son's lostness produces a sense of rightness — he has done everything correctly — that insulates him from recognizing his condition. He is like the Pharisee in Luke 18:11 who prays "I thank you that I am not like other men." His prayer is addressed to himself.</p>
+                <p>The theological implication is significant for moral formation. It is possible to be catechized, confirmed, Mass-attending, rule-keeping, and relationally absent from the Father. Religion, as Keller notes, can be used as a transaction system — a way of establishing moral credit that one believes obligates God — rather than as a response to grace already given. The older son has never understood that the feast was not a reward to be earned; it was the nature of the household all along. "Everything I have is yours" was always true. He simply could not receive it because receiving it would have required him to stop earning it.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Theological Reflection</h4>
+                <ol>
+                    <li>Augustine's restlessness and the younger son's share the same structure: visible, painful, productive of conversion. Why is the older son's invisible restlessness more resistant to grace?</li>
+                    <li>Keller argues that religion can be just as effective a way of avoiding God as irreligion. What is the diagnostic sign that one has shifted from loving the Father to using religion as a transaction system?</li>
+                    <li>The parable ends without the older son's response. What does the open ending suggest about how Jesus viewed the Pharisees — and how does it apply to morally serious Christians today?</li>
+                </ol>
+            </div>
+        `
+    },
+
+    quiz: [
+        {
+            q: "In Luke 15, who is Jesus telling the Parable of the Prodigal Son to?",
+            options: [
+                "His twelve disciples, in private",
+                "Pharisees and scribes who were grumbling that he welcomed sinners",
+                "The crowds following him into Jerusalem",
+                "A rich young ruler asking about eternal life"
+            ],
+            correct: 1,
+            explanation: "Luke 15:1–2 specifies the audience: Pharisees and scribes who were grumbling that Jesus 'receives sinners and eats with them.' This is the exegetical key — the parable is addressed to the self-righteous, not the wayward."
+        },
+        {
+            q: "When the father sees his returning son 'while he was still a long way off,' he runs to meet him. Why was this culturally shocking?",
+            options: [
+                "Running was forbidden on the Sabbath",
+                "A dignified older man running was considered undignified and self-abasing",
+                "It signaled that the son was being welcomed as a servant, not a son",
+                "The father was breaking Jewish purity laws by touching him"
+            ],
+            correct: 1,
+            explanation: "In the ancient Middle East, a dignified patriarch did not run — it required lifting the robe and was considered shameful. The father's running is a deliberate act of self-abasement to absorb his son's shame. It is an early portrait of the Incarnation's logic."
+        },
+        {
+            q: "The older son describes his years at home using the word 'served.' What does this reveal about his relationship with his father?",
+            options: [
+                "He was genuinely humble and servant-hearted",
+                "He had been living as a slave in his father's house rather than as a son who loved him",
+                "He had worked harder than his brother and deserved more reward",
+                "He understood the true meaning of the covenant better than his brother"
+            ],
+            correct: 1,
+            explanation: "The Greek word is douleuō — slave-service. The older son has been performing obedience out of duty and resentment, not love. He wanted his father's estate, his father's approval — but not his father. This is the elder-brother spirit Keller identifies."
+        },
+        {
+            q: "Timothy Keller argues that the parable presents two ways to be lost. What are they?",
+            options: [
+                "Poverty and wealth",
+                "Irreligion (the younger son) and religion used as a transaction system (the older son)",
+                "Youth and old age",
+                "Mortal sin and venial sin"
+            ],
+            correct: 1,
+            explanation: "Keller's central insight: the younger son is lost through irreligion — open rebellion. The older son is lost through religion — performing duty without love, treating obedience as currency. The second lostness is more dangerous because it is invisible to the one who has it."
+        },
+        {
+            q: "The parable ends without telling us whether the older brother enters the feast. Why is this significant?",
+            options: [
+                "Luke forgot to include the ending",
+                "It shows that the older son was eventually forgiven offscreen",
+                "Jesus deliberately leaves the ending open — the Pharisees in the crowd must decide whether they are the older brother and whether they will respond to the father's plea",
+                "It suggests that the older brother's fate was unimportant to Jesus"
+            ],
+            correct: 2,
+            explanation: "The open ending is the rhetorical trap. Jesus is not delivering a morality tale — he is placing his audience inside the narrative. The Pharisees are the older brother. The question of whether he walks through the door is the question Jesus is putting directly to them."
+        }
+    ]
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
+    initModule(MODULE_DATA);
+});
 </script>
 
 </body>
