@@ -30,9 +30,10 @@ function loadModule(moduleId) {
 
     document.title = `CRUX — ${currentModule.title}`;
 
-    // Show UI, hide landing
+    // Show UI, hide landing (landingScreen only exists in crux-modules.html)
     document.getElementById('loadingState').style.display = 'none';
-    document.getElementById('landingScreen').style.display = 'none';
+    const landingEl = document.getElementById('landingScreen');
+    if (landingEl) landingEl.style.display = 'none';
     document.getElementById('stepIndicator').style.display = 'flex';
     document.getElementById('moduleHeader').style.display = 'block';
     document.getElementById('levelToggleWrap').style.display = 'block';
