@@ -21,7 +21,7 @@ function goToPracticeGames() {
 }
 
 function loadModule(moduleId) {
-    currentModule = MODULES[moduleId];
+    currentModule = (window.MODULES || {})[moduleId];
     if (!currentModule) {
         document.getElementById('loadingState').style.display = 'none';
         document.getElementById('landingScreen').style.display = 'block';
@@ -211,10 +211,10 @@ async function showCompletion(correct) {
     const gamesBtn = document.getElementById('practiceGamesBtn');
     if (gamesBtn) gamesBtn.style.display = 'inline-flex';
 
-    if (currentModule.nextModule && MODULES[currentModule.nextModule]) {
+    if (currentModule.nextModule && (window.MODULES || {})[currentModule.nextModule]) {
         const nextBtn = document.getElementById('nextModuleBtn');
         nextBtn.style.display = 'inline-flex';
-        nextBtn.textContent = `Next: ${MODULES[currentModule.nextModule].title} →`;
+        nextBtn.textContent = `Next: ${window.MODULES[currentModule.nextModule].title} →`;
     }
 
     if (window.currentUser && pct >= 60) {
