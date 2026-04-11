@@ -788,8 +788,9 @@ cards.forEach(({ id, cardId, sceneId }) => {
   const specular = card.querySelector('.holo-specular');
   let isFlipped  = false;
 
-  // Flip on click
-  scene.addEventListener('click', () => {
+  // Flip on click — ignore clicks originating inside the back face
+  scene.addEventListener('click', (e) => {
+    if (e.target.closest('.card-back')) return;
     isFlipped = !isFlipped;
     scene.querySelector('.card-flipper').style.transform = '';
     scene.classList.toggle('flipped', isFlipped);
