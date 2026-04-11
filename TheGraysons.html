@@ -347,7 +347,7 @@ body {
 }
 
 .back-content {
-  position: relative; z-index: 5; flex: 1; display: flex;
+  position: relative; z-index: 20; flex: 1; display: flex;
   flex-direction: column; padding: 1.25rem 1.2rem 1rem; overflow: hidden;
 }
 
@@ -510,6 +510,7 @@ body {
             <div class="back-fact-row"><span class="back-fact-label">Martyrdom</span><span class="back-fact-value">Beheading, c. 230 AD · Rome</span></div>
           </div>
           <div class="back-footer">
+            <button class="flip-back-btn" style="background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:0.44rem;letter-spacing:2px;text-transform:uppercase;color:rgba(200,150,255,0.4);padding:0;transition:color 0.2s;" onmouseover="this.style.color='rgba(200,150,255,0.8)'" onmouseout="this.style.color='rgba(200,150,255,0.4)'">&#x21A9; Flip</button>
             <span class="back-footer-set">CRUX · Saints · Series I</span>
             <span class="back-footer-num">033 / 052</span>
           </div>
@@ -593,6 +594,7 @@ body {
             <div class="back-fact-row"><span class="back-fact-label">Canonized</span><span class="back-fact-value">1120 AD by Pope Calixtus II</span></div>
           </div>
           <div class="back-footer">
+            <button class="flip-back-btn" style="background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:0.44rem;letter-spacing:2px;text-transform:uppercase;color:rgba(200,150,255,0.4);padding:0;transition:color 0.2s;" onmouseover="this.style.color='rgba(200,150,255,0.8)'" onmouseout="this.style.color='rgba(200,150,255,0.4)'">&#x21A9; Flip</button>
             <span class="back-footer-set">CRUX · Saints · Series I</span>
             <span class="back-footer-num">034 / 052</span>
           </div>
@@ -676,6 +678,7 @@ body {
             <div class="back-fact-row"><span class="back-fact-label">Canonized</span><span class="back-fact-value">1255 AD by Pope Alexander IV</span></div>
           </div>
           <div class="back-footer">
+            <button class="flip-back-btn" style="background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:0.44rem;letter-spacing:2px;text-transform:uppercase;color:rgba(200,150,255,0.4);padding:0;transition:color 0.2s;" onmouseover="this.style.color='rgba(200,150,255,0.8)'" onmouseout="this.style.color='rgba(200,150,255,0.4)'">&#x21A9; Flip</button>
             <span class="back-footer-set">CRUX · Saints · Series I</span>
             <span class="back-footer-num">035 / 052</span>
           </div>
@@ -759,6 +762,7 @@ body {
             <div class="back-fact-row"><span class="back-fact-label">Canonized</span><span class="back-fact-value">1933 AD by Pope Pius XI</span></div>
           </div>
           <div class="back-footer">
+            <button class="flip-back-btn" style="background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:0.44rem;letter-spacing:2px;text-transform:uppercase;color:rgba(200,150,255,0.4);padding:0;transition:color 0.2s;" onmouseover="this.style.color='rgba(200,150,255,0.8)'" onmouseout="this.style.color='rgba(200,150,255,0.4)'">&#x21A9; Flip</button>
             <span class="back-footer-set">CRUX · Saints · Series I</span>
             <span class="back-footer-num">036 / 052</span>
           </div>
@@ -788,19 +792,30 @@ cards.forEach(({ id, cardId, sceneId }) => {
   const specular = card.querySelector('.holo-specular');
   let isFlipped  = false;
 
-  // Flip on click — ignore clicks originating inside the back face
-  scene.addEventListener('click', (e) => {
-    if (e.target.closest('.card-back')) return;
-    isFlipped = !isFlipped;
+  // Front face click → flip to back only
+  const frontFace = document.getElementById(cardId);
+  frontFace.addEventListener('click', () => {
+    isFlipped = true;
     scene.querySelector('.card-flipper').style.transform = '';
-    scene.classList.toggle('flipped', isFlipped);
-    hint.textContent = isFlipped ? 'Tap to flip back  ✦' : 'Tap card to flip  ✦';
+    scene.classList.add('flipped');
+    hint.textContent = 'Tap ↩ to flip back';
+    // Disable pointer events on front face so it doesn't swallow back-face clicks
+    frontFace.style.pointerEvents = 'none';
   });
 
-  // Tab switching
+  // Flip-back button on back face
+  scene.querySelector('.flip-back-btn').addEventListener('click', () => {
+    isFlipped = false;
+    scene.querySelector('.card-flipper').style.transform = '';
+    scene.classList.remove('flipped');
+    hint.textContent = 'Tap card to flip  ✦';
+    // Re-enable front face pointer events
+    frontFace.style.pointerEvents = 'auto';
+  });
+
+  // Tab switching — no propagation concerns, front face listener is separate
   scene.querySelectorAll('.back-tab').forEach(tab => {
-    tab.addEventListener('click', (e) => {
-      e.stopPropagation();
+    tab.addEventListener('click', () => {
       const target = tab.dataset.panel;
       scene.querySelectorAll('.back-tab').forEach(t => t.classList.remove('active'));
       scene.querySelectorAll('.back-panel').forEach(p => p.classList.remove('active'));
