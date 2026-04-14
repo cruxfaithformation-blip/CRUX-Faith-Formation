@@ -1,0 +1,1341 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>CRUX — The Ten Commandments</title>
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LQ35DLTVKY');
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDK v10 -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+            authDomain: "crux-faith-formation.firebaseapp.com",
+            projectId: "crux-faith-formation",
+            storageBucket: "crux-faith-formation.firebasestorage.app",
+            messagingSenderId: "838141015985",
+            appId: "1:838141015985:web:2655e570663e182d75ef90",
+            measurementId: "G-LQ35DLTVKY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        window.db = getFirestore(app);
+        window.auth = getAuth(app);
+        window.fsModules = { doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp };
+
+        onAuthStateChanged(window.auth, (user) => {
+            window.currentUser = user || null;
+            const el = document.getElementById('userDisplay');
+            if (el) el.textContent = user ? user.email.split('@')[0] : 'Guest';
+            if (user) loadUserProgress();
+        });
+    </script>
+
+    <style>
+        :root {
+            color-scheme: light;
+            --navy: #1a1f36;
+            --navy-mid: #242a45;
+            --navy-light: #2f3659;
+            --gold: #d4a574;
+            --gold-light: #e8c9a0;
+            --gold-dark: #b8895a;
+            --white: #ffffff;
+            --off-white: #f8f7f4;
+            --text-primary: #1a1f36;
+            --text-secondary: #5a6282;
+            --text-muted: #8890b0;
+            --border: rgba(26, 31, 54, 0.1);
+            --border-gold: rgba(212, 165, 116, 0.3);
+            --shadow-sm: 0 2px 8px rgba(26, 31, 54, 0.08);
+            --shadow-md: 0 4px 20px rgba(26, 31, 54, 0.12);
+            --shadow-lg: 0 8px 40px rgba(26, 31, 54, 0.18);
+            --green: #2e7d32;
+            --green-light: #e8f5e9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--off-white);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ─── HEADER ──────────────────────────────────────── */
+        header {
+            background: var(--navy);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+        }
+
+        .header-left { display: flex; align-items: center; gap: 1.5rem; }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        .back-btn:hover { color: var(--gold); }
+
+        .header-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 4px;
+            text-decoration: none;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-chip {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.7);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .xp-chip {
+            background: rgba(212, 165, 116, 0.15);
+            border: 1px solid var(--border-gold);
+            color: var(--gold);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: none;
+        }
+
+        /* ─── PROGRESS BAR ────────────────────────────────── */
+        .progress-track {
+            background: rgba(255,255,255,0.08);
+            height: 3px;
+            position: sticky;
+            top: 57px;
+            z-index: 99;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gold);
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* ─── MAIN LAYOUT ─────────────────────────────────── */
+        .module-wrap {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 2rem 6rem;
+        }
+
+        /* ─── STEP INDICATOR ──────────────────────────────── */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 2.5rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        .step-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-dot {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: var(--white);
+        }
+
+        .step.complete .step-dot {
+            background: var(--green);
+            border-color: var(--green);
+            color: var(--white);
+        }
+
+        .step-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .step.active .step-label { color: var(--navy); font-weight: 600; }
+        .step.complete .step-label { color: var(--green); }
+
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background: var(--border);
+            margin: 0 0.5rem;
+            transition: background 0.3s ease;
+        }
+
+        .step-line.complete { background: var(--green); }
+
+        /* ─── MODULE HEADER ───────────────────────────────── */
+        .module-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .module-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-eyebrow .grade-tag {
+            display: inline-block;
+            background: rgba(212, 165, 116, 0.12);
+            color: var(--gold-dark);
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .module-eyebrow .topic-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .module-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* ─── LEVEL TOGGLE ────────────────────────────────── */
+        .level-toggle {
+            display: inline-flex;
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .level-btn {
+            padding: 0.6rem 1.4rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .level-btn.active {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        /* ─── CONTENT PANELS ──────────────────────────────── */
+        .panel {
+            display: none;
+            animation: fadeUp 0.35s ease;
+        }
+
+        .panel.active { display: block; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── LESSON CONTENT ──────────────────────────────── */
+        .lesson-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .lesson-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .lesson-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin: 1.5rem 0 0.6rem;
+        }
+
+        .lesson-card p {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.85;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card ul, .lesson-card ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card li {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.75;
+            margin-bottom: 0.4rem;
+        }
+
+        .highlight-box {
+            background: rgba(212, 165, 116, 0.08);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 8px 8px 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+            font-style: italic;
+            color: var(--navy);
+            font-size: 0.95rem;
+        }
+
+        .highlight-box cite {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--gold-dark);
+            font-weight: 600;
+            margin-top: 0.4rem;
+            font-style: normal;
+            letter-spacing: 0.5px;
+        }
+
+        .key-term {
+            display: inline-block;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            margin: 0 0.1rem;
+        }
+
+        /* ─── READING SECTION ─────────────────────────────── */
+        .reading-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .reading-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .reading-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reading-body {
+            font-size: 0.97rem;
+            line-height: 1.9;
+            color: var(--text-primary);
+        }
+
+        .reading-body p { margin-bottom: 1.1rem; }
+
+        .reflection-block {
+            background: var(--navy);
+            border-radius: 10px;
+            padding: 1.75rem;
+            margin-top: 2rem;
+        }
+
+        .reflection-block h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .reflection-block ol {
+            padding-left: 1.25rem;
+        }
+
+        .reflection-block li {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            margin-bottom: 0.6rem;
+        }
+
+        /* ─── QUIZ ────────────────────────────────────────── */
+        .quiz-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-intro {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question-block {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question-block:last-of-type { border-bottom: none; }
+
+        .question-num {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.85rem 1.1rem;
+            background: var(--off-white);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem;
+            color: var(--text-primary);
+            width: 100%;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--navy);
+            background: rgba(26, 31, 54, 0.04);
+        }
+
+        .option-btn.selected {
+            border-color: var(--navy);
+            background: rgba(26, 31, 54, 0.06);
+        }
+
+        .option-btn.correct {
+            border-color: var(--green);
+            background: var(--green-light);
+            color: var(--green);
+        }
+
+        .option-btn.incorrect {
+            border-color: #c62828;
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .option-letter {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 1.5px solid currentColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+
+        .answer-feedback {
+            margin-top: 0.75rem;
+            padding: 0.85rem 1rem;
+            border-radius: 7px;
+            font-size: 0.88rem;
+            line-height: 1.55;
+            display: none;
+        }
+
+        .answer-feedback.correct {
+            background: var(--green-light);
+            color: var(--green);
+            border-left: 3px solid var(--green);
+        }
+
+        .answer-feedback.incorrect {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 3px solid #c62828;
+        }
+
+        /* ─── NAVIGATION BUTTONS ──────────────────────────── */
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 2rem;
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary:hover {
+            background: var(--navy-light);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.5rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-dark);
+            color: var(--white);
+        }
+
+        /* ─── COMPLETION SCREEN ───────────────────────────── */
+        .completion-screen {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .completion-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .completion-screen h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .completion-screen p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .xp-award {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .score-display {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            display: inline-block;
+            margin-bottom: 2.5rem;
+            min-width: 240px;
+        }
+
+        .score-display .score-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1;
+        }
+
+        .score-display .score-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+
+        .completion-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ─── LOADING STATE ───────────────────────────────── */
+        .loading-state {
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--navy);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-state p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* ─── RESPONSIVE ──────────────────────────────────── */
+        @media (max-width: 640px) {
+            .module-wrap { padding: 2rem 1.25rem 5rem; }
+            .module-title { font-size: 1.7rem; }
+            .lesson-card, .reading-card, .quiz-card { padding: 1.75rem 1.25rem; }
+            .step-label { display: none; }
+            .nav-bar { flex-direction: column-reverse; }
+            .nav-bar .btn-primary, .nav-bar .btn-secondary { width: 100%; justify-content: center; }
+        }
+
+        /* ─── GEOGRAPHY MODULE — LOCATION CARDS ──────────── */
+        /* ─── GEO CARDS (Bible Geography module) ─────────── */
+        .geo-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin: 1.25rem 0;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .geo-card:hover { box-shadow: var(--shadow-md); }
+
+        .geo-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.9rem 1.25rem;
+            background: var(--navy);
+            flex-wrap: wrap;
+        }
+
+        .geo-names {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .geo-ancient {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .geo-arrow {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+        }
+
+        .geo-modern {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.85);
+        }
+
+        .geo-era-tag {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            background: rgba(212,165,116,0.15);
+            border: 1px solid rgba(212,165,116,0.3);
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .geo-body {
+            padding: 1.1rem 1.25rem 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .geo-body p {
+            font-size: 0.92rem;
+            line-height: 1.75;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .geo-then-now {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .geo-then {
+            padding: 1rem 1.25rem;
+            border-right: 1px solid var(--border);
+            background: rgba(212,165,116,0.04);
+        }
+
+        .geo-now {
+            padding: 1rem 1.25rem;
+            background: rgba(26,31,54,0.03);
+        }
+
+        .geo-tn-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .geo-then p, .geo-now p {
+            font-size: 0.88rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* ─── LANDING SCREEN ──────────────────────────────── */
+        .landing-group {
+            margin-bottom: 2.5rem;
+        }
+
+        .landing-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .landing-group-icon {
+            font-size: 1.1rem;
+        }
+
+        .landing-group-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: 0.3px;
+        }
+
+        .landing-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+        }
+
+        .landing-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .landing-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-gold);
+        }
+
+        .landing-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+
+        .landing-card-grade {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: var(--gold-dark);
+            background: rgba(212,165,116,0.12);
+            padding: 0.15rem 0.55rem;
+            border-radius: 20px;
+        }
+
+        .landing-card-xp {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .landing-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.3;
+        }
+
+        .landing-card-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .landing-card-footer {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+            margin-top: 0.5rem;
+        }
+
+        .landing-card:hover .landing-card-footer {
+            color: var(--navy);
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
+            ← Back
+        </button>
+        <a href="index.html" class="header-logo">CRUX</a>
+    </div>
+    <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
+        <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
+    </div>
+</header>
+
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div class="module-wrap">
+
+    <!-- Loading state — shown while a module loads -->
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
+
+    <!-- Step indicator -->
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
+        </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
+        </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
+
+    <!-- Module header -->
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">Grades 3–8</span>
+            <span class="topic-tag" id="topicTag">Faith Formation</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <!-- Level toggle -->
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions — you can review your answers before submitting.</p>
+            <div id="quizQuestions">
+                <!-- Populated by JS -->
+            </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You've completed this lesson. Keep going — the faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
+            </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    ← Back to CRUX
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="crux-module-engine.js"></script>
+<script>
+const MODULE_DATA = {
+    id: 'ten_commandments',
+    title: 'The Ten Commandments',
+    subtitle: 'God gave the Commandments after rescuing Israel from slavery — not as the price of freedom, but as the shape of it.',
+    gradeTag: 'Grades 3–8',
+    topic: 'How We Live',
+    xpReward: 60,
+    nextModule: 'beatitudes',
+
+    lesson: {
+        beginner: `
+            <h2>The Ten Commandments — Lesson</h2>
+
+            <p>Before God gave the Ten Commandments, he did something else first. He rescued his people from slavery in Egypt. He parted the Red Sea. He led them through the wilderness. And then, when they reached Mount Sinai, he gave them the Commandments: not as the price of his help, but as a gift to a people he had already saved.</p>
+
+            <p>The Commandments begin with this sentence: <em>"I am the Lord your God, who brought you out of Egypt, out of the house of slavery."</em> That sentence matters. God does not introduce himself as a lawgiver. He introduces himself as a rescuer. The rules come from a relationship, not the other way around.</p>
+
+            <h3>Two Groups, One Principle</h3>
+
+            <p>A lawyer once asked Jesus which commandment was the greatest. Jesus answered: love God with all your heart, soul, and mind, and love your neighbor as yourself. Then he said: all the law and the prophets hang on these two commandments.</p>
+
+            <p>The Ten Commandments split exactly along those two lines. The first three are about loving God. The last seven are about loving your neighbor. Every commandment is one of those two things worked out in practice.</p>
+
+            <h3>The First Three: Loving God</h3>
+
+            <p><strong>1. You shall have no other gods before me.</strong> God asks for first place, not just a place. This commandment covers anything that takes God's place in a person's life: money, status, approval from others, anything that becomes the thing you organize your whole life around. The question it asks is simple: what do you love most?</p>
+
+            <p><strong>2. You shall not take the name of the Lord your God in vain.</strong> God's name carries his presence. Using it carelessly, as a swear word or an empty exclamation, treats the person whose name it is as though he doesn't matter. The commandment asks for the same care with God's name that you would give to the name of someone you love.</p>
+
+            <p><strong>3. Remember the sabbath day and keep it holy.</strong> One day a week is set apart for rest and worship. The commandment isn't just about not working. It's a positive instruction to stop, gather, and remember who God is and what he has done. Catholics fulfill this at Sunday Mass.</p>
+
+            <h3>The Last Seven: Loving Your Neighbor</h3>
+
+            <p><strong>4. Honor your father and your mother.</strong> The first commandment about human relationships is about family. It asks for genuine respect: real honor, not blind compliance. The Church extends this to all legitimate authority, because ordered society depends on people being willing to respect those responsible for their care.</p>
+
+            <p><strong>5. You shall not kill.</strong> Every human life has dignity because every person is made in the image of God. This commandment forbids murder, but the Catholic understanding runs deeper. It also covers actions that damage human life indirectly: causing unnecessary harm, destroying someone's reputation, leading others into serious sin.</p>
+
+            <p><strong>6. You shall not commit adultery.</strong> Marriage is a covenant: a permanent, faithful, life-giving union between a husband and wife. This commandment protects that covenant. More broadly, it calls every person to chastity: treating your own body and other people's bodies with respect, as belonging to persons made in God's image rather than as objects for use. That includes being careful about what you look at and consume. Pornography reduces real people to objects, which is the opposite of what this commandment requires.</p>
+
+            <p><strong>7. You shall not steal.</strong> Other people's property belongs to them. This covers taking what isn't yours, but also cheating, fraud, and failing to pay what you owe. The commandment carries a positive obligation too: to be generous with what you have.</p>
+
+            <p><strong>8. You shall not bear false witness against your neighbor.</strong> Truth is owed to other people. This commandment covers lying, but also gossip, rash judgment, and damaging someone's reputation with information that isn't yours to share. It asks for honesty in every direction.</p>
+
+            <p><strong>9. You shall not covet your neighbor's wife.</strong> The 9th commandment moves inside. It covers not just actions but desires, specifically the desire to take someone who belongs to another person. The Church reads this as calling for interior purity: disciplining what you allow yourself to want, not just what you allow yourself to do.</p>
+
+            <p><strong>10. You shall not covet your neighbor's goods.</strong> Like the 9th, this commandment addresses desire itself. Covetousness is not just wanting things; it is resenting others for having them. The commandment asks for contentment: finding sufficiency in what God has given rather than measuring your life against what others have.</p>
+
+            <h3>The Shape of Love</h3>
+
+            <p>The Commandments are sometimes taught as a list of prohibitions, ten things you cannot do. The Church reads them differently. They describe the shape of a life ordered toward love. When you honor your parents, tell the truth, protect human life, and keep Sunday holy, you are not following rules to avoid punishment. You are practicing the kind of person you are becoming. The Commandments show what love looks like in ordinary life.</p>
+        `,
+
+        theologian: `
+            <h2>The Ten Commandments — Theologian Level</h2>
+
+            <p>The Ten Commandments are not the oldest moral code in human history. Hammurabi's Code predates them by several centuries. The Egyptian Book of the Dead contains similar prohibitions against murder and theft. The Commandments are not remarkable because the world had never thought of these rules before. They are remarkable because of who gives them, to whom, and why.</p>
+
+            <h3>Natural Law: The Commandments Written on the Heart</h3>
+
+            <p>In Romans 2:14–15, Paul argues that Gentiles who never received the Mosaic law can still act according to its requirements, because they "show that the work of the law is written on their hearts." This is the natural law argument: moral truth is not arbitrarily imposed from outside but is inscribed in human nature itself. Right reason, rightly ordered, arrives at the same conclusions the Commandments express.</p>
+
+            <p>Thomas Aquinas develops this in the Summa Theologiae (I-II, Q. 100). He distinguishes three kinds of precepts in the Old Law: moral, ceremonial, and judicial. The ceremonial precepts governed Israel's worship and passed away with the old covenant. The judicial precepts governed Israel's civil order and similarly passed. The moral precepts of the Decalogue remain binding not because the Mosaic covenant is still in force, but because they articulate natural law, which binds every rational creature in every age.</p>
+
+            <p>This distinction matters pastorally. When a student asks why Christians are not obliged to offer animal sacrifices (a ceremonial precept) but are obliged not to steal (a moral precept), the answer is not arbitrary. The moral precepts bind because they express what human reason, made in God's image, already knows about living well. The Commandments do not create morality. They name it.</p>
+
+            <h3>The Two Tablets and Matthew 22</h3>
+
+            <p>Jewish tradition understood the Decalogue as written on two stone tablets. The division between them is interpretively significant. The first tablet contains commandments governing the relationship between Israel and God. The second contains commandments governing relationships between human beings. This structure anticipates Jesus's answer to the lawyer in Matthew 22:37–40: the whole law hangs on love of God and love of neighbor.</p>
+
+            <p>Jesus is not simplifying the law. He is revealing its internal architecture. The two great commandments are not a replacement for the Decalogue but its interpretive key. Each of the ten can be read as love of God or love of neighbor made concrete in a specific domain: time (sabbath), speech (name, false witness), family (parents, marriage), property (theft, covetousness), and life itself (murder).</p>
+
+            <div class="highlight-box">
+                <p>"You shall love the Lord your God with all your heart, and with all your soul, and with all your mind. This is the greatest and first commandment. And a second is like it: you shall love your neighbor as yourself. On these two commandments hang all the law and the prophets."</p>
+                <cite>— Matthew 22:37–40</cite>
+            </div>
+
+            <h3>The Commandments: Full Catholic Application</h3>
+
+            <p><strong>1st Commandment — You shall have no other gods before me.</strong> The Church extends this beyond literal idol worship. The CCC identifies superstition, divination, magic, and irreligion as violations of the first commandment. More broadly, it covers any ordering of life that places something other than God at the center. Augustine called this the disordered loves that result from <em>incurvatus in se</em>, the self curved inward. Practical atheism, living as though God does not exist even while nominally believing, falls under this commandment.</p>
+
+            <p><strong>2nd Commandment — You shall not take the name of the Lord in vain.</strong> This covers blasphemy and perjury explicitly. The positive obligation is reverence: treating God's name as carrying his presence, which it does. The Church also reads this as requiring that oaths be taken seriously. Invoking God's name as witness to a promise places the full weight of the relationship with God behind the claim.</p>
+
+            <p><strong>3rd Commandment — Remember the sabbath and keep it holy.</strong> For Catholics the sabbath obligation is fulfilled on Sunday, the Lord's Day, the day of resurrection. The CCC specifies that the obligation includes attending Mass, resting from servile work, and spending time with family and in works of mercy. The commandment has both a negative dimension (refraining from unnecessary work) and a positive one (actively worshipping and resting).</p>
+
+            <p><strong>4th Commandment — Honor your father and your mother.</strong> The Church extends filial duty to encompass all legitimate authority: civil authorities, employers, teachers, and the Church herself. The positive obligation on parents is equally significant: the duty to educate children in the faith, to provide for their material and spiritual needs, and to respect their vocation as they mature.</p>
+
+            <p><strong>5th Commandment — You shall not kill.</strong> The Church's application is broad. The direct taking of innocent human life is always gravely wrong: this covers abortion, euthanasia, and murder. But the commandment also covers scandal (leading others into serious sin), cooperation with evil, and actions that damage human dignity indirectly. Anger, hatred, and the desire for revenge are interior violations. The positive obligation is to protect and promote human life at every stage.</p>
+
+            <p><strong>6th Commandment — You shall not commit adultery.</strong> The Church reads the 6th commandment as covering the entire domain of sexual ethics. The positive virtue it calls for is chastity: the successful integration of sexuality within the person according to one's state in life, which takes a different form for the married, the single, and the consecrated. Violations include adultery, fornication, pornography, and any use of sexuality that reduces persons to objects or separates the unitive and procreative dimensions of the sexual act. The CCC is explicit that pornography is a grave offense because it perverts the conjugal act and does serious harm to those who produce and consume it.</p>
+
+            <p><strong>7th Commandment — You shall not steal.</strong> The Church's application covers not just theft but fraud, tax evasion, unjust wages, and the failure to honor contracts. The positive obligation includes restitution for what has been wrongfully taken and generosity toward those in need. The commandment also grounds Catholic Social Teaching's concern for just economic structures: theft is not only an individual act but can be embedded in systems.</p>
+
+            <p><strong>8th Commandment — You shall not bear false witness.</strong> The CCC identifies multiple violations: lying, false testimony, rash judgment, detraction (revealing another's faults without legitimate reason), calumny (false accusations), flattery, and boasting. The positive obligation is truthfulness in all things, not merely avoiding technical falsehood but living in fidelity to truth as a form of respect for persons and for God, who is truth itself.</p>
+
+            <p><strong>9th Commandment — You shall not covet your neighbor's wife.</strong> The 9th commandment governs the interior life in the sexual domain. Jesus makes this explicit in Matthew 5:28: looking at another person with lust is already a violation of the spirit of the law. The virtue called for is purity of heart: disciplining the imagination and the desires, not merely the actions. The Church is clear that this extends to deliberate consumption of sexual content involving real persons, which cultivates disordered desire even when no outward act follows.</p>
+
+            <p><strong>10th Commandment — You shall not covet your neighbor's goods.</strong> Covetousness is envy directed at property. The commandment addresses the disposition of the heart toward material goods: whether a person is ordered toward gratitude and sufficiency, or toward resentment and acquisition. The positive virtue is poverty of spirit: detachment from things, which is not indifference to material needs but freedom from being governed by them.</p>
+
+            <h3>A Note on Catholic Numbering</h3>
+
+            <p>Catholic and Lutheran numbering of the Commandments differs from the numbering used in most Protestant traditions. Catholics, following Augustine and the Council of Trent, combine what Protestants call the 1st and 2nd commandments (no other gods; no graven images) into a single first commandment, and split what Protestants call the 10th commandment (you shall not covet) into the 9th (coveting a neighbor's wife) and 10th (coveting a neighbor's goods). The content is identical. The division reflects different readings of the Exodus 20 text and different catechetical traditions. Neither numbering is more ancient than the other.</p>
+        `
+    },
+
+    reading: {
+        beginner: `
+            <h2>Reading: Before the Rules, the Rescue</h2>
+            <div class="reading-meta">Exodus 20:1–17 — The Ten Commandments at Sinai</div>
+            <div class="reading-body">
+                <p>The Ten Commandments begin with a sentence most people skip over: "I am the Lord your God, who brought you out of Egypt, out of the house of slavery." God introduces himself not as a lawmaker but as the one who already acted on Israel's behalf. The Commandments are given to a people God has already rescued, not as terms they have to meet to earn his help.</p>
+
+                <p>That changes how you read everything that follows. A stranger who hands you a list of rules is making a demand. A father who has just pulled you out of danger and then says "here is how to live well" is giving a gift. The Commandments are God's gift to people he loves, showing them what a life ordered toward him and toward others actually looks like.</p>
+
+                <p>The Commandments divide into two groups. The first three are about the relationship between Israel and God: put him first, treat his name with respect, keep one day holy. The last seven are about relationships between people: honor parents, protect life, keep marriage holy, don't steal, tell the truth, don't let envy eat you alive. Jesus later summed up both groups in two sentences: love God with everything you have, and love your neighbor as yourself.</p>
+
+                <p>The Commandments are not ten separate rules that happen to be listed together. They are one vision of human flourishing, seen from two angles. When you live them, you are not earning anything from God. You are becoming the kind of person he made you to be.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Reflect on These Questions</h4>
+                <ol>
+                    <li>God gave the Commandments after rescuing Israel, not before. Why do you think that order matters?</li>
+                    <li>Jesus said all the Commandments hang on two: love God and love neighbor. Pick one of the ten and explain how it is really just one of those two things worked out in practice.</li>
+                    <li>Which of the ten is hardest for most people you know — and why do you think that is?</li>
+                </ol>
+            </div>
+        `,
+
+        theologian: `
+            <h2>Reading: The Law Written on the Heart</h2>
+            <div class="reading-meta">Romans 2:12–16 and Aquinas, Summa Theologiae I-II, Q. 100 — Natural law and the permanence of the moral precepts</div>
+            <div class="reading-body">
+                <p>Paul's letter to the Romans contains one of the most consequential arguments in the history of moral theology. Writing to a mixed community of Jewish and Gentile Christians, he addresses the question of how Gentiles, people who never received the Mosaic law, will be judged. His answer in Romans 2:14–15 is precise: when Gentiles "do by nature what the law requires, they are a law to themselves, even though they do not have the law. They show that the work of the law is written on their hearts, while their conscience also bears witness."</p>
+
+                <p>This is the natural law argument in its scriptural form. Moral knowledge is not exclusively the property of those who received special revelation. It is inscribed in human nature itself, accessible in principle to any person who reasons rightly about what it means to be human. The Decalogue does not invent morality. It articulates what conscience already knows.</p>
+
+                <p>Thomas Aquinas draws out the implications of this in the Summa Theologiae. He distinguishes three kinds of precepts in the Old Law. Ceremonial precepts governed Israel's worship: the sacrificial system, the dietary laws, the feasts. These were figures and types of the realities fulfilled in Christ, and they ceased to bind when the reality they prefigured arrived. Judicial precepts governed Israel's civil life as a particular nation. These too passed with the old covenant's specific political order. But the moral precepts of the Decalogue are different in kind. They bind because they express the natural law, which is the rational creature's participation in the eternal law of God. They do not bind because of the Mosaic covenant. They bind because they are true.</p>
+
+                <p>This distinction resolves what would otherwise be an arbitrary inconsistency: why Christians are bound by the prohibition on murder but not by the prohibition on eating pork. The answer is not that Christians pick and choose. It is that the two kinds of precepts were never the same kind of thing. The dietary laws were ceremonial; they signified Israel's holiness and separation. The prohibition on murder is moral; it expresses the inviolable dignity of every person made in God's image. One kind of law was always time-bound. The other was not.</p>
+
+                <p>The pastoral consequence is significant. When Catholics present the Commandments as binding moral norms, they are not claiming that non-Christians are bound by the Mosaic covenant. They are claiming that the moral truth the Commandments express is inscribed in human nature and accessible to reason. That is why the conversation about the Commandments can be had with anyone, not just with those who accept Jewish or Christian revelation.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Theological Reflection</h4>
+                <ol>
+                    <li>Aquinas distinguishes moral, ceremonial, and judicial precepts in the Old Law. What would you say to someone who argues that Christians who follow the Ten Commandments but not the dietary laws are being inconsistent?</li>
+                    <li>Paul says Gentiles who do not have the law can still act according to it because it is "written on their hearts." What does this imply about the relationship between revelation and reason in Catholic moral theology?</li>
+                    <li>If the moral precepts bind because they express natural law rather than because of the Mosaic covenant, what does that mean for how Catholics should argue for the Commandments in a pluralistic society — and what arguments should they not use?</li>
+                </ol>
+            </div>
+        `
+    },
+
+    quiz: [
+        {
+            q: "The Ten Commandments begin with the sentence: 'I am the Lord your God, who brought you out of Egypt, out of the house of slavery.' Why does this opening matter?",
+            options: [
+                "It establishes God's authority to make laws for Israel",
+                "It shows that the Commandments are given to a people God has already rescued, as a gift within a relationship rather than as conditions for his help",
+                "It explains why the Commandments only apply to the Jewish people",
+                "It introduces the historical context for students of ancient history"
+            ],
+            correct: 1,
+            explanation: "The preamble establishes that God acts before he commands. The rescue precedes the law. This means the Commandments are not conditions Israel must meet to earn God's favor — they are God's gift to people he has already saved, showing them how to live in response to what he has done."
+        },
+        {
+            q: "Jesus summarizes all the Commandments in two. How do the Ten Commandments divide along those two lines?",
+            options: [
+                "The first five concern personal holiness; the second five concern social behavior",
+                "The first three concern love of God; the last seven concern love of neighbor",
+                "The first tablet concerns ritual obligations; the second concerns moral obligations",
+                "The Commandments do not divide cleanly — Jesus's summary replaces rather than organizes them"
+            ],
+            correct: 1,
+            explanation: "The Decalogue divides into two tablets: the first three commandments govern the relationship with God (no other gods, no vain use of his name, keeping the sabbath), and the last seven govern relationships with other people (parents, life, marriage, property, truth, and desire). Jesus's two great commandments reveal this structure without replacing the specific commandments."
+        },
+        {
+            q: "According to Aquinas, why do the moral precepts of the Ten Commandments still bind Christians, even though other Old Testament laws (like dietary restrictions) do not?",
+            options: [
+                "The Church chose to retain the Ten Commandments at the Council of Trent",
+                "The moral precepts bind because they express natural law, which is inscribed in human nature and binds every rational creature — unlike ceremonial precepts, which were always time-bound figures of realities fulfilled in Christ",
+                "Christians are still bound by all Mosaic law, but most Christians have forgotten this",
+                "Jesus explicitly stated which Old Testament laws still apply and which do not"
+            ],
+            correct: 1,
+            explanation: "Aquinas distinguishes moral, ceremonial, and judicial precepts. Ceremonial precepts (sacrifices, dietary laws, feasts) prefigured Christ and ceased when the reality arrived. Moral precepts bind because they express the natural law — what right reason knows about human flourishing. They do not bind because of the Mosaic covenant but because they are true."
+        },
+        {
+            q: "The Catholic Church's application of the 6th Commandment extends beyond the prohibition on adultery. What does the Church teach it requires?",
+            options: [
+                "Celibacy for all Christians as the ideal form of chastity",
+                "Chastity for every person according to their state in life, including respect for persons as ends in themselves and not objects — explicitly including the avoidance of pornography",
+                "Fidelity within marriage only; the commandment does not apply to the unmarried",
+                "A general disposition of modesty, without specific application to digital media or sexual content"
+            ],
+            correct: 1,
+            explanation: "The CCC reads the 6th Commandment as governing the entire domain of sexual ethics. The positive virtue it calls for is chastity — different in form for married, single, and consecrated persons, but required of all. Pornography is explicitly identified as a grave violation because it reduces persons to objects and corrupts both those who produce and those who consume it."
+        },
+        {
+            q: "Why does Catholic numbering of the Ten Commandments differ from most Protestant numbering?",
+            options: [
+                "The Catholic Church added a commandment at the Council of Trent",
+                "Catholics follow Augustine's tradition of combining the first two Protestant commandments into one and splitting the last commandment into two, covering covetousness of persons and covetousness of goods separately",
+                "The Protestant Reformers discovered an earlier manuscript that corrected the Catholic numbering",
+                "Catholic numbering follows the Hebrew text; Protestant numbering follows the Greek Septuagint"
+            ],
+            correct: 1,
+            explanation: "Following Augustine and the Council of Trent, Catholics combine what Protestants number as the 1st and 2nd commandments (no other gods; no graven images) into a single first commandment, and split what Protestants number as the 10th into the 9th (coveting a neighbor's wife) and 10th (coveting a neighbor's goods). The content is identical across both traditions. The difference reflects different catechetical traditions in reading Exodus 20, not a difference in the underlying text."
+        }
+    ]
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
+    initModule(MODULE_DATA);
+});
+</script>
+
+</body>
+</html>
