@@ -1758,7 +1758,82 @@
             background: #1b5e20;
         }
 
-        .mscard-complete-badge {
+        /* ── PILLAR GROUPS (youth section) ─────────────── */
+        .pillar-group {
+            margin-bottom: 3rem;
+        }
+
+        .pillar-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.85rem;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .pillar-group-icon {
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .pillar-group-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
+        }
+
+        .pillar-group-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            opacity: 0.8;
+        }
+
+        .pillar-group-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+        }
+
+        .pillar-group-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        .pillar-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .mscard-coming {
+            opacity: 0.5;
+            pointer-events: none;
+        }
+
+        .mscard-coming-badge {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-secondary);
+            background: rgba(0,0,0,0.06);
+            padding: 0.15rem 0.55rem;
+            border-radius: 20px;
+        }
+
+        .mscard-topic.pillar-i   { background: rgba(192,57,43,0.1);  color: #922b21; }
+        .mscard-topic.pillar-ii  { background: rgba(30,132,73,0.1);  color: #1a6b3c; }
+        .mscard-topic.pillar-iii { background: rgba(26,82,118,0.1);  color: #1a5276; }
+        .mscard-topic.pillar-iv  { background: rgba(108,52,131,0.1); color: #5b2c6f; }
+        .mscard-topic.pillar-v   { background: rgba(26,31,54,0.1);   color: var(--navy); }
+
+                .mscard-complete-badge {
             display: inline-flex;
             align-items: center;
             gap: 0.3rem;
@@ -2103,7 +2178,7 @@
                     </div>
                     <div style="display:flex;gap:1.5rem;flex-shrink:0;">
                         <div style="text-align:center;">
-                            <div style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);font-weight:700;">9</div>
+                            <div style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--gold);font-weight:700;">16</div>
                             <div style="font-size:0.72rem;color:rgba(255,255,255,0.45);font-weight:600;letter-spacing:0.5px;text-transform:uppercase;">Modules</div>
                         </div>
                         <div style="text-align:center;">
@@ -2117,189 +2192,362 @@
                     </div>
                 </div>
 
-                <!-- Module cards -->
-                <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;margin-bottom:2.5rem;">
+                <!-- Module cards — organised by Catechism pillar -->
+                <div style="margin-bottom:2.5rem;">
 
-                    <div class="module-shelf-card" data-module="trinity" onclick="window.location.href='crux-modules.html?module=trinity'">
-                        <div class="mscard-inner">
-                            <div class="mscard-top">
-                                <span class="mscard-topic">Core Beliefs</span>
-                                <span class="mscard-xp">⭐ 50 XP</span>
-                            </div>
-                            <h3 class="mscard-title">The Holy Trinity</h3>
-                            <p class="mscard-desc">Understanding the central mystery of the Christian faith — one God in three divine Persons.</p>
-                            <div class="mscard-meta">
-                                <span class="mscard-grade">Grades 3–8</span>
-                                <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                    <!-- PILLAR I -->
+                    <div class="pillar-group">
+                        <div class="pillar-group-header">
+                            <span class="pillar-group-icon">✟</span>
+                            <div class="pillar-group-text">
+                                <div class="pillar-group-num">Pillar I</div>
+                                <div class="pillar-group-title">What We Believe</div>
+                                <div class="pillar-group-subtitle">The Creed — who God is, who Jesus is, and what the Church professes</div>
                             </div>
                         </div>
-                        <div class="mscard-footer">
-                            Start Module →</div>
-                        <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=trinity'">
-                            🎮 Practice Games
+                        <div class="pillar-card-grid">
+                            <div class="module-shelf-card" data-module="trinity" onclick="window.location.href='crux-modules.html?module=trinity'">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-i">Pillar I — What We Believe</span>
+                                        <span class="mscard-xp">⭐ 50 XP</span>
+                                    </div>
+                                    <h3 class="mscard-title">The Holy Trinity</h3>
+                                    <p class="mscard-desc">One God in three Persons — Father, Son, and Holy Spirit. The central mystery of the Christian faith.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 3–8</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer">Start Module →</div>
+                                <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=trinity'">🎮 Practice Games</div>
+                            </div>
+                            <div class="module-shelf-card" data-module="jesus" onclick="window.location.href='crux-modules.html?module=jesus'">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-i">Pillar I — What We Believe</span>
+                                        <span class="mscard-xp">⭐ 50 XP</span>
+                                    </div>
+                                    <h3 class="mscard-title">Who Is Jesus Christ?</h3>
+                                    <p class="mscard-desc">Fully God and fully human — what that means and why it matters for everything else in the faith.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 3–8</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer">Start Module →</div>
+                                <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=jesus'">🎮 Practice Games</div>
+                            </div>
+                            <div class="module-shelf-card" data-module="mary" onclick="window.location.href='crux-modules.html?module=mary'">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-i">Pillar I — What We Believe</span>
+                                        <span class="mscard-xp">⭐ 50 XP</span>
+                                    </div>
+                                    <h3 class="mscard-title">Mary &amp; the Saints</h3>
+                                    <p class="mscard-desc">The Communion of Saints — why the Church honors Mary, what it means to have a patron saint, and how the saints intercede for us.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 3–8</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer">Start Module →</div>
+                                <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=mary'">🎮 Practice Games</div>
+                            </div>
+                            <div class="module-shelf-card" data-module="prodigal_son" onclick="window.location.href='crux-modules.html?module=prodigal_son'">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-i">Pillar I — What We Believe</span>
+                                        <span class="mscard-xp">⭐ 60 XP</span>
+                                    </div>
+                                    <h3 class="mscard-title">The Prodigal Son</h3>
+                                    <p class="mscard-desc">Jesus told this parable to people who thought they were the good ones. That changes everything.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 3–8</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer">Start Module →</div>
+                                <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=prodigal_son'">🎮 Practice Games</div>
+                            </div>
+                            <div class="module-shelf-card" data-module="bible_geography" onclick="window.location.href='crux-modules.html?module=bible_geography'">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-i">Pillar I — What We Believe</span>
+                                        <span class="mscard-xp">⭐ 60 XP</span>
+                                    </div>
+                                    <h3 class="mscard-title">The Geography of the Bible</h3>
+                                    <p class="mscard-desc">These events didn't happen in a story — they happened in real places you can visit today.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 3–8</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer">Start Module →</div>
+                                <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=bible_geography'">🎮 Practice Games</div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="module-shelf-card" data-module="sacraments" onclick="window.location.href='crux-modules.html?module=sacraments'">
-                        <div class="mscard-inner">
-                            <div class="mscard-top">
-                                <span class="mscard-topic">Core Beliefs</span>
-                                <span class="mscard-xp">⭐ 50 XP</span>
-                            </div>
-                            <h3 class="mscard-title">The Seven Sacraments</h3>
-                            <p class="mscard-desc">Outward signs instituted by Christ that give grace — seven holy encounters with God across the span of a life.</p>
-                            <div class="mscard-meta">
-                                <span class="mscard-grade">Grades 3–8</span>
-                                <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                    <!-- PILLAR II -->
+                    <div class="pillar-group">
+                        <div class="pillar-group-header">
+                            <span class="pillar-group-icon">🕊️</span>
+                            <div class="pillar-group-text">
+                                <div class="pillar-group-num">Pillar II</div>
+                                <div class="pillar-group-title">What We Celebrate</div>
+                                <div class="pillar-group-subtitle">The Sacraments — how God meets us through the liturgy and sacramental life of the Church</div>
                             </div>
                         </div>
-                        <div class="mscard-footer">
-                            Start Module →</div>
-                        <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=sacraments'">
-                            🎮 Practice Games
-                        </div>
-                    </div>
-
-                    <div class="module-shelf-card" data-module="jesus" onclick="window.location.href='crux-modules.html?module=jesus'">
-                        <div class="mscard-inner">
-                            <div class="mscard-top">
-                                <span class="mscard-topic">Christology</span>
-                                <span class="mscard-xp">⭐ 50 XP</span>
+                        <div class="pillar-card-grid">
+                            <div class="module-shelf-card" data-module="sacraments" onclick="window.location.href='crux-modules.html?module=sacraments'">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-ii">Pillar II — What We Celebrate</span>
+                                        <span class="mscard-xp">⭐ 50 XP</span>
+                                    </div>
+                                    <h3 class="mscard-title">The Seven Sacraments</h3>
+                                    <p class="mscard-desc">Seven sacred signs instituted by Christ — what they are, what they do, and why the Church calls them encounters with God.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 3–8</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer">Start Module →</div>
+                                <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=sacraments'">🎮 Practice Games</div>
                             </div>
-                            <h3 class="mscard-title">Who is Jesus Christ?</h3>
-                            <p class="mscard-desc">The most important question ever asked — and the answer that changes everything.</p>
-                            <div class="mscard-meta">
-                                <span class="mscard-grade">Grades 3–8</span>
-                                <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                            <div class="module-shelf-card mscard-coming">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-ii">Pillar II — What We Celebrate</span>
+                                        <span class="mscard-coming-badge">Coming Soon</span>
+                                    </div>
+                                    <h3 class="mscard-title">The Mass &amp; the Real Presence</h3>
+                                    <p class="mscard-desc">What actually happens at Mass — and why the Eucharist is the source and summit of the Catholic faith.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 3–8</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer" style="color:var(--text-secondary);">Coming Soon</div>
                             </div>
-                        </div>
-                        <div class="mscard-footer">
-                            Start Module →</div>
-                        <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=jesus'">
-                            🎮 Practice Games
-                        </div>
-                    </div>
-
-                    <div class="module-shelf-card" data-module="mary" onclick="window.location.href='crux-modules.html?module=mary'">
-                        <div class="mscard-inner">
-                            <div class="mscard-top">
-                                <span class="mscard-topic">Catholic Life</span>
-                                <span class="mscard-xp">⭐ 50 XP</span>
+                            <div class="module-shelf-card mscard-coming">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-ii">Pillar II — What We Celebrate</span>
+                                        <span class="mscard-coming-badge">Coming Soon</span>
+                                    </div>
+                                    <h3 class="mscard-title">Reconciliation &amp; Confession</h3>
+                                    <p class="mscard-desc">What happens in the confessional, why we need it, and what the Church means by God's mercy being inexhaustible.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 3–8</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer" style="color:var(--text-secondary);">Coming Soon</div>
                             </div>
-                            <h3 class="mscard-title">Mary & the Saints</h3>
-                            <p class="mscard-desc">Why Catholics honor Mary and ask the saints to pray for us — and why this is not worship.</p>
-                            <div class="mscard-meta">
-                                <span class="mscard-grade">Grades 3–8</span>
-                                <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                            <div class="module-shelf-card mscard-coming">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-ii">Pillar II — What We Celebrate</span>
+                                        <span class="mscard-coming-badge">Coming Soon</span>
+                                    </div>
+                                    <h3 class="mscard-title">The Liturgical Year</h3>
+                                    <p class="mscard-desc">Advent, Christmas, Lent, Easter, Ordinary Time — how the Church marks time and why the calendar is a teacher.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 3–8</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer" style="color:var(--text-secondary);">Coming Soon</div>
                             </div>
-                        </div>
-                        <div class="mscard-footer">
-                            Start Module →</div>
-                        <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=mary'">
-                            🎮 Practice Games
-                        </div>
-                    </div>
-
-                    <div class="module-shelf-card" data-module="conscience" onclick="window.location.href='crux-modules.html?module=conscience'">
-                        <div class="mscard-inner">
-                            <div class="mscard-top">
-                                <span class="mscard-topic">Moral Theology</span>
-                                <span class="mscard-xp">⭐ 60 XP</span>
-                            </div>
-                            <h3 class="mscard-title">Conscience & Moral Decision-Making</h3>
-                            <p class="mscard-desc">What the Church teaches about conscience — and why it is not a permission slip to do whatever you want.</p>
-                            <div class="mscard-meta">
-                                <span class="mscard-grade">Grades 6–8</span>
-                                <span class="mscard-parts">Lesson · Reading · Quiz</span>
-                            </div>
-                        </div>
-                        <div class="mscard-footer">
-                            Start Module →</div>
-                        <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=conscience'">
-                            🎮 Practice Games
                         </div>
                     </div>
 
-                    <div class="module-shelf-card" data-module="lords_prayer" onclick="window.location.href='crux-modules.html?module=lords_prayer'">
-                        <div class="mscard-inner">
-                            <div class="mscard-top">
-                                <span class="mscard-topic">Prayer</span>
-                                <span class="mscard-xp">⭐ 50 XP</span>
-                            </div>
-                            <h3 class="mscard-title">The Lord's Prayer</h3>
-                            <p class="mscard-desc">The prayer Jesus gave us — seven petitions that teach us everything about how to speak to God.</p>
-                            <div class="mscard-meta">
-                                <span class="mscard-grade">Grades 3–5</span>
-                                <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                    <!-- PILLAR III -->
+                    <div class="pillar-group">
+                        <div class="pillar-group-header">
+                            <span class="pillar-group-icon">⚖️</span>
+                            <div class="pillar-group-text">
+                                <div class="pillar-group-num">Pillar III</div>
+                                <div class="pillar-group-title">How We Live</div>
+                                <div class="pillar-group-subtitle">The Commandments — the moral life, conscience, and what it looks like to follow Christ in daily decisions</div>
                             </div>
                         </div>
-                        <div class="mscard-footer">Start Module →</div>
-                        <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=lords_prayer'">
-                            🎮 Practice Games
+                        <div class="pillar-card-grid">
+                            <div class="module-shelf-card" data-module="conscience" onclick="window.location.href='crux-modules.html?module=conscience'">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-iii">Pillar III — How We Live</span>
+                                        <span class="mscard-xp">⭐ 60 XP</span>
+                                    </div>
+                                    <h3 class="mscard-title">Conscience &amp; Moral Decision-Making</h3>
+                                    <p class="mscard-desc">What the Church teaches about conscience — and why it is not a permission slip to do whatever you want.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 6–8</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer">Start Module →</div>
+                                <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=conscience'">🎮 Practice Games</div>
+                            </div>
+                            <div class="module-shelf-card" data-module="fruits_holy_spirit" onclick="window.location.href='crux-modules.html?module=fruits_holy_spirit'">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-iii">Pillar III — How We Live</span>
+                                        <span class="mscard-xp">⭐ 50 XP</span>
+                                    </div>
+                                    <h3 class="mscard-title">The Fruits of the Holy Spirit</h3>
+                                    <p class="mscard-desc">Not a checklist. A portrait of what a life looks like when the Holy Spirit is actually at work.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 3–8</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer">Start Module →</div>
+                                <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=fruits_holy_spirit'">🎮 Practice Games</div>
+                            </div>
+                            <div class="module-shelf-card mscard-coming">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-iii">Pillar III — How We Live</span>
+                                        <span class="mscard-coming-badge">Coming Soon</span>
+                                    </div>
+                                    <h3 class="mscard-title">The Ten Commandments</h3>
+                                    <p class="mscard-desc">Not just a list of rules — a covenant framework for a life ordered toward God and neighbor.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 3–8</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer" style="color:var(--text-secondary);">Coming Soon</div>
+                            </div>
+                            <div class="module-shelf-card mscard-coming">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-iii">Pillar III — How We Live</span>
+                                        <span class="mscard-coming-badge">Coming Soon</span>
+                                    </div>
+                                    <h3 class="mscard-title">The Beatitudes</h3>
+                                    <p class="mscard-desc">The Sermon on the Mount — eight descriptions of what a flourishing Christian life actually looks like.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 3–8</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer" style="color:var(--text-secondary);">Coming Soon</div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="module-shelf-card" data-module="bible_geography" onclick="window.location.href='crux-modules.html?module=bible_geography'">
-                        <div class="mscard-inner">
-                            <div class="mscard-top">
-                                <span class="mscard-topic">Sacred Scripture</span>
-                                <span class="mscard-xp">⭐ 60 XP</span>
-                            </div>
-                            <h3 class="mscard-title">The Geography of the Bible</h3>
-                            <p class="mscard-desc">These events didn't happen in a story — they happened in real places you can visit today.</p>
-                            <div class="mscard-meta">
-                                <span class="mscard-grade">Grades 3–8</span>
-                                <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                    <!-- PILLAR IV -->
+                    <div class="pillar-group">
+                        <div class="pillar-group-header">
+                            <span class="pillar-group-icon">🙏</span>
+                            <div class="pillar-group-text">
+                                <div class="pillar-group-num">Pillar IV</div>
+                                <div class="pillar-group-title">How We Pray</div>
+                                <div class="pillar-group-subtitle">The Lord's Prayer — the nature of prayer and how the Church teaches us to speak with God</div>
                             </div>
                         </div>
-                        <div class="mscard-footer">Start Module →</div>
-                        <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=bible_geography'">
-                            🎮 Practice Games
+                        <div class="pillar-card-grid">
+                            <div class="module-shelf-card" data-module="lords_prayer" onclick="window.location.href='crux-modules.html?module=lords_prayer'">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-iv">Pillar IV — How We Pray</span>
+                                        <span class="mscard-xp">⭐ 50 XP</span>
+                                    </div>
+                                    <h3 class="mscard-title">The Lord's Prayer</h3>
+                                    <p class="mscard-desc">The prayer Jesus gave us — seven petitions that teach us everything about how to speak to God.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 3–5</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer">Start Module →</div>
+                                <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=lords_prayer'">🎮 Practice Games</div>
+                            </div>
+                            <div class="module-shelf-card mscard-coming">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-iv">Pillar IV — How We Pray</span>
+                                        <span class="mscard-coming-badge">Coming Soon</span>
+                                    </div>
+                                    <h3 class="mscard-title">The Rosary</h3>
+                                    <p class="mscard-desc">How to pray the Rosary, what the mysteries are, and why this devotion has shaped Catholic life for centuries.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 3–8</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer" style="color:var(--text-secondary);">Coming Soon</div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="module-shelf-card" data-module="prodigal_son" onclick="window.location.href='crux-modules.html?module=prodigal_son'">
-                        <div class="mscard-inner">
-                            <div class="mscard-top">
-                                <span class="mscard-topic">Sacred Scripture</span>
-                                <span class="mscard-xp">⭐ 60 XP</span>
-                            </div>
-                            <h3 class="mscard-title">The Prodigal Son</h3>
-                            <p class="mscard-desc">Jesus told this parable to people who thought they were the good ones. That changes everything.</p>
-                            <div class="mscard-meta">
-                                <span class="mscard-grade">Grades 3–8</span>
-                                <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                    <!-- PILLAR V -->
+                    <div class="pillar-group">
+                        <div class="pillar-group-header">
+                            <span class="pillar-group-icon">⛪</span>
+                            <div class="pillar-group-text">
+                                <div class="pillar-group-num">Pillar V</div>
+                                <div class="pillar-group-title">Who We Are</div>
+                                <div class="pillar-group-subtitle">Church &amp; Identity — the nature of the Church, the human person, and our call to discipleship</div>
                             </div>
                         </div>
-                        <div class="mscard-footer">Start Module →</div>
-                        <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=prodigal_son'">
-                            🎮 Practice Games
-                        </div>
-                    </div>
-
-                    <div class="module-shelf-card" data-module="fruits_holy_spirit" onclick="window.location.href='crux-modules.html?module=fruits_holy_spirit'">
-                        <div class="mscard-inner">
-                            <div class="mscard-top">
-                                <span class="mscard-topic">Holy Spirit</span>
-                                <span class="mscard-xp">⭐ 50 XP</span>
+                        <div class="pillar-card-grid">
+                            <div class="module-shelf-card mscard-coming">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-v">Pillar V — Who We Are</span>
+                                        <span class="mscard-coming-badge">Coming Soon</span>
+                                    </div>
+                                    <h3 class="mscard-title">Creation &amp; the Human Person</h3>
+                                    <p class="mscard-desc">God made everything good. Humans are made in His image. And original sin explains why the world is broken.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 3–8</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer" style="color:var(--text-secondary);">Coming Soon</div>
                             </div>
-                            <h3 class="mscard-title">The Fruits of the Holy Spirit</h3>
-                            <p class="mscard-desc">Not a checklist. A portrait of what a life looks like when the Holy Spirit is actually at work.</p>
-                            <div class="mscard-meta">
-                                <span class="mscard-grade">Grades 3–8</span>
-                                <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                            <div class="module-shelf-card mscard-coming">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-v">Pillar V — Who We Are</span>
+                                        <span class="mscard-coming-badge">Coming Soon</span>
+                                    </div>
+                                    <h3 class="mscard-title">The Nicene Creed</h3>
+                                    <p class="mscard-desc">The Church's own summary of everything she believes — article by article, phrase by phrase.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 3–8</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer" style="color:var(--text-secondary);">Coming Soon</div>
                             </div>
-                        </div>
-                        <div class="mscard-footer">Start Module →</div>
-                        <div class="mscard-games" onclick="event.stopPropagation();window.location.href='crux-games.html?module=fruits_holy_spirit'">
-                            🎮 Practice Games
+                            <div class="module-shelf-card mscard-coming">
+                                <div class="mscard-inner">
+                                    <div class="mscard-top">
+                                        <span class="mscard-topic pillar-v">Pillar V — Who We Are</span>
+                                        <span class="mscard-coming-badge">Coming Soon</span>
+                                    </div>
+                                    <h3 class="mscard-title">The Gifts of the Holy Spirit</h3>
+                                    <p class="mscard-desc">Wisdom, understanding, counsel, fortitude — the seven gifts given for mission, and how they differ from the fruits.</p>
+                                    <div class="mscard-meta">
+                                        <span class="mscard-grade">Grades 5–8</span>
+                                        <span class="mscard-parts">Lesson · Reading · Quiz</span>
+                                    </div>
+                                </div>
+                                <div class="mscard-footer" style="color:var(--text-secondary);">Coming Soon</div>
+                            </div>
                         </div>
                     </div>
 
                 </div>
 
                 <div class="notice-box">
-                    <p>More modules coming soon. Each completed module awards XP toward your <strong>CRUX rank</strong> — from Seeker to Saint.</p>
+                    <p>Modules are organized around the <strong>four pillars of the Catechism</strong> — what we believe, celebrate, live, and pray. New modules are added regularly. Each completed module awards XP toward your <strong>CRUX rank</strong> — from Seeker to Saint.</p>
                 </div>
             </div>
         </section>
