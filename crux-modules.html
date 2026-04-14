@@ -887,14 +887,21 @@
         .landing-group-header {
             display: flex;
             align-items: center;
-            gap: 0.75rem;
+            gap: 0.9rem;
             margin-bottom: 1.25rem;
-            padding-bottom: 0.75rem;
+            padding-bottom: 0.85rem;
             border-bottom: 2px solid var(--gold);
         }
 
         .landing-group-icon {
-            font-size: 1.1rem;
+            font-size: 1.4rem;
+            flex-shrink: 0;
+        }
+
+        .landing-group-text {
+            display: flex;
+            flex-direction: column;
+            gap: 0.15rem;
         }
 
         .landing-group-title {
@@ -903,6 +910,24 @@
             font-weight: 700;
             color: var(--navy);
             letter-spacing: 0.3px;
+            line-height: 1.2;
+        }
+
+        .landing-group-subtitle {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.2px;
+        }
+
+        .landing-pillar-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            opacity: 0.75;
         }
 
         .landing-card-grid {
@@ -1007,11 +1032,15 @@
             <p style="color:var(--text-secondary);font-size:1rem;max-width:560px;">Each module has a Lesson, a Reading with reflection questions, and a Quiz to earn XP. Choose Beginner or Theologian level inside any module.</p>
         </div>
 
-        <!-- Core Beliefs -->
+        <!-- ── PILLAR 1: WHAT WE BELIEVE ─────────────────── -->
         <div class="landing-group">
             <div class="landing-group-header">
                 <span class="landing-group-icon">✟</span>
-                <span class="landing-group-title">Core Beliefs</span>
+                <div class="landing-group-text">
+                    <div class="landing-pillar-num">Pillar I</div>
+                    <div class="landing-group-title">What We Believe</div>
+                    <div class="landing-group-subtitle">The Creed — who God is, who Jesus is, and what the Church professes</div>
+                </div>
             </div>
             <div class="landing-card-grid">
                 <div class="landing-card" onclick="window.location.href='crux-modules.html?module=trinity'">
@@ -1020,7 +1049,7 @@
                         <span class="landing-card-xp">⭐ 50 XP</span>
                     </div>
                     <h3 class="landing-card-title">The Holy Trinity</h3>
-                    <p class="landing-card-desc">One God in three divine Persons — the central mystery of the Christian faith.</p>
+                    <p class="landing-card-desc">One God in three Persons — Father, Son, and Holy Spirit. The central mystery of the Christian faith.</p>
                     <div class="landing-card-footer">Start →</div>
                 </div>
                 <div class="landing-card" onclick="window.location.href='crux-modules.html?module=jesus'">
@@ -1029,16 +1058,7 @@
                         <span class="landing-card-xp">⭐ 50 XP</span>
                     </div>
                     <h3 class="landing-card-title">Who Is Jesus Christ?</h3>
-                    <p class="landing-card-desc">The most important question ever asked — and the answer that changes everything.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=sacraments'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Seven Sacraments</h3>
-                    <p class="landing-card-desc">Seven holy encounters with God — outward signs that give grace across the span of a life.</p>
+                    <p class="landing-card-desc">Fully God and fully human — what that means and why it matters for everything else in the faith.</p>
                     <div class="landing-card-footer">Start →</div>
                 </div>
                 <div class="landing-card" onclick="window.location.href='crux-modules.html?module=mary'">
@@ -1047,45 +1067,7 @@
                         <span class="landing-card-xp">⭐ 50 XP</span>
                     </div>
                     <h3 class="landing-card-title">Mary &amp; the Saints</h3>
-                    <p class="landing-card-desc">Why Catholics honor Mary and ask the saints to pray for us — and why this is not worship.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Prayer -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">🙏</span>
-                <span class="landing-group-title">Prayer</span>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=lords_prayer'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–5</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Lord's Prayer</h3>
-                    <p class="landing-card-desc">Seven petitions that teach us everything about how to speak to God.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Sacred Scripture -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">📖</span>
-                <span class="landing-group-title">Sacred Scripture</span>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=bible_geography'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Geography of the Bible</h3>
-                    <p class="landing-card-desc">These events didn't happen in a story — they happened in real places you can visit today.</p>
+                    <p class="landing-card-desc">The Communion of Saints — why the Church honors Mary, what it means to have a patron saint, and how the saints intercede for us.</p>
                     <div class="landing-card-footer">Start →</div>
                 </div>
                 <div class="landing-card" onclick="window.location.href='crux-modules.html?module=prodigal_son'">
@@ -1097,14 +1079,50 @@
                     <p class="landing-card-desc">Jesus told this parable to people who thought they were the good ones. That changes everything.</p>
                     <div class="landing-card-footer">Start →</div>
                 </div>
+                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=bible_geography'">
+                    <div class="landing-card-top">
+                        <span class="landing-card-grade">Grades 3–8</span>
+                        <span class="landing-card-xp">⭐ 60 XP</span>
+                    </div>
+                    <h3 class="landing-card-title">The Geography of the Bible</h3>
+                    <p class="landing-card-desc">These events didn't happen in a story — they happened in real places you can visit today.</p>
+                    <div class="landing-card-footer">Start →</div>
+                </div>
             </div>
         </div>
 
-        <!-- Moral Theology -->
+        <!-- ── PILLAR 2: WHAT WE CELEBRATE ───────────────── -->
+        <div class="landing-group">
+            <div class="landing-group-header">
+                <span class="landing-group-icon">🕊️</span>
+                <div class="landing-group-text">
+                    <div class="landing-pillar-num">Pillar II</div>
+                    <div class="landing-group-title">What We Celebrate</div>
+                    <div class="landing-group-subtitle">The Sacraments — how God meets us through the liturgy and sacramental life of the Church</div>
+                </div>
+            </div>
+            <div class="landing-card-grid">
+                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=sacraments'">
+                    <div class="landing-card-top">
+                        <span class="landing-card-grade">Grades 3–8</span>
+                        <span class="landing-card-xp">⭐ 50 XP</span>
+                    </div>
+                    <h3 class="landing-card-title">The Seven Sacraments</h3>
+                    <p class="landing-card-desc">Seven sacred signs instituted by Christ — what they are, what they do, and why the Church calls them encounters with God.</p>
+                    <div class="landing-card-footer">Start →</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── PILLAR 3: HOW WE LIVE ──────────────────────── -->
         <div class="landing-group">
             <div class="landing-group-header">
                 <span class="landing-group-icon">⚖️</span>
-                <span class="landing-group-title">Moral Theology</span>
+                <div class="landing-group-text">
+                    <div class="landing-pillar-num">Pillar III</div>
+                    <div class="landing-group-title">How We Live</div>
+                    <div class="landing-group-subtitle">The Commandments — the moral life, conscience, and what it looks like to follow Christ in daily decisions</div>
+                </div>
             </div>
             <div class="landing-card-grid">
                 <div class="landing-card" onclick="window.location.href='crux-modules.html?module=conscience'">
@@ -1116,16 +1134,6 @@
                     <p class="landing-card-desc">What the Church teaches about conscience — and why it is not a permission slip to do whatever you want.</p>
                     <div class="landing-card-footer">Start →</div>
                 </div>
-            </div>
-        </div>
-
-        <!-- Holy Spirit -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">🕊️</span>
-                <span class="landing-group-title">Holy Spirit</span>
-            </div>
-            <div class="landing-card-grid">
                 <div class="landing-card" onclick="window.location.href='crux-modules.html?module=fruits_holy_spirit'">
                     <div class="landing-card-top">
                         <span class="landing-card-grade">Grades 3–8</span>
@@ -1134,6 +1142,61 @@
                     <h3 class="landing-card-title">The Fruits of the Holy Spirit</h3>
                     <p class="landing-card-desc">Not a checklist. A portrait of what a life looks like when the Holy Spirit is actually at work.</p>
                     <div class="landing-card-footer">Start →</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── PILLAR 4: HOW WE PRAY ──────────────────────── -->
+        <div class="landing-group">
+            <div class="landing-group-header">
+                <span class="landing-group-icon">🙏</span>
+                <div class="landing-group-text">
+                    <div class="landing-pillar-num">Pillar IV</div>
+                    <div class="landing-group-title">How We Pray</div>
+                    <div class="landing-group-subtitle">The Lord's Prayer — the nature of prayer and how the Church teaches us to speak with God</div>
+                </div>
+            </div>
+            <div class="landing-card-grid">
+                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=lords_prayer'">
+                    <div class="landing-card-top">
+                        <span class="landing-card-grade">Grades 3–5</span>
+                        <span class="landing-card-xp">⭐ 50 XP</span>
+                    </div>
+                    <h3 class="landing-card-title">The Lord's Prayer</h3>
+                    <p class="landing-card-desc">The prayer Jesus gave us — seven petitions that teach us everything about how to speak to God.</p>
+                    <div class="landing-card-footer">Start →</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── PILLAR 5: WHO WE ARE ───────────────────────── -->
+        <div class="landing-group">
+            <div class="landing-group-header">
+                <span class="landing-group-icon">⛪</span>
+                <div class="landing-group-text">
+                    <div class="landing-pillar-num">Pillar V</div>
+                    <div class="landing-group-title">Who We Are</div>
+                    <div class="landing-group-subtitle">Church &amp; Identity — the nature of the Church, the human person, and our call to discipleship</div>
+                </div>
+            </div>
+            <div class="landing-card-grid" style="opacity:0.6;pointer-events:none;">
+                <div class="landing-card">
+                    <div class="landing-card-top">
+                        <span class="landing-card-grade">Grades 3–8</span>
+                        <span class="landing-card-xp" style="color:var(--text-muted);background:rgba(0,0,0,0.05);padding:0.15rem 0.55rem;border-radius:20px;font-size:0.72rem;font-weight:700;">Coming Soon</span>
+                    </div>
+                    <h3 class="landing-card-title">Creation &amp; the Human Person</h3>
+                    <p class="landing-card-desc">God made everything good. Humans are made in His image. And original sin explains why the world is broken.</p>
+                    <div class="landing-card-footer" style="color:var(--text-muted);">Coming Soon</div>
+                </div>
+                <div class="landing-card">
+                    <div class="landing-card-top">
+                        <span class="landing-card-grade">Grades 3–8</span>
+                        <span class="landing-card-xp" style="color:var(--text-muted);background:rgba(0,0,0,0.05);padding:0.15rem 0.55rem;border-radius:20px;font-size:0.72rem;font-weight:700;">Coming Soon</span>
+                    </div>
+                    <h3 class="landing-card-title">The Nicene Creed</h3>
+                    <p class="landing-card-desc">The Church's own summary of everything she believes — article by article, phrase by phrase.</p>
+                    <div class="landing-card-footer" style="color:var(--text-muted);">Coming Soon</div>
                 </div>
             </div>
         </div>
