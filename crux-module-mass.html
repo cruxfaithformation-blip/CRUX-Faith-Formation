@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light">
-    <title>CRUX — Learning Modules</title>
+    <title>CRUX — The Mass &amp; the Real Presence</title>
 
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
@@ -887,21 +887,14 @@
         .landing-group-header {
             display: flex;
             align-items: center;
-            gap: 0.9rem;
+            gap: 0.75rem;
             margin-bottom: 1.25rem;
-            padding-bottom: 0.85rem;
+            padding-bottom: 0.75rem;
             border-bottom: 2px solid var(--gold);
         }
 
         .landing-group-icon {
-            font-size: 1.4rem;
-            flex-shrink: 0;
-        }
-
-        .landing-group-text {
-            display: flex;
-            flex-direction: column;
-            gap: 0.15rem;
+            font-size: 1.1rem;
         }
 
         .landing-group-title {
@@ -910,24 +903,6 @@
             font-weight: 700;
             color: var(--navy);
             letter-spacing: 0.3px;
-            line-height: 1.2;
-        }
-
-        .landing-group-subtitle {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            font-weight: 500;
-            letter-spacing: 0.2px;
-        }
-
-        .landing-pillar-num {
-            font-family: 'Playfair Display', serif;
-            font-size: 0.68rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--gold-dark);
-            opacity: 0.75;
         }
 
         .landing-card-grid {
@@ -1010,236 +985,355 @@
 
 <header>
     <div class="header-left">
-        <button class="back-btn" onclick="window.location.href='index.html#youth'">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
             ← Back
         </button>
         <a href="index.html" class="header-logo">CRUX</a>
     </div>
     <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
         <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
     </div>
 </header>
 
-<div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
 
 <div class="module-wrap">
 
-    <!-- Landing screen — shown when no ?module= param -->
-    <div id="landingScreen" style="display:none;">
-        <div style="margin-bottom:2.5rem;">
-            <div style="display:inline-block;color:var(--gold-dark);font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.75rem;">Faith Formation</div>
-            <h1 style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:0.75rem;">Learning Modules</h1>
-            <p style="color:var(--text-secondary);font-size:1rem;max-width:560px;">Each module has a Lesson, a Reading with reflection questions, and a Quiz to earn XP. Choose Beginner or Theologian level inside any module.</p>
-        </div>
+    <!-- Loading state — shown while a module loads -->
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
 
-        <!-- ── PILLAR 1: WHAT WE BELIEVE ─────────────────── -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">✟</span>
-                <div class="landing-group-text">
-                    <div class="landing-pillar-num">Pillar I</div>
-                    <div class="landing-group-title">What We Believe</div>
-                    <div class="landing-group-subtitle">The Creed — who God is, who Jesus is, and what the Church professes</div>
-                </div>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=trinity'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Holy Trinity</h3>
-                    <p class="landing-card-desc">One God in three Persons — Father, Son, and Holy Spirit. The central mystery of the Christian faith.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=jesus'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Who Is Jesus Christ?</h3>
-                    <p class="landing-card-desc">Fully God and fully human — what that means and why it matters for everything else in the faith.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=mary'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Mary &amp; the Saints</h3>
-                    <p class="landing-card-desc">The Communion of Saints — why the Church honors Mary, what it means to have a patron saint, and how the saints intercede for us.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=prodigal_son'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Prodigal Son</h3>
-                    <p class="landing-card-desc">Jesus told this parable to people who thought they were the good ones. That changes everything.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=bible_geography'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Geography of the Bible</h3>
-                    <p class="landing-card-desc">These events didn't happen in a story — they happened in real places you can visit today.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
+    <!-- Step indicator -->
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
         </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
+        </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
 
-        <!-- ── PILLAR 2: WHAT WE CELEBRATE ───────────────── -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">🕊️</span>
-                <div class="landing-group-text">
-                    <div class="landing-pillar-num">Pillar II</div>
-                    <div class="landing-group-title">What We Celebrate</div>
-                    <div class="landing-group-subtitle">The Sacraments — how God meets us through the liturgy and sacramental life of the Church</div>
-                </div>
+    <!-- Module header -->
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">Grades 3–8</span>
+            <span class="topic-tag" id="topicTag">Faith Formation</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <!-- Level toggle -->
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions — you can review your answers before submitting.</p>
+            <div id="quizQuestions">
+                <!-- Populated by JS -->
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=sacraments'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Seven Sacraments</h3>
-                    <p class="landing-card-desc">Seven sacred signs instituted by Christ — what they are, what they do, and why the Church calls them encounters with God.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=mass_real_presence'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Mass &amp; the Real Presence</h3>
-                    <p class="landing-card-desc">What actually happens at Mass — and why the Eucharist is the source and summit of the Catholic faith.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
             </div>
         </div>
+    </div>
 
-        <!-- ── PILLAR 3: HOW WE LIVE ──────────────────────── -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">⚖️</span>
-                <div class="landing-group-text">
-                    <div class="landing-pillar-num">Pillar III</div>
-                    <div class="landing-group-title">How We Live</div>
-                    <div class="landing-group-subtitle">The Commandments — the moral life, conscience, and what it looks like to follow Christ in daily decisions</div>
-                </div>
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You've completed this lesson. Keep going — the faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=conscience'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 6–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Conscience &amp; Moral Decision-Making</h3>
-                    <p class="landing-card-desc">What the Church teaches about conscience — and why it is not a permission slip to do whatever you want.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=fruits_holy_spirit'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Fruits of the Holy Spirit</h3>
-                    <p class="landing-card-desc">Not a checklist. A portrait of what a life looks like when the Holy Spirit is actually at work.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    ← Back to CRUX
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
             </div>
         </div>
-
-        <!-- ── PILLAR 4: HOW WE PRAY ──────────────────────── -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">🙏</span>
-                <div class="landing-group-text">
-                    <div class="landing-pillar-num">Pillar IV</div>
-                    <div class="landing-group-title">How We Pray</div>
-                    <div class="landing-group-subtitle">The Lord's Prayer — the nature of prayer and how the Church teaches us to speak with God</div>
-                </div>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=lords_prayer'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–5</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Lord's Prayer</h3>
-                    <p class="landing-card-desc">The prayer Jesus gave us — seven petitions that teach us everything about how to speak to God.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ── PILLAR 5: WHO WE ARE ───────────────────────── -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">⛪</span>
-                <div class="landing-group-text">
-                    <div class="landing-pillar-num">Pillar V</div>
-                    <div class="landing-group-title">Who We Are</div>
-                    <div class="landing-group-subtitle">Church &amp; Identity — the nature of the Church, the human person, and our call to discipleship</div>
-                </div>
-            </div>
-            <div class="landing-card-grid" style="opacity:0.6;pointer-events:none;">
-                <div class="landing-card">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp" style="color:var(--text-muted);background:rgba(0,0,0,0.05);padding:0.15rem 0.55rem;border-radius:20px;font-size:0.72rem;font-weight:700;">Coming Soon</span>
-                    </div>
-                    <h3 class="landing-card-title">Creation &amp; the Human Person</h3>
-                    <p class="landing-card-desc">God made everything good. Humans are made in His image. And original sin explains why the world is broken.</p>
-                    <div class="landing-card-footer" style="color:var(--text-muted);">Coming Soon</div>
-                </div>
-                <div class="landing-card">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp" style="color:var(--text-muted);background:rgba(0,0,0,0.05);padding:0.15rem 0.55rem;border-radius:20px;font-size:0.72rem;font-weight:700;">Coming Soon</span>
-                    </div>
-                    <h3 class="landing-card-title">The Nicene Creed</h3>
-                    <p class="landing-card-desc">The Church's own summary of everything she believes — article by article, phrase by phrase.</p>
-                    <div class="landing-card-footer" style="color:var(--text-muted);">Coming Soon</div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
 </div>
 
+
+<script src="crux-module-engine.js"></script>
 <script>
-// ── ROUTER ─────────────────────────────────────────────────
-// If a ?module= param is present, redirect to the standalone file.
-// This preserves all existing links without any changes to index.html.
-(function() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('module');
-    if (!id) return; // No param — show landing screen below
-    const routes = {
-        'lords_prayer': 'crux-module-lords-prayer.html',
-        'bible_geography': 'crux-module-geography.html',
-        'trinity': 'crux-module-trinity.html',
-        'sacraments': 'crux-module-sacraments.html',
-        'jesus': 'crux-module-jesus.html',
-        'mary': 'crux-module-mary.html',
-        'conscience': 'crux-module-conscience.html',
-        'prodigal_son': 'crux-module-prodigal-son.html',
-        'fruits_holy_spirit': 'crux-module-fruits.html',
-        'mass_real_presence': 'crux-module-mass.html',
-    };
-    const dest = routes[id];
-    if (dest) {
-        window.location.replace(dest);
-    }
-    // Unknown module ID — fall through to landing screen
-})();
+const MODULE_DATA = {
+    id: 'mass_real_presence',
+    title: 'The Mass & the Real Presence',
+    subtitle: 'Jesus didn\'t say "this represents my body." He said "this is my body." That difference is everything.',
+    gradeTag: 'Grades 3–8',
+    topic: 'What We Celebrate',
+    xpReward: 60,
+    nextModule: 'reconciliation',
+
+    lesson: {
+        beginner: `
+            <h2>The Mass &amp; the Real Presence — Lesson</h2>
+
+            <p>It was the night before Jesus died. He was with his closest friends gathered around a table for a Passover meal. They had eaten together many times, but this night was different. Jesus knew what was coming. And before it arrived, he did something no one expected.</p>
+
+            <p>He took bread, broke it, and handed it to them. Then he said: <em>"This is my body, which will be given up for you."</em> He took a cup of wine and said: <em>"This is the cup of my blood, the blood of the new and eternal covenant, which will be poured out for you and for many for the forgiveness of sins."</em> And then: <em>"Do this in memory of me."</em></p>
+
+            <h3>What He Actually Said</h3>
+
+            <p>Notice what Jesus did not say. He did not say "this bread represents my body." He did not say "think of this as a symbol of me." He said <em>this is my body.</em> The Catholic Church has always taken those words at face value, as a statement of what is actually happening, not a figure of speech.</p>
+
+            <p>This is what the Church calls the <strong>Real Presence</strong>: the belief that when a priest consecrates the bread and wine at Mass, they truly and completely become the body and blood of Jesus Christ. The bread and wine still look and taste the same. But what they are has changed entirely.</p>
+
+            <div class="highlight-box">
+                <p>"This is my body, which will be given up for you."</p>
+                <cite>— Jesus, at the Last Supper (Luke 22:19)</cite>
+            </div>
+
+            <h3>Every Mass Is That Same Moment</h3>
+
+            <p>When a Catholic goes to Mass and the priest consecrates the bread and wine, something is happening at that altar that is not a memory and not a performance. The same Jesus who sat at that table the night before he died is present on that altar. The Mass does not repeat the Last Supper from a distance. It makes the same sacrifice present again.</p>
+
+            <p>This is why Catholics genuflect when they pass the tabernacle. The tabernacle is not a decorative box. It holds consecrated hosts, which the Church believes are the body of Christ. Kneeling in front of it is the same gesture you would make before a king, because the Church believes that is exactly what is there.</p>
+
+            <h3>Why This Makes the Mass Different</h3>
+
+            <p>Most people go to church services to hear teaching, to sing, to be with their community. Those are good things. But the Catholic understanding of Mass goes further. The Mass is primarily an encounter. A Catholic who receives communion is not taking a symbol of Jesus. The Church teaches they are receiving Jesus himself, under the form of bread.</p>
+
+            <p>That is the claim. It is either true or it is the strangest idea in all of religion. Catholics believe it is true because Jesus said it plainly, and no one who heard him thought he was speaking in metaphors.</p>
+
+            <h3>What It Looks Like in Practice</h3>
+
+            <p>The reverence you see at a Catholic Mass flows directly from this belief. The genuflection before the tabernacle. The silence before communion. The way the priest handles the host carefully. The extraordinary ministers who carry communion to the sick. None of this is ceremony for ceremony's sake. It is the behavior of people who believe they are in the presence of God.</p>
+
+            <p>You do not have to believe it to understand it. But once you understand what Catholics believe is happening at Mass, their behavior makes complete sense.</p>
+        `,
+
+        theologian: `
+            <h2>The Mass &amp; the Real Presence — Theologian Level</h2>
+
+            <p>The most contested sentence in Catholic theology may be six words long: <em>This is my body.</em> Everything depends on what kind of statement that is. The Catholic Church reads it as a literal declaration of fact. Most Protestant traditions read it as a metaphor or memorial. The dispute has divided Christianity for five hundred years, and it begins in a synagogue in Capernaum, a year before the Last Supper.</p>
+
+            <h3>John 6: The Argument Jesus Did Not Walk Back</h3>
+
+            <p>In John 6, Jesus feeds five thousand people with five loaves of bread. The next day the crowd follows him across the lake wanting more food. Jesus tells them they are looking for the wrong thing, then makes a series of escalating claims. He calls himself the bread of life. He says his flesh is real food and his blood is real drink. He says that unless they eat his flesh and drink his blood they have no life in them. He says this not once but six times in six different formulations, each one more explicit than the last.</p>
+
+            <p>The crowd objects. "How can this man give us his flesh to eat?" They understand him literally and find it offensive. His own disciples say "this saying is hard; who can accept it?" and many of them leave. Jesus watches them go. He does not call them back and clarify that he was speaking symbolically. He turns to the Twelve and asks if they want to leave too. Peter answers: "Lord, to whom shall we go? You have the words of eternal life."</p>
+
+            <p>The interpretive question the Protestant Reformers faced in the sixteenth century is the same one those disciples faced in Capernaum: is Jesus speaking literally or figuratively? The crowd thought he meant it literally and left. Jesus let them leave without correction. The Church has always read that silence as the answer.</p>
+
+            <div class="highlight-box">
+                <p>"Unless you eat the flesh of the Son of Man and drink his blood, you do not have life within you."</p>
+                <cite>— John 6:53</cite>
+            </div>
+
+            <h3>The Early Church: What They Believed from the Beginning</h3>
+
+            <p>A common objection to the Real Presence is that it is a medieval invention, a later theological development that the early Church would not recognize. The historical record does not support this reading.</p>
+
+            <p>Ignatius of Antioch wrote his letters around 107 AD, within living memory of the Apostles. He was a student of the Apostle John. In his Letter to the Smyrnaeans, he describes those who reject the Eucharist as people who "do not confess that the Eucharist is the flesh of our Savior Jesus Christ, flesh which suffered for our sins and which the Father, in his goodness, raised up again." He is not describing a symbolic meal. He is describing the body of a man who was crucified.</p>
+
+            <p>Justin Martyr, writing his First Apology around 155 AD to explain Christianity to a pagan Roman emperor, describes the Eucharist with remarkable precision: the bread and wine after the prayer of consecration are not common bread and common drink, "but the flesh and blood of that Jesus who was made flesh." Justin is writing apologetics, not catechesis. He has every reason to soften this claim for a hostile audience. He does not soften it.</p>
+
+            <p>Cyril of Jerusalem in the fourth century instructs candidates preparing for baptism: "Do not think of the bread and wine as bare elements, for they are the body and blood of Christ as the Lord himself has declared." The instruction is matter-of-fact. He is not introducing a new doctrine. He is explaining something the Church already knows.</p>
+
+            <p>Across a century and a half, in three different cities, writing to three different audiences, these early Christian writers describe the Eucharist in identical terms. The Real Presence is not what the medieval Church invented. It is what the early Church inherited.</p>
+
+            <h3>The Protestant Divergence</h3>
+
+            <p>In the 1520s, Ulrich Zwingli argued that "this is my body" is a figure of speech, that the bread represents Christ's body but does not become it, and that the Lord's Supper is primarily a memorial act of the community. His reading was not the only Protestant position — Luther rejected it sharply and maintained that Christ is truly present in, with, and under the bread and wine. Zwingli's memorial view became the dominant understanding in Reformed and evangelical Protestantism.</p>
+
+            <p>The Catholic response to Zwingli is not primarily an argument about metaphors. It is an argument about what Jesus did when the disciples walked away in John 6. If "this is my body" means "this represents my body," then Jesus could have said so. He had already used metaphorical language throughout his ministry: he called himself a door, a vine, a shepherd. When his listeners misunderstood a metaphor, he typically clarified. In John 6 he does the opposite. He repeats the claim more emphatically as the objections mount. Catholics read this as deliberate, not careless.</p>
+
+            <h3>Transubstantiation: What the Term Actually Means</h3>
+
+            <p>At the Fourth Lateran Council in 1215, the Church formally defined the change that occurs at consecration using the term <span class="key-term">transubstantiation</span>. The word comes from Aristotelian philosophy and requires a brief explanation to be useful.</p>
+
+            <p>Aristotle distinguished between a thing's <em>substance</em> (what it actually is) and its <em>accidents</em> (its observable properties: appearance, taste, smell, texture). Transubstantiation means the substance of the bread and wine changes entirely into the body and blood of Christ, while the accidents remain. The host still looks like bread. It still tastes like bread. But what it is, in the deepest sense, is no longer bread.</p>
+
+            <p>The Church does not claim that transubstantiation explains how this change occurs. It claims only that this is what occurs. The philosophical vocabulary names the fact without resolving the mystery of the mechanism. Aquinas was careful about this distinction: the change is real, the bread is truly gone and Christ is truly present, but the mode of that presence exceeds what philosophy can fully articulate.</p>
+
+            <h3>Eucharistic Miracles</h3>
+
+            <p>The Church does not require belief in private revelations or miraculous phenomena beyond what Scripture and Tradition establish. But two Eucharistic miracles are worth knowing because of the scientific investigation they have undergone.</p>
+
+            <p>In Lanciano, Italy, around 700 AD, a Basilian monk who doubted the Real Presence witnessed the host and wine transform visibly during Mass into what appeared to be flesh and blood. The relics were preserved and examined in 1970 and 1971 by Dr. Odoardo Linoli, a professor of anatomy and pathological histology. His findings: the flesh was cardiac muscle tissue from a human heart, blood type AB, with no signs of preservatives and no explanation for its preservation over twelve centuries.</p>
+
+            <p>In Buenos Aires in 1996, a consecrated host that had been dropped and set aside to dissolve began to bleed. The sample was photographed, preserved, and eventually sent to Dr. Frederick Zugibe of Columbia University, one of the leading cardiac pathologists in the United States, who identified it as inflamed cardiac muscle tissue, blood type AB, showing signs that the heart had been under severe stress at the time of death. Zugibe was not told what he was analyzing. He had no idea the sample came from a consecrated host.</p>
+
+            <p>Neither miracle proves the doctrine. The Church has never staked its teaching on physical phenomena. But both cases present a question that purely symbolic readings of the Eucharist do not easily answer: what, exactly, is being symbolized by a piece of cardiac tissue?</p>
+        `
+    },
+
+    reading: {
+        beginner: `
+            <h2>Reading: The Night Everything Changed</h2>
+            <div class="reading-meta">Luke 22:14–20 and 1 Corinthians 11:23–26 — The Last Supper in two voices</div>
+            <div class="reading-body">
+                <p>The Gospel of Luke records the Last Supper in a few short verses. What strikes most readers who come to it carefully is how little explanation Jesus offers. He takes the bread, gives thanks, breaks it, and says "this is my body." He takes the cup and says "this is the new covenant in my blood." There is no footnote. There is no "by this I mean." He says it and moves on.</p>
+
+                <p>About twenty years after the Last Supper, the Apostle Paul writes to the church in Corinth about what he calls "the tradition I received from the Lord." He is passing on not his own interpretation but what was handed to him. His account matches Luke almost word for word. And he adds something Luke does not: "For as often as you eat this bread and drink the cup, you proclaim the death of the Lord until he comes." For Paul, what happens at this meal is directly connected to the death and resurrection of Jesus. It is not a ceremony that points to something else. It is itself a proclamation of the central event of history.</p>
+
+                <p>What both accounts share is the plainness of the language. Jesus does not say "this stands for my body" or "this reminds you of my body." He says "this is my body." Catholic Christians have always read those words the way they were spoken: as a statement of fact about what is happening in front of the disciples. The bread is no longer only bread. Something has changed.</p>
+
+                <p>The practical question for anyone who goes to Mass is what they believe is happening when the priest repeats those same words. The Church's answer is that the same thing happens that happened in that upper room: bread and wine become the body and blood of Christ, present on the altar, offered again to God and given to the faithful.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Reflect on These Questions</h4>
+                <ol>
+                    <li>Jesus said "this is my body" without explanation. What do you think his disciples understood him to mean in that moment?</li>
+                    <li>Catholics genuflect before the tabernacle because they believe Jesus is present there. How does that change how you think about a Catholic church building?</li>
+                    <li>If the Real Presence is true, how should that change the way a person prepares for and receives communion?</li>
+                </ol>
+            </div>
+        `,
+
+        theologian: `
+            <h2>Reading: "The Flesh of Our Savior"</h2>
+            <div class="reading-meta">Ignatius of Antioch, Letter to the Smyrnaeans (c. 107 AD) — The earliest non-scriptural testimony to the Real Presence</div>
+            <div class="reading-body">
+                <p>Ignatius of Antioch was the third bishop of Antioch, the city where followers of Jesus were first called Christians. He was almost certainly a direct disciple of the Apostle John. Around 107 AD, while being transported to Rome to be executed, he wrote a series of letters to churches along his route. One of those letters went to the church at Smyrna.</p>
+
+                <p>In that letter, Ignatius warns against a group called the Docetists, who taught that Jesus only appeared to have a physical body and only appeared to suffer and die. His argument against them is grounded in the Eucharist. He writes that the Docetists "abstain from the Eucharist and from prayer because they do not confess that the Eucharist is the flesh of our Savior Jesus Christ, flesh which suffered for our sins and which the Father, in his goodness, raised up again." He calls the Eucharist "the medicine of immortality, the antidote to death."</p>
+
+                <p>What is remarkable about this passage is not its content but its tone. Ignatius is not introducing a controversial new doctrine. He is using the Real Presence as common ground, as the thing both he and his readers already believe, to refute people who deny Christ's physical body. You do not argue from a disputed premise. The Real Presence, for Ignatius in 107 AD, is simply what the Church holds.</p>
+
+                <p>Fifty years later, Justin Martyr writes his First Apology to the emperor Antoninus Pius. He is explaining Christianity to someone who knows nothing about it and is considering whether to persecute it. He describes the Eucharist in Chapter 66 with the same matter-of-fact directness: the food over which the prayer of thanksgiving has been pronounced is "the flesh and blood of that Jesus who was made flesh." He distinguishes this explicitly from common bread and common drink. Again, no argument. No defense of the doctrine. Just a description of what Christians believe and practice.</p>
+
+                <p>The significance of these two witnesses is chronological. The argument that the Real Presence is a medieval innovation requires explaining why the bishop who studied under John the Apostle and the apologist writing to a Roman emperor within living memory of the Apostles both describe the Eucharist in exactly the same terms the Council of Trent would use fourteen centuries later. The continuity of the language across time is not an accident of translation. It is the testimony of a community that received this teaching from the beginning and passed it on without revision.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Theological Reflection</h4>
+                <ol>
+                    <li>Ignatius uses the Real Presence as a premise in his argument against the Docetists, not as the conclusion of it. What does that tell you about what the early Church considered settled doctrine versus open question?</li>
+                    <li>Justin Martyr is writing apologetics to a hostile audience and still describes the Eucharist in explicit terms. What does his willingness to do this suggest about how central the Real Presence was to early Christian identity?</li>
+                    <li>The Reformers in the sixteenth century had access to Ignatius and Justin. What reading of their texts would allow a sincere Christian to conclude that the early Church held only a memorial view of the Eucharist?</li>
+                </ol>
+            </div>
+        `
+    },
+
+    quiz: [
+        {
+            q: "In John 6, many disciples leave Jesus after his teaching on the bread of life. What does Jesus do when they leave?",
+            options: [
+                "He calls them back and clarifies that he was speaking symbolically",
+                "He lets them go without correction and asks the Twelve if they want to leave too",
+                "He performs a miracle to convince them to return",
+                "He sends the Apostles to explain what he really meant"
+            ],
+            correct: 1,
+            explanation: "Jesus watches the disciples leave and does not correct their literal understanding. He turns to the Twelve and asks if they want to leave too. Catholics read this silence as confirmation that he meant what he said. If 'my flesh is real food' were a metaphor, the moment when people were walking away over it would have been the time to say so."
+        },
+        {
+            q: "What does the term 'transubstantiation' mean?",
+            options: [
+                "The bread and wine are blessed and set apart as holy symbols of Christ",
+                "The substance of the bread and wine changes into the body and blood of Christ, while their outward appearance remains the same",
+                "The bread and wine are spiritually united with Christ during the prayer of consecration",
+                "The Mass re-sacrifices Christ on the altar in a physical sense"
+            ],
+            correct: 1,
+            explanation: "Transubstantiation uses Aristotelian categories to describe what happens at consecration: the substance (what something actually is) changes entirely into the body and blood of Christ, while the accidents (appearance, taste, smell) remain unchanged. The host still looks and tastes like bread. What it is has changed."
+        },
+        {
+            q: "Ignatius of Antioch, writing around 107 AD, describes those who reject the Eucharist as people who deny what?",
+            options: [
+                "The authority of the bishop of Rome",
+                "That the Eucharist is the flesh of our Savior Jesus Christ",
+                "That baptism is necessary for salvation",
+                "That Jesus rose physically from the dead"
+            ],
+            correct: 1,
+            explanation: "Ignatius writes that the Docetists 'do not confess that the Eucharist is the flesh of our Savior Jesus Christ, flesh which suffered for our sins.' Writing within living memory of the Apostles, he treats the Real Presence not as a disputed doctrine but as established common ground."
+        },
+        {
+            q: "The Eucharistic miracle of Buenos Aires (1996) was investigated by Dr. Frederick Zugibe, a cardiac pathologist at Columbia University. What did he find?",
+            options: [
+                "The sample was ordinary bread that had been contaminated with human blood",
+                "He could not identify the tissue and declined to draw conclusions",
+                "Inflamed cardiac muscle tissue, blood type AB, showing signs the heart had been under severe stress at death",
+                "The sample had decomposed and could not be analyzed"
+            ],
+            correct: 2,
+            explanation: "Zugibe identified the sample as inflamed cardiac muscle tissue with blood type AB, consistent with a heart under severe stress. He was not told the sample came from a consecrated host. The Church does not require belief in Eucharistic miracles, but the Buenos Aires case is notable because the scientific examination was conducted blind by a leading specialist with no knowledge of the sample's origin."
+        },
+        {
+            q: "What is the main Catholic argument against Ulrich Zwingli's 'memorial only' reading of the Last Supper?",
+            options: [
+                "Zwingli was not a trained theologian and his reading can be dismissed on those grounds",
+                "The memorial view was condemned by the Council of Nicaea in 325 AD",
+                "When disciples in John 6 objected to Jesus's teaching literally, he repeated and intensified the claim rather than clarifying it was a metaphor",
+                "The word 'remember' in Hebrew always implies real presence, not symbolic memory"
+            ],
+            correct: 2,
+            explanation: "The Catholic argument is not primarily about the word 'remember' or about Zwingli's credentials. It is about Jesus's behavior in John 6. When people misunderstood a metaphor elsewhere in his ministry, Jesus typically clarified. In John 6, as the objections escalated and disciples began to leave, he intensified the claim rather than softening it. Catholics read that pattern as evidence that he was not speaking metaphorically."
+        }
+    ]
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
+    initModule(MODULE_DATA);
+});
 </script>
 
 </body>
