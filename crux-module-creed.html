@@ -1,0 +1,1359 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>CRUX — The Nicene Creed</title>
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LQ35DLTVKY');
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDK v10 -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+            authDomain: "crux-faith-formation.firebaseapp.com",
+            projectId: "crux-faith-formation",
+            storageBucket: "crux-faith-formation.firebasestorage.app",
+            messagingSenderId: "838141015985",
+            appId: "1:838141015985:web:2655e570663e182d75ef90",
+            measurementId: "G-LQ35DLTVKY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        window.db = getFirestore(app);
+        window.auth = getAuth(app);
+        window.fsModules = { doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp };
+
+        onAuthStateChanged(window.auth, (user) => {
+            window.currentUser = user || null;
+            const el = document.getElementById('userDisplay');
+            if (el) el.textContent = user ? user.email.split('@')[0] : 'Guest';
+            if (user) loadUserProgress();
+        });
+    </script>
+
+    <style>
+        :root {
+            color-scheme: light;
+            --navy: #1a1f36;
+            --navy-mid: #242a45;
+            --navy-light: #2f3659;
+            --gold: #d4a574;
+            --gold-light: #e8c9a0;
+            --gold-dark: #b8895a;
+            --white: #ffffff;
+            --off-white: #f8f7f4;
+            --text-primary: #1a1f36;
+            --text-secondary: #5a6282;
+            --text-muted: #8890b0;
+            --border: rgba(26, 31, 54, 0.1);
+            --border-gold: rgba(212, 165, 116, 0.3);
+            --shadow-sm: 0 2px 8px rgba(26, 31, 54, 0.08);
+            --shadow-md: 0 4px 20px rgba(26, 31, 54, 0.12);
+            --shadow-lg: 0 8px 40px rgba(26, 31, 54, 0.18);
+            --green: #2e7d32;
+            --green-light: #e8f5e9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--off-white);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ─── HEADER ──────────────────────────────────────── */
+        header {
+            background: var(--navy);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+        }
+
+        .header-left { display: flex; align-items: center; gap: 1.5rem; }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        .back-btn:hover { color: var(--gold); }
+
+        .header-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 4px;
+            text-decoration: none;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-chip {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.7);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .xp-chip {
+            background: rgba(212, 165, 116, 0.15);
+            border: 1px solid var(--border-gold);
+            color: var(--gold);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: none;
+        }
+
+        /* ─── PROGRESS BAR ────────────────────────────────── */
+        .progress-track {
+            background: rgba(255,255,255,0.08);
+            height: 3px;
+            position: sticky;
+            top: 57px;
+            z-index: 99;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gold);
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* ─── MAIN LAYOUT ─────────────────────────────────── */
+        .module-wrap {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 2rem 6rem;
+        }
+
+        /* ─── STEP INDICATOR ──────────────────────────────── */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 2.5rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        .step-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-dot {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: var(--white);
+        }
+
+        .step.complete .step-dot {
+            background: var(--green);
+            border-color: var(--green);
+            color: var(--white);
+        }
+
+        .step-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .step.active .step-label { color: var(--navy); font-weight: 600; }
+        .step.complete .step-label { color: var(--green); }
+
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background: var(--border);
+            margin: 0 0.5rem;
+            transition: background 0.3s ease;
+        }
+
+        .step-line.complete { background: var(--green); }
+
+        /* ─── MODULE HEADER ───────────────────────────────── */
+        .module-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .module-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-eyebrow .grade-tag {
+            display: inline-block;
+            background: rgba(212, 165, 116, 0.12);
+            color: var(--gold-dark);
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .module-eyebrow .topic-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .module-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* ─── LEVEL TOGGLE ────────────────────────────────── */
+        .level-toggle {
+            display: inline-flex;
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .level-btn {
+            padding: 0.6rem 1.4rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .level-btn.active {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        /* ─── CONTENT PANELS ──────────────────────────────── */
+        .panel {
+            display: none;
+            animation: fadeUp 0.35s ease;
+        }
+
+        .panel.active { display: block; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── LESSON CONTENT ──────────────────────────────── */
+        .lesson-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .lesson-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .lesson-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin: 1.5rem 0 0.6rem;
+        }
+
+        .lesson-card p {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.85;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card ul, .lesson-card ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card li {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.75;
+            margin-bottom: 0.4rem;
+        }
+
+        .highlight-box {
+            background: rgba(212, 165, 116, 0.08);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 8px 8px 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+            font-style: italic;
+            color: var(--navy);
+            font-size: 0.95rem;
+        }
+
+        .highlight-box cite {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--gold-dark);
+            font-weight: 600;
+            margin-top: 0.4rem;
+            font-style: normal;
+            letter-spacing: 0.5px;
+        }
+
+        .key-term {
+            display: inline-block;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            margin: 0 0.1rem;
+        }
+
+        /* ─── READING SECTION ─────────────────────────────── */
+        .reading-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .reading-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .reading-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reading-body {
+            font-size: 0.97rem;
+            line-height: 1.9;
+            color: var(--text-primary);
+        }
+
+        .reading-body p { margin-bottom: 1.1rem; }
+
+        .reflection-block {
+            background: var(--navy);
+            border-radius: 10px;
+            padding: 1.75rem;
+            margin-top: 2rem;
+        }
+
+        .reflection-block h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .reflection-block ol {
+            padding-left: 1.25rem;
+        }
+
+        .reflection-block li {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            margin-bottom: 0.6rem;
+        }
+
+        /* ─── QUIZ ────────────────────────────────────────── */
+        .quiz-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-intro {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question-block {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question-block:last-of-type { border-bottom: none; }
+
+        .question-num {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.85rem 1.1rem;
+            background: var(--off-white);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem;
+            color: var(--text-primary);
+            width: 100%;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--navy);
+            background: rgba(26, 31, 54, 0.04);
+        }
+
+        .option-btn.selected {
+            border-color: var(--navy);
+            background: rgba(26, 31, 54, 0.06);
+        }
+
+        .option-btn.correct {
+            border-color: var(--green);
+            background: var(--green-light);
+            color: var(--green);
+        }
+
+        .option-btn.incorrect {
+            border-color: #c62828;
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .option-letter {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 1.5px solid currentColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+
+        .answer-feedback {
+            margin-top: 0.75rem;
+            padding: 0.85rem 1rem;
+            border-radius: 7px;
+            font-size: 0.88rem;
+            line-height: 1.55;
+            display: none;
+        }
+
+        .answer-feedback.correct {
+            background: var(--green-light);
+            color: var(--green);
+            border-left: 3px solid var(--green);
+        }
+
+        .answer-feedback.incorrect {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 3px solid #c62828;
+        }
+
+        /* ─── NAVIGATION BUTTONS ──────────────────────────── */
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 2rem;
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary:hover {
+            background: var(--navy-light);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.5rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-dark);
+            color: var(--white);
+        }
+
+        /* ─── COMPLETION SCREEN ───────────────────────────── */
+        .completion-screen {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .completion-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .completion-screen h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .completion-screen p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .xp-award {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .score-display {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            display: inline-block;
+            margin-bottom: 2.5rem;
+            min-width: 240px;
+        }
+
+        .score-display .score-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1;
+        }
+
+        .score-display .score-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+
+        .completion-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ─── LOADING STATE ───────────────────────────────── */
+        .loading-state {
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--navy);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-state p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* ─── RESPONSIVE ──────────────────────────────────── */
+        @media (max-width: 640px) {
+            .module-wrap { padding: 2rem 1.25rem 5rem; }
+            .module-title { font-size: 1.7rem; }
+            .lesson-card, .reading-card, .quiz-card { padding: 1.75rem 1.25rem; }
+            .step-label { display: none; }
+            .nav-bar { flex-direction: column-reverse; }
+            .nav-bar .btn-primary, .nav-bar .btn-secondary { width: 100%; justify-content: center; }
+        }
+
+        /* ─── GEOGRAPHY MODULE — LOCATION CARDS ──────────── */
+        /* ─── GEO CARDS (Bible Geography module) ─────────── */
+        .geo-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin: 1.25rem 0;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .geo-card:hover { box-shadow: var(--shadow-md); }
+
+        .geo-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.9rem 1.25rem;
+            background: var(--navy);
+            flex-wrap: wrap;
+        }
+
+        .geo-names {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .geo-ancient {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .geo-arrow {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+        }
+
+        .geo-modern {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.85);
+        }
+
+        .geo-era-tag {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            background: rgba(212,165,116,0.15);
+            border: 1px solid rgba(212,165,116,0.3);
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .geo-body {
+            padding: 1.1rem 1.25rem 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .geo-body p {
+            font-size: 0.92rem;
+            line-height: 1.75;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .geo-then-now {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .geo-then {
+            padding: 1rem 1.25rem;
+            border-right: 1px solid var(--border);
+            background: rgba(212,165,116,0.04);
+        }
+
+        .geo-now {
+            padding: 1rem 1.25rem;
+            background: rgba(26,31,54,0.03);
+        }
+
+        .geo-tn-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .geo-then p, .geo-now p {
+            font-size: 0.88rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* ─── LANDING SCREEN ──────────────────────────────── */
+        .landing-group {
+            margin-bottom: 2.5rem;
+        }
+
+        .landing-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .landing-group-icon {
+            font-size: 1.1rem;
+        }
+
+        .landing-group-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: 0.3px;
+        }
+
+        .landing-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+        }
+
+        .landing-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .landing-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-gold);
+        }
+
+        .landing-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+
+        .landing-card-grade {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: var(--gold-dark);
+            background: rgba(212,165,116,0.12);
+            padding: 0.15rem 0.55rem;
+            border-radius: 20px;
+        }
+
+        .landing-card-xp {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .landing-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.3;
+        }
+
+        .landing-card-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .landing-card-footer {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+            margin-top: 0.5rem;
+        }
+
+        .landing-card:hover .landing-card-footer {
+            color: var(--navy);
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
+            ← Back
+        </button>
+        <a href="index.html" class="header-logo">CRUX</a>
+    </div>
+    <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
+        <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
+    </div>
+</header>
+
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div class="module-wrap">
+
+    <!-- Loading state — shown while a module loads -->
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
+
+    <!-- Step indicator -->
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
+        </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
+        </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
+
+    <!-- Module header -->
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">Grades 3–8</span>
+            <span class="topic-tag" id="topicTag">Faith Formation</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <!-- Level toggle -->
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions — you can review your answers before submitting.</p>
+            <div id="quizQuestions">
+                <!-- Populated by JS -->
+            </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You've completed this lesson. Keep going — the faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
+            </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    ← Back to CRUX
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="crux-module-engine.js"></script>
+<script>
+const MODULE_DATA = {
+    id: 'nicene_creed',
+    title: 'The Nicene Creed',
+    subtitle: 'Every Sunday, a billion Catholics say the same words. Here is what they actually mean.',
+    gradeTag: 'Grades 3–8',
+    topic: 'Who We Are',
+    xpReward: 60,
+    nextModule: 'reconciliation',
+
+    lesson: {
+        beginner: `
+            <h2>The Nicene Creed — Lesson</h2>
+
+            <p>Every Sunday at Mass, after the homily, Catholics around the world stand up and say the same words. In English, in Spanish, in Swahili, in Tagalog, in Latin: the same statement, the same claims, the same faith. About a billion people, every week, making the same profession together.</p>
+
+            <p>The Nicene Creed is not a magic formula or a good luck charm. It is a map. It summarizes the whole story of the Christian faith: who God is, what he did in history, and what he promises for the future. When you say it at Mass, you are not just reciting words. You are staking a claim: this is what I believe about the world.</p>
+
+            <h3>Movement One: The Father</h3>
+
+            <p>The Creed opens with God the Father, creator of everything.</p>
+
+            <p><strong>Article 1 — "I believe in one God, the Father almighty, maker of heaven and earth, of all things visible and invisible."</strong> God made everything: not just the earth but the entire cosmos, and not just what we can see but the spiritual realm as well. He made it freely, from nothing, and it is good. If you want to go deeper on this, the <a href="crux-modules.html?module=creation_human_person" style="color:var(--gold-dark);font-weight:600;">Creation &amp; the Human Person</a> module covers what it means that God made humans in his image.</p>
+
+            <h3>Movement Two: The Son</h3>
+
+            <p>The longest section of the Creed is about Jesus Christ. Seven of the twelve articles are about him: his identity, his birth, his death, his resurrection, his ascension, and his return. The Church spends more time on Jesus in the Creed than on anything else because Jesus is the center of everything.</p>
+
+            <p><strong>Article 2 — "I believe in one Lord Jesus Christ, the only begotten Son of God, born of the Father before all ages."</strong> Jesus is not a great teacher who was later declared to be God. He existed before time as the eternal Son of God. The <a href="crux-modules.html?module=trinity" style="color:var(--gold-dark);font-weight:600;">Holy Trinity</a> module goes deeper on what it means for Jesus to be the Son of God.</p>
+
+            <p><strong>Article 3 — "God from God, Light from Light, true God from true God, begotten not made, consubstantial with the Father."</strong> These phrases were chosen very carefully. Jesus is not a lesser God or a created being. He is fully God, of the same divine substance as the Father. "Consubstantial" is a big word that simply means: same stuff, same nature, fully divine.</p>
+
+            <p><strong>Article 4 — "Through him all things were made."</strong> The Son was present and active at creation, not just the Father. John 1 opens with the same claim: "All things came into being through him."</p>
+
+            <p><strong>Article 5 — "For us men and for our salvation he came down from heaven, and by the Holy Spirit was incarnate of the Virgin Mary, and became man."</strong> The Son of God became a human being. He did not pretend to be human or appear as a human. He actually became one, born of a woman, with a real body, in a specific place and time. This is the Incarnation. The <a href="crux-modules.html?module=jesus" style="color:var(--gold-dark);font-weight:600;">Who Is Jesus Christ?</a> module explores what it means that Jesus is fully God and fully human.</p>
+
+            <p><strong>Article 6 — "For our sake he was crucified under Pontius Pilate, he suffered death and was buried."</strong> The Creed names Pontius Pilate, a specific Roman governor who really existed. The death of Jesus was not mythological. It happened in history, under a named official, in a dateable time.</p>
+
+            <p><strong>Article 7 — "And rose again on the third day in accordance with the Scriptures."</strong> The Resurrection is not a metaphor for new beginnings or the memory of Jesus living on. The Creed claims it as a historical event: on the third day, the body that was buried came back to life, transformed and glorified.</p>
+
+            <p><strong>Article 8 — "He ascended into heaven and is seated at the right hand of the Father."</strong> After his resurrection, Jesus did not stay on earth indefinitely. He ascended, returned to the Father, and now reigns. "Right hand of the Father" is a way of saying he holds the position of highest authority.</p>
+
+            <p><strong>Article 9 — "He will come again in glory to judge the living and the dead and his kingdom will have no end."</strong> History is going somewhere. The Creed claims that Jesus will return, that there will be a judgment, and that his kingdom, not any earthly empire, is the one with no end.</p>
+
+            <h3>Movement Three: The Holy Spirit and the Church</h3>
+
+            <p><strong>Article 10 — "I believe in the Holy Spirit, the Lord, the giver of life, who proceeds from the Father and the Son, who with the Father and the Son is adored and glorified."</strong> The Holy Spirit is not a force or a feeling. He is a person, the third person of the Trinity, equally divine with the Father and the Son. The <a href="crux-modules.html?module=trinity" style="color:var(--gold-dark);font-weight:600;">Holy Trinity</a> module covers this in more depth.</p>
+
+            <p><strong>Article 11 — "I believe in one, holy, catholic and apostolic Church."</strong> The Church has four marks that describe what she is. One: united in one faith, one baptism, one Lord. Holy: set apart by God, even though her members are sinful. Catholic: universal, for all people of all times and places. Apostolic: founded on the Apostles, whose authority continues through the bishops.</p>
+
+            <p><strong>Article 12 — "I confess one baptism for the forgiveness of sins. I look forward to the resurrection of the dead and the life of the world to come."</strong> The Creed ends with three forward-looking claims: baptism really does forgive sins, the dead will be raised, and there is a life beyond this one that does not end.</p>
+
+            <h3>Why Say It Every Week?</h3>
+
+            <p>The Creed is not recited at Mass because Catholics need reminding. It is recited because faith is a living thing that needs to be spoken, not just held privately. When you stand with a thousand other people and say "I believe," you are doing something together that no one can do alone. You are joining your voice to a profession that has been made, in one form or another, since the earliest Christians gathered to worship.</p>
+        `,
+
+        theologian: `
+            <h2>The Nicene Creed — Theologian Level</h2>
+
+            <p>The Nicene Creed did not emerge from calm theological reflection. It emerged from a crisis. In the early fourth century, a priest in Alexandria named Arius began teaching that the Son of God was a created being, the first and greatest of God's creatures, but a creature nonetheless. His formula was crisp and memorable: "there was a time when he was not." The Son was not eternal. He was not equal to the Father. He was not fully God.</p>
+
+            <p>The argument spread with remarkable speed. Within a decade it had divided the Eastern Church and threatened to fracture the recently unified Roman Empire. In 325 AD, the Emperor Constantine convened the Council of Nicaea, the first ecumenical council in Church history, to settle the question. What the council produced was not a new doctrine but a precise articulation of what the Church had always believed and now needed to defend in the face of a sophisticated alternative.</p>
+
+            <h3>Homoousios: One Word, Everything at Stake</h3>
+
+            <p>The council's key decision was the insertion of a single Greek word into the creedal formula: <span class="key-term">homoousios</span> — "of the same substance" or "consubstantial." The Son is homoousios with the Father: not similar in nature, not like the Father, but of the identical divine substance. Arius and his followers had proposed <em>homoiousios</em> — "of similar substance." The difference is a single letter iota. The theological stakes could not have been higher.</p>
+
+            <p>If the Son is only "similar" to the Father rather than the same substance, he is not fully divine. If he is not fully divine, then God did not enter human history in the person of Jesus Christ. Only a lesser divine being did. If a lesser being died on the cross, then the atonement is incomplete: a creature cannot redeem the creation. Athanasius of Alexandria, who became the council's most tenacious defender, understood this with precision. His formula was blunt: only God can save. If the Son is not fully God, we are not saved. The iota was worth fighting for.</p>
+
+            <div class="highlight-box">
+                <p>"The Son of God became man so that we might become God."</p>
+                <cite>— Athanasius of Alexandria, On the Incarnation</cite>
+            </div>
+
+            <p>The Council of Constantinople in 381 AD completed the Creed by adding the article on the Holy Spirit, affirming his full divinity against a group called the Pneumatomachi ("spirit fighters") who accepted the Son's divinity but denied the Spirit's. The text Catholics recite today is technically the Niceno-Constantinopolitan Creed, the product of both councils.</p>
+
+            <h3>The Twelve Articles: Contested Phrases Unpacked</h3>
+
+            <p><strong>"Begotten, not made."</strong> This phrase targets Arianism directly. To be begotten means to proceed from the Father's own nature: the Son shares the Father's substance as a son shares the nature of his father. To be made means to be brought into existence from outside that nature. The distinction between generation and creation is the entire argument.</p>
+
+            <p><strong>"He descended into hell."</strong> This is the most misread phrase in the Creed for modern readers. "Hell" here translates the Latin <em>infernum</em> and the Greek <em>Hades</em>, both of which refer to <em>Sheol</em> in Hebrew: the realm of the dead, not the place of eternal punishment. The Creed is not claiming that Jesus was tormented after death. It is claiming that he truly died and went where the dead go: the realm of the departed. The CCC §632–635 explains this as Christ's solidarity with all who have died, and his proclamation of the Gospel to those who awaited redemption before his coming.</p>
+
+            <p><strong>"One, holy, catholic and apostolic Church."</strong> Each mark requires careful reading. "One" refers to the unity of faith and structure, not the absence of diversity. The Church contains many rites, many languages, many cultures within one body. "Holy" refers to the Church's divine origin and the holiness of her head, not the sinlessness of her members. "Catholic" comes from the Greek <em>katholikos</em>, meaning universal, whole, and complete, and in the Creed refers to the Church's universality across time and place, not specifically to Roman Catholicism as a denomination (though Catholics believe that the one, holy, catholic and apostolic Church subsists in the Catholic Church). "Apostolic" means the Church stands in continuity with the Apostles through the unbroken succession of bishops and the preservation of apostolic teaching.</p>
+
+            <p><strong>"The communion of saints."</strong> The Latin <em>sanctorum communio</em> is deliberately ambiguous. <em>Sancti</em> can mean holy persons; <em>sancta</em> can mean holy things. The phrase encompasses both: the community of all the faithful, living and dead, united in Christ, and the sharing in holy things: the sacraments, the Scriptures, the charisms of the Spirit. The dead are not absent from this communion. They remain part of the one body of Christ.</p>
+
+            <p><strong>"The resurrection of the body."</strong> The Creed does not say "the immortality of the soul" — a phrase with Greek philosophical origins that would have been familiar to the Creed's first audience. It says the resurrection of the body. This is a deliberate, countercultural claim: the body matters, the body will be raised, the final state of the redeemed is not disembodied spiritual existence but glorified bodily life. The <a href="crux-modules.html?module=creation_human_person" style="color:var(--gold-dark);font-weight:600;">Creation &amp; the Human Person</a> module covers the body-soul anthropology that grounds this claim.</p>
+
+            <h3>The Filioque and the Great Schism</h3>
+
+            <p>The Western Church gradually added a phrase to Article 10: that the Holy Spirit proceeds from the Father <em>and the Son</em> — in Latin, <em>filioque</em>. The addition was not universally authorized and the Eastern Church never accepted it. The filioque became the formal theological cause of the Great Schism of 1054, which divided Eastern Orthodoxy from Rome.</p>
+
+            <p>The Eastern objection was not purely political. Orthodox theologians argued that the filioque subordinates the Spirit to the Son, disrupts the monarchy of the Father as the single source of divinity, and was inserted into the Creed unilaterally by the Western Church without an ecumenical council. Western theologians argued it is implied in John 15:26 and 20:22 and preserves the full equality of Father and Son in the procession of the Spirit. The debate remains unresolved and is one of the central issues in ongoing Catholic-Orthodox dialogue.</p>
+
+            <h3>The Creed as Regula Fidei</h3>
+
+            <p>Before the New Testament canon was formally settled, the early Church used the baptismal creed as the <em>regula fidei</em>, the rule of faith, against Gnostic teachers who claimed secret knowledge beyond what the Church publicly proclaimed. Irenaeus of Lyons (c. 180 AD) and Tertullian (c. 200 AD) both appeal to the rule of faith as the measure of authentic Christianity: what the Church teaches publicly, what she has received from the Apostles, what is proclaimed at baptism. The Creed is not a later imposition on a more fluid early Christianity. It is the crystallization of what Christianity has always been.</p>
+
+            <p>When Catholics recite the Creed at Mass, they are doing what Christians have done since the second century: publicly staking a claim about the nature of reality, the identity of Jesus, and the direction of history. The words are ancient. The claim is as contested now as it was when Athanasius stood alone against the Arian majority and refused to soften a single syllable.</p>
+        `
+    },
+
+    reading: {
+        beginner: `
+            <h2>Reading: The Creed, Line by Line</h2>
+            <div class="reading-meta">The Nicene Creed with plain-language annotations</div>
+            <div class="reading-body">
+                <p>Below is the full text of the Nicene Creed as prayed at Mass, with a plain-language note after each section explaining what it means. Read it slowly. This is a document worth understanding, not just memorizing.</p>
+
+                <p><em>"I believe in one God, the Father almighty, maker of heaven and earth, of all things visible and invisible."</em><br>
+                One God made everything: the physical universe and the spiritual realm. He is not one god among many. He is the only one.</p>
+
+                <p><em>"I believe in one Lord Jesus Christ, the only begotten Son of God, born of the Father before all ages. God from God, Light from Light, true God from true God, begotten not made, consubstantial with the Father; through him all things were made."</em><br>
+                Jesus is not a created being or a very holy human. He is fully divine, the eternal Son of God, equal to the Father. "Consubstantial" means same substance: same nature, fully God.</p>
+
+                <p><em>"For us men and for our salvation he came down from heaven, and by the Holy Spirit was incarnate of the Virgin Mary, and became man."</em><br>
+                The Son of God became a real human being, not a disguise or an appearance, but truly human. Born of Mary. This is called the Incarnation.</p>
+
+                <p><em>"For our sake he was crucified under Pontius Pilate, he suffered death and was buried, and rose again on the third day in accordance with the Scriptures."</em><br>
+                The death and resurrection of Jesus are historical events. Pontius Pilate was a real Roman governor. The Creed names him because the crucifixion happened in datable, verifiable history.</p>
+
+                <p><em>"He ascended into heaven and is seated at the right hand of the Father. He will come again in glory to judge the living and the dead and his kingdom will have no end."</em><br>
+                After the resurrection, Jesus returned to the Father and reigns. He will return. History has a destination.</p>
+
+                <p><em>"I believe in the Holy Spirit, the Lord, the giver of life, who proceeds from the Father and the Son, who with the Father and the Son is adored and glorified, who has spoken through the prophets."</em><br>
+                The Holy Spirit is the third person of the Trinity, fully God and equally worthy of worship. He inspired the prophets and is active in the world today.</p>
+
+                <p><em>"I believe in one, holy, catholic and apostolic Church."</em><br>
+                The Church has four defining marks: united (one), set apart by God (holy), universal across all times and places (catholic), and founded on the teaching of the Apostles (apostolic).</p>
+
+                <p><em>"I confess one baptism for the forgiveness of sins. I look forward to the resurrection of the dead and the life of the world to come. Amen."</em><br>
+                Baptism truly forgives sin. The dead will be raised. There is a life beyond this one. These are the final claims. The word "Amen" means: I mean it.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Reflect on These Questions</h4>
+                <ol>
+                    <li>The Creed says Jesus was crucified "under Pontius Pilate" — a specific historical person. Why do you think the Creed bothers to name him? What does it signal about the kind of claims Christianity is making?</li>
+                    <li>If you had to explain what the Creed is to someone who had never heard of it, what would you say in two or three sentences?</li>
+                    <li>Which article of the Creed do you find hardest to believe or hardest to understand? What questions does it raise for you?</li>
+                </ol>
+            </div>
+        `,
+
+        theologian: `
+            <h2>Reading: Athanasius Against the World</h2>
+            <div class="reading-meta">The Council of Nicaea (325 AD) and the battle over homoousios</div>
+            <div class="reading-body">
+                <p>When the Council of Nicaea convened in 325 AD, approximately 300 bishops gathered from across the Roman Empire. The majority were not Arians, but neither were most of them committed to the formula that Athanasius and Alexander of Alexandria were defending. They were a middle party: bishops who found the controversy tiresome, who wanted unity more than precision, who were open to compromise formulas that might satisfy both sides.</p>
+
+                <p>Arius's position had the virtue of logical clarity. If the Son is eternally begotten from the Father, then the Father's nature must have preceded the Son's. There must be a moment, even if outside time, in which the Father existed without the Son. Arius concluded that the Son therefore had a beginning and was therefore a creature, albeit the highest. He called the Son "the firstborn of all creation," drawing on Colossians 1:15, and said the Son was God in a derivative sense — God's highest deputy, not God himself.</p>
+
+                <p>Athanasius saw the soteriological consequence immediately. If the Son is a creature, then on the cross a creature died for the sins of other creatures. That is not redemption. Redemption requires that the one who bears the sin be capable of bearing it, that the mediator between God and humanity be fully both. Athanasius's argument was not primarily philosophical. It was pastoral: if the Son is not fully God, we are not saved.</p>
+
+                <p>The council inserted <em>homoousios</em> over strong objection. Eusebius of Caesarea, who had originally opposed the term, eventually signed under imperial pressure. Arius and two bishops who refused to sign were exiled. The crisis appeared resolved.</p>
+
+                <p>It was not resolved. Within years of Nicaea, the Arian position recovered under imperial patronage, and Athanasius spent a total of seventeen years in exile across five different banishments, driven out by emperors who favored the Arian compromise. The phrase <em>Athanasius contra mundum</em>, Athanasius against the world, became the shorthand for his position: one bishop, repeatedly exiled, refusing to alter a single word of what the council had defined, while the majority of the episcopate accommodated itself to the politically convenient formula.</p>
+
+                <p>His vindication came at Constantinople in 381 AD, fifty-six years after Nicaea, four years after his death. The council reaffirmed Nicaea, completed the article on the Holy Spirit, and produced the text that Catholics have recited ever since. Athanasius did not live to see it. The persistence of a single bishop against sustained imperial and ecclesiastical pressure is one of the reasons the Church still confesses that the Son is consubstantial with the Father every Sunday.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Theological Reflection</h4>
+                <ol>
+                    <li>Athanasius argued that the Arian position was not just philosophically wrong but pastorally catastrophic — if the Son is not fully God, the atonement fails. Do you find this argument convincing? What assumptions does it rest on?</li>
+                    <li>The majority of bishops at and after Nicaea were prepared to accept compromise formulas that would have unified the Church without fully condemning Arianism. What does the story of Athanasius suggest about the relationship between institutional consensus and doctrinal truth?</li>
+                    <li>The filioque controversy — whether the Spirit proceeds from the Father alone or from the Father and the Son — divided Eastern and Western Christianity in 1054 and remains unresolved. Given what you know about how carefully the Creed was constructed, why do you think this addition caused a schism rather than simply a theological debate?</li>
+                </ol>
+            </div>
+        `
+    },
+
+    quiz: [
+        {
+            q: "Why did the Council of Nicaea in 325 AD produce the Nicene Creed?",
+            options: [
+                "The emperor Constantine wanted a statement of faith to unite his empire after centuries of Roman polytheism",
+                "The Church needed a creed because the Apostles had left no written record of what Christians believed",
+                "The council was convened to respond to Arianism, which taught that the Son of God was a created being rather than fully divine",
+                "The bishops at Nicaea wanted to replace the older Apostles' Creed with a more detailed version"
+            ],
+            correct: 2,
+            explanation: "The Council of Nicaea was convened primarily in response to Arianism — the teaching of Arius of Alexandria that the Son was the first and greatest of God's creatures but a creature nonetheless ('there was a time when he was not'). The council produced a creedal formula with the precise term homoousios (consubstantial) to affirm what the Church had always believed: that the Son is fully divine, of the same substance as the Father."
+        },
+        {
+            q: "The Nicene Creed says Jesus 'descended into hell.' What does the Catholic Church teach this phrase means?",
+            options: [
+                "Jesus was temporarily punished in hell for bearing humanity's sins before his resurrection",
+                "Jesus descended to the realm of the dead — the place where all the departed waited — in solidarity with all who have died, not to a place of punishment",
+                "The phrase is metaphorical, describing the suffering of the crucifixion rather than a literal descent",
+                "Jesus descended to hell to defeat Satan in direct combat before rising on the third day"
+            ],
+            correct: 1,
+            explanation: "'Hell' here translates the Latin infernum and Greek Hades, both referring to Sheol — the realm of the dead, not the place of eternal punishment (Gehenna). The CCC §632–635 explains this as Christ's solidarity with all who have died and his proclamation of the Gospel to those who awaited redemption. The Creed is affirming that Jesus truly died and went where the dead go — not that he was tormented after death."
+        },
+        {
+            q: "What does 'consubstantial with the Father' mean in the Nicene Creed?",
+            options: [
+                "Jesus has the same moral character and values as God the Father",
+                "Jesus shares the Father's divine nature and substance — he is not a lesser god or a created being, but fully God",
+                "Jesus is physically similar in appearance to what humans imagine God to look like",
+                "Jesus was given all of the Father's divine powers at his baptism"
+            ],
+            correct: 1,
+            explanation: "Consubstantial translates the Greek homoousios — 'of the same substance.' The Son shares the identical divine nature of the Father. This was the precise term the Council of Nicaea inserted to reject Arianism, which held the Son to be of 'similar substance' (homoiousios) rather than the same. The difference is theologically decisive: only if the Son is fully God can the incarnation and atonement accomplish what the Church claims they accomplish."
+        },
+        {
+            q: "The Creed describes the Church as 'one, holy, catholic and apostolic.' What does 'catholic' mean in this context?",
+            options: [
+                "It refers specifically to the Roman Catholic Church as the one true Church",
+                "It means the Church follows the teachings of the Pope in Rome",
+                "It means universal — the Church is for all people of all times and places, not a sect for one nation or culture",
+                "It means the Church's teachings are complete and need no further development"
+            ],
+            correct: 2,
+            explanation: "In the Creed, 'catholic' comes from the Greek katholikos — universal or whole. It describes the Church's scope: not a sect for one people or one era, but a community for all people in all times and places. While Catholics believe this universal Church subsists in the Roman Catholic Church, the word in the Creed itself describes universality, not a denominational label. The word predates the name 'Roman Catholic' by many centuries."
+        },
+        {
+            q: "The Nicene Creed is structured around three movements. What are they, and what does each cover?",
+            options: [
+                "Creation (Father), Redemption (Son), Sanctification (Holy Spirit and Church) — covering who God is and what each person of the Trinity does",
+                "Law (Old Testament), Gospel (New Testament), Church (present day) — covering salvation history in three phases",
+                "Belief (Creed), Worship (sacraments), Life (commandments) — the three pillars of Catholic practice",
+                "Origin (creation), Crisis (the Fall), Resolution (redemption) — the arc of the human story"
+            ],
+            correct: 0,
+            explanation: "The Creed is organized around the three persons of the Trinity. The first movement concerns God the Father as creator of all things. The second and longest movement concerns Jesus Christ — his divine identity, incarnation, death, resurrection, ascension, and return. The third movement concerns the Holy Spirit, the Church he animates, and the final realities the Church awaits. The three movements together tell the complete story of what Christians believe about God and his relationship to the world."
+        }
+    ]
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
+    initModule(MODULE_DATA);
+});
+</script>
+
+</body>
+</html>
