@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="color-scheme" content="light">
-    <title>CRUX — Learning Modules</title>
+    <title>CRUX — Creation &amp; the Human Person</title>
 
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
@@ -887,21 +887,14 @@
         .landing-group-header {
             display: flex;
             align-items: center;
-            gap: 0.9rem;
+            gap: 0.75rem;
             margin-bottom: 1.25rem;
-            padding-bottom: 0.85rem;
+            padding-bottom: 0.75rem;
             border-bottom: 2px solid var(--gold);
         }
 
         .landing-group-icon {
-            font-size: 1.4rem;
-            flex-shrink: 0;
-        }
-
-        .landing-group-text {
-            display: flex;
-            flex-direction: column;
-            gap: 0.15rem;
+            font-size: 1.1rem;
         }
 
         .landing-group-title {
@@ -910,24 +903,6 @@
             font-weight: 700;
             color: var(--navy);
             letter-spacing: 0.3px;
-            line-height: 1.2;
-        }
-
-        .landing-group-subtitle {
-            font-size: 0.75rem;
-            color: var(--text-muted);
-            font-weight: 500;
-            letter-spacing: 0.2px;
-        }
-
-        .landing-pillar-num {
-            font-family: 'Playfair Display', serif;
-            font-size: 0.68rem;
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            color: var(--gold-dark);
-            opacity: 0.75;
         }
 
         .landing-card-grid {
@@ -1010,248 +985,342 @@
 
 <header>
     <div class="header-left">
-        <button class="back-btn" onclick="window.location.href='index.html#youth'">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
             ← Back
         </button>
         <a href="index.html" class="header-logo">CRUX</a>
     </div>
     <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
         <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
     </div>
 </header>
 
-<div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
 
 <div class="module-wrap">
 
-    <!-- Landing screen — shown when no ?module= param -->
-    <div id="landingScreen" style="display:none;">
-        <div style="margin-bottom:2.5rem;">
-            <div style="display:inline-block;color:var(--gold-dark);font-size:0.72rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.75rem;">Faith Formation</div>
-            <h1 style="font-family:'Playfair Display',serif;font-size:2.2rem;font-weight:700;color:var(--navy);line-height:1.2;margin-bottom:0.75rem;">Learning Modules</h1>
-            <p style="color:var(--text-secondary);font-size:1rem;max-width:560px;">Each module has a Lesson, a Reading with reflection questions, and a Quiz to earn XP. Choose Beginner or Theologian level inside any module.</p>
-        </div>
+    <!-- Loading state — shown while a module loads -->
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
 
-        <!-- ── PILLAR 1: WHAT WE BELIEVE ─────────────────── -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">✟</span>
-                <div class="landing-group-text">
-                    <div class="landing-pillar-num">Pillar I</div>
-                    <div class="landing-group-title">What We Believe</div>
-                    <div class="landing-group-subtitle">The Creed — who God is, who Jesus is, and what the Church professes</div>
-                </div>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=trinity'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Holy Trinity</h3>
-                    <p class="landing-card-desc">One God in three Persons — Father, Son, and Holy Spirit. The central mystery of the Christian faith.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=jesus'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Who Is Jesus Christ?</h3>
-                    <p class="landing-card-desc">Fully God and fully human — what that means and why it matters for everything else in the faith.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=mary'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Mary &amp; the Saints</h3>
-                    <p class="landing-card-desc">The Communion of Saints — why the Church honors Mary, what it means to have a patron saint, and how the saints intercede for us.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=prodigal_son'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Prodigal Son</h3>
-                    <p class="landing-card-desc">Jesus told this parable to people who thought they were the good ones. That changes everything.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=bible_geography'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Geography of the Bible</h3>
-                    <p class="landing-card-desc">These events didn't happen in a story — they happened in real places you can visit today.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
+    <!-- Step indicator -->
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
         </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
+        </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
 
-        <!-- ── PILLAR 2: WHAT WE CELEBRATE ───────────────── -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">🕊️</span>
-                <div class="landing-group-text">
-                    <div class="landing-pillar-num">Pillar II</div>
-                    <div class="landing-group-title">What We Celebrate</div>
-                    <div class="landing-group-subtitle">The Sacraments — how God meets us through the liturgy and sacramental life of the Church</div>
-                </div>
+    <!-- Module header -->
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">Grades 3–8</span>
+            <span class="topic-tag" id="topicTag">Faith Formation</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <!-- Level toggle -->
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions — you can review your answers before submitting.</p>
+            <div id="quizQuestions">
+                <!-- Populated by JS -->
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=sacraments'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Seven Sacraments</h3>
-                    <p class="landing-card-desc">Seven sacred signs instituted by Christ — what they are, what they do, and why the Church calls them encounters with God.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=mass_real_presence'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Mass &amp; the Real Presence</h3>
-                    <p class="landing-card-desc">What actually happens at Mass — and why the Eucharist is the source and summit of the Catholic faith.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
             </div>
         </div>
+    </div>
 
-        <!-- ── PILLAR 3: HOW WE LIVE ──────────────────────── -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">⚖️</span>
-                <div class="landing-group-text">
-                    <div class="landing-pillar-num">Pillar III</div>
-                    <div class="landing-group-title">How We Live</div>
-                    <div class="landing-group-subtitle">The Commandments — the moral life, conscience, and what it looks like to follow Christ in daily decisions</div>
-                </div>
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You've completed this lesson. Keep going — the faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
             </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=conscience'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 6–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Conscience &amp; Moral Decision-Making</h3>
-                    <p class="landing-card-desc">What the Church teaches about conscience — and why it is not a permission slip to do whatever you want.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=fruits_holy_spirit'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Fruits of the Holy Spirit</h3>
-                    <p class="landing-card-desc">Not a checklist. A portrait of what a life looks like when the Holy Spirit is actually at work.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=ten_commandments'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Ten Commandments</h3>
-                    <p class="landing-card-desc">Not just a list of rules — a covenant framework for a life ordered toward God and neighbor.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    ← Back to CRUX
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
             </div>
         </div>
-
-        <!-- ── PILLAR 4: HOW WE PRAY ──────────────────────── -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">🙏</span>
-                <div class="landing-group-text">
-                    <div class="landing-pillar-num">Pillar IV</div>
-                    <div class="landing-group-title">How We Pray</div>
-                    <div class="landing-group-subtitle">The Lord's Prayer — the nature of prayer and how the Church teaches us to speak with God</div>
-                </div>
-            </div>
-            <div class="landing-card-grid">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=lords_prayer'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–5</span>
-                        <span class="landing-card-xp">⭐ 50 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">The Lord's Prayer</h3>
-                    <p class="landing-card-desc">The prayer Jesus gave us — seven petitions that teach us everything about how to speak to God.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- ── PILLAR 5: WHO WE ARE ───────────────────────── -->
-        <div class="landing-group">
-            <div class="landing-group-header">
-                <span class="landing-group-icon">⛪</span>
-                <div class="landing-group-text">
-                    <div class="landing-pillar-num">Pillar V</div>
-                    <div class="landing-group-title">Who We Are</div>
-                    <div class="landing-group-subtitle">Church &amp; Identity — the nature of the Church, the human person, and our call to discipleship</div>
-                </div>
-            </div>
-            <div class="landing-card-grid" style="opacity:0.6;pointer-events:none;">
-                <div class="landing-card" onclick="window.location.href='crux-modules.html?module=creation_human_person'">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp">⭐ 60 XP</span>
-                    </div>
-                    <h3 class="landing-card-title">Creation &amp; the Human Person</h3>
-                    <p class="landing-card-desc">God made everything good. Humans are made in His image. And original sin explains why the world is broken.</p>
-                    <div class="landing-card-footer">Start →</div>
-                </div>
-                </div>
-                <div class="landing-card">
-                    <div class="landing-card-top">
-                        <span class="landing-card-grade">Grades 3–8</span>
-                        <span class="landing-card-xp" style="color:var(--text-muted);background:rgba(0,0,0,0.05);padding:0.15rem 0.55rem;border-radius:20px;font-size:0.72rem;font-weight:700;">Coming Soon</span>
-                    </div>
-                    <h3 class="landing-card-title">The Nicene Creed</h3>
-                    <p class="landing-card-desc">The Church's own summary of everything she believes — article by article, phrase by phrase.</p>
-                    <div class="landing-card-footer" style="color:var(--text-muted);">Coming Soon</div>
-                </div>
-            </div>
-        </div>
-
     </div>
 
 </div>
 
+
+<script src="crux-module-engine.js"></script>
 <script>
-// ── ROUTER ─────────────────────────────────────────────────
-// If a ?module= param is present, redirect to the standalone file.
-// This preserves all existing links without any changes to index.html.
-(function() {
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('module');
-    if (!id) return; // No param — show landing screen below
-    const routes = {
-        'lords_prayer': 'crux-module-lords-prayer.html',
-        'bible_geography': 'crux-module-geography.html',
-        'trinity': 'crux-module-trinity.html',
-        'sacraments': 'crux-module-sacraments.html',
-        'jesus': 'crux-module-jesus.html',
-        'mary': 'crux-module-mary.html',
-        'conscience': 'crux-module-conscience.html',
-        'prodigal_son': 'crux-module-prodigal-son.html',
-        'fruits_holy_spirit': 'crux-module-fruits.html',
-        'mass_real_presence': 'crux-module-mass.html',
-        'ten_commandments': 'crux-module-commandments.html',
-        'creation_human_person': 'crux-module-creation.html',
-    };
-    const dest = routes[id];
-    if (dest) {
-        window.location.replace(dest);
-    }
-    // Unknown module ID — fall through to landing screen
-})();
+const MODULE_DATA = {
+    id: 'creation_human_person',
+    title: 'Creation & the Human Person',
+    subtitle: 'The first thing God said about the world was that it is good. The first thing he said about you was that you are very good.',
+    gradeTag: 'Grades 3–8',
+    topic: 'Who We Are',
+    xpReward: 60,
+    nextModule: 'nicene_creed',
+
+    lesson: {
+        beginner: `
+            <h2>Creation &amp; the Human Person — Lesson</h2>
+
+            <p>In the first chapter of the Bible, God creates the world in six days. And as he works through light, sky, land, sea, plants, sun, moon, stars, fish, birds, and animals, he pauses and looks at what he has made. Seven times in Genesis 1, the same phrase appears: <em>God saw that it was good.</em></p>
+
+            <p>Then on the sixth day, God makes something different. He makes human beings. And this time the phrase changes: <em>God saw everything that he had made, and indeed, it was very good.</em></p>
+
+            <p>That one word — <em>very</em> — is where this module begins.</p>
+
+            <h3>Made in the Image of God</h3>
+
+            <p>The Bible gives a specific reason why humans are different from everything else God made: <em>"God created mankind in his image, in the image of God he created them."</em> No other creature in Genesis receives this description: not the lions, not the whales, not the angels. Humans alone are made in the <em>imago Dei</em> — the image of God.</p>
+
+            <p>What does that mean in practice? It means you have something no animal has: a mind that can reason, a will that can choose, and a capacity to love: not just to feel instincts but to decide to give yourself to someone else. Those three things, reason, free will, and the ability to love, are what makes a person a person. They are the image of God in you.</p>
+
+            <p>That image is why every human being has dignity. Not because of what they have done, or where they come from, or whether they are smart or beautiful or successful. Because they are made in God's image. That fact cannot be earned and cannot be taken away.</p>
+
+            <div class="highlight-box">
+                <p>"God created mankind in his image, in the image of God he created them; male and female he created them."</p>
+                <cite>— Genesis 1:27</cite>
+            </div>
+
+            <h3>Body and Soul Together</h3>
+
+            <p>Some people think of the human person as a soul that happens to be stuck in a body, with the real you being a spirit and the body just a temporary container. The Catholic Church teaches something different. You are not a soul in a body. You are a person, and a person is soul and body together. Both matter. Both are good. Both are part of who God made you to be.</p>
+
+            <p>This is why the Church teaches that the Resurrection of the body matters: not just that your soul goes to heaven, but that one day your body will be raised and glorified too. It is why Catholics treat the bodies of the dead with reverence. It is why suffering in the body is taken seriously rather than dismissed. The body is not a cage. It is part of you.</p>
+
+            <h3>Made for Something</h3>
+
+            <p>God did not make humans and leave them without purpose. He placed them in the garden and gave them a vocation: to care for creation, to be in relationship with each other, and to know and love God. Humans are the only creatures in all of creation that can look up at the sky and ask "why?" The only ones that can pray. The only ones made not just to exist but to belong to God and to each other.</p>
+
+            <h3>What Went Wrong, and What Stayed True</h3>
+
+            <p>If humans are made in God's image and made for goodness, why does the world look the way it does? Why do people lie, hurt each other, and choose things they know are wrong?</p>
+
+            <p>The Bible's answer is the Fall. In Genesis 3, Adam and Eve choose their own judgment over God's. They want to decide for themselves what is good and what is evil, without reference to anyone else. That choice broke something in the relationship between humans and God, and it introduced into human nature a tendency toward selfishness and sin that we are all born into. The Church calls this original sin.</p>
+
+            <p>But here is what original sin does not do: it does not destroy the image of God in you. You are still made in God's image. You still have reason, free will, and the capacity for love. The wound is real, but the image remains. The brokenness in the world is not what God made. It is what we introduced. And it is precisely what Christ came to heal.</p>
+        `,
+
+        theologian: `
+            <h2>Creation &amp; the Human Person — Theologian Level</h2>
+
+            <p>Genesis opens with two creation accounts that have different literary styles, different emphases, and different theological concerns. Genesis 1 is cosmic and liturgical: structured, rhythmic, building toward the sabbath rest. Genesis 2 is intimate and anthropological, focused on the particular dignity and vocation of the human person. The Church reads both as inspired Scripture, and both as teaching theological truth rather than scientific mechanism.</p>
+
+            <h3>Genesis 2 and the Relational Anthropology</h3>
+
+            <p>In Genesis 2, the human person is formed from the dust of the ground — <em>adamah</em> in Hebrew, the same word from which <em>Adam</em> derives. The name itself encodes the paradox: humans are of the earth, continuous with the rest of material creation, not some alien spiritual substance dropped into a biological shell. Then God breathes into the nostrils of the human the <em>nishmat chayyim</em>, the breath of life, and the human becomes a living being. This breath is not described for the animals. It is uniquely the mode of human creation.</p>
+
+            <p>The garden is given with a vocation: "to till it and keep it." The Hebrew <em>avad</em> (to serve or till) and <em>shamar</em> (to keep or guard) are the same words used later for priestly service in the tabernacle. The human person is placed in creation as a steward with a quasi-priestly function: to offer the world back to God in grateful care, not to exploit it.</p>
+
+            <p>The account of Eve's creation from Adam's side carries relational weight that translation often flattens. When Adam first sees her, his response is the first recorded human speech in Scripture: "This at last is bone of my bones and flesh of my flesh." The "at last" signals that something was missing. John Paul II calls this the original solitude: before Eve, Adam names all the animals and finds among them no partner. That naming establishes what humans are not: not animals, not capable of the kind of relationship that corresponds to what Adam is. The creation of Eve reveals human personhood as inherently relational. To be human is to be made for communion.</p>
+
+            <h3>Imago Dei: Three Dimensions</h3>
+
+            <p>The Catholic theological tradition identifies three dimensions of the <em>imago Dei</em> in the human person. The first is the intellectual soul: reason distinguishes humans from animals and makes moral knowledge possible. The second is free will: the capacity for genuine moral choice, which is the precondition for love, since love cannot be compelled. The third is the <em>capax Dei</em>, the capacity for God, which Augustine articulates in the Confessions as the restlessness of the heart that finds no rest until it rests in God.</p>
+
+            <p>Aquinas draws a careful distinction between the <em>image</em> and the <em>likeness</em> of God in the human person. The image, grounded in the intellectual soul, remains after the Fall. The likeness, the conformity of the will to God's will and the orientation of the whole person toward God, is wounded and diminished but not destroyed. This distinction has significant moral and pastoral implications. Natural law remains accessible to human reason because the intellectual image survives the Fall. Conscience still functions. Gentiles who never received revealed law can still "do by nature what the law requires" (Romans 2:14) because the image in which they were made has not been erased.</p>
+
+            <h3>Evolution and Genesis: The Church's Actual Position</h3>
+
+            <p>In 1950, Pope Pius XII addressed the question directly in <em>Humani Generis</em>. He permitted Catholics to hold that the human body evolved from prior living matter, provided two things are affirmed: that the soul is directly created by God for each person, and that all human beings descend from a common origin (the doctrinal basis for original sin applying to all humanity). The physical evolution of the body is not a doctrinal matter. The spiritual dignity of each person is.</p>
+
+            <p>In 1996, John Paul II went further in a message to the Pontifical Academy of Sciences, describing evolution as "more than a hypothesis" and noting that convergent evidence from multiple scientific disciplines gives it substantial credibility. Benedict XVI and Francis have both affirmed the compatibility of evolutionary science with Catholic faith.</p>
+
+            <p>The reason the compatibility is not controversial within Catholic theology is that Genesis is not attempting to answer scientific questions. Genesis 1 is a theological text structured around the sabbath, teaching that creation is good, that it has an Author, and that humans occupy a unique place within it. It makes no claims about the mechanism of biological development. The questions "did God create?" and "how did biological life develop over time?" are not competing answers to the same question. They are answers to different questions entirely.</p>
+
+            <h3>Original Sin: Wound, Not Corruption</h3>
+
+            <p>The Catholic doctrine of original sin navigates between two errors that have repeatedly appeared in Christian history. The first is Pelagianism: the view that human nature is basically fine, that the Fall was a bad example rather than a structural damage, and that humans can achieve goodness and even salvation by their own effort without grace. The Church condemned this at the Council of Carthage (418 AD) and repeatedly since.</p>
+
+            <p>The second error is Manichaeism: the view that matter is evil, that the body is a prison for the soul, and that the Fall corrupted human nature so thoroughly that nothing good remains in it. Augustine spent years as a Manichee before his conversion, and his mature theology against Pelagius is sometimes misread as having a Manichaean edge. The tradition as a whole resists this. The Fourth Lateran Council (1215) declared that God is the creator of all things visible and invisible, and that everything he created was good.</p>
+
+            <p>The precise Catholic position is that original sin wounded human nature: intellect is darkened, will is weakened, passions incline toward disorder. But it did not destroy it. The image of God remains. Reason still functions, though imperfectly. The will can still choose good, though with difficulty and not without grace. This is why the entire edifice of natural law, conscience, and moral philosophy remains possible. If the Fall had destroyed the image entirely, there would be no basis for appealing to reason, no ground for common moral discourse, no explanation for why non-Christians can act virtuously. The wound is real. The image is not gone.</p>
+
+            <p>This framing has direct consequences for how students should understand themselves. The deepest truth about a human being is not that they are broken. It is that they are made in God's image, and that the brokenness is precisely what does not belong: an intrusion of disorder that was not in the original design and will not be in the final one.</p>
+        `
+    },
+
+    reading: {
+        beginner: `
+            <h2>Reading: Seven Times Good</h2>
+            <div class="reading-meta">Genesis 1:1–2:3 — The creation account and the very good human person</div>
+            <div class="reading-body">
+                <p>Genesis 1 has a rhythm. Day by day, God speaks things into existence, and after each act of creation the text pauses: "God saw that it was good." It happens seven times. This repetition is not accidental. The author is teaching something with structure, not just with content: creation is not a mistake, not an accident, not a neutral fact. It is a gift, and it is good.</p>
+
+                <p>The sixth day is different. On the sixth day, God makes the land animals, and then, distinctly, makes humans. The text slows down at this point. Instead of "let there be," the language shifts: "Let us make mankind in our image, in our likeness." The plural is striking. Jewish and Christian interpreters have puzzled over it for centuries. What is clear is the claim that follows: humans are made in the image of God. Nothing else in the creation account receives this description.</p>
+
+                <p>When God finishes the sixth day and looks at everything he has made, the phrase changes for the only time in the chapter: not "it was good" but "it was very good." The superlative arrives with the human person. Whatever the image of God means, it marks a distinction: not a difference of degree but a difference in kind between humans and the rest of creation.</p>
+
+                <p>The seventh day is a rest. God does not rest because he is tired. He rests because the work is complete. The sabbath rest built into the creation account is not a footnote. It is the goal toward which the whole week moves. Creation exists not just to be used but to be enjoyed, and the humans who bear God's image are the ones called to lead that enjoyment, to till and keep the garden and to rest in the God who made it.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Reflect on These Questions</h4>
+                <ol>
+                    <li>God says humans are "very good" — not just good like everything else. What do you think that difference means for how humans should treat each other?</li>
+                    <li>The image of God in you cannot be earned and cannot be taken away. How does that change the way you think about people who have done terrible things?</li>
+                    <li>If the deepest truth about a person is that they are made in God's image — not that they are broken — how should that shape the way you think about yourself?</li>
+                </ol>
+            </div>
+        `,
+
+        theologian: `
+            <h2>Reading: The Original Solitude and What It Reveals</h2>
+            <div class="reading-meta">Genesis 2:15–25 and John Paul II, Theology of the Body (General Audiences, 1979–1980)</div>
+            <div class="reading-body">
+                <p>In Genesis 2, before Eve is created, God places the human person in the garden with a task and a prohibition, and then says something unexpected: "It is not good for the man to be alone." This is the first time in the creation account that something is "not good." The observation triggers a process, in which God brings all the animals before Adam to be named, that ends without resolution. Adam names every creature and finds among them no partner corresponding to him.</p>
+
+                <p>John Paul II calls this moment the "original solitude" and treats it as theologically revelatory. The naming of the animals is not simply a task. It is Adam's discovery of what he is. By encountering every other creature and finding none that corresponds to him, Adam discovers that he is different in kind, not just in degree. He has a self-awareness that the animals do not. He can reflect on his own existence, ask questions about it, and feel the absence of something he does not yet have a name for.</p>
+
+                <p>This original solitude establishes two things simultaneously. It establishes the uniqueness of the human person: the dimension of interiority, of self-possession, of the capacity for real relationship that comes only from freedom. And it establishes that this uniqueness is oriented outward. The solitude is not a complete condition. It points toward communion. The human person is discovered to be unique precisely at the moment when that uniqueness is experienced as insufficient on its own.</p>
+
+                <p>When Eve is created and Adam sees her, his response — "bone of my bones and flesh of my flesh" — is the recognition of another who corresponds to him. John Paul II reads this as the paradigmatic act of self-gift: Adam's joy is not in possessing Eve but in the fact that someone exists who is like him, to whom he can give himself and from whom he can receive. This is the structure of love written into human nature at the beginning: two persons, each complete in themselves as images of God, freely choosing union.</p>
+
+                <p>The theological anthropology that emerges from this reading is significant. The human person is not primarily defined by reason alone, or by the soul alone, or by the capacity for God alone. The human person is defined by the capacity for self-gift, for love in the full sense, which is the willing of the good of another. This is the deepest dimension of the imago Dei: that God himself is a communion of persons (Father, Son, Holy Spirit), and that the human person, made in his image, is made for communion in the same fundamental way.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Theological Reflection</h4>
+                <ol>
+                    <li>John Paul II reads Adam's naming of the animals as a discovery of what humans are, not just a task to be completed. What does the failure to find a partner among the animals reveal about human nature that could not have been revealed any other way?</li>
+                    <li>The Church teaches that the imago Dei is not destroyed by original sin — only wounded. If that is true, what are the implications for how Catholics should engage with people who do not share their faith? What grounds does that leave for moral conversation?</li>
+                    <li>Aquinas distinguishes image (intellectual soul — remains after Fall) from likeness (conformity of will to God — wounded). How does this distinction change the way you understand conscience, natural law, and the possibility of non-Christians acting virtuously?</li>
+                </ol>
+            </div>
+        `
+    },
+
+    quiz: [
+        {
+            q: "What does the Catholic Church mean when it says humans are made in the 'imago Dei' — the image of God?",
+            options: [
+                "That humans physically resemble God in some way",
+                "That humans alone among creatures have reason, free will, and the capacity for love and relationship with God",
+                "That humans were originally divine and have fallen from that state",
+                "That each person contains a fragment of the divine essence"
+            ],
+            correct: 1,
+            explanation: "The imago Dei refers to the intellectual soul (reason), free will (the capacity for genuine moral choice), and the capax Dei (the capacity for relationship with God). These distinguish humans from all other creatures and ground the inviolable dignity of every person. The image is not a physical resemblance but a structural one — humans reflect God's rationality, freedom, and capacity for love."
+        },
+        {
+            q: "The Catholic Church teaches that the human person is a soul temporarily housed in a body. True or false?",
+            options: [
+                "True — the soul is the real person and the body is a temporary container",
+                "False — the Church teaches that soul and body together constitute the human person, and both are good",
+                "True for this life, but false after the resurrection",
+                "The Church has no definitive teaching on this question"
+            ],
+            correct: 1,
+            explanation: "Catholic anthropology explicitly rejects the idea that the soul is trapped in the body. Soul and body together constitute the human person — which is why the resurrection of the body matters, why Catholics treat the bodies of the dead with reverence, and why bodily suffering is taken seriously. The body is not a cage. It is part of who you are."
+        },
+        {
+            q: "What is the Catholic Church's official position on biological evolution?",
+            options: [
+                "Evolution is incompatible with Catholic faith and must be rejected",
+                "Evolution is the only acceptable account of human origins for Catholics",
+                "Catholics may accept that the human body evolved from prior matter, provided the direct creation of each soul by God is affirmed",
+                "The Church has deliberately avoided taking any position on evolution"
+            ],
+            correct: 2,
+            explanation: "In Humani Generis (1950), Pius XII permitted Catholics to hold that the human body evolved from prior living matter, provided two things are affirmed: that God directly creates each soul, and that all humans share a common origin. John Paul II in 1996 described evolution as 'more than a hypothesis.' The Church distinguishes the theological question (God creates, humans have unique dignity) from the scientific question (how biological life developed)."
+        },
+        {
+            q: "According to Catholic teaching, what does original sin do to the image of God in the human person?",
+            options: [
+                "It destroys the image of God entirely, leaving human nature fundamentally corrupt",
+                "It has no real effect — humans remain exactly as God originally made them",
+                "It wounds and weakens the image — darkening the intellect and weakening the will — but does not destroy it",
+                "It transfers the image of God from humans to the Church collectively"
+            ],
+            correct: 2,
+            explanation: "The Catholic position navigates between two errors: Pelagianism (the Fall had no real effect) and Manichaeism (the Fall corrupted human nature entirely). The image of God remains after the Fall — which is why conscience still functions, why natural law is still accessible to reason, and why non-Christians can act virtuously. Original sin genuinely wounds human nature but does not destroy it."
+        },
+        {
+            q: "The Catholic Church teaches that original sin 'wounded' human nature. What does that mean for the image of God in every person?",
+            options: [
+                "The image of God is completely destroyed by original sin — humans must be entirely recreated through baptism",
+                "Original sin had no real effect — humans remain exactly as God originally made them",
+                "The image of God remains in every person after the Fall, though wounded — reason still functions, conscience still works, and humans are still capable of goodness",
+                "The image of God now exists only in baptized Catholics, not in all human beings"
+            ],
+            correct: 2,
+            explanation: "Catholic teaching holds that original sin genuinely wounds human nature — intellect is darkened, will is weakened, and we incline toward selfishness — but does not destroy the image of God. Every person, regardless of faith or baptism, still bears that image. This is why conscience still works, why humans can still reason about right and wrong, and why every person deserves dignity. The wound is real. The image remains."
+        }
+    ]
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
+    initModule(MODULE_DATA);
+});
 </script>
 
 </body>
