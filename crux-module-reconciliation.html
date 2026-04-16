@@ -1,0 +1,1339 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>CRUX — Reconciliation &amp; Confession</title>
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LQ35DLTVKY');
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDK v10 -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+            authDomain: "crux-faith-formation.firebaseapp.com",
+            projectId: "crux-faith-formation",
+            storageBucket: "crux-faith-formation.firebasestorage.app",
+            messagingSenderId: "838141015985",
+            appId: "1:838141015985:web:2655e570663e182d75ef90",
+            measurementId: "G-LQ35DLTVKY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        window.db = getFirestore(app);
+        window.auth = getAuth(app);
+        window.fsModules = { doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp };
+
+        onAuthStateChanged(window.auth, (user) => {
+            window.currentUser = user || null;
+            const el = document.getElementById('userDisplay');
+            if (el) el.textContent = user ? user.email.split('@')[0] : 'Guest';
+            if (user) loadUserProgress();
+        });
+    </script>
+
+    <style>
+        :root {
+            color-scheme: light;
+            --navy: #1a1f36;
+            --navy-mid: #242a45;
+            --navy-light: #2f3659;
+            --gold: #d4a574;
+            --gold-light: #e8c9a0;
+            --gold-dark: #b8895a;
+            --white: #ffffff;
+            --off-white: #f8f7f4;
+            --text-primary: #1a1f36;
+            --text-secondary: #5a6282;
+            --text-muted: #8890b0;
+            --border: rgba(26, 31, 54, 0.1);
+            --border-gold: rgba(212, 165, 116, 0.3);
+            --shadow-sm: 0 2px 8px rgba(26, 31, 54, 0.08);
+            --shadow-md: 0 4px 20px rgba(26, 31, 54, 0.12);
+            --shadow-lg: 0 8px 40px rgba(26, 31, 54, 0.18);
+            --green: #2e7d32;
+            --green-light: #e8f5e9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--off-white);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ─── HEADER ──────────────────────────────────────── */
+        header {
+            background: var(--navy);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+        }
+
+        .header-left { display: flex; align-items: center; gap: 1.5rem; }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        .back-btn:hover { color: var(--gold); }
+
+        .header-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 4px;
+            text-decoration: none;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-chip {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.7);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .xp-chip {
+            background: rgba(212, 165, 116, 0.15);
+            border: 1px solid var(--border-gold);
+            color: var(--gold);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: none;
+        }
+
+        /* ─── PROGRESS BAR ────────────────────────────────── */
+        .progress-track {
+            background: rgba(255,255,255,0.08);
+            height: 3px;
+            position: sticky;
+            top: 57px;
+            z-index: 99;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gold);
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* ─── MAIN LAYOUT ─────────────────────────────────── */
+        .module-wrap {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 2rem 6rem;
+        }
+
+        /* ─── STEP INDICATOR ──────────────────────────────── */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 2.5rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        .step-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-dot {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: var(--white);
+        }
+
+        .step.complete .step-dot {
+            background: var(--green);
+            border-color: var(--green);
+            color: var(--white);
+        }
+
+        .step-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .step.active .step-label { color: var(--navy); font-weight: 600; }
+        .step.complete .step-label { color: var(--green); }
+
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background: var(--border);
+            margin: 0 0.5rem;
+            transition: background 0.3s ease;
+        }
+
+        .step-line.complete { background: var(--green); }
+
+        /* ─── MODULE HEADER ───────────────────────────────── */
+        .module-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .module-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-eyebrow .grade-tag {
+            display: inline-block;
+            background: rgba(212, 165, 116, 0.12);
+            color: var(--gold-dark);
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .module-eyebrow .topic-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .module-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* ─── LEVEL TOGGLE ────────────────────────────────── */
+        .level-toggle {
+            display: inline-flex;
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .level-btn {
+            padding: 0.6rem 1.4rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .level-btn.active {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        /* ─── CONTENT PANELS ──────────────────────────────── */
+        .panel {
+            display: none;
+            animation: fadeUp 0.35s ease;
+        }
+
+        .panel.active { display: block; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── LESSON CONTENT ──────────────────────────────── */
+        .lesson-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .lesson-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .lesson-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin: 1.5rem 0 0.6rem;
+        }
+
+        .lesson-card p {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.85;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card ul, .lesson-card ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card li {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.75;
+            margin-bottom: 0.4rem;
+        }
+
+        .highlight-box {
+            background: rgba(212, 165, 116, 0.08);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 8px 8px 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+            font-style: italic;
+            color: var(--navy);
+            font-size: 0.95rem;
+        }
+
+        .highlight-box cite {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--gold-dark);
+            font-weight: 600;
+            margin-top: 0.4rem;
+            font-style: normal;
+            letter-spacing: 0.5px;
+        }
+
+        .key-term {
+            display: inline-block;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            margin: 0 0.1rem;
+        }
+
+        /* ─── READING SECTION ─────────────────────────────── */
+        .reading-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .reading-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .reading-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reading-body {
+            font-size: 0.97rem;
+            line-height: 1.9;
+            color: var(--text-primary);
+        }
+
+        .reading-body p { margin-bottom: 1.1rem; }
+
+        .reflection-block {
+            background: var(--navy);
+            border-radius: 10px;
+            padding: 1.75rem;
+            margin-top: 2rem;
+        }
+
+        .reflection-block h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .reflection-block ol {
+            padding-left: 1.25rem;
+        }
+
+        .reflection-block li {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            margin-bottom: 0.6rem;
+        }
+
+        /* ─── QUIZ ────────────────────────────────────────── */
+        .quiz-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-intro {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question-block {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question-block:last-of-type { border-bottom: none; }
+
+        .question-num {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.85rem 1.1rem;
+            background: var(--off-white);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem;
+            color: var(--text-primary);
+            width: 100%;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--navy);
+            background: rgba(26, 31, 54, 0.04);
+        }
+
+        .option-btn.selected {
+            border-color: var(--navy);
+            background: rgba(26, 31, 54, 0.06);
+        }
+
+        .option-btn.correct {
+            border-color: var(--green);
+            background: var(--green-light);
+            color: var(--green);
+        }
+
+        .option-btn.incorrect {
+            border-color: #c62828;
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .option-letter {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 1.5px solid currentColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+
+        .answer-feedback {
+            margin-top: 0.75rem;
+            padding: 0.85rem 1rem;
+            border-radius: 7px;
+            font-size: 0.88rem;
+            line-height: 1.55;
+            display: none;
+        }
+
+        .answer-feedback.correct {
+            background: var(--green-light);
+            color: var(--green);
+            border-left: 3px solid var(--green);
+        }
+
+        .answer-feedback.incorrect {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 3px solid #c62828;
+        }
+
+        /* ─── NAVIGATION BUTTONS ──────────────────────────── */
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 2rem;
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary:hover {
+            background: var(--navy-light);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.5rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-dark);
+            color: var(--white);
+        }
+
+        /* ─── COMPLETION SCREEN ───────────────────────────── */
+        .completion-screen {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .completion-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .completion-screen h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .completion-screen p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .xp-award {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .score-display {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            display: inline-block;
+            margin-bottom: 2.5rem;
+            min-width: 240px;
+        }
+
+        .score-display .score-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1;
+        }
+
+        .score-display .score-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+
+        .completion-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ─── LOADING STATE ───────────────────────────────── */
+        .loading-state {
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--navy);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-state p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* ─── RESPONSIVE ──────────────────────────────────── */
+        @media (max-width: 640px) {
+            .module-wrap { padding: 2rem 1.25rem 5rem; }
+            .module-title { font-size: 1.7rem; }
+            .lesson-card, .reading-card, .quiz-card { padding: 1.75rem 1.25rem; }
+            .step-label { display: none; }
+            .nav-bar { flex-direction: column-reverse; }
+            .nav-bar .btn-primary, .nav-bar .btn-secondary { width: 100%; justify-content: center; }
+        }
+
+        /* ─── GEOGRAPHY MODULE — LOCATION CARDS ──────────── */
+        /* ─── GEO CARDS (Bible Geography module) ─────────── */
+        .geo-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin: 1.25rem 0;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .geo-card:hover { box-shadow: var(--shadow-md); }
+
+        .geo-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.9rem 1.25rem;
+            background: var(--navy);
+            flex-wrap: wrap;
+        }
+
+        .geo-names {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .geo-ancient {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .geo-arrow {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+        }
+
+        .geo-modern {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.85);
+        }
+
+        .geo-era-tag {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            background: rgba(212,165,116,0.15);
+            border: 1px solid rgba(212,165,116,0.3);
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .geo-body {
+            padding: 1.1rem 1.25rem 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .geo-body p {
+            font-size: 0.92rem;
+            line-height: 1.75;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .geo-then-now {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .geo-then {
+            padding: 1rem 1.25rem;
+            border-right: 1px solid var(--border);
+            background: rgba(212,165,116,0.04);
+        }
+
+        .geo-now {
+            padding: 1rem 1.25rem;
+            background: rgba(26,31,54,0.03);
+        }
+
+        .geo-tn-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .geo-then p, .geo-now p {
+            font-size: 0.88rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* ─── LANDING SCREEN ──────────────────────────────── */
+        .landing-group {
+            margin-bottom: 2.5rem;
+        }
+
+        .landing-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .landing-group-icon {
+            font-size: 1.1rem;
+        }
+
+        .landing-group-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: 0.3px;
+        }
+
+        .landing-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+        }
+
+        .landing-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .landing-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-gold);
+        }
+
+        .landing-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+
+        .landing-card-grade {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: var(--gold-dark);
+            background: rgba(212,165,116,0.12);
+            padding: 0.15rem 0.55rem;
+            border-radius: 20px;
+        }
+
+        .landing-card-xp {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .landing-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.3;
+        }
+
+        .landing-card-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .landing-card-footer {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+            margin-top: 0.5rem;
+        }
+
+        .landing-card:hover .landing-card-footer {
+            color: var(--navy);
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
+            ← Back
+        </button>
+        <a href="index.html" class="header-logo">CRUX</a>
+    </div>
+    <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
+        <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
+    </div>
+</header>
+
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div class="module-wrap">
+
+    <!-- Loading state — shown while a module loads -->
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
+
+    <!-- Step indicator -->
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
+        </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
+        </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
+
+    <!-- Module header -->
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">Grades 3–8</span>
+            <span class="topic-tag" id="topicTag">Faith Formation</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <!-- Level toggle -->
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions — you can review your answers before submitting.</p>
+            <div id="quizQuestions">
+                <!-- Populated by JS -->
+            </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You've completed this lesson. Keep going — the faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
+            </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    ← Back to CRUX
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="crux-module-engine.js"></script>
+<script>
+const MODULE_DATA = {
+    id: 'reconciliation',
+    title: 'Reconciliation & Confession',
+    subtitle: 'The father ran down the road before his son said a single word. That is the God you are confessing to.',
+    gradeTag: 'Grades 3–8',
+    topic: 'What We Celebrate',
+    xpReward: 60,
+    nextModule: 'beatitudes',
+
+    lesson: {
+        beginner: `
+            <h2>Reconciliation &amp; Confession — Lesson</h2>
+
+            <p>In Luke 15, Jesus tells a story about a son who takes his inheritance early, wastes every penny of it, and ends up feeding pigs in a foreign country, the lowest possible situation for a Jewish man in that culture. He decides to go home and beg his father to take him back as a servant. He rehearses his speech on the road.</p>
+
+            <p>Then this: <em>"While he was still a long way off, his father saw him and was filled with compassion. He ran to his son, threw his arms around him and kissed him."</em></p>
+
+            <p>The father does not wait for the speech. He does not make the son earn his way back. He runs. That is the image Jesus gives us of what God does when a sinner turns and comes home. Before a word is spoken, before any explanation is made, the father is already moving.</p>
+
+            <p>That is the God you are walking toward when you go to confession.</p>
+
+            <h3>Why Confession, and Why to a Priest?</h3>
+
+            <p>Many people believe that being sorry in your heart and confessing directly to God in private prayer is enough. And God absolutely hears that prayer. But the Catholic Church teaches that this is not the full picture, and there is a specific reason why, rooted in Scripture.</p>
+
+            <p>On the evening of the Resurrection, Jesus appeared to the Apostles. He breathed on them and said: <em>"Receive the Holy Spirit. If you forgive anyone's sins, their sins are forgiven; if you retain anyone's sins, they are retained."</em> (John 20:22–23)</p>
+
+            <p>Jesus gave the Apostles, and through them their successors the bishops and priests, the specific authority to forgive sins. He did not say "tell people to pray privately and their sins will be forgiven." He gave that authority to human beings and instructed them to exercise it. The confessional is not a Catholic invention. It is the ordinary means God chose to deliver the forgiveness Christ won on the cross.</p>
+
+            <p>There is also a pastoral reason. Private contrition, being sorry in your heart, can become a trap. It is easy to convince yourself you have fully repented of something when you have only partially faced it. Saying your sins out loud to another person, and hearing the words of absolution spoken over you, is a different and more complete act. It closes the loop in a way that interior prayer alone often does not.</p>
+
+            <div class="highlight-box">
+                <p>"Receive the Holy Spirit. If you forgive anyone's sins, their sins are forgiven; if you retain anyone's sins, they are retained."</p>
+                <cite>— John 20:22–23</cite>
+            </div>
+
+            <h3>How Confession Works: Five Parts</h3>
+
+            <p><strong>1. Examination of conscience.</strong> Before you go to confession, you take time to honestly review what you have done and what you have failed to do since your last confession. This is meant to help you see clearly, not to be an exercise in self-punishment. so you can bring everything to God, not just the easy things.</p>
+
+            <p><strong>2. Contrition.</strong> Contrition means sorrow for your sins: not just regret that you got caught, or fear of punishment, but actual sorrow for having done something wrong and for having hurt your relationship with God and others. The Church distinguishes between perfect contrition (sorrow out of love for God) and imperfect contrition (sorrow because of fear of the consequences). Both are valid. Both are accepted.</p>
+
+            <p><strong>3. Confession of sins.</strong> You tell the priest your sins, specifically and honestly. You do not need to confess every impure thought or every moment of impatience. You need to confess any serious sins (mortal sins) completely, and you can confess lesser sins (venial sins) as part of your regular spiritual practice. The act of saying them out loud matters. Something changes when you name a thing rather than just carrying it.</p>
+
+            <p><strong>4. Absolution.</strong> The priest pronounces the words of absolution: <em>"I absolve you from your sins in the name of the Father, and of the Son, and of the Holy Spirit."</em> This is not the priest forgiving you on his own authority. He is acting in the place of Christ, extending the forgiveness that Christ purchased on the cross. The grace flows through the sacrament.</p>
+
+            <p><strong>5. Penance.</strong> The priest assigns a penance, usually a prayer or a small act, not as payment for sins (those are already forgiven) but as an expression of your intention to repair what was broken and to reorient yourself toward God.</p>
+
+            <h3>Why It Shouldn't Be as Scary as It Feels</h3>
+
+            <p>Confession can be intimidating, even for the most experienced Catholic. The first time most people go is at their first reconciliation as young children, when the scariest thing to confess might be a lie or cheating on a math test. As we get older, sins become more substantial, and the fear of confessing them can grow to match, even though the need for confession grows just as much.</p>
+
+            <p>What is it that we're actually afraid of? That the priest will judge us? Here is what is important to understand: the priest in the confessional is not acting as himself. He is acting in the person of Christ — <em>persona Christi</em>. And if we know one thing about Jesus, it is that he loves sinners. He hand-picked them as his closest companions during his time on earth. Confessing even the gravest of sins to him with an open heart brings the same forgiveness Jesus showed the disciples and those he healed during his ministry. In the same way that Jesus asks for faith before healing, we need to enter the confessional with faith that confessing our sins has a genuine healing power.</p>
+
+            <p>You may worry that the priest will remember what you said and see you differently the next time he passes you in the aisle. Consider this: priests hear confessions almost daily. They hear ordinary confessions and devastating ones and everything between. The sins that feel uniquely shameful to you have almost certainly been confessed to that priest many times before. And if a priest is judging you after hearing your confession, he is breaking the sacred commitment he made to act as a healer, not a judge. That is the primary purpose of this sacrament. If you feel judged after confession, find a different confessor. There are priests in every parish and every city, and you are not obligated to confess to your own pastor.</p>
+
+            <p>That said, there is real value in going to the same priest regularly. Like a doctor who knows your medical history, a confessor who knows what you have been struggling with over time can offer better spiritual guidance than one who only has today's visit to work from.</p>
+
+            <p>The most important thing: fear of judgment cannot become an excuse to keep carrying the weight of your sins. Jesus said his yoke is easy and his burden is light. Years of guilt and unconfessed mistakes are not light. He is more than willing to carry them. He nailed them to the cross when he laid down his life. As frightening as walking into the confessional can feel, that fear is nothing compared to the peace of walking out with a clean spirit and a full heart.</p>
+        `,
+
+        theologian: `
+            <h2>Reconciliation &amp; Confession — Theologian Level</h2>
+
+            <p>The Protestant Reformers of the sixteenth century did not dispute that Christians need forgiveness. They disputed the mechanism. Luther's early position, and the position that became standard in most Protestant traditions, was that repentance before God in private prayer is sufficient for the forgiveness of sins, and that the Catholic practice of auricular confession to a priest was an unscriptural imposition that turned forgiveness into a transaction controlled by the clergy. The Catholic response to this argument is exegetical, theological, and pastoral.</p>
+
+            <h3>The Scriptural Basis: John 20 and James 5</h3>
+
+            <p>The primary scriptural text is John 20:22–23. On the evening of the Resurrection, Jesus appears to the gathered disciples, breathes on them, and says: "Receive the Holy Spirit. If you forgive anyone's sins, their sins are forgiven; if you retain anyone's sins, they are retained." The act of breathing deliberately echoes Genesis 2:7, where God breathes life into Adam. John uses the same rare Greek verb in both passages. The parallel is not accidental. Just as the first breath created human life, the resurrection breath creates the new life of the Church and her sacramental authority.</p>
+
+            <p>The authority Jesus grants here has a specific structure. The power to forgive and the power to retain are given together. To retain sins, to not forgive them, presupposes some basis for that judgment. A priest cannot determine whether to forgive or retain sins without hearing them. The text does not say "declare to everyone that their sins are forgiven." It gives a discriminating authority, which requires auricular confession as its ordinary exercise. The Protestant objection that private prayer to God is sufficient does not engage with the structure of this text. It sidesteps it.</p>
+
+            <p>James 5:16 provides a second witness: "Confess your sins to one another and pray for one another, so that you may be healed." The verse is rarely cited in Protestant discussions of this topic precisely because it is inconvenient. It is not an instruction to confess to God in private. It is an instruction to confess to another person. The Catholic tradition reads this alongside John 20 as part of a consistent apostolic practice of external, spoken confession.</p>
+
+            <h3>The Council of Trent's Position</h3>
+
+            <p>The Council of Trent (Session 14, 1551) defined the sacrament of Penance in direct response to the Reformers. Trent distinguished between three forms of sorrow. <span class="key-term">Attrition</span> is imperfect contrition: sorrow arising from fear of punishment or the ugliness of sin, without necessarily involving love of God. <span class="key-term">Contrition</span> is perfect contrition: sorrow arising from love of God above all things. <span class="key-term">Perfect contrition</span>, Trent acknowledged, does restore grace even before sacramental confession, provided the penitent has the intention of confessing. Trent then defined sacramental confession as the ordinary means God has established for the forgiveness of mortal sins, and perfect contrition as the extraordinary means available when confession is impossible. The ordinary means cannot be set aside simply because the extraordinary means exists.</p>
+
+            <p>The pastoral argument behind this position is significant. Perfect contrition requires genuine love of God above all things as the motive for sorrow. This is a high bar. The Church, in her realism about human nature, does not want the forgiveness of serious sins to depend entirely on the penitent's ability to achieve perfect interior contrition in solitude. The sacrament provides objective grace through the absolution of the priest, independent of the penitent's subjective spiritual state at that moment, provided the minimum conditions (some sorrow and the intention to avoid sin) are met.</p>
+
+            <h3>Persona Christi: The Theology of the Confessor</h3>
+
+            <p>The priest in the confessional does not forgive sins in his own person or on his own authority. He acts <span class="key-term">in persona Christi</span> — in the person of Christ. This is the technical theological formulation for how ordained ministry functions in Catholic theology: the priest is not a conduit through whom grace passes, nor a representative who speaks on behalf of the community. He acts as Christ himself, whose authority he exercises by virtue of holy orders.</p>
+
+            <p>The practical consequence is that the personal holiness or lack thereof of the confessor does not affect the validity of the sacrament. A sinful priest absolves validly. An alcoholic priest absolves validly. A priest who privately disbelieves the doctrine he is administering still absolves validly, provided he intends to do what the Church does. The grace flows through the office, not the man. This is the same principle that governs baptism: an unbelieving minister who performs the rite with the intention of doing what Christians do confers valid baptism, because the sacrament operates by the power of Christ, not of the minister.</p>
+
+            <p>This doctrine has significant pastoral implications. The fear that a confessor's personal holiness affects the grace received is theologically unfounded. You are not confessing to a man who may or may not be worthy of hearing your confession. You are confessing to Christ, who is always worthy, always present, and whose forgiveness is neither conditional on the confessor's virtue nor diminished by his sin.</p>
+
+            <h3>The Seal of Confession</h3>
+
+            <p>The <span class="key-term">sacramental seal</span> — the absolute prohibition on a confessor revealing anything heard in confession, is one of the most absolute norms in all of Church law. Canon 983 of the Code of Canon Law states: "The sacramental seal is inviolable; therefore, it is absolutely forbidden for a confessor to betray in any way a penitent in words or in any other manner and for any reason." The penalty for violation is automatic excommunication reserved to the Holy See.</p>
+
+            <p>The seal admits no exceptions. Not civil law, not a court order, not a bishop's instruction, not an emergency. A priest who is asked in a civil court what he heard in confession must refuse to answer and accept the legal consequences, whatever they are. The historical record includes several cases of priests who were executed rather than break the seal. St. John Nepomucene was drowned in the Vltava River in 1393 for refusing to reveal to King Wenceslaus IV what the queen had confessed. He is venerated as the patron of confessors and of those falsely accused.</p>
+
+            <p>The absolute character of the seal is not arbitrary. It is the institutional guarantee that the confessional is truly safe: nothing said there will ever be used against the penitent under any circumstances. Without that guarantee, the sacrament collapses. No one would confess serious sins if the confessor could be compelled to testify about them. The seal is what makes confession possible as a practical matter, and the Church has defended it absolutely for the same reason she defends the sacrament itself: because God instructed it, and because human beings need it.</p>
+        `
+    },
+
+    reading: {
+        beginner: `
+            <h2>Reading: The Father Who Ran</h2>
+            <div class="reading-meta">Luke 15:11–32 — The Prodigal Son as a picture of confession</div>
+            <div class="reading-body">
+                <p>The parable of the Prodigal Son is the longest parable Jesus tells and the one that most directly describes what God does when a sinner returns. It is worth reading as a picture of what happens in confession.</p>
+
+                <p>The son asks for his inheritance early, essentially wishing his father dead, and wastes it entirely. He ends up starving in a foreign country, feeding pigs for a Gentile farmer. He decides to go home, rehearses a speech asking to be taken back as a servant rather than a son, and starts walking.</p>
+
+                <p>The detail that matters most is what the father does when he sees him coming: he runs. In the culture of the ancient Near East, a man of the father's age and status did not run. Running was undignified. The father humiliates himself by running down the road to a son who humiliated him. He does this before the son says a word. The speech the son prepared — "I am no longer worthy to be called your son, make me like one of your hired servants" — gets interrupted by the embrace. The father is not interested in the speech. He has already decided what he is going to do.</p>
+
+                <p>This is what confession is. You are the son walking down the road rehearsing your speech. God is the father who sees you while you are still a long way off and runs. The absolution you receive at the end of confession is the robe, the ring, the sandals, the fatted calf. It is the father's response to your return, not a reward you have earned by confessing correctly.</p>
+
+                <p>There is also the older son, who is angry that his brother is being celebrated after behaving so badly. He stands outside the feast and refuses to go in. The father goes out to him too, gently and without anger, and says: "You are always with me, and everything I have is yours." The older son's resentment is a different kind of distance from the father. Both sons need to come home. The door is open for both.</p>
+
+                <p>If you have been away from confession for a long time, you are the younger son walking down the road. God is already running.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Reflect on These Questions</h4>
+                <ol>
+                    <li>The father runs before the son says a word. What does that tell you about whether God is waiting to hear your explanation before he forgives you?</li>
+                    <li>The son prepared a speech asking to be made a servant. The father never lets him finish it. What does that suggest about how God hears our confessions?</li>
+                    <li>Is there something you have been carrying around that you have not brought to confession? What would it feel like to put it down?</li>
+                </ol>
+            </div>
+        `,
+
+        theologian: `
+            <h2>Reading: Trent on Penance — What the Reformers Got Wrong and Why It Matters</h2>
+            <div class="reading-meta">Council of Trent, Session 14 (1551) — The sacrament of Penance and the necessity of confession</div>
+            <div class="reading-body">
+                <p>The Council of Trent's fourteenth session addressed the sacrament of Penance in direct response to the Protestant Reformers, particularly Luther and Calvin. Understanding what Trent actually defined, and what it did not define, clarifies the Catholic position and explains why the Church insists on sacramental confession rather than private repentance as the ordinary means of forgiveness for serious sin.</p>
+
+                <p>Trent's central claim is that the sacrament of Penance is distinct from baptism and was instituted by Christ in John 20:22–23. The council reads this text as establishing a sacrament with three acts required of the penitent: contrition, confession, and satisfaction. Contrition (sorrow for sins) is necessary but not sufficient on its own. Confession to a priest is required for the forgiveness of mortal sins committed after baptism. Satisfaction (penance) expresses the intention to repair what was broken.</p>
+
+                <p>The Reformers' objection was that this framework puts human works between the sinner and God's forgiveness. Trent's response was precise: the three acts are not works that earn forgiveness. They are the ordinary form that receiving God's freely given forgiveness takes. The distinction between receiving a gift and earning it is significant. You do not earn a gift by unwrapping it. But you do need to unwrap it.</p>
+
+                <p>On the question of contrition, Trent made an important acknowledgment that is often overlooked. Perfect contrition, sorrow arising from love of God, does restore grace even before sacramental confession, provided the penitent intends to confess. Luther was not entirely wrong that genuine interior repentance matters. What Trent insisted is that this does not make sacramental confession optional. The ordinary path to forgiveness of mortal sin is through the sacrament. Perfect contrition is the extraordinary provision for cases where confession is impossible, not a general alternative to it.</p>
+
+                <p>Trent also addressed the scope of confession: the penitent is required to confess all mortal sins of which they are aware after a careful examination of conscience, including their number and the circumstances that change their species. This is the requirement that most people find the most demanding. It is worth understanding why the Church insists on it. A general "I have sinned in many ways" does not bring the specific sin fully before God and the confessor. It keeps it partially hidden. The specificity of confession is not bureaucratic. It is therapeutic. You cannot be healed from what you have not named.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Theological Reflection</h4>
+                <ol>
+                    <li>Trent distinguishes between perfect contrition (which can restore grace before confession, with the intention to confess) and the sacrament as the ordinary means of forgiveness. What is the pastoral wisdom in insisting on the sacrament even when perfect contrition is theoretically sufficient?</li>
+                    <li>The Protestant objection was that requiring confession to a priest puts human works between the sinner and God's forgiveness. How would you respond to that objection using Trent's distinction between earning a gift and receiving it?</li>
+                    <li>Trent requires confession of mortal sins by number and circumstances that change their species. The argument for specificity is that you cannot be healed from what you have not named. Do you find that argument compelling? What does it assume about the relationship between language and healing?</li>
+                </ol>
+            </div>
+        `
+    },
+
+    quiz: [
+        {
+            q: "In John 20:22–23, Jesus gives the Apostles authority to forgive and retain sins. Why does the Catholic Church read this as establishing sacramental confession rather than just private prayer?",
+            options: [
+                "Because the verse mentions the Holy Spirit, which is only given through the sacraments",
+                "Because the authority to forgive and retain sins requires hearing them — a discriminating judgment about specific sins presupposes that those sins have been confessed",
+                "Because John 20 was written specifically to establish the papacy and the sacramental system",
+                "Because the Apostles immediately began requiring confession from all early Christians after this event"
+            ],
+            correct: 1,
+            explanation: "The text gives the power both to forgive and to retain sins. To make a discriminating judgment — to forgive this sin but retain that one — the priest must hear the sins. A general declaration that everyone is forgiven does not use the authority Jesus gave, because it makes no distinction. The structure of the authority Jesus grants requires auricular confession as its ordinary exercise."
+        },
+        {
+            q: "What does the Catholic Church mean when it says the priest acts 'in persona Christi' in the confessional?",
+            options: [
+                "The priest acts as a representative of the Christian community, conveying the community's forgiveness",
+                "The priest acts in the person of Christ himself, whose authority he exercises through holy orders — meaning the priest's personal holiness does not affect the validity of the absolution",
+                "The priest temporarily becomes Christ during the sacrament through a mystical transformation",
+                "The priest forgives sins on behalf of Christ, who delegates this authority to worthy ministers"
+            ],
+            correct: 1,
+            explanation: "In persona Christi means the priest acts not as himself or as a community representative, but as Christ. The practical consequence is that the grace of absolution flows through the office, not the man. A sinful priest absolves validly. This is the same principle behind valid baptism administered by an unbeliever: the sacrament operates by Christ's power, not the minister's personal virtue."
+        },
+        {
+            q: "The Council of Trent acknowledged that perfect contrition can restore grace even before sacramental confession. Why does the Church still require sacramental confession for mortal sins?",
+            options: [
+                "Because the Council of Trent overruled the possibility of perfect contrition restoring grace",
+                "Because perfect contrition is impossible for anyone who has committed a mortal sin",
+                "Because sacramental confession is the ordinary means God established for forgiveness of mortal sin, and perfect contrition is the extraordinary provision for when confession is genuinely impossible — not a general alternative to the sacrament",
+                "Because the Church does not recognize the validity of interior acts of contrition without external expression"
+            ],
+            correct: 2,
+            explanation: "Trent acknowledged that perfect contrition (sorrow arising from love of God) restores grace, provided the penitent intends to confess. But Trent defined this as the extraordinary provision for cases where confession is impossible, not as a general alternative. The sacrament is the ordinary path God established. You do not bypass a gift's normal form simply because an emergency alternative exists."
+        },
+        {
+            q: "What is the sacramental seal of confession, and what are its limits?",
+            options: [
+                "A general expectation of confidentiality that can be broken in cases of serious public harm",
+                "An absolute prohibition on revealing anything heard in confession, with no exceptions under any circumstances, including civil law, court orders, or episcopal instruction",
+                "A promise of confidentiality that applies to sins confessed but not to other things discussed with the priest",
+                "A Church policy that can be suspended by the bishop in cases involving criminal activity"
+            ],
+            correct: 1,
+            explanation: "Canon 983 makes the sacramental seal absolute. There are no exceptions: not civil courts, not bishops, not emergencies. A priest who breaks the seal faces automatic excommunication reserved to the Holy See. The historical record includes priests who were executed rather than violate it. The absolute character of the seal is what makes the confessional genuinely safe and therefore makes confession practically possible."
+        },
+        {
+            q: "What are the five parts of the sacrament of Reconciliation, in order?",
+            options: [
+                "Prayer, confession, contrition, absolution, communion",
+                "Examination of conscience, contrition, confession of sins, absolution, penance",
+                "Contrition, examination of conscience, confession, penance, absolution",
+                "Confession, absolution, penance, contrition, thanksgiving"
+            ],
+            correct: 1,
+            explanation: "The five parts are: (1) Examination of conscience — honestly reviewing sins since the last confession; (2) Contrition — genuine sorrow for sin; (3) Confession — naming sins aloud to the priest; (4) Absolution — the priest pronouncing forgiveness in the person of Christ; (5) Penance — the assigned act that expresses the intention to repair what was broken and reorient toward God."
+        }
+    ]
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
+    initModule(MODULE_DATA);
+});
+</script>
+
+</body>
+</html>
