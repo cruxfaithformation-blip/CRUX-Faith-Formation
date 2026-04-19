@@ -1,0 +1,1343 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>CRUX — The Beatitudes</title>
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LQ35DLTVKY');
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDK v10 -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+            authDomain: "crux-faith-formation.firebaseapp.com",
+            projectId: "crux-faith-formation",
+            storageBucket: "crux-faith-formation.firebasestorage.app",
+            messagingSenderId: "838141015985",
+            appId: "1:838141015985:web:2655e570663e182d75ef90",
+            measurementId: "G-LQ35DLTVKY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        window.db = getFirestore(app);
+        window.auth = getAuth(app);
+        window.fsModules = { doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp };
+
+        onAuthStateChanged(window.auth, (user) => {
+            window.currentUser = user || null;
+            const el = document.getElementById('userDisplay');
+            if (el) el.textContent = user ? user.email.split('@')[0] : 'Guest';
+            if (user) loadUserProgress();
+        });
+    </script>
+
+    <style>
+        :root {
+            color-scheme: light;
+            --navy: #1a1f36;
+            --navy-mid: #242a45;
+            --navy-light: #2f3659;
+            --gold: #d4a574;
+            --gold-light: #e8c9a0;
+            --gold-dark: #b8895a;
+            --white: #ffffff;
+            --off-white: #f8f7f4;
+            --text-primary: #1a1f36;
+            --text-secondary: #5a6282;
+            --text-muted: #8890b0;
+            --border: rgba(26, 31, 54, 0.1);
+            --border-gold: rgba(212, 165, 116, 0.3);
+            --shadow-sm: 0 2px 8px rgba(26, 31, 54, 0.08);
+            --shadow-md: 0 4px 20px rgba(26, 31, 54, 0.12);
+            --shadow-lg: 0 8px 40px rgba(26, 31, 54, 0.18);
+            --green: #2e7d32;
+            --green-light: #e8f5e9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--off-white);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ─── HEADER ──────────────────────────────────────── */
+        header {
+            background: var(--navy);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+        }
+
+        .header-left { display: flex; align-items: center; gap: 1.5rem; }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        .back-btn:hover { color: var(--gold); }
+
+        .header-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 4px;
+            text-decoration: none;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-chip {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.7);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .xp-chip {
+            background: rgba(212, 165, 116, 0.15);
+            border: 1px solid var(--border-gold);
+            color: var(--gold);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: none;
+        }
+
+        /* ─── PROGRESS BAR ────────────────────────────────── */
+        .progress-track {
+            background: rgba(255,255,255,0.08);
+            height: 3px;
+            position: sticky;
+            top: 57px;
+            z-index: 99;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gold);
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* ─── MAIN LAYOUT ─────────────────────────────────── */
+        .module-wrap {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 2rem 6rem;
+        }
+
+        /* ─── STEP INDICATOR ──────────────────────────────── */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 2.5rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        .step-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-dot {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: var(--white);
+        }
+
+        .step.complete .step-dot {
+            background: var(--green);
+            border-color: var(--green);
+            color: var(--white);
+        }
+
+        .step-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .step.active .step-label { color: var(--navy); font-weight: 600; }
+        .step.complete .step-label { color: var(--green); }
+
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background: var(--border);
+            margin: 0 0.5rem;
+            transition: background 0.3s ease;
+        }
+
+        .step-line.complete { background: var(--green); }
+
+        /* ─── MODULE HEADER ───────────────────────────────── */
+        .module-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .module-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-eyebrow .grade-tag {
+            display: inline-block;
+            background: rgba(212, 165, 116, 0.12);
+            color: var(--gold-dark);
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .module-eyebrow .topic-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .module-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* ─── LEVEL TOGGLE ────────────────────────────────── */
+        .level-toggle {
+            display: inline-flex;
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .level-btn {
+            padding: 0.6rem 1.4rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .level-btn.active {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        /* ─── CONTENT PANELS ──────────────────────────────── */
+        .panel {
+            display: none;
+            animation: fadeUp 0.35s ease;
+        }
+
+        .panel.active { display: block; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── LESSON CONTENT ──────────────────────────────── */
+        .lesson-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .lesson-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .lesson-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin: 1.5rem 0 0.6rem;
+        }
+
+        .lesson-card p {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.85;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card ul, .lesson-card ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card li {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.75;
+            margin-bottom: 0.4rem;
+        }
+
+        .highlight-box {
+            background: rgba(212, 165, 116, 0.08);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 8px 8px 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+            font-style: italic;
+            color: var(--navy);
+            font-size: 0.95rem;
+        }
+
+        .highlight-box cite {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--gold-dark);
+            font-weight: 600;
+            margin-top: 0.4rem;
+            font-style: normal;
+            letter-spacing: 0.5px;
+        }
+
+        .key-term {
+            display: inline-block;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            margin: 0 0.1rem;
+        }
+
+        /* ─── READING SECTION ─────────────────────────────── */
+        .reading-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .reading-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .reading-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reading-body {
+            font-size: 0.97rem;
+            line-height: 1.9;
+            color: var(--text-primary);
+        }
+
+        .reading-body p { margin-bottom: 1.1rem; }
+
+        .reflection-block {
+            background: var(--navy);
+            border-radius: 10px;
+            padding: 1.75rem;
+            margin-top: 2rem;
+        }
+
+        .reflection-block h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .reflection-block ol {
+            padding-left: 1.25rem;
+        }
+
+        .reflection-block li {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            margin-bottom: 0.6rem;
+        }
+
+        /* ─── QUIZ ────────────────────────────────────────── */
+        .quiz-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-intro {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question-block {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question-block:last-of-type { border-bottom: none; }
+
+        .question-num {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.85rem 1.1rem;
+            background: var(--off-white);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem;
+            color: var(--text-primary);
+            width: 100%;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--navy);
+            background: rgba(26, 31, 54, 0.04);
+        }
+
+        .option-btn.selected {
+            border-color: var(--navy);
+            background: rgba(26, 31, 54, 0.06);
+        }
+
+        .option-btn.correct {
+            border-color: var(--green);
+            background: var(--green-light);
+            color: var(--green);
+        }
+
+        .option-btn.incorrect {
+            border-color: #c62828;
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .option-letter {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 1.5px solid currentColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+
+        .answer-feedback {
+            margin-top: 0.75rem;
+            padding: 0.85rem 1rem;
+            border-radius: 7px;
+            font-size: 0.88rem;
+            line-height: 1.55;
+            display: none;
+        }
+
+        .answer-feedback.correct {
+            background: var(--green-light);
+            color: var(--green);
+            border-left: 3px solid var(--green);
+        }
+
+        .answer-feedback.incorrect {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 3px solid #c62828;
+        }
+
+        /* ─── NAVIGATION BUTTONS ──────────────────────────── */
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 2rem;
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary:hover {
+            background: var(--navy-light);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.5rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-dark);
+            color: var(--white);
+        }
+
+        /* ─── COMPLETION SCREEN ───────────────────────────── */
+        .completion-screen {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .completion-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .completion-screen h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .completion-screen p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .xp-award {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .score-display {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            display: inline-block;
+            margin-bottom: 2.5rem;
+            min-width: 240px;
+        }
+
+        .score-display .score-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1;
+        }
+
+        .score-display .score-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+
+        .completion-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ─── LOADING STATE ───────────────────────────────── */
+        .loading-state {
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--navy);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-state p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* ─── RESPONSIVE ──────────────────────────────────── */
+        @media (max-width: 640px) {
+            .module-wrap { padding: 2rem 1.25rem 5rem; }
+            .module-title { font-size: 1.7rem; }
+            .lesson-card, .reading-card, .quiz-card { padding: 1.75rem 1.25rem; }
+            .step-label { display: none; }
+            .nav-bar { flex-direction: column-reverse; }
+            .nav-bar .btn-primary, .nav-bar .btn-secondary { width: 100%; justify-content: center; }
+        }
+
+        /* ─── GEOGRAPHY MODULE — LOCATION CARDS ──────────── */
+        /* ─── GEO CARDS (Bible Geography module) ─────────── */
+        .geo-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            margin: 1.25rem 0;
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.2s ease;
+        }
+
+        .geo-card:hover { box-shadow: var(--shadow-md); }
+
+        .geo-card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            padding: 0.9rem 1.25rem;
+            background: var(--navy);
+            flex-wrap: wrap;
+        }
+
+        .geo-names {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            flex-wrap: wrap;
+        }
+
+        .geo-ancient {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .geo-arrow {
+            color: rgba(255,255,255,0.4);
+            font-size: 0.9rem;
+        }
+
+        .geo-modern {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: rgba(255,255,255,0.85);
+        }
+
+        .geo-era-tag {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            background: rgba(212,165,116,0.15);
+            border: 1px solid rgba(212,165,116,0.3);
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .geo-body {
+            padding: 1.1rem 1.25rem 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .geo-body p {
+            font-size: 0.92rem;
+            line-height: 1.75;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .geo-then-now {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .geo-then {
+            padding: 1rem 1.25rem;
+            border-right: 1px solid var(--border);
+            background: rgba(212,165,116,0.04);
+        }
+
+        .geo-now {
+            padding: 1rem 1.25rem;
+            background: rgba(26,31,54,0.03);
+        }
+
+        .geo-tn-label {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+        }
+
+        .geo-then p, .geo-now p {
+            font-size: 0.88rem;
+            line-height: 1.7;
+            color: var(--text-secondary);
+            margin: 0;
+        }
+
+        /* ─── LANDING SCREEN ──────────────────────────────── */
+        .landing-group {
+            margin-bottom: 2.5rem;
+        }
+
+        .landing-group-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--gold);
+        }
+
+        .landing-group-icon {
+            font-size: 1.1rem;
+        }
+
+        .landing-group-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--navy);
+            letter-spacing: 0.3px;
+        }
+
+        .landing-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1rem;
+        }
+
+        .landing-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.5rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .landing-card:hover {
+            transform: translateY(-3px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-gold);
+        }
+
+        .landing-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 0.25rem;
+        }
+
+        .landing-card-grade {
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            color: var(--gold-dark);
+            background: rgba(212,165,116,0.12);
+            padding: 0.15rem 0.55rem;
+            border-radius: 20px;
+        }
+
+        .landing-card-xp {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--text-muted);
+        }
+
+        .landing-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.3;
+        }
+
+        .landing-card-desc {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .landing-card-footer {
+            font-size: 0.82rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+            margin-top: 0.5rem;
+        }
+
+        .landing-card:hover .landing-card-footer {
+            color: var(--navy);
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
+            ← Back
+        </button>
+        <a href="index.html" class="header-logo">CRUX</a>
+    </div>
+    <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
+        <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
+    </div>
+</header>
+
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div class="module-wrap">
+
+    <!-- Loading state — shown while a module loads -->
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
+
+    <!-- Step indicator -->
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
+        </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
+        </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
+
+    <!-- Module header -->
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">Grades 3–8</span>
+            <span class="topic-tag" id="topicTag">Faith Formation</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <!-- Level toggle -->
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions — you can review your answers before submitting.</p>
+            <div id="quizQuestions">
+                <!-- Populated by JS -->
+            </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You've completed this lesson. Keep going — the faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
+            </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    ← Back to CRUX
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="crux-module-engine.js"></script>
+<script>
+const MODULE_DATA = {
+    id: 'beatitudes',
+    title: 'The Beatitudes',
+    subtitle: 'Jesus sat down on a hillside and described the blessed life. Every single person on his list looked like a loser by the world\'s standards.',
+    gradeTag: 'Grades 3–8',
+    topic: 'How We Live',
+    xpReward: 60,
+    nextModule: 'ten_commandments',
+
+    lesson: {
+        beginner: `
+            <h2>The Beatitudes — Lesson</h2>
+
+            <p>Jesus sits down on a hillside. A crowd gathers. And the first thing out of his mouth is a list of people he calls blessed.</p>
+
+            <p>Blessed are the poor in spirit. Blessed are those who mourn. Blessed are the meek. Blessed are those who are persecuted.</p>
+
+            <p>Stop for a second and think about that list. By the world's scoreboard, none of those people are winning. The poor in spirit sound like they need a confidence boost. The meek sound like pushovers. The persecuted sound like they picked the wrong side. If you wrote those words on a locker room wall before a big game, your coach would take them down.</p>
+
+            <p>That's exactly the point. The Kingdom of God runs on completely different rules than the world does. Jesus isn't describing a strategy for getting ahead. He's describing what a person looks like when they're living for something bigger than themselves, and actually free.</p>
+
+            <h3>The Eight Beatitudes</h3>
+
+            <p><strong>Blessed are the poor in spirit, for theirs is the kingdom of heaven.</strong> This isn't about being broke. It's about knowing you need God. The person who walks around thinking they have everything figured out on their own has no room for the Kingdom. The person who knows their own emptiness does. Humility is the door.</p>
+
+            <p><strong>Blessed are those who mourn, for they will be comforted.</strong> Grief is not a sign that something went wrong with your faith. It's a sign that you loved something real. Jesus doesn't promise the mourning person a quick fix. He promises presence: the kind of comfort that comes from God sitting with you in the middle of it, not pulling you out before you're ready.</p>
+
+            <p><strong>Blessed are the meek, for they will inherit the earth.</strong> Meekness is not weakness. It's strength that knows when not to use itself. The meek person could come out swinging but chooses not to, because they're not trying to prove anything. That kind of quiet confidence is rarer than most people realize.</p>
+
+            <p><strong>Blessed are those who hunger and thirst for righteousness, for they will be filled.</strong> What do you want badly enough to feel its absence like hunger? If the answer is justice, goodness, a world ordered toward what's right, that desire itself is a sign you're on the right track. Jesus says that kind of hunger gets satisfied.</p>
+
+            <p><strong>Blessed are the merciful, for they will receive mercy.</strong> Mercy is giving someone a break they didn't earn. It's the choice you make when you could hold something over someone and you don't. The person who can't extend mercy to others tends to struggle receiving it themselves. The connection runs both ways.</p>
+
+            <p><strong>Blessed are the pure in heart, for they will see God.</strong> Purity of heart doesn't mean you've never had a dark thought. It means your deepest desire, underneath everything else, is oriented toward God. When what you want and what God wants are pointed in the same direction, you start to see things more clearly.</p>
+
+            <p><strong>Blessed are the peacemakers, for they will be called children of God.</strong> Not peacekeepers but peacemakers. Keeping the peace can mean just avoiding conflict. Making peace means actually doing something to repair what's broken between people. It's harder and it costs more. Jesus calls those people his family.</p>
+
+            <p><strong>Blessed are those who are persecuted for righteousness, for theirs is the kingdom of heaven.</strong> Nobody signs up for this one. But Jesus is clear: if you're living this list, the world is not always going to like it. Standing for something real will cost you something sometimes. He says that cost comes with the Kingdom.</p>
+
+            <h3>A Different Kind of Scorecard</h3>
+
+            <p>Think about someone you've known who actually lived this way. Not perfectly. Nobody does. But someone humble, merciful, oriented toward God even when it was inconvenient. That person probably didn't look like a winner by the world's standards. They may have been quiet about their faith. They may have taken more than they gave back.</p>
+
+            <p>Jesus says that person is closer to the Kingdom than most people who can recite every doctrine from memory. The Beatitudes aren't a checklist. They're a portrait. And if you squint at them long enough, they start to look like someone you know.</p>
+        `,
+
+        theologian: `
+            <h2>The Beatitudes — Theologian Level</h2>
+
+            <p>The Sermon on the Mount opens with eight declarations that sound, to modern ears, like a description of people who are losing at life. The Greek word Jesus uses — <span class="key-term">makarios</span> — is the key to understanding why that reading is wrong.</p>
+
+            <h3>What Makarios Actually Means</h3>
+
+            <p><em>Makarios</em> is often translated "happy" or "blessed," but neither word captures it fully. In classical Greek it was used to describe the gods, beings whose existence was complete. When it was applied to humans, it described the condition of someone who has what they were made for, someone whose life is properly ordered toward its true end. The Beatitudes are not promising emotional happiness. They are not a formula for feeling good. They are a description of the condition of someone rightly oriented toward God, which is objectively the best thing a human being can be, however it feels in a given moment.</p>
+
+            <p>This distinction matters pastorally. A student who reads "blessed are those who mourn" and hears a promise that grief will feel good has misread the text. Grief doesn't feel good. The promise is not that it will. The promise is that the person in the middle of real grief, who hasn't numbed out or distracted themselves, who is actually feeling the weight of loss, is in a state of <em>makarios</em> because they are living truthfully, in contact with what is real, and therefore in proximity to the God who is real.</p>
+
+            <div class="highlight-box">
+                <p>"Blessed are the poor in spirit, for theirs is the kingdom of heaven."</p>
+                <cite>— Matthew 5:3</cite>
+            </div>
+
+            <h3>Jesus as the Living Beatitudes</h3>
+
+            <p>The Beatitudes are not only a description of the Christian life. They are a self-portrait of Jesus. He does not merely preach them. He lives every one of them in the narrative of the Gospels.</p>
+
+            <p><strong>Poor in spirit:</strong> Paul's description in Philippians 2:6–7 — "though he was in the form of God, he did not regard equality with God as something to be exploited, but emptied himself." The Greek word is <em>kenosis</em>: self-emptying. The eternal Son of God empties himself of divine prerogative and takes on human nature. If poverty of spirit means knowing your dependence, Jesus demonstrates it by becoming dependent on Mary for milk, dependent on Joseph for protection, dependent on a Roman cross for the act that saves the world.</p>
+
+            <p><strong>Those who mourn:</strong> John 11:35 — the shortest verse in the Bible. "Jesus wept." At Lazarus's tomb, knowing he is about to raise him, Jesus weeps anyway. Not because he lacks faith in what is about to happen. Because the weight of human grief is real and he enters it rather than bypassing it.</p>
+
+            <p><strong>Meek:</strong> The entry into Jerusalem on a donkey, deliberately fulfilling Zechariah 9:9: "your king comes to you, gentle and riding on a donkey." The king of kings rides a borrowed animal. Meekness is not the absence of power. It is the choice of the appropriate response when more force is available.</p>
+
+            <p><strong>Merciful:</strong> The woman caught in adultery (John 8). The crowd is ready to execute the law. Jesus writes in the dirt, says "let the one without sin cast the first stone," and one by one they leave. He does not excuse the sin. He refuses to destroy the person.</p>
+
+            <p><strong>Pure in heart:</strong> Gethsemane. "Not my will but yours." The purest expression of a heart entirely oriented toward God, in the moment when that orientation costs everything.</p>
+
+            <p><strong>Peacemaker:</strong> The cross itself. Paul writes in Colossians 1:20 that God reconciled all things to himself "through him, whether things on earth or things in heaven, by making peace through his blood, shed on the cross." The ultimate act of peacemaking is the one that costs the peacemaker everything.</p>
+
+            <p><strong>Persecuted for righteousness:</strong> The passion narrative in its entirety. He is arrested for what he taught, tried on false testimony, and executed by the state. The last beatitude is not theoretical for Jesus. It is his biography.</p>
+
+            <h3>Beatitudes and Commandments: Floor and Ceiling</h3>
+
+            <p>The Ten Commandments and the Beatitudes are not competing moral systems. They address different dimensions of the moral life. Aquinas, in the Summa Theologiae (I-II, Q. 69), draws a precise distinction. The Commandments set the minimum floor: the acts required and prohibited for a moral life to be possible at all. You shall not murder, you shall not steal: these are the conditions of basic civilized existence. The Beatitudes describe the ceiling: not what is minimally required but what a fully flourishing human life, properly oriented toward its final end in God, actually looks like.</p>
+
+            <p>A person can keep all ten commandments and still be spiritually impoverished, never mourning, never meek, never merciful, never persecuted for anything because they never stand for anything. The Commandments are necessary. They are not sufficient. The Beatitudes name the life the Commandments are meant to make possible.</p>
+
+            <p>If you have already studied the <a href="crux-modules.html?module=ten_commandments" style="color:var(--gold-dark);font-weight:600;">Ten Commandments module</a>, this relationship is worth holding together: the Commandments tell you what kind of person not to be. The Beatitudes describe what kind of person to become.</p>
+
+            <h3>Luke 6 and the Four Woes</h3>
+
+            <p>Matthew's Beatitudes are the familiar version, but Luke 6:20–26 contains a shorter version with a structural element Matthew omits: four corresponding woes. "Blessed are you who are poor, but woe to you who are rich. Blessed are you who are hungry now, but woe to you who are full now." The parallel structure is deliberate. Luke's Jesus is not saying wealth and comfort are sins. He is saying they carry a specific spiritual danger: they can make a person feel complete when they are not. The full person does not hunger. The comfortable person does not mourn. The person who has everything the world offers may have crowded out the very condition, the poverty of spirit and acknowledged need, that makes the Kingdom accessible.</p>
+
+            <p>The woes are not curses. They are warnings. They are what the Beatitudes look like from the other side: not "these people are damned" but "these people are in danger of missing the only thing that matters."</p>
+
+            <h3>Aquinas on the Beatitudes and the Gifts</h3>
+
+            <p>In ST I-II Q. 69, Aquinas connects each Beatitude to one of the gifts of the Holy Spirit, the same gifts tied to the Fruits module. His argument is that the Beatitudes represent acts flowing from the gifts at their highest expression. Poverty of spirit flows from the gift of fear of the Lord (the recognition of one's creatureliness before God). Meekness flows from piety (the affective bond with God that makes gentleness possible). Mourning flows from knowledge (the clear seeing of things as they truly are, which includes the true weight of sin and loss). The pattern holds across all eight.</p>
+
+            <p>This architecture means the Beatitudes, the Gifts, and the Fruits are not three separate lists to memorize. They are one integrated account of what a life fully alive to God looks like: from the inside (the gifts that orient the person), through the action (the beatitudes as acts of that orientation), to the visible evidence from the outside (the fruits). The same Spirit, the same life, three different angles of view.</p>
+        `
+    },
+
+    reading: {
+        beginner: `
+            <h2>Reading: The Upside-Down List</h2>
+            <div class="reading-meta">Matthew 5:1–12 — The Beatitudes and the people Jesus called blessed</div>
+            <div class="reading-body">
+                <p>When Jesus gives the Beatitudes, he's sitting on a hillside with a crowd gathered around him. Matthew sets this up deliberately to echo Moses on Mount Sinai receiving the Ten Commandments. The parallel is intentional: here is the new lawgiver, giving the deeper law.</p>
+
+                <p>The people Jesus names as blessed would have surprised his audience. In first-century Jewish culture, wealth and success were widely understood as signs of God's favor. The poor, the mourning, the persecuted: these were not the people you expected God to be blessing. They were the ones who looked like they had been forgotten.</p>
+
+                <p>Jesus flips the whole thing. The person who knows their need for God is closer to the Kingdom than the self-sufficient person. The person carrying real grief is more alive to reality than the person who has numbed out. The person who gets pushed around for standing for something true is storing up something the bully can never take away.</p>
+
+                <p>None of this means suffering is good or that poverty is holy on its own. Jesus isn't romanticizing hardship. He's pointing at the orientation underneath it. The poor in spirit isn't blessed because they're poor. They're blessed because their poverty has made them reach for God. The mourning person isn't blessed because they're sad. They're blessed because they haven't lied to themselves about the weight of what they've lost.</p>
+
+                <p>The last beatitude is the one that tends to feel the most distant at age 13: "blessed are those who are persecuted for righteousness." Nobody signs up for that. But at some point, in a school hallway, in a group chat, somewhere, you are going to have to decide whether you stand for something or stay quiet. Jesus says the people who stand for the right thing, even when it costs them, are the ones who end up with the Kingdom. That's a pretty good trade.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Reflect on These Questions</h4>
+                <ol>
+                    <li>Which beatitude surprised you most? Which one makes the least sense to you right now?</li>
+                    <li>Jesus says the meek will inherit the earth. Think of someone you'd describe as meek in the way Jesus means it — not weak, but strong enough not to need to prove it. What is it about them that stands out?</li>
+                    <li>The last beatitude says blessed are those persecuted for righteousness. Has there been a moment where you stayed quiet when you should have said something? What stopped you?</li>
+                </ol>
+            </div>
+        `,
+
+        theologian: `
+            <h2>Reading: Aquinas on the Beatitudes and the Gifts</h2>
+            <div class="reading-meta">Thomas Aquinas, Summa Theologiae I-II, Q. 69 — The Beatitudes as the highest acts of the gifts of the Spirit</div>
+            <div class="reading-body">
+                <p>Aquinas asks a precise question in Q. 69: what is the relationship between the Beatitudes, the gifts of the Holy Spirit, and the fruits? His answer constructs a unified account of the interior life that is more useful than any of the three lists treated in isolation.</p>
+
+                <p>His starting point is the distinction between happiness as an end and happiness as the path toward that end. The final beatitude, the full possession of God in eternal life, is the ultimate end. But the Beatitudes as Jesus names them in Matthew 5 describe something different: the acts and dispositions that constitute the path toward that end here, in ordinary life. They are not descriptions of heaven. They are descriptions of what a life oriented toward heaven looks like from the inside, now.</p>
+
+                <p>Aquinas then maps each Beatitude to one of the seven gifts of the Holy Spirit. The mapping reveals the internal logic. Poverty of spirit corresponds to the gift of fear of the Lord, which correctly perceives the creature's relation to the Creator and therefore empties the person of the pride that fills that space with self. Meekness corresponds to piety, the gift that produces the right affective relationship with God and, through that, with other people. Mourning corresponds to knowledge, the gift that enables the person to see things as they actually are, including the actual weight of sin, loss, and the gap between what is and what ought to be.</p>
+
+                <p>The pattern is consistent: each gift, at its highest expression in action, produces the corresponding Beatitude. The gift is the interior orientation; the Beatitude is what that orientation looks like when it moves into the world as an act. This is why Aquinas says the Beatitudes are not simply acts of virtue. They are acts of virtue operating under the motion of the Holy Spirit, which is what distinguishes them from ordinary moral effort.</p>
+
+                <p>The fruits of the Spirit, which you may have studied in the <a href="crux-modules.html?module=fruits_holy_spirit" style="color:var(--gold-dark);font-weight:600;">Fruits of the Holy Spirit module</a>, complete the picture. If the gifts are the interior orientation and the Beatitudes are the highest acts, the fruits are the visible results: what a person who is living this way produces in the world over time. Love, joy, peace, patience: these are what the Beatitudes look like from the outside, accumulated across a life.</p>
+
+                <p>The practical implication of Aquinas's framework is that growth in the Beatitudes is not primarily a matter of trying harder to be meek or merciful. It is a matter of cooperating with the gifts the Spirit has already given. You do not manufacture poverty of spirit by willing yourself to be humble. You receive the gift of fear of the Lord, the right perception of your creaturely dependence, and poverty of spirit follows from it. The moral life is not a solo project. It is a collaboration.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Theological Reflection</h4>
+                <ol>
+                    <li>Aquinas distinguishes between the Beatitudes as acts of virtue and the same acts operating under the motion of the Holy Spirit. What is the practical difference? Can you live the Beatitudes without the gifts?</li>
+                    <li>The four woes in Luke 6 correspond structurally to the Beatitudes. Aquinas doesn't address them directly. How would you extend his framework — what gift, blocked or absent, would produce the condition Jesus warns against in each woe?</li>
+                    <li>If the Beatitudes are Jesus's self-portrait, and the gifts are what produce the Beatitudes in us, what does that suggest about what the gifts of the Spirit are actually doing in a person's life? What are they making us into?</li>
+                </ol>
+            </div>
+        `
+    },
+
+    quiz: [
+        {
+            q: "The Greek word 'makarios,' translated as 'blessed' in the Beatitudes, most accurately means what?",
+            options: [
+                "Emotionally happy or content in a given moment",
+                "The deep wellbeing of someone who has what they were made for — properly oriented toward their true end in God",
+                "Approved by God through righteous behavior",
+                "Fortunate in the circumstances of one's life"
+            ],
+            correct: 1,
+            explanation: "Makarios in classical Greek described the gods — beings whose existence was complete. Applied to humans, it describes the condition of someone rightly ordered toward their true end. The Beatitudes are not promising emotional happiness. They describe objective wellbeing: the state of a person living truthfully and oriented toward God, regardless of how that feels in a given moment."
+        },
+        {
+            q: "Aquinas distinguishes the Ten Commandments from the Beatitudes as 'floor' and 'ceiling.' What does he mean?",
+            options: [
+                "The Commandments apply to everyone; the Beatitudes only apply to priests and religious",
+                "The Commandments set the minimum required for moral life; the Beatitudes describe what a fully flourishing life oriented toward God looks like — what the Commandments make possible",
+                "The Commandments govern external actions; the Beatitudes govern only interior attitudes",
+                "The Commandments are from the Old Testament; the Beatitudes replace them in the New"
+            ],
+            correct: 1,
+            explanation: "Aquinas teaches that the Commandments are necessary — they establish the conditions of basic moral life. But they are not sufficient. A person can keep all ten and still be spiritually impoverished. The Beatitudes describe the ceiling: not what is minimally required but what human life fully alive to God actually looks like. The Commandments tell you what kind of person not to be. The Beatitudes describe what kind of person to become."
+        },
+        {
+            q: "Which beatitude does Jesus personally embody in Gethsemane when he prays 'not my will but yours'?",
+            options: [
+                "Blessed are the meek",
+                "Blessed are the merciful",
+                "Blessed are the pure in heart",
+                "Blessed are the peacemakers"
+            ],
+            correct: 2,
+            explanation: "Purity of heart means having one's deepest desire entirely oriented toward God. Gethsemane is the most direct expression of this in the Gospels: Jesus, facing the cross, aligns his will completely with the Father's. The pure in heart are not people who have never struggled — they are people whose fundamental orientation, even in the struggle, is toward God."
+        },
+        {
+            q: "Luke 6 includes four 'woes' that Matthew's version of the Beatitudes omits. What is Jesus warning against in the woes?",
+            options: [
+                "That wealth, comfort, and worldly satisfaction are sinful in themselves",
+                "That wealth and comfort carry a spiritual danger — they can make a person feel complete when they are not, closing off the hunger and poverty of spirit that makes the Kingdom accessible",
+                "That people who are comfortable now will definitely be excluded from the Kingdom",
+                "That physical suffering is required for salvation"
+            ],
+            correct: 1,
+            explanation: "The woes are warnings, not condemnations. Luke's Jesus is not saying wealth is a sin. He is pointing at the spiritual danger of feeling complete when you are not — of having so much that you lose the hunger for the only thing that truly satisfies. The full person does not hunger. The comfortable person does not mourn. The woes describe what the Beatitudes look like from the other side: the condition of someone in danger of missing the Kingdom not because they are evil but because they are satisfied."
+        },
+        {
+            q: "According to Aquinas, the Beatitudes are the highest acts of what?",
+            options: [
+                "The theological virtues of faith, hope, and charity",
+                "The cardinal virtues of prudence, justice, fortitude, and temperance",
+                "The gifts of the Holy Spirit, operating at their highest expression in action",
+                "The moral precepts of the Ten Commandments, internalized through practice"
+            ],
+            correct: 2,
+            explanation: "Aquinas maps each Beatitude to one of the seven gifts of the Holy Spirit. Poverty of spirit flows from fear of the Lord; meekness from piety; mourning from knowledge. Each gift, at its highest expression in action, produces the corresponding Beatitude. This is why the Beatitudes are not simply virtuous acts — they are acts of virtue operating under the motion of the Holy Spirit, which distinguishes them from ordinary moral effort and connects them to the same Spirit who produces the fruits."
+        }
+    ]
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
+    initModule(MODULE_DATA);
+});
+</script>
+
+</body>
+</html>
