@@ -1,0 +1,1381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="CRUX Games" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="theme-color" content="#1a1f36" />
+  <meta name="description" content="Catholic faith games — Faithle, Connections, Book Drop & Verse Unscramble. Earn XP and grow in scripture." />
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="CRUX Games" />
+  <meta property="og:description" content="Daily Catholic faith games. Earn XP. Grow in scripture." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://cruxfaith.com/cruxgames.html" />
+
+  <!-- PWA Manifest (inline for single-file deploy) -->
+  <link rel="manifest" href="cruxgames-manifest.json" />
+
+  <!-- Favicon / Apple Touch Icon (reuse CRUX cross icon) -->
+  <link rel="apple-touch-icon" href="icons/crux-icon-192.png" />
+  <link rel="icon" type="image/png" href="icons/crux-icon-192.png" />
+
+  <title>CRUX Games</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-analytics-compat.js"></script>
+
+  <style>
+    /* ─── Reset & Base ─────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    html { height: 100%; -webkit-text-size-adjust: 100%; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #faf8f4;
+      color: #1a1f36;
+      min-height: 100%;
+      min-height: -webkit-fill-available;
+      overscroll-behavior: none;
+    }
+
+    /* ─── CSS Variables ─────────────────────────────────────────── */
+    :root {
+      --navy: #1a1f36;
+      --navy-mid: #2d3563;
+      --gold: #d4a574;
+      --gold-light: #e8c99a;
+      --gold-pale: #fdf8f2;
+      --cream: #faf8f4;
+      --white: #ffffff;
+      --text: #1a1f36;
+      --muted: #6b7280;
+      --border: rgba(26,31,54,0.12);
+      --border-mid: rgba(26,31,54,0.22);
+      --success: #3b6d11;
+      --success-bg: #eaf3de;
+      --error: #a32d2d;
+      --error-bg: #fcebeb;
+      --warn: #ba7517;
+      --warn-bg: #faeeda;
+      --info: #185fa5;
+      --info-bg: #e6f1fb;
+      --card-shadow: 0 2px 12px rgba(26,31,54,0.08);
+      --safe-top: env(safe-area-inset-top, 0px);
+      --safe-bottom: env(safe-area-inset-bottom, 0px);
+      --safe-left: env(safe-area-inset-left, 0px);
+      --safe-right: env(safe-area-inset-right, 0px);
+    }
+
+    /* ─── App Shell ─────────────────────────────────────────────── */
+    #app {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      min-height: -webkit-fill-available;
+      padding-top: var(--safe-top);
+      padding-bottom: var(--safe-bottom);
+      padding-left: var(--safe-left);
+      padding-right: var(--safe-right);
+    }
+
+    /* ─── Top Nav ───────────────────────────────────────────────── */
+    .top-nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--navy);
+      padding: 0 16px;
+      height: 56px;
+      display: flex; align-items: center; justify-content: space-between;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .nav-logo {
+      display: flex; align-items: center; gap: 9px;
+      font-family: 'Playfair Display', serif;
+      font-size: 18px; font-weight: 700; color: #fff;
+      text-decoration: none;
+    }
+    .nav-logo span { color: var(--gold); }
+    .cross-icon {
+      width: 18px; height: 18px; position: relative; flex-shrink: 0;
+    }
+    .cross-icon::before, .cross-icon::after {
+      content: ''; position: absolute; background: var(--gold); border-radius: 2px;
+    }
+    .cross-icon::before { width: 3px; height: 100%; left: 50%; transform: translateX(-50%); }
+    .cross-icon::after  { width: 100%; height: 3px; top: 32%; }
+
+    .nav-right { display: flex; align-items: center; gap: 10px; }
+    .nav-xp-pill {
+      display: flex; align-items: center; gap: 5px;
+      background: rgba(212,165,116,0.15); border: 1px solid rgba(212,165,116,0.3);
+      padding: 4px 10px; border-radius: 99px;
+      font-size: 12px; font-weight: 600; color: var(--gold);
+    }
+    .nav-avatar {
+      width: 32px; height: 32px; border-radius: 50%;
+      background: rgba(255,255,255,0.1); border: 1.5px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 12px; font-weight: 600; color: #fff; cursor: pointer;
+    }
+    .nav-back-btn {
+      background: none; border: none; color: var(--gold);
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      font-family: 'Inter', sans-serif;
+      display: none; align-items: center; gap: 4px; padding: 4px 0;
+    }
+    .nav-back-btn.visible { display: flex; }
+
+    /* ─── Main Content ──────────────────────────────────────────── */
+    .main { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+    .screen { display: none; }
+    .screen.active { display: block; }
+
+    /* ─── Home Screen ───────────────────────────────────────────── */
+    .home-hero {
+      background: var(--navy);
+      padding: 28px 20px 24px;
+      text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .home-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 100%, rgba(212,165,116,0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-badge {
+      display: inline-block; font-size: 10px; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 10px;
+    }
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 28px; font-weight: 700; color: #fff;
+      margin-bottom: 6px; line-height: 1.15;
+    }
+    .hero-sub { font-size: 13px; color: rgba(255,255,255,0.55); margin-bottom: 18px; }
+
+    .xp-bar-card {
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 12px; padding: 14px 16px; max-width: 340px; margin: 0 auto;
+    }
+    .xp-row { display: flex; justify-content: space-between; align-items: baseline;
+      font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+    .xp-row strong { color: #fff; font-weight: 600; }
+    .xp-track { background: rgba(255,255,255,0.1); border-radius: 99px; height: 7px; overflow: hidden; }
+    .xp-fill  { height: 100%; background: linear-gradient(90deg, var(--gold) 0%, var(--gold-light) 100%);
+      border-radius: 99px; transition: width 0.8s cubic-bezier(.4,0,.2,1); width: 0%; }
+
+    .home-stats {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 10px;
+      padding: 16px; max-width: 480px; margin: 0 auto;
+    }
+    .stat-tile {
+      background: var(--white); border: 1.5px solid var(--border);
+      border-radius: 12px; padding: 12px; text-align: center;
+    }
+    .stat-num { font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 700; color: var(--navy); }
+    .stat-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; color: var(--muted); margin-top: 2px; }
+
+    .verse-banner {
+      margin: 0 16px 16px;
+      background: var(--white); border: 1.5px solid var(--border);
+      border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0;
+      padding: 11px 14px; font-style: italic; font-size: 13px; color: var(--navy);
+      line-height: 1.55;
+    }
+    .verse-banner cite {
+      font-style: normal; font-size: 10px; color: var(--muted);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      display: block; margin-top: 5px;
+    }
+
+    .section-heading {
+      font-family: 'Playfair Display', serif;
+      font-size: 17px; font-weight: 700; color: var(--navy);
+      padding: 4px 16px 10px; 
+    }
+
+    .games-scroll {
+      padding: 0 16px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+    }
+
+    .game-card {
+      background: var(--white); border: 1.5px solid var(--border);
+      border-radius: 14px; padding: 16px 14px 12px;
+      cursor: pointer; transition: all 0.18s;
+      position: relative; overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .game-card:active { transform: scale(0.97); }
+    .game-card.featured { border-color: var(--gold); background: var(--gold-pale); }
+    .game-card.locked { opacity: 0.5; cursor: not-allowed; }
+    .daily-badge {
+      position: absolute; top: 9px; right: -20px;
+      background: var(--gold); color: var(--navy);
+      font-size: 8px; font-weight: 700; letter-spacing: 0.08em;
+      padding: 3px 26px; transform: rotate(35deg);
+    }
+    .game-icon { font-size: 26px; margin-bottom: 10px; display: block; }
+    .game-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 15px; font-weight: 700; color: var(--navy); margin-bottom: 4px;
+    }
+    .game-desc { font-size: 11px; color: var(--muted); line-height: 1.45; margin-bottom: 10px; }
+    .game-footer { display: flex; justify-content: space-between; align-items: center; }
+    .game-xp { font-size: 11px; font-weight: 600; color: var(--gold); }
+    .game-type { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .play-pill {
+      display: block; width: 100%; margin-top: 10px;
+      padding: 8px; background: var(--navy); color: #fff;
+      border: none; border-radius: 8px; font-size: 12px; font-weight: 600;
+      cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.15s;
+    }
+    .play-pill:active { background: var(--navy-mid); }
+    .game-card.featured .play-pill { background: var(--gold); color: var(--navy); }
+
+    /* ─── Auth Banner ───────────────────────────────────────────── */
+    .auth-banner {
+      margin: 0 16px 16px;
+      background: var(--info-bg); border: 1.5px solid rgba(24,95,165,0.2);
+      border-radius: 10px; padding: 12px 14px;
+      display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    }
+    .auth-banner p { font-size: 12px; color: var(--info); line-height: 1.4; }
+    .auth-banner a {
+      font-size: 12px; font-weight: 600; color: var(--info);
+      white-space: nowrap; text-decoration: none;
+      padding: 5px 12px; border: 1.5px solid var(--info);
+      border-radius: 6px; flex-shrink: 0;
+    }
+
+    /* ─── Game Screens Shared ───────────────────────────────────── */
+    .game-screen { padding: 16px; max-width: 480px; margin: 0 auto; }
+    .gs-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px; font-weight: 700; color: var(--navy);
+      text-align: center; margin-bottom: 4px;
+    }
+    .gs-sub { font-size: 12px; color: var(--muted); text-align: center; margin-bottom: 16px; }
+
+    .feedback-msg {
+      min-height: 30px; text-align: center; margin: 8px 0;
+      font-size: 13px; font-weight: 600; color: var(--navy);
+    }
+
+    .action-row { display: flex; gap: 8px; margin-top: 12px; }
+    .btn {
+      padding: 11px 16px; border-radius: 10px;
+      border: 1.5px solid var(--border);
+      font-size: 13px; font-weight: 600; cursor: pointer;
+      font-family: 'Inter', sans-serif; background: var(--white);
+      color: var(--navy); transition: all 0.15s; -webkit-tap-highlight-color: transparent;
+    }
+    .btn:active { transform: scale(0.97); }
+    .btn.primary { background: var(--navy); color: #fff; border-color: var(--navy); flex: 1; }
+    .btn.gold    { background: var(--gold); color: var(--navy); border-color: var(--gold); flex: 1; }
+    .btn.outline { flex: 1; }
+
+    /* ─── FAITHLE ───────────────────────────────────────────────── */
+    .faithle-hint {
+      background: rgba(212,165,116,0.1); border: 1.5px solid rgba(212,165,116,0.3);
+      border-radius: 10px; padding: 10px 14px; margin-bottom: 14px;
+      font-size: 13px; color: var(--navy); line-height: 1.5; text-align: center;
+    }
+    .wordle-grid {
+      display: grid; grid-template-rows: repeat(6, 1fr);
+      gap: 5px; margin-bottom: 14px; max-width: 280px; margin-left: auto; margin-right: auto;
+    }
+    .w-row { display: grid; grid-template-columns: repeat(5,1fr); gap: 5px; }
+    .w-cell {
+      aspect-ratio: 1; border: 2px solid var(--border); border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px; font-weight: 700; text-transform: uppercase;
+      color: var(--navy); background: var(--white);
+      transition: border-color 0.1s, background 0.15s;
+    }
+    .w-cell.filled { border-color: var(--navy); }
+    .w-cell.correct { background: var(--success-bg); border-color: var(--success); color: var(--success); }
+    .w-cell.present { background: var(--warn-bg); border-color: var(--warn); color: var(--warn); }
+    .w-cell.absent  { background: #f1efe8; border-color: #b4b2a9; color: #888780; }
+
+    .kb-wrap { display: flex; flex-direction: column; gap: 6px; }
+    .kb-row  { display: flex; gap: 4px; justify-content: center; }
+    .kb-key  {
+      min-width: 30px; height: 44px; border-radius: 7px;
+      border: 1.5px solid var(--border); background: var(--white);
+      font-size: 12px; font-weight: 600; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      padding: 0 3px; font-family: 'Inter', sans-serif; color: var(--navy);
+      transition: all 0.12s; -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .kb-key.wide { min-width: 46px; font-size: 10px; }
+    .kb-key:active { transform: scale(0.93); }
+    .kb-key.k-correct { background: var(--success-bg); border-color: var(--success); color: var(--success); }
+    .kb-key.k-present { background: var(--warn-bg); border-color: var(--warn); color: var(--warn); }
+    .kb-key.k-absent  { background: #f1efe8; border-color: #b4b2a9; color: #888780; }
+
+    /* ─── CONNECTIONS ───────────────────────────────────────────── */
+    .conn-grid {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      gap: 6px; margin-bottom: 12px;
+    }
+    .conn-tile {
+      aspect-ratio: 1.05; border: 2px solid var(--border); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center; font-size: 11px; font-weight: 600;
+      cursor: pointer; padding: 5px; color: var(--navy);
+      transition: all 0.15s; background: var(--white);
+      text-transform: uppercase; line-height: 1.2;
+      -webkit-tap-highlight-color: transparent; user-select: none;
+    }
+    .conn-tile:active { transform: scale(0.95); }
+    .conn-tile.selected { border-color: var(--navy); background: rgba(26,31,54,0.08); }
+    .conn-tile.s0 { background: var(--success-bg); border-color: var(--success); color: var(--success); cursor: default; }
+    .conn-tile.s1 { background: var(--warn-bg); border-color: var(--warn); color: var(--warn); cursor: default; }
+    .conn-tile.s2 { background: var(--info-bg); border-color: var(--info); color: var(--info); cursor: default; }
+    .conn-tile.s3 { background: #fbeaf0; border-color: #993556; color: #993556; cursor: default; }
+
+    .lives-row { display: flex; gap: 6px; justify-content: center; margin-bottom: 10px; }
+    .life { width: 11px; height: 11px; border-radius: 50%; background: var(--navy); }
+    .life.gone { background: var(--border); }
+
+    .conn-legend { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center;
+      font-size: 11px; color: var(--muted); margin-top: 8px; }
+    .legend-swatch { width: 10px; height: 10px; border-radius: 3px;
+      display: inline-block; margin-right: 3px; vertical-align: middle; }
+
+    /* ─── BOOK DROP ─────────────────────────────────────────────── */
+    .clue-card {
+      background: var(--white); border: 1.5px solid var(--border);
+      border-radius: 14px; padding: 20px; margin-bottom: 14px;
+    }
+    .clue-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em;
+      color: var(--muted); margin-bottom: 8px; font-weight: 600; }
+    .clue-text  { font-size: 15px; color: var(--navy); line-height: 1.6; }
+    .book-input {
+      width: 100%; padding: 12px 14px; border: 1.5px solid var(--border);
+      border-radius: 10px; font-size: 15px; font-family: 'Inter', sans-serif;
+      color: var(--navy); background: var(--white); outline: none;
+      transition: border-color 0.15s;
+    }
+    .book-input:focus { border-color: var(--navy); }
+    .book-input-row { display: flex; gap: 8px; margin-bottom: 8px; }
+
+    /* ─── VERSE UNSCRAMBLE ──────────────────────────────────────── */
+    .progress-dots { display: flex; gap: 5px; justify-content: center; margin-bottom: 14px; }
+    .pd { width: 9px; height: 9px; border-radius: 50%;
+      background: var(--border); border: 1.5px solid rgba(26,31,54,0.15); }
+    .pd.done    { background: var(--gold); border-color: var(--gold); }
+    .pd.current { background: var(--navy); border-color: var(--navy); }
+
+    .verse-meta { text-align: center; margin-bottom: 14px; }
+    .verse-ref { font-family: 'Playfair Display', serif; font-size: 18px;
+      font-weight: 700; color: var(--navy); }
+    .diff-badge { display: inline-block; padding: 3px 10px; border-radius: 99px;
+      font-size: 11px; font-weight: 600; margin-top: 4px; }
+    .diff-easy   { background: var(--success-bg); color: var(--success); }
+    .diff-medium { background: var(--warn-bg); color: var(--warn); }
+    .diff-hard   { background: var(--error-bg); color: var(--error); }
+
+    .drop-zone {
+      min-height: 66px; background: rgba(26,31,54,0.03);
+      border: 1.5px dashed rgba(26,31,54,0.2); border-radius: 12px;
+      padding: 10px; display: flex; flex-wrap: wrap; gap: 6px;
+      align-items: flex-start; margin-bottom: 10px; transition: border-color 0.2s;
+    }
+    .drop-zone.correct { border-color: var(--success); background: var(--success-bg); }
+    .drop-zone.wrong   { border-color: var(--error); background: var(--error-bg); }
+    .drop-label { font-size: 11px; color: var(--muted); width: 100%; font-style: italic; }
+
+    .word-bank { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .w-chip {
+      padding: 7px 12px; background: var(--white); border: 1.5px solid var(--border);
+      border-radius: 8px; font-size: 13px; font-weight: 500; color: var(--navy);
+      cursor: pointer; user-select: none; transition: all 0.14s;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .w-chip:active { transform: scale(0.95); }
+    .w-chip.placed { background: var(--navy); color: #fff; border-color: var(--navy); }
+
+    .hint-box {
+      background: var(--info-bg); border: 1.5px solid rgba(24,95,165,0.2);
+      border-radius: 10px; padding: 10px 14px; margin-bottom: 10px;
+      font-size: 12px; color: var(--info); display: none;
+    }
+    .hint-box.show { display: block; }
+    .hint-box strong { font-size: 10px; text-transform: uppercase; letter-spacing: 0.06em; display: block; margin-bottom: 4px; }
+
+    /* ─── Result Panel ──────────────────────────────────────────── */
+    .result-card {
+      background: var(--gold-pale); border: 1.5px solid var(--gold);
+      border-radius: 16px; padding: 24px 20px; text-align: center; margin-bottom: 16px;
+    }
+    .result-icon  { font-size: 44px; margin-bottom: 10px; }
+    .result-title { font-family: 'Playfair Display', serif;
+      font-size: 26px; font-weight: 700; color: var(--navy); margin-bottom: 5px; }
+    .result-sub   { font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+    .xp-badge {
+      display: inline-block; padding: 8px 24px;
+      background: var(--navy); color: var(--gold);
+      font-size: 18px; font-weight: 700; border-radius: 99px; margin-bottom: 14px;
+    }
+    .score-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 8px; margin-bottom: 16px;
+    }
+    .sc { background: var(--white); border: 1px solid var(--border);
+      border-radius: 10px; padding: 10px; text-align: center; }
+    .sc-n { font-family: 'Playfair Display', serif;
+      font-size: 22px; font-weight: 700; color: var(--navy); }
+    .sc-l { font-size: 10px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--muted); margin-top: 2px; }
+
+    .verse-reveal-list { margin-bottom: 16px; }
+    .vr-item {
+      background: var(--white); border: 1px solid var(--border);
+      border-left: 3px solid var(--gold); border-radius: 0 10px 10px 0;
+      padding: 10px 14px; margin-bottom: 8px;
+      font-family: 'Playfair Display', serif; font-style: italic;
+      font-size: 13px; color: var(--navy); line-height: 1.55;
+    }
+    .vr-item cite {
+      font-style: normal; font-family: 'Inter', sans-serif;
+      font-size: 10px; color: var(--muted); display: block; margin-top: 5px;
+    }
+
+    /* ─── Loading / Toast ───────────────────────────────────────── */
+    .toast {
+      position: fixed; bottom: calc(20px + var(--safe-bottom)); left: 50%;
+      transform: translateX(-50%) translateY(80px); opacity: 0;
+      background: var(--navy); color: #fff; padding: 10px 20px;
+      border-radius: 99px; font-size: 13px; font-weight: 600;
+      transition: all 0.3s cubic-bezier(.4,0,.2,1); z-index: 999;
+      white-space: nowrap; pointer-events: none;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+    .toast.gold { background: var(--gold); color: var(--navy); }
+
+    #loadingScreen {
+      position: fixed; inset: 0; background: var(--navy);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 9999; transition: opacity 0.4s;
+    }
+    .loading-logo { font-family: 'Playfair Display', serif;
+      font-size: 34px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+    .loading-logo em { color: var(--gold); font-style: normal; }
+    .loading-sub { font-size: 12px; color: rgba(255,255,255,0.5); margin-bottom: 28px; }
+    .loading-spinner {
+      width: 32px; height: 32px; border-radius: 50%;
+      border: 3px solid rgba(255,255,255,0.15);
+      border-top-color: var(--gold);
+      animation: spin 0.8s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ─── Responsive tweaks ─────────────────────────────────────── */
+    @media (min-width: 480px) {
+      .games-scroll { grid-template-columns: repeat(2, 1fr); }
+      .kb-key { min-width: 34px; height: 50px; font-size: 13px; }
+      .kb-key.wide { min-width: 52px; }
+    }
+    @media (min-width: 640px) {
+      .games-scroll { grid-template-columns: repeat(3, 1fr); }
+      .top-nav { height: 60px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Loading Screen -->
+<div id="loadingScreen">
+  <div class="loading-logo">CRUX <em>Games</em></div>
+  <div class="loading-sub">Faith · Play · Grow</div>
+  <div class="loading-spinner"></div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<!-- App Shell -->
+<div id="app">
+
+  <!-- Top Nav -->
+  <nav class="top-nav">
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button class="nav-back-btn" id="navBack" onclick="goHome()">← Games</button>
+      <a class="nav-logo" href="index.html" id="navLogo">
+        <span class="cross-icon"></span>CRUX <span>Games</span>
+      </a>
+    </div>
+    <div class="nav-right">
+      <div class="nav-xp-pill" id="navXpPill">⚡ <span id="navXpNum">0</span> XP</div>
+      <div class="nav-avatar" id="navAvatar" onclick="window.location='crux-account.html'">?</div>
+    </div>
+  </nav>
+
+  <main class="main">
+
+    <!-- ── HOME SCREEN ──────────────────────────────────────────── -->
+    <div class="screen active" id="homeScreen">
+
+      <div class="home-hero">
+        <div class="hero-badge">Daily Catholic Games</div>
+        <h1 class="hero-title">Play. Pray. Grow.</h1>
+        <p class="hero-sub">Earn XP, build streaks, deepen your faith</p>
+        <div class="xp-bar-card">
+          <div class="xp-row">
+            <span id="heroLevelLabel">Seeker</span>
+            <span><strong id="heroXpNum">0</strong> / <span id="heroXpNext">500</span> XP</span>
+          </div>
+          <div class="xp-track"><div class="xp-fill" id="heroXpFill"></div></div>
+        </div>
+      </div>
+
+      <div class="home-stats">
+        <div class="stat-tile"><div class="stat-num" id="statStreak">0</div><div class="stat-lbl">Day Streak</div></div>
+        <div class="stat-tile"><div class="stat-num" id="statXP">0</div><div class="stat-lbl">Total XP</div></div>
+        <div class="stat-tile"><div class="stat-num" id="statWins">0</div><div class="stat-lbl">Games Won</div></div>
+      </div>
+
+      <div id="authBanner" class="auth-banner" style="display:none;">
+        <p>Sign in to save your XP and streak to your CRUX account.</p>
+        <a href="crux-account.html">Sign In</a>
+      </div>
+
+      <div class="verse-banner" id="verseBanner">
+        "Your word is a lamp to my feet and a light to my path."
+        <cite>Psalm 119:105 · Verse of the Day</cite>
+      </div>
+
+      <div class="section-heading">Today's Games</div>
+      <div class="games-scroll">
+
+        <div class="game-card featured" onclick="openGame('faithle')">
+          <div class="daily-badge">DAILY</div>
+          <span class="game-icon">✝</span>
+          <div class="game-name">Faithle</div>
+          <div class="game-desc">Guess the 5-letter Catholic word in 6 tries</div>
+          <div class="game-footer">
+            <span class="game-xp">Up to 50 XP</span>
+            <span class="game-type">Word</span>
+          </div>
+          <button class="play-pill">Play Now</button>
+        </div>
+
+        <div class="game-card" onclick="openGame('connections')">
+          <span class="game-icon">⛪</span>
+          <div class="game-name">Connections</div>
+          <div class="game-desc">Group 16 words into 4 hidden Catholic categories</div>
+          <div class="game-footer">
+            <span class="game-xp">Up to 75 XP</span>
+            <span class="game-type">Puzzle</span>
+          </div>
+          <button class="play-pill">Play</button>
+        </div>
+
+        <div class="game-card" onclick="openGame('bookdrop')">
+          <span class="game-icon">📜</span>
+          <div class="game-name">Book Drop</div>
+          <div class="game-desc">Identify the Bible book from a one-line clue</div>
+          <div class="game-footer">
+            <span class="game-xp">Up to 40 XP</span>
+            <span class="game-type">Scripture</span>
+          </div>
+          <button class="play-pill">Play</button>
+        </div>
+
+        <div class="game-card" onclick="openGame('unscramble')">
+          <span class="game-icon">📖</span>
+          <div class="game-name">Verse Unscramble</div>
+          <div class="game-desc">Restore a scrambled scripture verse word by word</div>
+          <div class="game-footer">
+            <span class="game-xp">Up to 45 XP</span>
+            <span class="game-type">Scripture</span>
+          </div>
+          <button class="play-pill">Play</button>
+        </div>
+
+        <div class="game-card" onclick="openGame('wordsearch')" style="opacity:0.55;">
+          <span class="game-icon">🔤</span>
+          <div class="game-name">Saint Search</div>
+          <div class="game-desc">Find hidden saint names in a letter grid</div>
+          <div class="game-footer">
+            <span class="game-xp">Up to 30 XP</span>
+            <span class="game-type">Word</span>
+          </div>
+          <button class="play-pill" style="opacity:0.5">Coming Soon</button>
+        </div>
+
+        <div class="game-card" onclick="openGame('catquiz')" style="opacity:0.55;">
+          <span class="game-icon">🏛</span>
+          <div class="game-name">Catechism Quiz</div>
+          <div class="game-desc">10 questions from the Catechism of the Catholic Church</div>
+          <div class="game-footer">
+            <span class="game-xp">Up to 60 XP</span>
+            <span class="game-type">Trivia</span>
+          </div>
+          <button class="play-pill" style="opacity:0.5">Coming Soon</button>
+        </div>
+
+      </div>
+    </div><!-- /homeScreen -->
+
+    <!-- ── FAITHLE SCREEN ────────────────────────────────────────── -->
+    <div class="screen" id="faithleScreen">
+      <div class="game-screen">
+        <div class="gs-title">Faithle</div>
+        <div class="gs-sub">6 guesses to find the Catholic word</div>
+        <div class="faithle-hint" id="faithleHint">Loading…</div>
+        <div class="feedback-msg" id="faithleMsg"></div>
+        <div class="wordle-grid" id="wordleGrid"></div>
+        <div class="kb-wrap" id="wordleKb"></div>
+        <div id="faithleResult"></div>
+      </div>
+    </div>
+
+    <!-- ── CONNECTIONS SCREEN ────────────────────────────────────── -->
+    <div class="screen" id="connectionsScreen">
+      <div class="game-screen">
+        <div class="gs-title">Connections</div>
+        <div class="gs-sub">Select 4 words that share a Catholic category</div>
+        <div class="lives-row" id="connLives"></div>
+        <div class="conn-grid" id="connGrid"></div>
+        <div class="action-row">
+          <button class="btn outline" onclick="connShuffle()">Shuffle</button>
+          <button class="btn outline" onclick="connDeselect()">Deselect</button>
+          <button class="btn primary" onclick="connSubmit()">Submit</button>
+        </div>
+        <div class="feedback-msg" id="connMsg"></div>
+        <div class="conn-legend">
+          <span><span class="legend-swatch" style="background:var(--success-bg);border:1px solid var(--success)"></span>Easy</span>
+          <span><span class="legend-swatch" style="background:var(--warn-bg);border:1px solid var(--warn)"></span>Medium</span>
+          <span><span class="legend-swatch" style="background:var(--info-bg);border:1px solid var(--info)"></span>Hard</span>
+          <span><span class="legend-swatch" style="background:#fbeaf0;border:1px solid #993556"></span>Tricky</span>
+        </div>
+        <div id="connResult"></div>
+      </div>
+    </div>
+
+    <!-- ── BOOK DROP SCREEN ──────────────────────────────────────── -->
+    <div class="screen" id="bookdropScreen">
+      <div class="game-screen">
+        <div class="gs-title">Book Drop</div>
+        <div class="gs-sub">Name the Bible book from the description</div>
+        <div id="bookdropContent"></div>
+      </div>
+    </div>
+
+    <!-- ── VERSE UNSCRAMBLE SCREEN ───────────────────────────────── -->
+    <div class="screen" id="unscrambleScreen">
+      <div class="game-screen">
+        <div class="gs-title">Verse Unscramble</div>
+        <div class="gs-sub">Restore the sacred words to their rightful order</div>
+        <div id="unscrambleContent"></div>
+      </div>
+    </div>
+
+  </main>
+</div><!-- /app -->
+
+<!-- ════════════════════════════════════════════════════════════════
+     FIREBASE CONFIG
+═════════════════════════════════════════════════════════════════ -->
+<script>
+const firebaseConfig = {
+  apiKey:            "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+  authDomain:        "crux-faith-formation.firebaseapp.com",
+  projectId:         "crux-faith-formation",
+  storageBucket:     "crux-faith-formation.firebasestorage.app",
+  messagingSenderId: "838141015985",
+  appId:             "1:838141015985:web:2655e570663e182d75ef90",
+  measurementId:     "G-LQ35DLTVKY"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db   = firebase.firestore();
+try { firebase.analytics(); } catch(e) {}
+</script>
+
+<!-- ════════════════════════════════════════════════════════════════
+     APP LOGIC
+═════════════════════════════════════════════════════════════════ -->
+<script>
+/* ── XP Level System (mirrors crux-challenges.html) ────────────── */
+const LEVELS = [
+  { name:'Seeker',     min:0,    max:499  },
+  { name:'Disciple',   min:500,  max:1199 },
+  { name:'Apostle',    min:1200, max:2499 },
+  { name:'Shepherd',   min:2500, max:4499 },
+  { name:'Prophet',    min:4500, max:7499 },
+  { name:'Martyr',     min:7500, max:11999},
+  { name:'Saint',      min:12000,max:99999},
+];
+function getLevel(xp) {
+  return LEVELS.find(l => xp >= l.min && xp <= l.max) || LEVELS[0];
+}
+
+/* ── Session State ──────────────────────────────────────────────── */
+let currentUser = null;
+let sessionXP   = 0; // XP earned this session (before auth write)
+let profile = { totalXP: 0, streak: 0, gamesWon: 0, lastPlayed: null };
+
+/* ── Auth Listener ──────────────────────────────────────────────── */
+auth.onAuthStateChanged(async user => {
+  currentUser = user;
+  if (user) {
+    document.getElementById('authBanner').style.display = 'none';
+    const initials = (user.displayName || user.email || '?')
+      .split(' ').map(w=>w[0]).join('').substring(0,2).toUpperCase();
+    document.getElementById('navAvatar').textContent = initials;
+    await loadProfile(user.uid);
+  } else {
+    document.getElementById('authBanner').style.display = 'flex';
+    document.getElementById('navAvatar').textContent = '?';
+    loadLocalProfile();
+  }
+  updateUI();
+  hideLoading();
+});
+
+async function loadProfile(uid) {
+  try {
+    const snap = await db.collection('userProgress').doc(uid).get();
+    if (snap.exists) {
+      const d = snap.data();
+      profile.totalXP   = d.totalXP   || 0;
+      profile.streak    = d.streak    || 0;
+      profile.gamesWon  = d.gamesWon  || 0;
+      profile.lastPlayed= d.lastPlayed|| null;
+      checkStreak();
+    }
+  } catch(e) { console.warn('Profile load error:', e); }
+}
+
+function loadLocalProfile() {
+  try {
+    const saved = localStorage.getItem('cruxGamesProfile');
+    if (saved) profile = { ...profile, ...JSON.parse(saved) };
+    checkStreak();
+  } catch(e) {}
+}
+
+function checkStreak() {
+  const today = new Date().toDateString();
+  const last  = profile.lastPlayed;
+  if (!last) return;
+  const diff = (new Date(today) - new Date(last)) / 86400000;
+  if (diff > 1) { profile.streak = 0; saveProfile(); }
+}
+
+async function awardXP(amount, gameId) {
+  if (amount <= 0) return;
+  profile.totalXP  += amount;
+  profile.gamesWon += 1;
+  const today = new Date().toDateString();
+  if (profile.lastPlayed !== today) {
+    const diff = profile.lastPlayed
+      ? (new Date(today) - new Date(profile.lastPlayed)) / 86400000 : 0;
+    profile.streak = (diff === 1) ? profile.streak + 1 : 1;
+    profile.lastPlayed = today;
+  }
+  updateUI();
+  showToast(`+${amount} XP earned!`, true);
+  await saveProfile(gameId, amount);
+}
+
+async function saveProfile(gameId, xpEarned) {
+  if (currentUser) {
+    try {
+      const uid = currentUser.uid;
+      await db.collection('userProgress').doc(uid).set({
+        totalXP:    profile.totalXP,
+        streak:     profile.streak,
+        gamesWon:   profile.gamesWon,
+        lastPlayed: profile.lastPlayed,
+        updatedAt:  firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge: true });
+      if (gameId && xpEarned) {
+        await db.collection('xpAwards').add({
+          userId:    uid,
+          source:    'game',
+          gameId:    gameId,
+          xpAwarded: xpEarned,
+          awardedAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }
+    } catch(e) { console.warn('Save error:', e); }
+  } else {
+    try { localStorage.setItem('cruxGamesProfile', JSON.stringify(profile)); } catch(e) {}
+  }
+}
+
+function updateUI() {
+  const xp  = profile.totalXP;
+  const lvl = getLevel(xp);
+  const pct = Math.min(100, ((xp - lvl.min) / (lvl.max - lvl.min + 1)) * 100);
+
+  document.getElementById('navXpNum').textContent     = xp.toLocaleString();
+  document.getElementById('heroXpNum').textContent    = xp.toLocaleString();
+  document.getElementById('heroXpNext').textContent   = lvl.max.toLocaleString();
+  document.getElementById('heroLevelLabel').textContent = lvl.name;
+  document.getElementById('heroXpFill').style.width   = pct + '%';
+  document.getElementById('statXP').textContent       = xp.toLocaleString();
+  document.getElementById('statStreak').textContent   = profile.streak;
+  document.getElementById('statWins').textContent     = profile.gamesWon;
+}
+
+/* ── Navigation ─────────────────────────────────────────────────── */
+let activeGame = null;
+function openGame(id) {
+  if (id === 'wordsearch' || id === 'catquiz') {
+    showToast('Coming soon!'); return;
+  }
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id + 'Screen').classList.add('active');
+  document.getElementById('navBack').classList.add('visible');
+  document.getElementById('navLogo').style.display = 'none';
+  activeGame = id;
+  window.scrollTo(0,0);
+  if (id === 'faithle')     initFaithle();
+  if (id === 'connections') initConnections();
+  if (id === 'bookdrop')    initBookDrop();
+  if (id === 'unscramble')  initUnscramble();
+}
+function goHome() {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('homeScreen').classList.add('active');
+  document.getElementById('navBack').classList.remove('visible');
+  document.getElementById('navLogo').style.display = '';
+  activeGame = null;
+  window.scrollTo(0,0);
+}
+
+/* ── Toast ──────────────────────────────────────────────────────── */
+let toastTimer = null;
+function showToast(msg, gold=false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast show' + (gold ? ' gold' : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(()=>{ t.className = 'toast'; }, 2200);
+}
+
+function hideLoading() {
+  const el = document.getElementById('loadingScreen');
+  el.style.opacity = '0';
+  setTimeout(()=>{ el.style.display='none'; }, 400);
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   FAITHLE
+══════════════════════════════════════════════════════════════════ */
+const FAITHLE_WORDS = [
+  { word:'GRACE',  hint:'Unmerited divine favor freely given to humanity' },
+  { word:'PSALM',  hint:'A sacred song in the Hebrew scriptures' },
+  { word:'CROSS',  hint:'Symbol of Christ\'s sacrifice and redemption' },
+  { word:'ALTAR',  hint:'Sacred table for the celebration of Mass' },
+  { word:'CREED',  hint:'A formal statement of Christian belief' },
+  { word:'ANGEL',  hint:'A heavenly messenger and servant of God' },
+  { word:'PETER',  hint:'The apostle named as the first pope' },
+  { word:'PAPAL',  hint:'Relating to the authority of the Bishop of Rome' },
+  { word:'FAITH',  hint:'Trust and belief in God and divine revelation' },
+  { word:'RELIC',  hint:'A sacred object associated with a saint' },
+  { word:'MITRE',  hint:'The ceremonial hat worn by a bishop' },
+  { word:'TENET',  hint:'A core principle of belief or doctrine' },
+  { word:'VIGIL',  hint:'A prayerful night watch, as before Easter' },
+  { word:'CANON',  hint:'An official rule or body of scripture' },
+  { word:'GRACE',  hint:'Unmerited divine favor freely given to humanity' },
+  { word:'LAITY',  hint:'All baptized members of the Church who are not clergy' },
+  { word:'TITHE',  hint:'A tenth of one\'s income offered to the Church' },
+  { word:'PAPAL',  hint:'Relating to the authority of the Holy Father' },
+  { word:'SAINT',  hint:'A person officially declared holy by the Church' },
+  { word:'CHOIR',  hint:'The group of singers who lead liturgical music' },
+];
+
+let FL = { word:'', hint:'', row:0, col:0, over:false,
+           guesses:[], keyStates:{} };
+
+function initFaithle() {
+  const pick = FAITHLE_WORDS[Math.floor(Math.random()*FAITHLE_WORDS.length)];
+  FL = { word:pick.word, hint:pick.hint, row:0, col:0, over:false,
+         guesses: Array(6).fill('').map(()=>Array(5).fill('')), keyStates:{} };
+  document.getElementById('faithleHint').textContent = pick.hint;
+  document.getElementById('faithleMsg').textContent  = '';
+  document.getElementById('faithleResult').innerHTML = '';
+  buildWordleGrid();
+  buildWordleKb();
+}
+
+function buildWordleGrid() {
+  const g = document.getElementById('wordleGrid');
+  g.innerHTML = '';
+  for (let r=0; r<6; r++) {
+    const row = document.createElement('div');
+    row.className = 'w-row'; row.id = 'wr'+r;
+    for (let c=0; c<5; c++) {
+      const cell = document.createElement('div');
+      cell.className = 'w-cell'; cell.id = 'wc'+r+c;
+      row.appendChild(cell);
+    }
+    g.appendChild(row);
+  }
+}
+
+function buildWordleKb() {
+  const rows=[['Q','W','E','R','T','Y','U','I','O','P'],
+              ['A','S','D','F','G','H','J','K','L'],
+              ['ENTER','Z','X','C','V','B','N','M','⌫']];
+  const kb = document.getElementById('wordleKb');
+  kb.innerHTML = '';
+  rows.forEach(r=>{
+    const div = document.createElement('div'); div.className='kb-row';
+    r.forEach(k=>{
+      const btn = document.createElement('button');
+      btn.className='kb-key'+(k.length>1?' wide':'');
+      btn.textContent=k; btn.id='kbk_'+k;
+      btn.addEventListener('click',()=>flKey(k));
+      div.appendChild(btn);
+    });
+    kb.appendChild(div);
+  });
+}
+
+document.addEventListener('keydown', e=>{
+  if (activeGame !== 'faithle') return;
+  if (e.key==='Enter') flKey('ENTER');
+  else if (e.key==='Backspace') flKey('⌫');
+  else if (/^[A-Za-z]$/.test(e.key)) flKey(e.key.toUpperCase());
+});
+
+function flKey(k) {
+  if (FL.over) return;
+  if (k==='⌫') {
+    if (FL.col>0){ FL.col--; FL.guesses[FL.row][FL.col]=''; flUpdateCell(FL.row,FL.col,''); }
+  } else if (k==='ENTER') {
+    flSubmit();
+  } else if (FL.col<5) {
+    FL.guesses[FL.row][FL.col]=k;
+    flUpdateCell(FL.row,FL.col,k,true);
+    FL.col++;
+  }
+}
+
+function flUpdateCell(r,c,letter,filled=false) {
+  const cell = document.getElementById('wc'+r+c);
+  if (!cell) return;
+  cell.textContent = letter;
+  cell.className = 'w-cell' + (filled?' filled':'');
+}
+
+function flSubmit() {
+  if (FL.col<5){ document.getElementById('faithleMsg').textContent='Not enough letters'; return; }
+  const guess = FL.guesses[FL.row].join('');
+  const result = flScore(guess, FL.word);
+  result.forEach((state,i)=>{
+    const cell = document.getElementById('wc'+FL.row+i);
+    cell.className = 'w-cell '+state;
+    const k = guess[i];
+    const p={correct:3,present:2,absent:1};
+    if (!FL.keyStates[k]||p[state]>p[FL.keyStates[k]]) FL.keyStates[k]=state;
+  });
+  flUpdateKb();
+  if (guess===FL.word) {
+    FL.over=true;
+    const xp=[50,45,40,35,30,25][FL.row];
+    document.getElementById('faithleMsg').textContent='';
+    awardXP(xp,'faithle');
+    setTimeout(()=>showFaithleResult(true,xp),600);
+  } else {
+    FL.row++; FL.col=0;
+    if(FL.row===6){
+      FL.over=true;
+      document.getElementById('faithleMsg').textContent='The word was '+FL.word;
+      setTimeout(()=>showFaithleResult(false,0),800);
+    } else {
+      document.getElementById('faithleMsg').textContent='';
+    }
+  }
+}
+
+function flScore(guess,answer){
+  const res=Array(5).fill('absent');
+  const a=[...answer], g=[...guess];
+  g.forEach((l,i)=>{ if(l===a[i]){res[i]='correct';a[i]=null;g[i]=null;} });
+  g.forEach((l,i)=>{ if(l&&a.includes(l)){res[i]='present';a[a.indexOf(l)]=null;} });
+  return res;
+}
+
+function flUpdateKb(){
+  Object.keys(FL.keyStates).forEach(k=>{
+    const el=document.getElementById('kbk_'+k);
+    if(el) el.className='kb-key'+(k.length>1?' wide':'')+' k-'+FL.keyStates[k];
+  });
+}
+
+function showFaithleResult(won, xp){
+  const el = document.getElementById('faithleResult');
+  el.innerHTML=`
+    <div class="result-card" style="margin-top:16px">
+      <div class="result-icon">${won?'✨':'🙏'}</div>
+      <div class="result-title">${won?'Well done!':'Keep the faith'}</div>
+      <div class="result-sub">${won?'The word was '+FL.word:'The word was '+FL.word+' — try again tomorrow'}</div>
+      ${won?`<div class="xp-badge">+${xp} XP</div>`:''}
+      <div class="action-row">
+        <button class="btn outline" onclick="initFaithle()">New Word</button>
+        <button class="btn primary" onclick="goHome()">← Hub</button>
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   CONNECTIONS
+══════════════════════════════════════════════════════════════════ */
+const CONN_SETS = [
+  { groups:[
+    {label:'Sacraments of Initiation', color:0, words:['Baptism','Eucharist','Confirmation','Chrism']},
+    {label:'Books of the Pentateuch',  color:1, words:['Genesis','Exodus','Leviticus','Numbers']},
+    {label:'Archangels',               color:2, words:['Michael','Gabriel','Raphael','Uriel']},
+    {label:'Parts of the Rosary',      color:3, words:['Mystery','Decade','Chaplet','Bead']},
+  ]},
+  { groups:[
+    {label:'Stations of the Cross moments', color:0, words:['Condemned','Falls','Stripped','Buried']},
+    {label:'Theological Virtues',           color:1, words:['Faith','Hope','Love','Charity']},
+    {label:'Evangelists',                   color:2, words:['Matthew','Mark','Luke','John']},
+    {label:'Major Prophets',                color:3, words:['Isaiah','Jeremiah','Ezekiel','Daniel']},
+  ]},
+];
+let CN = { cards:[], selected:[], solved:[], lives:4, set:null };
+
+function initConnections(){
+  CN.set = CONN_SETS[Math.floor(Math.random()*CONN_SETS.length)];
+  CN.cards=[]; CN.selected=[]; CN.solved=[]; CN.lives=4;
+  CN.set.groups.forEach(g=> g.words.forEach(w=> CN.cards.push({word:w,group:g.label,color:g.color})));
+  CN.cards.sort(()=>Math.random()-0.5);
+  document.getElementById('connMsg').textContent='';
+  document.getElementById('connResult').innerHTML='';
+  connRender();
+}
+function connRender(){
+  const g=document.getElementById('connGrid'); g.innerHTML='';
+  CN.cards.forEach((c,i)=>{
+    const el=document.createElement('div');
+    const solved=CN.solved.includes(c.group);
+    el.className='conn-tile'+(solved?' s'+c.color:CN.selected.includes(i)?' selected':'');
+    el.textContent=c.word;
+    if(!solved) el.onclick=()=>connToggle(i);
+    g.appendChild(el);
+  });
+  const lives=document.getElementById('connLives'); lives.innerHTML='';
+  for(let i=0;i<4;i++){
+    const d=document.createElement('div');
+    d.className='life'+(i>=CN.lives?' gone':'');
+    lives.appendChild(d);
+  }
+}
+function connToggle(i){
+  if(CN.selected.includes(i)) CN.selected=CN.selected.filter(x=>x!==i);
+  else if(CN.selected.length<4) CN.selected.push(i);
+  connRender();
+}
+function connShuffle(){ CN.cards.sort(()=>Math.random()-0.5); CN.selected=[]; connRender(); }
+function connDeselect(){ CN.selected=[]; connRender(); }
+function connSubmit(){
+  if(CN.selected.length!==4){ document.getElementById('connMsg').textContent='Select exactly 4 words'; return; }
+  const groups=CN.selected.map(i=>CN.cards[i].group);
+  if(groups.every(g=>g===groups[0])){
+    CN.solved.push(groups[0]); CN.selected=[];
+    document.getElementById('connMsg').textContent='✓ '+groups[0];
+    connRender();
+    if(CN.solved.length===4){
+      setTimeout(()=>{ awardXP(75,'connections'); showConnResult(true); },500);
+    }
+  } else {
+    CN.lives--;
+    CN.selected=[];
+    connRender();
+    if(CN.lives===0){
+      document.getElementById('connMsg').textContent='Out of attempts';
+      setTimeout(()=>showConnResult(false),800);
+    } else {
+      document.getElementById('connMsg').textContent='Not quite — '+CN.lives+' left';
+    }
+  }
+}
+function showConnResult(won){
+  document.getElementById('connResult').innerHTML=`
+    <div class="result-card" style="margin-top:16px">
+      <div class="result-icon">${won?'🎉':'🙏'}</div>
+      <div class="result-title">${won?'All found!':'Good effort'}</div>
+      <div class="result-sub">${won?'You found all 4 categories':'Keep practicing — the faith is deep!'}</div>
+      ${won?'<div class="xp-badge">+75 XP</div>':''}
+      <div class="action-row">
+        <button class="btn outline" onclick="initConnections()">Play Again</button>
+        <button class="btn primary" onclick="goHome()">← Hub</button>
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   BOOK DROP
+══════════════════════════════════════════════════════════════════ */
+const BOOK_CLUES = [
+  { book:'Jonah',      clue:'A reluctant prophet survives three days inside a great fish before finally fulfilling his mission to Nineveh.', verse:'"For as Jonah was three days in the belly of the whale…" — Matthew 12:40' },
+  { book:'Ruth',       clue:'A loyal foreign woman follows her mother-in-law to Bethlehem and becomes an ancestor of King David.', verse:'"Where you go I will go, where you lodge I will lodge." — Ruth 1:16' },
+  { book:'Psalms',     clue:'A collection of 150 sacred songs and poems attributed largely to King David, used in Jewish and Christian worship.', verse:'"The Lord is my shepherd; I shall not want." — Psalm 23:1' },
+  { book:'Revelation', clue:'The final book of the New Testament containing visions of the end times, the beast, and the New Jerusalem.', verse:'"Behold, I make all things new." — Revelation 21:5' },
+  { book:'Acts',       clue:'The story of Pentecost and the missionary journeys of the apostles spreading the Church throughout the Roman world.', verse:'"You will receive power when the Holy Spirit comes on you." — Acts 1:8' },
+  { book:'Job',        clue:'A righteous man loses everything and wrestles with profound suffering, questioning God and receiving an answer from the whirlwind.', verse:'"I know that my Redeemer lives." — Job 19:25' },
+  { book:'Esther',     clue:'A Jewish woman becomes queen of Persia and risks her life to save her people from genocide.', verse:'"Who knows whether you have not come to the kingdom for such a time as this?" — Esther 4:14' },
+  { book:'Tobit',      clue:'A devout blind man sends his son on a journey accompanied by the archangel Raphael in disguise.', verse:'"Prayer with fasting is good, but better than both is almsgiving with righteousness." — Tobit 12:8' },
+];
+let BD = { idx:0, guessed:false, score:0, round:0, total:5 };
+
+function initBookDrop(){
+  BD.score=0; BD.round=0;
+  const pool=[...BOOK_CLUES].sort(()=>Math.random()-0.5);
+  BD.pool=pool.slice(0,BD.total);
+  BD.idx=0; BD.guessed=false;
+  renderBookDrop();
+}
+function renderBookDrop(){
+  const c=BD.pool[BD.idx];
+  const el=document.getElementById('bookdropContent');
+  if(BD.idx>=BD.total){ showBookResult(); return; }
+  el.innerHTML=`
+    <div style="text-align:center;margin-bottom:14px;font-size:12px;color:var(--muted)">Book ${BD.idx+1} of ${BD.total}</div>
+    <div class="clue-card">
+      <div class="clue-label">Today's Clue</div>
+      <div class="clue-text">${c.clue}</div>
+    </div>
+    ${BD.guessed ? `
+      <div class="result-card">
+        <div class="result-icon">📖</div>
+        <div class="result-title">${c.book}</div>
+        <div style="font-family:'Playfair Display',serif;font-style:italic;font-size:13px;color:var(--muted);margin:6px 0 12px;line-height:1.55">${c.verse}</div>
+        <button class="btn primary" onclick="nextBook()" style="max-width:200px;margin:0 auto">${BD.idx+1<BD.total?'Next Book →':'See Results'}</button>
+      </div>` : `
+      <div class="book-input-row">
+        <input class="book-input" id="bookInput" type="text" placeholder="Name the Bible book…" autocorrect="off" autocapitalize="words" />
+        <button class="btn primary" style="flex:0;padding:11px 18px" onclick="checkBook()">Go</button>
+      </div>
+      <div class="feedback-msg" id="bookMsg"></div>
+    `}`;
+  if(!BD.guessed){
+    const inp=document.getElementById('bookInput');
+    inp.addEventListener('keydown',e=>{ if(e.key==='Enter') checkBook(); });
+    setTimeout(()=>inp.focus(),100);
+  }
+}
+function checkBook(){
+  const val=(document.getElementById('bookInput').value||'').trim().toLowerCase();
+  const ans=BD.pool[BD.idx].book.toLowerCase();
+  if(val===ans || (ans.includes(val)&&val.length>=3)){
+    BD.guessed=true; BD.score++;
+    awardXP(40,'bookdrop');
+    renderBookDrop();
+  } else {
+    document.getElementById('bookMsg').textContent='Not quite — try again!';
+  }
+}
+function nextBook(){ BD.idx++; BD.guessed=false; renderBookDrop(); }
+function showBookResult(){
+  document.getElementById('bookdropContent').innerHTML=`
+    <div class="result-card">
+      <div class="result-icon">${BD.score===BD.total?'🌟':'📖'}</div>
+      <div class="result-title">${BD.score===BD.total?'Scripture Scholar':'Well done'}</div>
+      <div class="result-sub">${BD.score} of ${BD.total} books identified correctly</div>
+      <div class="xp-badge">+${BD.score*40} XP total</div>
+      <div class="action-row">
+        <button class="btn outline" onclick="initBookDrop()">Play Again</button>
+        <button class="btn primary" onclick="goHome()">← Hub</button>
+      </div>
+    </div>`;
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   VERSE UNSCRAMBLE
+══════════════════════════════════════════════════════════════════ */
+const VU_VERSES = [
+  { ref:'John 3:16',         difficulty:'easy',   xp:30,
+    words:['For','God','so','loved','the','world','that','he','gave','his','only','Son'],
+    reflection:'God\'s love is not passive but sacrificial, giving the most precious gift imaginable.' },
+  { ref:'Philippians 4:13',  difficulty:'easy',   xp:30,
+    words:['I','can','do','all','things','through','Christ','who','strengthens','me'],
+    reflection:'Paul wrote this from prison, proclaiming radical trust in Christ\'s sustaining power.' },
+  { ref:'Psalm 23:1',        difficulty:'easy',   xp:30,
+    words:['The','Lord','is','my','shepherd','I','shall','not','want'],
+    reflection:'The opening of the most beloved psalm, proclaiming God\'s tender personal care.' },
+  { ref:'Matthew 5:9',       difficulty:'medium', xp:40,
+    words:['Blessed','are','the','peacemakers','for','they','shall','be','called','children','of','God'],
+    reflection:'Jesus redefines greatness — not by power but by a willingness to reconcile.' },
+  { ref:'Romans 8:28',       difficulty:'medium', xp:40,
+    words:['And','we','know','that','in','all','things','God','works','for','the','good','of','those','who','love','him'],
+    reflection:'Not that life will be easy, but that God can draw good from every circumstance.' },
+  { ref:'Proverbs 3:5',      difficulty:'medium', xp:40,
+    words:['Trust','in','the','Lord','with','all','your','heart','and','lean','not','on','your','own','understanding'],
+    reflection:'A call to surrender self-sufficiency and rely radically on divine wisdom.' },
+  { ref:'Isaiah 40:31',      difficulty:'hard',   xp:45,
+    words:['But','those','who','hope','in','the','Lord','will','renew','their','strength','they','will','soar','on','wings','like','eagles'],
+    reflection:'Isaiah\'s promise of divine renewal — exhausted people given eagle-like strength.' },
+  { ref:'1 Corinthians 13:4',difficulty:'hard',   xp:45,
+    words:['Love','is','patient','love','is','kind','it','does','not','envy','it','does','not','boast','it','is','not','proud'],
+    reflection:'The standard against which all Christian action is measured.' },
+];
+
+const VU_ROUNDS = 5;
+let VU = { verses:[], idx:0, ansArr:[], bankArr:[], hints:0, mistakes:0,
+           totalXP:0, correct:0, totalMistakes:0 };
+
+function shuffle(arr){ return [...arr].sort(()=>Math.random()-0.5); }
+
+function initUnscramble(){
+  const pool = shuffle(VU_VERSES);
+  const easy = pool.filter(v=>v.difficulty==='easy').slice(0,2);
+  const med  = pool.filter(v=>v.difficulty==='medium').slice(0,2);
+  const hard = pool.filter(v=>v.difficulty==='hard').slice(0,1);
+  VU.verses=[...easy,...med,...hard].sort(()=>Math.random()-0.5);
+  VU.idx=0; VU.totalXP=0; VU.correct=0; VU.totalMistakes=0;
+  vuLoadRound();
+}
+function vuLoadRound(){
+  const v=VU.verses[VU.idx];
+  VU.ansArr=[]; VU.bankArr=shuffle(v.words); VU.hints=0; VU.mistakes=0;
+  vuRender();
+}
+function vuCalcXP(base){ return Math.max(5, base - VU.hints*8 - VU.mistakes*5); }
+
+function vuRender(){
+  const el=document.getElementById('unscrambleContent');
+  if(VU.idx>=VU_ROUNDS){ vuShowResult(); return; }
+  const v=VU.verses[VU.idx];
+
+  let dots='';
+  for(let i=0;i<VU_ROUNDS;i++){
+    dots+=`<div class="pd${i<VU.idx?' done':i===VU.idx?' current':''}"></div>`;
+  }
+
+  const ansHtml = VU.ansArr.length===0
+    ? '<div class="drop-label">Tap words below to place them here</div>'
+    : VU.ansArr.map((w,i)=>`<div class="w-chip placed" onclick="vuRemove(${i})">${w}</div>`).join('');
+
+  const bankHtml = VU.bankArr.map((w,i)=>
+    `<div class="w-chip" onclick="vuAdd(${i})">${w}</div>`).join('');
+
+  const xpPreview=vuCalcXP(v.xp);
+  const diffClass={easy:'diff-easy',medium:'diff-medium',hard:'diff-hard'}[v.difficulty];
+
+  el.innerHTML=`
+    <div class="progress-dots">${dots}</div>
+    <div class="verse-meta">
+      <div class="verse-ref">${v.ref}</div>
+      <div class="diff-badge ${diffClass}">${v.difficulty}</div>
+    </div>
+    <div class="drop-zone" id="vuDrop">${ansHtml}</div>
+    <div class="word-bank" id="vuBank">
+      <div class="drop-label">Word bank</div>${bankHtml}
+    </div>
+    <div class="hint-box" id="vuHint"><strong>Hint</strong><span id="vuHintText"></span></div>
+    <div class="feedback-msg" id="vuMsg"></div>
+    <div class="action-row">
+      <button class="btn outline" onclick="vuClear()">Clear</button>
+      <button class="btn outline" onclick="vuHintBtn()" id="vuHintBtnEl">Hint (${2-VU.hints} left)</button>
+    </div>
+    <button class="btn primary" style="margin-top:8px;width:100%" onclick="vuCheck()">Check Answer</button>
+    <div style="text-align:center;font-size:11px;color:var(--muted);margin-top:8px">Up to <strong style="color:var(--gold)">${v.xp} XP</strong> this verse</div>`;
+}
+
+function vuAdd(i){ VU.ansArr.push(VU.bankArr[i]); VU.bankArr.splice(i,1); vuRender(); }
+function vuRemove(i){ VU.bankArr.push(VU.ansArr[i]); VU.ansArr.splice(i,1); vuRender(); }
+function vuClear(){ VU.bankArr=[...VU.bankArr,...VU.ansArr]; VU.ansArr=[]; vuRender(); }
+
+function vuHintBtn(){
+  if(VU.hints>=2) return;
+  const v=VU.verses[VU.idx];
+  const w=v.words;
+  VU.hints++;
+  const hint = VU.hints===1
+    ? `Starts with: "${w[0]} ${w[1]} ${w[2]}…"`
+    : `Middle: "…${w[Math.floor(w.length/2)-1]} ${w[Math.floor(w.length/2)]} ${w[Math.floor(w.length/2)+1]}…"`;
+  document.getElementById('vuHint').classList.add('show');
+  document.getElementById('vuHintText').textContent = hint;
+  document.getElementById('vuHintBtnEl').textContent = `Hint (${2-VU.hints} left)`;
+  document.getElementById('vuMsg').textContent = 'Hint used — XP reduced';
+}
+
+function vuCheck(){
+  const v=VU.verses[VU.idx];
+  if(VU.ansArr.length===0){ document.getElementById('vuMsg').textContent='Add some words first'; return; }
+  if(VU.ansArr.length<v.words.length){ document.getElementById('vuMsg').textContent='Place all the words'; return; }
+  if(VU.ansArr.join(' ')===v.words.join(' ')){
+    document.getElementById('vuDrop').classList.add('correct');
+    const earned=vuCalcXP(v.xp);
+    VU.totalXP+=earned; VU.correct++;
+    awardXP(earned,'unscramble');
+    document.getElementById('vuMsg').textContent=`Correct! +${earned} XP`;
+    setTimeout(()=>{ VU.idx++; if(VU.idx<VU_ROUNDS) vuLoadRound(); else vuShowResult(); },1200);
+  } else {
+    VU.mistakes++; VU.totalMistakes++;
+    const drop=document.getElementById('vuDrop');
+    drop.classList.add('wrong');
+    setTimeout(()=>drop.classList.remove('wrong'),500);
+    if(VU.mistakes>=3){
+      document.getElementById('vuMsg').textContent='Showing correct order…';
+      setTimeout(()=>{ VU.idx++; if(VU.idx<VU_ROUNDS) vuLoadRound(); else vuShowResult(); },1200);
+    } else {
+      document.getElementById('vuMsg').textContent=`Not quite — ${3-VU.mistakes} attempt${3-VU.mistakes===1?'':'s'} left`;
+    }
+  }
+}
+
+function vuShowResult(){
+  const pct=Math.round((VU.correct/VU_ROUNDS)*100);
+  const icon=pct===100?'🌟':pct>=80?'✨':pct>=60?'😊':'🙏';
+  const title=pct===100?'Sola Scriptura!':pct>=80?'Scripture Scholar':pct>=60?'Faithful Student':'Keep Practicing';
+  const revHtml=VU.verses.slice(0,VU_ROUNDS).map(v=>`
+    <div class="vr-item">${v.words.join(' ')}
+      <cite>— ${v.ref} · ${v.reflection}</cite>
+    </div>`).join('');
+  document.getElementById('unscrambleContent').innerHTML=`
+    <div class="result-card">
+      <div class="result-icon">${icon}</div>
+      <div class="result-title">${title}</div>
+      <div class="result-sub">${VU.correct} of ${VU_ROUNDS} verses restored correctly</div>
+      <div class="xp-badge">+${VU.totalXP} XP earned</div>
+      <div class="score-grid">
+        <div class="sc"><div class="sc-n">${VU.correct}/${VU_ROUNDS}</div><div class="sc-l">Correct</div></div>
+        <div class="sc"><div class="sc-n">${VU.totalMistakes}</div><div class="sc-l">Mistakes</div></div>
+        <div class="sc"><div class="sc-n">${VU.totalXP}</div><div class="sc-l">XP Earned</div></div>
+      </div>
+    </div>
+    <div class="verse-reveal-list">${revHtml}</div>
+    <div class="action-row">
+      <button class="btn gold" onclick="initUnscramble()">Play Again</button>
+      <button class="btn primary" onclick="goHome()">← Hub</button>
+    </div>`;
+}
+
+/* ── PWA Service Worker registration ────────────────────────────── */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('cruxgames-sw.js').catch(()=>{});
+  });
+}
+</script>
+
+</body>
+</html>
