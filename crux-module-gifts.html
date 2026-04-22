@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>CRUX — The Gifts of the Holy Spirit</title>
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LQ35DLTVKY');
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDK v10 -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+            authDomain: "crux-faith-formation.firebaseapp.com",
+            projectId: "crux-faith-formation",
+            storageBucket: "crux-faith-formation.firebasestorage.app",
+            messagingSenderId: "838141015985",
+            appId: "1:838141015985:web:2655e570663e182d75ef90",
+            measurementId: "G-LQ35DLTVKY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        window.db = getFirestore(app);
+        window.auth = getAuth(app);
+        window.fsModules = { doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp };
+
+        onAuthStateChanged(window.auth, (user) => {
+            window.currentUser = user || null;
+            const el = document.getElementById('userDisplay');
+            if (el) el.textContent = user ? user.email.split('@')[0] : 'Guest';
+            if (user) loadUserProgress();
+        });
+    </script>
+
+    <style>
+        :root {
+            color-scheme: light;
+            --navy: #1a1f36;
+            --navy-mid: #242a45;
+            --navy-light: #2f3659;
+            --gold: #d4a574;
+            --gold-light: #e8c9a0;
+            --gold-dark: #b8895a;
+            --white: #ffffff;
+            --off-white: #f8f7f4;
+            --text-primary: #1a1f36;
+            --text-secondary: #4a5568;
+            --text-muted: #8896a5;
+            --border: #e2e8f0;
+            --border-gold: rgba(212,165,116,0.4);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--off-white);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* ─── HEADER ──────────────────────────────────────── */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            height: 56px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+        }
+
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+        .header-right { display: flex; align-items: center; gap: 0.75rem; }
+
+        .header-logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: var(--gold);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .back-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.75);
+            padding: 0.35rem 0.85rem;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .xp-chip, .user-chip {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--gold);
+            background: rgba(212,165,116,0.15);
+            border: 1px solid rgba(212,165,116,0.3);
+            padding: 0.3rem 0.75rem;
+            border-radius: 20px;
+        }
+
+        .user-chip { color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
+
+        /* ─── PROGRESS BAR ────────────────────────────────── */
+        .progress-track {
+            height: 3px;
+            background: rgba(255,255,255,0.1);
+            position: sticky;
+            top: 56px;
+            z-index: 99;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gold);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* ─── LAYOUT ──────────────────────────────────────── */
+        .module-wrap {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 6rem;
+        }
+
+        /* ─── STEP INDICATOR ──────────────────────────────── */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .step.active { color: var(--navy); }
+        .step.complete { color: var(--gold-dark); }
+
+        .step-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .step.active .step-dot { background: var(--navy); color: var(--white); border-color: var(--navy); }
+        .step.complete .step-dot { background: var(--gold-dark); color: var(--white); border-color: var(--gold-dark); }
+
+        .step-label { font-size: 0.78rem; font-weight: 600; }
+
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background: var(--border);
+            margin: 0 0.75rem;
+        }
+
+        .step-line.complete { background: var(--gold-dark); }
+
+        /* ─── MODULE HEADER ───────────────────────────────── */
+        .module-header {
+            margin-bottom: 1.75rem;
+        }
+
+        .module-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .grade-tag, .topic-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .module-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* ─── LEVEL TOGGLE ────────────────────────────────── */
+        .level-toggle {
+            display: inline-flex;
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .level-btn {
+            padding: 0.6rem 1.4rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .level-btn.active {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        /* ─── CONTENT PANELS ──────────────────────────────── */
+        .panel {
+            display: none;
+            animation: fadeUp 0.35s ease;
+        }
+
+        .panel.active { display: block; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── LESSON CONTENT ──────────────────────────────── */
+        .lesson-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .lesson-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .lesson-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin: 1.5rem 0 0.6rem;
+        }
+
+        .lesson-card p {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.85;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card ul, .lesson-card ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card li {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.85;
+            margin-bottom: 0.4rem;
+        }
+
+        .key-term {
+            background: rgba(212,165,116,0.15);
+            color: var(--gold-dark);
+            padding: 0.1rem 0.45rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.94em;
+        }
+
+        .highlight-box {
+            background: var(--navy);
+            border-radius: 10px;
+            padding: 1.5rem 1.75rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box p {
+            color: var(--gold-light);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-style: italic;
+            line-height: 1.7;
+            margin-bottom: 0.4rem;
+        }
+
+        .highlight-box cite {
+            color: rgba(212,165,116,0.65);
+            font-size: 0.8rem;
+            font-style: normal;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* ─── READING CARD ────────────────────────────────── */
+        .reading-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .reading-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .reading-meta {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.3px;
+            margin-bottom: 1.75rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+        }
+
+        .reading-body p {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.85;
+            margin-bottom: 1rem;
+        }
+
+        .reflection-block {
+            background: rgba(26,31,54,0.04);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 8px 8px 0;
+            padding: 1.25rem 1.5rem;
+            margin-top: 1.75rem;
+        }
+
+        .reflection-block h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.85rem;
+        }
+
+        .reflection-block ol {
+            padding-left: 1.25rem;
+        }
+
+        .reflection-block li {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.75;
+            margin-bottom: 0.6rem;
+        }
+
+        /* ─── QUIZ CARD ───────────────────────────────────── */
+        .quiz-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-intro {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .quiz-q {
+            margin-bottom: 2rem;
+        }
+
+        .quiz-q-text {
+            font-size: 0.97rem;
+            font-weight: 600;
+            color: var(--navy);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-q-num {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+
+        .quiz-options { display: flex; flex-direction: column; gap: 0.6rem; }
+
+        .quiz-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.85rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            background: var(--white);
+        }
+
+        .quiz-option:hover { border-color: var(--navy); background: rgba(26,31,54,0.03); }
+        .quiz-option.selected { border-color: var(--navy); background: rgba(26,31,54,0.06); }
+        .quiz-option.correct { border-color: #22c55e; background: rgba(34,197,94,0.08); }
+        .quiz-option.incorrect { border-color: #ef4444; background: rgba(239,68,68,0.06); }
+
+        .quiz-option-indicator {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 2px;
+            transition: all 0.15s;
+        }
+
+        .quiz-option.selected .quiz-option-indicator { border-color: var(--navy); background: var(--navy); }
+        .quiz-option.correct .quiz-option-indicator { border-color: #22c55e; background: #22c55e; }
+        .quiz-option.incorrect .quiz-option-indicator { border-color: #ef4444; background: #ef4444; }
+
+        .quiz-option-text { font-size: 0.9rem; color: var(--text-primary); line-height: 1.5; }
+
+        .quiz-explanation {
+            margin-top: 0.75rem;
+            padding: 0.9rem 1rem;
+            background: rgba(26,31,54,0.04);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 6px 6px 0;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            display: none;
+        }
+
+        .quiz-explanation.show { display: block; }
+
+        /* ─── NAV BAR ─────────────────────────────────────── */
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 2rem;
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary:hover {
+            background: var(--navy-light);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.5rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-dark);
+            color: var(--white);
+        }
+
+        /* ─── COMPLETION SCREEN ───────────────────────────── */
+        .completion-screen {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .completion-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .completion-screen h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .completion-screen p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .xp-award {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .score-display {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            display: inline-block;
+            margin-bottom: 2.5rem;
+            min-width: 240px;
+        }
+
+        .score-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .score-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .completion-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ─── LOADING ─────────────────────────────────────── */
+        .loading-state {
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .loading-spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid var(--border);
+            border-top-color: var(--navy);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto 1.25rem;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-state p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* ─── RESPONSIVE ──────────────────────────────────── */
+        @media (max-width: 640px) {
+            .module-wrap { padding: 2rem 1.25rem 5rem; }
+            .module-title { font-size: 1.7rem; }
+            .lesson-card, .reading-card, .quiz-card { padding: 1.75rem 1.25rem; }
+            .step-label { display: none; }
+            .nav-bar { flex-direction: column-reverse; }
+            .nav-bar .btn-primary, .nav-bar .btn-secondary { width: 100%; justify-content: center; }
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
+            ← Back
+        </button>
+        <a href="index.html" class="header-logo">CRUX</a>
+    </div>
+    <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
+        <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
+    </div>
+</header>
+
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div class="module-wrap">
+
+    <!-- Loading state — shown while a module loads -->
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
+
+    <!-- Step indicator -->
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
+        </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
+        </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
+
+    <!-- Module header -->
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">Grades 5–8</span>
+            <span class="topic-tag" id="topicTag">Faith Formation</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <!-- Level toggle -->
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions — you can review your answers before submitting.</p>
+            <div id="quizQuestions">
+                <!-- Populated by JS -->
+            </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You've completed this lesson. Keep going — the faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
+            </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    ← Back to CRUX
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="crux-module-engine.js"></script>
+<script>
+const MODULE_DATA = {
+    id: 'gifts_holy_spirit',
+    title: 'The Gifts of the Holy Spirit',
+    subtitle: 'God doesn\'t give gifts to be admired. He gives them to be used. The question isn\'t whether you have them — you do. The question is what you\'re doing with them.',
+    gradeTag: 'Grades 5–8',
+    topic: 'Who We Are',
+    xpReward: 60,
+    nextModule: 'fruits_holy_spirit',
+
+    lesson: {
+        beginner: `
+            <h2>The Gifts of the Holy Spirit — Lesson</h2>
+
+            <p>When the Holy Spirit comes to you — first at Baptism, strengthened at Confirmation — he doesn't arrive empty-handed. He comes with gifts. Seven of them, named by the prophet Isaiah eight centuries before Christ, and fulfilled in every soul that receives the Spirit.</p>
+
+            <p>Here's the thing about gifts, though. A gift left in the box does nothing. A hammer sitting in a drawer builds no house. God gives you these gifts not so you can feel equipped but so you can actually go do something with them. More on that in a minute.</p>
+
+            <h3>The Seven Gifts</h3>
+
+            <p>These come directly from Isaiah 11:2–3, a passage describing the Spirit resting on the Messiah. Because we are united to Christ through Baptism, we receive these same gifts.</p>
+
+            <p><strong>Wisdom</strong> is the ability to see things the way God sees them — to know what actually matters. Not book-smarts. Not knowing the most facts. The person with wisdom can walk into a complicated situation and see clearly what is true, what is good, and what is worth caring about. It's the highest of the seven gifts because it orders everything else.</p>
+
+            <p><strong>Understanding</strong> goes deeper than knowing what the faith teaches. It's the capacity to grasp what we believe — not just recite the Creed but actually enter into its meaning. When a passage of Scripture suddenly opens up and lands differently than it did before, that's understanding at work.</p>
+
+            <p><strong>Counsel</strong> is practical wisdom — knowing the right thing to do in a specific situation, right now. You know what is generally good; counsel tells you what to do with that knowledge when things get complicated. It's the gift that keeps you from being "right in theory but useless in practice."</p>
+
+            <p><strong>Fortitude</strong> is the courage to do what is right when it costs you something. Not the absence of fear. The ability to act rightly despite it. The person with fortitude doesn't need the world's approval to make the right call. They've decided what they stand for, and they stand there.</p>
+
+            <p><strong>Knowledge</strong> is the ability to see the world clearly — to understand creation in its right relationship to God. Not just science or facts but the kind of clear-eyed seeing that lets you recognize what is true and what is counterfeit, what satisfies and what only promises to.</p>
+
+            <p><strong>Piety</strong> is genuine devotion to God and everyone connected to God — which, if you think about it, is everyone. Not performance. Not going through religious motions. A real affection for God and a disposition to treat others as people God loves. It's the gift that makes religion a relationship rather than a routine.</p>
+
+            <p><strong>Fear of the Lord</strong> is the one that needs the most explaining, because it sounds like it doesn't belong on a list of gifts.</p>
+
+            <h3>Fear of the Lord — What It Actually Means</h3>
+
+            <p>Think about someone you love more than almost anyone. A parent. A grandparent. A mentor who believed in you before you believed in yourself. Now think about what it would feel like to seriously let them down. Not to be punished by them — just to disappoint them, to look at their face and see that you'd done something that hurt them or fell short of who they knew you could be.</p>
+
+            <p>That feeling — that deep reluctance to be the cause of that disappointment — is closer to what the Church means by Fear of the Lord than anything involving terror.</p>
+
+            <p>Proverbs 9:10 says: "The fear of the LORD is the beginning of wisdom." It's not an obstacle to wisdom. It's the starting point. A person who genuinely does not care what God thinks of their choices has no anchor, no north star. The person who fears the Lord — who wants more than anything not to offend the one who loves them most — is a person who can be trusted.</p>
+
+            <p>There's another kind of fear — the fear of other people. What will they think? Will they judge me? Will I lose their approval? Proverbs calls this kind of fear a "snare," a trap. Jesus puts it plainly in Matthew 10:28: fear God, not men, because only God's judgment ultimately matters. A person free from the fear of other people, but anchored by love and reverence for God, is one of the most free and fearless people alive.</p>
+
+            <div class="highlight-box">
+                <p>"The fear of the LORD is the beginning of wisdom."</p>
+                <cite>— Proverbs 9:10</cite>
+            </div>
+
+            <h3>Gifts and Fruits — What's the Difference?</h3>
+
+            <p>The Holy Spirit also produces what Scripture calls <em>fruits</em> — love, joy, peace, patience, kindness, goodness, faithfulness, gentleness, self-control (Galatians 5:22–23). If you've studied the <a href="crux-modules.html?module=fruits_holy_spirit" style="color:var(--gold-dark);font-weight:600;">Fruits of the Holy Spirit module</a>, you know these well.</p>
+
+            <p>Here's the distinction that matters:</p>
+
+            <p><strong>Gifts are capacities</strong> — what the Spirit equips you with. They are the tools the Spirit places in your hands. Wisdom, fortitude, counsel: these are given to you.</p>
+
+            <p><strong>Fruits are results</strong> — what grows in your life and in the world when you actually use those gifts in love. They are the visible evidence that the Spirit is at work. A hammer is a gift. A house is a fruit. The hammer doesn't build itself.</p>
+
+            <p>You can have gifts and never produce fruit. The person with great fortitude who never uses it for anyone but themselves produces nothing worth counting. The gifts are given for a purpose. They are not for your benefit alone.</p>
+
+            <h3>Not Tomorrow. Today.</h3>
+
+            <p>Jesus told a parable about a wealthy man who entrusted large sums of money to three servants before going on a journey. Two of them put the money to work and doubled it. The third buried his in the ground and gave it back untouched when the master returned.</p>
+
+            <p>The master's response to the first two: <em>"Well done, good and faithful servant."</em> To the third: <em>"Depart from me."</em></p>
+
+            <p>Notice what the third servant didn't do. He didn't steal. He didn't waste the money. He just didn't use it. And that was enough.</p>
+
+            <p>You have been given gifts by God. Real ones. Not the same as everyone else's, but real. And Paul writes in 1 Corinthians 13 that if you have every gift imaginable — prophecy, knowledge, faith that moves mountains — but lack love, you are "nothing." Not diminished. Nothing.</p>
+
+            <p>The gifts without love are a hammer with no nail. The gifts without action are a hammer in a drawer. Jesus came not to be served but to serve. He didn't come to hold his gifts in reserve. He used every one of them, all the way to the cross.</p>
+
+            <p>The time to use what you've been given is now. Not when you're older, not when conditions improve, not when you feel more ready. The world needs what God put in you — today.</p>
+
+            <div class="highlight-box">
+                <p>"If I have prophetic powers, and understand all mysteries and all knowledge, and if I have all faith, so as to remove mountains, but have not love, I am nothing."</p>
+                <cite>— 1 Corinthians 13:2</cite>
+            </div>
+        `,
+
+        theologian: `
+            <h2>The Gifts of the Holy Spirit — Theologian Level</h2>
+
+            <p>The seven gifts of the Holy Spirit are not a New Testament innovation. They arrive in Isaiah 11:1–3 as a portrait of the Messiah — the one on whom "the Spirit of the LORD shall rest." The Spirit rests on him bearing seven specific capacities. Because Christian Baptism is, as Paul writes in Romans 6, a dying and rising with Christ, the person baptized is incorporated into the one on whom the Spirit rests. The gifts belong to us not because we earned them but because we are in him.</p>
+
+            <h3>Gifts vs. Virtues — The Aquinas Distinction</h3>
+
+            <p>Thomas Aquinas draws a precise line between the virtues and the gifts in the <em>Summa Theologiae</em> (I-II, Q.68). Virtues — prudence, justice, fortitude, temperance, and the theological virtues — are habits that perfect our faculties for acts moved by human reason. They are genuinely our own; they are developed through practice and choice. But they are limited by the ceiling of what human reason can perceive and direct.</p>
+
+            <p>The gifts are different in kind. They are permanent dispositions that make the soul <em>docile</em> — responsive, pliable — to the movements of the Holy Spirit, who is a higher principle of action than human reason. The person with the gift of wisdom is not simply someone with good judgment. They are someone whose judgment is open to being moved by a principle above judgment. The gifts do not replace the virtues; they elevate them to a mode of operation that exceeds what the virtues alone can reach.</p>
+
+            <p>CCC 1830 states it this way: "The moral life of Christians is sustained by the gifts of the Holy Spirit. These are permanent dispositions which make man docile in following the promptings of the Holy Spirit." The key word is <span class="key-term">docile</span> — teachable, responsive. The gifts are not automatic. They require cooperation.</p>
+
+            <h3>Confirmation, Baptism, and OCIA</h3>
+
+            <p>The gifts are given at Baptism. Confirmation does not add a different set of gifts; it perfects and strengthens what Baptism began. CCC 1303 describes Confirmation as bringing "an increase and deepening of baptismal grace." The newly confirmed person is not receiving something new so much as they are ratifying and completing what was already begun in them — this time as an adult making a conscious commitment rather than receiving grace as an infant through the faith of the Church.</p>
+
+            <p>For those coming through the Order of Christian Initiation for Adults (OCIA), this is especially significant. The adult who was never baptized receives all three sacraments of initiation together — Baptism, Confirmation, and Eucharist — at the Easter Vigil, completing the full initiation at once. The adult who was baptized but never confirmed receives a strengthening of what has already been planted. In either case, Confirmation is not the end of formation. It is the equipping for mission.</p>
+
+            <p>The practical question Confirmation raises, then, is the one that belongs to every confirmed Catholic: what are you doing with what you've been given?</p>
+
+            <h3>Filial Fear and Servile Fear</h3>
+
+            <p>Fear of the Lord requires precise language. Aquinas distinguishes two kinds in ST II-II, Q.19: <span class="key-term">servile fear</span> (<em>timor servilis</em>) and <span class="key-term">filial fear</span> (<em>timor filialis</em>).</p>
+
+            <p>Servile fear is the fear of a slave for a master — specifically, the fear of punishment. It is not without value; Aquinas acknowledges it can move a person toward God as a beginning. But it is not the gift named in Isaiah. A person who avoids sin only because they fear punishment is not yet free. Their goodness is instrumental; it depends entirely on the threat remaining credible.</p>
+
+            <p>Filial fear is the fear of a child for a parent — the deep reluctance to offend someone whose love you trust and whose good opinion of you is precious. It is not fear that God will harm you. It is fear of becoming the kind of person God would mourn, fear of breaking the relationship by doing something that puts distance between you and the one who loves you most. This fear is ordered by love. It is compatible with confidence in God's mercy. In fact, it is the form fear takes once mercy has been received and trusted.</p>
+
+            <p>Proverbs 29:25 names the failure mode of servile fear applied to people rather than God: "Fear of man is a snare, but whoever trusts in the LORD is kept safe." The person who lives in servile fear of other people's judgment is a person who can be controlled — by approval, by shame, by the threat of social exclusion. The person anchored in filial fear of God alone is the freest person in any room. They have already decided whose verdict is final.</p>
+
+            <h3>The Twelve Gifts and the Question of Charisms</h3>
+
+            <p>Beyond the seven sanctifying gifts of Isaiah 11, Paul describes in 1 Corinthians 12 a distinct category: <span class="key-term">charisms</span> (Greek: <em>χαρίσματα</em>), the charismatic gifts given for building up the Body of Christ. These include wisdom of speech, knowledge, faith, healing, miracles, prophecy, discernment of spirits, tongues, and interpretation of tongues. Some traditions extend these lists to twelve or more, drawing on Romans 12, Ephesians 4, and other Pauline texts.</p>
+
+            <p>The theological distinction matters. The seven gifts of Isaiah 11 are sanctifying — they are ordered primarily toward the holiness of the individual. The charisms are ecclesial — they are ordered toward the common good of the Church. You might receive both; they are not in competition. But confusing them leads to error in both directions: treating the charisms as personal achievements and ignoring them as irrelevant both miss the point. They are given for use, and their use is for others.</p>
+
+            <h3>Gifts Without Love Are Nothing</h3>
+
+            <p>The chapter that follows Paul's treatment of the charisms is 1 Corinthians 13 — the "love chapter," often reduced to a wedding reading. Read in its original context, it is a devastating critique of gifts exercised without charity.</p>
+
+            <p>"If I speak in the tongues of men and of angels, but have not love, I am a noisy gong or a clanging cymbal. And if I have prophetic powers, and understand all mysteries and all knowledge, and if I have all faith, so as to remove mountains, but have not love, I am nothing."</p>
+
+            <p>Aquinas describes charity (<em>caritas</em>) as the "form" of all the virtues in ST II-II, Q.23 — meaning it is what gives every other virtue its final direction and value. Without charity, fortitude becomes recklessness or pride. Without charity, knowledge becomes arrogance. Without charity, counsel becomes manipulation. The gifts are real. But charity is what makes their exercise life-giving rather than merely impressive.</p>
+
+            <p>The Parable of the Talents (Matthew 25:14–30) gives this urgency a face. The servant who buried his gift was not wicked in the conventional sense. He was afraid — specifically, servile fear: "I was afraid, and I went and hid your talent in the ground." He feared loss more than he loved the master. The result was the same as if he'd destroyed it. "Depart from me," says the master. "Well done, good and faithful servant," says the master to the two who acted.</p>
+
+            <p>The question every confirmed Catholic faces is not whether they have gifts. They do — given by the Spirit who rests on Christ and on all who are in Christ. The question is whether those gifts are producing fruit, whether they are being exercised in love, and whether the servant hears, at the end: <em>well done</em>.</p>
+
+            <div class="highlight-box">
+                <p>"His master said to him, 'Well done, good and faithful servant. You have been faithful over a little; I will set you over much. Enter into the joy of your master.'"</p>
+                <cite>— Matthew 25:21</cite>
+            </div>
+        `
+    },
+
+    reading: {
+        beginner: `
+            <h2>Reading: The Spirit on the Shoot of Jesse</h2>
+            <div class="reading-meta">Isaiah 11:1–3 — The source of the seven gifts, and what they were given for</div>
+            <div class="reading-body">
+                <p>Isaiah wrote these words approximately 700 years before Jesus was born, and he was writing about a king. Not just any king — a king who would come from the family line of Jesse, King David's father. A shoot from a stump. Something that looks dead producing unexpected new life.</p>
+
+                <p>"A shoot shall come out from the stump of Jesse, and a branch shall grow out of his roots. The spirit of the LORD shall rest on him, the spirit of wisdom and understanding, the spirit of counsel and might, the spirit of knowledge and the fear of the LORD. His delight shall be in the fear of the LORD."</p>
+
+                <p>Christians read this passage as a prophecy of Jesus — the one who came from David's line, the one on whom the Spirit descended at his Baptism in the Jordan (Matthew 3:16). The seven gifts are first a portrait of the Messiah. They describe who he is and how he operates: with wisdom, with clear-eyed understanding, with practical counsel, with fortitude that never flinches, with knowledge, with piety, and with a deep, settled reverence for the Father.</p>
+
+                <p>Here is what makes this passage personal: because Baptism unites us to Christ — Paul calls it dying and rising with him (Romans 6:3–4) — the Spirit who rests on Jesus rests on us. Not as a reward for being good enough. As a gift to people who have been grafted into the one who already has these gifts in their fullness.</p>
+
+                <p>This means the question is never "do I have these gifts?" The question is always "am I using them?" The same Spirit who gave Jesus the wisdom to see through every trap the Pharisees set, the counsel to answer with perfect precision, the fortitude to face the cross without turning back — that same Spirit is at work in you. Not to make you Jesus, but to make you more fully yourself, alive to God, capable of things you couldn't manage on your own.</p>
+
+                <p>Notice the last line: "his delight shall be in the fear of the LORD." Fear of the Lord isn't described here as a burden or a requirement. It's a <em>delight</em>. That's the clue that this isn't terror. It's the deep satisfaction of a person whose whole orientation is toward the one who loves them, who has nothing to hide, nothing to protect, nothing to fear from the world because the only opinion that truly matters belongs to the Father.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Reflect on These Questions</h4>
+                <ol>
+                    <li>Of the seven gifts — wisdom, understanding, counsel, fortitude, knowledge, piety, fear of the Lord — which one do you feel most in need of right now? Why that one?</li>
+                    <li>The passage says the Messiah's "delight shall be in the fear of the LORD." How does knowing it's described as a delight change how you think about what fearing God means?</li>
+                    <li>If the gifts are given to be used, not stored — what is one specific thing in your life right now where you think God might be asking you to actually use something he's given you?</li>
+                </ol>
+            </div>
+        `,
+
+        theologian: `
+            <h2>Reading: Gifts, Charisms, and the Shape of Love</h2>
+            <div class="reading-meta">1 Corinthians 12:4–13 and 13:1–3 — The charisms, their purpose, and the one thing without which they are nothing</div>
+            <div class="reading-body">
+                <p>Paul is writing to a church in Corinth that is gifted and fractured — a community with real spiritual power and real problems, where the charisms have become a source of competition rather than communion. His response to that situation produces two of the most theologically dense chapters in the New Testament.</p>
+
+                <p>He begins by establishing that the gifts are diverse but their source is one: "There are varieties of gifts, but the same Spirit; and there are varieties of service, but the same Lord; and there are varieties of activities, but it is the same God who empowers them all in everyone." The diversity is intentional. No one person has all the gifts. No one gift is the whole of what the Body needs. The architecture is designed so that the community cannot function without each member.</p>
+
+                <p>"To each is given the manifestation of the Spirit for the common good." This line is doing significant theological work. The gifts are not given for your personal benefit. They are given for the common good — for the community, for the Body, for the world the Body is sent into. A charism hoarded is a charism misused.</p>
+
+                <p>Paul lists nine: utterance of wisdom, utterance of knowledge, faith, healing, miracles, prophecy, discernment of spirits, tongues, interpretation of tongues. "All these are empowered by one and the same Spirit, who apportions to each one individually as he wills." Not as you choose. As he wills. The person who decides which gift they want has already missed something important about how the Spirit works.</p>
+
+                <p>Then chapter 13 arrives like a verdict: "If I speak in the tongues of men and of angels, but have not love, I am a noisy gong or a clanging cymbal. And if I have prophetic powers, and understand all mysteries and all knowledge, and if I have all faith, so as to remove mountains, but have not love, I am nothing. If I give away all I have, and if I deliver up my body to be burned, but have not love, I gain nothing."</p>
+
+                <p>This is not a soft sentiment. Paul is describing people who are genuinely gifted — people with prophecy, with knowledge, with faith that moves mountains, with the willingness to sacrifice everything. And he says: without love, nothing. Not diminished, not partial, not incomplete. Nothing. The gifts without love are not neutral. They are a noisy gong — impressive noise, no music.</p>
+
+                <p>Aquinas connects this directly to his treatment of charity as the "form" of the virtues: charity is what gives every virtue and gift its proper direction. Without it, fortitude becomes recklessness, knowledge becomes pride, prophecy becomes performance. Love is not one gift among many. It is the medium in which all the gifts must operate if they are to be what they were given to be.</p>
+
+                <p>The practical implication: the question you bring to the discernment of your gifts is not "what am I good at?" It is "what does love require of me, given what I've been given?" That is the question that turns charisms into service and service into holiness.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Theological Reflection</h4>
+                <ol>
+                    <li>Paul says the Spirit "apportions to each one individually as he wills" — not as the recipient chooses. What does that imply about how a person should approach discerning their own gifts? What kind of posture does it require?</li>
+                    <li>Aquinas treats charity as the "form" of the virtues — the principle that gives them their right direction. If charity is absent from a gift, what specifically goes wrong? Walk through two or three of the seven gifts and describe what each one looks like without love as its animating principle.</li>
+                    <li>"Well done, good and faithful servant" — Matthew 25:21 — is spoken to the servants who acted, not to the one who preserved what he received. Given what Paul says about gifts and their purpose, what does fidelity to a gift actually require? What is the difference between being faithful with a gift and simply not losing it?</li>
+                </ol>
+            </div>
+        `
+    },
+
+    quiz: [
+        {
+            q: "How many gifts of the Holy Spirit are there in the traditional Catholic list drawn from Isaiah 11?",
+            options: [
+                "Five — the same number as the books of the Torah",
+                "Seven — wisdom, understanding, counsel, fortitude, knowledge, piety, and fear of the Lord",
+                "Nine — the same count as the charisms Paul lists in 1 Corinthians 12",
+                "Twelve — corresponding to the twelve apostles"
+            ],
+            correct: 1,
+            explanation: "The seven gifts come from Isaiah 11:2–3: wisdom, understanding, counsel, fortitude (might), knowledge, piety, and fear of the Lord. The nine charisms in 1 Corinthians 12 are a distinct category — gifts ordered toward building up the Church rather than primarily toward personal sanctification. Some traditions count additional gifts from other Pauline texts, but the seven from Isaiah are the core Catholic list."
+        },
+        {
+            q: "Which Old Testament prophet first names the seven gifts, describing them as resting on the coming Messiah?",
+            options: [
+                "Jeremiah, in his prophecy of the new covenant written on the heart",
+                "Ezekiel, in his vision of the valley of dry bones",
+                "Isaiah, in his description of the shoot from the stump of Jesse",
+                "Daniel, in his vision of the four kingdoms"
+            ],
+            correct: 2,
+            explanation: "Isaiah 11:1–3 names all seven gifts as qualities of the Spirit resting on the 'shoot from the stump of Jesse' — the Messiah from David's lineage. Christians read this as fulfilled in Jesus, and through Baptism these same gifts are given to those united to Christ. The passage is the Old Testament root of the Catholic doctrine of the seven gifts."
+        },
+        {
+            q: "In Catholic teaching, 'Fear of the Lord' most accurately means:",
+            options: [
+                "A genuine terror of divine punishment that motivates moral behavior through dread",
+                "Anxiety about whether God approves of you, driving constant spiritual self-examination",
+                "Loving reverence — a deep reluctance to offend God, rooted in love rather than fear of harm, like a child who doesn't want to disappoint a parent",
+                "Awe at God's power in nature, similar to being humbled by a storm or a mountain"
+            ],
+            correct: 2,
+            explanation: "The Church distinguishes filial fear (timor filialis) from servile fear (timor servilis). Servile fear is the fear of punishment — it can be the beginning of a journey toward God, but it is not the gift itself. Filial fear is the fear of a child who loves their parent: not fear of harm, but a deep reluctance to offend or disappoint the one who loves you most. Proverbs 9:10 calls this the 'beginning of wisdom' — it is a delight, not a burden, for someone rightly related to God."
+        },
+        {
+            q: "Which sacrament strengthens the seven gifts first received at Baptism?",
+            options: [
+                "The Eucharist, which is the source and summit of Christian life",
+                "Reconciliation, which restores the soul's relationship with God after serious sin",
+                "Holy Orders, for those called to serve the Church through ordained ministry",
+                "Confirmation, which brings an increase and deepening of baptismal grace"
+            ],
+            correct: 3,
+            explanation: "CCC 1303 teaches that Confirmation 'brings an increase and deepening of baptismal grace.' The gifts are given at Baptism; Confirmation perfects them. It is not a separate gift-giving but a completion and strengthening of what was already planted. For adults coming through OCIA, Confirmation is received together with Baptism and Eucharist at the Easter Vigil, completing the three sacraments of initiation at once."
+        },
+        {
+            q: "Paul writes in 1 Corinthians 13 that if you have all gifts — prophecy, knowledge, faith to move mountains — but lack what, you are 'nothing'?",
+            options: [
+                "Humility — without which all gifts become sources of pride",
+                "Love (charity) — without which even the most impressive gifts produce nothing of lasting value",
+                "Obedience to the Church — without which gifts cannot be properly ordered",
+                "Suffering — because the gifts are only proven genuine through trial"
+            ],
+            correct: 1,
+            explanation: "1 Corinthians 13:2 is unambiguous: 'if I have all faith, so as to remove mountains, but have not love, I am nothing.' Aquinas calls charity the 'form' of all the virtues — the principle that gives them right direction and genuine value. Gifts without love are a noisy gong: real noise, no music. The gifts are given for mission, and mission is an act of love. Without love, the gift is present but its purpose is lost."
+        }
+    ]
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
+    initModule(MODULE_DATA);
+});
+</script>
+
+</body>
+</html>
