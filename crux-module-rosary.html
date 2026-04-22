@@ -1,0 +1,1211 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>CRUX — The Rosary</title>
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LQ35DLTVKY');
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDK v10 -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+            authDomain: "crux-faith-formation.firebaseapp.com",
+            projectId: "crux-faith-formation",
+            storageBucket: "crux-faith-formation.firebasestorage.app",
+            messagingSenderId: "838141015985",
+            appId: "1:838141015985:web:2655e570663e182d75ef90",
+            measurementId: "G-LQ35DLTVKY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        window.db = getFirestore(app);
+        window.auth = getAuth(app);
+        window.fsModules = { doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp };
+
+        onAuthStateChanged(window.auth, (user) => {
+            window.currentUser = user || null;
+            const el = document.getElementById('userDisplay');
+            if (el) el.textContent = user ? user.email.split('@')[0] : 'Guest';
+            if (user) loadUserProgress();
+        });
+    </script>
+
+    <style>
+        :root {
+            color-scheme: light;
+            --navy: #1a1f36;
+            --navy-mid: #242a45;
+            --navy-light: #2f3659;
+            --gold: #d4a574;
+            --gold-light: #e8c9a0;
+            --gold-dark: #b8895a;
+            --white: #ffffff;
+            --off-white: #f8f7f4;
+            --text-primary: #1a1f36;
+            --text-secondary: #5a6282;
+            --text-muted: #8890b0;
+            --border: rgba(26, 31, 54, 0.1);
+            --border-gold: rgba(212, 165, 116, 0.3);
+            --shadow-sm: 0 2px 8px rgba(26, 31, 54, 0.08);
+            --shadow-md: 0 4px 20px rgba(26, 31, 54, 0.12);
+            --shadow-lg: 0 8px 40px rgba(26, 31, 54, 0.18);
+            --green: #2e7d32;
+            --green-light: #e8f5e9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--off-white);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ─── HEADER ──────────────────────────────────────── */
+        header {
+            background: var(--navy);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+        }
+
+        .header-left { display: flex; align-items: center; gap: 1.5rem; }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        .back-btn:hover { color: var(--gold); }
+
+        .header-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 4px;
+            text-decoration: none;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-chip {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.7);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .xp-chip {
+            background: rgba(212, 165, 116, 0.15);
+            border: 1px solid var(--border-gold);
+            color: var(--gold);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: none;
+        }
+
+        /* ─── PROGRESS BAR ────────────────────────────────── */
+        .progress-track {
+            background: rgba(255,255,255,0.08);
+            height: 3px;
+            position: sticky;
+            top: 57px;
+            z-index: 99;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gold);
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* ─── MAIN LAYOUT ─────────────────────────────────── */
+        .module-wrap {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 2rem 6rem;
+        }
+
+        /* ─── STEP INDICATOR ──────────────────────────────── */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 2.5rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        .step-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-dot {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: var(--white);
+        }
+
+        .step.complete .step-dot {
+            background: var(--green);
+            border-color: var(--green);
+            color: var(--white);
+        }
+
+        .step-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .step.active .step-label { color: var(--navy); font-weight: 600; }
+        .step.complete .step-label { color: var(--green); }
+
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background: var(--border);
+            margin: 0 0.5rem;
+            transition: background 0.3s ease;
+        }
+
+        .step-line.complete { background: var(--green); }
+
+        /* ─── MODULE HEADER ───────────────────────────────── */
+        .module-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .module-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-eyebrow .grade-tag {
+            display: inline-block;
+            background: rgba(212, 165, 116, 0.12);
+            color: var(--gold-dark);
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .module-eyebrow .topic-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .module-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* ─── LEVEL TOGGLE ────────────────────────────────── */
+        .level-toggle {
+            display: inline-flex;
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .level-btn {
+            padding: 0.6rem 1.4rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .level-btn.active {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        /* ─── CONTENT PANELS ──────────────────────────────── */
+        .panel {
+            display: none;
+            animation: fadeUp 0.35s ease;
+        }
+
+        .panel.active { display: block; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── LESSON CONTENT ──────────────────────────────── */
+        .lesson-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .lesson-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .lesson-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin: 1.5rem 0 0.6rem;
+        }
+
+        .lesson-card p {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.85;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card ul, .lesson-card ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card li {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.75;
+            margin-bottom: 0.4rem;
+        }
+
+        .highlight-box {
+            background: rgba(212, 165, 116, 0.08);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 8px 8px 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+            font-style: italic;
+            color: var(--navy);
+            font-size: 0.95rem;
+        }
+
+        .highlight-box cite {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--gold-dark);
+            font-weight: 600;
+            margin-top: 0.4rem;
+            font-style: normal;
+            letter-spacing: 0.5px;
+        }
+
+        .key-term {
+            display: inline-block;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            margin: 0 0.1rem;
+        }
+
+        /* ─── READING SECTION ─────────────────────────────── */
+        .reading-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .reading-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .reading-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reading-body {
+            font-size: 0.97rem;
+            line-height: 1.9;
+            color: var(--text-primary);
+        }
+
+        .reading-body p { margin-bottom: 1.1rem; }
+
+        .reflection-block {
+            background: var(--navy);
+            border-radius: 10px;
+            padding: 1.75rem;
+            margin-top: 2rem;
+        }
+
+        .reflection-block h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .reflection-block ol {
+            padding-left: 1.25rem;
+        }
+
+        .reflection-block li {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            margin-bottom: 0.6rem;
+        }
+
+        /* ─── QUIZ ────────────────────────────────────────── */
+        .quiz-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-intro {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question-block {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question-block:last-of-type { border-bottom: none; }
+
+        .question-num {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.85rem 1.1rem;
+            background: var(--off-white);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem;
+            color: var(--text-primary);
+            width: 100%;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--navy);
+            background: rgba(26, 31, 54, 0.04);
+        }
+
+        .option-btn.selected {
+            border-color: var(--navy);
+            background: rgba(26, 31, 54, 0.06);
+        }
+
+        .option-btn.correct {
+            border-color: var(--green);
+            background: var(--green-light);
+            color: var(--green);
+        }
+
+        .option-btn.incorrect {
+            border-color: #c62828;
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .option-letter {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 1.5px solid currentColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+
+        .answer-feedback {
+            margin-top: 0.75rem;
+            padding: 0.85rem 1rem;
+            border-radius: 7px;
+            font-size: 0.88rem;
+            line-height: 1.55;
+            display: none;
+        }
+
+        .answer-feedback.correct {
+            background: var(--green-light);
+            color: var(--green);
+            border-left: 3px solid var(--green);
+        }
+
+        .answer-feedback.incorrect {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 3px solid #c62828;
+        }
+
+        /* ─── NAVIGATION BUTTONS ──────────────────────────── */
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 2rem;
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary:hover {
+            background: var(--navy-light);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.5rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-dark);
+            color: var(--white);
+        }
+
+        /* ─── COMPLETION SCREEN ───────────────────────────── */
+        .completion-screen {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .completion-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .completion-screen h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .completion-screen p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .xp-award {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .score-display {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            display: inline-block;
+            margin-bottom: 2.5rem;
+            min-width: 240px;
+        }
+
+        .score-display .score-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1;
+        }
+
+        .score-display .score-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+
+        .completion-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ─── LOADING STATE ───────────────────────────────── */
+        .loading-state {
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--navy);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-state p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* ─── RESPONSIVE ──────────────────────────────────── */
+        @media (max-width: 640px) {
+            .module-wrap { padding: 2rem 1.25rem 5rem; }
+            .module-title { font-size: 1.7rem; }
+            .lesson-card, .reading-card, .quiz-card { padding: 1.75rem 1.25rem; }
+            .step-label { display: none; }
+            .nav-bar { flex-direction: column-reverse; }
+            .nav-bar .btn-primary, .nav-bar .btn-secondary { width: 100%; justify-content: center; }
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
+            ← Back
+        </button>
+        <a href="index.html" class="header-logo">CRUX</a>
+    </div>
+    <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
+        <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
+    </div>
+</header>
+
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div class="module-wrap">
+
+    <!-- Loading state -->
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
+
+    <!-- Step indicator -->
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
+        </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
+        </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
+
+    <!-- Module header -->
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">Grades 3–8</span>
+            <span class="topic-tag" id="topicTag">How We Pray</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <!-- Level toggle -->
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions — you can review your answers before submitting.</p>
+            <div id="quizQuestions">
+                <!-- Populated by JS -->
+            </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You've completed this lesson. Keep going — the faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
+            </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    ← Back to CRUX
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="crux-module-engine.js"></script>
+<script>
+const MODULE_DATA = {
+    id: 'rosary',
+    title: 'The Rosary',
+    subtitle: 'Not a prayer to Mary — a prayer with Mary. Pope John Paul II called it "contemplating with Mary the face of Christ."',
+    gradeTag: 'Grades 3–8',
+    topic: 'How We Pray',
+    xpReward: 60,
+    nextModule: 'lords_prayer',
+
+    lesson: {
+        beginner: `
+            <h2>The Rosary — Lesson</h2>
+
+            <p>You have probably seen the beads. Hanging from a rearview mirror, wrapped around a grandmother's wrist, pooled in someone's pocket on the way into Mass. The Rosary is one of the most recognized symbols in Catholic life — and one of the most misunderstood. It is not a lucky charm. It is not jewelry. It is a prayer. More precisely, it is a structured method of meditating on the life of Jesus Christ, with his mother Mary as your guide.</p>
+
+            <p>Pope John Paul II, who called the Rosary his favorite prayer, wrote: "To recite the Rosary is nothing other than to contemplate with Mary the face of Christ." That one sentence tells you everything you need to know about what this prayer actually is. You are not praying to Mary as though she were God. You are praying with her — moving through the most important moments of her son's life, decade by decade, with the person who knew him most intimately beside you.</p>
+
+            <h3>How to Pray the Rosary</h3>
+
+            <p>A standard rosary has a crucifix at the bottom, a short stem of beads leading up, and a circular chain of five groups called <strong>decades</strong> — each decade consisting of one larger bead and ten smaller beads. The beads do not create the prayer. They track it, so your hands can count while your mind is free to meditate on the mystery.</p>
+
+            <p>Here is the sequence, step by step:</p>
+
+            <ol>
+                <li><strong>Hold the crucifix</strong> and pray the <strong>Apostles' Creed</strong>.</li>
+                <li>On the first large bead: pray the <strong>Our Father</strong>.</li>
+                <li>On each of the next three small beads: pray a <strong>Hail Mary</strong> — one for faith, one for hope, one for charity.</li>
+                <li>Pray a <strong>Glory Be</strong>.</li>
+                <li><strong>Announce the First Mystery</strong> (see the list below) and hold it briefly in mind.</li>
+                <li>Pray the <strong>Our Father</strong> on the large bead that opens the decade.</li>
+                <li>Pray the <strong>Hail Mary</strong> ten times on the ten small beads, meditating on the mystery as you go.</li>
+                <li>Pray the <strong>Glory Be</strong>, then the <strong>Fatima Prayer</strong> if you wish.</li>
+                <li>Announce the Second Mystery and repeat steps 6–8. Continue through all five mysteries.</li>
+                <li>Finish with the <strong>Hail Holy Queen</strong>.</li>
+            </ol>
+
+            <p>One full Rosary covers five mysteries and takes around 15–20 minutes at a calm pace. You can return to this page anytime as a reference while you are learning.</p>
+
+            <h3>The Prayers</h3>
+
+            <div class="highlight-box">
+                <p><strong>Apostles' Creed</strong><br>I believe in God, the Father Almighty, Creator of heaven and earth, and in Jesus Christ, His only Son, our Lord, who was conceived by the Holy Spirit, born of the Virgin Mary, suffered under Pontius Pilate, was crucified, died and was buried; He descended into hell; on the third day He rose again from the dead; He ascended into heaven, and is seated at the right hand of God the Father Almighty; from there He will come to judge the living and the dead. I believe in the Holy Spirit, the holy Catholic Church, the communion of saints, the forgiveness of sins, the resurrection of the body, and life everlasting. Amen.</p>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>Our Father</strong><br>Our Father, who art in heaven, hallowed be Thy name; Thy kingdom come; Thy will be done on earth as it is in heaven. Give us this day our daily bread; and forgive us our trespasses as we forgive those who trespass against us; and lead us not into temptation, but deliver us from evil. Amen.</p>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>Hail Mary</strong><br>Hail Mary, full of grace, the Lord is with thee. Blessed art thou among women, and blessed is the fruit of thy womb, Jesus. Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death. Amen.</p>
+                <cite>The first half comes directly from Scripture — Gabriel's greeting (Luke 1:28) and Elizabeth's greeting (Luke 1:42).</cite>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>Glory Be</strong><br>Glory be to the Father, and to the Son, and to the Holy Spirit. As it was in the beginning, is now, and ever shall be, world without end. Amen.</p>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>Fatima Prayer</strong> (optional, prayed after each Glory Be)<br>O my Jesus, forgive us our sins, save us from the fires of hell, lead all souls to heaven, especially those in most need of Thy mercy. Amen.</p>
+                <cite>Given at Fatima, Portugal in 1917 during the apparitions of Our Lady.</cite>
+            </div>
+
+            <div class="highlight-box">
+                <p><strong>Hail Holy Queen</strong> (prayed at the end)<br>Hail, Holy Queen, Mother of Mercy, our life, our sweetness and our hope. To thee do we cry, poor banished children of Eve. To thee do we send up our sighs, mourning and weeping in this valley of tears. Turn then, most gracious advocate, thine eyes of mercy toward us, and after this exile, show unto us the blessed fruit of thy womb, Jesus. O clement, O loving, O sweet Virgin Mary.</p>
+            </div>
+
+            <h3>The Four Sets of Mysteries</h3>
+
+            <p>The 20 mysteries are divided into four sets of five, each associated with certain days of the week. When you sit down to pray, you pray one set of five mysteries — working through the five decades of the rosary once.</p>
+
+            <p><strong>Joyful Mysteries</strong> — Monday and Saturday</p>
+            <ul>
+                <li><strong>The Annunciation</strong> — The angel Gabriel tells Mary she will conceive the Son of God. Mary says yes.</li>
+                <li><strong>The Visitation</strong> — Carrying Jesus in her womb, Mary travels to visit her cousin Elizabeth, who is carrying John the Baptist.</li>
+                <li><strong>The Nativity</strong> — Jesus is born in a stable in Bethlehem. The Word becomes flesh.</li>
+                <li><strong>The Presentation</strong> — Mary and Joseph present the infant Jesus in the Temple, following the Law of Moses.</li>
+                <li><strong>The Finding in the Temple</strong> — After three days of anxious searching, Mary and Joseph find the twelve-year-old Jesus calmly teaching in the Temple.</li>
+            </ul>
+
+            <p><strong>Sorrowful Mysteries</strong> — Tuesday and Friday</p>
+            <ul>
+                <li><strong>The Agony in the Garden</strong> — The night before he dies, Jesus prays alone in Gethsemane. "Not my will but yours."</li>
+                <li><strong>The Scourging at the Pillar</strong> — Jesus is flogged by Roman soldiers.</li>
+                <li><strong>The Crowning with Thorns</strong> — Soldiers mock Jesus as a king and press thorns into his head.</li>
+                <li><strong>The Carrying of the Cross</strong> — Jesus carries the instrument of his own death through the streets to Calvary.</li>
+                <li><strong>The Crucifixion</strong> — Jesus is nailed to the cross and dies. "It is finished."</li>
+            </ul>
+
+            <p><strong>Glorious Mysteries</strong> — Wednesday and Sunday</p>
+            <ul>
+                <li><strong>The Resurrection</strong> — On the third day, the tomb is empty. Jesus appears to Mary Magdalene, then to the disciples.</li>
+                <li><strong>The Ascension</strong> — Forty days after the Resurrection, Jesus ascends bodily into heaven.</li>
+                <li><strong>The Descent of the Holy Spirit</strong> — At Pentecost, the Holy Spirit comes upon Mary and the apostles gathered in prayer.</li>
+                <li><strong>The Assumption of Mary</strong> — At the end of her earthly life, Mary is taken body and soul into heaven.</li>
+                <li><strong>The Coronation of Mary</strong> — Mary is crowned Queen of Heaven, sharing in the glory of her son.</li>
+            </ul>
+
+            <p><strong>Luminous Mysteries</strong> — Thursday</p>
+            <p>In 2002, Pope John Paul II noticed that the three traditional sets moved from the Annunciation to the Passion with almost nothing from the middle — the three years when Jesus actually taught, healed, and revealed who he was. He added five "mysteries of light" to fill this gap. They belong on Thursday.</p>
+            <ul>
+                <li><strong>The Baptism in the Jordan</strong> — Jesus is baptized and the Father's voice declares: "This is my beloved Son, with whom I am well pleased."</li>
+                <li><strong>The Wedding at Cana</strong> — Mary's intercession moves Jesus to perform his first miracle, turning water into wine. Mary says to the servants: "Do whatever he tells you."</li>
+                <li><strong>The Proclamation of the Kingdom</strong> — Jesus announces the Kingdom of God and calls people to repentance and belief.</li>
+                <li><strong>The Transfiguration</strong> — On Mount Tabor, Jesus is transfigured before Peter, James, and John. His divine glory becomes briefly visible through his humanity.</li>
+                <li><strong>The Institution of the Eucharist</strong> — At the Last Supper, Jesus gives us his body and blood and commands us to do this in memory of him.</li>
+            </ul>
+
+            <h3>Mary's Role in the Rosary</h3>
+
+            <p>People sometimes ask — honestly — whether Catholics are worshiping Mary when they pray the Rosary. The answer is no. And the distinction matters.</p>
+
+            <p>Catholics <em>venerate</em> Mary. Veneration is the deepest honor that can be given to a creature — but it is not worship. Worship belongs to God alone. Mary is not a goddess. She is not a savior. She cannot forgive your sins or grant you eternal life. What she can do — what the Church believes she does — is intercede for you. She prays for you to her son. When you ask Mary to pray for you, you are asking someone who loves you and who has a unique relationship with Jesus to go to him on your behalf.</p>
+
+            <p>Think carefully about what that means. How much do you love your mother? Now think about how much Jesus loves his. He chose her before time began. He was carried by her, raised by her, cared for by her for thirty years. The love the Son of God has for his mother is beyond anything the world can measure.</p>
+
+            <p>Look at what happened at the wedding at Cana (John 2:1–11). A wedding runs out of wine — a social disaster in first-century Jewish culture. Mary sees the problem and brings it to Jesus. He tells her his hour has not yet come. And then he acts anyway. He turns water into wine. His first recorded miracle happens because his mother asked him to. Before he acts, she tells the servants: "Do whatever he tells you." She does not solve the problem herself. She brings it to her son and directs everyone toward him.</p>
+
+            <p>That is the pattern of Marian intercession. She does not replace Jesus. She points you toward him. When you pray the Rosary, you are meditating on the life of Christ with the person who knew him most deeply — and asking her, decade by decade, to carry your prayer to him.</p>
+        `,
+
+        theologian: `
+            <h2>The Rosary — Theologian Level</h2>
+
+            <p>In 2002, Pope John Paul II issued <em>Rosarium Virginis Mariae</em> — an apostolic letter that added five new mysteries to the Rosary and, more importantly, reoriented the theological understanding of what the Rosary is and what it does. To understand his contribution, you need to understand the problem he was addressing.</p>
+
+            <h3>The Problem JPII Was Solving</h3>
+
+            <p>By the late twentieth century, the Rosary had acquired a reputation as a Marian devotion — a prayer about Mary, with Christ as secondary figure. This was not only theologically imprecise; it had practical consequences. Catholics seeking a Christocentric spirituality found the Rosary less compelling. Critics saw in it apparent evidence that Catholic piety had elevated Mary beyond her proper place. And many devout Catholics were reciting the words while meditating on nothing in particular.</p>
+
+            <p>JPII's response was not to defend the status quo but to recover the original intention. He wrote: "To recite the Rosary is nothing other than to contemplate with Mary the face of Christ." The Rosary is a meditation on Christ. Mary is not the subject of the meditation — she is the guide. The best possible guide, because no human being ever knew Jesus more intimately, over more years, and with more depth of attention. But a guide nonetheless, not a destination.</p>
+
+            <p>This reframing changes how you pray. The ten Hail Marys of each decade are not the content of the prayer. They are the rhythm — a familiar, repetitive prayer that quiets the mind and keeps you in Mary's company while you contemplate the mystery. You are not praying the Hail Mary ten times. You are meditating on the Transfiguration, or the Crucifixion, or the Annunciation, while the Hail Mary functions as a steady heartbeat underneath the contemplation.</p>
+
+            <h3>The Luminous Mysteries and What They Fill In</h3>
+
+            <p>When JPII examined the three traditional sets of mysteries, he identified a structural gap. The Joyful Mysteries cover the Incarnation and childhood of Jesus. The Sorrowful cover the Passion. The Glorious cover the Resurrection and its aftermath. Missing entirely: the public ministry — three years in which Jesus preached the Sermon on the Mount, healed the sick, forgave sins publicly, raised Lazarus, and gave the Church its teaching and its sacraments. The traditional Rosary moved directly from the Finding in the Temple to the Agony in the Garden, skipping the heart of the Gospel.</p>
+
+            <p>The five Luminous Mysteries JPII added are not arbitrary. Each is a precise moment of revelation — a point at which the identity of Jesus becomes distinctly visible. The Baptism declares his divine sonship through the Father's voice. Cana reveals the power of his mercy and the character of Mary's intercession. The Proclamation names the content of his mission. The Transfiguration momentarily renders visible the divine glory hidden beneath the human nature. The Institution of the Eucharist establishes the gift that will sustain the Church until he returns.</p>
+
+            <p>It is worth pausing on JPII's choice to make the Wedding at Cana the second Luminous Mystery. Among all the signs in John's Gospel — the healing of the official's son, the feeding of the five thousand, the raising of Lazarus — he chose the one that simultaneously reveals the power of Jesus and the intercessory role of Mary. That placement is not incidental.</p>
+
+            <h3>The Precision of Marian Veneration</h3>
+
+            <p>The Catholic tradition distinguishes carefully between the honor owed to different beings. <span class="key-term">Latria</span> is the worship due to God alone — adoration, sacrifice, the complete submission of the self to the divine. <span class="key-term">Dulia</span> is the honor given to the saints — recognition of the work of God in a human life, and the practice of asking for their intercession. <span class="key-term">Hyperdulia</span> is a category reserved solely for Mary — the highest veneration that can be offered to any creature, which acknowledges her unique place in salvation history without crossing the line that belongs only to God.</p>
+
+            <p>These distinctions are not legalism. They are theological hygiene — protection against error in both directions. Collapse hyperdulia into latria and you have made Mary a goddess, which violates both Scripture and Mary's own self-understanding: she called herself the handmaid of the Lord. Refuse hyperdulia out of nervousness about the line and you impoverish your relationship with the woman God himself chose as the vessel of the Incarnation.</p>
+
+            <p>The Rosary operates entirely within the logic of hyperdulia. When you say "Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death," you are not asking Mary to save you. You are asking her to intercede — to bring your need before her son. The petition is the same as asking a trusted friend to pray for you, calibrated to someone who has the closest possible relationship with the one you are petitioning.</p>
+
+            <h3>Cana as the Paradigm of Intercession</h3>
+
+            <p>John 2:1–11 is the primary New Testament foundation for Marian intercession and repays careful reading. Mary sees that the wine has run out. She does not attempt to solve the problem herself. She goes to Jesus and reports it. His response — "Woman, what is this to me and to you? My hour has not yet come" — uses Johannine language for the hour of the Passion, the full eschatological moment of revelation. He is indicating something about the timing of his messianic work.</p>
+
+            <p>And then he acts. Without explanation, without a change of stated position, he tells the servants to fill the jars with water. The water becomes wine — the finest wine of the celebration. His first recorded miracle happens at his mother's prompting, ahead of his own stated schedule.</p>
+
+            <p>The narrative structure is the pattern of all Marian intercession. Mary identifies a need, presents it to Jesus, and directs everyone toward him: "Do whatever he tells you." She does not resolve the situation. She does not override him. She intercedes, and then steps back. The phrase "Do whatever he tells you" is addressed to the servants at Cana, but it reads as a word for every Catholic in every century who approaches Mary in prayer. She is not the destination. She is pointing you toward her son and telling you to do what he says.</p>
+
+            <p>Aquinas observes in <em>Summa Theologiae</em> II-II, q. 83 that asking the saints to intercede honors God by honoring the order of creation — the web of love and relationship in which human persons genuinely participate in one another's flourishing. To ask Mary to pray for us is not to insert an obstacle between the soul and God. It is to use a channel God himself created and filled with the most graced human life in history.</p>
+
+            <h3>Mary as the Model of Contemplation</h3>
+
+            <p>Twice in Luke's infancy narrative, the evangelist notes that Mary "kept all these things and pondered them in her heart" (Luke 2:19, 51). The Greek word for "pondered" — <em>symballousa</em> — means literally to cast things together, to bring different elements into contact and see what they produce. Mary is not merely a passive witness to the events of her son's life. She is actively at work on them, meditating on them, letting them speak to each other over time.</p>
+
+            <p>JPII uses these verses to establish Mary as the model of Rosary prayer. The Rosary, properly prayed, is not a ritual recitation. It is a sustained act of contemplative attention — to a person, to a life, to the face of Christ — carried out in the company of the woman who spent her entire life doing exactly this. The repetition of the Hail Mary is not meant to produce boredom. It is meant to produce what repetition always produces when rightly used: the quieting of the surface noise so that something deeper can emerge.</p>
+
+            <p>In this sense, the Rosary is a form of <em>lectio divina</em> applied not to a text but to a sequence of events. You hold the mystery the way you would hold a difficult verse — not trying to extract information from it, but waiting for what it has to say to settle into you. Mary is the contemplative beside you, already practiced at exactly this attention, pointing you toward the face of her son. She does not draw attention to herself. That has never been her manner. She points, and she prays for you while you look.</p>
+
+            <p>If you want to study the prayer Mary is most associated with in the Rosary, the <a href="crux-modules.html?module=mary" style="color:var(--gold-dark);font-weight:600;">Mary and the Saints module</a> covers the theology of the Communion of Saints and Mary's unique place within it.</p>
+        `
+    },
+
+    reading: {
+        beginner: `
+            <h2>Reading: Do Whatever He Tells You</h2>
+            <div class="reading-meta">John 2:1–11 — The Wedding at Cana and the pattern of Marian intercession</div>
+            <div class="reading-body">
+                <p>The Wedding at Cana is the second Luminous Mystery of the Rosary, and it is the story that most clearly shows what Mary's role in a Catholic's life actually looks like.</p>
+
+                <p>Jesus and his disciples are at a wedding in Cana. His mother is there too. At some point during the celebration, the wine runs out. In first-century Jewish culture, running out of wine at a wedding was not a minor inconvenience. It was a social disaster — the kind of failure the host family would be reminded of for years. Mary notices the problem.</p>
+
+                <p>She does not try to fix it herself. She goes to Jesus and says simply: "They have no wine." No lengthy explanation. No explicit request. She just brings the problem to him and trusts him with it.</p>
+
+                <p>Jesus answers in a way that sounds, at first, like a refusal. He says something about his hour not yet having come. But Mary does not argue, and she does not panic. She turns to the servants standing nearby and says seven words that define her role in Catholic prayer: "Do whatever he tells you."</p>
+
+                <p>She does not tell the servants to find another solution. She does not tell them to wait and see. She has complete confidence that he is going to act. And she is right. Jesus tells the servants to fill six stone jars with water — jars holding twenty to thirty gallons each. They do. The water becomes wine. The headwaiter tastes it and is astonished: this is the finest wine of the night. And it is Jesus's first recorded miracle.</p>
+
+                <p>Now think about what this tells you about the relationship between Mary and her son. She sees a need. She does not try to solve it on her own — she brings it to Jesus. She trusts him to act even when his first response seems to be no. She directs everyone around her toward him. That is the complete shape of Marian intercession. She is not a bypass around Christ. She is a path to him.</p>
+
+                <p>When you pray the Rosary, you ask Mary to "pray for us sinners, now and at the hour of our death." You are asking her to do exactly what she did at Cana: see your need, bring it to Jesus, and point you toward what he says. The seven words she spoke to those servants are meant for you too. Do whatever he tells you.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Reflect on These Questions</h4>
+                <ol>
+                    <li>Mary sees a problem and brings it to Jesus rather than solving it herself. Is there something you have been trying to handle alone that you could bring to him instead? What makes it hard to hand things over?</li>
+                    <li>Jesus seems to say no, and then acts anyway. What does that tell you about how Mary's intercession works? And what does it tell you about how much he loves and honors his mother?</li>
+                    <li>"Do whatever he tells you." Mary says this to servants at a wedding, but it reads like a word for every believer in every century. Is there something you know Jesus is asking you to do that you have been putting off?</li>
+                </ol>
+            </div>
+        `,
+
+        theologian: `
+            <h2>Reading: Rosarium Virginis Mariae — Contemplating the Face of Christ</h2>
+            <div class="reading-meta">Pope John Paul II, Apostolic Letter Rosarium Virginis Mariae (October 16, 2002)</div>
+            <div class="reading-body">
+                <p>In the opening paragraph of <em>Rosarium Virginis Mariae</em>, JPII describes the Rosary as a prayer that has "all the depth of the Gospel message in its entirety." He then offers the line that reframes everything that follows: "To recite the Rosary is nothing other than to contemplate with Mary the face of Christ."</p>
+
+                <p>The phrase "face of Christ" is precise and deliberate. Not the doctrine of Christ, not the theology of Christ, not even the teachings of Christ — the face. A face is particular. It belongs to a specific person. It changes with grief and with joy. You cannot contemplate a face abstractly. JPII is insisting that the Rosary is, at its core, a prayer directed toward a living person — not a system of ideas about him.</p>
+
+                <p>He develops this through the concept of Mary as the <em>mirror</em> of Christ. "Mary lived with her eyes fixed on Christ, treasuring his every word: 'And his mother kept all these things in her heart' (Luke 2:51)." Her entire life was a sustained contemplation of the mystery of her son — from the Annunciation through the cross to Pentecost. The Rosary asks you to borrow her attention. When you pray the mysteries, you are not constructing your own approach to Jesus from scratch. You are adopting the posture of the human being who knew him best and spent her life looking at his face.</p>
+
+                <p>On the Hail Mary, JPII makes a point that changes how you understand the structure of the Rosary: "The Hail Marys of the Rosary, far from being a mechanical repetition, are meant to create the atmosphere of contemplation." The ten Hail Marys of each decade are not the content of the prayer. They are the rhythm — a familiar, repetitive movement that quiets the mind and creates the conditions in which genuine contemplation of the mystery becomes possible. The Hail Mary is the heartbeat; the mystery is the thought. Understanding this distinction transforms what you do with those ten beads.</p>
+
+                <p>On the Luminous Mysteries, JPII is candid about his reasoning: the three traditional sets moved from the Nativity to the Passion with almost nothing from the public ministry. "It is during the years of his public ministry," he writes, "that the mystery of Christ is most evidently a mystery of light." The Baptism, Cana, the Proclamation of the Kingdom, the Transfiguration, the Eucharist — each is a moment in which something essential about who Jesus is becomes visible. To have meditated on the Rosary for centuries without these events was to have been praying the mystery of Christ while largely skipping the years in which he was most publicly teaching and revealing himself.</p>
+
+                <p>JPII also addresses the objection that the Rosary is insufficiently Scriptural. His response is that the mysteries are nothing but the Gospel — specific, named events from the life of Christ, held in the mind while praying. "The Rosary, though clearly Marian in character, is at heart a Christocentric prayer." The reason Mary is at the center is not that the prayer is about her. It is that she is, by any account, the best human guide to the mystery of her son — the one who held him as an infant, raised him, followed him, and stood beneath his cross. Her presence in the Rosary is the presence of the ideal companion for this contemplation, not a diversion from its object.</p>
+
+                <p>The letter closes with a characteristic JPII movement toward peace: "The Rosary is by its nature a prayer for peace, since it consists in the contemplation of Christ, the Prince of Peace." The person who regularly holds the mysteries of Christ's life in mind — from the Annunciation to the Coronation — is being formed, over time, by what they contemplate. The Rosary is not only a devotional exercise. It is a formation program. What you attend to makes you into something. Mary, who spent her life attending to her son, is your guide into that formation.</p>
+            </div>
+            <div class="reflection-block">
+                <h4>Theological Reflection</h4>
+                <ol>
+                    <li>JPII distinguishes between contemplating the "face" of Christ and contemplating his teachings or doctrines. What is the practical difference between meditating on a person versus meditating on ideas about that person? How does that distinction change what you are doing during the ten Hail Marys of a decade?</li>
+                    <li>JPII says the Hail Mary creates an "atmosphere of contemplation" rather than being the content of the prayer itself. If this is true, what does it mean to pray the Rosary badly — going through the words without the contemplation? And what would it take to actually ponder a mystery during those ten beads?</li>
+                    <li>JPII writes that the Rosary is "by its nature a prayer for peace" because it consists in contemplating Christ. If sustained attention to the face of Christ produces peace, what does that say about the source of the anxiety and conflict that characterizes most human lives? What are most people actually contemplating instead?</li>
+                </ol>
+            </div>
+        `
+    },
+
+    quiz: [
+        {
+            q: "Catholics give Mary the highest honor that can be offered to any creature. What is the theological term for this — distinct from worship?",
+            options: [
+                "Latria — the worship due to God alone",
+                "Dulia — the honor given to saints generally",
+                "Hyperdulia — the highest veneration given to any creature, reserved for Mary alone",
+                "Proskynesis — prostration before a holy figure"
+            ],
+            correct: 2,
+            explanation: "The Catholic tradition distinguishes latria (worship of God alone), dulia (honor of saints), and hyperdulia (the highest veneration given to any creature — reserved for Mary). These distinctions matter practically, not just technically. To offer Mary latria is to make her a goddess, which violates both Scripture and Mary's own self-understanding as the handmaid of the Lord. To refuse hyperdulia is to fail to honor the woman God chose as the vessel of the Incarnation. Hyperdulia honors Mary as fully as any creature can be honored — without crossing the line that belongs to God alone."
+        },
+        {
+            q: "Pope John Paul II added the Luminous Mysteries in 2002. What gap in the traditional Rosary did they fill?",
+            options: [
+                "The period between the Resurrection and Pentecost",
+                "Jesus's public ministry — the years of teaching, healing, and revelation skipped by the traditional three sets",
+                "Mary's life after the Ascension, including her Assumption",
+                "The Old Testament events that prefigure Christ"
+            ],
+            correct: 1,
+            explanation: "The three traditional sets — Joyful, Sorrowful, Glorious — moved from the Nativity and childhood of Jesus directly to the Passion and then the Resurrection, largely skipping the entire public ministry. JPII chose five events to close this gap: the Baptism, the Wedding at Cana, the Proclamation of the Kingdom, the Transfiguration, and the Institution of the Eucharist. Each is a moment of revelation — a point at which who Jesus is becomes visibly clear. Together they complete a meditation on the full arc of the Gospel."
+        },
+        {
+            q: "The Hail Mary draws its first half directly from two figures in the Gospel of Luke. Who are they?",
+            options: [
+                "The angel Gabriel and Elizabeth",
+                "Mary herself and the angel Gabriel",
+                "Elizabeth and Zechariah",
+                "Simeon and Anna at the Presentation"
+            ],
+            correct: 0,
+            explanation: "'Hail, full of grace, the Lord is with you' comes from the angel Gabriel's greeting to Mary in Luke 1:28. 'Blessed are you among women, and blessed is the fruit of your womb' comes from Elizabeth's greeting in Luke 1:42. The second half of the prayer — 'Holy Mary, Mother of God, pray for us sinners, now and at the hour of our death' — was composed and standardized by the Church. The first half of the Hail Mary is Scripture: words spoken about Mary, by the figures in the Gospel, that the Church has been repeating ever since."
+        },
+        {
+            q: "Pope John Paul II described the Rosary as 'contemplating with Mary the ___ of Christ.' What is the missing word?",
+            options: [
+                "Mother",
+                "Cross",
+                "Word",
+                "Face"
+            ],
+            correct: 3,
+            explanation: "'To recite the Rosary is nothing other than to contemplate with Mary the face of Christ.' — Rosarium Virginis Mariae, §3. JPII's choice of the word 'face' is deliberate. Not the theology of Christ, not his teachings, not even his cross — the face of a specific person. A face is particular. It changes with grief and with joy. You cannot contemplate a face abstractly. JPII is insisting that the Rosary is directed toward a living person, not a system of ideas — and that Mary, who spent her life with her eyes fixed on that face, is the ideal guide into that contemplation."
+        },
+        {
+            q: "At the Wedding at Cana, Jesus says 'My hour has not yet come' — and then performs the miracle anyway. What does the Church see in this exchange?",
+            options: [
+                "Evidence that Jesus changed his mind when faced with a compelling argument",
+                "A demonstration of Mary's unique intercessory role — her intercession moves Jesus to act, establishing the New Testament pattern of Marian intercession",
+                "Proof that the timing of the Passion was not determined in advance",
+                "A sign that miracles in John's Gospel are spontaneous rather than planned"
+            ],
+            correct: 1,
+            explanation: "Cana is the paradigm of Marian intercession in the New Testament. Mary sees a need, brings it to Jesus without demanding a response, and tells the servants — and through them, every Catholic in every century — 'Do whatever he tells you.' Jesus acts: not because he is argued into it, but because his mother brought the need to him. The Church reads this as the New Testament establishment of Mary's intercessory role: she does not solve problems herself, she does not replace Christ, she intercedes — and her son, who loves her beyond measure, responds. When Catholics ask Mary to pray for them, they are following the same pattern she demonstrated at Cana."
+        }
+    ]
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
+    initModule(MODULE_DATA);
+});
+</script>
+
+</body>
+</html>
