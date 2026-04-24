@@ -777,6 +777,54 @@ body::before {
 
 .reflection-textarea:focus { outline: none; border-color: var(--purple); }
 
+.journal-status {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  min-height: 1.2rem;
+  margin-top: 0.4rem;
+  transition: opacity 0.3s;
+}
+.journal-status.saved { color: var(--green); }
+.journal-status.error { color: #b91c1c; }
+
+.journal-signin-prompt {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.75rem;
+  padding: 0.6rem 0.85rem;
+  background: rgba(212,165,116,0.08);
+  border: 1px solid rgba(212,165,116,0.2);
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+.journal-signin-prompt a {
+  color: var(--purple);
+  font-weight: 600;
+  text-decoration: none;
+}
+.journal-signin-prompt a:hover { text-decoration: underline; }
+
+.journal-indicator {
+  display: none;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+.journal-indicator-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--green);
+  flex-shrink: 0;
+}
+
 /* BOTTOM NAV */
 .module-bottom-nav {
   display: flex;
@@ -1010,11 +1058,19 @@ body::before {
 
           <div class="reflection-block">
             <h4>Reflection — Movement One</h4>
+            <div class="journal-indicator" id="journal-indicator">
+              <span class="journal-indicator-dot"></span>
+              <span id="journal-last-saved">Responses save to your Study Journal</span>
+            </div>
             <p class="reflection-prompt">Paul says there is "no condemnation" for those in Christ. Where in your life do you still live as though condemnation is possible? What would it look like to take this verse seriously?</p>
-            <textarea class="reflection-textarea" placeholder="Your reflection..."></textarea>
+            <textarea class="reflection-textarea" data-reflection-key="s1_q1" placeholder="Your reflection..."></textarea>
 
             <p class="reflection-prompt">The Spirit helps us call God "Father." What does that word actually mean to you? What does it cost or give to say it?</p>
-            <textarea class="reflection-textarea" placeholder="Your reflection..."></textarea>
+            <textarea class="reflection-textarea" data-reflection-key="s1_q2" placeholder="Your reflection..."></textarea>
+            <div class="journal-status" id="journal-status-s1"></div>
+            <div class="journal-signin-prompt">
+              📖 <a href="crux-account.html">Sign in</a> to save your reflections to your Study Journal.
+            </div>
           </div>
 
         </div>
@@ -1098,10 +1154,14 @@ body::before {
           <div class="reflection-block">
             <h4>Reflection — Movement Two</h4>
             <p class="reflection-prompt">Paul says hope is for what we do not yet see. Where in your life are you being asked to hope rather than see? Does verse 25 ("we wait for it with patience") feel like comfort or demand right now?</p>
-            <textarea class="reflection-textarea" placeholder="Your reflection..."></textarea>
+            <textarea class="reflection-textarea" data-reflection-key="s2_q1" placeholder="Your reflection..."></textarea>
 
             <p class="reflection-prompt">Verse 26 says we do not know how to pray as we ought, and the Spirit intercedes for us. Does knowing that change how you approach prayer?</p>
-            <textarea class="reflection-textarea" placeholder="Your reflection..."></textarea>
+            <textarea class="reflection-textarea" data-reflection-key="s2_q2" placeholder="Your reflection..."></textarea>
+            <div class="journal-status" id="journal-status-s2"></div>
+            <div class="journal-signin-prompt">
+              📖 <a href="crux-account.html">Sign in</a> to save your reflections to your Study Journal.
+            </div>
           </div>
 
         </div>
@@ -1178,10 +1238,14 @@ body::before {
           <div class="reflection-block">
             <h4>Reflection — Movement Three</h4>
             <p class="reflection-prompt">Paul lists tribulation, distress, persecution, famine, nakedness, peril, sword. Some of his readers had faced most of them. Which of these words names something real in your own life or world?</p>
-            <textarea class="reflection-textarea" placeholder="Your reflection..."></textarea>
+            <textarea class="reflection-textarea" data-reflection-key="s3_q1" placeholder="Your reflection..."></textarea>
 
             <p class="reflection-prompt">"Nothing in all creation will be able to separate us from the love of God in Christ Jesus our Lord." If you believed this fully, not just intellectually but in your bones, what would change about how you live this week?</p>
-            <textarea class="reflection-textarea" placeholder="Your reflection..."></textarea>
+            <textarea class="reflection-textarea" data-reflection-key="s3_q2" placeholder="Your reflection..."></textarea>
+            <div class="journal-status" id="journal-status-s3"></div>
+            <div class="journal-signin-prompt">
+              📖 <a href="crux-account.html">Sign in</a> to save your reflections to your Study Journal.
+            </div>
           </div>
 
         </div>
@@ -1276,6 +1340,136 @@ const sectionObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.3 });
 
 sections.forEach(s => sectionObserver.observe(s));
+</script>
+
+<!-- Study Journal: save/load reflections to Firebase -->
+<script type="module">
+import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import { getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+  authDomain: "crux-faith-formation.firebaseapp.com",
+  projectId: "crux-faith-formation",
+  storageBucket: "crux-faith-formation.firebasestorage.app",
+  messagingSenderId: "838141015985",
+  appId: "1:838141015985:web:2655e570663e182d75ef90"
+};
+
+const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+const STUDY_ID       = 'romans_8';
+const STUDY_TITLE    = 'Romans 8';
+const STUDY_SUBTITLE = 'The Spirit Who Gives Life';
+const STUDY_URL      = 'crux-bible-romans-8.html';
+
+let isDocNew   = true;
+let saveTimers = {};
+
+// Map each textarea key to the section-level status element
+const KEY_TO_STATUS = {
+  s1_q1: 's1', s1_q2: 's1',
+  s2_q1: 's2', s2_q2: 's2',
+  s3_q1: 's3', s3_q2: 's3'
+};
+
+function setStatus(key, msg, isError) {
+  const el = document.getElementById('journal-status-' + KEY_TO_STATUS[key]);
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'journal-status' + (isError ? ' error' : (msg === 'Saving...' ? '' : ' saved'));
+  if (!isError && msg !== 'Saving...') {
+    setTimeout(() => { el.textContent = ''; el.className = 'journal-status'; }, 3000);
+  }
+}
+
+function getAssociatedPrompt(textarea) {
+  let el = textarea.previousElementSibling;
+  while (el) {
+    if (el.classList.contains('reflection-prompt')) return el.textContent.trim();
+    el = el.previousElementSibling;
+  }
+  return '';
+}
+
+async function saveResponse(uid, key, text, prompt) {
+  setStatus(key, 'Saving...');
+  const wasNew = isDocNew;
+  if (isDocNew) isDocNew = false;
+  try {
+    const ref = doc(db, 'userProgress', uid, 'studyReflections', STUDY_ID);
+    if (wasNew) {
+      await setDoc(ref, {
+        studyTitle: STUDY_TITLE,
+        studySubtitle: STUDY_SUBTITLE,
+        studyUrl: STUDY_URL,
+        firstSaved: serverTimestamp(),
+        lastUpdated: serverTimestamp(),
+        responses: { [key]: { prompt, text, updatedAt: serverTimestamp() } }
+      });
+    } else {
+      await updateDoc(ref, {
+        lastUpdated: serverTimestamp(),
+        [`responses.${key}`]: { prompt, text, updatedAt: serverTimestamp() }
+      });
+    }
+    setStatus(key, 'Saved to your journal ✓');
+  } catch (err) {
+    isDocNew = wasNew;
+    console.error('Journal save error:', err);
+    setStatus(key, 'Could not save — try again', true);
+  }
+}
+
+async function loadResponses(uid) {
+  try {
+    const snap = await getDoc(doc(db, 'userProgress', uid, 'studyReflections', STUDY_ID));
+    if (!snap.exists()) return;
+    isDocNew = false;
+    const { responses = {}, lastUpdated } = snap.data();
+    Object.entries(responses).forEach(([key, val]) => {
+      const ta = document.querySelector(`[data-reflection-key="${key}"]`);
+      if (ta && val.text) ta.value = val.text;
+    });
+    if (lastUpdated?.toDate) {
+      const dateStr = lastUpdated.toDate().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+      const el = document.getElementById('journal-last-saved');
+      if (el) el.textContent = `Last saved ${dateStr}`;
+    }
+  } catch (err) {
+    console.error('Journal load error:', err);
+  }
+}
+
+function initJournal(uid) {
+  loadResponses(uid);
+
+  document.querySelectorAll('.reflection-textarea[data-reflection-key]').forEach(ta => {
+    const key = ta.dataset.reflectionKey;
+    ta.addEventListener('input', () => {
+      clearTimeout(saveTimers[key]);
+      setStatus(key, 'Saving...');
+      saveTimers[key] = setTimeout(() => {
+        saveResponse(uid, key, ta.value.trim(), getAssociatedPrompt(ta));
+      }, 1500);
+    });
+  });
+
+  document.querySelectorAll('.journal-signin-prompt').forEach(el => el.style.display = 'none');
+  const indicator = document.getElementById('journal-indicator');
+  if (indicator) indicator.style.display = 'flex';
+}
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    initJournal(user.uid);
+  } else {
+    document.querySelectorAll('.journal-signin-prompt').forEach(el => el.style.display = 'flex');
+  }
+});
 </script>
 
 </body>

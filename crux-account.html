@@ -597,6 +597,86 @@
 
         #becomeTeacherCard h3 { color: var(--gold-dark) !important; }
 
+        /* ─── STUDY JOURNAL ─────────────────────────────── */
+        .journal-entry {
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 0.75rem;
+        }
+
+        .journal-entry-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.85rem 1rem;
+            background: var(--off-white);
+            cursor: pointer;
+            transition: background 0.15s;
+            user-select: none;
+        }
+
+        .journal-entry-header:hover { background: #edecea; }
+
+        .journal-entry-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.15rem;
+        }
+
+        .journal-entry-meta {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            letter-spacing: 0.3px;
+        }
+
+        .journal-chevron {
+            font-size: 0.62rem;
+            color: var(--text-muted);
+            transition: transform 0.2s;
+            flex-shrink: 0;
+        }
+
+        .journal-entry-body {
+            padding: 0.75rem 1rem 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .journal-response {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .journal-response:last-of-type { border-bottom: none; }
+
+        .journal-prompt {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+            line-height: 1.5;
+        }
+
+        .journal-answer {
+            font-size: 0.9rem;
+            color: var(--text-primary);
+            line-height: 1.7;
+            white-space: pre-wrap;
+        }
+
+        .journal-return-link {
+            display: inline-block;
+            margin-top: 0.85rem;
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--gold-dark);
+            text-decoration: none;
+        }
+
+        .journal-return-link:hover { text-decoration: underline; }
+
         /* ─── BACK LINK ─────────────────────────────────── */
         .back-link {
             display: block;
@@ -791,6 +871,14 @@
             <div class="section-card">
                 <h3>🎯 Recent Teacher Awards</h3>
                 <div id="awardsList">
+                    <div class="no-data">Loading…</div>
+                </div>
+            </div>
+
+            <!-- Study Journal -->
+            <div class="section-card">
+                <h3>📖 Study Journal</h3>
+                <div id="journalList">
                     <div class="no-data">Loading…</div>
                 </div>
             </div>
@@ -1111,10 +1199,11 @@
                     document.getElementById('dashJoined').textContent   = 'Recently';
                 }
 
-                // Load XP, classes, and awards in parallel
+                // Load XP, classes, awards, and study journal in parallel
                 await Promise.all([
                     loadUserProgress(user.uid),
-                    loadTeacherAwards(user.uid)
+                    loadTeacherAwards(user.uid),
+                    loadStudyJournal(user.uid)
                 ]);
 
                 // Determine teacher status — check role field first,
@@ -1251,6 +1340,71 @@
                 container.innerHTML = '<div class="no-data">Could not load awards.</div>';
             }
         }
+
+        // ── STUDY JOURNAL ──────────────────────────────────
+        async function loadStudyJournal(userId) {
+            const container = document.getElementById('journalList');
+            try {
+                const snap = await getDocs(collection(db, 'userProgress', userId, 'studyReflections'));
+                if (snap.empty) {
+                    container.innerHTML = '<div class="no-data">No saved reflections yet. <a href="crux-bible-study.html" style="color:var(--gold-dark);font-weight:600;">Visit a Bible Study</a> to start your journal.</div>';
+                    return;
+                }
+                container.innerHTML = '';
+                let hasAny = false;
+                snap.forEach(d => {
+                    const data = d.data();
+                    const responses = data.responses || {};
+                    const filled = Object.entries(responses)
+                        .filter(([, v]) => v.text && v.text.trim())
+                        .sort(([a], [b]) => a.localeCompare(b));
+                    if (!filled.length) return;
+                    hasAny = true;
+
+                    const lastUpdated = data.lastUpdated?.toDate
+                        ? data.lastUpdated.toDate().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+                        : 'Recently';
+                    const firstSaved = data.firstSaved?.toDate
+                        ? data.firstSaved.toDate().toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
+                        : null;
+
+                    const entryId = 'jentry-' + d.id;
+                    const div = document.createElement('div');
+                    div.className = 'journal-entry';
+                    div.innerHTML = `
+                        <div class="journal-entry-header" onclick="toggleJournalEntry('${entryId}')">
+                            <div>
+                                <div class="journal-entry-title">${data.studyTitle || 'Bible Study'}${data.studySubtitle ? ' — ' + data.studySubtitle : ''}</div>
+                                <div class="journal-entry-meta">${filled.length} response${filled.length !== 1 ? 's' : ''} · Last updated ${lastUpdated}${firstSaved ? ' · Started ' + firstSaved : ''}</div>
+                            </div>
+                            <span class="journal-chevron" id="${entryId}-chevron">▼</span>
+                        </div>
+                        <div class="journal-entry-body" id="${entryId}" style="display:none;">
+                            ${filled.map(([, val]) => `
+                                <div class="journal-response">
+                                    <p class="journal-prompt">${val.prompt || ''}</p>
+                                    <p class="journal-answer">${val.text.replace(/</g, '&lt;')}</p>
+                                </div>`).join('')}
+                            <a href="${data.studyUrl || 'crux-bible-study.html'}" class="journal-return-link">Return to study →</a>
+                        </div>`;
+                    container.appendChild(div);
+                });
+                if (!hasAny) {
+                    container.innerHTML = '<div class="no-data">No responses written yet. Open a Bible Study and start reflecting.</div>';
+                }
+            } catch (err) {
+                console.error('loadStudyJournal error:', err);
+                container.innerHTML = '<div class="no-data">Could not load journal.</div>';
+            }
+        }
+
+        window.toggleJournalEntry = function(id) {
+            const body    = document.getElementById(id);
+            const chevron = document.getElementById(id + '-chevron');
+            const isOpen  = body.style.display !== 'none';
+            body.style.display = isOpen ? 'none' : 'block';
+            if (chevron) chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+        };
 
         // ── JOIN CLASS ─────────────────────────────────────
         window.joinClass = async function() {
