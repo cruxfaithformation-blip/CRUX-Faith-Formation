@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>CRUX — Romans 8</title>
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LQ35DLTVKY');
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDK v10 -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+            authDomain: "crux-faith-formation.firebaseapp.com",
+            projectId: "crux-faith-formation",
+            storageBucket: "crux-faith-formation.firebasestorage.app",
+            messagingSenderId: "838141015985",
+            appId: "1:838141015985:web:2655e570663e182d75ef90",
+            measurementId: "G-LQ35DLTVKY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        window.db = getFirestore(app);
+        window.auth = getAuth(app);
+        window.fsModules = { doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp };
+
+        onAuthStateChanged(window.auth, (user) => {
+            window.currentUser = user || null;
+            const el = document.getElementById('userDisplay');
+            if (el) el.textContent = user ? user.email.split('@')[0] : 'Guest';
+            if (user) loadUserProgress();
+        });
+    </script>
+
+    <style>
+        :root {
+            color-scheme: light;
+            --navy: #1a1f36;
+            --navy-mid: #242a45;
+            --navy-light: #2f3659;
+            --gold: #d4a574;
+            --gold-light: #e8c9a0;
+            --gold-dark: #b8895a;
+            --white: #ffffff;
+            --off-white: #f8f7f4;
+            --text-primary: #1a1f36;
+            --text-secondary: #4a5568;
+            --text-muted: #8896a5;
+            --border: #e2e8f0;
+            --border-gold: rgba(212,165,116,0.4);
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--off-white);
+            color: var(--text-primary);
+            min-height: 100vh;
+        }
+
+        /* ─── HEADER ──────────────────────────────────────── */
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: var(--navy);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 1.5rem;
+            height: 56px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+        }
+
+        .header-left { display: flex; align-items: center; gap: 1rem; }
+        .header-right { display: flex; align-items: center; gap: 0.75rem; }
+
+        .header-logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 1.2rem;
+            color: var(--gold);
+            text-decoration: none;
+            letter-spacing: 2px;
+        }
+
+        .back-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.2);
+            color: rgba(255,255,255,0.75);
+            padding: 0.35rem 0.85rem;
+            border-radius: 6px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s ease;
+        }
+
+        .back-btn:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+        }
+
+        .xp-chip, .user-chip {
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--gold);
+            background: rgba(212,165,116,0.15);
+            border: 1px solid rgba(212,165,116,0.3);
+            padding: 0.3rem 0.75rem;
+            border-radius: 20px;
+        }
+
+        .user-chip { color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.15); }
+
+        /* ─── PROGRESS BAR ────────────────────────────────── */
+        .progress-track {
+            height: 3px;
+            background: rgba(255,255,255,0.1);
+            position: sticky;
+            top: 56px;
+            z-index: 99;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gold);
+            width: 0%;
+            transition: width 0.4s ease;
+        }
+
+        /* ─── LAYOUT ──────────────────────────────────────── */
+        .module-wrap {
+            max-width: 760px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 6rem;
+        }
+
+        /* ─── STEP INDICATOR ──────────────────────────────── */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-muted);
+        }
+
+        .step.active { color: var(--navy); }
+        .step.complete { color: var(--gold-dark); }
+
+        .step-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid currentColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            font-weight: 700;
+        }
+
+        .step.active .step-dot { background: var(--navy); color: var(--white); border-color: var(--navy); }
+        .step.complete .step-dot { background: var(--gold-dark); color: var(--white); border-color: var(--gold-dark); }
+
+        .step-label { font-size: 0.78rem; font-weight: 600; }
+
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background: var(--border);
+            margin: 0 0.75rem;
+        }
+
+        .step-line.complete { background: var(--gold-dark); }
+
+        /* ─── MODULE HEADER ───────────────────────────────── */
+        .module-header {
+            margin-bottom: 1.75rem;
+        }
+
+        .module-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .grade-tag, .topic-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .module-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* ─── LEVEL TOGGLE ────────────────────────────────── */
+        .level-toggle {
+            display: inline-flex;
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .level-btn {
+            padding: 0.6rem 1.4rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .level-btn.active {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        /* ─── CONTENT PANELS ──────────────────────────────── */
+        .panel {
+            display: none;
+            animation: fadeUp 0.35s ease;
+        }
+
+        .panel.active { display: block; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── LESSON CONTENT ──────────────────────────────── */
+        .lesson-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .lesson-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .lesson-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin: 1.5rem 0 0.6rem;
+        }
+
+        .lesson-card p {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.85;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card ul, .lesson-card ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card li {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.85;
+            margin-bottom: 0.4rem;
+        }
+
+        .key-term {
+            background: rgba(212,165,116,0.15);
+            color: var(--gold-dark);
+            padding: 0.1rem 0.45rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.94em;
+        }
+
+        .highlight-box {
+            background: var(--navy);
+            border-radius: 10px;
+            padding: 1.5rem 1.75rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box p {
+            color: var(--gold-light);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-style: italic;
+            line-height: 1.7;
+            margin-bottom: 0.4rem;
+        }
+
+        .highlight-box cite {
+            color: rgba(212,165,116,0.65);
+            font-size: 0.8rem;
+            font-style: normal;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        /* ─── READING CARD ────────────────────────────────── */
+        .reading-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .reading-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .reading-meta {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 0.3px;
+            margin-bottom: 1.75rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+            text-transform: uppercase;
+        }
+
+        .reading-body p {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.85;
+            margin-bottom: 1rem;
+        }
+
+        .scripture-block {
+            background: rgba(26,31,54,0.04);
+            border-left: 3px solid var(--gold-dark);
+            border-radius: 0 8px 8px 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            line-height: 1.85;
+            color: var(--navy);
+        }
+
+        .scripture-block .verse-num {
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: var(--gold-dark);
+            vertical-align: super;
+            margin-right: 2px;
+        }
+
+        .reflection-block {
+            background: rgba(26,31,54,0.04);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 8px 8px 0;
+            padding: 1.25rem 1.5rem;
+            margin-top: 1.75rem;
+        }
+
+        .reflection-block h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--navy);
+            margin-bottom: 0.85rem;
+        }
+
+        .reflection-block ol {
+            padding-left: 1.25rem;
+        }
+
+        .reflection-block li {
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            line-height: 1.75;
+            margin-bottom: 0.6rem;
+        }
+
+        /* ─── QUIZ CARD ───────────────────────────────────── */
+        .quiz-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-intro {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .quiz-q {
+            margin-bottom: 2rem;
+        }
+
+        .quiz-q-text {
+            font-size: 0.97rem;
+            font-weight: 600;
+            color: var(--navy);
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .quiz-q-num {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 0.4rem;
+        }
+
+        .quiz-options { display: flex; flex-direction: column; gap: 0.6rem; }
+
+        .quiz-option {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+            padding: 0.85rem 1rem;
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            background: var(--white);
+        }
+
+        .quiz-option:hover { border-color: var(--navy); background: rgba(26,31,54,0.03); }
+        .quiz-option.selected { border-color: var(--navy); background: rgba(26,31,54,0.06); }
+        .quiz-option.correct { border-color: #22c55e; background: rgba(34,197,94,0.08); }
+        .quiz-option.incorrect { border-color: #ef4444; background: rgba(239,68,68,0.06); }
+
+        .quiz-option-indicator {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-radius: 50%;
+            flex-shrink: 0;
+            margin-top: 2px;
+            transition: all 0.15s;
+        }
+
+        .quiz-option.selected .quiz-option-indicator { border-color: var(--navy); background: var(--navy); }
+        .quiz-option.correct .quiz-option-indicator { border-color: #22c55e; background: #22c55e; }
+        .quiz-option.incorrect .quiz-option-indicator { border-color: #ef4444; background: #ef4444; }
+
+        .quiz-option-text { font-size: 0.9rem; color: var(--text-primary); line-height: 1.5; }
+
+        .quiz-explanation {
+            margin-top: 0.75rem;
+            padding: 0.9rem 1rem;
+            background: rgba(26,31,54,0.04);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 6px 6px 0;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+            display: none;
+        }
+
+        .quiz-explanation.show { display: block; }
+
+        /* ─── NAV BAR ─────────────────────────────────────── */
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 2rem;
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary:hover {
+            background: var(--navy-light);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.5rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-dark);
+            color: var(--white);
+        }
+
+        /* ─── COMPLETION SCREEN ───────────────────────────── */
+        .completion-screen {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .completion-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .completion-screen h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .completion-screen p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .xp-award {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .score-display {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            display: inline-block;
+            margin-bottom: 2.5rem;
+            min-width: 240px;
+        }
+
+        .score-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .score-label {
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 0.25rem;
+        }
+
+        .completion-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ─── LOADING ─────────────────────────────────────── */
+        .loading-state {
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .loading-spinner {
+            width: 36px;
+            height: 36px;
+            border: 3px solid var(--border);
+            border-top-color: var(--navy);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            margin: 0 auto 1.25rem;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-state p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* ─── RESPONSIVE ──────────────────────────────────── */
+        @media (max-width: 640px) {
+            .module-wrap { padding: 2rem 1.25rem 5rem; }
+            .module-title { font-size: 1.7rem; }
+            .lesson-card, .reading-card, .quiz-card { padding: 1.75rem 1.25rem; }
+            .step-label { display: none; }
+            .nav-bar { flex-direction: column-reverse; }
+            .nav-bar .btn-primary, .nav-bar .btn-secondary { width: 100%; justify-content: center; }
+        }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
+            ← Back
+        </button>
+        <a href="index.html" class="header-logo">CRUX</a>
+    </div>
+    <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
+        <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
+    </div>
+</header>
+
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div class="module-wrap">
+
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
+
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
+        </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
+        </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
+
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">High School / Adult</span>
+            <span class="topic-tag" id="topicTag">Scripture</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions. You can review your answers before submitting.</p>
+            <div id="quizQuestions">
+            </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You have completed this lesson. The faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
+            </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-primary" onclick="window.location.href='index.html'">
+                    ← Back to CRUX
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="crux-module-engine.js"></script>
+<script>
+const MODULE_DATA = {
+    id: 'romans_8',
+    title: 'Romans 8',
+    subtitle: 'Paul wasn\'t writing to comfortable people. He was writing to a divided, threatened church. His answer to all of it: if God is for us, who is against us?',
+    gradeTag: 'High School / Adult',
+    topic: 'Scripture',
+    xpReward: 75,
+    nextModule: null,
+
+    lesson: {
+        beginner: `
+            <h2>Romans 8 — Lesson</h2>
+
+            <p>There is a certain kind of Christian who will post "Christ is King" from an anonymous account but would never walk out the door with a cross around their neck, because the approval of strangers online costs nothing, but the approval of the people who actually know you costs something. Vocal in digital spaces. Invisible in the physical ones.</p>
+
+            <p>Paul was not writing to that person. Or rather, he was writing to the people who needed to stop being that person.</p>
+
+            <h3>Who Paul Was Writing To</h3>
+
+            <p>The year is around 57 AD. Paul is writing to a church in Rome he has never visited. What he knows about them is that they are divided. A few years earlier, the Emperor Claudius expelled all Jews from Rome. The Jewish Christians left. The Gentile Christians stayed, reorganized, and built a church without them. When Claudius died and the Jewish Christians returned, they came back to a community that had moved on without them. The tension over who had priority in this new thing called the Church was real and it was producing real damage.</p>
+
+            <p>Paul spends seven chapters building his case. By chapter 8, he is ready to deliver the conclusion. And the conclusion is not a compromise between the Jewish Christians and the Gentile Christians. The conclusion is that both groups are equally broken, equally rescued, equally adopted, and equally unstoppable when they stop fighting each other and start living by the Spirit who has been given to both of them.</p>
+
+            <h3>The Three Movements of Romans 8</h3>
+
+            <p>The chapter moves in three clear sections.</p>
+
+            <p>The first is the declaration of freedom. "There is therefore now no condemnation for those who are in Christ Jesus" (v. 1). Paul opens by clearing the ground completely. The sentence that was owed has been carried out, on Christ. What remains for the person in Christ is not reduced guilt but zero guilt. From that foundation, Paul describes what life looks like when it is oriented around the Spirit rather than around the self.</p>
+
+            <p>The second movement is the groaning of creation and the certainty of hope (vv. 18-27). Paul is honest about suffering. He does not promise that following Christ means things get easier. What he promises is that the suffering has a direction. The whole creation is straining toward something. So are we. The Spirit is at work in us even when we do not have words for what we need.</p>
+
+            <p>The third is the climax (vv. 28-39). If God is for us, who is against us? Paul lists the things that could theoretically separate us from the love of God: tribulation, distress, persecution, famine, nakedness, peril, sword. He is not being hypothetical. He has personally experienced most of that list. And his answer is that none of it has the power to finish the job. The love of God in Christ Jesus is more durable than any of it.</p>
+
+            <h3>Flesh and Spirit — What Paul Actually Means</h3>
+
+            <p>Paul uses the word "flesh" constantly in this chapter, and it is easy to read it wrong. Flesh does not mean the physical body. Paul is not saying that matter is evil or that the soul is good and the body is a problem. That is a Gnostic idea, and the Church rejected it explicitly.</p>
+
+            <p>When Paul says "flesh" (<span class="key-term">sarx</span> in Greek), he means the whole human person, body, mind, and will, oriented away from God and living by its own power. "Spirit" means the whole person reoriented around God's presence and power. The contrast is not body versus soul. It is two ways of living: one under sin's dominion, one under the Spirit's.</p>
+
+            <p>The practical question Paul is asking is simple: which direction is your life pointed?</p>
+
+            <h3>What Paul Means by Hope</h3>
+
+            <p>The word Paul uses for hope in verse 24 is <span class="key-term">elpis</span>, and it does not mean what we usually mean when we say "I hope so." In English, hope is often weak, somewhere between a wish and a guess. <em>Elpis</em> in the New Testament carries a different weight: confident expectation of something certain but not yet received. What is uncertain is only the timing and the path. The destination is not in question.</p>
+
+            <p>Paul holds two things together that feel like they should be in tension. He says salvation is something that already happened to the people he is writing to (the Greek verb is past tense, completed). And then immediately he says they are still waiting. Both are true at once. The rescue is complete. The full inheritance has not been collected yet. Hope is the posture that holds those two things together without anxiety.</p>
+
+            <h3>The Challenge at the End</h3>
+
+            <p>Paul closes the chapter by asking what is really a rhetorical question. Who shall separate us from the love of Christ? Tribulation? Distress? Persecution? Famine? Sword? And then he answers his own question: nothing in all of creation has the power to do it.</p>
+
+            <p>Paul was not writing from a comfortable chair. He wrote this from a life that had included beatings, shipwrecks, imprisonment, and the constant threat of execution. His conviction that nothing can separate us from God's love was not optimism. It was the conclusion of a man who had tested the claim under pressure and found it held.</p>
+
+            <p>This is a faith worth dying over. Which raises the obvious question: if that is true, what are you afraid of?</p>
+
+            <div class="highlight-box">
+                <p>"For I am convinced that neither death, nor life, nor angels, nor principalities, nor things present, nor things to come, nor powers, nor height, nor depth, nor anything else in all creation, will be able to separate us from the love of God in Christ Jesus our Lord."</p>
+                <cite>— Romans 8:38–39 (RSV-CE)</cite>
+            </div>
+        `,
+
+        theologian: `
+            <h2>Romans 8 — Theologian Level</h2>
+
+            <p>Romans 8 is the theological and emotional apex of the first half of Paul's letter. To read it well requires knowing what he has been building across seven chapters, who his audience was and why they were in conflict, and what specific Greek words are doing in the argument that English translations cannot fully carry.</p>
+
+            <h3>The Roman Context</h3>
+
+            <p>Around 49 AD, the Emperor Claudius expelled Jews from Rome. The historian Suetonius records this, and Acts 18:2 confirms it, noting that Aquila and Priscilla left Rome because of it. The Jewish Christians left with the broader Jewish community. The Gentile Christians remained, reorganized, and built a church in their absence.</p>
+
+            <p>When Claudius died in 54 AD, the Jewish Christians returned to a community that had spent years functioning without them. The tensions this produced, over leadership, over the relationship between Jewish covenant history and Gentile inclusion, over who had priority in the community, are part of what the letter to the Romans is written to address. Paul has never visited this church. He is writing to a community mid-argument. By chapter 8, he has laid enough groundwork to deliver his answer: both groups are equally condemned without Christ, equally justified through him, and equally indwelt by the same Spirit. The argument for unity is not tolerance. It is theology.</p>
+
+            <h3>Three Uses of Law in Four Verses</h3>
+
+            <p>Romans 8:1–4 uses the word <span class="key-term">nomos</span> (law) three times, and Paul means something different each time. "The law of the Spirit of life" is the principle or dynamic of life operating in the Spirit. "The law of sin and death" is the principle of sin's dominion over the unredeemed person, not the Torah. "The just requirement of the law" in verse 4 is the Mosaic Law's righteous demand, which Christ fulfills on behalf of those who are in him.</p>
+
+            <p>Paul is not confused. He is using the same word to describe three different realities, and the argument depends on distinguishing them. Christ fulfills what the Torah pointed toward. He frees people from the principle of sin's dominion. And the person united to Christ walks in the Spirit, in whom the Law's deepest intention finds its completion.</p>
+
+            <h3>Sarx and Pneuma — Two Orientations, Not Two Substances</h3>
+
+            <p>The flesh-Spirit contrast in verses 5–11 is one of the most misread passages in Paul. <span class="key-term">Sarx</span> (flesh) does not mean the physical body. Reading it that way produces Gnostic anthropology: matter is evil, the body is a prison, salvation is escape into pure spirit. Paul teaches no such thing. The resurrection of the body (verse 11) makes this explicit: the same Spirit who raised Christ will give life to mortal bodies. Salvation is not body-rescue. It is total-person redemption.</p>
+
+            <p>Sarx in Paul means the whole human person, body, mind, and will, oriented away from God and living under sin's dominion. Pneuma means the person reoriented around God's presence. The contrast is two modes of existence, not two substances. "To set the mind on the flesh is death, but to set the mind on the Spirit is life and peace" (v. 6). The Greek word behind "set the mind" is <span class="key-term">phronousin</span>, from <em>phroneō</em>: to be oriented toward, to habitually attend to. Paul is describing the direction of a life, not the content of individual thoughts.</p>
+
+            <h3>The Trinitarian Grammar of Verses 9–11</h3>
+
+            <p>In three consecutive verses, Paul uses four different phrases for the same indwelling reality: "Spirit of God," "Spirit of Christ," "Christ in you," and "Spirit of him who raised Jesus from the dead." He moves between them without explanation or apology, as if the identification is assumed. This is not careless writing. It is Trinitarian grammar flowing naturally from how Paul already thinks about God.</p>
+
+            <p>Paul is not making a formal Trinitarian argument in verses 9–11. He is writing pastorally. But the Church Fathers would later draw on precisely this kind of interchangeable usage when they worked out the doctrine of the Trinity. The same Spirit belongs to the Father and to the Son. To have the Spirit of God is to have the Spirit of Christ. This is the theological substructure of what Nicaea and Constantinople would later formalize.</p>
+
+            <h3>Elpis and Hypomonē — What Hope and Patience Actually Mean</h3>
+
+            <p>Verse 24 contains one of the most important word studies in the chapter. "For in this hope we were saved." The Greek word is <span class="key-term">elpis</span>, and English "hope" is too weak for it. In modern usage, hope is somewhere between a wish and a guess. <em>Elpis</em> in the New Testament carries confident expectation of something certain but not yet received. The destination is not in question. What remains unknown is only the timing and the path.</p>
+
+            <p>Verse 24 also contains the Greek verb <span class="key-term">esōthēmen</span>: "we were saved." This is aorist passive tense. The aorist in Greek signals a completed action. Paul is saying salvation is something that already happened to his readers, not something they are still working toward. Then immediately he says they are still waiting. Both are true simultaneously. The rescue is complete. The full inheritance has not yet been collected. Hope is the posture that holds completed salvation and unreceived inheritance together without collapsing into either anxiety or complacency.</p>
+
+            <p>The word translated "patience" in verse 25 is <span class="key-term">hypomonē</span>, and "patience" is too passive a rendering. <em>Hypomonē</em> means steadfast endurance under pressure, the posture of a soldier holding a position. It is active, costly, and deliberate. Paul is not describing someone who has resigned themselves to waiting. He is describing someone who holds their ground.</p>
+
+            <h3>CCC 846–848 and the Question Romans 8:8 Raises</h3>
+
+            <p>Verse 8 states: "those who are in the flesh cannot please God." This raises the question of whether people outside explicit Christian faith are condemned by definition. The Catholic tradition draws a careful distinction here, grounded in Augustine's theology of grace and developed in Lumen Gentium and the Catechism.</p>
+
+            <p>Paul is not saying non-Christians can do nothing good. He is saying that without the Spirit, no action can orient a person toward the full end God intends, which is communion with him. Natural virtue is real, but it cannot reach a supernatural destiny. CCC 2001 states: "The preparation of man for the reception of grace is already a work of grace."</p>
+
+            <p>CCC 847 addresses directly the question of those who, through no fault of their own, do not know the Gospel or the Church: those "who seek God with a sincere heart, and, moved by grace, try in their actions to do his will as they know it through the dictates of their conscience — those too may achieve eternal salvation." CCC 848 introduces the concept of people being related to the Church in ways that are not visible membership. Vatican II's Lumen Gentium (§16) extends this further: the Holy Spirit offers to all people the possibility of being associated with the Paschal mystery in ways known only to God.</p>
+
+            <p>The Catholic reading of Romans 8 is neither universalist nor narrowly exclusivist. Grace is operative beyond the visible boundaries of the Church. But the Church remains the ordinary means through which Christ's saving work flows into the world.</p>
+
+            <h3>Predestination — The Catholic Reading of Verses 29–30</h3>
+
+            <p>Verses 29–30 contain the most contested word in Pauline theology: <span class="key-term">proorizo</span>, "predestined." From <em>pro</em> (before) + <em>horizō</em> (to mark out, to set a boundary, the root of "horizon"): to mark out a destination in advance.</p>
+
+            <p>The Calvinist reading takes this to mean God unconditionally chose, before creation, exactly who would be saved and who would be damned, with no reference to human free will. This is the doctrine of double predestination, the basis of TULIP theology.</p>
+
+            <p>The Catholic tradition reads it differently. The word before "predestined" in verse 29 is <em>proegnō</em>: "he foreknew." God's foreknowledge encompasses his knowledge of how people would freely respond to grace. CCC 600 states: "To God, all moments of time are present in their immediacy. When therefore he establishes his eternal plan of 'predestination,' he includes in it each person's free response to his grace." The "golden chain" of verse 30, foreknew, predestined, called, justified, glorified, describes God's sovereign purpose working through rather than despite human freedom. The destination Paul has in mind is conformity to the image of his Son (v. 29), not a mechanism for bypassing the will.</p>
+
+            <div class="highlight-box">
+                <p>"For those whom he foreknew he also predestined to be conformed to the image of his Son, in order that he might be the firstborn among many brethren."</p>
+                <cite>— Romans 8:29 (RSV-CE)</cite>
+            </div>
+        `
+    },
+
+    reading: {
+        beginner: `
+            <h2>Reading: Nothing Can Separate Us</h2>
+            <div class="reading-meta">Romans 8:31–39 — The climax of Paul's argument, and what it actually cost him to write it</div>
+            <div class="reading-body">
+
+                <div class="scripture-block">
+                    <span class="verse-num">31</span>What then shall we say to this? If God is for us, who is against us? <span class="verse-num">32</span>He who did not spare his own Son but gave him up for us all, will he not also give us all things with him? <span class="verse-num">33</span>Who shall bring any charge against God's elect? It is God who justifies; <span class="verse-num">34</span>who is to condemn? Is it Christ Jesus, who died, yes, who was raised from the dead, who is at the right hand of God, who indeed intercedes for us? <span class="verse-num">35</span>Who shall separate us from the love of Christ? Shall tribulation, or distress, or persecution, or famine, or nakedness, or peril, or sword? <span class="verse-num">36</span>As it is written, "For thy sake we are being killed all the day long; we are regarded as sheep to be slaughtered." <span class="verse-num">37</span>No, in all these things we are more than conquerors through him who loved us. <span class="verse-num">38</span>For I am convinced that neither death, nor life, nor angels, nor principalities, nor things present, nor things to come, nor powers, <span class="verse-num">39</span>nor height, nor depth, nor anything else in all creation, will be able to separate us from the love of God in Christ Jesus our Lord.
+                </div>
+
+                <p>The list in verse 35 is not hypothetical. Paul catalogs the enemies: tribulation, distress, persecution, famine, nakedness, peril, sword. In 2 Corinthians 11, he gives his own resume: beaten three times with rods, whipped five times, shipwrecked three times, in danger from rivers, bandits, his own people, Gentiles, the open sea. He wrote this letter knowing he would likely be executed in Rome. His conviction that nothing can separate us from the love of God was not the optimism of someone who had not been tested. It was the conclusion of someone who had run the test and found the result held.</p>
+
+                <p>In verse 36, Paul reaches for Psalm 44, a lament: "For your sake we are being killed all the day long; we are regarded as sheep to be slaughtered." He is placing Christian suffering inside Israel's long history of suffering for the sake of God's name. This is not a new situation. The people of God have always borne this. They have always been sustained through it. He is telling the Roman Christians: you are part of a story that has been going longer than Rome has existed.</p>
+
+                <p>Verse 37 uses the Greek word <span class="key-term">hypernikōmen</span>: "more than conquerors." The word is built from <em>hyper</em> (beyond, more than) and <em>nikaō</em> (to conquer, the root of Nike). The force is not "we barely win." The victory Paul is describing is overwhelming, beyond ordinary triumph, not through strength but through the love of Christ.</p>
+
+                <p>The list in verses 38–39 is exhaustive by design. Death, life, angels, powers above, powers below, things present, things to come, anything else in all of creation. Paul is closing every door. None of it has the power to finish the work of separation. The only thing that could end this relationship would be the love of God failing, and Paul says he is convinced that will not happen.</p>
+
+                <p>Convinced is the word he uses. Not hopeful. Not uncertain but leaning that way. Convinced: the Greek <em>pepeismai</em>, perfect passive, the posture of someone who has been persuaded by evidence and remains persuaded. He has run the numbers on his own life and on the life of Christ, and this is what he concludes.</p>
+
+            </div>
+            <div class="reflection-block">
+                <h4>Reflect on These Questions</h4>
+                <ol>
+                    <li>Paul wrote this from lived experience, not from comfort. He lists things that had actually happened to him. Does knowing that change how the passage lands? Why or why not?</li>
+                    <li>The Christian faith has always had a public, visible dimension — a willingness to be identified with Christ in physical space, not just in private belief. What does that actually look like for you, in the places you move through every day?</li>
+                    <li>"If God is for us, who is against us?" Paul is not asking a question about the spiritual realm. He is making a claim about what can and cannot ultimately harm someone who belongs to God. What in your life feels like it has the most power to harm you? How does Paul's claim meet that specific thing?</li>
+                </ol>
+            </div>
+        `,
+
+        theologian: `
+            <h2>Reading: The Groaning of Creation and the Certainty of Hope</h2>
+            <div class="reading-meta">Romans 8:18–27 — Suffering with a direction, hope with a weight, and prayer without words</div>
+            <div class="reading-body">
+
+                <div class="scripture-block">
+                    <span class="verse-num">18</span>I consider that the sufferings of this present time are not worth comparing with the glory that is to be revealed to us. <span class="verse-num">19</span>For the creation waits with eager longing for the revealing of the sons of God; <span class="verse-num">20</span>for the creation was subjected to futility, not of its own will but by the will of him who subjected it in hope; <span class="verse-num">21</span>because the creation itself will be set free from its bondage to decay and obtain the glorious liberty of the children of God. <span class="verse-num">22</span>We know that the whole creation has been groaning in travail together until now; <span class="verse-num">23</span>and not only the creation, but we ourselves, who have the first fruits of the Spirit, groan inwardly as we wait for adoption as sons, the redemption of our bodies. <span class="verse-num">24</span>For in this hope we were saved. Now hope that is seen is not hope. For who hopes for what he sees? <span class="verse-num">25</span>But if we hope for what we do not see, we wait for it with patience.
+                    <br><br>
+                    <span class="verse-num">26</span>Likewise the Spirit helps us in our weakness; for we do not know how to pray as we ought, but the Spirit himself intercedes for us with sighs too deep for words. <span class="verse-num">27</span>And he who searches the hearts of men knows what is the mind of the Spirit, because the Spirit intercedes for the saints according to the will of God.
+                </div>
+
+                <p>Verse 19 uses the Greek word <span class="key-term">apekdechetai</span> for "waits with eager longing." The word carries the image of craning one's neck forward to see something coming. It appears only eight times in the New Testament, and Paul uses it repeatedly for the posture of Christian hope. Creation is not passively resigned to its current state. It is actively, bodily, straining toward what is coming.</p>
+
+                <p>Paul is making a cosmological claim in verses 20–22. The fall affected not just humanity but the entire created order, which is why Paul can speak of creation groaning. It did not sin. But it suffers the consequences of human sin. This is the context for the Catholic tradition's care for creation: the created world is caught up in the drama of redemption. Its future is not disposal but renewal.</p>
+
+                <p>Verse 23 describes Christians as having the "first fruits" of the Spirit, the beginning of the harvest, not its entirety. What we experience now in grace and sacrament is genuine, but partial. The full harvest, the resurrection of the body, the new creation, is still coming. This grounds the Church's sacramental theology: the Eucharist is a real encounter with the living Christ, and a foretaste of the eschatological feast, not yet the feast itself.</p>
+
+                <p>Verses 24–25 hold the tension that defines Christian existence: salvation is completed (esōthēmen, aorist passive) and the inheritance is not yet received. <span class="key-term">Elpis</span>, the Greek word for hope, carries confident expectation of something certain but not yet in hand. The uncertainty is not about the destination but about the path and timing. <span class="key-term">Hypomonē</span>, translated "patience" in verse 25, means steadfast endurance under load, the posture of someone holding a position under pressure, not someone sitting passively. Christian waiting is active, costly, and deliberate.</p>
+
+                <p>Verses 26–27 may be the most honest thing Paul writes in the letter. "We do not know how to pray as we ought." He says <em>we</em>. Not you, not them. He includes himself. The apostle who had been caught up to the third heaven, who planted churches across the Mediterranean, who wrote most of the New Testament, says he does not fully know how to pray. The honesty is disarming and the implication is significant: prayer is not a performance the believer must get right. The Spirit is already praying in the person who does not have words. The Greek phrase <span class="key-term">alalētois stenagmois</span>, "sighs too deep for words," describes something inexpressible, prayer happening at a depth below articulation. The Spirit intercedes for the saints according to the will of God, not because the believer has constructed a sufficiently adequate request.</p>
+
+            </div>
+            <div class="reflection-block">
+                <h4>Theological Reflection</h4>
+                <ol>
+                    <li>Paul describes creation as "subjected to futility, not of its own will." The created world suffers consequences it did not choose. What are the theological implications of a cosmology in which the fall affects more than human beings, and the restoration reaches equally far?</li>
+                    <li>Paul holds two things simultaneously: salvation is a completed past event (<em>esōthēmen</em>, aorist) and Christians are still waiting for what they do not yet have. How does the distinction between <em>elpis</em> (confident expectation) and wishful thinking change how you understand the experience of waiting in the Christian life?</li>
+                    <li>The Spirit intercedes "with sighs too deep for words." Augustine says the Spirit does not petition the Father from a position of inferiority, but makes the believer groan, makes them pray, makes them desire. What does this suggest about prayer when language fails — grief, confusion, or exhaustion that does not resolve into words?</li>
+                </ol>
+            </div>
+        `
+    },
+
+    quiz: [
+        {
+            q: "What does Paul mean by the word 'flesh' (sarx) throughout Romans 8?",
+            options: [
+                "The physical body, which Paul considers corrupt and in need of being left behind at death",
+                "Sexual sin specifically, since Paul often uses flesh language in discussions of sexual morality",
+                "The whole human person — body, mind, and will — oriented away from God and living under sin's dominion",
+                "Non-Christians, since Paul is distinguishing those in the Church from those outside it"
+            ],
+            correct: 2,
+            explanation: "Sarx in Paul does not mean the physical body. Reading it that way produces Gnostic anthropology: that matter is evil and the soul needs to escape the body. Paul explicitly teaches the resurrection of the body in verse 11, where the same Spirit who raised Christ will 'give life to your mortal bodies.' Flesh means the whole person oriented away from God. Spirit means the whole person reoriented around God's presence. The contrast is two modes of existence, not two substances."
+        },
+        {
+            q: "In Romans 8:24, Paul says 'in this hope we were saved.' What does the Greek word elpis (hope) actually mean?",
+            options: [
+                "Wishful thinking — a desire for something good without certainty about whether it will happen",
+                "Blind faith — trusting in something precisely because there is no evidence for it",
+                "Confident expectation of something certain but not yet received — the destination is not in question, only the timing",
+                "Ongoing effort — hope as an active virtue that must be continually practiced to be maintained"
+            ],
+            correct: 2,
+            explanation: "Elpis in the New Testament carries a weight that English 'hope' lacks. Modern English hope often means 'I want this but I'm not sure.' Elpis is closer to confident expectation of something certain but not yet in hand. Paul holds two things together in verses 24–25: salvation is already completed (he uses the aorist tense, a past completed action), and Christians are still waiting for what they do not yet have. Elpis is the posture that holds both truths without collapsing into either anxiety or presumption."
+        },
+        {
+            q: "In Romans 8:9–11, Paul uses 'Spirit of God,' 'Spirit of Christ,' 'Christ in you,' and 'Spirit of him who raised Jesus' interchangeably. What is theologically significant about this?",
+            options: [
+                "Paul is being careless, and later editors standardized his language when copying the manuscripts",
+                "Paul is distinguishing between three separate divine persons who each indwell believers at different stages of the Christian life",
+                "Paul is showing that the Old Testament Spirit of God is different from the New Testament Spirit of Christ",
+                "Paul's Trinitarian grammar flows naturally from how he already thinks about God — the same Spirit belongs to Father and Son, and this interchangeable usage becomes foundational for later Trinitarian doctrine"
+            ],
+            correct: 3,
+            explanation: "Paul is not making a formal Trinitarian argument in these verses. He is writing pastorally to a church he has never visited. But the Trinitarian grammar flows naturally from how he already thinks about God: the Spirit is simultaneously the Spirit of God and the Spirit of Christ, and to have the Spirit is to have Christ. The Church Fathers drew on exactly this kind of interchangeable Pauline usage when they worked out the doctrine of the Trinity at Nicaea (325 AD) and Constantinople (381 AD)."
+        },
+        {
+            q: "What does 'no condemnation' (v.1) point to in the Greek word katakrima?",
+            options: [
+                "A reduction in spiritual guilt — believers carry less shame than non-believers",
+                "A suspended sentence — God has chosen not to execute judgment yet, though it remains possible",
+                "Not merely a verdict but the carrying out of a sentence — which has already been executed on Christ, leaving nothing remaining for those in him",
+                "A legal declaration that the believer was never guilty to begin with"
+            ],
+            correct: 2,
+            explanation: "Katakrima is stronger than krima (judgment). It refers not just to a verdict but to the execution of a sentence. Paul's opening line in Romans 8 is not saying that believers are judged less harshly. He is saying the sentence has already been carried out — on Christ, not on them. What remains for the person in Christ is not reduced guilt but zero guilt. This is the foundation everything else in chapter 8 stands on: the complete clearance Paul announces in verse 1 is what makes the life he describes in verses 2–39 possible."
+        },
+        {
+            q: "Why did Paul need to address unity between Jewish and Gentile Christians in his letter to Rome?",
+            options: [
+                "Paul had heard rumors that the Roman church was about to split into two separate congregations meeting in different buildings",
+                "Emperor Claudius had expelled Jews from Rome around 49 AD, and when they returned after his death, they came back to a church that had reorganized without them — creating real tension over leadership and priority",
+                "The Jewish Christians in Rome had begun requiring Gentile converts to be circumcised, which Paul opposed on principle",
+                "Rome had no Jewish Christian community, so Paul was preparing the Gentile church to welcome Jewish missionaries when they arrived"
+            ],
+            correct: 1,
+            explanation: "The historian Suetonius records Claudius expelling Jews from Rome, and Acts 18:2 confirms it. The Jewish Christians left with the broader Jewish community. The Gentile Christians stayed, reorganized, and built a church without them. When Jewish Christians returned after Claudius died in 54 AD, they came back to a community that had moved on. The tensions over who had priority in this newly reorganized church are part of what Romans is written to address. Paul's answer by chapter 8 is not a compromise — it is a shared theology of grace: both groups are equally condemned without Christ, equally justified through him, and equally indwelt by the same Spirit."
+        }
+    ]
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backBtn').onclick = () => window.location.href = 'index.html#youth';
+    initModule(MODULE_DATA);
+});
+</script>
+
+</body>
+</html>
