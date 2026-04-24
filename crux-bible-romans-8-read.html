@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — Romans 8: Read It First</title>
+<meta name="description" content="Read Romans 8 in full before diving into commentary. RSV-CE translation.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --navy-deep: #0f1222;
+  --navy-light: #252b47;
+  --gold: #d4a574;
+  --gold-light: #e8c99a;
+  --gold-pale: #f5ead8;
+  --gold-dim: rgba(212,165,116,0.15);
+  --cream: #faf8f4;
+  --off-white: #f4f2ee;
+  --white: #ffffff;
+  --text-primary: #1a1f36;
+  --text-secondary: #5a6080;
+  --text-muted-dark: rgba(255,255,255,0.45);
+  --text-soft: rgba(255,255,255,0.7);
+  --border: rgba(26,31,54,0.1);
+  --border-gold: rgba(212,165,116,0.3);
+  --purple: #4a2c6b;
+  --purple-light: #f0eaf8;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: var(--navy-deep);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.6;
+}
+
+/* NAV */
+.site-nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 200;
+  padding: 1rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(15,18,34,0.9);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: 5px;
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.nav-back {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--text-muted-dark);
+  text-decoration: none;
+  transition: color 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.nav-back:hover { color: var(--gold); }
+
+/* HERO */
+.hero {
+  padding: 6.5rem 2rem 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--navy-deep);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 700px;
+  height: 600px;
+  background: radial-gradient(ellipse, rgba(212,165,116,0.09) 0%, transparent 70%);
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.hero-track {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.75rem;
+  animation: fadeUp 0.7s ease both;
+}
+
+.hero-book {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 7vw, 5rem);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1;
+  margin-bottom: 0.5rem;
+  animation: fadeUp 0.7s ease 0.1s both;
+}
+
+.hero-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.7s ease 0.2s both;
+}
+
+.hero-instructions {
+  max-width: 560px;
+  margin: 0 auto 2.5rem;
+  animation: fadeUp 0.7s ease 0.3s both;
+}
+
+.hero-instructions p {
+  font-size: 1.1rem;
+  color: var(--text-soft);
+  line-height: 1.8;
+}
+
+/* READING TIPS BAR */
+.tips-bar {
+  background: rgba(255,255,255,0.03);
+  border-top: 1px solid rgba(212,165,116,0.12);
+  border-bottom: 1px solid rgba(212,165,116,0.12);
+  padding: 2.5rem 2rem;
+}
+
+.tips-inner {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+.tips-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+  gap: 1.5rem;
+}
+
+.tip {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+}
+
+.tip-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--gold);
+  flex-shrink: 0;
+  margin-top: 0.5rem;
+}
+
+.tip p {
+  font-size: 0.92rem;
+  color: var(--text-muted-dark);
+  line-height: 1.6;
+}
+
+/* READING AREA — switches to cream */
+.reading-area {
+  background: var(--cream);
+  color: var(--text-primary);
+  min-height: 100vh;
+  position: relative;
+}
+
+.reading-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+}
+
+/* PASSAGE HEADER */
+.passage-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.passage-book-mark {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: var(--navy);
+  padding: 0.35rem 0.75rem;
+  border-radius: 4px;
+}
+
+.passage-translation {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  color: var(--text-secondary);
+  letter-spacing: 1px;
+}
+
+/* SECTION DIVIDERS */
+.reading-section {
+  margin-bottom: 3rem;
+}
+
+.section-marker {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.section-marker-line {
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.section-marker-label {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.section-verses-ref {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold);
+  white-space: nowrap;
+}
+
+/* VERSE TEXT */
+.verse {
+  margin-bottom: 0.85rem;
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+}
+
+.vn {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--gold);
+  flex-shrink: 0;
+  width: 18px;
+  text-align: right;
+  padding-top: 0.3rem;
+}
+
+.vt {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  line-height: 1.85;
+}
+
+/* PAUSE PROMPT */
+.pause-prompt {
+  margin: 2.5rem 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--off-white);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+}
+
+.pause-prompt p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+}
+
+/* REFLECTION BLOCK */
+.reflection-block {
+  margin: 2rem 0;
+  padding: 1.5rem;
+  background: var(--purple-light);
+  border-radius: 8px;
+  border-left: 3px solid var(--purple);
+}
+
+.reflection-block h4 {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--purple);
+  margin-bottom: 0.75rem;
+}
+
+.reflection-prompt {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  line-height: 1.65;
+  margin-bottom: 0.85rem;
+}
+
+.reflection-textarea {
+  width: 100%;
+  min-height: 80px;
+  padding: 0.75rem 1rem;
+  border: 1px solid rgba(74,44,107,0.2);
+  border-radius: 6px;
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 1rem;
+  color: var(--text-primary);
+  background: white;
+  resize: vertical;
+  line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+
+.reflection-textarea:focus { outline: none; border-color: var(--purple); }
+
+/* CTA CONTINUE */
+.continue-cta {
+  margin-top: 4rem;
+  padding: 2.5rem;
+  background: var(--navy);
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid rgba(212,165,116,0.2);
+}
+
+.continue-cta h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.75rem;
+}
+
+.continue-cta p {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.7;
+  max-width: 440px;
+  margin: 0 auto 1.75rem;
+}
+
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 2.5rem;
+  background: var(--gold);
+  color: var(--navy-deep);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.25s ease;
+  border: 2px solid var(--gold);
+}
+
+.btn-gold:hover {
+  background: var(--gold-light);
+  border-color: var(--gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(212,165,116,0.25);
+}
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+  .site-nav { padding: 1rem 1.25rem; }
+  .reading-inner { padding: 2.5rem 1.25rem 5rem; }
+  .tips-grid { grid-template-columns: 1fr; gap: 1rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">CRUX</a>
+  <a href="crux-bible-study.html" class="nav-back">← Bible Study</a>
+</nav>
+
+<section class="hero">
+  <p class="hero-track">Bible Study · New Testament · Romans</p>
+  <h1 class="hero-book">Romans 8</h1>
+  <p class="hero-subtitle">The Spirit Who Gives Life</p>
+  <div class="hero-instructions">
+    <p>
+      Before any commentary, before any study notes — read the text yourself. All 39 verses. Take your time. Notice what stops you.
+    </p>
+  </div>
+</section>
+
+<div class="tips-bar">
+  <div class="tips-inner">
+    <p class="tips-label">Active Reading Tips</p>
+    <div class="tips-grid">
+      <div class="tip">
+        <div class="tip-dot"></div>
+        <p>Read slowly enough to hear Paul's argument build. He's making a case, not making a list.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-dot"></div>
+        <p>Underline or note any word that repeats. Paul's repeated words are almost always his key terms.</p>
+      </div>
+      <div class="tip">
+        <div class="tip-dot"></div>
+        <p>Mark the passage that surprises you most. That's usually where the study begins.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="reading-area">
+  <div class="reading-inner">
+
+    <div class="passage-header">
+      <span class="passage-book-mark">Romans 8</span>
+      <span class="passage-translation">Revised Standard Version, Catholic Edition (RSV-CE)</span>
+    </div>
+
+    <!-- SECTION 1 -->
+    <div class="reading-section">
+      <div class="section-marker">
+        <div class="section-marker-line"></div>
+        <span class="section-marker-label">Life in the Spirit</span>
+        <div class="section-marker-line"></div>
+        <span class="section-verses-ref">vv. 1–17</span>
+      </div>
+
+      <div class="verse"><span class="vn">1</span><span class="vt">There is therefore now no condemnation for those who are in Christ Jesus.</span></div>
+      <div class="verse"><span class="vn">2</span><span class="vt">For the law of the Spirit of life in Christ Jesus has set me free from the law of sin and death.</span></div>
+      <div class="verse"><span class="vn">3</span><span class="vt">For God has done what the law, weakened by the flesh, could not do: sending his own Son in the likeness of sinful flesh and for sin, he condemned sin in the flesh,</span></div>
+      <div class="verse"><span class="vn">4</span><span class="vt">in order that the just requirement of the law might be fulfilled in us, who walk not according to the flesh but according to the Spirit.</span></div>
+      <div class="verse"><span class="vn">5</span><span class="vt">For those who live according to the flesh set their minds on the things of the flesh, but those who live according to the Spirit set their minds on the things of the Spirit.</span></div>
+      <div class="verse"><span class="vn">6</span><span class="vt">To set the mind on the flesh is death, but to set the mind on the Spirit is life and peace.</span></div>
+      <div class="verse"><span class="vn">7</span><span class="vt">For the mind that is set on the flesh is hostile to God; it does not submit to God's law, indeed it cannot;</span></div>
+      <div class="verse"><span class="vn">8</span><span class="vt">and those who are in the flesh cannot please God.</span></div>
+      <div class="verse"><span class="vn">9</span><span class="vt">But you are not in the flesh, you are in the Spirit, if in fact the Spirit of God dwells in you. Any one who does not have the Spirit of Christ does not belong to him.</span></div>
+      <div class="verse"><span class="vn">10</span><span class="vt">But if Christ is in you, although your bodies are dead because of sin, your spirits are alive because of righteousness.</span></div>
+      <div class="verse"><span class="vn">11</span><span class="vt">If the Spirit of him who raised Jesus from the dead dwells in you, he who raised Christ Jesus from the dead will give life to your mortal bodies also through his Spirit who dwells in you.</span></div>
+      <div class="verse"><span class="vn">12</span><span class="vt">So then, brethren, we are debtors, not to the flesh, to live according to the flesh—</span></div>
+      <div class="verse"><span class="vn">13</span><span class="vt">for if you live according to the flesh you will die, but if by the Spirit you put to death the deeds of the body you will live.</span></div>
+      <div class="verse"><span class="vn">14</span><span class="vt">For all who are led by the Spirit of God are sons of God.</span></div>
+      <div class="verse"><span class="vn">15</span><span class="vt">For you did not receive the spirit of slavery to fall back into fear, but you have received the spirit of sonship. When we cry, "Abba! Father!"</span></div>
+      <div class="verse"><span class="vn">16</span><span class="vt">it is the Spirit himself bearing witness with our spirit that we are children of God,</span></div>
+      <div class="verse"><span class="vn">17</span><span class="vt">and if children, then heirs, heirs of God and fellow heirs with Christ, provided we suffer with him in order that we may also be glorified with him.</span></div>
+    </div>
+
+    <div class="pause-prompt">
+      <p>Pause here if you need to. Paul has just built a complete argument. What is the central claim of the first seventeen verses? Say it in your own words before reading on.</p>
+    </div>
+
+    <!-- SECTION 2 -->
+    <div class="reading-section">
+      <div class="section-marker">
+        <div class="section-marker-line"></div>
+        <span class="section-marker-label">Present Suffering and Future Glory</span>
+        <div class="section-marker-line"></div>
+        <span class="section-verses-ref">vv. 18–30</span>
+      </div>
+
+      <div class="verse"><span class="vn">18</span><span class="vt">I consider that the sufferings of this present time are not worth comparing with the glory that is to be revealed to us.</span></div>
+      <div class="verse"><span class="vn">19</span><span class="vt">For the creation waits with eager longing for the revealing of the sons of God;</span></div>
+      <div class="verse"><span class="vn">20</span><span class="vt">for the creation was subjected to futility, not of its own will but by the will of him who subjected it in hope;</span></div>
+      <div class="verse"><span class="vn">21</span><span class="vt">because the creation itself will be set free from its bondage to decay and obtain the glorious liberty of the children of God.</span></div>
+      <div class="verse"><span class="vn">22</span><span class="vt">We know that the whole creation has been groaning in travail together until now;</span></div>
+      <div class="verse"><span class="vn">23</span><span class="vt">and not only the creation, but we ourselves, who have the first fruits of the Spirit, groan inwardly as we wait for adoption as sons, the redemption of our bodies.</span></div>
+      <div class="verse"><span class="vn">24</span><span class="vt">For in this hope we were saved. Now hope that is seen is not hope. For who hopes for what he sees?</span></div>
+      <div class="verse"><span class="vn">25</span><span class="vt">But if we hope for what we do not see, we wait for it with patience.</span></div>
+      <div class="verse"><span class="vn">26</span><span class="vt">Likewise the Spirit helps us in our weakness; for we do not know how to pray as we ought, but the Spirit himself intercedes for us with sighs too deep for words.</span></div>
+      <div class="verse"><span class="vn">27</span><span class="vt">And he who searches the hearts of men knows what is the mind of the Spirit, because the Spirit intercedes for the saints according to the will of God.</span></div>
+      <div class="verse"><span class="vn">28</span><span class="vt">We know that in everything God works for good with those who love him, who are called according to his purpose.</span></div>
+      <div class="verse"><span class="vn">29</span><span class="vt">For those whom he foreknew he also predestined to be conformed to the image of his Son, in order that he might be the first-born among many brethren.</span></div>
+      <div class="verse"><span class="vn">30</span><span class="vt">And those whom he predestined he also called; and those whom he called he also justified; and those whom he justified he also glorified.</span></div>
+    </div>
+
+    <div class="pause-prompt">
+      <p>Verse 28 may be the most quoted verse in this chapter. Read it again. What is Paul actually claiming? Notice the phrase "called according to his purpose" — it qualifies something.</p>
+    </div>
+
+    <!-- SECTION 3 -->
+    <div class="reading-section">
+      <div class="section-marker">
+        <div class="section-marker-line"></div>
+        <span class="section-marker-label">God's Everlasting Love</span>
+        <div class="section-marker-line"></div>
+        <span class="section-verses-ref">vv. 31–39</span>
+      </div>
+
+      <div class="verse"><span class="vn">31</span><span class="vt">What then shall we say to this? If God is for us, who is against us?</span></div>
+      <div class="verse"><span class="vn">32</span><span class="vt">He who did not spare his own Son but gave him up for us all, will he not also give us all things with him?</span></div>
+      <div class="verse"><span class="vn">33</span><span class="vt">Who shall bring any charge against God's elect? It is God who justifies;</span></div>
+      <div class="verse"><span class="vn">34</span><span class="vt">who is to condemn? Is it Christ Jesus, who died, yes, who was raised from the dead, who is at the right hand of God, who indeed intercedes for us?</span></div>
+      <div class="verse"><span class="vn">35</span><span class="vt">Who shall separate us from the love of Christ? Shall tribulation, or distress, or persecution, or famine, or nakedness, or peril, or sword?</span></div>
+      <div class="verse"><span class="vn">36</span><span class="vt">As it is written, "For thy sake we are being killed all the day long; we are regarded as sheep to be slaughtered."</span></div>
+      <div class="verse"><span class="vn">37</span><span class="vt">No, in all these things we are more than conquerors through him who loved us.</span></div>
+      <div class="verse"><span class="vn">38</span><span class="vt">For I am sure that neither death, nor life, nor angels, nor principalities, nor things present, nor things to come, nor powers,</span></div>
+      <div class="verse"><span class="vn">39</span><span class="vt">nor height, nor depth, nor anything else in all creation, will be able to separate us from the love of God in Christ Jesus our Lord.</span></div>
+    </div>
+
+    <!-- REFLECTION -->
+    <div class="reflection-block">
+      <h4>Before You Continue</h4>
+      <p class="reflection-prompt">What is the one verse or phrase from this reading that you want to sit with?</p>
+      <textarea class="reflection-textarea" placeholder="Write it here, or just hold it in mind..."></textarea>
+
+      <p class="reflection-prompt">What surprised you — something you expected, or something you didn't?</p>
+      <textarea class="reflection-textarea" placeholder="There are no wrong answers here..."></textarea>
+
+      <p class="reflection-prompt">Paul mentions suffering four times across this chapter. What do you notice about how he treats it?</p>
+      <textarea class="reflection-textarea" placeholder="Your observation..."></textarea>
+    </div>
+
+    <!-- CTA -->
+    <div class="continue-cta">
+      <h3>Ready to go deeper?</h3>
+      <p>The guided study unpacks the Greek behind the key terms, brings in the Church Fathers, and walks through each movement with commentary and reflection.</p>
+      <a href="crux-bible-romans-8.html" class="btn-gold">Begin the Guided Study →</a>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
