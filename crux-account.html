@@ -522,6 +522,46 @@
             text-transform: uppercase;
         }
 
+        .saint-card.clickable { cursor: pointer; text-decoration: none; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .saint-card.clickable:hover { transform: translateY(-6px) rotate(1.5deg); box-shadow: 0 20px 48px rgba(0,0,0,0.7), 0 0 28px rgba(212,165,116,0.18); }
+        .saint-card.clickable::after { content: 'View →'; position: absolute; bottom: 26px; font-size: 0.42rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(212,165,116,0.6); opacity: 0; transition: opacity 0.2s; }
+        .saint-card.clickable:hover::after { opacity: 1; }
+
+        .card-rarity-bar.legendary {
+            background: linear-gradient(90deg, transparent 0%, #d4a574 20%, #f5e6c8 50%, #d4a574 80%, transparent 100%);
+            height: 3px;
+            animation: legendaryShimmer 2.5s ease-in-out infinite;
+        }
+        @keyframes legendaryShimmer {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .card-rarity-badge {
+            position: absolute;
+            bottom: 24px;
+            font-size: 0.38rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(212,165,116,0.4);
+            z-index: 1;
+        }
+
+        .view-all-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--gold-dark);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+            transition: color 0.2s;
+            margin-top: 0.25rem;
+        }
+        .view-all-link:hover { color: var(--gold); }
+
         .cards-hint {
             font-size: 0.78rem;
             color: var(--text-muted);
@@ -1010,28 +1050,10 @@
             <div class="card-showcase-section">
                 <div class="showcase-header">
                     <div class="showcase-title">&#127183; Card Collection</div>
-                    <div class="showcase-sub">Preset favorites</div>
+                    <div class="showcase-sub" id="cardCount">Loading…</div>
                 </div>
-                <div class="card-row">
-                    <div class="saint-card">
-                        <div class="card-rarity-bar"></div>
-                        <div class="card-wordmark">CRUX</div>
-                        <div class="card-saint-name">St. Thomas</div>
-                    </div>
-                    <div class="saint-card">
-                        <div class="card-rarity-bar"></div>
-                        <div class="card-wordmark">CRUX</div>
-                        <div class="card-saint-name">St. Cecilia</div>
-                    </div>
-                    <div class="saint-card">
-                        <div class="card-rarity-bar"></div>
-                        <div class="card-wordmark">CRUX</div>
-                        <div class="card-saint-name">St. Bernadette</div>
-                    </div>
-                    <div class="card-cta">
-                        <div class="pack-badge">🃏 Pack Opening — Coming Soon</div>
-                        <div class="cards-hint">Your full collection<br>will live here.</div>
-                    </div>
+                <div class="card-row" id="cardRow">
+                    <div class="no-data" style="padding:1rem 0;">Loading your cards…</div>
                 </div>
             </div>
 
@@ -1348,7 +1370,10 @@
 
                 await setDoc(doc(db, 'userProgress', user.uid), {
                     totalXP: 0, xpFromQuizzes: 0, xpFromTeachers: 0,
-                    level: 1, teacherIds: [], createdAt: serverTimestamp()
+                    level: 1, teacherIds: [],
+                    cardsOwned: ['thomas', 'cecilia', 'david', 'clare', 'bernadette', 'bvm'],
+                    packsOpened: 1, alphaPackReceived: true,
+                    createdAt: serverTimestamp()
                 });
 
                 if (isTeacher) {
@@ -1467,6 +1492,46 @@
             }
         }
 
+        // ── CARD CATALOG ───────────────────────────────────
+        const CARD_CATALOG = {
+            thomas:     { name: 'St. Thomas',         rarity: 'rare',      url: 'crux-thomas-flip.html' },
+            cecilia:    { name: 'St. Cecilia',         rarity: 'rare',      url: null },
+            david:      { name: 'St. David',           rarity: 'rare',      url: null },
+            clare:      { name: 'St. Clare',           rarity: 'rare',      url: null },
+            bernadette: { name: 'St. Bernadette',      rarity: 'rare',      url: null },
+            bvm:        { name: 'Blessed Virgin Mary', rarity: 'legendary', url: null }
+        };
+
+        function renderCardShowcase(cardsOwned) {
+            const row = document.getElementById('cardRow');
+            const countEl = document.getElementById('cardCount');
+            if (!cardsOwned || cardsOwned.length === 0) {
+                row.innerHTML = '<div class="no-data" style="padding:1rem 0;">No cards yet — keep exploring to earn your first card.</div>';
+                countEl.textContent = '0 cards';
+                return;
+            }
+            countEl.textContent = cardsOwned.length + ' card' + (cardsOwned.length !== 1 ? 's' : '');
+            const cardEls = cardsOwned.map(id => {
+                const card = CARD_CATALOG[id] || { name: id, rarity: 'common', url: null };
+                const isLegendary = card.rarity === 'legendary';
+                const tag = card.url ? 'a' : 'div';
+                const href = card.url ? ` href="${card.url}"` : '';
+                return `<${tag}${href} class="saint-card${card.url ? ' clickable' : ''}" title="${card.name}">` +
+                    `<div class="card-rarity-bar${isLegendary ? ' legendary' : ''}"></div>` +
+                    `<div class="card-wordmark">CRUX</div>` +
+                    `<div class="card-saint-name">${card.name}</div>` +
+                `</${tag}>`;
+            }).join('');
+            const hasThomas = cardsOwned.includes('thomas');
+            row.innerHTML = cardEls +
+                `<div class="card-cta">` +
+                    (hasThomas ? `<a href="crux-thomas-flip.html" class="view-all-link">&#127183; View St. Thomas &rarr;</a>` : '') +
+                    `<div class="cards-hint" style="font-size:0.72rem;color:var(--text-muted);margin-top:${hasThomas ? '0.5rem' : '0'};">` +
+                        `More cards coming with new modules.` +
+                    `</div>` +
+                `</div>`;
+        }
+
         // ── LOAD USER PROGRESS & XP ────────────────────────
         async function loadUserProgress(userId) {
             try {
@@ -1478,6 +1543,8 @@
                 } else {
                     data = snap.data();
                 }
+
+                renderCardShowcase(data.cardsOwned || []);
 
                 const totalXP   = data.totalXP        || 0;
                 const quizXP    = data.xpFromQuizzes   || 0;
