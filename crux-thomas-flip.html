@@ -1034,8 +1034,11 @@ const scene = document.getElementById('cardScene');
 const hint  = document.getElementById('flipHint');
 let isFlipped = false;
 
+const flipper = scene.querySelector('.card-flipper');
+
 scene.addEventListener('click', () => {
   isFlipped = !isFlipped;
+  flipper.style.transform = '';
   scene.classList.toggle('flipped', isFlipped);
   hint.textContent = isFlipped ? 'Tap to flip back  ✦' : 'Tap card to flip  ✦';
 });
