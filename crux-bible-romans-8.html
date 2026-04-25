@@ -261,7 +261,7 @@ body::before {
 /* SIDEBAR */
 .study-sidebar {
   position: sticky;
-  top: 120px;
+  top: 135px;
   display: flex;
   flex-direction: column;
   gap: 1rem;
@@ -825,6 +825,66 @@ body::before {
   flex-shrink: 0;
 }
 
+/* PROGRESS BAR */
+.progress-bar {
+  background: var(--navy-light);
+  padding: 0.6rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 0.5px solid rgba(255,255,255,0.06);
+  position: sticky;
+  top: 94px;
+  z-index: 145;
+}
+.progress-label { font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+.progress-track { flex: 1; height: 3px; background: var(--navy-mid); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: var(--gold); border-radius: 2px; transition: width 0.5s ease; }
+.progress-count { font-family: 'Inter', sans-serif; font-size: 0.68rem; color: rgba(255,255,255,0.35); white-space: nowrap; }
+
+/* LECTIONARY WIDGET */
+.lectionary-widget {
+  background: linear-gradient(135deg, var(--navy), var(--navy-light));
+  border-radius: 10px;
+  padding: 1rem;
+  border: 1px solid rgba(212,165,116,0.2);
+}
+.lect-label { font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.35rem; }
+.lect-date { font-family: 'Inter', sans-serif; font-size: 0.7rem; color: rgba(255,255,255,0.35); margin-bottom: 0.55rem; }
+.lect-passage { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.88rem; color: rgba(255,255,255,0.8); line-height: 1.55; margin-bottom: 0.5rem; }
+.lect-ref { font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600; color: var(--gold); letter-spacing: 1px; }
+.lect-link { display: inline-block; margin-top: 0.55rem; font-family: 'Inter', sans-serif; font-size: 0.7rem; color: var(--gold); text-decoration: none; font-weight: 600; opacity: 0.8; }
+.lect-link:hover { opacity: 1; text-decoration: underline; }
+
+/* FURTHER STUDY RESOURCES */
+.sidebar-resource-list { list-style: none; padding: 0.75rem 1rem; display: flex; flex-direction: column; gap: 0; }
+.sidebar-resource-list li { font-family: 'Crimson Pro', serif; font-size: 0.85rem; color: var(--text-secondary); padding: 0.45rem 0; border-bottom: 1px solid var(--border); line-height: 1.45; }
+.sidebar-resource-list li:last-child { border: none; padding-bottom: 0; }
+.sidebar-resource-list li strong { display: block; font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--text-primary); font-weight: 600; margin-bottom: 0.1rem; }
+
+/* ADD TO PLAN BUTTON */
+.add-to-plan-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  width: 100%;
+  padding: 0.55rem 1rem;
+  border: 1.5px solid rgba(212,165,116,0.3);
+  border-radius: 8px;
+  background: transparent;
+  color: rgba(212,165,116,0.7);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-decoration: none;
+  letter-spacing: 0.5px;
+}
+.add-to-plan-btn:hover { background: rgba(212,165,116,0.08); border-color: var(--gold); color: var(--gold); }
+.add-to-plan-btn.saved { background: rgba(212,165,116,0.12); border-color: var(--gold); color: var(--gold); }
+
 /* BOTTOM NAV */
 .module-bottom-nav {
   display: flex;
@@ -866,6 +926,24 @@ body::before {
 }
 
 .nav-btn.primary:hover { background: var(--gold-light); }
+
+.nav-btn-plan {
+  padding: 0.6rem 1.25rem;
+  border-radius: 6px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: all 0.2s;
+  background: transparent;
+  border: 1.5px solid rgba(26,31,54,0.2);
+  color: var(--text-secondary);
+}
+.nav-btn-plan:hover { border-color: var(--navy); color: var(--navy); background: var(--off-white); }
+.nav-btn-plan.saved { border-color: var(--green); color: var(--green); background: var(--green-light); }
 
 /* ANIMATIONS */
 @keyframes fadeUp {
@@ -946,6 +1024,13 @@ body::before {
     </div>
     <p class="context-note">Romans is a letter, not a systematic theology. Paul is writing to real people with real divisions: Jewish Christians who observed the Law and Gentile Christians who did not. Reading chapter 8 in isolation risks missing how hard-won each claim actually is.</p>
   </div>
+</div>
+
+<!-- PROGRESS BAR -->
+<div class="progress-bar">
+  <span class="progress-label">Progress</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="progress-count" id="progressCount">0 of 3 sections</span>
 </div>
 
 <div class="study-area">
@@ -1256,6 +1341,16 @@ body::before {
 
     <!-- SIDEBAR -->
     <aside class="study-sidebar">
+
+      <!-- Lectionary Widget -->
+      <div class="lectionary-widget">
+        <div class="lect-label">Today's Lectionary</div>
+        <div class="lect-date" id="lectDate"></div>
+        <p class="lect-passage">"For all who are led by the Spirit of God are sons of God."</p>
+        <div class="lect-ref">Romans 8:14</div>
+        <a href="https://bible.usccb.org/daily-bible-reading" class="lect-link" target="_blank" rel="noopener">USCCB Daily Reading →</a>
+      </div>
+
       <div class="sidebar-card">
         <div class="sidebar-card-head">In This Study</div>
         <ul class="sidebar-toc">
@@ -1299,12 +1394,46 @@ body::before {
           </li>
         </ul>
       </div>
+
+      <!-- Further Study -->
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Further Study</div>
+        <ul class="sidebar-resource-list">
+          <li>
+            <strong>Navarre Bible: Romans</strong>
+            Scripture text with commentary from the Church Fathers and modern theologians
+          </li>
+          <li>
+            <strong>Scott Hahn — Romans</strong>
+            <em>Romans: The Gospel of Salvation</em> — accessible Catholic exegesis
+          </li>
+          <li>
+            <strong>CCC §1986–2016</strong>
+            Grace, justification, and the indwelling of the Spirit
+          </li>
+          <li>
+            <strong>Council of Trent, Sess. VI</strong>
+            Decree on Justification — dogmatic foundation for reading Paul
+          </li>
+        </ul>
+      </div>
+
+      <!-- Add to Plan -->
+      <button class="add-to-plan-btn" id="addToPlanBtn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Add to Study Plan
+      </button>
+
     </aside>
   </div>
 </div>
 
 <div class="module-bottom-nav">
   <a href="crux-bible-romans-8-read.html" class="nav-btn">← Read the Text</a>
+  <button class="nav-btn-plan" id="addToPlanBtnBottom">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+    Add to Plan
+  </button>
   <a href="crux-bible-study.html" class="nav-btn primary">All Bible Studies →</a>
 </div>
 
@@ -1340,6 +1469,51 @@ const sectionObserver = new IntersectionObserver((entries) => {
 }, { threshold: 0.3 });
 
 sections.forEach(s => sectionObserver.observe(s));
+
+// Progress bar — count sections that have entered the viewport
+const TOTAL_SECTIONS = 3;
+const seenSections = new Set();
+
+const progressObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) seenSections.add(entry.target.id);
+    const count = seenSections.size;
+    document.getElementById('progressFill').style.width = (count / TOTAL_SECTIONS * 100) + '%';
+    document.getElementById('progressCount').textContent = count + ' of ' + TOTAL_SECTIONS + ' sections';
+  });
+}, { threshold: 0.15 });
+
+sections.forEach(s => progressObserver.observe(s));
+
+// Lectionary widget — show today's date
+(function() {
+  const el = document.getElementById('lectDate');
+  if (!el) return;
+  el.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+})();
+
+// Add to Plan toggle (sidebar + bottom nav stay in sync)
+(function() {
+  const btns = [document.getElementById('addToPlanBtn'), document.getElementById('addToPlanBtnBottom')];
+  let saved = false;
+  btns.forEach(btn => {
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      saved = !saved;
+      btns.forEach(b => {
+        if (!b) return;
+        const isBottom = b.id === 'addToPlanBtnBottom';
+        if (saved) {
+          b.classList.add('saved');
+          b.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> ' + (isBottom ? 'Added' : 'Added to Plan');
+        } else {
+          b.classList.remove('saved');
+          b.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg> ' + (isBottom ? 'Add to Plan' : 'Add to Study Plan');
+        }
+      });
+    });
+  });
+})();
 </script>
 
 <!-- Study Journal: save/load reflections to Firebase -->

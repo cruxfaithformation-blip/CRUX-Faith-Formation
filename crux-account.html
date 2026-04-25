@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUX - Account</title>
-    
+    <title>CRUX – Account</title>
+
     <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
     <script>
@@ -13,10 +13,9 @@
         gtag('js', new Date());
         gtag('config', 'G-LQ35DLTVKY');
     </script>
-    
-    <meta name="color-scheme" content="light">
+
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- Firebase SDK v10 -->
     <script type="module">
         import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
@@ -36,63 +35,75 @@
         const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
         window.auth = getAuth(app);
         window.db = getFirestore(app);
-        
-        console.log('✅ Firebase initialized for CRUX accounts!');
     </script>
-    
+
     <style>
         :root {
-            --navy: #1a1f36;
-            --navy-mid: #242a45;
-            --navy-light: #2f3659;
+            /* Alpha palette */
+            --navy-deep: #0f1222;
+            --navy-mid: #161b30;
+            --navy-card: #1c2240;
+            /* Legacy vars (referenced in JS-rendered HTML) */
+            --navy: #1c2240;
+            --navy-light: #263055;
             --gold: #d4a574;
             --gold-light: #e8c9a0;
             --gold-dark: #b8895a;
-            --white: #ffffff;
-            --off-white: #f8f7f4;
-            --text-primary: #1a1f36;
-            --text-secondary: #5a6282;
-            --text-muted: #8890b0;
-            --border: rgba(26, 31, 54, 0.1);
-            --border-gold: rgba(212, 165, 116, 0.25);
-            --shadow-sm: 0 2px 8px rgba(26, 31, 54, 0.08);
-            --shadow-md: 0 4px 20px rgba(26, 31, 54, 0.12);
-            --shadow-lg: 0 8px 40px rgba(26, 31, 54, 0.16);
-            color-scheme: light;
+            --off-white: rgba(255, 255, 255, 0.04);
+            --white: #f0ece4;
+            --text-primary: #f0ece4;
+            --text-secondary: rgba(240, 236, 228, 0.7);
+            --text-muted: rgba(240, 236, 228, 0.38);
+            --border: rgba(212, 165, 116, 0.15);
+            --border-gold: rgba(212, 165, 116, 0.32);
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.35);
+            --shadow-md: 0 4px 20px rgba(0, 0, 0, 0.45);
+            --shadow-lg: 0 8px 40px rgba(0, 0, 0, 0.55);
+            color-scheme: dark;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--navy);
+            background: var(--navy-deep);
             min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            padding: 3rem 1.5rem 4rem;
-            position: relative;
+            color: var(--text-primary);
             overflow-x: hidden;
         }
 
-        /* Subtle cross watermark behind everything */
+        /* Grain overlay */
         body::before {
+            content: '';
+            position: fixed;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 200px;
+            opacity: 0.035;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        /* Cross watermark */
+        body::after {
             content: '✟';
             position: fixed;
-            font-size: 32rem;
-            color: rgba(212, 165, 116, 0.03);
+            font-size: 40rem;
+            color: rgba(212, 165, 116, 0.022);
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
             pointer-events: none;
-            line-height: 1;
             z-index: 0;
+            line-height: 1;
         }
 
+        /* ─── CONTAINER ─────────────────────────────────── */
         .account-container {
-            max-width: 520px;
+            max-width: 960px;
             width: 100%;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 5rem;
             position: relative;
             z-index: 1;
         }
@@ -105,87 +116,91 @@
 
         .logo h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.8rem;
+            font-size: 3rem;
             font-weight: 900;
-            color: var(--gold);
-            letter-spacing: 8px;
-            margin-bottom: 0.4rem;
+            letter-spacing: 10px;
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
             line-height: 1;
+            margin-bottom: 0.5rem;
         }
 
         .logo p {
-            color: rgba(255, 255, 255, 0.45);
-            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-size: 0.72rem;
             font-weight: 400;
-            letter-spacing: 3px;
+            letter-spacing: 4px;
             text-transform: uppercase;
         }
 
-        /* ─── CARDS ─────────────────────────────────────── */
-        .auth-card,
-        .dashboard {
-            background: var(--off-white);
-            border-radius: 12px;
+        /* ─── AUTH CARDS ────────────────────────────────── */
+        .auth-card {
+            max-width: 440px;
+            margin: 0 auto;
+            background: rgba(28, 34, 64, 0.9);
+            border: 1px solid var(--border-gold);
+            border-radius: 16px;
             padding: 2.5rem;
-            box-shadow: var(--shadow-lg);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(212, 165, 116, 0.06);
         }
 
-        .auth-card h2,
-        .dashboard h2 {
+        .auth-card h2 {
             font-family: 'Playfair Display', serif;
-            color: var(--navy);
-            font-size: 1.75rem;
+            color: var(--text-primary);
+            font-size: 1.8rem;
             font-weight: 700;
             margin-bottom: 1.5rem;
             text-align: center;
         }
 
-        /* ─── FIREBASE BADGE ────────────────────────────── */
         .firebase-badge {
-            background: rgba(26, 31, 54, 0.06);
-            color: var(--text-secondary);
-            border: 1px solid var(--border);
-            padding: 0.4rem 0.9rem;
+            background: rgba(212, 165, 116, 0.08);
+            color: var(--gold);
+            border: 1px solid rgba(212, 165, 116, 0.2);
+            padding: 0.35rem 0.9rem;
             border-radius: 20px;
-            font-size: 0.78rem;
+            font-size: 0.74rem;
             font-weight: 600;
-            letter-spacing: 0.3px;
+            letter-spacing: 0.5px;
             display: inline-block;
-            margin-bottom: 1.25rem;
+            margin-bottom: 1.5rem;
         }
 
         /* ─── FORMS ─────────────────────────────────────── */
-        .form-group {
-            margin-bottom: 1.25rem;
-        }
+        .form-group { margin-bottom: 1.25rem; }
 
         .form-group label {
             display: block;
             font-weight: 600;
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            margin-bottom: 0.4rem;
-            letter-spacing: 0.3px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            letter-spacing: 0.9px;
             text-transform: uppercase;
         }
 
         .form-group input {
             width: 100%;
-            padding: 0.85rem 1rem;
-            border: 1.5px solid var(--border);
+            padding: 0.9rem 1rem;
+            border: 1.5px solid rgba(212, 165, 116, 0.18);
             border-radius: 8px;
             font-size: 0.95rem;
             font-family: 'Inter', sans-serif;
             color: var(--text-primary);
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.05);
             transition: border-color 0.2s ease, box-shadow 0.2s ease;
         }
 
         .form-group input:focus {
             outline: none;
             border-color: var(--gold);
-            box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.15);
+            box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
         }
+
+        .form-group input::placeholder { color: rgba(240, 236, 228, 0.22); }
 
         /* ─── BUTTONS ───────────────────────────────────── */
         .btn {
@@ -202,42 +217,42 @@
         }
 
         .btn-primary {
-            background: var(--navy);
-            color: var(--gold);
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-dark) 100%);
+            color: var(--navy-deep);
         }
 
         .btn-primary:hover {
-            background: var(--navy-light);
             transform: translateY(-1px);
-            box-shadow: 0 4px 16px rgba(26, 31, 54, 0.25);
+            box-shadow: 0 6px 20px rgba(212, 165, 116, 0.35);
         }
 
         .btn-secondary {
-            background: var(--gold);
-            color: var(--navy);
+            background: rgba(212, 165, 116, 0.1);
+            color: var(--gold);
+            border: 1px solid rgba(212, 165, 116, 0.25);
             margin-top: 0.75rem;
         }
 
         .btn-secondary:hover {
-            background: var(--gold-light);
+            background: rgba(212, 165, 116, 0.18);
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.4);
+            box-shadow: 0 4px 14px rgba(212, 165, 116, 0.2);
         }
 
         .btn-logout {
             background: transparent;
             color: var(--text-muted);
-            border: 1.5px solid var(--border);
+            border: 1px solid rgba(255, 255, 255, 0.1);
             margin-top: 0.75rem;
         }
 
         .btn-logout:hover {
-            border-color: #dc3545;
-            color: #dc3545;
-            background: rgba(220, 53, 69, 0.05);
+            border-color: #ef4444;
+            color: #fca5a5;
+            background: rgba(239, 68, 68, 0.06);
         }
 
-        /* ─── TOGGLE AUTH LINK ──────────────────────────── */
+        /* ─── TOGGLE AUTH ───────────────────────────────── */
         .toggle-auth {
             text-align: center;
             margin-top: 1.5rem;
@@ -246,7 +261,7 @@
         }
 
         .toggle-auth a {
-            color: var(--gold-dark);
+            color: var(--gold);
             cursor: pointer;
             font-weight: 600;
             text-decoration: none;
@@ -256,18 +271,18 @@
 
         /* ─── MESSAGES ──────────────────────────────────── */
         .error-message {
-            background: #fff1f2;
-            color: #9b1c1c;
+            background: rgba(239, 68, 68, 0.1);
+            color: #fca5a5;
             padding: 0.85rem 1rem;
             border-radius: 8px;
             margin-bottom: 1rem;
-            border-left: 3px solid #dc3545;
+            border-left: 3px solid #ef4444;
             font-size: 0.875rem;
         }
 
         .success-message {
-            background: #f0fdf4;
-            color: #14532d;
+            background: rgba(34, 197, 94, 0.1);
+            color: #86efac;
             padding: 0.85rem 1rem;
             border-radius: 8px;
             margin-bottom: 1rem;
@@ -275,57 +290,273 @@
             font-size: 0.875rem;
         }
 
-        /* ─── DASHBOARD PROFILE ─────────────────────────── */
-        .user-info {
-            background: var(--navy);
+        /* ─── ROLE TOGGLE ───────────────────────────────── */
+        .role-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2rem;
+            padding: 0.85rem 0.5rem;
+            border: 1.5px solid rgba(212, 165, 116, 0.15);
             border-radius: 10px;
-            padding: 1.5rem;
+            text-align: center;
+            transition: all 0.2s;
+            background: rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+
+        .role-option.role-active {
+            border-color: var(--gold);
+            background: rgba(212, 165, 116, 0.1);
+        }
+
+        .role-option:hover { border-color: var(--gold-dark); }
+
+        /* ─── PROFILE HERO ──────────────────────────────── */
+        .profile-hero {
+            background: linear-gradient(160deg, #1a2040 0%, #0f1222 65%);
+            border: 1px solid rgba(212, 165, 116, 0.14);
+            border-radius: 20px;
+            padding: 3rem 2.5rem 2.5rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .profile-hero::before {
+            content: '✟';
+            position: absolute;
+            font-size: 20rem;
+            color: rgba(212, 165, 116, 0.04);
+            right: -2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            line-height: 1;
+            pointer-events: none;
+        }
+
+        .profile-hero-inner {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .profile-greeting {
+            font-size: 0.72rem;
+            letter-spacing: 3.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+        }
+
+        .profile-username {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            line-height: 1.1;
+            margin-bottom: 0.85rem;
+        }
+
+        .profile-level {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(212, 165, 116, 0.1);
+            color: var(--gold);
+            border: 1px solid rgba(212, 165, 116, 0.28);
+            padding: 0.4rem 1.1rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+        }
+
+        .profile-meta { text-align: right; }
+
+        .profile-meta-item { margin-bottom: 0.85rem; }
+
+        .profile-meta-label {
+            font-size: 0.66rem;
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.15rem;
+        }
+
+        .profile-meta-value {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+
+        /* ─── CARD SHOWCASE ─────────────────────────────── */
+        .card-showcase-section {
+            background: rgba(22, 27, 48, 0.7);
+            border: 1px solid rgba(212, 165, 116, 0.12);
+            border-radius: 16px;
+            padding: 2rem 2.5rem;
             margin-bottom: 1.5rem;
         }
 
-        .user-info p {
-            margin-bottom: 0.6rem;
-            color: rgba(255,255,255,0.65);
-            font-size: 0.9rem;
+        .showcase-header {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
         }
 
-        .user-info p:last-of-type { margin-bottom: 0.75rem; }
-
-        .user-info strong {
-            color: var(--gold);
-            font-weight: 600;
-        }
-
-        .level-badge {
-            display: inline-block;
-            background: rgba(212, 165, 116, 0.15);
-            color: var(--gold);
-            border: 1px solid rgba(212, 165, 116, 0.3);
-            font-family: 'Inter', sans-serif;
-            font-size: 0.78rem;
+        .showcase-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
             font-weight: 700;
-            padding: 0.3rem 0.9rem;
-            border-radius: 20px;
+            color: var(--text-primary);
+        }
+
+        .showcase-sub {
+            font-size: 0.73rem;
+            color: var(--text-muted);
             letter-spacing: 0.5px;
-            margin-top: 0.25rem;
+        }
+
+        .card-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.25rem;
+        }
+
+        /* CSS-only saint card (CRUX card back design) */
+        .saint-card {
+            width: 100px;
+            height: 142px;
+            border-radius: 10px;
+            background: linear-gradient(170deg, #1c2650 0%, #0f1535 100%);
+            border: 1px solid rgba(212, 165, 116, 0.28);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6), 0 1px 0 rgba(255, 255, 255, 0.05) inset;
+            flex-shrink: 0;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            cursor: default;
+        }
+
+        .saint-card:hover {
+            transform: translateY(-5px) rotate(1.5deg);
+            box-shadow: 0 18px 44px rgba(0, 0, 0, 0.7), 0 0 22px rgba(212, 165, 116, 0.12);
+        }
+
+        .saint-card::before {
+            content: '✟';
+            position: absolute;
+            font-size: 6.5rem;
+            color: rgba(212, 165, 116, 0.07);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -56%);
+            line-height: 1;
+        }
+
+        .card-rarity-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, transparent 0%, var(--gold) 50%, transparent 100%);
+        }
+
+        .card-wordmark {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 0.95rem;
+            letter-spacing: 5px;
+            background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            position: relative;
+            z-index: 1;
+        }
+
+        .card-saint-name {
+            position: absolute;
+            bottom: 9px;
+            font-size: 0.5rem;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            color: rgba(212, 165, 116, 0.55);
+            z-index: 1;
+            text-align: center;
+            width: 88%;
+        }
+
+        .card-cta {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.6rem;
+            padding-left: 0.5rem;
+        }
+
+        .pack-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(212, 165, 116, 0.07);
+            border: 1px solid rgba(212, 165, 116, 0.18);
+            color: var(--gold-dark);
+            font-size: 0.7rem;
+            font-weight: 700;
+            letter-spacing: 0.6px;
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+            text-transform: uppercase;
+        }
+
+        .cards-hint {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* ─── DASHBOARD GRID ────────────────────────────── */
+        .dash-grid {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .dash-main, .dash-side {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
         }
 
         /* ─── SECTION CARDS ─────────────────────────────── */
         .section-card {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-top: 3px solid var(--gold);
-            border-radius: 8px;
-            padding: 1.25rem 1.5rem;
-            margin-bottom: 1rem;
+            background: rgba(28, 34, 64, 0.55);
+            border: 1px solid rgba(212, 165, 116, 0.11);
+            border-radius: 12px;
+            padding: 1.5rem;
         }
 
         .section-card h3 {
             font-family: 'Playfair Display', serif;
-            color: var(--navy);
-            font-size: 1rem;
+            color: var(--text-primary);
+            font-size: 0.92rem;
             font-weight: 700;
-            margin-bottom: 1rem;
+            margin-bottom: 1.2rem;
+            letter-spacing: 0.3px;
         }
 
         /* ─── XP PILLS ──────────────────────────────────── */
@@ -333,43 +564,43 @@
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 0.6rem;
-            margin-bottom: 1rem;
+            margin-bottom: 1.1rem;
         }
 
         .xp-pill {
-            background: var(--off-white);
-            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(212, 165, 116, 0.1);
             border-radius: 8px;
-            padding: 0.75rem 1rem;
+            padding: 0.85rem 1rem;
             text-align: center;
         }
 
         .xp-pill .xp-label {
-            font-size: 0.7rem;
+            font-size: 0.66rem;
             font-weight: 700;
             letter-spacing: 0.08em;
             text-transform: uppercase;
             color: var(--text-muted);
-            margin-bottom: 0.25rem;
+            margin-bottom: 0.3rem;
         }
 
         .xp-pill .xp-value {
             font-family: 'Playfair Display', serif;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             font-weight: 700;
-            color: var(--navy);
+            color: var(--text-primary);
         }
 
         .xp-pill.xp-total {
             grid-column: 1 / -1;
-            background: var(--navy);
-            border-color: transparent;
+            background: rgba(212, 165, 116, 0.08);
+            border-color: rgba(212, 165, 116, 0.22);
         }
 
-        .xp-pill.xp-total .xp-label { color: rgba(255,255,255,0.5); }
+        .xp-pill.xp-total .xp-label { color: rgba(212, 165, 116, 0.55); }
 
         .xp-pill.xp-total .xp-value {
-            font-size: 1.55rem;
+            font-size: 1.65rem;
             color: var(--gold);
         }
 
@@ -377,70 +608,57 @@
         .progress-label-row {
             display: flex;
             justify-content: space-between;
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             color: var(--text-muted);
-            margin-bottom: 0.4rem;
+            margin-bottom: 0.5rem;
         }
 
         .progress-track {
-            height: 8px;
-            background: var(--off-white);
+            height: 6px;
+            background: rgba(255, 255, 255, 0.06);
             border-radius: 10px;
             overflow: hidden;
-            border: 1px solid var(--border);
         }
 
         .progress-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--navy), var(--gold));
+            background: linear-gradient(90deg, var(--navy-card), var(--gold));
             border-radius: 10px;
-            transition: width 0.6s ease;
+            transition: width 0.8s ease;
         }
 
         /* ─── CLASS LIST ────────────────────────────────── */
-        .class-list {
-            list-style: none;
-            margin: 0;
-            padding: 0;
-        }
+        .class-list { list-style: none; margin: 0; padding: 0; }
 
         .class-item {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
-            padding: 0.65rem 0.85rem;
-            background: var(--off-white);
-            border: 1px solid var(--border);
+            gap: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(212, 165, 116, 0.1);
             border-radius: 8px;
             margin-bottom: 0.5rem;
             font-size: 0.875rem;
         }
 
         .class-item .teacher-name { font-weight: 700; color: var(--text-primary); }
-        .class-item .teacher-school { font-size: 0.8rem; color: var(--text-muted); }
+        .class-item .teacher-school { font-size: 0.78rem; color: var(--text-muted); }
 
         /* ─── JOIN ROW ──────────────────────────────────── */
         .join-row {
             display: flex;
-            gap: 0.6rem;
+            gap: 0.75rem;
             align-items: flex-end;
         }
 
-        .join-row .form-group {
-            flex: 1;
-            margin-bottom: 0;
-        }
-
-        .join-row .form-group input {
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            font-weight: 600;
-        }
+        .join-row .form-group { flex: 1; margin-bottom: 0; }
+        .join-row .form-group input { text-transform: uppercase; letter-spacing: 0.12em; font-weight: 600; }
 
         .btn-join {
-            padding: 0.85rem 1.25rem;
-            background: var(--gold);
-            color: var(--navy);
+            padding: 0.875rem 1.25rem;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--navy-deep);
             border: none;
             border-radius: 8px;
             font-family: 'Inter', sans-serif;
@@ -453,12 +671,11 @@
         }
 
         .btn-join:hover {
-            background: var(--gold-light);
             transform: translateY(-1px);
-            box-shadow: 0 4px 12px rgba(212, 165, 116, 0.4);
+            box-shadow: 0 4px 16px rgba(212, 165, 116, 0.35);
         }
 
-        .btn-join:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .btn-join:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
         .join-feedback {
             margin-top: 0.6rem;
@@ -467,20 +684,20 @@
             display: none;
         }
 
-        .join-feedback.success { color: #15803d; display: block; }
-        .join-feedback.error   { color: #b91c1c; display: block; }
+        .join-feedback.success { color: #86efac; display: block; }
+        .join-feedback.error   { color: #fca5a5; display: block; }
 
         /* ─── AWARD CARDS ───────────────────────────────── */
         .award-card {
-            background: var(--off-white);
-            border: 1px solid var(--border);
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(212, 165, 116, 0.1);
             border-radius: 10px;
             padding: 1rem 1.1rem;
             margin-bottom: 0.75rem;
-            transition: box-shadow 0.2s;
+            transition: border-color 0.2s;
         }
 
-        .award-card:hover { box-shadow: var(--shadow-sm); }
+        .award-card:hover { border-color: rgba(212, 165, 116, 0.25); }
 
         .award-top {
             display: flex;
@@ -493,44 +710,30 @@
 
         .award-xp {
             font-family: 'Playfair Display', serif;
-            font-size: 0.85rem;
+            font-size: 0.82rem;
             font-weight: 700;
-            color: var(--navy);
-            background: rgba(212, 165, 116, 0.15);
-            border: 1px solid var(--border-gold);
-            padding: 0.2rem 0.55rem;
+            color: var(--gold);
+            background: rgba(212, 165, 116, 0.12);
+            border: 1px solid rgba(212, 165, 116, 0.25);
+            padding: 0.2rem 0.6rem;
             border-radius: 6px;
         }
 
-        .award-title {
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: var(--text-primary);
-            margin-bottom: 0.2rem;
-        }
-
-        .award-from {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            margin-bottom: 0.35rem;
-        }
+        .award-title { font-weight: 700; font-size: 0.9rem; color: var(--text-primary); margin-bottom: 0.2rem; }
+        .award-from  { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 0.35rem; }
 
         .award-notes {
             font-size: 0.83rem;
             color: var(--gold-dark);
             font-style: italic;
-            background: rgba(212, 165, 116, 0.08);
-            border-left: 2px solid var(--gold);
+            background: rgba(212, 165, 116, 0.06);
+            border-left: 2px solid rgba(212, 165, 116, 0.35);
             padding: 0.35rem 0.65rem;
             border-radius: 0 6px 6px 0;
             margin-bottom: 0.3rem;
         }
 
-        .award-date {
-            font-size: 0.73rem;
-            color: var(--text-muted);
-            text-align: right;
-        }
+        .award-date { font-size: 0.72rem; color: var(--text-muted); text-align: right; }
 
         .no-data {
             font-size: 0.85rem;
@@ -540,31 +743,9 @@
             padding: 0.75rem;
         }
 
-        /* ─── ROLE TOGGLE ───────────────────────────────── */
-        .role-option {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.2rem;
-            padding: 0.85rem 0.5rem;
-            border: 1.5px solid var(--border);
-            border-radius: 10px;
-            text-align: center;
-            transition: all 0.2s;
-            background: var(--white);
-            cursor: pointer;
-        }
-
-        .role-option.role-active {
-            border-color: var(--gold);
-            background: rgba(212, 165, 116, 0.08);
-        }
-
-        .role-option:hover { border-color: var(--gold-dark); }
-
         /* ─── CLASS CODE DISPLAY ────────────────────────── */
         .class-code-display {
-            background: var(--navy);
+            background: rgba(212, 165, 116, 0.08);
             color: var(--gold);
             font-family: 'Courier New', monospace;
             font-size: 2rem;
@@ -575,31 +756,28 @@
             border-radius: 10px;
             margin: 0.75rem 0;
             cursor: pointer;
-            transition: opacity 0.2s;
+            transition: opacity 0.2s, background 0.2s;
             user-select: all;
+            border: 1px solid rgba(212, 165, 116, 0.22);
         }
 
-        .class-code-display:hover { opacity: 0.85; }
-        .class-code-hint { font-size: 0.78rem; color: var(--text-muted); text-align: center; margin-top: 0.3rem; }
+        .class-code-display:hover { opacity: 0.8; }
+        .class-code-hint { font-size: 0.75rem; color: var(--text-muted); text-align: center; margin-top: 0.3rem; }
 
-        /* ─── TEACHER SETUP CARD VARIANTS ───────────────── */
+        /* ─── TEACHER CARD VARIANTS ─────────────────────── */
         #teacherSetupCard {
-            background: rgba(26, 31, 54, 0.04) !important;
-            border-top-color: var(--navy) !important;
+            background: rgba(212, 165, 116, 0.05) !important;
+            border-color: rgba(212, 165, 116, 0.22) !important;
         }
-
-        #teacherSetupCard h3 { color: var(--navy) !important; }
 
         #becomeTeacherCard {
-            background: rgba(212, 165, 116, 0.06) !important;
-            border-top-color: var(--gold-dark) !important;
+            border-style: dashed !important;
+            border-color: rgba(212, 165, 116, 0.18) !important;
         }
-
-        #becomeTeacherCard h3 { color: var(--gold-dark) !important; }
 
         /* ─── STUDY JOURNAL ─────────────────────────────── */
         .journal-entry {
-            border: 1px solid var(--border);
+            border: 1px solid rgba(212, 165, 116, 0.12);
             border-radius: 8px;
             overflow: hidden;
             margin-bottom: 0.75rem;
@@ -609,50 +787,40 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.85rem 1rem;
-            background: var(--off-white);
+            padding: 0.9rem 1rem;
+            background: rgba(255, 255, 255, 0.04);
             cursor: pointer;
             transition: background 0.15s;
             user-select: none;
         }
 
-        .journal-entry-header:hover { background: #edecea; }
+        .journal-entry-header:hover { background: rgba(255, 255, 255, 0.07); }
 
         .journal-entry-title {
             font-family: 'Playfair Display', serif;
-            font-size: 0.95rem;
+            font-size: 0.92rem;
             font-weight: 700;
-            color: var(--navy);
+            color: var(--text-primary);
             margin-bottom: 0.15rem;
         }
 
-        .journal-entry-meta {
-            font-size: 0.72rem;
-            color: var(--text-muted);
-            letter-spacing: 0.3px;
-        }
-
-        .journal-chevron {
-            font-size: 0.62rem;
-            color: var(--text-muted);
-            transition: transform 0.2s;
-            flex-shrink: 0;
-        }
+        .journal-entry-meta { font-size: 0.7rem; color: var(--text-muted); letter-spacing: 0.3px; }
+        .journal-chevron { font-size: 0.6rem; color: var(--text-muted); transition: transform 0.2s; flex-shrink: 0; }
 
         .journal-entry-body {
             padding: 0.75rem 1rem 1rem;
-            border-top: 1px solid var(--border);
+            border-top: 1px solid rgba(212, 165, 116, 0.1);
         }
 
         .journal-response {
             padding: 0.75rem 0;
-            border-bottom: 1px solid var(--border);
+            border-bottom: 1px solid rgba(212, 165, 116, 0.08);
         }
 
         .journal-response:last-of-type { border-bottom: none; }
 
         .journal-prompt {
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             font-weight: 600;
             color: var(--text-muted);
             margin-bottom: 0.4rem;
@@ -661,7 +829,7 @@
 
         .journal-answer {
             font-size: 0.9rem;
-            color: var(--text-primary);
+            color: var(--text-secondary);
             line-height: 1.7;
             white-space: pre-wrap;
         }
@@ -675,15 +843,22 @@
             text-decoration: none;
         }
 
-        .journal-return-link:hover { text-decoration: underline; }
+        .journal-return-link:hover { text-decoration: underline; color: var(--gold); }
+
+        /* ─── ACCOUNT ACTIONS ───────────────────────────── */
+        .account-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
 
         /* ─── BACK LINK ─────────────────────────────────── */
         .back-link {
             display: block;
             text-align: center;
-            margin-top: 1.5rem;
-            color: rgba(255,255,255,0.3);
-            font-size: 0.8rem;
+            margin-top: 2rem;
+            color: var(--text-muted);
+            font-size: 0.78rem;
             text-decoration: none;
             letter-spacing: 0.5px;
             transition: color 0.2s;
@@ -691,38 +866,53 @@
 
         .back-link:hover { color: var(--gold); }
 
+        /* ─── RESPONSIVE ─────────────────────────────────── */
+        @media (max-width: 780px) {
+            .dash-grid { grid-template-columns: 1fr; }
+            .profile-hero-inner { flex-direction: column; gap: 1.25rem; }
+            .profile-meta { text-align: left; }
+            .profile-username { font-size: 2.1rem; }
+        }
+
         @media (max-width: 480px) {
-            body { padding: 2rem 1rem 3rem; }
-            .auth-card, .dashboard { padding: 1.75rem 1.25rem; }
-            .xp-grid { grid-template-columns: 1fr; }
-            .xp-pill.xp-total { grid-column: auto; }
+            .account-container { padding: 2rem 1rem 4rem; }
+            .auth-card { padding: 1.75rem 1.25rem; }
+            .profile-hero { padding: 1.75rem 1.25rem; }
+            .card-showcase-section { padding: 1.5rem 1.25rem; }
+            .card-row { gap: 0.85rem; flex-wrap: wrap; }
+            .saint-card { width: 84px; height: 120px; }
+            .card-wordmark { font-size: 0.78rem; letter-spacing: 4px; }
             .join-row { flex-direction: column; }
             .btn-join { width: 100%; }
+            .xp-grid { grid-template-columns: 1fr; }
+            .xp-pill.xp-total { grid-column: auto; }
         }
     </style>
 </head>
 <body>
     <div class="account-container">
+
+        <!-- CRUX Wordmark -->
         <div class="logo">
             <h1>CRUX</h1>
             <p>Catholic Faith Formation</p>
         </div>
 
-        <!-- Login Form -->
+        <!-- ─── LOGIN FORM ──────────────────────────────── -->
         <div id="loginForm" class="auth-card">
             <h2>Sign In</h2>
             <div class="firebase-badge">✓ Firebase Authentication</div>
-            
+
             <div id="loginError"></div>
-            
+
             <form onsubmit="handleLogin(event)">
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" id="loginEmail" required autocomplete="email">
+                    <input type="email" id="loginEmail" required autocomplete="email" placeholder="your@email.com">
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="loginPassword" required autocomplete="current-password">
+                    <input type="password" id="loginPassword" required autocomplete="current-password" placeholder="••••••••">
                 </div>
                 <button type="submit" class="btn btn-primary">Sign In</button>
             </form>
@@ -732,25 +922,25 @@
             </div>
         </div>
 
-        <!-- Register Form -->
+        <!-- ─── REGISTER FORM ───────────────────────────── -->
         <div id="registerForm" class="auth-card" style="display: none;">
             <h2>Create Account</h2>
             <div class="firebase-badge">✓ Firebase Authentication</div>
-            
+
             <div id="registerError"></div>
-            
+
             <form onsubmit="handleRegister(event)">
                 <div class="form-group">
                     <label>Username</label>
-                    <input type="text" id="registerUsername" required minlength="3">
+                    <input type="text" id="registerUsername" required minlength="3" placeholder="yourname">
                 </div>
                 <div class="form-group">
                     <label>Email</label>
-                    <input type="email" id="registerEmail" required autocomplete="email">
+                    <input type="email" id="registerEmail" required autocomplete="email" placeholder="your@email.com">
                 </div>
                 <div class="form-group">
                     <label>Password</label>
-                    <input type="password" id="registerPassword" required minlength="6" autocomplete="new-password">
+                    <input type="password" id="registerPassword" required minlength="6" autocomplete="new-password" placeholder="6+ characters">
                 </div>
 
                 <!-- Role toggle -->
@@ -772,7 +962,7 @@
                     </div>
                 </div>
 
-                <!-- Extra teacher fields shown when teacher role selected -->
+                <!-- Extra teacher fields -->
                 <div id="teacherRegFields" style="display:none;">
                     <div class="form-group">
                         <label>Your Full Name</label>
@@ -792,106 +982,158 @@
             </div>
         </div>
 
-        <!-- Dashboard -->
-        <div id="dashboard" class="dashboard" style="display: none;">
-            <h2>Your Account</h2>
+        <!-- ─── DASHBOARD ────────────────────────────────── -->
+        <div id="dashboard" style="display: none;">
 
-            <!-- Profile Info -->
-            <div class="user-info">
-                <p><strong>Username:</strong> <span id="dashUsername"></span></p>
-                <p><strong>Email:</strong> <span id="dashEmail"></span></p>
-                <p><strong>Member Since:</strong> <span id="dashJoined"></span></p>
-                <div class="level-badge" id="levelBadge">⚔️ Level 1 – Seeker</div>
-            </div>
-
-            <!-- XP Breakdown -->
-            <div class="section-card">
-                <h3>📊 XP Breakdown</h3>
-                <div class="xp-grid">
-                    <div class="xp-pill">
-                        <div class="xp-label">Quiz XP</div>
-                        <div class="xp-value" id="xpQuiz">–</div>
+            <!-- Profile Hero -->
+            <div class="profile-hero">
+                <div class="profile-hero-inner">
+                    <div class="profile-hero-text">
+                        <div class="profile-greeting">Welcome back</div>
+                        <h1 class="profile-username" id="dashUsername">Loading…</h1>
+                        <div class="profile-level" id="levelBadge">⚔️ Level 1 – Seeker</div>
                     </div>
-                    <div class="xp-pill">
-                        <div class="xp-label">Teacher Awards</div>
-                        <div class="xp-value" id="xpTeachers">–</div>
-                    </div>
-                    <div class="xp-pill xp-total">
-                        <div class="xp-label">Total XP</div>
-                        <div class="xp-value" id="xpTotal">–</div>
+                    <div class="profile-meta">
+                        <div class="profile-meta-item">
+                            <div class="profile-meta-label">Email</div>
+                            <div class="profile-meta-value" id="dashEmail">—</div>
+                        </div>
+                        <div class="profile-meta-item">
+                            <div class="profile-meta-label">Member since</div>
+                            <div class="profile-meta-value" id="dashJoined">—</div>
+                        </div>
                     </div>
                 </div>
-                <div class="progress-label-row">
-                    <span id="progressLabelLeft">Level 1: Seeker</span>
-                    <span id="progressLabelRight">0% to Level 2</span>
-                </div>
-                <div class="progress-track">
-                    <div class="progress-fill" id="progressFill" style="width:0%"></div>
-                </div>
             </div>
 
-            <!-- Your Classes -->
-            <div class="section-card">
-                <h3>📚 Your Classes</h3>
-                <ul class="class-list" id="classList">
-                    <li class="no-data">Loading…</li>
-                </ul>
-            </div>
-
-            <!-- Join a Class -->
-            <div class="section-card">
-                <h3>➕ Join a Class</h3>
-                <div class="join-row">
-                    <div class="form-group">
-                        <label>Class Code</label>
-                        <input type="text" id="classCodeInput" placeholder="e.g. ABCD1234" maxlength="8" />
+            <!-- Card Showcase -->
+            <div class="card-showcase-section">
+                <div class="showcase-header">
+                    <div class="showcase-title">&#127183; Card Collection</div>
+                    <div class="showcase-sub">Preset favorites</div>
+                </div>
+                <div class="card-row">
+                    <div class="saint-card">
+                        <div class="card-rarity-bar"></div>
+                        <div class="card-wordmark">CRUX</div>
+                        <div class="card-saint-name">St. Thomas</div>
                     </div>
-                    <button class="btn-join" id="joinBtn" onclick="joinClass()">Join</button>
-                </div>
-                <div class="join-feedback" id="joinFeedback"></div>
-            </div>
-
-            <!-- Teacher Setup Card (shown only for teacher accounts) -->
-            <div class="section-card" id="teacherSetupCard" style="display:none;">
-                <h3>&#128203; Teacher Setup</h3>
-                <div id="teacherSetupContent">
-                    <!-- Populated by JS: either "set up your class" form or "your class code" display -->
-                </div>
-            </div>
-
-            <!-- Become a Teacher (shown for student accounts) -->
-            <div class="section-card" id="becomeTeacherCard" style="display:none;">
-                <h3>&#128203; Are You a Teacher?</h3>
-                <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:1rem;">If you teach faith formation, upgrade your account to create a class code and award XP to students.</p>
-                <button class="btn-join" style="width:100%;" onclick="upgradeToTeacher()">Set Up Teacher Account</button>
-                <div id="upgradeTeacherFeedback" class="join-feedback"></div>
-            </div>
-
-            <!-- Teacher Awards -->
-            <div class="section-card">
-                <h3>🎯 Recent Teacher Awards</h3>
-                <div id="awardsList">
-                    <div class="no-data">Loading…</div>
+                    <div class="saint-card">
+                        <div class="card-rarity-bar"></div>
+                        <div class="card-wordmark">CRUX</div>
+                        <div class="card-saint-name">St. Cecilia</div>
+                    </div>
+                    <div class="saint-card">
+                        <div class="card-rarity-bar"></div>
+                        <div class="card-wordmark">CRUX</div>
+                        <div class="card-saint-name">St. Bernadette</div>
+                    </div>
+                    <div class="card-cta">
+                        <div class="pack-badge">🃏 Pack Opening — Coming Soon</div>
+                        <div class="cards-hint">Your full collection<br>will live here.</div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Study Journal -->
-            <div class="section-card">
-                <h3>📖 Study Journal</h3>
-                <div id="journalList">
-                    <div class="no-data">Loading…</div>
+            <!-- Main Grid -->
+            <div class="dash-grid">
+
+                <!-- Left column -->
+                <div class="dash-main">
+
+                    <div class="section-card">
+                        <h3>📊 XP Breakdown</h3>
+                        <div class="xp-grid">
+                            <div class="xp-pill">
+                                <div class="xp-label">Quiz XP</div>
+                                <div class="xp-value" id="xpQuiz">–</div>
+                            </div>
+                            <div class="xp-pill">
+                                <div class="xp-label">Teacher Awards</div>
+                                <div class="xp-value" id="xpTeachers">–</div>
+                            </div>
+                            <div class="xp-pill xp-total">
+                                <div class="xp-label">Total XP</div>
+                                <div class="xp-value" id="xpTotal">–</div>
+                            </div>
+                        </div>
+                        <div class="progress-label-row">
+                            <span id="progressLabelLeft">Level 1: Seeker</span>
+                            <span id="progressLabelRight">0% to Level 2</span>
+                        </div>
+                        <div class="progress-track">
+                            <div class="progress-fill" id="progressFill" style="width:0%"></div>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h3>📖 Study Journal</h3>
+                        <div id="journalList">
+                            <div class="no-data">Loading…</div>
+                        </div>
+                    </div>
+
+                    <div class="section-card">
+                        <h3>📚 Your Classes</h3>
+                        <ul class="class-list" id="classList">
+                            <li class="no-data">Loading…</li>
+                        </ul>
+                    </div>
+
+                    <div class="section-card">
+                        <h3>➕ Join a Class</h3>
+                        <div class="join-row">
+                            <div class="form-group">
+                                <label>Class Code</label>
+                                <input type="text" id="classCodeInput" placeholder="e.g. ABCD1234" maxlength="8" />
+                            </div>
+                            <button class="btn-join" id="joinBtn" onclick="joinClass()">Join</button>
+                        </div>
+                        <div class="join-feedback" id="joinFeedback"></div>
+                    </div>
+
                 </div>
+
+                <!-- Right column -->
+                <div class="dash-side">
+
+                    <div class="section-card">
+                        <h3>🎯 Teacher Awards</h3>
+                        <div id="awardsList">
+                            <div class="no-data">Loading…</div>
+                        </div>
+                    </div>
+
+                    <div class="section-card" id="teacherSetupCard" style="display:none;">
+                        <h3>&#128203; Teacher Setup</h3>
+                        <div id="teacherSetupContent"></div>
+                    </div>
+
+                    <div class="section-card" id="becomeTeacherCard" style="display:none;">
+                        <h3>&#128203; Are You a Teacher?</h3>
+                        <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:1rem;">If you teach faith formation, upgrade your account to create a class code and award XP to students.</p>
+                        <button class="btn-join" style="width:100%;" onclick="upgradeToTeacher()">Set Up Teacher Account</button>
+                        <div id="upgradeTeacherFeedback" class="join-feedback"></div>
+                    </div>
+
+                </div>
+
+            </div>
+            <!-- /dash-grid -->
+
+            <!-- Account Actions -->
+            <div class="account-actions">
+                <button class="btn btn-secondary" id="goToWebsiteBtn">Go to CRUX Website</button>
+                <button class="btn btn-logout" id="logoutBtn">Sign Out</button>
             </div>
 
-            <button class="btn btn-secondary" id="goToWebsiteBtn">
-                Go to CRUX Website
-            </button>
-
-            <button class="btn btn-logout" id="logoutBtn">
-                Sign Out
-            </button>
         </div>
+        <!-- /dashboard -->
+
+        <a href="/" class="back-link">← Return to cruxfaith.com</a>
+
     </div>
+    <!-- /account-container -->
 
     <script type="module">
         import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
@@ -965,31 +1207,29 @@
             document.getElementById('becomeTeacherCard').style.display = 'none';
 
             if (teacherData && teacherData.classCode) {
-                // Already set up — show the code
                 content.innerHTML = `
                     <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:0.5rem;">
-                        <strong style="color:var(--navy);">${teacherData.name || 'Your'}</strong> class at
-                        <strong style="color:var(--navy);">${teacherData.school || 'your school'}</strong>
+                        <strong style="color:var(--text-primary);">${teacherData.name || 'Your'}</strong> class at
+                        <strong style="color:var(--text-primary);">${teacherData.school || 'your school'}</strong>
                     </p>
                     <p style="font-size:0.82rem;color:var(--text-muted);margin-bottom:0.3rem;">Share this code with your students:</p>
                     <div class="class-code-display" onclick="copyCode('${teacherData.classCode}')" title="Click to copy">${teacherData.classCode}</div>
                     <p class="class-code-hint">Click the code to copy it to your clipboard</p>
                     <p style="font-size:0.78rem;color:var(--text-muted);margin-top:0.75rem;">
-                        Students enrolled: <strong style="color:var(--navy);">${(teacherData.students || []).length}</strong>
+                        Students enrolled: <strong style="color:var(--text-primary);">${(teacherData.students || []).length}</strong>
                         &nbsp;&#183;&nbsp;
                         <a href="crux-teacher.html" style="color:var(--gold-dark);font-weight:700;">Open Teacher Dashboard &#8594;</a>
                     </p>`;
             } else {
-                // Needs setup
                 content.innerHTML = `
                     <p style="font-size:0.875rem;color:var(--text-muted);margin-bottom:1rem;">Complete your teacher profile to generate a class code your students can use to join.</p>
                     <div class="form-group">
                         <label>Your Full Name</label>
-                        <input type="text" id="setupTeacherName" placeholder="e.g. Mrs. Sullivan" style="width:100%;padding:0.75rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.95rem;font-family:Inter,sans-serif;">
+                        <input type="text" id="setupTeacherName" placeholder="e.g. Mrs. Sullivan" style="width:100%;padding:0.75rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.95rem;font-family:Inter,sans-serif;color:var(--text-primary);background:rgba(255,255,255,0.05);">
                     </div>
                     <div class="form-group">
                         <label>School / Parish</label>
-                        <input type="text" id="setupSchool" placeholder="e.g. St. Patrick's School" style="width:100%;padding:0.75rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.95rem;font-family:Inter,sans-serif;">
+                        <input type="text" id="setupSchool" placeholder="e.g. St. Patrick's School" style="width:100%;padding:0.75rem;border:1.5px solid var(--border);border-radius:8px;font-size:0.95rem;font-family:Inter,sans-serif;color:var(--text-primary);background:rgba(255,255,255,0.05);">
                     </div>
                     <button class="btn-join" style="width:100%;padding:0.875rem;" onclick="saveTeacherSetup()">Generate My Class Code</button>
                     <div id="setupFeedback" class="join-feedback"></div>`;
@@ -1009,7 +1249,6 @@
             feedback.className='join-feedback'; feedback.textContent='Generating code…';
 
             try {
-                // Ensure unique code
                 let code = generateClassCode();
                 let attempts = 0;
                 while (attempts < 5) {
@@ -1042,7 +1281,6 @@
             if (!user) return;
             const fb = document.getElementById('upgradeTeacherFeedback');
             fb.className='join-feedback'; fb.textContent='';
-            // Just show the setup card
             renderTeacherSetup(null);
         };
 
@@ -1052,8 +1290,9 @@
                 const el = document.querySelector('.class-code-display');
                 const orig = el.textContent;
                 el.textContent = 'Copied!';
-                el.style.background = '#15803d';
-                setTimeout(() => { el.textContent = orig; el.style.background = ''; }, 1200);
+                el.style.background = 'rgba(34, 197, 94, 0.15)';
+                el.style.color = '#86efac';
+                setTimeout(() => { el.textContent = orig; el.style.background = ''; el.style.color = ''; }, 1200);
             }).catch(() => {
                 alert('Your class code is: ' + code);
             });
@@ -1070,14 +1309,12 @@
             }
         });
 
-        // Show login form
         window.showLogin = function() {
             document.getElementById('loginForm').style.display = 'block';
             document.getElementById('registerForm').style.display = 'none';
             document.getElementById('loginError').innerHTML = '';
         }
 
-        // Show register form
         window.showRegister = function() {
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('registerForm').style.display = 'block';
@@ -1109,13 +1346,11 @@
                     joinedDate: serverTimestamp(), createdAt: serverTimestamp()
                 });
 
-                // Create initial userProgress doc
                 await setDoc(doc(db, 'userProgress', user.uid), {
                     totalXP: 0, xpFromQuizzes: 0, xpFromTeachers: 0,
                     level: 1, teacherIds: [], createdAt: serverTimestamp()
                 });
 
-                // If teacher — generate class code and create teacher doc
                 if (isTeacher) {
                     let code = generateClassCode();
                     let attempts = 0;
@@ -1131,7 +1366,6 @@
                     await updateDoc(doc(db, 'users', user.uid), { teacherDocId: user.uid });
                 }
 
-                console.log('✅ Account created successfully!');
                 document.getElementById('registerError').innerHTML =
                     '<div class="success-message">&#10003; Account created! Loading your dashboard&#8230;</div>';
             } catch (error) {
@@ -1154,7 +1388,6 @@
             document.getElementById('loginError').innerHTML = '';
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-                console.log('✅ Logged in successfully!');
             } catch (error) {
                 console.error('Login error:', error);
                 let errorMessage = 'Failed to log in. ';
@@ -1181,7 +1414,6 @@
                 document.getElementById('registerForm').style.display = 'none';
                 document.getElementById('dashboard').style.display    = 'block';
 
-                // Hoist userData so it's always in scope
                 const userData = userDoc.exists() ? userDoc.data() : {};
 
                 if (userDoc.exists()) {
@@ -1199,15 +1431,12 @@
                     document.getElementById('dashJoined').textContent   = 'Recently';
                 }
 
-                // Load XP, classes, awards, and study journal in parallel
                 await Promise.all([
                     loadUserProgress(user.uid),
                     loadTeacherAwards(user.uid),
                     loadStudyJournal(user.uid)
                 ]);
 
-                // Determine teacher status — check role field first,
-                // then fall back to teachers collection for older accounts
                 const role = userData.role || '';
                 let isTeacher = (role === 'teacher');
                 if (!isTeacher) {
@@ -1215,7 +1444,6 @@
                         const tSnap = await getDoc(doc(db, 'teachers', user.uid));
                         if (tSnap.exists()) {
                             isTeacher = true;
-                            // Backfill role field for future logins
                             try { await updateDoc(doc(db, 'users', user.uid), { role: 'teacher' }); } catch(e) {}
                         }
                     } catch(e) {}
@@ -1444,7 +1672,6 @@
                 const teacherId   = teacherDoc.id;
                 const teacherData = teacherDoc.data();
 
-                // Check if already joined
                 const progressSnap = await getDoc(doc(db, 'userProgress', user.uid));
                 const existing = progressSnap.exists() ? (progressSnap.data().teacherIds || []) : [];
                 if (existing.includes(teacherId)) {
@@ -1455,8 +1682,6 @@
                     return;
                 }
 
-                // Add teacherId to student's own progress only
-                // (students cannot write to the teachers collection)
                 if (progressSnap.exists()) {
                     await updateDoc(doc(db, 'userProgress', user.uid), {
                         teacherIds: arrayUnion(teacherId)
@@ -1472,7 +1697,6 @@
                 feedback.textContent = `✅ Joined ${teacherData.name || 'class'}'s class at ${teacherData.school || 'school'}!`;
                 input.value = '';
 
-                // Refresh progress & class list
                 await loadUserProgress(user.uid);
 
             } catch (err) {
@@ -1485,7 +1709,6 @@
             }
         };
 
-        // Enter key support for class code input
         document.getElementById('classCodeInput').addEventListener('keydown', e => {
             if (e.key === 'Enter') window.joinClass();
         });
@@ -1495,7 +1718,6 @@
             if (confirm('Are you sure you want to sign out?')) {
                 try {
                     await signOut(auth);
-                    console.log('✅ Logged out successfully!');
                 } catch (error) {
                     console.error('Logout error:', error);
                     alert('Failed to log out: ' + error.message);
