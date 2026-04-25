@@ -1,0 +1,882 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — Build Your Study Plan</title>
+
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date()); gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<script type="module">
+  import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+  import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+  import { getFirestore, doc, setDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+  const cfg = {
+    apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+    authDomain: "crux-faith-formation.firebaseapp.com",
+    projectId: "crux-faith-formation",
+    storageBucket: "crux-faith-formation.firebasestorage.app",
+    messagingSenderId: "838141015985",
+    appId: "1:838141015985:web:2655e570663e182d75ef90"
+  };
+  const app = getApps().length ? getApps()[0] : initializeApp(cfg);
+  window.auth = getAuth(app);
+  window.db = getFirestore(app);
+  window.fsSetDoc = setDoc;
+  window.fsDoc = doc;
+  window.fsTimestamp = serverTimestamp;
+
+  onAuthStateChanged(window.auth, (user) => {
+    window.currentUser = user || null;
+  });
+</script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --navy-deep: #0f1222;
+  --navy-light: #252b47;
+  --gold: #d4a574;
+  --gold-light: #e8c99a;
+  --gold-pale: #f5ead8;
+  --cream: #faf7f2;
+  --white: #ffffff;
+  --off-white: #f4f3ef;
+  --border: rgba(26,31,54,0.1);
+  --text-primary: #1a1f36;
+  --text-secondary: #5a6080;
+  --text-muted: #8a90aa;
+  --green: #2d6a4f;
+  --green-light: #e8f5ee;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: var(--navy-deep); color: var(--text-primary); min-height: 100vh; }
+
+/* NAV */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 1.25rem 2.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(15,18,34,0.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+.nav-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; letter-spacing: 5px; color: var(--gold); text-decoration: none; }
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+.nav-links a { font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 1px; color: rgba(255,255,255,0.45); text-decoration: none; transition: color 0.2s; }
+.nav-links a:hover { color: var(--gold); }
+
+/* HERO */
+.page-hero {
+  background: var(--navy); padding: 7rem 2rem 3rem;
+  text-align: center; position: relative; overflow: hidden;
+}
+.page-hero::before {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(212,165,116,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-eyebrow { font-size: 0.68rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.65rem; }
+.hero-title { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3rem); font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+.hero-subtitle { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: rgba(255,255,255,0.45); }
+
+/* STEP BAR */
+.step-bar {
+  background: var(--navy-light); border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0.85rem 0; position: sticky; top: 68px; z-index: 100;
+}
+.step-track { display: flex; align-items: center; justify-content: center; max-width: 560px; margin: 0 auto; padding: 0 1rem; }
+.step { display: flex; align-items: center; gap: 0.5rem; padding: 0 0.75rem; }
+.step-dot { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.72rem; font-weight: 700; flex-shrink: 0; transition: all 0.3s; }
+.step-dot.done { background: var(--gold); color: var(--navy); }
+.step-dot.active { background: var(--white); color: var(--navy); }
+.step-dot.pending { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.3); }
+.step-label { font-size: 0.72rem; font-weight: 600; color: rgba(255,255,255,0.4); white-space: nowrap; transition: color 0.3s; }
+.step-label.active { color: var(--gold); }
+.step-line { flex: 1; height: 1px; background: rgba(255,255,255,0.1); min-width: 32px; max-width: 64px; transition: background 0.3s; }
+.step-line.done { background: var(--gold); }
+
+/* BUILDER BODY */
+.builder-body { background: var(--cream); min-height: calc(100vh - 200px); padding-bottom: 4rem; }
+.builder-wrapper { max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem; }
+
+/* VIEWS */
+.view { display: none; }
+.view.active { display: block; }
+
+/* SECTION HEADER */
+.section-head { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem; }
+.section-head h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--navy); }
+.section-head p { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.2rem; }
+.sel-count { background: var(--navy); color: var(--gold); padding: 0.3rem 0.9rem; border-radius: 20px; font-size: 0.72rem; font-weight: 700; white-space: nowrap; }
+
+/* FILTER TABS */
+.filter-tabs { display: flex; gap: 0.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; }
+.filter-tab { padding: 0.35rem 0.9rem; border: 1px solid var(--border); border-radius: 20px; background: var(--white); font-size: 0.78rem; font-weight: 500; color: var(--text-secondary); cursor: pointer; transition: all 0.15s; font-family: 'Inter', sans-serif; }
+.filter-tab:hover:not(.active) { border-color: var(--navy); color: var(--navy); }
+.filter-tab.active { background: var(--navy); color: var(--gold); border-color: var(--navy); }
+
+/* MODULE GRID */
+.module-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.plan-card { background: var(--white); border: 2px solid var(--border); border-radius: 12px; padding: 1.25rem; cursor: pointer; transition: all 0.2s; position: relative; user-select: none; }
+.plan-card:not(.unavailable):hover { border-color: var(--gold-light); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+.plan-card.selected { border-color: var(--gold); background: var(--gold-pale); }
+.plan-card.unavailable { opacity: 0.55; cursor: default; }
+.plan-check { position: absolute; top: 0.75rem; right: 0.75rem; width: 22px; height: 22px; background: var(--gold); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--navy); font-weight: 700; opacity: 0; transition: opacity 0.15s; }
+.plan-card.selected .plan-check { opacity: 1; }
+.card-icon { font-size: 1.4rem; margin-bottom: 0.5rem; }
+.card-category { font-size: 0.62rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.2rem; }
+.card-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.35rem; line-height: 1.25; }
+.card-meta { display: flex; gap: 0.4rem; flex-wrap: wrap; margin-bottom: 0.5rem; }
+.card-tag { padding: 0.12rem 0.45rem; background: var(--off-white); border-radius: 4px; font-size: 0.67rem; font-weight: 600; color: var(--text-secondary); }
+.plan-card.selected .card-tag { background: rgba(212,165,116,0.2); }
+.card-badge { display: inline-block; padding: 0.12rem 0.45rem; font-size: 0.62rem; font-weight: 700; border-radius: 4px; letter-spacing: 0.5px; }
+.badge-live { background: var(--green-light); color: var(--green); }
+.badge-soon { background: var(--off-white); color: var(--text-muted); }
+
+/* VIEW FOOTER */
+.view-footer { display: flex; align-items: center; justify-content: space-between; padding-top: 1rem; border-top: 1px solid var(--border); flex-wrap: wrap; gap: 1rem; }
+.view-footer-note { font-size: 0.82rem; color: var(--text-muted); }
+
+/* BUTTONS */
+.btn { padding: 0.7rem 1.5rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; border: none; transition: all 0.2s; display: inline-flex; align-items: center; gap: 0.4rem; }
+.btn-primary { background: var(--gold); color: var(--navy); }
+.btn-primary:hover { background: var(--gold-light); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+.btn-ghost { background: var(--off-white); color: var(--text-secondary); }
+.btn-ghost:hover { background: #e8e7e3; color: var(--text-primary); }
+.btn-navy { background: var(--navy); color: var(--gold); }
+.btn-navy:hover { background: var(--navy-light); }
+
+/* VIEW B: CONFIGURE */
+.configure-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
+.form-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; padding: 1.5rem; margin-bottom: 1rem; }
+.form-card:last-child { margin-bottom: 0; }
+.form-card h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 1.25rem; }
+.form-group { margin-bottom: 1.1rem; }
+.form-group:last-child { margin-bottom: 0; }
+.form-label { display: block; font-size: 0.72rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem; }
+.form-input { width: 100%; padding: 0.65rem 0.9rem; border: 1px solid var(--border); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--text-primary); background: var(--off-white); transition: border-color 0.15s; }
+.form-input:focus { outline: none; border-color: var(--gold); background: var(--white); }
+
+/* PACE OPTIONS */
+.pace-options { display: flex; flex-direction: column; gap: 0.5rem; }
+.pace-option { display: flex; align-items: flex-start; gap: 0.85rem; padding: 0.85rem 1rem; border: 2px solid var(--border); border-radius: 8px; cursor: pointer; transition: all 0.15s; }
+.pace-option:hover { border-color: var(--gold-light); }
+.pace-option.selected { border-color: var(--gold); background: var(--gold-pale); }
+.pace-radio { width: 18px; height: 18px; border-radius: 50%; border: 2px solid var(--border); flex-shrink: 0; margin-top: 0.15rem; background: white; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+.pace-option.selected .pace-radio { border-color: var(--gold); background: var(--gold); }
+.pace-radio-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--navy); display: none; }
+.pace-option.selected .pace-radio-dot { display: block; }
+.pace-title { font-weight: 600; font-size: 0.88rem; color: var(--navy); }
+.pace-desc { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.1rem; }
+.pace-est { font-size: 0.72rem; font-weight: 600; color: var(--gold); margin-top: 0.15rem; }
+.custom-end-group { display: none; margin-top: 0.75rem; }
+.custom-end-group.visible { display: block; }
+
+/* SELECTION LIST */
+.sel-list { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1rem; }
+.sel-item { display: flex; align-items: center; justify-content: space-between; padding: 0.6rem 0.85rem; background: var(--off-white); border-radius: 8px; }
+.sel-item-left { display: flex; align-items: center; gap: 0.6rem; }
+.sel-item-icon { font-size: 1rem; }
+.sel-item-name { font-weight: 600; font-size: 0.85rem; color: var(--navy); }
+.sel-item-secs { font-size: 0.72rem; color: var(--text-muted); }
+.remove-btn { width: 22px; height: 22px; border-radius: 50%; background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; flex-shrink: 0; }
+.remove-btn:hover { background: #fee2e2; border-color: #fca5a5; color: #dc2626; }
+.empty-sel { text-align: center; padding: 1.5rem; color: var(--text-muted); font-size: 0.85rem; }
+
+/* SUMMARY TABLE */
+.stat-table { border-top: 1px solid var(--border); padding-top: 1rem; margin-top: 0.5rem; }
+.stat-row { display: flex; justify-content: space-between; font-size: 0.82rem; color: var(--text-muted); padding: 0.3rem 0; }
+.stat-row strong { color: var(--navy); }
+
+/* VIEW C: PLAN */
+.plan-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 2rem; margin-bottom: 2.5rem; flex-wrap: wrap; }
+.plan-eyebrow { font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.35rem; }
+.plan-name-display { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 4vw, 2rem); font-weight: 700; color: var(--navy); margin-bottom: 0.75rem; }
+.plan-metrics { display: flex; gap: 1.75rem; flex-wrap: wrap; }
+.metric-val { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 700; color: var(--navy); line-height: 1; }
+.metric-lbl { font-size: 0.65rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); margin-top: 0.15rem; }
+
+.share-box { background: var(--navy); border-radius: 10px; padding: 1rem 1.25rem; min-width: 200px; flex-shrink: 0; }
+.share-lbl { font-size: 0.62rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem; }
+.share-code { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--white); letter-spacing: 4px; margin-bottom: 0.25rem; }
+.share-note { font-size: 0.7rem; color: rgba(255,255,255,0.35); margin-bottom: 0.6rem; }
+.copy-btn { padding: 0.3rem 0.8rem; background: var(--gold); color: var(--navy); border: none; border-radius: 6px; font-size: 0.72rem; font-weight: 700; cursor: pointer; font-family: 'Inter', sans-serif; transition: background 0.15s; }
+.copy-btn:hover { background: var(--gold-light); }
+.copy-btn.copied { background: var(--green); color: white; }
+
+/* SCHEDULE */
+.schedule { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 2rem; }
+.week-block { border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.week-header { background: var(--navy); padding: 0.65rem 1.25rem; display: flex; align-items: center; justify-content: space-between; }
+.week-lbl { font-size: 0.7rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+.week-dates { font-size: 0.7rem; color: rgba(255,255,255,0.35); }
+.session-row { display: flex; align-items: center; gap: 1rem; padding: 0.85rem 1.25rem; border-bottom: 1px solid var(--border); background: var(--white); cursor: pointer; transition: background 0.15s; text-decoration: none; color: inherit; }
+.session-row:last-child { border-bottom: none; }
+.session-row:hover { background: var(--off-white); }
+.session-row.row-today { background: var(--green-light); }
+.session-row.row-today:hover { background: #d8eedf; }
+.session-day { width: 75px; font-size: 0.7rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; flex-shrink: 0; }
+.s-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+.s-dot.dot-done { background: var(--gold); }
+.s-dot.dot-today { background: var(--green); box-shadow: 0 0 0 3px rgba(45,106,79,0.2); }
+.session-content { flex: 1; min-width: 0; }
+.session-mod { font-weight: 600; font-size: 0.88rem; color: var(--navy); }
+.session-sec { font-size: 0.77rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.session-dur { font-size: 0.7rem; color: var(--text-muted); white-space: nowrap; flex-shrink: 0; }
+.session-badge { font-size: 0.68rem; font-weight: 700; padding: 0.2rem 0.55rem; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+.bdg-done { background: var(--green-light); color: var(--green); }
+.bdg-today { background: rgba(45,106,79,0.15); color: var(--green); }
+.bdg-upcoming { background: var(--off-white); color: var(--text-muted); }
+
+.plan-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+
+/* RESPONSIVE */
+@media (max-width: 700px) {
+  .site-nav { padding: 1rem 1.25rem; }
+  .nav-links { display: none; }
+  .configure-grid { grid-template-columns: 1fr; }
+  .plan-header { flex-direction: column; }
+  .share-box { min-width: unset; width: 100%; }
+  .session-day { display: none; }
+  .builder-wrapper { padding: 1.5rem 1rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">CRUX</a>
+  <ul class="nav-links">
+    <li><a href="crux-bible-study.html">Bible Study</a></li>
+    <li><a href="crux-modules.html">Faith Formation</a></li>
+    <li><a href="crux-account.html">My Account</a></li>
+  </ul>
+</nav>
+
+<div class="page-hero">
+  <p class="hero-eyebrow">Bible Study</p>
+  <h1 class="hero-title">Build Your Study Plan</h1>
+  <p class="hero-subtitle">Choose your books, set your pace, and commit to a schedule</p>
+</div>
+
+<div class="step-bar">
+  <div class="step-track">
+    <div class="step">
+      <div class="step-dot active" id="dot1">1</div>
+      <span class="step-label active" id="lbl1">Select Modules</span>
+    </div>
+    <div class="step-line" id="line1"></div>
+    <div class="step">
+      <div class="step-dot pending" id="dot2">2</div>
+      <span class="step-label" id="lbl2">Set Pace</span>
+    </div>
+    <div class="step-line" id="line2"></div>
+    <div class="step">
+      <div class="step-dot pending" id="dot3">3</div>
+      <span class="step-label" id="lbl3">Your Plan</span>
+    </div>
+  </div>
+</div>
+
+<div class="builder-body">
+<div class="builder-wrapper">
+
+  <!-- VIEW A: SELECT -->
+  <div class="view active" id="viewA">
+    <div class="section-head">
+      <div>
+        <h2>Choose Your Books</h2>
+        <p>Select as many as you like — you can change them later.</p>
+      </div>
+      <div class="sel-count" id="selCount">0 selected</div>
+    </div>
+
+    <div class="filter-tabs">
+      <button class="filter-tab active" data-filter="All" onclick="filterModules('All')">All</button>
+      <button class="filter-tab" data-filter="Gospels" onclick="filterModules('Gospels')">Gospels</button>
+      <button class="filter-tab" data-filter="Letters" onclick="filterModules('Letters')">Letters</button>
+      <button class="filter-tab" data-filter="History" onclick="filterModules('History')">History</button>
+      <button class="filter-tab" data-filter="Old Testament" onclick="filterModules('Old Testament')">Old Testament</button>
+      <button class="filter-tab" data-filter="Wisdom & Psalms" onclick="filterModules('Wisdom &amp; Psalms')">Wisdom &amp; Psalms</button>
+    </div>
+
+    <div class="module-grid" id="moduleGrid"></div>
+
+    <div class="view-footer">
+      <span class="view-footer-note">New modules added regularly.</span>
+      <button class="btn btn-primary" id="nextBtn" onclick="goToB()" disabled>Next: Set Your Pace &rarr;</button>
+    </div>
+  </div>
+
+  <!-- VIEW B: CONFIGURE -->
+  <div class="view" id="viewB">
+    <div class="section-head">
+      <div>
+        <h2>Set Your Pace</h2>
+        <p>Be realistic. A slow plan you finish beats a fast one you abandon.</p>
+      </div>
+    </div>
+
+    <div class="configure-grid">
+      <div>
+        <div class="form-card">
+          <h3>Name Your Plan</h3>
+          <div class="form-group">
+            <label class="form-label" for="planName">Plan Name</label>
+            <input type="text" id="planName" class="form-input" placeholder="e.g. Summer 2026 &mdash; Paul &amp; John" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="startDate">Start Date</label>
+            <input type="date" id="startDate" class="form-input" oninput="updateSummary()" />
+          </div>
+        </div>
+
+        <div class="form-card">
+          <h3>Choose Your Pace</h3>
+          <div class="pace-options">
+            <div class="pace-option" data-pace="daily" onclick="selectPace('daily')">
+              <div class="pace-radio"><div class="pace-radio-dot"></div></div>
+              <div>
+                <div class="pace-title">Daily</div>
+                <div class="pace-desc">One section per day, seven days a week</div>
+                <div class="pace-est" id="estDaily">&mdash;</div>
+              </div>
+            </div>
+            <div class="pace-option selected" data-pace="twice" onclick="selectPace('twice')">
+              <div class="pace-radio"><div class="pace-radio-dot"></div></div>
+              <div>
+                <div class="pace-title">Twice a week</div>
+                <div class="pace-desc">Two sessions per week &mdash; Tuesday &amp; Thursday</div>
+                <div class="pace-est" id="estTwice">&mdash;</div>
+              </div>
+            </div>
+            <div class="pace-option" data-pace="weekly" onclick="selectPace('weekly')">
+              <div class="pace-radio"><div class="pace-radio-dot"></div></div>
+              <div>
+                <div class="pace-title">Weekly</div>
+                <div class="pace-desc">One section per week &mdash; good for group study</div>
+                <div class="pace-est" id="estWeekly">&mdash;</div>
+              </div>
+            </div>
+            <div class="pace-option" data-pace="custom" onclick="selectPace('custom')">
+              <div class="pace-radio"><div class="pace-radio-dot"></div></div>
+              <div>
+                <div class="pace-title">Custom</div>
+                <div class="pace-desc">Set a target end date and we'll work backwards</div>
+                <div class="pace-est">Set your own end date</div>
+              </div>
+            </div>
+          </div>
+          <div class="custom-end-group" id="customEndGroup">
+            <label class="form-label" for="customEndDate">Target End Date</label>
+            <input type="date" id="customEndDate" class="form-input" oninput="updateSummary()" />
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h3>Your Selection</h3>
+        <div id="selList" class="sel-list"></div>
+        <button class="btn btn-ghost" style="width:100%;font-size:0.8rem;margin-bottom:0;" onclick="goToA()">+ Add or change modules</button>
+
+        <div class="stat-table" id="statTable">
+          <div class="stat-row"><span>Total sections</span><strong id="statSections">&mdash;</strong></div>
+          <div class="stat-row"><span>Est. time per session</span><strong id="statTime">&mdash;</strong></div>
+          <div class="stat-row"><span>Pace</span><strong id="statPace">&mdash;</strong></div>
+          <div class="stat-row"><span>Est. completion</span><strong id="statCompletion">&mdash;</strong></div>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;margin-top:1.25rem;" onclick="generatePlan()">Generate My Plan &rarr;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- VIEW C: GENERATED PLAN -->
+  <div class="view" id="viewC">
+    <div class="plan-header">
+      <div>
+        <div class="plan-eyebrow">Your Study Plan</div>
+        <div class="plan-name-display" id="displayName">&mdash;</div>
+        <div class="plan-metrics">
+          <div><div class="metric-val" id="metSessions">&mdash;</div><div class="metric-lbl">Sessions</div></div>
+          <div><div class="metric-val" id="metWeeks">&mdash;</div><div class="metric-lbl">Weeks</div></div>
+          <div><div class="metric-val" id="metBooks">&mdash;</div><div class="metric-lbl">Books</div></div>
+          <div><div class="metric-val" id="metDone">&mdash;</div><div class="metric-lbl">Complete</div></div>
+        </div>
+      </div>
+      <div class="share-box">
+        <div class="share-lbl">Share this plan</div>
+        <div class="share-code" id="shareCode">&mdash;</div>
+        <div class="share-note">Friends can follow along with this code</div>
+        <button class="copy-btn" id="copyBtn" onclick="copyCode()">Copy Code</button>
+      </div>
+    </div>
+
+    <div class="schedule" id="schedule"></div>
+
+    <div class="plan-actions">
+      <button class="btn btn-primary" id="todayBtn">Start Today's Session &rarr;</button>
+      <button class="btn btn-ghost" onclick="goToB()">&nbsp;&#9998;&nbsp; Edit Plan</button>
+      <button class="btn btn-navy" id="savePlanBtn" onclick="savePlan(false)">Save Plan</button>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<script>
+var MODULES = [
+  {
+    id: 'romans-8', category: 'Letters', icon: '&#9997;&#65039;',
+    title: 'Romans 8', subtitle: 'The Spirit Who Gives Life',
+    sections: 3,
+    sectionTitles: ['The Law of the Spirit', 'Suffering and the Glory to Come', 'Nothing Can Separate Us'],
+    minPerSection: 25, url: 'crux-bible-romans-8.html', available: true
+  },
+  {
+    id: 'romans', category: 'Letters', icon: '&#9997;&#65039;',
+    title: 'Romans', subtitle: 'The Righteousness of God',
+    sections: 10,
+    sectionTitles: ['Why Romans?','The Righteousness of God','All Have Sinned','Justified by Faith','Abraham Our Father','Life in the Spirit','Israel and the Gentiles','The Olive Tree','Living Sacrifice','Doxology'],
+    minPerSection: 30, url: 'crux-bible-romans.html', available: true
+  },
+  {
+    id: 'acts', category: 'History', icon: '&#128214;',
+    title: 'Acts of the Apostles', subtitle: 'The Church Is Born',
+    sections: 8,
+    sectionTitles: ['Pentecost','The Early Church','Stephen and Paul','The Gentile Mission','First Journey','The Jerusalem Council','Second Journey','Paul in Rome'],
+    minPerSection: 25, url: 'crux-bible-acts.html', available: true
+  },
+  {
+    id: 'mark', category: 'Gospels', icon: '&#9875;&#65039;',
+    title: 'Gospel of Mark', subtitle: 'The Urgent Gospel',
+    sections: 10,
+    sectionTitles: ['The Beginning','Authority and Healing','Parables of the Kingdom','Feeding the Five Thousand','Who Do You Say I Am?','The Transfiguration','Entry into Jerusalem','The Temple','The Passion','The Resurrection'],
+    minPerSection: 25, url: 'crux-bible-mark.html', available: true
+  },
+  {
+    id: 'life-of-jesus', category: 'Gospels', icon: '&#10013;&#65039;',
+    title: 'Life of Jesus', subtitle: 'The Four Gospels in Harmony',
+    sections: 8,
+    sectionTitles: ['Birth and Childhood','Baptism and Temptation','The Galilean Ministry','Teaching and Parables','Miracles','The Road to Jerusalem','The Passion','Resurrection and Ascension'],
+    minPerSection: 30, url: 'crux-bible-life-of-jesus.html', available: true
+  },
+  {
+    id: 'miracles', category: 'Gospels', icon: '&#9889;',
+    title: 'Miracles of Jesus', subtitle: 'Signs of the Kingdom',
+    sections: 7,
+    sectionTitles: ['Healing the Sick','Authority over Nature','Feeding the Multitudes','Raising the Dead','Exorcisms','The Wedding at Cana','The Greatest Sign'],
+    minPerSection: 20, url: 'crux-bible-miracles.html', available: true
+  },
+  {
+    id: 'john', category: 'Gospels', icon: '&#128250;',
+    title: 'Gospel of John', subtitle: 'The Word Became Flesh',
+    sections: 12, sectionTitles: [], minPerSection: 30, url: null, available: false
+  },
+  {
+    id: 'genesis', category: 'Old Testament', icon: '&#127960;&#65039;',
+    title: 'Genesis 1–11', subtitle: 'In the Beginning',
+    sections: 9, sectionTitles: [], minPerSection: 25, url: null, available: false
+  },
+  {
+    id: 'psalms', category: 'Wisdom & Psalms', icon: '&#127925;',
+    title: 'Psalms: Selected', subtitle: 'Lament and Praise',
+    sections: 8, sectionTitles: [], minPerSection: 20, url: null, available: false
+  },
+  {
+    id: 'revelation', category: 'Prophecy', icon: '&#128680;',
+    title: 'Revelation', subtitle: 'The Apocalypse of John',
+    sections: 12, sectionTitles: [], minPerSection: 35, url: null, available: false
+  }
+];
+
+var state = { selectedIds: [], pace: 'twice', currentFilter: 'All', shareCode: '', scheduleData: [] };
+
+var DAY_NAMES = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+var MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+var PACE_DAYS = { daily: [0,1,2,3,4,5,6], twice: [2,4], weekly: [2] };
+var PACE_LABELS = { daily: 'Daily', twice: 'Twice a week', weekly: 'Weekly', custom: 'Custom' };
+
+document.addEventListener('DOMContentLoaded', function() {
+  renderGrid();
+  var t = new Date();
+  var yyyy = t.getFullYear();
+  var mm = String(t.getMonth() + 1).padStart(2, '0');
+  var dd = String(t.getDate()).padStart(2, '0');
+  document.getElementById('startDate').value = yyyy + '-' + mm + '-' + dd;
+});
+
+function isSelected(id) { return state.selectedIds.indexOf(id) !== -1; }
+
+function renderGrid() {
+  var grid = document.getElementById('moduleGrid');
+  var filter = state.currentFilter;
+  var visible = filter === 'All' ? MODULES : MODULES.filter(function(m) { return m.category === filter; });
+
+  grid.innerHTML = visible.map(function(mod) {
+    var sel = isSelected(mod.id);
+    var cls = 'plan-card' + (sel ? ' selected' : '') + (!mod.available ? ' unavailable' : '');
+    var onclick = mod.available ? 'onclick="toggleModule(\'' + mod.id + '\')"' : '';
+    var hrs = Math.round(mod.sections * mod.minPerSection / 60 * 10) / 10;
+    return '<div class="' + cls + '" ' + onclick + '>' +
+      '<div class="plan-check">&#10003;</div>' +
+      '<div class="card-icon">' + mod.icon + '</div>' +
+      '<div class="card-category">' + mod.category + '</div>' +
+      '<div class="card-title">' + mod.title + '</div>' +
+      '<div class="card-meta">' +
+        '<span class="card-tag">' + mod.sections + ' sections</span>' +
+        '<span class="card-tag">~' + hrs + ' hrs</span>' +
+      '</div>' +
+      '<div class="card-badge ' + (mod.available ? 'badge-live' : 'badge-soon') + '">' +
+        (mod.available ? 'Available Now' : 'Coming Soon') +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function toggleModule(id) {
+  var idx = state.selectedIds.indexOf(id);
+  if (idx === -1) { state.selectedIds.push(id); } else { state.selectedIds.splice(idx, 1); }
+  renderGrid();
+  document.getElementById('selCount').textContent = state.selectedIds.length + ' selected';
+  document.getElementById('nextBtn').disabled = state.selectedIds.length === 0;
+}
+
+function filterModules(cat) {
+  state.currentFilter = cat;
+  document.querySelectorAll('.filter-tab').forEach(function(t) {
+    t.classList.toggle('active', t.dataset.filter === cat);
+  });
+  renderGrid();
+}
+
+function selectPace(pace) {
+  state.pace = pace;
+  document.querySelectorAll('.pace-option').forEach(function(el) {
+    el.classList.toggle('selected', el.dataset.pace === pace);
+  });
+  document.getElementById('customEndGroup').classList.toggle('visible', pace === 'custom');
+  updateSummary();
+}
+
+function goToA() { showView('A'); }
+
+function goToB() {
+  if (state.selectedIds.length === 0) return;
+  renderSelList();
+  updatePaceEstimates();
+  updateSummary();
+  showView('B');
+}
+
+function showView(id) {
+  document.querySelectorAll('.view').forEach(function(v) { v.classList.remove('active'); });
+  document.getElementById('view' + id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  updateStepBar(id);
+}
+
+function updateStepBar(view) {
+  var idx = { A: 0, B: 1, C: 2 }[view];
+  [1, 2, 3].forEach(function(n) {
+    var dot = document.getElementById('dot' + n);
+    var lbl = document.getElementById('lbl' + n);
+    var i = n - 1;
+    dot.className = 'step-dot';
+    lbl.className = 'step-label';
+    if (i < idx) { dot.classList.add('done'); dot.innerHTML = '&#10003;'; }
+    else if (i === idx) { dot.classList.add('active'); dot.textContent = String(n); lbl.classList.add('active'); }
+    else { dot.classList.add('pending'); dot.textContent = String(n); }
+  });
+  [1, 2].forEach(function(n) {
+    var line = document.getElementById('line' + n);
+    line.className = 'step-line' + (n <= idx ? ' done' : '');
+  });
+}
+
+function getSelectedModules() {
+  return state.selectedIds.map(function(id) { return MODULES.find(function(m) { return m.id === id; }); }).filter(Boolean);
+}
+
+function renderSelList() {
+  var mods = getSelectedModules();
+  var container = document.getElementById('selList');
+  if (!mods.length) {
+    container.innerHTML = '<div class="empty-sel">No modules selected.</div>';
+    return;
+  }
+  container.innerHTML = mods.map(function(mod) {
+    return '<div class="sel-item">' +
+      '<div class="sel-item-left">' +
+        '<span class="sel-item-icon">' + mod.icon + '</span>' +
+        '<div><div class="sel-item-name">' + mod.title + '</div><div class="sel-item-secs">' + mod.sections + ' sections</div></div>' +
+      '</div>' +
+      '<button class="remove-btn" onclick="removeModule(\'' + mod.id + '\')">&#10005;</button>' +
+    '</div>';
+  }).join('');
+}
+
+function removeModule(id) {
+  var idx = state.selectedIds.indexOf(id);
+  if (idx !== -1) state.selectedIds.splice(idx, 1);
+  renderSelList();
+  document.getElementById('selCount').textContent = state.selectedIds.length + ' selected';
+  document.getElementById('nextBtn').disabled = state.selectedIds.length === 0;
+  updatePaceEstimates();
+  updateSummary();
+  renderGrid();
+}
+
+function updatePaceEstimates() {
+  var total = getSelectedModules().reduce(function(s, m) { return s + m.sections; }, 0);
+  document.getElementById('estDaily').textContent = total ? total + ' days' : '—';
+  document.getElementById('estTwice').textContent = total ? Math.ceil(total / 2) + ' weeks' : '—';
+  document.getElementById('estWeekly').textContent = total ? total + ' weeks' : '—';
+}
+
+function updateSummary() {
+  var mods = getSelectedModules();
+  var total = mods.reduce(function(s, m) { return s + m.sections; }, 0);
+  var avgMin = total > 0 ? Math.round(mods.reduce(function(s, m) { return s + m.minPerSection * m.sections; }, 0) / total) : 0;
+  document.getElementById('statSections').textContent = total || '—';
+  document.getElementById('statTime').textContent = avgMin ? '~' + avgMin + ' min' : '—';
+  document.getElementById('statPace').textContent = PACE_LABELS[state.pace] || '—';
+  var startDate = document.getElementById('startDate').value;
+  var customEnd = document.getElementById('customEndDate').value;
+  if (startDate && total > 0 && (state.pace !== 'custom' || customEnd)) {
+    var sessions = buildSchedule(state.selectedIds, state.pace, startDate, customEnd);
+    if (sessions.length) {
+      document.getElementById('statCompletion').textContent = fmtDate(sessions[sessions.length - 1].date);
+    } else {
+      document.getElementById('statCompletion').textContent = '—';
+    }
+  } else {
+    document.getElementById('statCompletion').textContent = '—';
+  }
+}
+
+function buildSchedule(ids, pace, startStr, customEndStr) {
+  var mods = ids.map(function(id) { return MODULES.find(function(m) { return m.id === id; }); }).filter(Boolean);
+  var all = [];
+  mods.forEach(function(mod) {
+    for (var i = 0; i < mod.sections; i++) {
+      var title = (mod.sectionTitles && mod.sectionTitles[i]) ? mod.sectionTitles[i] : ('Section ' + (i + 1));
+      all.push({ moduleId: mod.id, moduleName: mod.title, url: mod.url, sectionNum: i + 1, sectionTitle: title, duration: mod.minPerSection });
+    }
+  });
+  if (!all.length) return [];
+
+  var days;
+  if (pace === 'custom' && customEndStr) {
+    var start = new Date(startStr + 'T00:00:00');
+    var end = new Date(customEndStr + 'T00:00:00');
+    var totalWeeks = Math.max(1, (end - start) / 604800000);
+    var spw = Math.ceil(all.length / totalWeeks);
+    if (spw <= 1) days = [2];
+    else if (spw <= 2) days = [2, 4];
+    else if (spw <= 3) days = [1, 3, 5];
+    else if (spw <= 5) days = [1, 2, 3, 4, 5];
+    else days = [0, 1, 2, 3, 4, 5, 6];
+  } else {
+    days = PACE_DAYS[pace] || PACE_DAYS.twice;
+  }
+
+  var cur = new Date(startStr + 'T00:00:00');
+  var scheduled = [];
+  var idx = 0;
+  var guard = 0;
+  while (idx < all.length && guard < 3650) {
+    if (days.indexOf(cur.getDay()) !== -1) {
+      var s = Object.assign({}, all[idx], { date: new Date(cur) });
+      scheduled.push(s);
+      idx++;
+    }
+    cur.setDate(cur.getDate() + 1);
+    guard++;
+  }
+  return scheduled;
+}
+
+function groupByWeek(sessions) {
+  if (!sessions.length) return [];
+  var weeks = [];
+  var first = new Date(sessions[0].date);
+  first.setDate(first.getDate() - first.getDay());
+  var wStart = new Date(first);
+  var wEnd = new Date(wStart);
+  wEnd.setDate(wEnd.getDate() + 6);
+  var wSessions = [];
+  var wNum = 1;
+
+  sessions.forEach(function(s) {
+    var d = new Date(s.date); d.setHours(0,0,0,0);
+    while (d > wEnd) {
+      if (wSessions.length) { weeks.push({ weekNum: wNum, wStart: new Date(wStart), wEnd: new Date(wEnd), sessions: wSessions }); wSessions = []; }
+      wNum++;
+      wStart.setDate(wStart.getDate() + 7);
+      wEnd.setDate(wEnd.getDate() + 7);
+    }
+    wSessions.push(s);
+  });
+  if (wSessions.length) weeks.push({ weekNum: wNum, wStart: new Date(wStart), wEnd: new Date(wEnd), sessions: wSessions });
+  return weeks;
+}
+
+function sessionStatus(date) {
+  var d = new Date(date); d.setHours(0,0,0,0);
+  var t = new Date(); t.setHours(0,0,0,0);
+  if (d < t) return 'done';
+  if (d.getTime() === t.getTime()) return 'today';
+  return 'upcoming';
+}
+
+function fmtDate(date) {
+  var yr = date.getFullYear();
+  var curYr = new Date().getFullYear();
+  return MONTH_NAMES[date.getMonth()] + ' ' + date.getDate() + (yr !== curYr ? ', ' + yr : '');
+}
+
+function fmtRange(a, b) {
+  if (a.getMonth() === b.getMonth() && a.getFullYear() === b.getFullYear()) {
+    return MONTH_NAMES[a.getMonth()] + ' ' + a.getDate() + '–' + b.getDate();
+  }
+  return MONTH_NAMES[a.getMonth()] + ' ' + a.getDate() + ' – ' + MONTH_NAMES[b.getMonth()] + ' ' + b.getDate();
+}
+
+function makeShareCode() {
+  var chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  var code = 'CRUX-';
+  for (var i = 0; i < 4; i++) code += chars[Math.floor(Math.random() * chars.length)];
+  return code;
+}
+
+function generatePlan() {
+  if (!state.selectedIds.length) return;
+  var startDate = document.getElementById('startDate').value;
+  var customEnd = document.getElementById('customEndDate').value;
+  var planName = document.getElementById('planName').value.trim() || 'My Study Plan';
+  if (!startDate) { alert('Please set a start date.'); return; }
+  if (state.pace === 'custom' && !customEnd) { alert('Please set a target end date for custom pace.'); return; }
+
+  var sessions = buildSchedule(state.selectedIds, state.pace, startDate, customEnd);
+  var weeks = groupByWeek(sessions);
+  state.scheduleData = sessions;
+  state.shareCode = makeShareCode();
+
+  document.getElementById('displayName').textContent = planName;
+  document.getElementById('shareCode').textContent = state.shareCode;
+
+  var mods = getSelectedModules();
+  var doneCount = sessions.filter(function(s) { return sessionStatus(s.date) === 'done'; }).length;
+  var pct = sessions.length > 0 ? Math.round(doneCount / sessions.length * 100) : 0;
+  document.getElementById('metSessions').textContent = sessions.length;
+  document.getElementById('metWeeks').textContent = weeks.length;
+  document.getElementById('metBooks').textContent = mods.length;
+  document.getElementById('metDone').textContent = pct + '%';
+
+  var schedEl = document.getElementById('schedule');
+  schedEl.innerHTML = weeks.map(function(week) {
+    var sessHtml = week.sessions.map(function(s) {
+      var status = sessionStatus(s.date);
+      var dotCls = status === 'done' ? 'dot-done' : (status === 'today' ? 'dot-today' : '');
+      var bdgCls = 'bdg-' + status;
+      var bdgTxt = status === 'done' ? 'Done' : (status === 'today' ? 'Today' : 'Upcoming');
+      var rowCls = 'session-row' + (status === 'today' ? ' row-today' : '');
+      var tag = s.url ? ('a href="' + s.url + '"') : 'div';
+      var closeTag = s.url ? 'a' : 'div';
+      return '<' + tag + ' class="' + rowCls + '">' +
+        '<div class="session-day">' + DAY_NAMES[s.date.getDay()].slice(0, 3) + '</div>' +
+        '<div class="s-dot ' + dotCls + '"></div>' +
+        '<div class="session-content">' +
+          '<div class="session-mod">' + s.moduleName + '</div>' +
+          '<div class="session-sec">§' + s.sectionNum + ' — ' + s.sectionTitle + '</div>' +
+        '</div>' +
+        '<div class="session-dur">~' + s.duration + ' min</div>' +
+        '<div class="session-badge ' + bdgCls + '">' + bdgTxt + '</div>' +
+      '</' + closeTag + '>';
+    }).join('');
+    return '<div class="week-block">' +
+      '<div class="week-header">' +
+        '<span class="week-lbl">Week ' + week.weekNum + '</span>' +
+        '<span class="week-dates">' + fmtRange(week.wStart, week.wEnd) + '</span>' +
+      '</div>' +
+      '<div>' + sessHtml + '</div>' +
+    '</div>';
+  }).join('');
+
+  var todaySession = sessions.find(function(s) { return sessionStatus(s.date) === 'today' && s.url; });
+  var nextSession = sessions.find(function(s) { return sessionStatus(s.date) === 'upcoming' && s.url; });
+  var todayBtn = document.getElementById('todayBtn');
+  if (todaySession) {
+    todayBtn.textContent = "Start Today’s Session →";
+    todayBtn.disabled = false;
+    todayBtn.onclick = function() { window.location.href = todaySession.url; };
+  } else if (nextSession) {
+    todayBtn.textContent = "Go to Next Session →";
+    todayBtn.disabled = false;
+    todayBtn.onclick = function() { window.location.href = nextSession.url; };
+  } else {
+    todayBtn.textContent = "Start Today’s Session →";
+    todayBtn.disabled = true;
+  }
+
+  showView('C');
+  if (window.currentUser) savePlan(true);
+}
+
+function copyCode() {
+  var code = state.shareCode;
+  if (!code) return;
+  var btn = document.getElementById('copyBtn');
+  function onCopied() { btn.textContent = 'Copied!'; btn.classList.add('copied'); setTimeout(function() { btn.textContent = 'Copy Code'; btn.classList.remove('copied'); }, 2000); }
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(code).then(onCopied).catch(function() { fallbackCopy(code); onCopied(); });
+  } else { fallbackCopy(code); onCopied(); }
+}
+function fallbackCopy(text) {
+  var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
+}
+
+async function savePlan(silent) {
+  if (!window.currentUser || !window.db) {
+    if (!silent) window.location.href = 'crux-account.html';
+    return;
+  }
+  var planName = document.getElementById('planName').value.trim() || 'My Study Plan';
+  var startDate = document.getElementById('startDate').value;
+  var planId = state.shareCode || makeShareCode();
+  var data = {
+    name: planName, startDate: startDate, pace: state.pace,
+    modules: state.selectedIds.slice(), shareCode: planId,
+    totalSessions: state.scheduleData.length,
+    createdAt: window.fsTimestamp ? window.fsTimestamp() : new Date().toISOString(),
+    uid: window.currentUser.uid
+  };
+  try {
+    var ref = window.fsDoc(window.db, 'studyPlans', window.currentUser.uid + '-' + planId);
+    await window.fsSetDoc(ref, data, { merge: true });
+    if (!silent) {
+      var btn = document.getElementById('savePlanBtn');
+      var orig = btn.textContent;
+      btn.textContent = 'Saved ✓';
+      setTimeout(function() { btn.textContent = orig; }, 2000);
+    }
+  } catch(e) {
+    if (!silent) alert('Could not save plan. Please try again.');
+  }
+}
+</script>
+</body>
+</html>

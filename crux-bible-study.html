@@ -464,6 +464,58 @@ body::before {
   color: var(--gold);
 }
 
+/* STUDY PLAN CTA */
+.plan-cta {
+  padding: 5rem 2rem;
+  text-align: center;
+  background: rgba(212,165,116,0.04);
+  border-top: 1px solid rgba(212,165,116,0.08);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+
+.plan-cta-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+
+.plan-cta-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.75rem;
+  line-height: 1.2;
+}
+
+.plan-cta-body {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  max-width: 480px;
+  margin: 0 auto 2rem;
+  line-height: 1.7;
+}
+
+.plan-cta-btn {
+  display: inline-block;
+  padding: 0.85rem 2rem;
+  background: var(--gold);
+  color: var(--navy-deep);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.88rem;
+  font-weight: 700;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.2s;
+  letter-spacing: 0.5px;
+}
+.plan-cta-btn:hover { background: var(--gold-light); }
+
 /* DIVIDER */
 .divider {
   width: 100%;
@@ -659,6 +711,15 @@ footer {
     </div>
 
   </div>
+</section>
+
+<div class="divider"></div>
+
+<section class="plan-cta reveal">
+  <p class="plan-cta-eyebrow">Study Plan Builder</p>
+  <h2 class="plan-cta-title">Don't just read — build a plan.</h2>
+  <p class="plan-cta-body">Pick your books, set your pace, and get a week-by-week schedule you can actually follow. Takes about two minutes.</p>
+  <a href="crux-study-plan.html" class="plan-cta-btn">Build Your Study Plan &rarr;</a>
 </section>
 
 <div class="divider"></div>
