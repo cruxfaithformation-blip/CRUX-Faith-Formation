@@ -62,13 +62,6 @@ body {
 
 /* ══ FRONT FACE — HOLO ══ */
 .card-front {
-  width: 300px;
-  height: 420px;
-}
-
-.card-holo {
-  position: relative;
-  cursor: pointer;
   box-shadow:
     0 0 0 1.5px rgba(255,255,255,0.15),
     0 0 0 3px rgba(120,80,200,0.3),
@@ -302,6 +295,12 @@ body {
   pointer-events: none;
 }
 
+.back-crest {
+  position: absolute; inset: 0; display: flex; align-items: center;
+  justify-content: center; opacity: 0.04; pointer-events: none; z-index: 1;
+}
+.back-crest svg { width: 200px; height: 200px; }
+
 .back-vignette {
   position: absolute; inset: 0;
   background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, rgba(0,0,0,0.6) 100%);
@@ -331,19 +330,20 @@ body {
 .back-ornament-cross { font-size: 0.6rem; color: rgba(255,255,255,0.25); letter-spacing: 3px; }
 
 .back-tabs {
-  display: flex; gap: 0; margin-bottom: 0.8rem;
-  border-bottom: 1px solid rgba(255,255,255,0.08); flex-shrink: 0;
+  display: flex; gap: 0; margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.12); flex-shrink: 0;
 }
 
 .back-tab {
-  font-family: 'Cinzel', serif; font-size: 0.46rem; letter-spacing: 1.5px;
-  text-transform: uppercase; color: rgba(255,255,255,0.3);
-  padding: 0.3rem 0.6rem 0.4rem; cursor: pointer;
-  border-bottom: 1.5px solid transparent; margin-bottom: -1px;
+  font-family: 'Cinzel', serif; font-size: 0.58rem; letter-spacing: 1px;
+  text-transform: uppercase; color: rgba(255,255,255,0.4);
+  padding: 0.45rem 0.75rem 0.5rem; cursor: pointer;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
   transition: color 0.2s, border-color 0.2s; user-select: none;
+  min-width: 60px; text-align: center;
 }
-.back-tab.active { color: rgba(200,150,255,0.9); border-bottom-color: rgba(200,150,255,0.6); }
-.back-tab:hover:not(.active) { color: rgba(255,255,255,0.55); }
+.back-tab.active { color: rgba(200,150,255,1); border-bottom-color: rgba(200,150,255,0.8); }
+.back-tab:hover:not(.active) { color: rgba(255,255,255,0.65); }
 
 .back-panel { display: none; flex: 1; overflow-y: auto; scrollbar-width: none; }
 .back-panel::-webkit-scrollbar { display: none; }
@@ -400,7 +400,7 @@ body {
   <div class="card-flipper">
 
     <!-- ══ FRONT FACE ══ -->
-    <div class="card-face card-front card-holo" id="holoCard">
+    <div class="card-face card-front" id="holoCard">
 
       <div class="holo-rarity-strip"></div>
       <div class="holo-border"></div>
@@ -459,6 +459,17 @@ body {
       <div class="back-border"></div>
       <div class="back-foil"></div>
       <div class="back-vignette"></div>
+
+      <!-- CRUX watermark crest -->
+      <div class="back-crest">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="50" y1="5" x2="50" y2="95" stroke="white" stroke-width="3"/>
+          <line x1="5" y1="35" x2="95" y2="35" stroke="white" stroke-width="3"/>
+          <circle cx="50" cy="50" r="44" stroke="white" stroke-width="1.5" stroke-dasharray="4 6"/>
+          <circle cx="50" cy="50" r="30" stroke="white" stroke-width="0.8"/>
+          <text x="50" y="78" text-anchor="middle" font-family="serif" font-size="10" fill="white" letter-spacing="4">CRUX</text>
+        </svg>
+      </div>
 
       <div class="back-content">
         <div class="back-header">
