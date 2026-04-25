@@ -1488,6 +1488,7 @@
                     level: 1, teacherIds: [],
                     cardsOwned: ['thomas', 'cecilia', 'david', 'clare', 'bernadette', 'bvm'],
                     packsOpened: 1, alphaPackReceived: true,
+                    alphaPackGifted: true, alphaPackNotified: false,
                     createdAt: serverTimestamp()
                 });
 
@@ -1687,7 +1688,7 @@
 
                 renderCardShowcase(data.cardsOwned || []);
 
-                if (data.alphaPackGifted && data.alphaPackNotified === false) {
+                if (data.alphaPackGifted && data.alphaPackNotified !== true) {
                     showGiftBanner(userId);
                 }
 
