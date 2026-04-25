@@ -800,6 +800,7 @@
                     <button class="tab-btn active" onclick="showTab('videos', this)">Videos</button>
                     <button class="tab-btn" onclick="showTab('spotify', this)">Spotify Playlists</button>
                     <button class="tab-btn" onclick="showTab('applemusic', this)">Apple Music</button>
+                    <button class="tab-btn" onclick="showTab('users', this)">Users</button>
                 </div>
             </nav>
         </header>
@@ -942,6 +943,44 @@
                 </div>
             </div>
 
+            <!-- ─── USERS TAB ─── -->
+            <div id="users" class="tab-content">
+
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2>Alpha Pack — Batch Grant</h2>
+                    </div>
+                    <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:1.25rem;line-height:1.6;">
+                        Grant the Alpha Pack to all existing users who haven't received it yet.
+                        Users will see a gift notification the next time they open their account page.
+                    </p>
+                    <div style="background:rgba(212,165,116,0.06);border:1px solid rgba(212,165,116,0.2);border-radius:8px;padding:1rem 1.25rem;margin-bottom:1.5rem;">
+                        <div style="font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;">Cards in the Alpha Pack</div>
+                        <div style="display:flex;gap:0.5rem;flex-wrap:wrap;">
+                            <span class="item-category-badge">St. Thomas</span>
+                            <span class="item-category-badge">St. Cecilia</span>
+                            <span class="item-category-badge">St. David</span>
+                            <span class="item-category-badge">St. Clare</span>
+                            <span class="item-category-badge">St. Bernadette</span>
+                            <span class="item-category-badge" style="background:rgba(212,165,116,0.15);color:var(--gold);">&#10022; Blessed Virgin Mary</span>
+                        </div>
+                    </div>
+                    <button class="btn btn-gold" id="grantBtn" onclick="grantAlphaPack()">Grant Alpha Pack to All Existing Users</button>
+                    <div id="grantLog" style="margin-top:1.25rem;font-size:0.82rem;font-family:monospace;line-height:1.8;"></div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2>User Accounts</h2>
+                        <span class="count-badge" id="userListCount">—</span>
+                    </div>
+                    <div id="userList" class="items-list">
+                        <div class="loading">Loading users from Firebase</div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </div>
 
@@ -1055,7 +1094,7 @@
 
         // ── Load all data ────────────────────────────────
         async function loadAllData() {
-            await Promise.all([loadVideos(), loadSpotify(), loadAppleMusic()]);
+            await Promise.all([loadVideos(), loadSpotify(), loadAppleMusic(), loadUsers()]);
             await updateStats();
         }
 
@@ -1257,6 +1296,78 @@
                 } catch (err) {
                     alert('Error: ' + err.message);
                 }
+            }
+        };
+
+        // ── USERS ────────────────────────────────────────
+        async function loadUsers() {
+            const container = document.getElementById('userList');
+            try {
+                const snap = await getDocs(collection(db, 'userProgress'));
+                document.getElementById('userListCount').textContent = snap.size + ' user' + (snap.size !== 1 ? 's' : '');
+                if (snap.empty) {
+                    container.innerHTML = '<div class="empty-state">No users yet.</div>';
+                    return;
+                }
+                container.innerHTML = '';
+                snap.forEach(docSnap => {
+                    const d = docSnap.data();
+                    const cardCount = d.cardsOwned ? d.cardsOwned.length : 0;
+                    const hasPack = d.alphaPackReceived;
+                    const notified = d.alphaPackNotified;
+                    const div = document.createElement('div');
+                    div.className = 'item-card';
+                    div.innerHTML = `
+                        <div class="item-info">
+                            <div class="item-title" style="font-family:monospace;font-size:0.8rem;">${escHtml(docSnap.id)}</div>
+                            <div class="item-desc">Level ${d.level || 1} &middot; ${(d.totalXP || 0).toLocaleString()} XP &middot; ${cardCount} card${cardCount !== 1 ? 's' : ''}</div>
+                        </div>
+                        <div class="item-actions">
+                            <span class="item-category-badge" style="${hasPack ? 'color:#6ee7b7;background:rgba(110,231,183,0.08);' : ''}">
+                                ${hasPack ? '&#10003; Alpha Pack' + (notified === false ? ' (unseen)' : '') : '&mdash; No pack'}
+                            </span>
+                        </div>`;
+                    container.appendChild(div);
+                });
+            } catch (err) {
+                container.innerHTML = `<div class="error-message">Error loading users: ${escHtml(err.message)}</div>`;
+            }
+        }
+
+        window.grantAlphaPack = async function() {
+            const btn = document.getElementById('grantBtn');
+            const log = document.getElementById('grantLog');
+            if (!confirm('Grant the Alpha Pack to all users who haven\'t received it yet? This cannot be undone.')) return;
+            btn.disabled = true;
+            btn.textContent = 'Running…';
+            log.innerHTML = '';
+
+            const ALPHA_CARDS = ['thomas', 'cecilia', 'david', 'clare', 'bernadette', 'bvm'];
+            try {
+                const snap = await getDocs(collection(db, 'userProgress'));
+                log.innerHTML += `<div>Found <strong>${snap.size}</strong> account${snap.size !== 1 ? 's' : ''}.</div>`;
+                let updated = 0;
+                let skipped = 0;
+                for (const docSnap of snap.docs) {
+                    const data = docSnap.data();
+                    if (data.alphaPackReceived) { skipped++; continue; }
+                    await updateDoc(doc(db, 'userProgress', docSnap.id), {
+                        cardsOwned: ALPHA_CARDS,
+                        packsOpened: 1,
+                        alphaPackReceived: true,
+                        alphaPackGifted: true,
+                        alphaPackNotified: false
+                    });
+                    updated++;
+                    log.innerHTML += `<div style="color:#6ee7b7;">&#10003; ${escHtml(docSnap.id.slice(0, 20))}&hellip;</div>`;
+                }
+                log.innerHTML += `<div style="margin-top:0.75rem;font-weight:700;color:#6ee7b7;">&#10003; Done &mdash; ${updated} granted, ${skipped} already had the pack.</div>`;
+                btn.textContent = 'Grant Complete ✓';
+                await loadUsers();
+            } catch (err) {
+                log.innerHTML += `<div style="color:#fca5a5;">Error: ${escHtml(err.message)}</div>`;
+                btn.disabled = false;
+                btn.textContent = 'Grant Alpha Pack to All Existing Users';
             }
         };
 

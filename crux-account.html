@@ -562,6 +562,104 @@
         }
         .view-all-link:hover { color: var(--gold); }
 
+        /* ─── ALPHA PACK GIFT NOTIFICATION ─────────────── */
+        .alpha-gift-banner {
+            display: none;
+            background: linear-gradient(135deg, rgba(26,31,54,0.97) 0%, rgba(20,24,44,0.97) 100%);
+            border: 1px solid rgba(212,165,116,0.4);
+            border-radius: 16px;
+            padding: 1.75rem 2rem;
+            margin-bottom: 1.5rem;
+            position: relative;
+            overflow: hidden;
+            animation: giftSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+        }
+        .alpha-gift-banner.visible { display: block; }
+        .alpha-gift-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at 20% 50%, rgba(212,165,116,0.07) 0%, transparent 60%);
+            pointer-events: none;
+        }
+        @keyframes giftSlideIn {
+            from { opacity: 0; transform: translateY(-16px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .gift-dismiss {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0.25rem;
+            transition: color 0.15s;
+        }
+        .gift-dismiss:hover { color: var(--gold); }
+        .gift-eyebrow {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+        .gift-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.35rem;
+        }
+        .gift-body {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 1.1rem;
+            line-height: 1.6;
+        }
+        .gift-cards {
+            display: flex;
+            gap: 0.45rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.25rem;
+        }
+        .gift-card-chip {
+            padding: 0.25rem 0.65rem;
+            background: rgba(212,165,116,0.1);
+            border: 1px solid rgba(212,165,116,0.22);
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 600;
+            color: var(--gold-dark);
+            letter-spacing: 0.3px;
+        }
+        .gift-card-chip.legendary {
+            background: rgba(212,165,116,0.18);
+            border-color: rgba(212,165,116,0.45);
+            color: var(--gold);
+        }
+        .gift-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: var(--gold);
+            color: var(--navy);
+            font-size: 0.82rem;
+            font-weight: 700;
+            padding: 0.55rem 1.2rem;
+            border-radius: 8px;
+            border: none;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            transition: background 0.15s;
+            text-decoration: none;
+        }
+        .gift-cta:hover { background: var(--gold-light); }
+
         .cards-hint {
             font-size: 0.78rem;
             color: var(--text-muted);
@@ -1024,6 +1122,23 @@
 
         <!-- ─── DASHBOARD ────────────────────────────────── -->
         <div id="dashboard" style="display: none;">
+
+            <!-- Alpha Pack Gift Notification -->
+            <div class="alpha-gift-banner" id="alphaGiftBanner">
+                <button class="gift-dismiss" onclick="dismissGiftBanner()" title="Dismiss">&times;</button>
+                <div class="gift-eyebrow">&#127873; You've Been Gifted</div>
+                <div class="gift-title">The Alpha Pack</div>
+                <div class="gift-body">As one of the first people to join CRUX, you've been given the full Alpha Pack — six holographic saint cards to start your collection.</div>
+                <div class="gift-cards">
+                    <span class="gift-card-chip">St. Thomas</span>
+                    <span class="gift-card-chip">St. Cecilia</span>
+                    <span class="gift-card-chip">St. David</span>
+                    <span class="gift-card-chip">St. Clare</span>
+                    <span class="gift-card-chip">St. Bernadette</span>
+                    <span class="gift-card-chip legendary">&#10022; Blessed Virgin Mary</span>
+                </div>
+                <button class="gift-cta" onclick="scrollToCards()">View My Cards &#8595;</button>
+            </div>
 
             <!-- Profile Hero -->
             <div class="profile-hero">
@@ -1492,6 +1607,32 @@
             }
         }
 
+        // ── ALPHA PACK NOTIFICATION ────────────────────────
+        let _giftUserId = null;
+
+        function showGiftBanner(userId) {
+            _giftUserId = userId;
+            document.getElementById('alphaGiftBanner').classList.add('visible');
+        }
+
+        window.dismissGiftBanner = async function() {
+            document.getElementById('alphaGiftBanner').classList.remove('visible');
+            if (_giftUserId) {
+                try {
+                    await updateDoc(doc(db, 'userProgress', _giftUserId), { alphaPackNotified: true });
+                } catch(e) { /* non-critical */ }
+            }
+        };
+
+        window.scrollToCards = function() {
+            document.getElementById('alphaGiftBanner').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            setTimeout(() => {
+                const showcase = document.querySelector('.card-showcase-section');
+                if (showcase) showcase.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+            dismissGiftBanner();
+        };
+
         // ── CARD CATALOG ───────────────────────────────────
         const CARD_CATALOG = {
             thomas:     { name: 'St. Thomas',         rarity: 'rare',      url: 'crux-thomas-flip.html' },
@@ -1545,6 +1686,10 @@
                 }
 
                 renderCardShowcase(data.cardsOwned || []);
+
+                if (data.alphaPackGifted && data.alphaPackNotified === false) {
+                    showGiftBanner(userId);
+                }
 
                 const totalXP   = data.totalXP        || 0;
                 const quizXP    = data.xpFromQuizzes   || 0;
