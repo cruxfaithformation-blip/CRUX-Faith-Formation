@@ -514,6 +514,7 @@ body {
         </div>
 
         <div class="back-footer">
+          <button class="flip-back-btn" style="background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:rgba(200,150,255,0.5);padding:0;transition:color 0.2s;" onmouseover="this.style.color='rgba(200,150,255,1)'" onmouseout="this.style.color='rgba(200,150,255,0.5)'">&#x21A9; Flip</button>
           <span class="back-footer-set">CRUX · Saints · Series I</span>
           <span class="back-footer-num">036 / 052</span>
         </div>
@@ -524,46 +525,55 @@ body {
 </div>
 
 <script>
-const scene = document.getElementById('cardScene');
-const hint  = document.getElementById('flipHint');
-let isFlipped = false;
+const scene     = document.getElementById('cardScene');
+const hint      = document.getElementById('flipHint');
+const frontFace = document.getElementById('holoCard');
+const flipper   = scene.querySelector('.card-flipper');
+let isFlipped   = false;
 
-const flipper = scene.querySelector('.card-flipper');
+const rainbow  = frontFace.querySelector('.holo-rainbow');
+const rainbow2 = frontFace.querySelector('.holo-rainbow-2');
+const specular = frontFace.querySelector('.holo-specular');
 
-scene.addEventListener('click', () => {
-  isFlipped = !isFlipped;
+// Tap front face → flip to back; disable front-face pointer events so back is fully interactive
+frontFace.addEventListener('click', () => {
+  isFlipped = true;
   flipper.style.transform = '';
-  scene.classList.toggle('flipped', isFlipped);
-  hint.textContent = isFlipped ? 'Tap to flip back  ✦' : 'Tap card to flip  ✦';
+  scene.classList.add('flipped');
+  hint.textContent = 'Tap ↩ to flip back';
+  frontFace.style.pointerEvents = 'none';
 });
 
-document.querySelectorAll('.back-tab').forEach(tab => {
-  tab.addEventListener('click', (e) => {
-    e.stopPropagation();
+// Dedicated flip-back button
+scene.querySelector('.flip-back-btn').addEventListener('click', () => {
+  isFlipped = false;
+  flipper.style.transform = '';
+  scene.classList.remove('flipped');
+  hint.textContent = 'Tap card to flip  ✦';
+  frontFace.style.pointerEvents = 'auto';
+});
+
+// Tab switching — no stopPropagation needed; front face has pointer-events:none when back is showing
+scene.querySelectorAll('.back-tab').forEach(tab => {
+  tab.addEventListener('click', () => {
     const target = tab.dataset.panel;
-    document.querySelectorAll('.back-tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.back-panel').forEach(p => p.classList.remove('active'));
+    scene.querySelectorAll('.back-tab').forEach(t => t.classList.remove('active'));
+    scene.querySelectorAll('.back-panel').forEach(p => p.classList.remove('active'));
     tab.classList.add('active');
     document.getElementById('panel-' + target).classList.add('active');
   });
 });
 
-const card = document.getElementById('holoCard');
-const rainbow  = card.querySelector('.holo-rainbow');
-const rainbow2 = card.querySelector('.holo-rainbow-2');
-const specular = card.querySelector('.holo-specular');
-
+// Holo parallax on front face only
 scene.addEventListener('mousemove', (e) => {
   if (isFlipped) return;
-  const rect = card.getBoundingClientRect();
+  const rect = scene.getBoundingClientRect();
   const x = (e.clientX - rect.left) / rect.width;
   const y = (e.clientY - rect.top)  / rect.height;
   if (x < 0 || x > 1 || y < 0 || y > 1) return;
-
   const rotX = (y - 0.5) * -22;
   const rotY = (x - 0.5) *  22;
   flipper.style.transform = 'rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)';
-
   const rx = (x - 0.5) * 60;
   const ry = (y - 0.5) * 60;
   rainbow.style.transform  = 'translateX(' + rx + '%) translateY(' + ry + '%) rotate(0deg)';
@@ -574,9 +584,7 @@ scene.addEventListener('mousemove', (e) => {
 });
 
 scene.addEventListener('mouseleave', () => {
-  if (!isFlipped) {
-    flipper.style.transform = '';
-  }
+  if (!isFlipped) flipper.style.transform = '';
   rainbow.style.transform  = '';
   rainbow2.style.transform = '';
   specular.style.background = '';
