@@ -16,6 +16,7 @@ function toBase64(filePath) {
 const cards = [
   {
     slug:        'cecilia',
+    navName:     'Cecilia',
     title:       'CRUX — St. Cecilia',
     saintName:   'St. Cecilia',
     badge:       '✦ Uncommon',
@@ -44,6 +45,7 @@ const cards = [
   },
   {
     slug:        'david',
+    navName:     'David',
     title:       'CRUX — St. David of Wales',
     saintName:   'St. David of Wales',
     badge:       '✦ Uncommon',
@@ -72,6 +74,7 @@ const cards = [
   },
   {
     slug:        'clare',
+    navName:     'Clare',
     title:       'CRUX — St. Clare of Assisi',
     saintName:   'St. Clare of Assisi',
     badge:       '✦ Uncommon',
@@ -100,6 +103,7 @@ const cards = [
   },
   {
     slug:        'bernadette',
+    navName:     'Bernadette',
     title:       'CRUX — St. Bernadette',
     saintName:   'St. Bernadette',
     badge:       '✦ Uncommon',
@@ -128,6 +132,7 @@ const cards = [
   },
   {
     slug:        'bvm',
+    navName:     'Mary',
     title:       'CRUX — Blessed Virgin Mary',
     saintName:   'Blessed Virgin Mary',
     badge:       '✦ Rare',
@@ -155,6 +160,23 @@ const cards = [
     imgFile: path.join(LEGENDARY_DIR, 'MaryGuadalupe001.jpg'),
   },
 ];
+
+// Full ordered roster including Thomas (which is not generated but needs nav context)
+const ALL_CARD_NAV = [
+  { slug: 'thomas',     navName: 'Thomas' },
+  ...cards.map(c => ({ slug: c.slug, navName: c.navName })),
+];
+
+// Attach circular prev/next to each generated card
+cards.forEach(card => {
+  const allIdx = ALL_CARD_NAV.findIndex(c => c.slug === card.slug);
+  const prev = ALL_CARD_NAV[(allIdx - 1 + ALL_CARD_NAV.length) % ALL_CARD_NAV.length];
+  const next = ALL_CARD_NAV[(allIdx + 1) % ALL_CARD_NAV.length];
+  card.prevSlug = prev.slug;
+  card.prevName = prev.navName;
+  card.nextSlug = next.slug;
+  card.nextName = next.navName;
+});
 
 function buildHTML(card, imgBase64) {
   const prayerHTML = card.prayer.map(p => `          <div class="back-prayer-text">${p}</div>`).join('\n');
@@ -196,6 +218,48 @@ body {
   text-align: center;
   pointer-events: none;
   transition: opacity 0.4s;
+}
+
+/* ══ CARD NAVIGATION ══ */
+.card-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.nav-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 0.5rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.55rem 0.9rem;
+  border-radius: 5px;
+  border: 1px solid rgba(212,165,116,0.18);
+  color: rgba(212,165,116,0.55);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+
+.nav-btn:hover {
+  color: rgba(212,165,116,0.95);
+  border-color: rgba(212,165,116,0.4);
+  background: rgba(212,165,116,0.06);
+}
+
+.nav-btn.nav-home {
+  color: rgba(200,150,255,0.55);
+  border-color: rgba(200,150,255,0.18);
+}
+
+.nav-btn.nav-home:hover {
+  color: rgba(200,150,255,0.95);
+  border-color: rgba(200,150,255,0.4);
+  background: rgba(200,150,255,0.06);
 }
 
 /* ══ FLIP SCENE ══ */
@@ -683,6 +747,12 @@ ${factsHTML}
 
   </div>
 </div>
+
+<nav class="card-nav">
+  <a class="nav-btn" href="crux-${card.prevSlug}-flip.html">&#8592; ${card.prevName}</a>
+  <a class="nav-btn nav-home" href="crux-account.html">My Cards</a>
+  <a class="nav-btn" href="crux-${card.nextSlug}-flip.html">${card.nextName} &#8594;</a>
+</nav>
 
 <script>
 const scene     = document.getElementById('cardScene');
