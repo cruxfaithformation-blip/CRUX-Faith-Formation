@@ -62,6 +62,8 @@ body {
 
 /* ══ FRONT FACE — HOLO ══ */
 .card-front {
+  cursor: pointer;
+  touch-action: manipulation;
   box-shadow:
     0 0 0 1.5px rgba(255,255,255,0.15),
     0 0 0 3px rgba(120,80,200,0.3),
@@ -337,10 +339,11 @@ body {
 .back-tab {
   font-family: 'Cinzel', serif; font-size: 0.58rem; letter-spacing: 1px;
   text-transform: uppercase; color: rgba(255,255,255,0.4);
-  padding: 0.45rem 0.75rem 0.5rem; cursor: pointer;
+  padding: 0.55rem 0.9rem 0.6rem; cursor: pointer;
   border-bottom: 2px solid transparent; margin-bottom: -1px;
   transition: color 0.2s, border-color 0.2s; user-select: none;
-  min-width: 60px; text-align: center;
+  min-width: 64px; text-align: center;
+  touch-action: manipulation; -webkit-tap-highlight-color: transparent;
 }
 .back-tab.active { color: rgba(200,150,255,1); border-bottom-color: rgba(200,150,255,0.8); }
 .back-tab:hover:not(.active) { color: rgba(255,255,255,0.65); }
@@ -535,8 +538,17 @@ const rainbow  = frontFace.querySelector('.holo-rainbow');
 const rainbow2 = frontFace.querySelector('.holo-rainbow-2');
 const specular = frontFace.querySelector('.holo-specular');
 
-// Tap front face → flip to back; disable front-face pointer events so back is fully interactive
-frontFace.addEventListener('click', () => {
+// Unified handler for both mouse click and touch — prevents ghost clicks on mobile
+function onTap(element, handler) {
+  element.addEventListener('touchend', function(e) {
+    e.preventDefault(); // block the synthesized click that follows touchend
+    handler(e);
+  }, { passive: false });
+  element.addEventListener('click', handler);
+}
+
+// Tap front face → flip to back
+onTap(frontFace, () => {
   isFlipped = true;
   flipper.style.transform = '';
   scene.classList.add('flipped');
@@ -545,7 +557,7 @@ frontFace.addEventListener('click', () => {
 });
 
 // Dedicated flip-back button
-scene.querySelector('.flip-back-btn').addEventListener('click', () => {
+onTap(scene.querySelector('.flip-back-btn'), () => {
   isFlipped = false;
   flipper.style.transform = '';
   scene.classList.remove('flipped');
@@ -553,9 +565,9 @@ scene.querySelector('.flip-back-btn').addEventListener('click', () => {
   frontFace.style.pointerEvents = 'auto';
 });
 
-// Tab switching — no stopPropagation needed; front face has pointer-events:none when back is showing
+// Tab switching
 scene.querySelectorAll('.back-tab').forEach(tab => {
-  tab.addEventListener('click', () => {
+  onTap(tab, () => {
     const target = tab.dataset.panel;
     scene.querySelectorAll('.back-tab').forEach(t => t.classList.remove('active'));
     scene.querySelectorAll('.back-panel').forEach(p => p.classList.remove('active'));
@@ -564,7 +576,7 @@ scene.querySelectorAll('.back-tab').forEach(tab => {
   });
 });
 
-// Holo parallax on front face only
+// Holo parallax on front face only (desktop)
 scene.addEventListener('mousemove', (e) => {
   if (isFlipped) return;
   const rect = scene.getBoundingClientRect();
