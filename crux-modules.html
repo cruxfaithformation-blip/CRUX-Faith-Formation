@@ -1225,7 +1225,6 @@
                     <p class="landing-card-desc">God made everything good. Humans are made in His image. And original sin explains why the world is broken.</p>
                     <div class="landing-card-footer">Start →</div>
                 </div>
-                </div>
                 <div class="landing-card" onclick="window.location.href='crux-modules.html?module=nicene_creed'">
                     <div class="landing-card-top">
                         <span class="landing-card-grade">Grades 3–8</span>
@@ -1234,7 +1233,6 @@
                     <h3 class="landing-card-title">The Nicene Creed</h3>
                     <p class="landing-card-desc">The Church's own summary of everything she believes — article by article, phrase by phrase.</p>
                     <div class="landing-card-footer">Start →</div>
-                </div>
                 </div>
             </div>
         </div>
@@ -1250,7 +1248,10 @@
 (function() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('module');
-    if (!id) return; // No param — show landing screen below
+    if (!id) {
+        document.getElementById('landingScreen').style.display = 'block';
+        return;
+    }
     const routes = {
         'lords_prayer': 'crux-module-lords-prayer.html',
         'bible_geography': 'crux-module-geography.html',
