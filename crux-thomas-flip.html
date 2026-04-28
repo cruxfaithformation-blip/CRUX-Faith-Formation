@@ -1084,6 +1084,7 @@ const scene     = document.getElementById('cardScene');
 const hint      = document.getElementById('flipHint');
 const frontFace = document.getElementById('holoCard');
 const flipper   = scene.querySelector('.card-flipper');
+const backFace  = scene.querySelector('.card-back');
 let isFlipped   = false;
 
 const rainbow  = frontFace.querySelector('.holo-rainbow');
@@ -1105,14 +1106,18 @@ onTap(frontFace, () => {
   scene.classList.add('flipped');
   hint.textContent = 'Tap ↩ to flip back';
   frontFace.style.pointerEvents = 'none';
+  setTimeout(() => { if (isFlipped) frontFace.style.opacity = '0'; }, 360);
 });
 
 onTap(scene.querySelector('.flip-back-btn'), () => {
   isFlipped = false;
+  frontFace.style.opacity = '';
   flipper.style.transform = '';
   scene.classList.remove('flipped');
   hint.textContent = 'Tap card to flip  ✦';
   frontFace.style.pointerEvents = 'auto';
+  setTimeout(() => { if (!isFlipped) backFace.style.opacity = '0'; }, 360);
+  setTimeout(() => { if (!isFlipped) backFace.style.opacity = ''; }, 720);
 });
 
 scene.querySelectorAll('.back-tab').forEach(tab => {
