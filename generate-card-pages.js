@@ -275,6 +275,7 @@ body {
   height: 100%;
   position: relative;
   transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
   transition: transform 0.72s cubic-bezier(0.45, 0.05, 0.2, 1.0);
 }
 

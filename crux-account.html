@@ -214,6 +214,8 @@
             transition: all 0.2s ease;
             font-family: 'Inter', sans-serif;
             letter-spacing: 0.4px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn-primary {
@@ -265,6 +267,7 @@
             cursor: pointer;
             font-weight: 600;
             text-decoration: none;
+            touch-action: manipulation;
         }
 
         .toggle-auth a:hover { text-decoration: underline; }
@@ -806,6 +809,8 @@
             transition: all 0.2s ease;
             white-space: nowrap;
             letter-spacing: 0.3px;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: transparent;
         }
 
         .btn-join:hover {
@@ -1435,16 +1440,53 @@
             });
         };
 
-        // ── AUTH STATE ─────────────────────────────────────
-        onAuthStateChanged(auth, async (user) => {
-            if (user) {
-                await loadUserProfile(user);
-            } else {
-                document.getElementById('loginForm').style.display = 'block';
-                document.getElementById('registerForm').style.display = 'none';
-                document.getElementById('dashboard').style.display = 'none';
+        // ── LOGIN ──────────────────────────────────────────
+        // Defined early so inline onsubmit always resolves it,
+        // even if onAuthStateChanged below throws on bad auth init.
+        window.handleLogin = async function(event) {
+            event.preventDefault();
+            const email    = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            document.getElementById('loginError').innerHTML = '';
+            const loginBtn = document.querySelector('#loginForm button[type="submit"]');
+            if (loginBtn) { loginBtn.disabled = true; loginBtn.textContent = '…'; }
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+            } catch (error) {
+                console.error('Login error:', error);
+                let errorMessage = 'Failed to sign in. ';
+                if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
+                    errorMessage += 'Invalid email or password.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage += 'Please enter a valid email address.';
+                } else if (error.code === 'auth/too-many-requests') {
+                    errorMessage += 'Too many failed attempts. Please try again later.';
+                } else if (error.code === 'auth/network-request-failed') {
+                    errorMessage += 'Network error — check your connection and try again.';
+                } else {
+                    errorMessage += error.message;
+                }
+                document.getElementById('loginError').innerHTML =
+                    `<div class="error-message">❌ ${errorMessage}</div>`;
+            } finally {
+                if (loginBtn) { loginBtn.disabled = false; loginBtn.textContent = 'Sign In'; }
             }
-        });
+        };
+
+        // ── AUTH STATE ─────────────────────────────────────
+        try {
+            onAuthStateChanged(auth, async (user) => {
+                if (user) {
+                    await loadUserProfile(user);
+                } else {
+                    document.getElementById('loginForm').style.display = 'block';
+                    document.getElementById('registerForm').style.display = 'none';
+                    document.getElementById('dashboard').style.display = 'none';
+                }
+            });
+        } catch (e) {
+            console.error('Auth state listener failed:', e);
+        }
 
         window.showLogin = function() {
             document.getElementById('loginForm').style.display = 'block';
@@ -1517,31 +1559,6 @@
                 else if (error.code === 'auth/invalid-email')   errorMessage += 'Invalid email address.';
                 else errorMessage += error.message;
                 document.getElementById('registerError').innerHTML =
-                    `<div class="error-message">❌ ${errorMessage}</div>`;
-            }
-        }
-
-        // ── LOGIN ──────────────────────────────────────────
-        window.handleLogin = async function(event) {
-            event.preventDefault();
-            const email    = document.getElementById('loginEmail').value.trim();
-            const password = document.getElementById('loginPassword').value;
-            document.getElementById('loginError').innerHTML = '';
-            try {
-                await signInWithEmailAndPassword(auth, email, password);
-            } catch (error) {
-                console.error('Login error:', error);
-                let errorMessage = 'Failed to log in. ';
-                if (error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found' || error.code === 'auth/invalid-credential') {
-                    errorMessage += 'Invalid email or password.';
-                } else if (error.code === 'auth/invalid-email') {
-                    errorMessage += 'Invalid email address.';
-                } else if (error.code === 'auth/too-many-requests') {
-                    errorMessage += 'Too many failed attempts. Please try again later.';
-                } else {
-                    errorMessage += error.message;
-                }
-                document.getElementById('loginError').innerHTML =
                     `<div class="error-message">❌ ${errorMessage}</div>`;
             }
         }
