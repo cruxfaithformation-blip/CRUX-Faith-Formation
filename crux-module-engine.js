@@ -143,7 +143,15 @@ function submitQuiz() {
     });
 
     document.getElementById('panelQuiz').scrollIntoView({ behavior: 'smooth' });
-    setTimeout(() => showCompletion(correct), 1800);
+
+    const submitBtn = document.getElementById('submitQuizBtn');
+    submitBtn.disabled = true;
+    setTimeout(() => {
+        submitBtn.textContent = 'See My Results →';
+        submitBtn.classList.remove('btn-gold');
+        submitBtn.disabled = false;
+        submitBtn.onclick = () => showCompletion(correct);
+    }, 1800);
 }
 
 // ── NAVIGATION ─────────────────────────────────────────────
@@ -237,15 +245,22 @@ async function awardXP(amount) {
         const snap = await getDoc(ref);
 
         if (snap.exists()) {
-            const current = snap.data().totalXP || 0;
+            const data = snap.data();
+            const completed = data.completedModules || [];
+            if (completed.includes(currentModule.id)) return;
+
+            const current = data.totalXP || 0;
+            const currentQuizXP = data.xpFromQuizzes || 0;
             await updateDoc(ref, {
                 totalXP: current + amount,
+                xpFromQuizzes: currentQuizXP + amount,
                 lastActivity: serverTimestamp()
             });
             document.getElementById('xpDisplay').textContent = current + amount;
         } else {
             await setDoc(ref, {
                 totalXP: amount,
+                xpFromQuizzes: amount,
                 lastActivity: serverTimestamp(),
                 userId: uid
             });
@@ -325,6 +340,20 @@ async function loadUserProgress() {
 function loadNextModule() {
     if (currentModule.nextModule) {
         window.location.href = `crux-modules.html?module=${currentModule.nextModule}`;
+    }
+}
+
+function reviewAnswers() {
+    document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('panelQuiz').classList.add('active');
+    updateStepIndicator('quiz');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
+    document.getElementById('submitQuizBtn').style.display = 'none';
+    const backBtn = document.querySelector('#panelQuiz .nav-bar .btn-secondary');
+    if (backBtn) {
+        backBtn.textContent = '← Back to Results';
+        backBtn.onclick = () => setStep('complete');
     }
 }
 
