@@ -715,15 +715,15 @@ try { firebase.analytics(); } catch(e) {}
      APP LOGIC
 ═════════════════════════════════════════════════════════════════ -->
 <script>
-/* ── XP Level System (mirrors crux-challenges.html) ────────────── */
+/* ── XP Level System (matches crux-account.html and crux-challenges.html) ── */
 const LEVELS = [
-  { name:'Seeker',     min:0,    max:499  },
-  { name:'Disciple',   min:500,  max:1199 },
-  { name:'Apostle',    min:1200, max:2499 },
-  { name:'Shepherd',   min:2500, max:4499 },
-  { name:'Prophet',    min:4500, max:7499 },
-  { name:'Martyr',     min:7500, max:11999},
-  { name:'Saint',      min:12000,max:99999},
+  { name:'Seeker',   min:0,    max:99   },
+  { name:'Learner',  min:100,  max:299  },
+  { name:'Student',  min:300,  max:599  },
+  { name:'Disciple', min:600,  max:999  },
+  { name:'Apostle',  min:1000, max:1999 },
+  { name:'Teacher',  min:2000, max:3999 },
+  { name:'Saint',    min:4000, max:99999},
 ];
 function getLevel(xp) {
   return LEVELS.find(l => xp >= l.min && xp <= l.max) || LEVELS[0];
