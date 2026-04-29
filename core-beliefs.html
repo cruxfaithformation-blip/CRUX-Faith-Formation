@@ -729,7 +729,7 @@
         }
         try {
             await window.fbUpdateDoc(window.fbDoc(window.db, 'userProgress', window.currentUid), {
-                xp: window.fbIncrement(150),
+                totalXP: window.fbIncrement(150),
                 'unlockedPacks.councilPack': true,
                 'completedModules.vaticanII': true
             });

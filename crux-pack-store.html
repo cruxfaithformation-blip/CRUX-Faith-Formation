@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pack Store — CRUX</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, doc, getDoc, updateDoc, increment, arrayUnion } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const app = initializeApp({
+            apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+            authDomain: "crux-faith-formation.firebaseapp.com",
+            projectId: "crux-faith-formation",
+            storageBucket: "crux-faith-formation.firebasestorage.app",
+            messagingSenderId: "838141015985",
+            appId: "1:838141015985:web:2655e570663e182d75ef90"
+        });
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        window.db = db;
+        window.fbDoc = doc;
+        window.fbUpdateDoc = updateDoc;
+        window.fbIncrement = increment;
+        window.fbArrayUnion = arrayUnion;
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                window.currentUid = user.uid;
+                const snap = await getDoc(doc(db, 'userProgress', user.uid));
+                if (snap.exists()) {
+                    const d = snap.data();
+                    if (typeof window.onStoreAuth === 'function') {
+                        window.onStoreAuth({
+                            totalXP:       d.totalXP       || 0,
+                            xpSpent:       d.xpSpent       || 0,
+                            cardsOwned:    d.cardsOwned    || [],
+                            packsOpened:   d.packsOpened   || 0,
+                            unlockedPacks: d.unlockedPacks || {}
+                        });
+                    }
+                } else {
+                    if (typeof window.onStoreAuth === 'function') {
+                        window.onStoreAuth({ totalXP: 0, xpSpent: 0, cardsOwned: [], packsOpened: 0, unlockedPacks: {} });
+                    }
+                }
+            } else {
+                window.currentUid = null;
+                if (typeof window.onStoreAuth === 'function') window.onStoreAuth(null);
+            }
+        });
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --navy:     #1a1f36;
+            --navy-mid: #242a45;
+            --navy-lt:  #2f3659;
+            --gold:     #d4a574;
+            --gold-lt:  #e8c9a0;
+            --gold-dk:  #b8895a;
+            --white:    #ffffff;
+            --border:   rgba(255,255,255,0.1);
+            --border-g: rgba(212,165,116,0.25);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--navy);
+            color: var(--white);
+            min-height: 100vh;
+        }
+
+        /* ── Header ── */
+        header {
+            background: var(--navy-mid);
+            border-bottom: 1px solid var(--border);
+            padding: 0.85rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 200;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 4px;
+            text-decoration: none;
+        }
+        .back-link {
+            color: rgba(255,255,255,0.45);
+            font-size: 0.82rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+            transition: color 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .back-link:hover { color: var(--gold); }
+
+        /* ── Balance strip ── */
+        .balance-strip {
+            background: var(--navy-mid);
+            border-bottom: 1px solid var(--border-g);
+            padding: 0.75rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .balance-left {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .balance-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.1rem;
+        }
+        .balance-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+        }
+        .balance-value {
+            font-family: 'DM Mono', monospace;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--gold);
+        }
+        .balance-divider {
+            width: 1px;
+            height: 28px;
+            background: var(--border);
+        }
+        .level-badge {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.68rem;
+            color: rgba(255,255,255,0.5);
+            letter-spacing: 1px;
+        }
+        .signin-prompt {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 1px;
+        }
+        .signin-link {
+            color: var(--gold);
+            text-decoration: none;
+            border-bottom: 1px solid rgba(212,165,116,0.3);
+            transition: border-color 0.2s;
+        }
+        .signin-link:hover { border-color: var(--gold); }
+
+        /* ── Main layout ── */
+        main {
+            max-width: 860px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 4rem;
+        }
+
+        .section-eyebrow {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.5rem;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 0.4rem;
+        }
+        .section-desc {
+            font-size: 0.87rem;
+            color: rgba(255,255,255,0.45);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        /* ── Pack grid ── */
+        .packs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 3rem;
+        }
+
+        .pack-tile {
+            background: var(--navy-mid);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: border-color 0.2s, transform 0.2s;
+        }
+        .pack-tile:hover:not(.locked):not(.earned-locked) {
+            border-color: var(--border-g);
+            transform: translateY(-2px);
+        }
+        .pack-tile.locked { opacity: 0.45; }
+        .pack-tile.earned-only { border-color: var(--border-g); }
+
+        .pack-art {
+            height: 140px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .pack-art-inner {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.4rem;
+            position: relative;
+            z-index: 1;
+        }
+        .pack-art-icon {
+            font-size: 2.5rem;
+        }
+        .pack-art-wordmark {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 1rem;
+            letter-spacing: 4px;
+        }
+        .pack-art-bg {
+            position: absolute;
+            inset: 0;
+        }
+
+        .pack-body {
+            padding: 1rem 1.1rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.35rem;
+        }
+        .pack-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--white);
+        }
+        .pack-desc {
+            font-size: 0.75rem;
+            color: rgba(255,255,255,0.45);
+            line-height: 1.55;
+            flex: 1;
+        }
+        .pack-odds {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .odds-pip {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.52rem;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            padding: 2px 7px;
+            border-radius: 3px;
+            font-weight: 500;
+        }
+        .odds-pip.legendary { background: rgba(212,165,116,0.15); color: var(--gold); border: 1px solid rgba(212,165,116,0.3); }
+        .odds-pip.rare      { background: rgba(100,149,237,0.12); color: #8ab4f8; border: 1px solid rgba(100,149,237,0.25); }
+        .odds-pip.uncommon  { background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.1); }
+
+        .pack-footer {
+            padding: 0.85rem 1.1rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+        }
+        .pack-cost {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--gold);
+        }
+        .pack-cost.earned { color: #6bcb77; }
+        .pack-cost.locked-cost { color: rgba(255,255,255,0.3); }
+
+        .open-btn {
+            background: var(--gold);
+            color: var(--navy);
+            border: none;
+            padding: 7px 14px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            white-space: nowrap;
+        }
+        .open-btn:hover { opacity: 0.88; }
+        .open-btn:disabled { opacity: 0.35; cursor: default; }
+        .open-btn.earned-btn { background: #6bcb77; }
+        .open-btn.locked-btn { background: var(--navy-lt); color: rgba(255,255,255,0.4); cursor: default; }
+
+        .lock-note {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            color: rgba(255,255,255,0.3);
+            letter-spacing: 0.8px;
+            text-align: center;
+            padding: 0.5rem 1.1rem 0.85rem;
+        }
+
+        /* ── Collection strip ── */
+        .collection-strip {
+            background: var(--navy-mid);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .collection-left { display: flex; align-items: center; gap: 1rem; }
+        .collection-icon { font-size: 1.5rem; }
+        .collection-text { display: flex; flex-direction: column; gap: 0.1rem; }
+        .collection-title { font-size: 0.95rem; font-weight: 600; color: var(--white); }
+        .collection-sub { font-size: 0.75rem; color: rgba(255,255,255,0.4); }
+        .view-collection-btn {
+            background: transparent;
+            border: 1px solid var(--border-g);
+            color: var(--gold);
+            padding: 8px 16px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .view-collection-btn:hover { background: rgba(212,165,116,0.1); }
+
+        /* ── Confirm modal ── */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(15,18,34,0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 300;
+            padding: 1.5rem;
+        }
+        .modal-box {
+            background: var(--navy-mid);
+            border: 1px solid var(--border-g);
+            border-radius: 14px;
+            padding: 2rem;
+            max-width: 360px;
+            width: 100%;
+            text-align: center;
+        }
+        .modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 0.5rem;
+        }
+        .modal-desc {
+            font-size: 0.82rem;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+        .modal-cost-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem 1rem;
+            background: rgba(255,255,255,0.04);
+            border-radius: 8px;
+            margin-bottom: 0.5rem;
+        }
+        .modal-cost-label { font-family: 'DM Mono', monospace; font-size: 0.68rem; color: rgba(255,255,255,0.45); letter-spacing: 1px; }
+        .modal-cost-value { font-family: 'DM Mono', monospace; font-size: 0.9rem; font-weight: 500; color: var(--gold); }
+        .modal-cost-value.after { color: rgba(255,255,255,0.6); }
+        .modal-buttons { display: flex; gap: 0.75rem; margin-top: 1.5rem; }
+        .modal-cancel {
+            flex: 1; background: transparent; border: 1px solid var(--border);
+            color: rgba(255,255,255,0.5); padding: 10px;
+            font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 1px;
+            text-transform: uppercase; border-radius: 5px; cursor: pointer; transition: all 0.2s;
+        }
+        .modal-cancel:hover { border-color: rgba(255,255,255,0.3); color: var(--white); }
+        .modal-confirm {
+            flex: 2; background: var(--gold); border: none; color: var(--navy);
+            padding: 10px;
+            font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 1.5px;
+            text-transform: uppercase; font-weight: 700; border-radius: 5px; cursor: pointer; transition: opacity 0.2s;
+        }
+        .modal-confirm:hover { opacity: 0.88; }
+        .modal-warn {
+            font-family: 'DM Mono', monospace; font-size: 0.65rem;
+            color: #f4846a; letter-spacing: 0.5px; margin-top: 1rem;
+        }
+
+        /* ── Reveal overlay ── */
+        .reveal-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(160deg, #0f1222 0%, #1a1f36 60%, #0d1528 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 400;
+            padding: 2rem 1rem;
+        }
+        .reveal-eyebrow {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+        }
+        .reveal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 0.4rem;
+        }
+        .reveal-hint {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.35);
+            margin-bottom: 2.5rem;
+        }
+        .reveal-cards {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2.5rem;
+            max-width: 700px;
+        }
+
+        .card-slot {
+            width: 110px;
+            height: 155px;
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.15s;
+        }
+        .card-slot:hover:not(.revealed) { transform: translateY(-4px); }
+
+        .card-back-face, .card-front-face {
+            position: absolute;
+            inset: 0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .card-back-face {
+            background: var(--navy-mid);
+            border: 1px solid var(--border-g);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+        .card-back-wordmark {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-lt) 50%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-back-cross {
+            font-size: 1.4rem;
+            opacity: 0.3;
+        }
+        .card-back-face.pulsing {
+            animation: pulse-border 1.5s ease-in-out infinite;
+        }
+        @keyframes pulse-border {
+            0%, 100% { border-color: rgba(212,165,116,0.25); }
+            50%       { border-color: rgba(212,165,116,0.65); }
+        }
+
+        .card-front-face {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.75rem;
+            text-align: center;
+            gap: 0.4rem;
+            border: 2px solid;
+        }
+        .card-slot.revealed .card-back-face { display: none; }
+        .card-slot.revealed .card-front-face { display: flex; }
+        .card-slot.revealed { cursor: default; animation: reveal-pop 0.3s ease-out; }
+        @keyframes reveal-pop {
+            0%   { transform: scale(0.85); opacity: 0; }
+            60%  { transform: scale(1.05); }
+            100% { transform: scale(1);    opacity: 1; }
+        }
+
+        .card-slot.legendary .card-front-face {
+            background: linear-gradient(145deg, #2a1a05 0%, #3d2510 50%, #1e1204 100%);
+            border-color: var(--gold);
+            box-shadow: 0 0 24px rgba(212,165,116,0.35);
+        }
+        .card-slot.rare .card-front-face {
+            background: linear-gradient(145deg, #0d1e3a 0%, #152d56 50%, #0a1628 100%);
+            border-color: #6495ed;
+            box-shadow: 0 0 16px rgba(100,149,237,0.25);
+        }
+        .card-slot.uncommon .card-front-face {
+            background: linear-gradient(145deg, #1a1f36 0%, #242a45 100%);
+            border-color: rgba(255,255,255,0.15);
+        }
+
+        .cf-rarity-icon { font-size: 1.1rem; }
+        .cf-wordmark {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            opacity: 0.5;
+        }
+        .cf-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.78rem;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.25;
+        }
+        .cf-rarity-badge {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.48rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 2px 7px;
+            border-radius: 3px;
+            font-weight: 700;
+            margin-top: 0.15rem;
+        }
+        .legendary .cf-wordmark { color: var(--gold); }
+        .legendary .cf-rarity-badge { background: rgba(212,165,116,0.2); color: var(--gold); border: 1px solid rgba(212,165,116,0.4); }
+        .rare .cf-wordmark { color: #8ab4f8; }
+        .rare .cf-rarity-badge { background: rgba(100,149,237,0.15); color: #8ab4f8; border: 1px solid rgba(100,149,237,0.3); }
+        .uncommon .cf-wordmark { color: rgba(255,255,255,0.35); }
+        .uncommon .cf-rarity-badge { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.12); }
+
+        .reveal-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
+        .reveal-again-btn {
+            background: var(--gold); color: var(--navy); border: none;
+            padding: 11px 22px;
+            font-family: 'DM Mono', monospace; font-size: 0.68rem;
+            letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700;
+            border-radius: 5px; cursor: pointer; transition: opacity 0.2s;
+        }
+        .reveal-again-btn:hover { opacity: 0.88; }
+        .reveal-again-btn:disabled { opacity: 0.35; cursor: default; }
+        .reveal-done-btn {
+            background: transparent; border: 1px solid var(--border-g);
+            color: rgba(255,255,255,0.6);
+            padding: 11px 22px;
+            font-family: 'DM Mono', monospace; font-size: 0.68rem;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            border-radius: 5px; cursor: pointer; transition: all 0.2s;
+        }
+        .reveal-done-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.3); }
+        .reveal-tap-all {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem; letter-spacing: 1px;
+            color: var(--gold); cursor: pointer;
+            background: none; border: none;
+            text-decoration: underline; text-underline-offset: 3px;
+            padding: 6px 0; transition: opacity 0.2s;
+        }
+        .reveal-tap-all:hover { opacity: 0.7; }
+
+        /* ── Responsive ── */
+        @media (max-width: 560px) {
+            header, .balance-strip { padding: 0.85rem 1.25rem; }
+            main { padding: 1.75rem 1rem 3rem; }
+            .packs-grid { grid-template-columns: 1fr 1fr; }
+            .card-slot { width: 88px; height: 124px; }
+            .reveal-cards { gap: 0.65rem; }
+        }
+        @media (max-width: 380px) {
+            .packs-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="logo">CRUX</a>
+    <button class="back-link" onclick="window.location.href='crux-account.html'">&#8592; My Account</button>
+</header>
+
+<div class="balance-strip" id="balanceStrip">
+    <div class="signin-prompt">
+        <a href="crux-account.html" class="signin-link">Sign in</a> to open packs with your XP
+    </div>
+</div>
+
+<main>
+    <div>
+        <div class="section-eyebrow">Saint Cards</div>
+        <h1 class="section-title">Pack Store</h1>
+        <p class="section-desc">Spend XP earned from modules and quizzes to open packs and grow your saint card collection.</p>
+    </div>
+
+    <div class="packs-grid" id="packsGrid">
+        <!-- Rendered by JS -->
+    </div>
+
+    <div class="collection-strip">
+        <div class="collection-left">
+            <div class="collection-icon">🃏</div>
+            <div class="collection-text">
+                <div class="collection-title">My Collection</div>
+                <div class="collection-sub" id="collectionSub">Sign in to see your cards</div>
+            </div>
+        </div>
+        <a href="crux-account.html#cards" class="view-collection-btn">View Collection →</a>
+    </div>
+</main>
+
+<!-- Confirm modal -->
+<div class="modal-overlay" id="confirmModal" style="display:none">
+    <div class="modal-box">
+        <div class="modal-title" id="modalTitle">Open Pack?</div>
+        <div class="modal-desc" id="modalDesc"></div>
+        <div class="modal-cost-row">
+            <span class="modal-cost-label">Cost</span>
+            <span class="modal-cost-value" id="modalCost"></span>
+        </div>
+        <div class="modal-cost-row">
+            <span class="modal-cost-label">Balance After</span>
+            <span class="modal-cost-value after" id="modalAfter"></span>
+        </div>
+        <div class="modal-warn" id="modalWarn" style="display:none"></div>
+        <div class="modal-buttons">
+            <button class="modal-cancel" onclick="closeConfirm()">Cancel</button>
+            <button class="modal-confirm" id="modalConfirmBtn" onclick="confirmOpen()">Open Pack →</button>
+        </div>
+    </div>
+</div>
+
+<!-- Reveal overlay -->
+<div class="reveal-overlay" id="revealOverlay" style="display:none">
+    <div class="reveal-eyebrow" id="revealEyebrow"></div>
+    <div class="reveal-title">Your Cards</div>
+    <div class="reveal-hint" id="revealHint">Tap each card to reveal</div>
+    <div class="reveal-cards" id="revealCards"></div>
+    <div class="reveal-actions" id="revealActions" style="display:none">
+        <button class="reveal-again-btn" id="openAgainBtn" onclick="openAgain()">Open Another →</button>
+        <button class="reveal-done-btn" onclick="closeReveal()">Done</button>
+    </div>
+    <button class="reveal-tap-all" id="tapAllBtn" onclick="revealAll()" style="display:none">Reveal All</button>
+</div>
+
+<script>
+    // ── Levels ──
+    const LEVELS = [
+        { level: 1, name: 'Seeker',   minXP: 0 },
+        { level: 2, name: 'Learner',  minXP: 100 },
+        { level: 3, name: 'Student',  minXP: 300 },
+        { level: 4, name: 'Disciple', minXP: 600 },
+        { level: 5, name: 'Apostle',  minXP: 1000 },
+        { level: 6, name: 'Teacher',  minXP: 2000 },
+        { level: 7, name: 'Saint',    minXP: 4000 }
+    ];
+    function getLevelName(xp) {
+        let cur = LEVELS[0];
+        for (const l of LEVELS) { if (xp >= l.minXP) cur = l; }
+        return cur;
+    }
+
+    // ── Card pool (52 planned set — Alpha Pack exclusives are separate) ──
+    const CARD_POOL = {
+        legendary: [
+            { id: 'joseph',       name: 'St. Joseph' },
+            { id: 'peter',        name: 'St. Peter' },
+            { id: 'paul',         name: 'St. Paul' },
+            { id: 'john-apostle', name: 'St. John the Apostle' },
+            { id: 'james-greater',name: 'St. James the Greater' },
+            { id: 'andrew',       name: 'St. Andrew' },
+            { id: 'philip',       name: 'St. Philip' },
+            { id: 'bartholomew',  name: 'St. Bartholomew' },
+            { id: 'matthew',      name: 'St. Matthew' },
+            { id: 'james-less',   name: 'St. James the Less' },
+            { id: 'simon-zealot', name: 'St. Simon the Zealot' },
+            { id: 'jude',         name: 'St. Jude Thaddaeus' }
+        ],
+        rare: [
+            { id: 'augustine',      name: 'St. Augustine' },
+            { id: 'aquinas',        name: 'St. Thomas Aquinas' },
+            { id: 'teresa-avila',   name: 'St. Teresa of Ávila' },
+            { id: 'john-cross',     name: 'St. John of the Cross' },
+            { id: 'ignatius',       name: 'St. Ignatius of Loyola' },
+            { id: 'dominic',        name: 'St. Dominic' },
+            { id: 'joan-arc',       name: 'St. Joan of Arc' },
+            { id: 'thomas-more',    name: 'St. Thomas More' },
+            { id: 'catherine-siena',name: 'St. Catherine of Siena' },
+            { id: 'patrick',        name: 'St. Patrick' },
+            { id: 'benedict',       name: 'St. Benedict' },
+            { id: 'francis-xavier', name: 'St. Francis Xavier' },
+            { id: 'kolbe',          name: 'St. Maximilian Kolbe' },
+            { id: 'mother-teresa',  name: 'St. Teresa of Calcutta' },
+            { id: 'john-paul-ii',   name: 'St. John Paul II' },
+            { id: 'stephen',        name: 'St. Stephen' },
+            { id: 'john-baptist',   name: 'St. John the Baptist' },
+            { id: 'carlo-acutis',   name: 'Bl. Carlo Acutis' }
+        ],
+        uncommon: [
+            { id: 'francis-assisi',   name: 'St. Francis of Assisi' },
+            { id: 'therese',          name: 'St. Thérèse of Lisieux' },
+            { id: 'augustine-young',  name: 'St. Augustine (Young)' },
+            { id: 'cecilia',          name: 'St. Cecilia' },
+            { id: 'lawrence',         name: 'St. Lawrence' },
+            { id: 'nicholas',         name: 'St. Nicholas of Myra' },
+            { id: 'anthony-padua',    name: 'St. Anthony of Padua' },
+            { id: 'christopher',      name: 'St. Christopher' },
+            { id: 'sebastian',        name: 'St. Sebastian' },
+            { id: 'damien',           name: 'St. Damien of Molokai' },
+            { id: 'edith-stein',      name: 'St. Edith Stein' },
+            { id: 'kateri',           name: 'St. Kateri Tekakwitha' },
+            { id: 'oscar-romero',     name: 'St. Oscar Romero' },
+            { id: 'pier-giorgio',     name: 'Bl. Pier Giorgio Frassati' },
+            { id: 'miguel-pro',       name: 'Bl. Miguel Pro' },
+            { id: 'maria-goretti',    name: 'St. Maria Goretti' },
+            { id: 'frances-cabrini',  name: 'St. Frances Xavier Cabrini' },
+            { id: 'dominic-savio',    name: 'St. Dominic Savio' },
+            { id: 'jose-sanchez',     name: 'Bl. José Sánchez del Río' },
+            { id: 'jacinta',          name: 'Bl. Jacinta Marto' }
+        ]
+    };
+
+    // ── Pack definitions ──
+    const PACKS = [
+        {
+            id: 'standard',
+            name: 'Standard Pack',
+            desc: '4 cards drawn from the full saint catalog.',
+            icon: '✦',
+            cardCount: 4,
+            cost: 200,
+            odds: { legendary: 0.05, rare: 0.20, uncommon: 0.75 },
+            unlockLevel: 1,
+            earnedOnly: false,
+            gradient: 'linear-gradient(145deg, #1a2a4a 0%, #243555 100%)',
+            artColor: 'rgba(212,165,116,0.7)'
+        },
+        {
+            id: 'premium',
+            name: 'Premium Pack',
+            desc: '5 cards with significantly boosted Rare odds.',
+            icon: '★',
+            cardCount: 5,
+            cost: 400,
+            odds: { legendary: 0.08, rare: 0.35, uncommon: 0.57 },
+            unlockLevel: 1,
+            earnedOnly: false,
+            gradient: 'linear-gradient(145deg, #2a1f0a 0%, #3d2e12 100%)',
+            artColor: 'rgba(212,165,116,0.9)'
+        },
+        {
+            id: 'apostles',
+            name: 'Apostles Pack',
+            desc: '4 cards with greatly boosted Legendary odds — Apostles tier.',
+            icon: '⛪',
+            cardCount: 4,
+            cost: 500,
+            odds: { legendary: 0.25, rare: 0.40, uncommon: 0.35 },
+            unlockLevel: 4,
+            earnedOnly: false,
+            gradient: 'linear-gradient(145deg, #1e0a2a 0%, #2e1240 100%)',
+            artColor: 'rgba(180,120,240,0.8)'
+        },
+        {
+            id: 'council',
+            name: 'Council Pack',
+            desc: 'Unlocked by completing the Vatican II module. Cannot be purchased.',
+            icon: '🏛',
+            cardCount: 4,
+            cost: 0,
+            odds: { legendary: 0.10, rare: 0.40, uncommon: 0.50 },
+            unlockLevel: 1,
+            earnedOnly: true,
+            gradient: 'linear-gradient(145deg, #0a2a1e 0%, #123d2e 100%)',
+            artColor: 'rgba(107,203,119,0.8)'
+        }
+    ];
+
+    // ── State ──
+    let userXP = 0;
+    let userXPSpent = 0;
+    let userCards = [];
+    let userLevel = 1;
+    let unlockedPacks = {};
+    let pendingPack = null;
+    let drawnCards = [];
+    let revealedCount = 0;
+
+    function balance() { return userXP - userXPSpent; }
+
+    // ── Auth callback ──
+    window.onStoreAuth = function(data) {
+        if (!data) {
+            renderStore(false);
+            return;
+        }
+        userXP       = data.totalXP;
+        userXPSpent  = data.xpSpent;
+        userCards    = data.cardsOwned;
+        userLevel    = getLevelName(userXP).level;
+        unlockedPacks = data.unlockedPacks;
+
+        // Update balance strip
+        const strip = document.getElementById('balanceStrip');
+        const lvl = getLevelName(userXP);
+        strip.innerHTML =
+            '<div class="balance-left">' +
+                '<div class="balance-item">' +
+                    '<span class="balance-label">XP Balance</span>' +
+                    '<span class="balance-value">' + balance().toLocaleString() + ' XP</span>' +
+                '</div>' +
+                '<div class="balance-divider"></div>' +
+                '<div class="balance-item">' +
+                    '<span class="balance-label">Total Earned</span>' +
+                    '<span class="balance-value" style="color:rgba(255,255,255,0.5);font-size:0.85rem">' + userXP.toLocaleString() + '</span>' +
+                '</div>' +
+            '</div>' +
+            '<span class="level-badge">⚔ Level ' + lvl.level + ' — ' + lvl.name + '</span>';
+
+        document.getElementById('collectionSub').textContent =
+            userCards.length + ' card' + (userCards.length !== 1 ? 's' : '') + ' · ' +
+            data.packsOpened + ' pack' + (data.packsOpened !== 1 ? 's' : '') + ' opened';
+
+        renderStore(true);
+    };
+
+    // ── Draw logic ──
+    function drawCard(odds) {
+        const roll = Math.random();
+        let rarity;
+        if (roll < odds.legendary) rarity = 'legendary';
+        else if (roll < odds.legendary + odds.rare) rarity = 'rare';
+        else rarity = 'uncommon';
+        const pool = CARD_POOL[rarity];
+        const card = pool[Math.floor(Math.random() * pool.length)];
+        return { ...card, rarity };
+    }
+
+    function drawPack(pack) {
+        const cards = [];
+        // Guarantee at least 1 rare in premium pack
+        if (pack.id === 'premium') {
+            const rarePool = CARD_POOL.rare;
+            cards.push({ ...rarePool[Math.floor(Math.random() * rarePool.length)], rarity: 'rare' });
+            for (let i = 1; i < pack.cardCount; i++) cards.push(drawCard(pack.odds));
+        } else {
+            for (let i = 0; i < pack.cardCount; i++) cards.push(drawCard(pack.odds));
+        }
+        // Sort: legendary first, then rare, then uncommon
+        const order = { legendary: 0, rare: 1, uncommon: 2 };
+        return cards.sort((a, b) => order[a.rarity] - order[b.rarity]);
+    }
+
+    // ── Store render ──
+    function renderStore(loggedIn) {
+        const grid = document.getElementById('packsGrid');
+        grid.innerHTML = PACKS.map(pack => {
+            const bal = balance();
+            const councilUnlocked = unlockedPacks.councilPack === true;
+            const levelOk = userLevel >= pack.unlockLevel;
+            const canAfford = bal >= pack.cost;
+
+            let state, costHtml, btnHtml, lockNote = '';
+
+            if (!loggedIn) {
+                state = 'locked';
+                costHtml = pack.earnedOnly
+                    ? '<span class="pack-cost earned">Earned</span>'
+                    : '<span class="pack-cost locked-cost">' + pack.cost + ' XP</span>';
+                btnHtml = '<button class="open-btn locked-btn" disabled>' + (pack.earnedOnly ? 'Locked' : 'Sign In') + '</button>';
+
+            } else if (pack.earnedOnly) {
+                if (councilUnlocked) {
+                    state = 'earned';
+                    costHtml = '<span class="pack-cost earned">Unlocked ✓</span>';
+                    btnHtml = '<button class="open-btn earned-btn" onclick="startOpen(\'' + pack.id + '\')">Open Free →</button>';
+                } else {
+                    state = 'locked';
+                    costHtml = '<span class="pack-cost earned">Earned</span>';
+                    btnHtml = '<button class="open-btn locked-btn" disabled>Locked</button>';
+                    lockNote = '<div class="lock-note">Complete the Vatican II module to unlock</div>';
+                }
+
+            } else if (!levelOk) {
+                state = 'locked';
+                const needed = LEVELS.find(l => l.level === pack.unlockLevel);
+                costHtml = '<span class="pack-cost locked-cost">' + pack.cost + ' XP</span>';
+                btnHtml = '<button class="open-btn locked-btn" disabled>Locked</button>';
+                lockNote = '<div class="lock-note">Unlocks at ' + needed.name + ' (Level ' + needed.level + ')</div>';
+
+            } else if (!canAfford) {
+                state = 'normal';
+                costHtml = '<span class="pack-cost">' + pack.cost + ' XP</span>';
+                btnHtml = '<button class="open-btn" disabled>Need ' + (pack.cost - bal) + ' more XP</button>';
+
+            } else {
+                state = 'normal';
+                costHtml = '<span class="pack-cost">' + pack.cost + ' XP</span>';
+                btnHtml = '<button class="open-btn" onclick="startOpen(\'' + pack.id + '\')">Open Pack →</button>';
+            }
+
+            const oddsHtml = pack.earnedOnly
+                ? '<div class="pack-odds">' +
+                    '<span class="odds-pip legendary">L ' + Math.round(pack.odds.legendary * 100) + '%</span>' +
+                    '<span class="odds-pip rare">R ' + Math.round(pack.odds.rare * 100) + '%</span>' +
+                    '<span class="odds-pip uncommon">U ' + Math.round(pack.odds.uncommon * 100) + '%</span>' +
+                  '</div>'
+                : '<div class="pack-odds">' +
+                    '<span class="odds-pip legendary">L ' + Math.round(pack.odds.legendary * 100) + '%</span>' +
+                    '<span class="odds-pip rare">R ' + Math.round(pack.odds.rare * 100) + '%</span>' +
+                    '<span class="odds-pip uncommon">U ' + Math.round(pack.odds.uncommon * 100) + '%</span>' +
+                  '</div>';
+
+            return '<div class="pack-tile ' + (state === 'locked' ? 'locked' : '') + (pack.earnedOnly && state === 'earned' ? ' earned-only' : '') + '">' +
+                '<div class="pack-art" style="background:' + pack.gradient + '">' +
+                    '<div class="pack-art-inner">' +
+                        '<span class="pack-art-icon" style="color:' + pack.artColor + '">' + pack.icon + '</span>' +
+                        '<span class="pack-art-wordmark" style="color:' + pack.artColor + '">CRUX</span>' +
+                    '</div>' +
+                '</div>' +
+                '<div class="pack-body">' +
+                    '<div class="pack-name">' + pack.name + '</div>' +
+                    '<div class="pack-desc">' + pack.desc + '</div>' +
+                    oddsHtml +
+                '</div>' +
+                '<div class="pack-footer">' +
+                    costHtml + btnHtml +
+                '</div>' +
+                lockNote +
+            '</div>';
+        }).join('');
+    }
+
+    // ── Open flow ──
+    window.startOpen = function(packId) {
+        if (!window.currentUid) { window.location.href = 'crux-account.html'; return; }
+        const pack = PACKS.find(p => p.id === packId);
+        if (!pack) return;
+        pendingPack = pack;
+
+        document.getElementById('modalTitle').textContent = pack.name;
+        document.getElementById('modalDesc').textContent =
+            pack.cardCount + ' cards · ' + Math.round(pack.odds.legendary * 100) + '% Legendary · ' +
+            Math.round(pack.odds.rare * 100) + '% Rare';
+
+        const isEarned = pack.earnedOnly;
+        document.getElementById('modalCost').textContent = isEarned ? 'Free (earned)' : pack.cost + ' XP';
+        document.getElementById('modalAfter').textContent = isEarned
+            ? balance().toLocaleString() + ' XP'
+            : (balance() - pack.cost).toLocaleString() + ' XP';
+
+        const warn = document.getElementById('modalWarn');
+        if (!isEarned && balance() - pack.cost < 0) {
+            warn.textContent = 'Insufficient XP balance.';
+            warn.style.display = 'block';
+            document.getElementById('modalConfirmBtn').disabled = true;
+        } else {
+            warn.style.display = 'none';
+            document.getElementById('modalConfirmBtn').disabled = false;
+        }
+
+        document.getElementById('confirmModal').style.display = 'flex';
+    };
+
+    window.closeConfirm = function() {
+        document.getElementById('confirmModal').style.display = 'none';
+        pendingPack = null;
+    };
+
+    window.confirmOpen = async function() {
+        if (!pendingPack || !window.currentUid) return;
+        const pack = pendingPack;
+        document.getElementById('confirmModal').style.display = 'none';
+
+        // Draw cards
+        drawnCards = drawPack(pack);
+        revealedCount = 0;
+
+        // Write to Firestore immediately
+        try {
+            const updates = {
+                cardsOwned:  window.fbArrayUnion(...drawnCards.map(c => c.id)),
+                packsOpened: window.fbIncrement(1)
+            };
+            if (!pack.earnedOnly) {
+                updates.xpSpent = window.fbIncrement(pack.cost);
+            }
+            await window.fbUpdateDoc(window.fbDoc(window.db, 'userProgress', window.currentUid), updates);
+
+            // Update local state
+            if (!pack.earnedOnly) userXPSpent += pack.cost;
+            drawnCards.forEach(c => { if (!userCards.includes(c.id)) userCards.push(c.id); });
+
+        } catch (e) {
+            console.error('Pack open write failed:', e);
+        }
+
+        showReveal(pack);
+    };
+
+    // ── Reveal screen ──
+    function showReveal(pack) {
+        document.getElementById('revealEyebrow').textContent = pack.name + ' · ' + pack.cardCount + ' Cards';
+        document.getElementById('revealHint').textContent = 'Tap each card to reveal';
+        document.getElementById('revealActions').style.display = 'none';
+        document.getElementById('tapAllBtn').style.display = 'inline-block';
+
+        const container = document.getElementById('revealCards');
+        container.innerHTML = drawnCards.map((card, i) =>
+            '<div class="card-slot ' + card.rarity + '" id="slot-' + i + '" onclick="revealCard(' + i + ')">' +
+                '<div class="card-back-face pulsing">' +
+                    '<span class="card-back-cross">✝</span>' +
+                    '<span class="card-back-wordmark">CRUX</span>' +
+                '</div>' +
+                '<div class="card-front-face">' +
+                    '<span class="cf-rarity-icon">' + rarityIcon(card.rarity) + '</span>' +
+                    '<span class="cf-wordmark">CRUX</span>' +
+                    '<span class="cf-name">' + card.name + '</span>' +
+                    '<span class="cf-rarity-badge">' + card.rarity + '</span>' +
+                '</div>' +
+            '</div>'
+        ).join('');
+
+        document.getElementById('revealOverlay').style.display = 'flex';
+    }
+
+    function rarityIcon(r) {
+        if (r === 'legendary') return '✦';
+        if (r === 'rare')      return '★';
+        return '·';
+    }
+
+    window.revealCard = function(i) {
+        const slot = document.getElementById('slot-' + i);
+        if (!slot || slot.classList.contains('revealed')) return;
+        slot.classList.add('revealed');
+        revealedCount++;
+
+        if (revealedCount === drawnCards.length) {
+            document.getElementById('tapAllBtn').style.display = 'none';
+            document.getElementById('revealHint').textContent = drawnCards.length + ' new cards added to your collection';
+            showRevealActions();
+        }
+    };
+
+    window.revealAll = function() {
+        drawnCards.forEach((_, i) => {
+            const slot = document.getElementById('slot-' + i);
+            if (slot && !slot.classList.contains('revealed')) {
+                setTimeout(() => revealCard(i), i * 120);
+            }
+        });
+    };
+
+    function showRevealActions() {
+        const again = document.getElementById('openAgainBtn');
+        const bal = balance();
+        const pack = pendingPack;
+        const canAgain = pack && !pack.earnedOnly && bal >= pack.cost;
+        again.disabled = !canAgain;
+        again.title = !canAgain ? 'Not enough XP' : '';
+        document.getElementById('revealActions').style.display = 'flex';
+    }
+
+    window.openAgain = function() {
+        if (!pendingPack) return;
+        closeReveal();
+        setTimeout(() => startOpen(pendingPack.id), 100);
+    };
+
+    window.closeReveal = function() {
+        document.getElementById('revealOverlay').style.display = 'none';
+        pendingPack = null;
+        // Re-render store with updated balance
+        renderStore(!!window.currentUid);
+        // Update balance strip
+        if (window.currentUid) {
+            const lvl = getLevelName(userXP);
+            document.getElementById('balanceStrip').querySelector('.balance-value').textContent =
+                balance().toLocaleString() + ' XP';
+            document.getElementById('collectionSub').textContent =
+                userCards.length + ' card' + (userCards.length !== 1 ? 's' : '');
+        }
+    };
+
+    // Initial render (logged out state)
+    renderStore(false);
+</script>
+
+</body>
+</html>
