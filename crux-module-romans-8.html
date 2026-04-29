@@ -329,6 +329,30 @@
             font-weight: 600;
             font-size: 0.94em;
         }
+        .key-term-wrap {
+            display: inline-flex;
+            align-items: baseline;
+            gap: 0.3rem;
+        }
+        .phonetic {
+            font-size: 0.78em;
+            color: var(--gold-dark);
+            font-style: italic;
+            opacity: 0.8;
+            font-weight: 400;
+            letter-spacing: 0.01em;
+        }
+        .speak-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85em;
+            padding: 0;
+            line-height: 1;
+            opacity: 0.5;
+            transition: opacity 0.15s;
+        }
+        .speak-btn:hover { opacity: 1; }
 
         .highlight-box {
             background: var(--navy);
@@ -883,13 +907,13 @@ const MODULE_DATA = {
 
             <p>Paul uses the word "flesh" constantly in this chapter, and it is easy to read it wrong. Flesh does not mean the physical body. Paul is not saying that matter is evil or that the soul is good and the body is a problem. That is a Gnostic idea, and the Church rejected it explicitly.</p>
 
-            <p>When Paul says "flesh" (<span class="key-term">sarx</span> in Greek), he means the whole human person, body, mind, and will, oriented away from God and living by its own power. "Spirit" means the whole person reoriented around God's presence and power. The contrast is not body versus soul. It is two ways of living: one under sin's dominion, one under the Spirit's.</p>
+            <p>When Paul says "flesh" (<span class="key-term-wrap"><span class="key-term">sarx</span><span class="phonetic">SAR-ks</span><button class="speak-btn" onclick="speakGreek('sarks')" title="Hear pronunciation">🔊</button></span> in Greek), he means the whole human person, body, mind, and will, oriented away from God and living by its own power. "Spirit" means the whole person reoriented around God's presence and power. The contrast is not body versus soul. It is two ways of living: one under sin's dominion, one under the Spirit's.</p>
 
             <p>The practical question Paul is asking is simple: which direction is your life pointed?</p>
 
             <h3>What Paul Means by Hope</h3>
 
-            <p>The word Paul uses for hope in verse 24 is <span class="key-term">elpis</span>, and it does not mean what we usually mean when we say "I hope so." In English, hope is often weak, somewhere between a wish and a guess. <em>Elpis</em> in the New Testament carries a different weight: confident expectation of something certain but not yet received. What is uncertain is only the timing and the path. The destination is not in question.</p>
+            <p>The word Paul uses for hope in verse 24 is <span class="key-term-wrap"><span class="key-term">elpis</span><span class="phonetic">EL-pis</span><button class="speak-btn" onclick="speakGreek('elpis')" title="Hear pronunciation">🔊</button></span>, and it does not mean what we usually mean when we say "I hope so." In English, hope is often weak, somewhere between a wish and a guess. <em>Elpis</em> in the New Testament carries a different weight: confident expectation of something certain but not yet received. What is uncertain is only the timing and the path. The destination is not in question.</p>
 
             <p>Paul holds two things together that feel like they should be in tension. He says salvation is something that already happened to the people he is writing to (the Greek verb is past tense, completed). And then immediately he says they are still waiting. Both are true at once. The rescue is complete. The full inheritance has not been collected yet. Hope is the posture that holds those two things together without anxiety.</p>
 
@@ -920,15 +944,15 @@ const MODULE_DATA = {
 
             <h3>Three Uses of Law in Four Verses</h3>
 
-            <p>Romans 8:1–4 uses the word <span class="key-term">nomos</span> (law) three times, and Paul means something different each time. "The law of the Spirit of life" is the principle or dynamic of life operating in the Spirit. "The law of sin and death" is the principle of sin's dominion over the unredeemed person, not the Torah. "The just requirement of the law" in verse 4 is the Mosaic Law's righteous demand, which Christ fulfills on behalf of those who are in him.</p>
+            <p>Romans 8:1–4 uses the word <span class="key-term-wrap"><span class="key-term">nomos</span><span class="phonetic">NO-mos</span><button class="speak-btn" onclick="speakGreek('nomos')" title="Hear pronunciation">🔊</button></span> (law) three times, and Paul means something different each time. "The law of the Spirit of life" is the principle or dynamic of life operating in the Spirit. "The law of sin and death" is the principle of sin's dominion over the unredeemed person, not the Torah. "The just requirement of the law" in verse 4 is the Mosaic Law's righteous demand, which Christ fulfills on behalf of those who are in him.</p>
 
             <p>Paul is not confused. He is using the same word to describe three different realities, and the argument depends on distinguishing them. Christ fulfills what the Torah pointed toward. He frees people from the principle of sin's dominion. And the person united to Christ walks in the Spirit, in whom the Law's deepest intention finds its completion.</p>
 
             <h3>Sarx and Pneuma — Two Orientations, Not Two Substances</h3>
 
-            <p>The flesh-Spirit contrast in verses 5–11 is one of the most misread passages in Paul. <span class="key-term">Sarx</span> (flesh) does not mean the physical body. Reading it that way produces Gnostic anthropology: matter is evil, the body is a prison, salvation is escape into pure spirit. Paul teaches no such thing. The resurrection of the body (verse 11) makes this explicit: the same Spirit who raised Christ will give life to mortal bodies. Salvation is not body-rescue. It is total-person redemption.</p>
+            <p>The flesh-Spirit contrast in verses 5–11 is one of the most misread passages in Paul. <span class="key-term-wrap"><span class="key-term">Sarx</span><span class="phonetic">SAR-ks</span><button class="speak-btn" onclick="speakGreek('sarks')" title="Hear pronunciation">🔊</button></span> (flesh) does not mean the physical body. Reading it that way produces Gnostic anthropology: matter is evil, the body is a prison, salvation is escape into pure spirit. Paul teaches no such thing. The resurrection of the body (verse 11) makes this explicit: the same Spirit who raised Christ will give life to mortal bodies. Salvation is not body-rescue. It is total-person redemption.</p>
 
-            <p>Sarx in Paul means the whole human person, body, mind, and will, oriented away from God and living under sin's dominion. Pneuma means the person reoriented around God's presence. The contrast is two modes of existence, not two substances. "To set the mind on the flesh is death, but to set the mind on the Spirit is life and peace" (v. 6). The Greek word behind "set the mind" is <span class="key-term">phronousin</span>, from <em>phroneō</em>: to be oriented toward, to habitually attend to. Paul is describing the direction of a life, not the content of individual thoughts.</p>
+            <p>Sarx in Paul means the whole human person, body, mind, and will, oriented away from God and living under sin's dominion. <span class="key-term-wrap"><span class="key-term">Pneuma</span><span class="phonetic">NYOO-mah</span><button class="speak-btn" onclick="speakGreek('nyooma')" title="Hear pronunciation">🔊</button></span> means the person reoriented around God's presence. The contrast is two modes of existence, not two substances. "To set the mind on the flesh is death, but to set the mind on the Spirit is life and peace" (v. 6). The Greek word behind "set the mind" is <span class="key-term-wrap"><span class="key-term">phronousin</span><span class="phonetic">fro-NOO-sin</span><button class="speak-btn" onclick="speakGreek('fronoosin')" title="Hear pronunciation">🔊</button></span>, from <em>phroneō</em>: to be oriented toward, to habitually attend to. Paul is describing the direction of a life, not the content of individual thoughts.</p>
 
             <h3>The Trinitarian Grammar of Verses 9–11</h3>
 
@@ -938,11 +962,11 @@ const MODULE_DATA = {
 
             <h3>Elpis and Hypomonē — What Hope and Patience Actually Mean</h3>
 
-            <p>Verse 24 contains one of the most important word studies in the chapter. "For in this hope we were saved." The Greek word is <span class="key-term">elpis</span>, and English "hope" is too weak for it. In modern usage, hope is somewhere between a wish and a guess. <em>Elpis</em> in the New Testament carries confident expectation of something certain but not yet received. The destination is not in question. What remains unknown is only the timing and the path.</p>
+            <p>Verse 24 contains one of the most important word studies in the chapter. "For in this hope we were saved." The Greek word is <span class="key-term-wrap"><span class="key-term">elpis</span><span class="phonetic">EL-pis</span><button class="speak-btn" onclick="speakGreek('elpis')" title="Hear pronunciation">🔊</button></span>, and English "hope" is too weak for it. In modern usage, hope is somewhere between a wish and a guess. <em>Elpis</em> in the New Testament carries confident expectation of something certain but not yet received. The destination is not in question. What remains unknown is only the timing and the path.</p>
 
-            <p>Verse 24 also contains the Greek verb <span class="key-term">esōthēmen</span>: "we were saved." This is aorist passive tense. The aorist in Greek signals a completed action. Paul is saying salvation is something that already happened to his readers, not something they are still working toward. Then immediately he says they are still waiting. Both are true simultaneously. The rescue is complete. The full inheritance has not yet been collected. Hope is the posture that holds completed salvation and unreceived inheritance together without collapsing into either anxiety or complacency.</p>
+            <p>Verse 24 also contains the Greek verb <span class="key-term-wrap"><span class="key-term">esōthēmen</span><span class="phonetic">eh-SO-thay-men</span><button class="speak-btn" onclick="speakGreek('esothaymen')" title="Hear pronunciation">🔊</button></span>: "we were saved." This is aorist passive tense. The aorist in Greek signals a completed action. Paul is saying salvation is something that already happened to his readers, not something they are still working toward. Then immediately he says they are still waiting. Both are true simultaneously. The rescue is complete. The full inheritance has not yet been collected. Hope is the posture that holds completed salvation and unreceived inheritance together without collapsing into either anxiety or complacency.</p>
 
-            <p>The word translated "patience" in verse 25 is <span class="key-term">hypomonē</span>, and "patience" is too passive a rendering. <em>Hypomonē</em> means steadfast endurance under pressure, the posture of a soldier holding a position. It is active, costly, and deliberate. Paul is not describing someone who has resigned themselves to waiting. He is describing someone who holds their ground.</p>
+            <p>The word translated "patience" in verse 25 is <span class="key-term-wrap"><span class="key-term">hypomonē</span><span class="phonetic">hoo-po-mo-NAY</span><button class="speak-btn" onclick="speakGreek('hypomonay')" title="Hear pronunciation">🔊</button></span>, and "patience" is too passive a rendering. <em>Hypomonē</em> means steadfast endurance under pressure, the posture of a soldier holding a position. It is active, costly, and deliberate. Paul is not describing someone who has resigned themselves to waiting. He is describing someone who holds their ground.</p>
 
             <h3>CCC 846–848 and the Question Romans 8:8 Raises</h3>
 
@@ -956,7 +980,7 @@ const MODULE_DATA = {
 
             <h3>Predestination — The Catholic Reading of Verses 29–30</h3>
 
-            <p>Verses 29–30 contain the most contested word in Pauline theology: <span class="key-term">proorizo</span>, "predestined." From <em>pro</em> (before) + <em>horizō</em> (to mark out, to set a boundary, the root of "horizon"): to mark out a destination in advance.</p>
+            <p>Verses 29–30 contain the most contested word in Pauline theology: <span class="key-term-wrap"><span class="key-term">proorizo</span><span class="phonetic">pro-OR-id-zo</span><button class="speak-btn" onclick="speakGreek('proorizo')" title="Hear pronunciation">🔊</button></span>, "predestined." From <em>pro</em> (before) + <em>horizō</em> (to mark out, to set a boundary, the root of "horizon"): to mark out a destination in advance.</p>
 
             <p>The Calvinist reading takes this to mean God unconditionally chose, before creation, exactly who would be saved and who would be damned, with no reference to human free will. This is the doctrine of double predestination, the basis of TULIP theology.</p>
 
@@ -983,11 +1007,11 @@ const MODULE_DATA = {
 
                 <p>In verse 36, Paul reaches for Psalm 44, a lament: "For your sake we are being killed all the day long; we are regarded as sheep to be slaughtered." He is placing Christian suffering inside Israel's long history of suffering for the sake of God's name. This is not a new situation. The people of God have always borne this. They have always been sustained through it. He is telling the Roman Christians: you are part of a story that has been going longer than Rome has existed.</p>
 
-                <p>Verse 37 uses the Greek word <span class="key-term">hypernikōmen</span>: "more than conquerors." The word is built from <em>hyper</em> (beyond, more than) and <em>nikaō</em> (to conquer, the root of Nike). The force is not "we barely win." The victory Paul is describing is overwhelming, beyond ordinary triumph, not through strength but through the love of Christ.</p>
+                <p>Verse 37 uses the Greek word <span class="key-term-wrap"><span class="key-term">hypernikōmen</span><span class="phonetic">hoo-per-ni-KO-men</span><button class="speak-btn" onclick="speakGreek('hypernikomen')" title="Hear pronunciation">🔊</button></span>: "more than conquerors." The word is built from <em>hyper</em> (beyond, more than) and <em>nikaō</em> (to conquer, the root of Nike). The force is not "we barely win." The victory Paul is describing is overwhelming, beyond ordinary triumph, not through strength but through the love of Christ.</p>
 
                 <p>The list in verses 38–39 is exhaustive by design. Death, life, angels, powers above, powers below, things present, things to come, anything else in all of creation. Paul is closing every door. None of it has the power to finish the work of separation. The only thing that could end this relationship would be the love of God failing, and Paul says he is convinced that will not happen.</p>
 
-                <p>Convinced is the word he uses. Not hopeful. Not uncertain but leaning that way. Convinced: the Greek <em>pepeismai</em>, perfect passive, the posture of someone who has been persuaded by evidence and remains persuaded. He has run the numbers on his own life and on the life of Christ, and this is what he concludes.</p>
+                <p>Convinced is the word he uses. Not hopeful. Not uncertain but leaning that way. Convinced: the Greek <span class="key-term-wrap"><span class="key-term">pepeismai</span><span class="phonetic">peh-PAYS-my</span><button class="speak-btn" onclick="speakGreek('pepaysmy')" title="Hear pronunciation">🔊</button></span>, perfect passive, the posture of someone who has been persuaded by evidence and remains persuaded. He has run the numbers on his own life and on the life of Christ, and this is what he concludes.</p>
 
             </div>
             <div class="reflection-block">
@@ -1011,15 +1035,15 @@ const MODULE_DATA = {
                     <span class="verse-num">26</span>Likewise the Spirit helps us in our weakness; for we do not know how to pray as we ought, but the Spirit himself intercedes for us with sighs too deep for words. <span class="verse-num">27</span>And he who searches the hearts of men knows what is the mind of the Spirit, because the Spirit intercedes for the saints according to the will of God.
                 </div>
 
-                <p>Verse 19 uses the Greek word <span class="key-term">apekdechetai</span> for "waits with eager longing." The word carries the image of craning one's neck forward to see something coming. It appears only eight times in the New Testament, and Paul uses it repeatedly for the posture of Christian hope. Creation is not passively resigned to its current state. It is actively, bodily, straining toward what is coming.</p>
+                <p>Verse 19 uses the Greek word <span class="key-term-wrap"><span class="key-term">apekdechetai</span><span class="phonetic">ah-pek-DEK-heh-tie</span><button class="speak-btn" onclick="speakGreek('apekdekhetai')" title="Hear pronunciation">🔊</button></span> for "waits with eager longing." The word carries the image of craning one's neck forward to see something coming. It appears only eight times in the New Testament, and Paul uses it repeatedly for the posture of Christian hope. Creation is not passively resigned to its current state. It is actively, bodily, straining toward what is coming.</p>
 
                 <p>Paul is making a cosmological claim in verses 20–22. The fall affected not just humanity but the entire created order, which is why Paul can speak of creation groaning. It did not sin. But it suffers the consequences of human sin. This is the context for the Catholic tradition's care for creation: the created world is caught up in the drama of redemption. Its future is not disposal but renewal.</p>
 
                 <p>Verse 23 describes Christians as having the "first fruits" of the Spirit, the beginning of the harvest, not its entirety. What we experience now in grace and sacrament is genuine, but partial. The full harvest, the resurrection of the body, the new creation, is still coming. This grounds the Church's sacramental theology: the Eucharist is a real encounter with the living Christ, and a foretaste of the eschatological feast, not yet the feast itself.</p>
 
-                <p>Verses 24–25 hold the tension that defines Christian existence: salvation is completed (esōthēmen, aorist passive) and the inheritance is not yet received. <span class="key-term">Elpis</span>, the Greek word for hope, carries confident expectation of something certain but not yet in hand. The uncertainty is not about the destination but about the path and timing. <span class="key-term">Hypomonē</span>, translated "patience" in verse 25, means steadfast endurance under load, the posture of someone holding a position under pressure, not someone sitting passively. Christian waiting is active, costly, and deliberate.</p>
+                <p>Verses 24–25 hold the tension that defines Christian existence: salvation is completed (esōthēmen, aorist passive) and the inheritance is not yet received. <span class="key-term-wrap"><span class="key-term">Elpis</span><span class="phonetic">EL-pis</span><button class="speak-btn" onclick="speakGreek('elpis')" title="Hear pronunciation">🔊</button></span>, the Greek word for hope, carries confident expectation of something certain but not yet in hand. The uncertainty is not about the destination but about the path and timing. <span class="key-term-wrap"><span class="key-term">Hypomonē</span><span class="phonetic">hoo-po-mo-NAY</span><button class="speak-btn" onclick="speakGreek('hypomonay')" title="Hear pronunciation">🔊</button></span>, translated "patience" in verse 25, means steadfast endurance under load, the posture of someone holding a position under pressure, not someone sitting passively. Christian waiting is active, costly, and deliberate.</p>
 
-                <p>Verses 26–27 may be the most honest thing Paul writes in the letter. "We do not know how to pray as we ought." He says <em>we</em>. Not you, not them. He includes himself. The apostle who had been caught up to the third heaven, who planted churches across the Mediterranean, who wrote most of the New Testament, says he does not fully know how to pray. The honesty is disarming and the implication is significant: prayer is not a performance the believer must get right. The Spirit is already praying in the person who does not have words. The Greek phrase <span class="key-term">alalētois stenagmois</span>, "sighs too deep for words," describes something inexpressible, prayer happening at a depth below articulation. The Spirit intercedes for the saints according to the will of God, not because the believer has constructed a sufficiently adequate request.</p>
+                <p>Verses 26–27 may be the most honest thing Paul writes in the letter. "We do not know how to pray as we ought." He says <em>we</em>. Not you, not them. He includes himself. The apostle who had been caught up to the third heaven, who planted churches across the Mediterranean, who wrote most of the New Testament, says he does not fully know how to pray. The honesty is disarming and the implication is significant: prayer is not a performance the believer must get right. The Spirit is already praying in the person who does not have words. The Greek phrase <span class="key-term-wrap"><span class="key-term">alalētois stenagmois</span><span class="phonetic">ah-lah-LAY-tois · steh-NAG-mois</span><button class="speak-btn" onclick="speakGreek('alalaytois stenagmois')" title="Hear pronunciation">🔊</button></span>, "sighs too deep for words," describes something inexpressible, prayer happening at a depth below articulation. The Spirit intercedes for the saints according to the will of God, not because the believer has constructed a sufficiently adequate request.</p>
 
             </div>
             <div class="reflection-block">
@@ -1091,6 +1115,15 @@ const MODULE_DATA = {
         }
     ]
 };
+
+function speakGreek(text) {
+    if (!window.speechSynthesis) return;
+    window.speechSynthesis.cancel();
+    const utt = new SpeechSynthesisUtterance(text);
+    utt.rate = 0.82;
+    utt.pitch = 1.0;
+    window.speechSynthesis.speak(utt);
+}
 
 window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('backBtn').onclick = () => window.location.href = 'index.html#youth';
