@@ -404,6 +404,14 @@
         .result-name { flex:1; font-weight:700; font-size:0.95rem; }
         .result-score { font-family:'Playfair Display',serif; font-size:1.35rem; font-weight:700; color:var(--gold); }
 
+        /* DIFFICULTY TOGGLE */
+        .diff-label { font-size:0.7rem; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.3); margin-bottom:0.6rem; text-align:center; }
+        .diff-toggle { display:flex; border:1.5px solid var(--border); border-radius:10px; overflow:hidden; margin-bottom:2.5rem; }
+        .diff-btn { flex:1; padding:0.72rem 1.5rem; background:transparent; border:none; color:rgba(255,255,255,0.5); font-family:'Inter',sans-serif; font-size:0.84rem; font-weight:600; cursor:pointer; transition:all 0.2s; text-align:center; }
+        .diff-btn + .diff-btn { border-left:1.5px solid var(--border); }
+        .diff-btn.active { background:var(--gold); color:var(--navy); }
+        .diff-grade { display:block; font-size:0.7rem; font-weight:400; opacity:0.65; margin-top:0.1rem; }
+
         @media(max-width:600px){
             .page-title { font-size:1.9rem; }
             .j-val { font-size:1.1rem; }
@@ -423,6 +431,17 @@
 <div class="screen active" id="screenLanding">
     <div class="page-title">CRUX Jeopardy</div>
     <p class="page-sub">Choose a preset pillar board or build your own from any combination of modules.</p>
+    <div class="diff-label">Difficulty</div>
+    <div class="diff-toggle">
+        <button class="diff-btn" id="diffElem" onclick="setDifficulty('elementary')">
+            Elementary
+            <span class="diff-grade">Grades 3–5</span>
+        </button>
+        <button class="diff-btn active" id="diffStd" onclick="setDifficulty('standard')">
+            Confirmation
+            <span class="diff-grade">Grades 9+</span>
+        </button>
+    </div>
     <div class="board-grid" id="presetGrid"></div>
 </div>
 
@@ -746,33 +765,263 @@ const QB = {
   ]}
 };
 
+// ── ELEMENTARY QUESTION BANK (Grades 3–5) ───────────────────────
+const QB_E = {
+  trinity: { label:'The Holy Trinity', q:[
+    { c:'The Trinity is one God in how many Persons?',
+      a:'Three — Father, Son, and Holy Spirit' },
+    { c:'Name the Three Persons of the Holy Trinity.',
+      a:'The Father, the Son, and the Holy Spirit' },
+    { c:'Which Person of the Trinity became a human being and was born as baby Jesus?',
+      a:'The Son (Jesus Christ)' },
+    { c:'At Jesus\'s baptism, all three Persons appear at the same time. Who speaks from the sky?',
+      a:'The Father — he says "This is my beloved Son, with whom I am well pleased"' },
+    { c:'What do we call the one God who is Three Persons — Father, Son, and Holy Spirit — all equal and all God?',
+      a:'The Holy Trinity' }
+  ]},
+  jesus: { label:'Who Is Jesus Christ?', q:[
+    { c:'Jesus is fully God and fully ___.',
+      a:'Human (man)' },
+    { c:'Where did Jesus grow up with Mary and Joseph?',
+      a:'Nazareth' },
+    { c:'What do we call the mystery of God becoming a human being in Jesus?',
+      a:'The Incarnation' },
+    { c:'Jesus died on the cross and rose from the dead after how many days?',
+      a:'Three days' },
+    { c:'The word "Christ" is a title, not a last name. What does it mean?',
+      a:'The Anointed One — or the Messiah' }
+  ]},
+  mary: { label:'Mary & the Saints', q:[
+    { c:'Mary is the mother of who?',
+      a:'Jesus, the Son of God' },
+    { c:'What prayer begins "Hail Mary, full of grace"?',
+      a:'The Hail Mary' },
+    { c:'What angel came to Mary to tell her she would be the mother of Jesus?',
+      a:'The Angel Gabriel' },
+    { c:'Mary said yes to God when Gabriel asked her to be Jesus\'s mother. What do we call this moment?',
+      a:'The Annunciation' },
+    { c:'The title "Theotokos" is one of Mary\'s most ancient titles. What does it mean?',
+      a:'Mother of God (or God-bearer)' }
+  ]},
+  prodigal_son: { label:'The Prodigal Son', q:[
+    { c:'In the Prodigal Son story, what does the younger son ask his father for before he leaves home?',
+      a:'His share of the family\'s money (his inheritance)' },
+    { c:'After spending all his money, what job did the younger son end up doing?',
+      a:'Feeding pigs' },
+    { c:'When the father sees his son coming home from far away, what does he do?',
+      a:'He runs to him, hugs him, and kisses him' },
+    { c:'The father gave his returning son three special gifts: a robe, sandals, and a ___.',
+      a:'A ring' },
+    { c:'The father in this story represents God. What does the father running out to meet his son teach us about God?',
+      a:'God doesn\'t wait for us to finish coming back — He runs toward us when we turn back to Him. His love is eager and merciful.' }
+  ]},
+  geography: { label:'Bible Geography', q:[
+    { c:'In what city was Jesus born?',
+      a:'Bethlehem' },
+    { c:'In what city did Jesus grow up with Mary and Joseph?',
+      a:'Nazareth' },
+    { c:'In what city was Jesus crucified and raised from the dead?',
+      a:'Jerusalem' },
+    { c:'In what river was Jesus baptized by John the Baptist?',
+      a:'The Jordan River' },
+    { c:'Jesus prayed in a garden the night before he died. What is this garden called?',
+      a:'The Garden of Gethsemane' }
+  ]},
+  sacraments: { label:'The Seven Sacraments', q:[
+    { c:'How many sacraments did Jesus give the Church?',
+      a:'Seven' },
+    { c:'What is the first sacrament most Catholics receive, usually as babies?',
+      a:'Baptism' },
+    { c:'Name the three Sacraments of Initiation — the three that make you fully part of the Church.',
+      a:'Baptism, Confirmation, and Eucharist (Holy Communion)' },
+    { c:'Which sacrament do you receive in Confession when the priest says "I absolve you from your sins"?',
+      a:'Reconciliation (also called Penance or Confession)' },
+    { c:'Three sacraments leave a permanent mark on the soul and can never be received twice. Name them.',
+      a:'Baptism, Confirmation, and Holy Orders (becoming a priest or deacon)' }
+  ]},
+  mass: { label:'The Mass & Real Presence', q:[
+    { c:'At Mass, what do the bread and wine become?',
+      a:'The Body and Blood of Jesus Christ' },
+    { c:'What is the name of the meal Jesus shared with his disciples the night before he died?',
+      a:'The Last Supper' },
+    { c:'What is the special moment at Mass called when the bread and wine become the Body and Blood of Jesus?',
+      a:'The Consecration' },
+    { c:'In John chapter 6, Jesus says "I am the bread of ___."',
+      a:'Life — "I am the Bread of Life"' },
+    { c:'What is the long word that describes how the bread and wine at Mass become the actual Body and Blood of Jesus?',
+      a:'Transubstantiation' }
+  ]},
+  reconciliation: { label:'Reconciliation', q:[
+    { c:'In Confession, who really forgives our sins — through the priest?',
+      a:'Jesus — God himself forgives us' },
+    { c:'What do we call the prayer we say in Confession to tell God we are sorry?',
+      a:'An Act of Contrition' },
+    { c:'Before Confession, you think carefully about your sins. What is this thinking-it-over time called?',
+      a:'Examination of conscience' },
+    { c:'After absolution, the priest gives you a penance. What is a penance?',
+      a:'A prayer or action you do to show you\'re sorry and to make up for the harm your sin caused' },
+    { c:'Jesus gave the Apostles the power to forgive sins. What did he do in John 20:22 when he gave them this gift?',
+      a:'He breathed on them and said "Receive the Holy Spirit. Whose sins you forgive are forgiven."' }
+  ]},
+  conscience: { label:'Conscience', q:[
+    { c:'Your conscience helps you know the difference between right and ___.',
+      a:'Wrong' },
+    { c:'What should you do before making an important decision, to help you choose what is right?',
+      a:'Listen to your conscience (pray, think, ask a trusted person for help)' },
+    { c:'If you ignore your conscience many times, what happens to it?',
+      a:'It gets weaker and harder to hear — like a muscle you stop using' },
+    { c:'The Church says you must always follow your conscience — but what must you also do?',
+      a:'Form (educate) your conscience correctly, so it knows what is truly good and right' },
+    { c:'What word describes the deep natural sense God put in every person that tells us to do good and avoid evil?',
+      a:'Synderesis — or the natural moral sense, the law written on every heart' }
+  ]},
+  fruits: { label:'Fruits of the Spirit', q:[
+    { c:'Love, joy, and peace are called the _____ of the Holy Spirit.',
+      a:'Fruits (Fruits of the Holy Spirit)' },
+    { c:'How many fruits of the Holy Spirit does the Catholic Church list?',
+      a:'Twelve' },
+    { c:'St. Paul lists fruits of the Spirit in the Bible. Name any three from his list.',
+      a:'Love, joy, peace, patience, kindness, generosity, faithfulness, gentleness, self-control (any three)' },
+    { c:'Why does St. Paul use the word "fruit" to describe the good things the Spirit grows in us?',
+      a:'Because fruit grows naturally from a healthy tree — these grow in us when we stay connected to God, like a branch on a vine' },
+    { c:'What is the difference between the Gifts of the Spirit and the Fruits of the Spirit?',
+      a:'Gifts are abilities the Spirit gives us to act. Fruits are the good results that show in our life when we cooperate with the Spirit.' }
+  ]},
+  commandments: { label:'Ten Commandments', q:[
+    { c:'God gave the Ten Commandments to which leader of Israel on a mountain?',
+      a:'Moses (on Mount Sinai)' },
+    { c:'The First Commandment tells us to love and worship God alone. Name one thing this forbids.',
+      a:'Having other gods, putting anything above God, or worshipping idols' },
+    { c:'Jesus said all the commandments can be summed up in two. What is the first one?',
+      a:'"Love God with all your heart, soul, and mind"' },
+    { c:'Which commandment tells us to keep Sunday holy as the Lord\'s Day?',
+      a:'The Third Commandment' },
+    { c:'Jesus said he did not come to get rid of the Law but to _____ it.',
+      a:'Fulfill it (Matthew 5:17) — to bring the Law to its full and complete meaning' }
+  ]},
+  beatitudes: { label:'The Beatitudes', q:[
+    { c:'The Beatitudes each begin with the word "Blessed." What does "Blessed" mean?',
+      a:'Happy — deeply happy, flourishing, fortunate' },
+    { c:'How many Beatitudes are there in Matthew chapter 5?',
+      a:'Eight' },
+    { c:'"Blessed are the peacemakers." What does Jesus promise them?',
+      a:'They shall be called children of God' },
+    { c:'"Blessed are the poor in spirit." What does "poor in spirit" mean?',
+      a:'Knowing we need God — not being too proud to ask for his help' },
+    { c:'Jesus gave the Beatitudes as part of a famous speech on a hillside. What is it called?',
+      a:'The Sermon on the Mount' }
+  ]},
+  lords_prayer: { label:"The Lord's Prayer", q:[
+    { c:'What is the name of the special prayer Jesus taught his disciples?',
+      a:'The Lord\'s Prayer — or the Our Father' },
+    { c:'What are the first two words of the Lord\'s Prayer?',
+      a:'"Our Father"' },
+    { c:'The Lord\'s Prayer has how many requests (petitions) to God?',
+      a:'Seven' },
+    { c:'In the Lord\'s Prayer, we ask God to forgive us just as we forgive ___.',
+      a:'Those who trespass (sin) against us — others who have hurt us' },
+    { c:'What does "hallowed be thy name" mean?',
+      a:'May your name be holy — we\'re saying God\'s name is set apart and sacred' }
+  ]},
+  rosary: { label:'The Rosary', q:[
+    { c:'The Rosary is a prayer that honors who?',
+      a:'Mary (and through her, Jesus)' },
+    { c:'What prayer do we say most often when praying the Rosary?',
+      a:'The Hail Mary' },
+    { c:'How many Hail Marys are in one decade of the Rosary?',
+      a:'Ten' },
+    { c:'The Rosary has four sets of mysteries. Name any two of the four sets.',
+      a:'Joyful, Luminous, Sorrowful, and Glorious (any two)' },
+    { c:'Pope John Paul II added a new set of mysteries to the Rosary in 2002. What are they called, and what do they cover?',
+      a:'The Luminous Mysteries (Mysteries of Light) — they cover Jesus\'s public ministry: his baptism, miracles, teaching, and Transfiguration' }
+  ]},
+  liturgical_year: { label:'The Liturgical Year', q:[
+    { c:'What season of the Church\'s year comes right before Christmas?',
+      a:'Advent' },
+    { c:'What season of the Church\'s year comes before Easter?',
+      a:'Lent' },
+    { c:'What is the most important feast in the Catholic Church\'s year?',
+      a:'Easter — the Resurrection of Jesus' },
+    { c:'What color are the priest\'s vestments during Lent?',
+      a:'Purple (violet)' },
+    { c:'The Church\'s year tells a special story every single year. What story does it tell?',
+      a:'The story of Jesus — his birth, life, death, resurrection, and the sending of the Holy Spirit — so we can enter into it each year' }
+  ]},
+  creation: { label:'Creation & the Human Person', q:[
+    { c:'The Bible says God created humans in his own image and ___.',
+      a:'Likeness (Genesis 1:27)' },
+    { c:'What do we call the first man and first woman in the Bible?',
+      a:'Adam and Eve' },
+    { c:'The Church teaches that every human being has special dignity from the moment of ___.',
+      a:'Conception — the very moment they begin to exist' },
+    { c:'After creating the world, God looked at everything he made and called it ___.',
+      a:'Good — "very good" (Genesis 1:31)' },
+    { c:'The human person is made of two things — a body and a ___. The Church teaches both are good and both matter.',
+      a:'Soul — we are a unity of body and soul. Both are created by God and both are good.' }
+  ]},
+  creed: { label:'The Nicene Creed', q:[
+    { c:'What prayer do Catholics say at Mass that lists what we believe?',
+      a:'The Nicene Creed (or the Creed)' },
+    { c:'The Creed says Jesus was born of the Virgin ___.',
+      a:'Mary' },
+    { c:'The Creed says Jesus suffered, died, and was buried. What does the Creed say happened next?',
+      a:'He rose again on the third day' },
+    { c:'The Creed says the Holy Spirit is "the Lord, the giver of ___."',
+      a:'Life' },
+    { c:'Why do we pray the Creed together at Mass every Sunday?',
+      a:'To say together out loud what we believe as Catholics — to profess our faith as one Church' }
+  ]},
+  romans_8: { label:'Romans 8', q:[
+    { c:'Romans 8:1 says "There is therefore now no ___ for those who are in Christ Jesus."',
+      a:'Condemnation' },
+    { c:'Romans 8:28 says "All things work together for ___."',
+      a:'Good — for those who love God' },
+    { c:'Paul says in Romans 8 that God\'s Spirit lives in us. What does this make us?',
+      a:'Children of God — adopted sons and daughters' },
+    { c:'Romans 8:26 says the Holy Spirit helps us when we don\'t know how to ___.',
+      a:'Pray — the Spirit prays within us when we don\'t have words' },
+    { c:'At the end of Romans 8, Paul says nothing in all of creation can separate us from what?',
+      a:'The love of God in Christ Jesus our Lord (Romans 8:38-39)' }
+  ]}
+};
+
 // ── PRESET BOARDS ────────────────────────────────────────────────
 const BOARDS = [
   { id:'p1', eyebrow:'Pillar I', name:'What We Believe',
     desc:'Trinity · Jesus Christ · Mary & Saints · Prodigal Son · Bible Geography',
     cats:['trinity','jesus','mary','prodigal_son','geography'],
     fj:{ c:'This Greek word — meaning "of the same substance" — was the pivotal term at the Council of Nicaea in 325 AD. It differed from the heretical alternative by a single letter, yet the difference was everything. Name the term, name the heresy it refuted, and state what that heresy taught.',
-         a:'Homoousios. It refuted Arianism, which taught that the Son was the greatest of all creatures — but a creature nonetheless ("there was a time when he was not"). Homoousios declared the Son identical in substance to the Father: truly and fully God.' }},
+         a:'Homoousios. It refuted Arianism, which taught that the Son was the greatest of all creatures — but a creature nonetheless ("there was a time when he was not"). Homoousios declared the Son identical in substance to the Father: truly and fully God.' },
+    fjE:{ c:'At Jesus\'s baptism in the Jordan River, all three Persons of the Trinity appear at the same time. Describe what each Person does or appears as.',
+          a:'The Father speaks from heaven: "This is my beloved Son, with whom I am well pleased." The Son (Jesus) is in the water being baptized. The Holy Spirit comes down like a dove.' }},
   { id:'p2', eyebrow:'Pillar II', name:'What We Celebrate',
     desc:'Seven Sacraments · The Mass & Real Presence · Reconciliation',
     cats:['sacraments','mass','reconciliation'],
     fj:{ c:'Three sacraments — Baptism, Confirmation, and Holy Orders — leave an indelible mark on the soul. Name the one that completes Christian initiation, strengthens the gifts of Baptism, and is typically administered by a bishop. Then explain why the "indelible mark" matters theologically.',
-         a:'Confirmation. The indelible mark means the sacrament permanently configures the recipient to Christ — it cannot be undone or repeated. Once sealed, always sealed. This is why Confirmation is never repeated even if someone leaves and returns to the faith.' }},
+         a:'Confirmation. The indelible mark means the sacrament permanently configures the recipient to Christ — it cannot be undone or repeated. Once sealed, always sealed. This is why Confirmation is never repeated even if someone leaves and returns to the faith.' },
+    fjE:{ c:'Name all seven sacraments. You get full credit if you can name at least five!',
+          a:'Baptism, Confirmation, Eucharist (Holy Communion), Reconciliation (Confession), Anointing of the Sick, Holy Orders (priesthood), and Matrimony (Marriage)' }},
   { id:'p3', eyebrow:'Pillar III', name:'How We Live',
     desc:'Conscience · Fruits of the Spirit · Ten Commandments · The Beatitudes',
     cats:['conscience','fruits','commandments','beatitudes'],
     fj:{ c:'Aquinas calls the Commandments the "floor" and the Beatitudes the "ceiling" of Christian moral life. Identify which virtue the Beatitudes primarily perfect, explain why it cannot be reduced to rule-following, and name the Gift of the Spirit Aquinas says most directly perfects the intellect\'s orientation toward God.',
-         a:'The Beatitudes perfect charity (love) — which cannot be reduced to rules because charity is a participation in God\'s own nature, not an obligation. It is its own end. The Gift of Wisdom most directly perfects the intellect by giving a taste (savor) of divine things — allowing us to judge all of life from God\'s perspective.' }},
+         a:'The Beatitudes perfect charity (love) — which cannot be reduced to rules because charity is a participation in God\'s own nature, not an obligation. It is its own end. The Gift of Wisdom most directly perfects the intellect by giving a taste (savor) of divine things — allowing us to judge all of life from God\'s perspective.' },
+    fjE:{ c:'Jesus gave us two Great Commandments. Say both of them, then explain how all Ten Commandments fit inside those two.',
+          a:'"Love God with all your heart, soul, and mind" and "Love your neighbor as yourself." The first three commandments are about loving God. The last seven are about loving your neighbor.' }},
   { id:'p4', eyebrow:'Pillar IV', name:'How We Pray',
     desc:"Lord's Prayer · The Rosary · The Liturgical Year · Gifts of the Spirit",
     cats:['lords_prayer','rosary','liturgical_year','gifts'],
     fj:{ c:'In his 2002 letter Rosarium Virginis Mariae, Pope John Paul II added five new mysteries to the Rosary and called it "a compendium of the Gospel." Name the set he added. Then identify which mystery from that set shows Mary\'s role as intercessor, and state the instruction she gives that captures her entire purpose in Christian life.',
-         a:'The Luminous Mysteries (Mysteries of Light). The Wedding at Cana shows Mary as intercessor: she brings a human need to Jesus and he acts. Her instruction to the servants: "Do whatever he tells you" — her perpetual message to all Christians, always directing away from herself and toward her Son.' }},
+         a:'The Luminous Mysteries (Mysteries of Light). The Wedding at Cana shows Mary as intercessor: she brings a human need to Jesus and he acts. Her instruction to the servants: "Do whatever he tells you" — her perpetual message to all Christians, always directing away from herself and toward her Son.' },
+    fjE:{ c:'Name all four sets of mysteries in the Rosary, and give one example mystery from any two of the sets.',
+          a:'Joyful (e.g., Annunciation or Birth of Jesus), Luminous (e.g., Baptism of Jesus or Wedding at Cana), Sorrowful (e.g., Crucifixion or Crowning with Thorns), Glorious (e.g., Resurrection or Assumption). Any two sets with a correct example each earn full credit.' }},
   { id:'p5', eyebrow:'Pillar V', name:'Who We Are',
     desc:'Creation & the Human Person · The Nicene Creed · Romans 8',
     cats:['creation','creed','romans_8'],
     fj:{ c:'The Nicene Creed, the imago Dei, and Romans 8 each approach a single claim about the human person from a different angle. State what that claim is. Then identify which of the three grounds it most foundationally — and explain why.',
-         a:'The claim: every human being has infinite, irreducible dignity because of their relationship to God — not because of what they can do or produce. Most foundationally grounded in imago Dei (Genesis 1:27): God\'s image is the ontological root. The Creed declares what God has done to restore it; Romans 8 describes what God\'s Spirit does within it.' }}
+         a:'The claim: every human being has infinite, irreducible dignity because of their relationship to God — not because of what they can do or produce. Most foundationally grounded in imago Dei (Genesis 1:27): God\'s image is the ontological root. The Creed declares what God has done to restore it; Romans 8 describes what God\'s Spirit does within it.' },
+    fjE:{ c:'The Bible says God made us in his "image and likeness." Name three ways that humans are like God — three things about being human that show we reflect who God is.',
+          a:'We can think and reason (God is all-knowing); we can love (God is love); we can make choices (God is free); we create things (God is Creator); we have a soul that lives forever (God is eternal). Accept any three.' }}
 ];
 
 const ALL_MODULES = [
@@ -807,8 +1056,23 @@ let gs = {
   customPicked: new Set(),
   finalWagers: [],
   finalMarked: [],
-  fromCustom: false
+  fromCustom: false,
+  difficulty: 'standard'
 };
+
+// ── DIFFICULTY ───────────────────────────────────────────────────
+function setDifficulty(level) {
+  gs.difficulty = level;
+  document.getElementById('diffElem').classList.toggle('active', level === 'elementary');
+  document.getElementById('diffStd').classList.toggle('active', level === 'standard');
+}
+
+function getQB() { return gs.difficulty === 'elementary' ? QB_E : QB; }
+
+function getFJ(board) {
+  if (!board) return getFallbackFJ();
+  return gs.difficulty === 'elementary' ? board.fjE : board.fj;
+}
 
 // ── SCREENS ──────────────────────────────────────────────────────
 function showScreen(id) {
@@ -943,7 +1207,7 @@ function renderBoard() {
   cats.forEach(id => {
     const hd = document.createElement('div');
     hd.className = 'j-cat-hd';
-    hd.textContent = QB[id].label;
+    hd.textContent = getQB()[id].label;
     board.appendChild(hd);
   });
 
@@ -978,10 +1242,10 @@ function openQuestion(col, row) {
   gs.activeCell = { col, row, key };
 
   const id = gs.cats[col];
-  const q = QB[id].q[row];
+  const q = getQB()[id].q[row];
   const val = (row + 1) * 100;
 
-  document.getElementById('qEyebrow').textContent = QB[id].label + ' — ' + val + ' points';
+  document.getElementById('qEyebrow').textContent = getQB()[id].label + ' — ' + val + ' points';
   document.getElementById('qClue').textContent = q.c;
   document.getElementById('qAnsText').textContent = q.a;
   document.getElementById('qAnsBox').classList.remove('show');
@@ -1068,7 +1332,7 @@ function lockWagers() {
     gs.finalWagers[i] = Math.min(Math.max(parseInt(inp.value) || 0, 0), max);
   });
 
-  const fj = gs.board ? gs.board.fj : getFallbackFJ();
+  const fj = getFJ(gs.board);
   document.getElementById('fjClue').textContent = fj.c;
   document.getElementById('fjAnsText').textContent = fj.a;
   document.getElementById('fjAnsBox').classList.remove('show');
@@ -1118,8 +1382,9 @@ function markFinal(i, correct) {
 
 function getFallbackFJ() {
   const id = gs.cats[Math.floor(Math.random() * gs.cats.length)];
-  const q = QB[id].q[4];
-  return { c:'[' + QB[id].label + '] ' + q.c, a:q.a };
+  const qb = getQB();
+  const q = qb[id].q[4];
+  return { c:'[' + qb[id].label + '] ' + q.c, a:q.a };
 }
 
 // ── RESULTS ──────────────────────────────────────────────────────
