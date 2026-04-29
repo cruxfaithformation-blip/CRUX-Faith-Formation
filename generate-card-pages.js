@@ -1,4 +1,4 @@
-// Generates individual holographic card pages for each Alpha Pack saint
+// Generates individual holographic card pages for each saint
 // Run: node generate-card-pages.js
 // Output: crux-{saint}-flip.html in the current directory
 
@@ -6,26 +6,20 @@ const fs = require('fs');
 const path = require('path');
 
 const GRAYSONS_DIR = '/Users/andrewcross/Documents/CRUX/Saint Cards/Graysons';
-const LEGENDARY_DIR = '/Users/andrewcross/Documents/CRUX/Saint Cards/LEGENDARY';
 const OUT_DIR = __dirname;
 
 function toBase64(filePath) {
   return fs.readFileSync(filePath).toString('base64');
 }
 
-const cards = [
+// Alpha Pack cards use base64-embedded images (already generated, re-generated here with updated nav)
+const ALPHA_CARDS = [
   {
-    slug:        'cecilia',
-    navName:     'Cecilia',
-    title:       'CRUX — St. Cecilia',
-    saintName:   'St. Cecilia',
-    badge:       '✦ Uncommon',
-    feast:       'November 22',
-    patron:      'Musicians, composers, singers',
-    bio:         'She sang to God in her heart while the organs played around her — music no one else in the room could hear.',
-    setNum:      '033 / 052',
-    backName:    'Cecilia of Rome',
-    backDates:   'd. c. 230 AD · Rome',
+    slug: 'cecilia', navName: 'Cecilia',
+    title: 'CRUX — St. Cecilia', saintName: 'St. Cecilia',
+    badge: '✦ Uncommon', feast: 'November 22', patron: 'Musicians, composers, singers',
+    bio: 'She sang to God in her heart while the organs played around her — music no one else in the room could hear.',
+    setNum: '033 / 052', backName: 'Cecilia of Rome', backDates: 'd. c. 230 AD · Rome',
     prayer: [
       'O St. Cecilia, virgin and martyr, you who kept a song of love for God alive in your heart even in the midst of what the world demanded of you — intercede for all musicians, composers, and singers who offer their art as prayer.',
       'Teach us that the truest music is the interior offering of the heart, hidden from every ear but God\'s alone. Pray for us in our silence, and help us find the sacred in sound.',
@@ -44,17 +38,11 @@ const cards = [
     imgFile: path.join(GRAYSONS_DIR, 'Cecilia.jpg'),
   },
   {
-    slug:        'david',
-    navName:     'David',
-    title:       'CRUX — St. David of Wales',
-    saintName:   'St. David of Wales',
-    badge:       '✦ Uncommon',
-    feast:       'March 1',
-    patron:      'Wales, poets, the Welsh people',
-    bio:         '"Be joyful. Keep the faith. Do the little things." — His last words became a nation\'s motto.',
-    setNum:      '034 / 052',
-    backName:    'David of Wales',
-    backDates:   'c. 500–589 AD · Menevia, Wales',
+    slug: 'david', navName: 'David',
+    title: 'CRUX — St. David of Wales', saintName: 'St. David of Wales',
+    badge: '✦ Uncommon', feast: 'March 1', patron: 'Wales, poets, the Welsh people',
+    bio: '"Be joyful. Keep the faith. Do the little things." — His last words became a nation\'s motto.',
+    setNum: '034 / 052', backName: 'David of Wales', backDates: 'c. 500–589 AD · Menevia, Wales',
     prayer: [
       'O St. David, patron of Wales, you who found God in small acts faithfully done — intercede for all who feel their work is too ordinary to matter, too hidden to count.',
       'Remind us that the little things, done with great love and steady faith, are the very substance of a holy life. Pray for Wales, for all who carry your motto in their hearts, and for all who need to hear: be joyful, keep the faith, do the little things.',
@@ -73,17 +61,11 @@ const cards = [
     imgFile: path.join(GRAYSONS_DIR, 'David.jpg'),
   },
   {
-    slug:        'clare',
-    navName:     'Clare',
-    title:       'CRUX — St. Clare of Assisi',
-    saintName:   'St. Clare of Assisi',
-    badge:       '✦ Uncommon',
-    feast:       'August 11',
-    patron:      'Television, the Poor Clares',
-    bio:         'She stood at the gate holding nothing but the Eucharist — and the soldiers fled.',
-    setNum:      '035 / 052',
-    backName:    'Clare of Assisi',
-    backDates:   '1194–1253 AD · Assisi, Italy',
+    slug: 'clare', navName: 'Clare',
+    title: 'CRUX — St. Clare of Assisi', saintName: 'St. Clare of Assisi',
+    badge: '✦ Uncommon', feast: 'August 11', patron: 'Television, the Poor Clares',
+    bio: 'She stood at the gate holding nothing but the Eucharist — and the soldiers fled.',
+    setNum: '035 / 052', backName: 'Clare of Assisi', backDates: '1194–1253 AD · Assisi, Italy',
     prayer: [
       'O St. Clare, mirror of poverty and courage, you who stood between your sisters and an army with nothing in your hands but the Body of Christ — intercede for all who feel defenseless.',
       'Teach us that the Eucharist is not a symbol but a presence, and that placing ourselves before it in trust is the most powerful act available to us. Pray for all who guard others through prayer and love.',
@@ -102,17 +84,11 @@ const cards = [
     imgFile: path.join(GRAYSONS_DIR, 'Clare.jpg'),
   },
   {
-    slug:        'bernadette',
-    navName:     'Bernadette',
-    title:       'CRUX — St. Bernadette',
-    saintName:   'St. Bernadette',
-    badge:       '✦ Uncommon',
-    feast:       'April 16',
-    patron:      'Lourdes, the sick, those who doubt',
-    bio:         'She dug in the mud for a spring that wasn\'t there yet. It has not stopped flowing since.',
-    setNum:      '036 / 052',
-    backName:    'Bernadette Soubirous',
-    backDates:   '1844–1879 AD · Lourdes, France',
+    slug: 'bernadette', navName: 'Bernadette',
+    title: 'CRUX — St. Bernadette', saintName: 'St. Bernadette',
+    badge: '✦ Uncommon', feast: 'April 16', patron: 'Lourdes, the sick, those who doubt',
+    bio: 'She dug in the mud for a spring that wasn\'t there yet. It has not stopped flowing since.',
+    setNum: '036 / 052', backName: 'Bernadette Soubirous', backDates: '1844–1879 AD · Lourdes, France',
     prayer: [
       'O St. Bernadette, poorest and smallest of visionaries, you who were asked to do something that looked foolish to everyone watching — and did it anyway — intercede for all who obey God in the face of ridicule.',
       'Pray for the sick who come to Lourdes and do not receive healing of the body, that they might receive the deeper healing you yourself received: peace, surrender, and the certainty of being known by God. You suffered your whole life and called it your job. Help us accept ours.',
@@ -131,17 +107,11 @@ const cards = [
     imgFile: path.join(GRAYSONS_DIR, 'Bernadette.jpg'),
   },
   {
-    slug:        'bvm',
-    navName:     'Mary',
-    title:       'CRUX — Blessed Virgin Mary',
-    saintName:   'Blessed Virgin Mary',
-    badge:       '✦ Rare',
-    feast:       'January 1 (Solemnity)',
-    patron:      'All of humanity, the Church',
-    bio:         '"Do whatever he tells you." The last recorded words of Mary in Scripture — and perhaps the most important.',
-    setNum:      '001 / 052',
-    backName:    'Mary, Mother of God',
-    backDates:   'c. 18 BC – c. 40 AD · Nazareth',
+    slug: 'bvm', navName: 'Mary',
+    title: 'CRUX — Blessed Virgin Mary', saintName: 'Blessed Virgin Mary',
+    badge: '✦ Rare', feast: 'January 1 (Solemnity)', patron: 'All of humanity, the Church',
+    bio: '"Do whatever he tells you." The last recorded words of Mary in Scripture — and perhaps the most important.',
+    setNum: '001 / 052', backName: 'Mary, Mother of God', backDates: 'c. 18 BC – c. 40 AD · Nazareth',
     prayer: [
       'O Blessed Virgin Mary, Mother of God and our Mother, you who said yes to the impossible with complete trust — intercede for all who face what they cannot carry alone.',
       'Teach us your fiat: the surrender that does not know the cost but trusts the Giver. Pray for your children in every hour of need, and bring us always to your Son.',
@@ -151,24 +121,330 @@ const cards = [
       'The Church has venerated Mary across every tradition and century, recognizing in her the fullest human cooperation with grace. Her apparitions — at Guadalupe, Lourdes, Fatima, and elsewhere — continue to call the world to prayer, penance, and peace. She is the New Eve, the Ark of the New Covenant, the Queen of Heaven.',
     ],
     facts: [
-      { label: 'Also Known', value: 'Our Lady · Theotokos · Queen of Heaven · New Eve' },
-      { label: 'Key Text',   value: 'Luke 1:26–56 · John 2:1–11 · John 19:25–27' },
-      { label: 'Patron of',  value: 'All of humanity · The Church · Many nations' },
-      { label: 'Symbols',    value: 'Blue mantle · White lily · Crescent moon · Crown of stars' },
+      { label: 'Also Known',  value: 'Our Lady · Theotokos · Queen of Heaven · New Eve' },
+      { label: 'Key Text',    value: 'Luke 1:26–56 · John 2:1–11 · John 19:25–27' },
+      { label: 'Patron of',   value: 'All of humanity · The Church · Many nations' },
+      { label: 'Symbols',     value: 'Blue mantle · White lily · Crescent moon · Crown of stars' },
       { label: 'Apparitions', value: 'Guadalupe · Lourdes · Fatima · Knock · Akita' },
     ],
-    imgFile: path.join(LEGENDARY_DIR, 'MaryGuadalupe001.jpg'),
+    imgFile: '/Users/andrewcross/Documents/CRUX/Saint Cards/LEGENDARY/MaryGuadalupe001.jpg',
   },
 ];
 
-// Full ordered roster including Thomas (which is not generated but needs nav context)
-const ALL_CARD_NAV = [
-  { slug: 'thomas',     navName: 'Thomas' },
-  ...cards.map(c => ({ slug: c.slug, navName: c.navName })),
+// New cards use external image files in images/saints/{slug}.jpg
+const NEW_CARDS = [
+  {
+    slug: 'peter', navName: 'Peter',
+    title: 'CRUX — St. Peter', saintName: 'St. Peter',
+    badge: '✦✦✦ Legendary', feast: 'June 29', patron: 'Fishermen, the papacy, Rome',
+    bio: 'Jesus gave him a new name — Rock — and built His Church upon him.',
+    setNum: '002 / 052', backName: 'Simon Peter', backDates: 'd. c. 64–68 AD · Rome',
+    prayer: [
+      'O St. Peter, Prince of the Apostles, you who confessed Christ as the Son of the Living God and were given the keys of the Kingdom — intercede for all who lead the Church, for those who struggle with failure, and for all who love Christ imperfectly but return to Him again and again.',
+      'Remind us that the Rock of the Church was a man who denied his Lord three times and still received a threefold commission: Feed my sheep. Pray for those who lead and for those who follow, that both may keep their eyes on Christ across every storm.',
+    ],
+    bioParagraphs: [
+      'Simon was a Galilean fisherman when Jesus called him from his nets with two words: Follow me. Jesus named him Cephas — Rock — and promised to build His Church on that foundation. Peter became the leader of the Twelve, the first to confess Christ as the Son of God, and the first to witness the empty tomb.',
+      'Peter denied Jesus three times in the hours before the Crucifixion. After the Resurrection, Jesus asked him three times, "Do you love me?" — restoring him with the threefold commission to tend His flock. Peter preached at Pentecost, led the early Church in Jerusalem, and was eventually crucified upside-down in Rome, unwilling to die in the same posture as his Lord.',
+    ],
+    facts: [
+      { label: 'Also Known', value: 'Cephas · Simon Bar-Jonah · Prince of Apostles' },
+      { label: 'Key Text',   value: 'Matt 16:13–19 · John 21:15–19 · Acts 2' },
+      { label: 'Patron of',  value: 'Popes · Fishermen · Rome · Net-makers' },
+      { label: 'Symbols',    value: 'Two crossed keys · Rooster · Inverted cross' },
+      { label: 'Martyrdom',  value: 'Crucified upside-down, c. 64–68 AD · Rome' },
+    ],
+  },
+  {
+    slug: 'paul', navName: 'Paul',
+    title: 'CRUX — St. Paul', saintName: 'St. Paul',
+    badge: '✦✦✦ Legendary', feast: 'June 29', patron: 'Missionaries, theologians, publishers',
+    bio: 'He persecuted Christians with zeal — then met the Risen Christ on the road and never looked back.',
+    setNum: '003 / 052', backName: 'Paul of Tarsus', backDates: 'c. 5–67 AD · Tarsus / Rome',
+    prayer: [
+      'O St. Paul, Apostle to the Gentiles, you who were knocked to the ground by the light of Christ and rose up to set the world ablaze — intercede for all missionaries, for all who have turned from darkness to light, and for all who carry the Gospel into places where it has never been heard.',
+      'Teach us to know Christ and Him crucified. Help us count all else as loss for the surpassing worth of knowing Him. Give us your courage to preach in season and out of season, and to finish the race with faith.',
+    ],
+    bioParagraphs: [
+      'Saul of Tarsus was a Pharisee and zealous persecutor of Christians. On the road to Damascus, he was struck blind by a blinding light and heard the voice of the Risen Christ: "Saul, why do you persecute me?" He was baptized, renamed Paul, and began one of history\'s most extraordinary missionary careers.',
+      'Paul traveled across the Mediterranean world — Turkey, Greece, Rome — planting churches, writing letters that became the core of the New Testament, and enduring shipwreck, beating, imprisonment, and stoning. His letters to the Romans, Corinthians, Galatians, and others contain the deepest theological reflection in all of Scripture. He was beheaded in Rome under Nero.',
+    ],
+    facts: [
+      { label: 'Also Known', value: 'Saul of Tarsus · Apostle to the Gentiles' },
+      { label: 'Key Text',   value: 'Romans · Galatians · 1 Corinthians · Acts 9' },
+      { label: 'Patron of',  value: 'Missionaries · Theologians · Publishers · Tent-makers' },
+      { label: 'Symbols',    value: 'Sword · Book · Serpent · Rays of light' },
+      { label: 'Martyrdom',  value: 'Beheaded, c. 67 AD · Rome under Nero' },
+    ],
+  },
+  {
+    slug: 'andrew', navName: 'Andrew',
+    title: 'CRUX — St. Andrew', saintName: 'St. Andrew',
+    badge: '✦✦✦ Legendary', feast: 'November 30', patron: 'Scotland, fishermen, Ukraine',
+    bio: 'The first called — he immediately brought his brother Peter to Jesus.',
+    setNum: '004 / 052', backName: 'Andrew the Apostle', backDates: 'd. c. 60 AD · Patras, Greece',
+    prayer: [
+      'O St. Andrew, first of the Apostles to be called, you who heard "Come and see" and stayed — and then went immediately to bring your brother — intercede for all who hear Christ\'s invitation and for all who lead others to Him.',
+      'Teach us the grace of immediacy: to follow without delay, to share what we have found without embarrassment, and to trust that Christ can do great things with very small offerings. Pray for Scotland, Ukraine, and all who sail on uncertain seas.',
+    ],
+    bioParagraphs: [
+      'Andrew was a fisherman from Bethsaida and a disciple of John the Baptist before he became one of the first Apostles. When Jesus called him on the shore of the Sea of Galilee, Andrew immediately left his nets — and then ran to find his brother Simon Peter: "We have found the Messiah." His first act as a disciple was to bring someone else.',
+      'Andrew was present at the feeding of the five thousand, noting the boy\'s loaves and fish. He preached across Greece, Turkey, and possibly Russia after Pentecost. He was crucified in Patras on a diagonal cross (now called the Saltire) and reportedly preached from the cross for two days, unwilling to ask to be taken down. He is patron of Scotland, Russia, Ukraine, and Greece.',
+    ],
+    facts: [
+      { label: 'Also Known', value: 'Andrew Protocletus — "First-Called"' },
+      { label: 'Key Text',   value: 'John 1:35–42 · John 6:8–9 · Acts 1' },
+      { label: 'Patron of',  value: 'Scotland · Ukraine · Russia · Greece · Fishermen' },
+      { label: 'Symbols',    value: 'X-shaped (Saltire) cross · Fish · Net' },
+      { label: 'Martyrdom',  value: 'Crucified on X-cross, c. 60 AD · Patras, Greece' },
+    ],
+  },
+  {
+    slug: 'philip', navName: 'Philip',
+    title: 'CRUX — St. Philip', saintName: 'St. Philip',
+    badge: '✦✦✦ Legendary', feast: 'May 3', patron: 'Uruguay, pastry chefs, hatmakers',
+    bio: '"Lord, show us the Father and it is enough for us." Philip asked the question every soul asks.',
+    setNum: '005 / 052', backName: 'Philip the Apostle', backDates: 'd. c. 80 AD · Hierapolis, Phrygia',
+    prayer: [
+      'O St. Philip, you who asked the question burning in every human heart — "Show us the Father" — and received the answer that defines Christianity: "Whoever has seen me has seen the Father" — intercede for all who seek God and all who doubt.',
+      'Help us understand that to know Christ is to know the Father. Give us the courage to ask our honest questions and the faith to recognize the answer when it comes. Pray for all who teach the faith and for all who are still searching.',
+    ],
+    bioParagraphs: [
+      'Philip was from Bethsaida, the same town as Peter and Andrew. When Jesus called him, Philip immediately found Nathanael (Bartholomew) and invited him: "Come and see." He appears at key moments in the Gospel — asking Jesus how to feed five thousand people, bringing Greek pilgrims to Jesus, and asking Him to "show us the Father."',
+      'Christ\'s answer — "Have I been with you so long and you still do not know me, Philip? Whoever has seen me has seen the Father" — became one of the central Christological statements in the Gospels. Philip preached in Greece, Syria, and Phrygia after Pentecost. He was martyred at Hierapolis around 80 AD.',
+    ],
+    facts: [
+      { label: 'Also Known', value: 'Philip of Bethsaida' },
+      { label: 'Key Text',   value: 'John 1:43–46 · John 6:5–7 · John 14:8–11' },
+      { label: 'Patron of',  value: 'Uruguay · Luxembourg · Pastry chefs · Hatmakers' },
+      { label: 'Symbols',    value: 'Cross · Loaves of bread · Spear · Book' },
+      { label: 'Martyrdom',  value: 'c. 80 AD · Hierapolis, Phrygia (modern Turkey)' },
+    ],
+  },
+  {
+    slug: 'bartholomew', navName: 'Bartholomew',
+    title: 'CRUX — St. Bartholomew', saintName: 'St. Bartholomew',
+    badge: '✦✦✦ Legendary', feast: 'August 24', patron: 'Armenia, tanners, leather workers',
+    bio: '"In him there is no guile." Jesus saw Nathanael coming and named his soul before he could speak.',
+    setNum: '006 / 052', backName: 'Bartholomew (Nathanael)', backDates: 'd. c. 71 AD · Armenia',
+    prayer: [
+      'O St. Bartholomew, Apostle who was seen and known before you saw — you in whom there was no guile — intercede for all who feel unseen, and for all who fear that if God truly knew them, He could not love them.',
+      'Remind us that Christ knows us before we speak, loves us before we deserve it, and calls us by name. Pray for Armenia, the first Christian nation, to whom you first brought the Gospel, and for all who carry the faith into the hardest places.',
+    ],
+    bioParagraphs: [
+      'Bartholomew is most likely the Nathanael of the Gospel of John — the man Philip brought to Jesus with the words "We have found the one Moses wrote about." Nathanael was skeptical: "Can anything good come from Nazareth?" Philip answered simply: "Come and see." When Jesus said, "Here is a true Israelite in whom there is no deceit," Nathanael was undone.',
+      'After Pentecost, Bartholomew preached in India, Armenia, Ethiopia, and Mesopotamia. Armenia became the first Christian nation in 301 AD — a transformation attributed in part to his mission. He was martyred in Armenia, flayed alive and then beheaded or crucified. He is depicted in Michelangelo\'s Last Judgment holding his own skin.',
+    ],
+    facts: [
+      { label: 'Also Known', value: 'Nathanael · Bartholomew of Cana' },
+      { label: 'Key Text',   value: 'John 1:45–51 · Matt 10:3 · Acts 1:13' },
+      { label: 'Patron of',  value: 'Armenia · Tanners · Leather workers · Bookbinders' },
+      { label: 'Symbols',    value: 'Flaying knife · His own skin · Book' },
+      { label: 'Martyrdom',  value: 'Flayed alive, c. 71 AD · Albanopolis, Armenia' },
+    ],
+  },
+  {
+    slug: 'matthew', navName: 'Matthew',
+    title: 'CRUX — St. Matthew', saintName: 'St. Matthew',
+    badge: '✦✦✦ Legendary', feast: 'September 21', patron: 'Tax collectors, accountants, bankers',
+    bio: 'He sat at the most despised seat in town. Jesus walked by and said two words: Follow me.',
+    setNum: '007 / 052', backName: 'Matthew Levi', backDates: 'd. c. 74 AD · Ethiopia or Persia',
+    prayer: [
+      'O St. Matthew, you who were called from the most unlikely place — not from a synagogue or the Temple but from a tax booth — intercede for all who think themselves too sinful, too compromised, or too far outside for Christ to call.',
+      'Remind us that the call of Christ transforms what it touches. You left everything to follow, and the world received the Gospel. Pray for all who feel disqualified from grace, and for all who keep financial accounts with integrity.',
+    ],
+    bioParagraphs: [
+      'Matthew was a tax collector in Capernaum — a position that made him rich, despised, and ceremonially unclean in the eyes of his neighbors. Tax collectors collaborated with Rome and were known to pocket extra above the required amount. When Jesus saw Matthew at his booth and said, "Follow me," Matthew got up and left everything — then threw a banquet so his outcast friends could meet Jesus.',
+      'When the Pharisees complained that Jesus ate with sinners, He replied: "I have not come to call the righteous but sinners." Matthew became one of the Twelve and wrote the first Gospel, emphasizing Jesus as the fulfillment of the Jewish Scriptures. He preached in Judea, then in Ethiopia or Persia, where he was martyred.',
+    ],
+    facts: [
+      { label: 'Also Known', value: 'Levi · Matthew the Evangelist' },
+      { label: 'Key Text',   value: 'Matt 9:9–13 · Gospel of Matthew' },
+      { label: 'Patron of',  value: 'Tax collectors · Accountants · Bankers · Bookkeepers' },
+      { label: 'Symbols',    value: 'Winged man · Book · Sword · Money bag' },
+      { label: 'Martyrdom',  value: 'c. 74 AD · Ethiopia or Persia' },
+    ],
+  },
+  {
+    slug: 'james-greater', navName: 'James',
+    title: 'CRUX — St. James the Greater', saintName: 'St. James the Greater',
+    badge: '✦✦✦ Legendary', feast: 'July 25', patron: 'Spain, pilgrims, laborers',
+    bio: 'The first Apostle martyred. He and his brother were called Sons of Thunder — now the world walks to him.',
+    setNum: '008 / 052', backName: 'James, Son of Zebedee', backDates: 'd. 44 AD · Jerusalem',
+    prayer: [
+      'O St. James, first of the Apostles to drink the cup of martyrdom, you who were among the inner circle who witnessed the Transfiguration — intercede for pilgrims and all who walk long roads toward God.',
+      'Pray for Spain and for all who make the Camino to your shrine in Santiago de Compostela. Help us understand that the journey itself is the formation, and that arriving changed is the point. Give us holy boldness and the courage to drink whatever cup Christ offers.',
+    ],
+    bioParagraphs: [
+      'James, son of Zebedee and brother of John, was a Galilean fisherman who left everything when Jesus called. He and John were nicknamed "Boanerges" — Sons of Thunder — for their fierce temperaments. James was part of the inner circle who witnessed the Transfiguration and accompanied Jesus in Gethsemane the night before His death.',
+      'James was the first of the Twelve to be martyred, beheaded by King Herod Agrippa I around 44 AD. According to tradition, his body was miraculously transported to northwest Spain, where the great shrine of Santiago de Compostela was built over his relics. For a thousand years, pilgrims from across Europe have walked the Camino de Santiago to venerate him.',
+    ],
+    facts: [
+      { label: 'Also Known', value: 'James Major · Son of Thunder · Santiago' },
+      { label: 'Key Text',   value: 'Mark 1:19–20 · Mark 3:17 · Acts 12:1–2' },
+      { label: 'Patron of',  value: 'Spain · Pilgrims · Laborers · Knights' },
+      { label: 'Symbols',    value: 'Pilgrim\'s staff · Scallop shell · Sword' },
+      { label: 'Martyrdom',  value: 'Beheaded, c. 44 AD · Jerusalem by Herod Agrippa' },
+    ],
+  },
+  {
+    slug: 'james-less', navName: 'James the Less',
+    title: 'CRUX — St. James the Less', saintName: 'St. James the Less',
+    badge: '✦✦✦ Legendary', feast: 'May 3', patron: 'Fullers, dying people, pharmacists',
+    bio: '"Faith without works is dead." — He governed the first Church and wrote the words that still sting.',
+    setNum: '009 / 052', backName: 'James of Jerusalem', backDates: 'd. c. 62 AD · Jerusalem',
+    prayer: [
+      'O St. James, bishop of Jerusalem, guardian of the first Church and kinsman of Christ — you who presided over the Council of Jerusalem and wrote the most practical letter in the New Testament — intercede for all pastors who must hold communities together across conflict.',
+      'Help us live faith that works: not a feeling or a doctrine alone, but a way of life that cares for orphans and widows, that controls the tongue, and that shows mercy without partiality. Pray for all who are dying, and for all who keep the faith without applause.',
+    ],
+    bioParagraphs: [
+      'James the Less — distinguished from James, son of Zebedee, by his smaller stature or later call — was a kinsman of Jesus and became the first bishop of Jerusalem after the Resurrection. He is the author of the Letter of James, which opens: "Consider it pure joy whenever you face trials." His letter is the most practical ethical document in the New Testament.',
+      'He was known for spending so much time in prayer that his knees became like a camel\'s. He presided over the Jerusalem Council (Acts 15), which determined that Gentile converts did not need circumcision. He was martyred around 62 AD — thrown from the pinnacle of the Temple, then stoned and clubbed, reportedly still praying for his killers as he died.',
+    ],
+    facts: [
+      { label: 'Also Known', value: 'James Minor · Bishop of Jerusalem · "Camel Knees"' },
+      { label: 'Key Text',   value: 'Letter of James · Acts 15 · Galatians 1:19' },
+      { label: 'Patron of',  value: 'Fullers · Pharmacists · Dying people · Jerusalem' },
+      { label: 'Symbols',    value: 'Fuller\'s club · Book · Temple · Saw' },
+      { label: 'Martyrdom',  value: 'Stoned, c. 62 AD · Jerusalem, at the Temple' },
+    ],
+  },
+  {
+    slug: 'simon-zealot', navName: 'Simon',
+    title: 'CRUX — St. Simon the Zealot', saintName: 'St. Simon the Zealot',
+    badge: '✦✦✦ Legendary', feast: 'October 28', patron: 'Sawyers, tanners, glassworkers',
+    bio: 'His epithet followed him everywhere — a fire that was never put out, only redirected toward the Kingdom.',
+    setNum: '010 / 052', backName: 'Simon the Zealot', backDates: 'd. c. 65 AD · Persia or Armenia',
+    prayer: [
+      'O St. Simon, called the Zealot — you whose passion for God was so fierce it became your name — intercede for all who burn with love for justice and truth, and help us direct that fire toward Christ and not against one another.',
+      'Teach us that zeal becomes holy when it is laid at the feet of Jesus. Pray for all who carry a fire within them that the world does not understand, and help us spend it in service to the Gospel rather than our own agendas.',
+    ],
+    bioParagraphs: [
+      'Simon the Zealot is one of the most mysterious of the Twelve. His epithet suggests he may have belonged to the Zealot movement — Jewish nationalists who opposed Roman occupation by any means necessary. That Jesus chose both Simon the Zealot and Matthew the tax collector (a Roman collaborator) for the same inner circle is a sign of the Kingdom\'s strange logic.',
+      'Simon appears only in the lists of the Twelve — his name, and then silence. He is said to have traveled to Egypt, Persia, and Armenia with Jude Thaddaeus. The two are often depicted together, and their feast is shared on October 28. He was martyred in Persia, possibly by being sawn in half — the saw is his symbol.',
+    ],
+    facts: [
+      { label: 'Also Known', value: 'Simon Kananaios · Simon Zelotes' },
+      { label: 'Key Text',   value: 'Matt 10:4 · Mark 3:18 · Luke 6:15 · Acts 1:13' },
+      { label: 'Patron of',  value: 'Sawyers · Tanners · Glassworkers · Curriers' },
+      { label: 'Symbols',    value: 'Saw · Book · Fish · Oar' },
+      { label: 'Martyrdom',  value: 'c. 65 AD · Persia, possibly with Jude Thaddaeus' },
+    ],
+  },
+  {
+    slug: 'jude', navName: 'Jude',
+    title: 'CRUX — St. Jude Thaddaeus', saintName: 'St. Jude Thaddaeus',
+    badge: '✦✦✦ Legendary', feast: 'October 28', patron: 'Desperate causes, hospitals, lost causes',
+    bio: 'The Apostle the world forgot. The one they call on when everything else has failed.',
+    setNum: '011 / 052', backName: 'Jude Thaddaeus', backDates: 'd. c. 65 AD · Persia',
+    prayer: [
+      'O St. Jude, Apostle and patron of desperate cases, you whose very name was avoided by early Christians lest they be confused with the traitor — intercede for all who have no one else to call, for all who have been waiting so long for a miracle that hope itself has grown thin.',
+      'You are the patron of impossible causes not because God specializes in the desperate, but because no situation is beyond His reach. Pray for all who come to you as a last resort, that they may find not just relief but faith. Hear us.',
+    ],
+    bioParagraphs: [
+      'Jude Thaddaeus — distinguished from Judas Iscariot by the name Thaddaeus — was an Apostle of whom the Gospels say almost nothing. He appears only in the lists of the Twelve and once in John, where he asks Jesus: "Lord, why do you intend to show yourself to us and not to the world?" His obscurity became the source of his patronage: because his name was avoided, invocations to Jude were truly a last resort.',
+      'Jude wrote the short Letter of Jude — a fierce warning against false teachers who "pervert the grace of God into a license for immorality." He is traditionally linked with Simon the Zealot and is said to have preached and been martyred with him in Persia around 65 AD. His relics are venerated in St. Peter\'s Basilica. Millions pray novenas to him each year.',
+    ],
+    facts: [
+      { label: 'Also Known', value: 'Thaddaeus · Lebbaeus · "The Forgotten Apostle"' },
+      { label: 'Key Text',   value: 'Letter of Jude · John 14:22 · Luke 6:16' },
+      { label: 'Patron of',  value: 'Desperate causes · Lost causes · Hospitals · Armenians' },
+      { label: 'Symbols',    value: 'Axe · Club · Flame above head · Image of Christ' },
+      { label: 'Martyrdom',  value: 'c. 65 AD · Persia, with Simon the Zealot' },
+    ],
+  },
+  {
+    slug: 'augustine', navName: 'Augustine',
+    title: 'CRUX — St. Augustine of Hippo', saintName: 'St. Augustine of Hippo',
+    badge: '✦✦ Rare', feast: 'August 28', patron: 'Theologians, brewers, those with bad habits',
+    bio: '"Our heart is restless until it rests in Thee." — Written after years of running the other way.',
+    setNum: '015 / 052', backName: 'Augustine of Hippo', backDates: '354–430 AD · Hippo Regius, North Africa',
+    prayer: [
+      'O St. Augustine, Doctor of Grace, you who lived fully in the world before you lived fully for God — and who wrote of both with unflinching honesty — intercede for all who know the truth but cannot yet live it, and for all who run from grace because they fear what it will cost them.',
+      '"Late have I loved Thee, O Beauty ever ancient, ever new." Let that cry become ours. Pray for theologians and teachers, for all who wrestle with faith and desire, and for all who stand at the edge of conversion still holding back. Help us take the last step.',
+    ],
+    bioParagraphs: [
+      'Augustine of Hippo was born in North Africa in 354. Brilliant, restless, and driven by desire, he spent his young adulthood pursuing pleasure, prestige, and various philosophies — including nine years in the Manichaean sect. His mother Monica prayed for his conversion for seventeen years without ceasing. In 386, sitting in a garden in Milan, he heard a child\'s voice: "Take and read." He opened Paul\'s letter to the Romans and was converted.',
+      'Augustine became Bishop of Hippo in 396 and spent the next thirty-four years writing theology that would shape all of Western Christianity. His Confessions — the first spiritual autobiography in history — is still read today. His works on grace, free will, original sin, and the Trinity defined the categories of Christian thought for a millennium. He died in 430 as Vandals besieged his city.',
+    ],
+    facts: [
+      { label: 'Also Known', value: 'Doctor of Grace · Augustine of Thagaste' },
+      { label: 'Key Text',   value: 'Confessions · City of God · On the Trinity' },
+      { label: 'Patron of',  value: 'Theologians · Brewers · Printers · Those with bad habits' },
+      { label: 'Symbols',    value: 'Heart on fire · Book · Bishop\'s mitre · Quill' },
+      { label: 'Doctor',     value: 'Doctor of the Church · Order of St. Augustine' },
+    ],
+  },
+  {
+    slug: 'aquinas', navName: 'Aquinas',
+    title: 'CRUX — St. Thomas Aquinas', saintName: 'St. Thomas Aquinas',
+    badge: '✦✦ Rare', feast: 'January 28', patron: 'Students, universities, theologians',
+    bio: '"The Dumb Ox." His classmates mocked him. He became the greatest theologian in Catholic history.',
+    setNum: '016 / 052', backName: 'Thomas Aquinas', backDates: '1225–1274 AD · Roccasecca, Italy',
+    prayer: [
+      'O St. Thomas Aquinas, Angelic Doctor, you who showed the world that faith and reason are not enemies but partners — intercede for all students, all teachers, and all who use their minds in service to God.',
+      '"Grant me, O Lord my God, a mind to know You, a heart to seek You, wisdom to find You." Make that your prayer for us. Help us think carefully and love deeply, and give us the humility to know that all learning is a participation in Your knowing.',
+    ],
+    bioParagraphs: [
+      'Thomas Aquinas was born to a noble Italian family who intended him for a prestigious Benedictine monastery. Instead he joined the radical new Dominican friars. His family kidnapped him and held him captive for a year to break his resolve. He outlasted them. At the University of Paris, his bulk and quietness earned him the nickname "Dumb Ox." His teacher Albert the Great said: "This ox will one day bellow so loud his voice will fill the world."',
+      'Aquinas spent his life synthesizing Christian faith with Aristotelian philosophy in his massive Summa Theologiae — one of the most influential books in history. He wrote the hymns Tantum Ergo and Pange Lingua for the feast of Corpus Christi. Near the end of his life, after a mystical experience during Mass, he said: "All that I have written seems to me like straw compared to what I have seen." He died at 49.',
+    ],
+    facts: [
+      { label: 'Also Known', value: 'Angelic Doctor · Dumb Ox · "The Common Doctor"' },
+      { label: 'Key Text',   value: 'Summa Theologiae · Summa Contra Gentiles' },
+      { label: 'Patron of',  value: 'Students · Universities · Theologians · Pencil-makers' },
+      { label: 'Symbols',    value: 'Star on chest · Chalice · Book · Ox' },
+      { label: 'Doctor',     value: 'Doctor of the Church · Dominican Order' },
+    ],
+  },
+  {
+    slug: 'teresa-avila', navName: 'Teresa',
+    title: 'CRUX — St. Teresa of Ávila', saintName: 'St. Teresa of Ávila',
+    badge: '✦✦ Rare', feast: 'October 15', patron: 'Spain, chess players, headache sufferers',
+    bio: '"Let nothing disturb you. Let nothing frighten you. All things pass. God never changes." She lived it.',
+    setNum: '017 / 052', backName: 'Teresa of Jesus', backDates: '1515–1582 AD · Ávila, Spain',
+    prayer: [
+      'O St. Teresa of Ávila, Doctor of the Church, you who mapped the interior life in The Interior Castle and who called prayer "an intimate friendship, a frequent heart-to-heart conversation with One who we know loves us" — intercede for all who pray without result, for all who are dry in their spiritual lives.',
+      '"Nada te turbe, nada te espante." Let nothing disturb us. Let nothing frighten us. Teach us your confidence not in our own steadiness but in God\'s. Reform our prayer, reform our lives, and help us begin again every day with the same trust you carried.',
+    ],
+    bioParagraphs: [
+      'Teresa de Ahumada entered a Carmelite convent at twenty-one and spent the next twenty years in spiritual mediocrity — neither fully committed to God nor fully to the world. Then, at forty, she underwent a profound second conversion, began experiencing intense mystical states, and heard God say: "I want you to converse now not with men but with angels." She became the most significant female mystic in Catholic history.',
+      'Teresa founded seventeen reformed Carmelite convents across Spain in the face of fierce opposition — from the Church, from her own order, from the Inquisition. She traveled by ox-cart across Spain, writing theology from bumping roadside inns. Her Interior Castle, The Way of Perfection, and The Book of Her Life are foundational texts of Christian mysticism. In 1970, she became the first woman Doctor of the Church.',
+    ],
+    facts: [
+      { label: 'Also Known', value: 'Teresa of Jesus · Doctor of Prayer' },
+      { label: 'Key Text',   value: 'The Interior Castle · The Way of Perfection · Her Life' },
+      { label: 'Patron of',  value: 'Spain · Chess · Headache sufferers · Carmelites' },
+      { label: 'Symbols',    value: 'Heart with arrow · Book · Quill · Flaming dove' },
+      { label: 'Doctor',     value: 'First female Doctor of the Church (1970)' },
+    ],
+  },
 ];
 
-// Attach circular prev/next to each generated card
-cards.forEach(card => {
+// Full circular nav chain across all cards (including Thomas which is pre-built)
+const ALL_CARD_NAV = [
+  { slug: 'bvm',          navName: 'Mary' },
+  { slug: 'peter',        navName: 'Peter' },
+  { slug: 'paul',         navName: 'Paul' },
+  { slug: 'andrew',       navName: 'Andrew' },
+  { slug: 'philip',       navName: 'Philip' },
+  { slug: 'bartholomew',  navName: 'Bartholomew' },
+  { slug: 'matthew',      navName: 'Matthew' },
+  { slug: 'james-greater',navName: 'James' },
+  { slug: 'james-less',   navName: 'James the Less' },
+  { slug: 'simon-zealot', navName: 'Simon' },
+  { slug: 'jude',         navName: 'Jude' },
+  { slug: 'thomas',       navName: 'Thomas' },
+  { slug: 'augustine',    navName: 'Augustine' },
+  { slug: 'aquinas',      navName: 'Aquinas' },
+  { slug: 'teresa-avila', navName: 'Teresa' },
+  { slug: 'cecilia',      navName: 'Cecilia' },
+  { slug: 'david',        navName: 'David' },
+  { slug: 'clare',        navName: 'Clare' },
+  { slug: 'bernadette',   navName: 'Bernadette' },
+];
+
+function attachNav(card) {
   const allIdx = ALL_CARD_NAV.findIndex(c => c.slug === card.slug);
   const prev = ALL_CARD_NAV[(allIdx - 1 + ALL_CARD_NAV.length) % ALL_CARD_NAV.length];
   const next = ALL_CARD_NAV[(allIdx + 1) % ALL_CARD_NAV.length];
@@ -176,9 +452,12 @@ cards.forEach(card => {
   card.prevName = prev.navName;
   card.nextSlug = next.slug;
   card.nextName = next.navName;
-});
+}
 
-function buildHTML(card, imgBase64) {
+ALPHA_CARDS.forEach(attachNav);
+NEW_CARDS.forEach(attachNav);
+
+function buildHTML(card, imgSrc) {
   const prayerHTML = card.prayer.map(p => `          <div class="back-prayer-text">${p}</div>`).join('\n');
   const bioHTML    = card.bioParagraphs.map(p => `          <div class="back-bio-text">${p}</div>`).join('\n');
   const factsHTML  = card.facts.map((f, i) =>
@@ -220,7 +499,6 @@ body {
   transition: opacity 0.4s;
 }
 
-/* ══ CARD NAVIGATION ══ */
 .card-nav {
   display: flex;
   align-items: center;
@@ -262,7 +540,6 @@ body {
   background: rgba(200,150,255,0.06);
 }
 
-/* ══ FLIP SCENE ══ */
 .card-scene {
   width: 300px;
   height: 420px;
@@ -292,7 +569,6 @@ body {
   -webkit-backface-visibility: hidden;
 }
 
-/* ══ FRONT FACE — HOLO ══ */
 .card-front {
   cursor: pointer;
   touch-action: manipulation;
@@ -494,7 +770,6 @@ body {
 .hc-bl { bottom:10px; left:10px; transform:scaleY(-1); }
 .hc-br { bottom:10px; right:10px; transform:scale(-1,-1); }
 
-/* ══ BACK FACE ══ */
 .card-back {
   transform: rotateY(180deg);
   background: #0c0a07;
@@ -634,7 +909,7 @@ body {
 <div class="card-scene" id="cardScene">
   <div class="card-flipper">
 
-    <!-- ══ FRONT FACE ══ -->
+    <!-- FRONT FACE -->
     <div class="card-face card-front" id="holoCard">
 
       <div class="holo-rarity-strip"></div>
@@ -663,7 +938,7 @@ body {
         <circle cx="2" cy="2" r="2" fill="rgba(255,255,255,0.4)"/>
       </svg>
 
-      <img class="holo-portrait" src="data:image/jpeg;base64,${imgBase64}" alt="${card.saintName}">
+      <img class="holo-portrait" src="${imgSrc}" alt="${card.saintName}">
       <div class="holo-darken"></div>
       <div class="holo-rainbow"></div>
       <div class="holo-rainbow-2"></div>
@@ -688,14 +963,13 @@ body {
       </div>
     </div>
 
-    <!-- ══ BACK FACE ══ -->
+    <!-- BACK FACE -->
     <div class="card-face card-back">
       <div class="back-strip"></div>
       <div class="back-border"></div>
       <div class="back-foil"></div>
       <div class="back-vignette"></div>
 
-      <!-- CRUX watermark crest -->
       <div class="back-crest">
         <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="50" y1="5" x2="50" y2="95" stroke="white" stroke-width="3"/>
@@ -767,16 +1041,14 @@ const rainbow  = frontFace.querySelector('.holo-rainbow');
 const rainbow2 = frontFace.querySelector('.holo-rainbow-2');
 const specular = frontFace.querySelector('.holo-specular');
 
-// Unified handler for both mouse click and touch — prevents ghost clicks on mobile
 function onTap(element, handler) {
   element.addEventListener('touchend', function(e) {
-    e.preventDefault(); // block the synthesized click that follows touchend
+    e.preventDefault();
     handler(e);
   }, { passive: false });
   element.addEventListener('click', handler);
 }
 
-// Tap front face → flip to back
 onTap(frontFace, () => {
   isFlipped = true;
   flipper.style.transform = '';
@@ -786,7 +1058,6 @@ onTap(frontFace, () => {
   setTimeout(() => { if (isFlipped) frontFace.style.opacity = '0'; }, 360);
 });
 
-// Dedicated flip-back button
 onTap(scene.querySelector('.flip-back-btn'), () => {
   isFlipped = false;
   frontFace.style.opacity = '';
@@ -798,7 +1069,6 @@ onTap(scene.querySelector('.flip-back-btn'), () => {
   setTimeout(() => { if (!isFlipped) backFace.style.opacity = ''; }, 720);
 });
 
-// Tab switching
 scene.querySelectorAll('.back-tab').forEach(tab => {
   onTap(tab, () => {
     const target = tab.dataset.panel;
@@ -809,7 +1079,6 @@ scene.querySelectorAll('.back-tab').forEach(tab => {
   });
 });
 
-// Holo parallax on front face only (desktop)
 scene.addEventListener('mousemove', (e) => {
   if (isFlipped) return;
   const rect = scene.getBoundingClientRect();
@@ -840,10 +1109,21 @@ scene.addEventListener('mouseleave', () => {
 </html>`;
 }
 
-for (const card of cards) {
-  console.log('Building ' + card.slug + '...');
-  const imgBase64 = toBase64(card.imgFile);
-  const html = buildHTML(card, imgBase64);
+// Generate Alpha Pack cards (base64 images, updated nav)
+for (const card of ALPHA_CARDS) {
+  console.log('Building ' + card.slug + ' (alpha)...');
+  const imgSrc = 'data:image/jpeg;base64,' + toBase64(card.imgFile);
+  const html = buildHTML(card, imgSrc);
+  const outPath = path.join(OUT_DIR, 'crux-' + card.slug + '-flip.html');
+  fs.writeFileSync(outPath, html, 'utf8');
+  console.log('  -> ' + outPath + ' (' + Math.round(html.length / 1024) + ' KB)');
+}
+
+// Generate new cards (external image paths)
+for (const card of NEW_CARDS) {
+  console.log('Building ' + card.slug + ' (new)...');
+  const imgSrc = 'images/saints/' + card.slug + '.jpg';
+  const html = buildHTML(card, imgSrc);
   const outPath = path.join(OUT_DIR, 'crux-' + card.slug + '-flip.html');
   fs.writeFileSync(outPath, html, 'utf8');
   console.log('  -> ' + outPath + ' (' + Math.round(html.length / 1024) + ' KB)');

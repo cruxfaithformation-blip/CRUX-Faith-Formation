@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — St. Simon the Zealot</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: radial-gradient(ellipse at center, #1a1510 0%, #0a0806 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  gap: 1.2rem;
+  font-family: 'EB Garamond', serif;
+}
+
+.flip-hint {
+  font-family: 'Cinzel', serif;
+  font-size: 0.52rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.35);
+  text-align: center;
+  pointer-events: none;
+  transition: opacity 0.4s;
+}
+
+.card-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  margin-top: 0.4rem;
+}
+
+.nav-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 0.5rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 0.55rem 0.9rem;
+  border-radius: 5px;
+  border: 1px solid rgba(212,165,116,0.18);
+  color: rgba(212,165,116,0.55);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+
+.nav-btn:hover {
+  color: rgba(212,165,116,0.95);
+  border-color: rgba(212,165,116,0.4);
+  background: rgba(212,165,116,0.06);
+}
+
+.nav-btn.nav-home {
+  color: rgba(200,150,255,0.55);
+  border-color: rgba(200,150,255,0.18);
+}
+
+.nav-btn.nav-home:hover {
+  color: rgba(200,150,255,0.95);
+  border-color: rgba(200,150,255,0.4);
+  background: rgba(200,150,255,0.06);
+}
+
+.card-scene {
+  width: 300px;
+  height: 420px;
+  perspective: 1000px;
+  cursor: pointer;
+}
+
+.card-flipper {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
+  transition: transform 0.72s cubic-bezier(0.45, 0.05, 0.2, 1.0);
+}
+
+.card-scene.flipped .card-flipper {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  overflow: hidden;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.card-front {
+  cursor: pointer;
+  touch-action: manipulation;
+  box-shadow:
+    0 0 0 1.5px rgba(255,255,255,0.15),
+    0 0 0 3px rgba(120,80,200,0.3),
+    0 8px 50px rgba(0,0,0,0.8),
+    0 0 60px rgba(150,100,255,0.1);
+}
+
+.holo-portrait {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  z-index: 1;
+}
+
+.holo-darken {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(4,2,8,0) 0%, rgba(4,2,8,0) 28%,
+    rgba(4,2,8,0.45) 50%, rgba(4,2,8,0.88) 68%,
+    rgba(2,1,5,0.97) 100%
+  );
+  z-index: 2;
+}
+
+.holo-rainbow {
+  position: absolute; inset: -50%; width: 200%; height: 200%;
+  background: linear-gradient(115deg,
+    transparent 0%, transparent 20%,
+    rgba(255,0,128,0.18) 25%, rgba(255,100,0,0.15) 30%,
+    rgba(255,220,0,0.18) 35%, rgba(0,255,128,0.15) 42%,
+    rgba(0,200,255,0.18) 48%, rgba(100,0,255,0.15) 54%,
+    rgba(255,0,200,0.12) 60%, transparent 65%, transparent 100%
+  );
+  z-index: 3; mix-blend-mode: screen;
+  animation: holo-sweep 4s linear infinite; pointer-events: none;
+}
+
+@keyframes holo-sweep {
+  0%   { transform: translateX(-30%) translateY(-30%); }
+  100% { transform: translateX(30%)  translateY(30%); }
+}
+
+.holo-rainbow-2 {
+  position: absolute; inset: -50%; width: 200%; height: 200%;
+  background: linear-gradient(245deg,
+    transparent 0%, transparent 25%,
+    rgba(0,255,200,0.1) 30%, rgba(100,0,255,0.12) 36%,
+    rgba(255,0,100,0.1) 42%, rgba(255,180,0,0.08) 48%,
+    rgba(0,150,255,0.1) 54%, transparent 60%, transparent 100%
+  );
+  z-index: 3; mix-blend-mode: screen;
+  animation: holo-sweep-2 6s linear infinite; pointer-events: none;
+}
+
+@keyframes holo-sweep-2 {
+  0%   { transform: translateX(20%) translateY(20%); }
+  100% { transform: translateX(-20%) translateY(-20%); }
+}
+
+.holo-foil {
+  position: absolute; inset: 0; z-index: 4;
+  mix-blend-mode: overlay; opacity: 0.4;
+  background-image: repeating-linear-gradient(105deg,
+    transparent 0px, transparent 2px,
+    rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 3px
+  );
+  pointer-events: none;
+}
+
+.holo-specular {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 60% 40% at 35% 25%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 40%, transparent 70%);
+  z-index: 5; pointer-events: none;
+  animation: specular-shift 4s ease-in-out infinite alternate;
+}
+
+@keyframes specular-shift {
+  0%   { background: radial-gradient(ellipse 60% 40% at 30% 20%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 40%, transparent 70%); }
+  50%  { background: radial-gradient(ellipse 60% 40% at 70% 40%, rgba(200,180,255,0.1) 0%, rgba(255,255,255,0.03) 40%, transparent 70%); }
+  100% { background: radial-gradient(ellipse 60% 40% at 40% 70%, rgba(180,255,220,0.1) 0%, rgba(255,255,255,0.03) 40%, transparent 70%); }
+}
+
+.holo-rarity-strip {
+  position: absolute; top: 0; left: 0; right: 0; height: 5px; z-index: 20;
+  background: linear-gradient(90deg, #ff0080, #ff8c00, #ffe000, #00ff80, #00c8ff, #8000ff, #ff0080);
+  background-size: 200% 100%;
+  animation: rainbow-strip 3s linear infinite;
+}
+
+@keyframes rainbow-strip {
+  0%   { background-position: 0% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.holo-border {
+  position: absolute; inset: 4px; border-radius: 14px; z-index: 19;
+  pointer-events: none; border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: inset 0 0 20px rgba(150,100,255,0.08);
+  animation: border-glow 4s ease-in-out infinite alternate;
+}
+
+@keyframes border-glow {
+  0%   { border-color: rgba(255,100,200,0.2); box-shadow: inset 0 0 20px rgba(255,0,150,0.06); }
+  33%  { border-color: rgba(100,200,255,0.2); box-shadow: inset 0 0 20px rgba(0,200,255,0.06); }
+  66%  { border-color: rgba(200,255,100,0.2); box-shadow: inset 0 0 20px rgba(100,255,0,0.06); }
+  100% { border-color: rgba(255,200,100,0.2); box-shadow: inset 0 0 20px rgba(255,150,0,0.06); }
+}
+
+.holo-content {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 1rem 1.1rem 0.9rem; z-index: 15;
+}
+
+.holo-name-row {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 0.45rem; gap: 0.5rem;
+}
+
+.holo-saint-name {
+  font-family: 'Cinzel', serif; font-size: 1.05rem; font-weight: 700;
+  color: #ffffff; letter-spacing: 0.5px; line-height: 1.2;
+  text-shadow: 0 0 20px rgba(200,150,255,0.6), 0 1px 8px rgba(0,0,0,0.9); flex: 1;
+}
+
+.holo-badge {
+  display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px;
+  border-radius: 4px; font-family: 'Cinzel', serif; font-size: 0.52rem;
+  font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  flex-shrink: 0; margin-top: 2px; background: rgba(0,0,0,0.5);
+  border: 1px solid rgba(255,255,255,0.25); color: #ffffff;
+  text-shadow: 0 0 8px rgba(200,150,255,0.8); backdrop-filter: blur(4px);
+  animation: badge-glow 3s ease-in-out infinite alternate;
+}
+
+@keyframes badge-glow {
+  0%   { border-color: rgba(255,100,200,0.5); color: #ffb0e0; text-shadow: 0 0 8px rgba(255,0,150,0.8); }
+  33%  { border-color: rgba(100,200,255,0.5); color: #b0e0ff; text-shadow: 0 0 8px rgba(0,200,255,0.8); }
+  66%  { border-color: rgba(180,255,100,0.5); color: #d0ffb0; text-shadow: 0 0 8px rgba(100,255,0,0.8); }
+  100% { border-color: rgba(255,200,50,0.5);  color: #ffe8b0; text-shadow: 0 0 8px rgba(255,180,0,0.8); }
+}
+
+.holo-divider {
+  width: 100%; height: 1px; margin: 0.4rem 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  position: relative; overflow: hidden;
+}
+
+.holo-divider::after {
+  content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,200,255,0.6), transparent);
+  animation: divider-sweep 3s ease-in-out infinite;
+}
+
+@keyframes divider-sweep { 0% { left: -60%; } 100% { left: 160%; } }
+
+.holo-info-grid {
+  display: grid; grid-template-columns: auto 1fr;
+  gap: 0.22rem 0.6rem; margin-bottom: 0.45rem;
+}
+
+.holo-label {
+  font-family: 'Cinzel', serif; font-size: 0.5rem; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.4); padding-top: 2px; white-space: nowrap;
+}
+
+.holo-value {
+  font-family: 'EB Garamond', serif; font-size: 0.8rem;
+  color: rgba(255,240,220,0.9); line-height: 1.35;
+  text-shadow: 0 1px 6px rgba(0,0,0,0.8);
+}
+
+.holo-bio {
+  font-family: 'EB Garamond', serif; font-size: 0.78rem; font-style: italic;
+  color: rgba(230,210,255,0.75); line-height: 1.5;
+  border-left: 2px solid rgba(255,255,255,0.2); padding-left: 0.6rem;
+  margin-bottom: 0.5rem; text-shadow: 0 1px 4px rgba(0,0,0,0.8);
+}
+
+.holo-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 0.4rem; border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.holo-set { font-family:'Cinzel',serif; font-size:0.48rem; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.25); }
+.holo-num { font-family:'Cinzel',serif; font-size:0.48rem; letter-spacing:1px; color:rgba(255,255,255,0.25); }
+
+.holo-corner { position: absolute; z-index: 18; width: 28px; height: 28px; }
+.hc-tl { top:10px; left:10px; }
+.hc-tr { top:10px; right:10px; transform:scaleX(-1); }
+.hc-bl { bottom:10px; left:10px; transform:scaleY(-1); }
+.hc-br { bottom:10px; right:10px; transform:scale(-1,-1); }
+
+.card-back {
+  transform: rotateY(180deg);
+  background: #0c0a07;
+  display: flex;
+  flex-direction: column;
+  box-shadow:
+    0 0 0 1.5px rgba(255,255,255,0.12),
+    0 0 0 3px rgba(120,80,200,0.25),
+    0 8px 50px rgba(0,0,0,0.8),
+    0 0 60px rgba(150,100,255,0.08);
+}
+
+.back-strip {
+  height: 5px; flex-shrink: 0;
+  background: linear-gradient(90deg, #ff0080, #ff8c00, #ffe000, #00ff80, #00c8ff, #8000ff, #ff0080);
+  background-size: 200% 100%;
+  animation: rainbow-strip 3s linear infinite;
+}
+
+.back-border {
+  position: absolute; inset: 4px; border-radius: 14px; pointer-events: none;
+  border: 1px solid rgba(255,255,255,0.1);
+  animation: border-glow 4s ease-in-out infinite alternate; z-index: 10;
+}
+
+.back-foil {
+  position: absolute; inset: 0; z-index: 2; mix-blend-mode: overlay; opacity: 0.25;
+  background-image: repeating-linear-gradient(105deg,
+    transparent 0px, transparent 2px,
+    rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 3px
+  );
+  pointer-events: none;
+}
+
+.back-crest {
+  position: absolute; inset: 0; display: flex; align-items: center;
+  justify-content: center; opacity: 0.04; pointer-events: none; z-index: 1;
+}
+.back-crest svg { width: 200px; height: 200px; }
+
+.back-vignette {
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 40%, rgba(0,0,0,0.6) 100%);
+  z-index: 3; pointer-events: none;
+}
+
+.back-content {
+  position: relative; z-index: 20; flex: 1; display: flex;
+  flex-direction: column; padding: 1.25rem 1.2rem 1rem; overflow: hidden;
+}
+
+.back-header { text-align: center; margin-bottom: 0.85rem; flex-shrink: 0; }
+
+.back-saint-name {
+  font-family: 'Cinzel', serif; font-size: 0.78rem; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.85);
+  text-shadow: 0 0 16px rgba(200,150,255,0.5); line-height: 1.3;
+}
+
+.back-dates {
+  font-family: 'EB Garamond', serif; font-size: 0.72rem; font-style: italic;
+  color: rgba(255,255,255,0.3); margin-top: 0.15rem; letter-spacing: 0.5px;
+}
+
+.back-ornament { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.85rem; flex-shrink: 0; }
+.back-ornament-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent); }
+.back-ornament-cross { font-size: 0.6rem; color: rgba(255,255,255,0.25); letter-spacing: 3px; }
+
+.back-tabs {
+  display: flex; gap: 0; margin-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.12); flex-shrink: 0;
+}
+
+.back-tab {
+  font-family: 'Cinzel', serif; font-size: 0.58rem; letter-spacing: 1px;
+  text-transform: uppercase; color: rgba(255,255,255,0.4);
+  padding: 0.55rem 0.9rem 0.6rem; cursor: pointer;
+  border-bottom: 2px solid transparent; margin-bottom: -1px;
+  transition: color 0.2s, border-color 0.2s; user-select: none;
+  min-width: 64px; text-align: center;
+  touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+}
+.back-tab.active { color: rgba(200,150,255,1); border-bottom-color: rgba(200,150,255,0.8); }
+.back-tab:hover:not(.active) { color: rgba(255,255,255,0.65); }
+
+.back-panel { display: none; flex: 1; overflow-y: auto; scrollbar-width: none; }
+.back-panel::-webkit-scrollbar { display: none; }
+.back-panel.active { display: block; }
+
+.back-prayer-label {
+  font-family: 'Cinzel', serif; font-size: 0.44rem; letter-spacing: 2px;
+  text-transform: uppercase; color: rgba(200,150,255,0.5); margin-bottom: 0.6rem;
+}
+
+.back-prayer-text {
+  font-family: 'EB Garamond', serif; font-size: 0.82rem;
+  color: rgba(230,215,200,0.78); line-height: 1.7;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.7); margin-bottom: 0.4rem;
+}
+
+.back-bio-text {
+  font-family: 'EB Garamond', serif; font-size: 0.8rem;
+  color: rgba(230,215,200,0.78); line-height: 1.7;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.7); margin-bottom: 0.55rem;
+}
+
+.back-bio-text + .back-bio-text {
+  padding-top: 0.4rem; border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.back-fact-row {
+  display: grid; grid-template-columns: auto 1fr;
+  gap: 0.25rem 0.6rem; margin-bottom: 0.55rem; align-items: start;
+}
+.back-fact-label {
+  font-family: 'Cinzel', serif; font-size: 0.46rem; letter-spacing: 1.5px;
+  text-transform: uppercase; color: rgba(200,150,255,0.55); padding-top: 3px; white-space: nowrap;
+}
+.back-fact-value {
+  font-family: 'EB Garamond', serif; font-size: 0.8rem;
+  color: rgba(230,215,200,0.82); line-height: 1.45; text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+}
+.back-fact-divider { grid-column: 1/-1; height: 1px; background: rgba(255,255,255,0.06); margin: 0.2rem 0; }
+
+.back-footer {
+  flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+  padding-top: 0.5rem; margin-top: 0.3rem; border-top: 1px solid rgba(255,255,255,0.08);
+}
+.back-footer-set { font-family:'Cinzel',serif; font-size:0.44rem; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.2); }
+.back-footer-num { font-family:'Cinzel',serif; font-size:0.44rem; letter-spacing:1px; color:rgba(255,255,255,0.2); }
+</style>
+</head>
+<body>
+
+<div class="flip-hint" id="flipHint">Tap card to flip &nbsp;✦</div>
+
+<div class="card-scene" id="cardScene">
+  <div class="card-flipper">
+
+    <!-- FRONT FACE -->
+    <div class="card-face card-front" id="holoCard">
+
+      <div class="holo-rarity-strip"></div>
+      <div class="holo-border"></div>
+
+      <svg class="holo-corner hc-tl" viewBox="0 0 28 28" fill="none">
+        <path d="M2 14 L2 2 L14 2" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M2 2 L9 9" stroke="rgba(255,255,255,0.2)" stroke-width="0.7"/>
+        <circle cx="2" cy="2" r="2" fill="rgba(255,255,255,0.4)"/>
+        <circle cx="14" cy="2" r="1.2" fill="rgba(255,255,255,0.25)"/>
+        <circle cx="2" cy="14" r="1.2" fill="rgba(255,255,255,0.25)"/>
+      </svg>
+      <svg class="holo-corner hc-tr" viewBox="0 0 28 28" fill="none">
+        <path d="M2 14 L2 2 L14 2" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M2 2 L9 9" stroke="rgba(255,255,255,0.2)" stroke-width="0.7"/>
+        <circle cx="2" cy="2" r="2" fill="rgba(255,255,255,0.4)"/>
+        <circle cx="14" cy="2" r="1.2" fill="rgba(255,255,255,0.25)"/>
+        <circle cx="2" cy="14" r="1.2" fill="rgba(255,255,255,0.25)"/>
+      </svg>
+      <svg class="holo-corner hc-bl" viewBox="0 0 28 28" fill="none">
+        <path d="M2 14 L2 2 L14 2" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="2" cy="2" r="2" fill="rgba(255,255,255,0.4)"/>
+      </svg>
+      <svg class="holo-corner hc-br" viewBox="0 0 28 28" fill="none">
+        <path d="M2 14 L2 2 L14 2" stroke="rgba(255,255,255,0.5)" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="2" cy="2" r="2" fill="rgba(255,255,255,0.4)"/>
+      </svg>
+
+      <img class="holo-portrait" src="images/saints/simon-zealot.jpg" alt="St. Simon the Zealot">
+      <div class="holo-darken"></div>
+      <div class="holo-rainbow"></div>
+      <div class="holo-rainbow-2"></div>
+      <div class="holo-foil"></div>
+      <div class="holo-specular"></div>
+
+      <div class="holo-content">
+        <div class="holo-name-row">
+          <div class="holo-saint-name">St. Simon the Zealot</div>
+          <div class="holo-badge">✦✦✦ Legendary</div>
+        </div>
+        <div class="holo-divider"></div>
+        <div class="holo-info-grid">
+          <span class="holo-label">Feast</span><span class="holo-value">October 28</span>
+          <span class="holo-label">Patron</span><span class="holo-value">Sawyers, tanners, glassworkers</span>
+        </div>
+        <div class="holo-bio">His epithet followed him everywhere — a fire that was never put out, only redirected toward the Kingdom.</div>
+        <div class="holo-footer">
+          <span class="holo-set">CRUX · Saints · Series I</span>
+          <span class="holo-num">010 / 052</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BACK FACE -->
+    <div class="card-face card-back">
+      <div class="back-strip"></div>
+      <div class="back-border"></div>
+      <div class="back-foil"></div>
+      <div class="back-vignette"></div>
+
+      <div class="back-crest">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="50" y1="5" x2="50" y2="95" stroke="white" stroke-width="3"/>
+          <line x1="5" y1="35" x2="95" y2="35" stroke="white" stroke-width="3"/>
+          <circle cx="50" cy="50" r="44" stroke="white" stroke-width="1.5" stroke-dasharray="4 6"/>
+          <circle cx="50" cy="50" r="30" stroke="white" stroke-width="0.8"/>
+          <text x="50" y="78" text-anchor="middle" font-family="serif" font-size="10" fill="white" letter-spacing="4">CRUX</text>
+        </svg>
+      </div>
+
+      <div class="back-content">
+        <div class="back-header">
+          <div class="back-saint-name">Simon the Zealot</div>
+          <div class="back-dates">d. c. 65 AD · Persia or Armenia</div>
+        </div>
+
+        <div class="back-ornament">
+          <div class="back-ornament-line"></div>
+          <div class="back-ornament-cross">✦ ✦ ✦</div>
+          <div class="back-ornament-line"></div>
+        </div>
+
+        <div class="back-tabs">
+          <div class="back-tab active" data-panel="prayer">Prayer</div>
+          <div class="back-tab" data-panel="bio">Biography</div>
+          <div class="back-tab" data-panel="facts">Details</div>
+        </div>
+
+        <div class="back-panel active" id="panel-prayer">
+          <div class="back-prayer-label">Prayer to St. Simon the Zealot</div>
+          <div class="back-prayer-text">O St. Simon, called the Zealot — you whose passion for God was so fierce it became your name — intercede for all who burn with love for justice and truth, and help us direct that fire toward Christ and not against one another.</div>
+          <div class="back-prayer-text">Teach us that zeal becomes holy when it is laid at the feet of Jesus. Pray for all who carry a fire within them that the world does not understand, and help us spend it in service to the Gospel rather than our own agendas.</div>
+          <div class="back-prayer-text" style="font-style:italic; color:rgba(200,150,255,0.7); font-size:0.76rem;">Amen.</div>
+        </div>
+
+        <div class="back-panel" id="panel-bio">
+          <div class="back-bio-text">Simon the Zealot is one of the most mysterious of the Twelve. His epithet suggests he may have belonged to the Zealot movement — Jewish nationalists who opposed Roman occupation by any means necessary. That Jesus chose both Simon the Zealot and Matthew the tax collector (a Roman collaborator) for the same inner circle is a sign of the Kingdom's strange logic.</div>
+          <div class="back-bio-text">Simon appears only in the lists of the Twelve — his name, and then silence. He is said to have traveled to Egypt, Persia, and Armenia with Jude Thaddaeus. The two are often depicted together, and their feast is shared on October 28. He was martyred in Persia, possibly by being sawn in half — the saw is his symbol.</div>
+        </div>
+
+        <div class="back-panel" id="panel-facts">
+          <div class="back-fact-row"><span class="back-fact-label">Also Known</span><span class="back-fact-value">Simon Kananaios · Simon Zelotes</span></div>
+          <div class="back-fact-row"><div class="back-fact-divider"></div></div>
+          <div class="back-fact-row"><span class="back-fact-label">Key Text</span><span class="back-fact-value">Matt 10:4 · Mark 3:18 · Luke 6:15 · Acts 1:13</span></div>
+          <div class="back-fact-row"><div class="back-fact-divider"></div></div>
+          <div class="back-fact-row"><span class="back-fact-label">Patron of</span><span class="back-fact-value">Sawyers · Tanners · Glassworkers · Curriers</span></div>
+          <div class="back-fact-row"><div class="back-fact-divider"></div></div>
+          <div class="back-fact-row"><span class="back-fact-label">Symbols</span><span class="back-fact-value">Saw · Book · Fish · Oar</span></div>
+          <div class="back-fact-row"><div class="back-fact-divider"></div></div>
+          <div class="back-fact-row"><span class="back-fact-label">Martyrdom</span><span class="back-fact-value">c. 65 AD · Persia, possibly with Jude Thaddaeus</span></div>
+        </div>
+
+        <div class="back-footer">
+          <button class="flip-back-btn" style="background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:rgba(200,150,255,0.5);padding:0;transition:color 0.2s;" onmouseover="this.style.color='rgba(200,150,255,1)'" onmouseout="this.style.color='rgba(200,150,255,0.5)'">&#x21A9; Flip</button>
+          <span class="back-footer-set">CRUX · Saints · Series I</span>
+          <span class="back-footer-num">010 / 052</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<nav class="card-nav">
+  <a class="nav-btn" href="crux-james-less-flip.html">&#8592; James the Less</a>
+  <a class="nav-btn nav-home" href="crux-account.html">My Cards</a>
+  <a class="nav-btn" href="crux-jude-flip.html">Jude &#8594;</a>
+</nav>
+
+<script>
+const scene     = document.getElementById('cardScene');
+const hint      = document.getElementById('flipHint');
+const frontFace = document.getElementById('holoCard');
+const flipper   = scene.querySelector('.card-flipper');
+const backFace  = scene.querySelector('.card-back');
+let isFlipped   = false;
+
+const rainbow  = frontFace.querySelector('.holo-rainbow');
+const rainbow2 = frontFace.querySelector('.holo-rainbow-2');
+const specular = frontFace.querySelector('.holo-specular');
+
+function onTap(element, handler) {
+  element.addEventListener('touchend', function(e) {
+    e.preventDefault();
+    handler(e);
+  }, { passive: false });
+  element.addEventListener('click', handler);
+}
+
+onTap(frontFace, () => {
+  isFlipped = true;
+  flipper.style.transform = '';
+  scene.classList.add('flipped');
+  hint.textContent = 'Tap ↩ to flip back';
+  frontFace.style.pointerEvents = 'none';
+  setTimeout(() => { if (isFlipped) frontFace.style.opacity = '0'; }, 360);
+});
+
+onTap(scene.querySelector('.flip-back-btn'), () => {
+  isFlipped = false;
+  frontFace.style.opacity = '';
+  flipper.style.transform = '';
+  scene.classList.remove('flipped');
+  hint.textContent = 'Tap card to flip  ✦';
+  frontFace.style.pointerEvents = 'auto';
+  setTimeout(() => { if (!isFlipped) backFace.style.opacity = '0'; }, 360);
+  setTimeout(() => { if (!isFlipped) backFace.style.opacity = ''; }, 720);
+});
+
+scene.querySelectorAll('.back-tab').forEach(tab => {
+  onTap(tab, () => {
+    const target = tab.dataset.panel;
+    scene.querySelectorAll('.back-tab').forEach(t => t.classList.remove('active'));
+    scene.querySelectorAll('.back-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-' + target).classList.add('active');
+  });
+});
+
+scene.addEventListener('mousemove', (e) => {
+  if (isFlipped) return;
+  const rect = scene.getBoundingClientRect();
+  const x = (e.clientX - rect.left) / rect.width;
+  const y = (e.clientY - rect.top)  / rect.height;
+  if (x < 0 || x > 1 || y < 0 || y > 1) return;
+  const rotX = (y - 0.5) * -22;
+  const rotY = (x - 0.5) *  22;
+  flipper.style.transform = 'rotateX(' + rotX + 'deg) rotateY(' + rotY + 'deg)';
+  const rx = (x - 0.5) * 60;
+  const ry = (y - 0.5) * 60;
+  rainbow.style.transform  = 'translateX(' + rx + '%) translateY(' + ry + '%) rotate(0deg)';
+  rainbow2.style.transform = 'translateX(' + (-rx * 0.7) + '%) translateY(' + (-ry * 0.7) + '%)';
+  const sx = Math.round(x * 100);
+  const sy = Math.round(y * 100);
+  specular.style.background = 'radial-gradient(ellipse 55% 35% at ' + sx + '% ' + sy + '%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.05) 40%, transparent 70%)';
+});
+
+scene.addEventListener('mouseleave', () => {
+  if (!isFlipped) flipper.style.transform = '';
+  rainbow.style.transform  = '';
+  rainbow2.style.transform = '';
+  specular.style.background = '';
+});
+</script>
+
+</body>
+</html>

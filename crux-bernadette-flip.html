@@ -31,7 +31,6 @@ body {
   transition: opacity 0.4s;
 }
 
-/* ══ CARD NAVIGATION ══ */
 .card-nav {
   display: flex;
   align-items: center;
@@ -73,7 +72,6 @@ body {
   background: rgba(200,150,255,0.06);
 }
 
-/* ══ FLIP SCENE ══ */
 .card-scene {
   width: 300px;
   height: 420px;
@@ -103,7 +101,6 @@ body {
   -webkit-backface-visibility: hidden;
 }
 
-/* ══ FRONT FACE — HOLO ══ */
 .card-front {
   cursor: pointer;
   touch-action: manipulation;
@@ -305,7 +302,6 @@ body {
 .hc-bl { bottom:10px; left:10px; transform:scaleY(-1); }
 .hc-br { bottom:10px; right:10px; transform:scale(-1,-1); }
 
-/* ══ BACK FACE ══ */
 .card-back {
   transform: rotateY(180deg);
   background: #0c0a07;
@@ -445,7 +441,7 @@ body {
 <div class="card-scene" id="cardScene">
   <div class="card-flipper">
 
-    <!-- ══ FRONT FACE ══ -->
+    <!-- FRONT FACE -->
     <div class="card-face card-front" id="holoCard">
 
       <div class="holo-rarity-strip"></div>
@@ -499,14 +495,13 @@ body {
       </div>
     </div>
 
-    <!-- ══ BACK FACE ══ -->
+    <!-- BACK FACE -->
     <div class="card-face card-back">
       <div class="back-strip"></div>
       <div class="back-border"></div>
       <div class="back-foil"></div>
       <div class="back-vignette"></div>
 
-      <!-- CRUX watermark crest -->
       <div class="back-crest">
         <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="50" y1="5" x2="50" y2="95" stroke="white" stroke-width="3"/>
@@ -588,16 +583,14 @@ const rainbow  = frontFace.querySelector('.holo-rainbow');
 const rainbow2 = frontFace.querySelector('.holo-rainbow-2');
 const specular = frontFace.querySelector('.holo-specular');
 
-// Unified handler for both mouse click and touch — prevents ghost clicks on mobile
 function onTap(element, handler) {
   element.addEventListener('touchend', function(e) {
-    e.preventDefault(); // block the synthesized click that follows touchend
+    e.preventDefault();
     handler(e);
   }, { passive: false });
   element.addEventListener('click', handler);
 }
 
-// Tap front face → flip to back
 onTap(frontFace, () => {
   isFlipped = true;
   flipper.style.transform = '';
@@ -607,7 +600,6 @@ onTap(frontFace, () => {
   setTimeout(() => { if (isFlipped) frontFace.style.opacity = '0'; }, 360);
 });
 
-// Dedicated flip-back button
 onTap(scene.querySelector('.flip-back-btn'), () => {
   isFlipped = false;
   frontFace.style.opacity = '';
@@ -619,7 +611,6 @@ onTap(scene.querySelector('.flip-back-btn'), () => {
   setTimeout(() => { if (!isFlipped) backFace.style.opacity = ''; }, 720);
 });
 
-// Tab switching
 scene.querySelectorAll('.back-tab').forEach(tab => {
   onTap(tab, () => {
     const target = tab.dataset.panel;
@@ -630,7 +621,6 @@ scene.querySelectorAll('.back-tab').forEach(tab => {
   });
 });
 
-// Holo parallax on front face only (desktop)
 scene.addEventListener('mousemove', (e) => {
   if (isFlipped) return;
   const rect = scene.getBoundingClientRect();
