@@ -559,6 +559,30 @@ body::before {
 
 .ws-note strong { color: var(--text-primary); font-weight: 600; }
 
+.ws-phonetic {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-style: italic;
+  opacity: 0.85;
+}
+.ws-speak {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8rem;
+  padding: 0;
+  opacity: 0.4;
+  line-height: 1;
+  transition: opacity 0.15s;
+}
+.ws-speak:hover { opacity: 1; }
+.ws-inline-term {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.25rem;
+}
+
 /* PATRISTIC QUOTE */
 .patristic-quote {
   margin: 1.75rem 0;
@@ -1068,6 +1092,8 @@ body::before {
               <span class="ws-label">Word Study</span>
               <span class="ws-term">σάρξ</span>
               <span class="ws-transliteration">sarx</span>
+              <span class="ws-phonetic">SAR-ks</span>
+              <button class="ws-speak" onclick="speakGreek('sarks')" title="Hear pronunciation">🔊</button>
               <a class="ws-strongs" href="https://www.blueletterbible.org/lexicon/g4561" target="_blank" rel="noopener">G4561</a>
             </div>
             <div class="word-study-body">
@@ -1088,6 +1114,8 @@ body::before {
               <span class="ws-label">Word Study</span>
               <span class="ws-term">νόμος</span>
               <span class="ws-transliteration">nomos</span>
+              <span class="ws-phonetic">NO-mos</span>
+              <button class="ws-speak" onclick="speakGreek('nomos')" title="Hear pronunciation">🔊</button>
               <a class="ws-strongs" href="https://www.blueletterbible.org/lexicon/g3551" target="_blank" rel="noopener">G3551</a>
             </div>
             <div class="word-study-body">
@@ -1112,7 +1140,7 @@ body::before {
           </div>
 
           <div class="section-body">
-            <p>"Abba" is Aramaic, the intimate, familial word for father. Paul is quoting the prayer language of the earliest Christians, likely the very words used by Jesus in Gethsemane. The point is legal, not sentimental: <em>hyiotheisia</em>, the word translated "adoption as sons," was a Roman legal term for full inheritance rights. A slave could cry out. Only a son could inherit.</p>
+            <p>"Abba" is Aramaic, the intimate, familial word for father. Paul is quoting the prayer language of the earliest Christians, likely the very words used by Jesus in Gethsemane. The point is legal, not sentimental: <span class="ws-inline-term"><em>hyiotheisia</em><span class="ws-phonetic">hwee-oh-THAY-see-ah</span><button class="ws-speak" onclick="speakGreek('hyiotheesia')" title="Hear pronunciation">🔊</button></span>, the word translated "adoption as sons," was a Roman legal term for full inheritance rights. A slave could cry out. Only a son could inherit.</p>
           </div>
 
           <div class="patristic-quote">
@@ -1182,8 +1210,8 @@ body::before {
           </div>
 
           <div class="section-body">
-            <p>Paul does not deny suffering. He weighs it. The word translated "I consider" is the Greek <em>logizomai</em>, the same word Paul uses elsewhere for accounting. He is making a calculation, not a platitude. Suffering is real. Glory is more real. The comparison is lopsided, but Paul takes both sides seriously.</p>
-            <p>Then he does something unexpected: he brings the whole created order into the argument. Creation was not simply a backdrop for human drama. It was "subjected to futility" at the fall (v. 20) and now waits for the revealing of the sons of God. Paul captures this with the word <em>apokaradokia</em>, a vivid Greek compound meaning "craning the neck forward in eager expectation." The restoration of humanity is the restoration of creation.</p>
+            <p>Paul does not deny suffering. He weighs it. The word translated "I consider" is the Greek <span class="ws-inline-term"><em>logizomai</em><span class="ws-phonetic">loh-GID-zoh-my</span><button class="ws-speak" onclick="speakGreek('logidzomy')" title="Hear pronunciation">🔊</button></span>, the same word Paul uses elsewhere for accounting. He is making a calculation, not a platitude. Suffering is real. Glory is more real. The comparison is lopsided, but Paul takes both sides seriously.</p>
+            <p>Then he does something unexpected: he brings the whole created order into the argument. Creation was not simply a backdrop for human drama. It was "subjected to futility" at the fall (v. 20) and now waits for the revealing of the sons of God. Paul captures this with the word <span class="ws-inline-term"><em>apokaradokia</em><span class="ws-phonetic">ah-poh-kar-ah-DOH-kee-ah</span><button class="ws-speak" onclick="speakGreek('apokaradokia')" title="Hear pronunciation">🔊</button></span>, a vivid Greek compound meaning "craning the neck forward in eager expectation." The restoration of humanity is the restoration of creation.</p>
           </div>
 
           <div class="word-study">
@@ -1191,6 +1219,8 @@ body::before {
               <span class="ws-label">Word Study</span>
               <span class="ws-term">ἐλπίς</span>
               <span class="ws-transliteration">elpis</span>
+              <span class="ws-phonetic">EL-pis</span>
+              <button class="ws-speak" onclick="speakGreek('elpis')" title="Hear pronunciation">🔊</button>
               <a class="ws-strongs" href="https://www.blueletterbible.org/lexicon/g1680" target="_blank" rel="noopener">G1680</a>
             </div>
             <div class="word-study-body">
@@ -1292,6 +1322,8 @@ body::before {
               <span class="ws-label">Word Study</span>
               <span class="ws-term">ὑπερνικάω</span>
               <span class="ws-transliteration">hypernikáō</span>
+              <span class="ws-phonetic">hoo-per-ni-KAH-oh</span>
+              <button class="ws-speak" onclick="speakGreek('hypernikao')" title="Hear pronunciation">🔊</button>
               <a class="ws-strongs" href="https://www.blueletterbible.org/lexicon/g5245" target="_blank" rel="noopener">G5245</a>
             </div>
             <div class="word-study-body">
@@ -1445,6 +1477,15 @@ document.getElementById('contextToggle').addEventListener('click', function() {
   content.classList.toggle('open');
   chevron.classList.toggle('open');
 });
+
+// Greek pronunciation
+function speakGreek(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.rate = 0.82;
+  window.speechSynthesis.speak(utt);
+}
 
 // Commentary toggles
 function toggleCommentary(btn) {
