@@ -1719,16 +1719,19 @@
             'jacinta':      { name: 'St. Jacinta Marto',        rarity: 'uncommon',  url: null },
         };
 
-        function renderCardShowcase(cardsOwned) {
+        const ADMIN_UIDS = ['ratIiHiOj6Qnd2nHRvQsLBiQj953'];
+
+        function renderCardShowcase(cardsOwned, isAdmin) {
             const row = document.getElementById('cardRow');
             const countEl = document.getElementById('cardCount');
-            if (!cardsOwned || cardsOwned.length === 0) {
+            const displayIds = isAdmin ? Object.keys(CARD_CATALOG) : cardsOwned;
+            if (!displayIds || displayIds.length === 0) {
                 row.innerHTML = '<div class="no-data" style="padding:1rem 0;">No cards yet — keep exploring to earn your first card.</div>';
                 countEl.textContent = '0 cards';
                 return;
             }
-            countEl.textContent = cardsOwned.length + ' card' + (cardsOwned.length !== 1 ? 's' : '');
-            const cardEls = cardsOwned.map(id => {
+            countEl.textContent = displayIds.length + ' card' + (displayIds.length !== 1 ? 's' : '') + (isAdmin ? ' (admin view)' : '');
+            const cardEls = displayIds.map(id => {
                 const card = CARD_CATALOG[id] || { name: id, rarity: 'common', url: null };
                 const isLegendary = card.rarity === 'legendary';
                 const tag = card.url ? 'a' : 'div';
@@ -1761,7 +1764,7 @@
                     data = snap.data();
                 }
 
-                renderCardShowcase(data.cardsOwned || []);
+                renderCardShowcase(data.cardsOwned || [], ADMIN_UIDS.includes(userId));
 
                 if (data.alphaPackGifted && data.alphaPackNotified !== true) {
                     showGiftBanner(userId);
