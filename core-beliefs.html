@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vatican II — Core Beliefs | CRUX</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, doc, getDoc, updateDoc, increment } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+            authDomain: "crux-faith-formation.firebaseapp.com",
+            projectId: "crux-faith-formation",
+            storageBucket: "crux-faith-formation.firebasestorage.app",
+            messagingSenderId: "838141015985",
+            appId: "1:838141015985:web:2655e570663e182d75ef90"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        window.db = db;
+        window.fbDoc = doc;
+        window.fbUpdateDoc = updateDoc;
+        window.fbIncrement = increment;
+
+        onAuthStateChanged(auth, async (user) => {
+            if (user) {
+                window.currentUid = user.uid;
+                const [teacherSnap, progressSnap] = await Promise.all([
+                    getDoc(doc(db, 'teachers', user.uid)),
+                    getDoc(doc(db, 'userProgress', user.uid))
+                ]);
+                const isTeacher = teacherSnap.exists();
+                const alreadyClaimed = !!(progressSnap.exists() && progressSnap.data()?.completedModules?.vaticanII);
+                if (typeof window.onAuthResolved === 'function') {
+                    window.onAuthResolved(user.uid, isTeacher, alreadyClaimed);
+                }
+            } else {
+                window.currentUid = null;
+                if (typeof window.onAuthResolved === 'function') {
+                    window.onAuthResolved(null, false, false);
+                }
+            }
+        });
+    </script>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Georgia', serif;
+            background: #f5f0e8;
+            color: #0f1f3d;
+            min-height: 100vh;
+        }
+
+        header {
+            background: #0f1f3d;
+            border-bottom: 1px solid rgba(201,168,76,0.2);
+            padding: 0.85rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: #C9A84C;
+            letter-spacing: 4px;
+            text-decoration: none;
+        }
+        .back-link {
+            color: rgba(255,255,255,0.5);
+            font-size: 0.82rem;
+            font-weight: 500;
+            cursor: pointer;
+            background: none;
+            border: none;
+            transition: color 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .back-link:hover { color: #C9A84C; }
+
+        main {
+            max-width: 680px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem 4rem;
+        }
+
+        /* ── Intro ── */
+        .belief-intro {
+            text-align: center;
+            padding: 2.5rem 1rem 2rem;
+            border-bottom: 1px solid rgba(201,168,76,0.2);
+            margin-bottom: 1.5rem;
+        }
+        .belief-tag {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: #C9A84C;
+            display: block;
+            margin-bottom: 0.75rem;
+        }
+        .belief-intro h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            color: #0f1f3d;
+            margin-bottom: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+        .belief-subtitle {
+            font-size: 1rem;
+            line-height: 1.7;
+            color: #555;
+            font-style: italic;
+            max-width: 520px;
+            margin: 0 auto;
+        }
+
+        /* ── View toggle ── */
+        .view-toggle {
+            display: flex;
+            background: #0f1f3d;
+            border-radius: 6px;
+            padding: 3px;
+            margin: 0 auto 1.5rem;
+            border: 1px solid rgba(201,168,76,0.25);
+            width: fit-content;
+        }
+        .toggle-btn {
+            background: transparent;
+            color: rgba(201,168,76,0.6);
+            border: none;
+            border-radius: 4px;
+            padding: 8px 20px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.68rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            font-weight: 400;
+            transition: all 0.2s;
+        }
+        .toggle-btn.active {
+            background: #C9A84C;
+            color: #0f1f3d;
+            font-weight: 700;
+        }
+
+        /* ── Shared card shell ── */
+        .hub-shell, .module-shell {
+            background: #fff;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 8px 40px rgba(15,31,61,0.13), 0 2px 8px rgba(15,31,61,0.07);
+            border: 1px solid rgba(201,168,76,0.2);
+        }
+
+        /* ── Teacher Hub ── */
+        .hub-header {
+            background: #0f1f3d;
+            padding: 2rem 2rem 1.5rem;
+            border-bottom: 3px solid #C9A84C;
+            position: relative;
+            overflow: hidden;
+        }
+        .hub-header::before {
+            content: '';
+            position: absolute;
+            top: -40px; right: -40px;
+            width: 200px; height: 200px;
+            border: 1px solid rgba(201,168,76,0.12);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .hub-header::after {
+            content: '';
+            position: absolute;
+            top: -20px; right: -20px;
+            width: 120px; height: 120px;
+            border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .resource-badge {
+            display: inline-block;
+            background: #C9A84C;
+            color: #0f1f3d;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 2px;
+            padding: 3px 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+            position: relative;
+        }
+        .hub-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 0.25rem;
+            position: relative;
+        }
+        .hub-subtitle {
+            color: #C9A84C;
+            font-size: 0.82rem;
+            font-style: italic;
+            position: relative;
+        }
+
+        .hub-intro-strip {
+            background: #ede6d6;
+            border-bottom: 1px solid rgba(201,168,76,0.22);
+            padding: 0.9rem 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .hub-intro-strip p { margin: 0; font-size: 0.82rem; line-height: 1.6; color: #444; }
+
+        .doc-tabs {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            border-bottom: 2px solid rgba(201,168,76,0.18);
+            background: #fff;
+        }
+        .doc-tab {
+            background: transparent;
+            border: none;
+            border-right: 1px solid rgba(201,168,76,0.12);
+            padding: 0.85rem 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.2rem;
+        }
+        .doc-tab:last-child { border-right: none; }
+        .tab-abbr {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 0.7rem;
+            color: #0f1f3d;
+            transition: color 0.2s;
+        }
+        .tab-tag {
+            font-size: 0.52rem;
+            font-family: 'DM Mono', monospace;
+            letter-spacing: 0.8px;
+            color: #888;
+            text-transform: uppercase;
+            transition: color 0.2s;
+        }
+
+        .doc-detail { padding: 1.75rem 2rem; }
+
+        .doc-title-row {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .doc-color-bar { width: 6px; min-height: 52px; border-radius: 3px; flex-shrink: 0; margin-top: 4px; }
+        .doc-title-text { flex: 1; }
+        .doc-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 900; margin-bottom: 0.2rem; }
+        .doc-subtitle-text { margin: 0; font-size: 0.8rem; color: #666; font-style: italic; }
+        .doc-badge {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 4px;
+            border: 1px solid;
+            font-weight: 700;
+            white-space: nowrap;
+            flex-shrink: 0;
+            margin-top: 4px;
+        }
+
+        .box-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 0.4rem;
+        }
+        .gold-label { color: #C9A84C; }
+
+        .key-idea-box {
+            border: 1px solid;
+            border-left-width: 4px;
+            border-radius: 6px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.25rem;
+        }
+        .key-idea-text { margin: 0; font-size: 0.87rem; line-height: 1.7; color: #0f1f3d; font-style: italic; }
+
+        .classroom-box {
+            background: #ede6d6;
+            border-radius: 6px;
+            padding: 1rem 1.25rem;
+            margin-bottom: 1.25rem;
+            border: 1px solid rgba(201,168,76,0.18);
+        }
+        .classroom-text { margin: 0; font-size: 0.82rem; color: #444; line-height: 1.6; }
+
+        .qa-box {
+            background: #0f1f3d;
+            border-radius: 6px;
+            padding: 1rem 1.25rem;
+        }
+        .student-q {
+            background: rgba(255,255,255,0.07);
+            border-radius: 4px;
+            padding: 0.6rem 0.9rem;
+            margin-bottom: 0.6rem;
+            border-left: 3px solid #C9A84C;
+            font-size: 0.82rem;
+            color: #ddd;
+            font-style: italic;
+        }
+        .faithful-answer { margin: 0; font-size: 0.82rem; color: #fff; line-height: 1.7; }
+
+        .hub-footer {
+            background: #ede6d6;
+            border-top: 1px solid rgba(201,168,76,0.22);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+        }
+        .hub-footer-note { font-size: 0.68rem; color: #888; font-family: 'DM Mono', monospace; }
+        .btn-outline {
+            background: #0f1f3d;
+            color: #C9A84C;
+            border: 1px solid #C9A84C;
+            padding: 8px 18px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            cursor: pointer;
+            border-radius: 3px;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        /* ── Student Module ── */
+        .module-hero {
+            background: linear-gradient(135deg, #0f1f3d 0%, #1a2f5a 60%, #0a1628 100%);
+            padding: 2.25rem 2rem 1.75rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .hero-ring {
+            position: absolute;
+            border: 1px solid #C9A84C;
+            border-radius: 50%;
+            pointer-events: none;
+        }
+        .hero-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 3px;
+            color: #C9A84C;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+            position: relative;
+        }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 900;
+            color: #fff;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+            position: relative;
+        }
+        .hero-desc {
+            color: rgba(201,168,76,0.8);
+            font-size: 0.82rem;
+            font-style: italic;
+            margin-bottom: 1.25rem;
+            max-width: 340px;
+            line-height: 1.6;
+            position: relative;
+        }
+        .step-pills { display: flex; gap: 0.45rem; flex-wrap: wrap; position: relative; }
+        .step-pill {
+            background: transparent;
+            border: 1px solid rgba(201,168,76,0.27);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 0.62rem;
+            font-family: 'DM Mono', monospace;
+            color: rgba(201,168,76,0.45);
+            cursor: pointer;
+            letter-spacing: 0.3px;
+            transition: all 0.2s;
+        }
+        .step-pill.active { background: #C9A84C; border-color: #C9A84C; color: #0f1f3d; font-weight: 700; }
+        .step-pill.done { border-color: #C9A84C; color: #C9A84C; }
+
+        .step-content { min-height: 320px; }
+
+        .step-panel { padding: 1.75rem 2rem; background: #fff; }
+        .step-heading {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 900;
+            margin: 0 0 0.2rem;
+            color: #0f1f3d;
+        }
+        .step-ref { font-size: 0.78rem; color: #888; font-style: italic; margin: 0 0 1.25rem; }
+
+        .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; margin-bottom: 1.25rem; }
+
+        .parchment-card {
+            background: #ede6d6;
+            border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 8px;
+            padding: 0.9rem 1rem;
+        }
+        .parchment-icon { font-size: 1.35rem; margin-bottom: 0.45rem; }
+        .parchment-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.83rem; margin-bottom: 0.3rem; color: #0f1f3d; }
+        .parchment-text { margin: 0; font-size: 0.74rem; color: #555; line-height: 1.6; }
+
+        .callout-navy {
+            background: #0f1f3d;
+            border-radius: 8px;
+            padding: 0.9rem 1.25rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+        .callout-icon { font-size: 1.25rem; flex-shrink: 0; margin-top: 1px; }
+        .callout-navy p { margin: 0; font-size: 0.82rem; color: #ddd; line-height: 1.6; }
+        .gold-text { color: #C9A84C; }
+
+        .unchanged-list { display: flex; flex-direction: column; gap: 0.7rem; }
+        .unchanged-item {
+            display: flex;
+            gap: 1rem;
+            align-items: flex-start;
+            background: #ede6d6;
+            border-radius: 8px;
+            padding: 0.9rem 1.1rem;
+            border: 1px solid rgba(201,168,76,0.18);
+        }
+        .unchanged-num {
+            width: 30px; height: 30px;
+            border-radius: 50%;
+            background: #0f1f3d;
+            color: #C9A84C;
+            display: flex; align-items: center; justify-content: center;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem; font-weight: 700;
+            flex-shrink: 0;
+        }
+        .unchanged-body { flex: 1; }
+        .unchanged-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.85rem; color: #0f1f3d; margin-bottom: 0.22rem; }
+        .unchanged-desc { margin: 0 0 0.4rem; font-size: 0.74rem; color: #555; line-height: 1.6; }
+        .ref-badge {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem; letter-spacing: 1px; text-transform: uppercase;
+            background: rgba(201,168,76,0.12); color: #C9A84C;
+            border: 1px solid rgba(201,168,76,0.33); padding: 2px 8px; border-radius: 4px; font-weight: 700;
+        }
+
+        .timeline { position: relative; padding-left: 1.5rem; margin-bottom: 1.5rem; }
+        .timeline-line {
+            position: absolute; left: 7px; top: 8px; bottom: 8px;
+            width: 2px;
+            background: linear-gradient(to bottom, #C9A84C, rgba(201,168,76,0.18));
+        }
+        .timeline-item { display: flex; gap: 0.85rem; margin-bottom: 0.85rem; position: relative; }
+        .timeline-dot {
+            width: 16px; height: 16px; border-radius: 50%;
+            background: #0f1f3d; border: 2px solid rgba(201,168,76,0.33);
+            flex-shrink: 0; margin-top: 3px;
+        }
+        .timeline-dot.hl { background: #C9A84C; border-color: #C9A84C; box-shadow: 0 0 12px rgba(201,168,76,0.5); }
+        .timeline-card {
+            flex: 1; background: #ede6d6;
+            border: 1px solid rgba(201,168,76,0.18); border-radius: 6px; padding: 0.6rem 0.9rem;
+        }
+        .timeline-card.hl { background: rgba(201,168,76,0.09); border-color: #C9A84C; }
+        .timeline-meta { display: flex; gap: 0.55rem; align-items: baseline; margin-bottom: 0.2rem; flex-wrap: wrap; }
+        .tl-year { font-family: 'DM Mono', monospace; font-size: 0.62rem; color: #888; font-weight: 700; }
+        .tl-year.gold { color: #C9A84C; }
+        .tl-label { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.8rem; color: #0f1f3d; }
+        .tl-badge {
+            font-family: 'DM Mono', monospace; font-size: 0.52rem; letter-spacing: 1px; text-transform: uppercase;
+            background: rgba(201,168,76,0.12); color: #C9A84C;
+            border: 1px solid rgba(201,168,76,0.33); padding: 1px 6px; border-radius: 3px; font-weight: 700;
+        }
+        .tl-detail { margin: 0; font-size: 0.7rem; color: #555; line-height: 1.55; }
+
+        .const-card {
+            cursor: pointer; border-radius: 10px; overflow: hidden;
+            border: 2px solid; transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .card-front { padding: 1.25rem 1rem; text-align: center; }
+        .card-symbol { font-size: 2rem; margin-bottom: 0.45rem; }
+        .card-abbr { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.4rem; color: #C9A84C; margin-bottom: 0.2rem; }
+        .card-rarity { font-family: 'DM Mono', monospace; font-size: 0.5rem; letter-spacing: 1.5px; color: rgba(255,255,255,0.52); text-transform: uppercase; }
+        .card-back { background: #ede6d6; padding: 1rem 0.9rem; }
+        .card-back-tag { font-family: 'DM Mono', monospace; font-size: 0.5rem; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 0.35rem; font-weight: 700; }
+        .card-back-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.77rem; color: #0f1f3d; margin-bottom: 0.45rem; line-height: 1.3; }
+        .card-back-rarity { font-family: 'DM Mono', monospace; font-size: 0.5rem; letter-spacing: 1px; }
+
+        .xp-bar {
+            margin-top: 1.25rem; background: #0f1f3d; border-radius: 8px;
+            padding: 0.9rem 1.25rem;
+            display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+        }
+        .xp-label { font-family: 'DM Mono', monospace; font-size: 0.58rem; letter-spacing: 2px; color: #C9A84C; text-transform: uppercase; margin-bottom: 0.22rem; }
+        .xp-desc { margin: 0; font-size: 0.74rem; color: #ddd; }
+        .claim-btn {
+            background: #C9A84C; color: #0f1f3d; border: none;
+            padding: 10px 18px;
+            font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 1.5px;
+            text-transform: uppercase; cursor: pointer; border-radius: 4px; font-weight: 700;
+            white-space: nowrap; transition: opacity 0.2s;
+        }
+        .claim-btn:hover:not(:disabled) { opacity: 0.88; }
+        .claim-btn:disabled { opacity: 0.55; cursor: default; }
+
+        .step-nav {
+            background: #ede6d6; border-top: 1px solid rgba(201,168,76,0.22);
+            padding: 0.9rem 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .nav-btn {
+            background: transparent; border: 1px solid rgba(201,168,76,0.33);
+            color: #0f1f3d; padding: 8px 16px; cursor: pointer;
+            font-family: 'DM Mono', monospace; font-size: 0.62rem; letter-spacing: 1px;
+            border-radius: 3px; transition: all 0.2s;
+        }
+        .nav-btn:disabled { opacity: 0.33; cursor: default; }
+        .nav-btn.next:not(:disabled) { background: #0f1f3d; color: #C9A84C; border-color: #0f1f3d; }
+        .nav-dots { display: flex; gap: 6px; align-items: center; }
+        .nav-dot { width: 6px; height: 6px; border-radius: 3px; background: rgba(201,168,76,0.25); transition: all 0.2s; }
+        .nav-dot.active { width: 20px; background: #C9A84C; }
+
+        /* ── Related footer ── */
+        .related-footer {
+            text-align: center; padding: 2rem 0;
+            border-top: 1px solid rgba(201,168,76,0.15); margin-top: 3rem;
+        }
+        .related-label {
+            font-family: 'DM Mono', monospace; font-size: 0.62rem;
+            letter-spacing: 2px; text-transform: uppercase; color: #888; margin-bottom: 0.75rem;
+        }
+        .related-link {
+            display: inline-block; color: #0f1f3d; font-size: 0.85rem;
+            text-decoration: none; border: 1px solid rgba(201,168,76,0.33);
+            padding: 0.6rem 1.25rem; border-radius: 4px; transition: all 0.2s;
+            font-family: 'Inter', sans-serif;
+        }
+        .related-link:hover { background: #0f1f3d; color: #C9A84C; }
+
+        /* ── Responsive ── */
+        @media (max-width: 540px) {
+            main { padding: 1.5rem 1rem 3rem; }
+            .hub-header, .doc-detail, .step-panel { padding: 1.5rem 1.25rem; }
+            .hub-intro-strip, .hub-footer, .step-nav { padding: 0.9rem 1.25rem; }
+            .module-hero { padding: 1.75rem 1.25rem 1.5rem; }
+            .card-grid { grid-template-columns: 1fr; }
+            .doc-tabs { grid-template-columns: repeat(2, 1fr); }
+            .view-toggle { width: 100%; }
+            .toggle-btn { flex: 1; text-align: center; }
+            .xp-bar { flex-direction: column; align-items: flex-start; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="logo">CRUX</a>
+    <button class="back-link" onclick="window.location.href='index.html'">&#8592; Back to CRUX</button>
+</header>
+
+<main>
+    <section id="vatican-ii">
+        <div class="belief-intro">
+            <span class="belief-tag">Church History &middot; Council</span>
+            <h1>Vatican II</h1>
+            <p class="belief-subtitle">Vatican II wasn't a break from tradition. It was the Church returning to its deepest roots &mdash; and the clearest modern proof that the same Church the Apostles built is still here today.</p>
+        </div>
+
+        <div class="view-toggle" id="vatToggle" style="display:none">
+            <button class="toggle-btn active" id="tbStudent" onclick="setVatView('student')">&#10022; Student View</button>
+            <button class="toggle-btn" id="tbTeacher" onclick="setVatView('teacher')">&#127891; Teacher Hub</button>
+        </div>
+
+        <div id="vatContent"></div>
+    </section>
+
+    <footer class="related-footer">
+        <div class="related-label">Explore More Core Beliefs</div>
+        <a href="index.html#beliefs" class="related-link">&#8592; Back to All Beliefs</a>
+    </footer>
+</main>
+
+<script>
+    // ── State ──
+    let vatView = 'student';
+    let docTab = 0;
+    let step = 0;
+    let flippedCard = null;
+    let xpClaimed = false;
+
+    // ── Data ──
+    const teacherDocs = [
+        {
+            abbr: 'SC',
+            title: 'Sacrosanctum Concilium',
+            subtitle: 'Constitution on the Sacred Liturgy',
+            tag: 'Liturgy',
+            color: '#7c4a2d',
+            classroomUse: 'Use when teaching the Mass, sacraments, or worship practices.',
+            keyIdea: 'Active, conscious participation of all the faithful in liturgy is the primary goal of reform.',
+            studentQ: 'Why do we say Mass in English?',
+            answer: "Because Vatican II restored the early Church’s practice of worshipping in the language of the people — just as the first Christians did."
+        },
+        {
+            abbr: 'LG',
+            title: 'Lumen Gentium',
+            subtitle: 'Dogmatic Constitution on the Church',
+            tag: 'Ecclesiology',
+            color: '#1a4a6b',
+            classroomUse: 'Use when teaching the role of laity, bishops, or the nature of the Church.',
+            keyIdea: 'The Church is the whole People of God — not just clergy — each called to holiness and mission.',
+            studentQ: 'Is being Catholic just about going to Mass?',
+            answer: "No — Vatican II reminded us that every baptized person shares in Christ’s priestly, prophetic, and kingly mission."
+        },
+        {
+            abbr: 'GS',
+            title: 'Gaudium et Spes',
+            subtitle: 'Pastoral Constitution on the Church in the Modern World',
+            tag: 'Social Teaching',
+            color: '#2d6b3a',
+            classroomUse: "Use when teaching human dignity, justice, or the Church’s role in society.",
+            keyIdea: "The Church reads the ‘signs of the times’ and engages the world rather than retreating from it.",
+            studentQ: 'Does the Church care about things happening in the world?',
+            answer: "Deeply. Vatican II declared that the joys and hopes of humanity are the joys and hopes of the Church."
+        },
+        {
+            abbr: 'DV',
+            title: 'Dei Verbum',
+            subtitle: 'Dogmatic Constitution on Divine Revelation',
+            tag: 'Scripture & Tradition',
+            color: '#5c3a6b',
+            classroomUse: 'Use when teaching Scripture, Tradition, or how we know what God has revealed.',
+            keyIdea: 'Scripture and Tradition together form one sacred deposit of the Word of God entrusted to the Church.',
+            studentQ: 'Why do Catholics use Tradition AND the Bible?',
+            answer: "Because that’s how the Apostles handed on the faith — through living witness and written word together."
+        }
+    ];
+
+    const timelineItems = [
+        { year: '~AD 50',     label: 'The Early Church',       detail: 'Worship in vernacular languages, communal Eucharist, active participation of all baptized.', hl: false },
+        { year: 'AD 325',     label: 'Council of Nicaea',      detail: 'Bishops gather to define the nature of Christ. The conciliar tradition begins.', hl: false },
+        { year: 'AD 400s',    label: 'Latin Becomes Dominant', detail: 'As the Roman Empire spreads Christianity, Latin becomes the liturgical language of the West.', hl: false },
+        { year: 'AD 1054',    label: 'Great Schism',           detail: 'East and West divide. The Church reflects on unity and authority.', hl: false },
+        { year: 'AD 1545',    label: 'Council of Trent',       detail: 'Response to the Reformation. Clarifies doctrine, standardizes the Latin Mass.', hl: false },
+        { year: '1962–1965', label: 'Vatican II',         detail: 'Returns to the sources. Restores active participation, vernacular Mass — echoing the early Church.', hl: true },
+        { year: 'Today',      label: 'Same Church',            detail: 'The Eucharist, apostolic succession, Scripture and Tradition — unchanged since the Apostles.', hl: false }
+    ];
+
+    const constitutionCards = [
+        { title: 'Sacrosanctum Concilium', abbr: 'SC', rarity: 'Rare',      color: '#7c4a2d', symbol: '🕊' },
+        { title: 'Lumen Gentium',          abbr: 'LG', rarity: 'Epic',      color: '#1a4a6b', symbol: '⛪' },
+        { title: 'Dei Verbum',             abbr: 'DV', rarity: 'Rare',      color: '#5c3a6b', symbol: '📖' },
+        { title: 'Gaudium et Spes',        abbr: 'GS', rarity: 'Legendary', color: '#2d6b3a', symbol: '🌍' }
+    ];
+
+    // ── Global handlers ──
+    window.setVatView = function(v) {
+        vatView = v;
+        document.getElementById('tbStudent').classList.toggle('active', v === 'student');
+        document.getElementById('tbTeacher').classList.toggle('active', v === 'teacher');
+        renderContent();
+    };
+
+    window.setDocTab = function(i) {
+        docTab = i;
+        renderContent();
+    };
+
+    window.setStep = function(n) {
+        if (n < 0 || n > 3) return;
+        step = n;
+        flippedCard = null;
+        renderContent();
+    };
+
+    window.toggleCard = function(i) {
+        flippedCard = flippedCard === i ? null : i;
+        renderContent();
+    };
+
+    window.claimXP = async function() {
+        if (xpClaimed) return;
+        if (!window.currentUid) {
+            alert('Sign in to claim XP.');
+            return;
+        }
+        try {
+            await window.fbUpdateDoc(window.fbDoc(window.db, 'userProgress', window.currentUid), {
+                xp: window.fbIncrement(150),
+                'unlockedPacks.councilPack': true,
+                'completedModules.vaticanII': true
+            });
+            xpClaimed = true;
+            renderContent();
+        } catch (e) {
+            console.error('XP claim failed:', e);
+        }
+    };
+
+    window.onAuthResolved = function(uid, isTeacher, alreadyClaimed) {
+        xpClaimed = alreadyClaimed;
+        if (isTeacher) {
+            document.getElementById('vatToggle').style.display = 'flex';
+        }
+        renderContent();
+    };
+
+    // ── Render ──
+    function renderContent() {
+        document.getElementById('vatContent').innerHTML =
+            vatView === 'teacher' ? renderTeacherHub() : renderStudentModule();
+    }
+
+    function renderTeacherHub() {
+        const d = teacherDocs[docTab];
+        const tabs = teacherDocs.map((t, i) => {
+            const active = i === docTab;
+            const bg = active ? 'background:' + t.color + ';' : '';
+            const abbrColor = active ? 'color:#fff;' : '';
+            const tagColor = active ? 'color:#C9A84C;' : '';
+            return '<button class="doc-tab" style="' + bg + '" onclick="setDocTab(' + i + ')">' +
+                '<span class="tab-abbr" style="' + abbrColor + '">' + t.abbr + '</span>' +
+                '<span class="tab-tag" style="' + tagColor + '">' + t.tag + '</span>' +
+                '</button>';
+        }).join('');
+
+        return '<div class="hub-shell">' +
+            '<div class="hub-header">' +
+                '<span class="resource-badge">Teacher Resource</span>' +
+                '<h2 class="hub-title">Teaching Vatican II</h2>' +
+                '<p class="hub-subtitle">Confidence, context, and classroom tools for educators</p>' +
+            '</div>' +
+            '<div class="hub-intro-strip">' +
+                '<span style="font-size:1.2rem;flex-shrink:0">📋</span>' +
+                '<p>Each of the four Constitutions is a cornerstone of Vatican II. Select one below to see its classroom application, key teaching idea, and how to answer common student questions faithfully.</p>' +
+            '</div>' +
+            '<div class="doc-tabs">' + tabs + '</div>' +
+            '<div class="doc-detail">' +
+                '<div class="doc-title-row">' +
+                    '<div class="doc-color-bar" style="background:' + d.color + '"></div>' +
+                    '<div class="doc-title-text">' +
+                        '<div class="doc-name" style="color:' + d.color + '">' + d.title + '</div>' +
+                        '<p class="doc-subtitle-text">' + d.subtitle + '</p>' +
+                    '</div>' +
+                    '<span class="doc-badge" style="background:' + d.color + '22;color:' + d.color + ';border-color:' + d.color + '55">' + d.tag + '</span>' +
+                '</div>' +
+                '<div class="key-idea-box" style="background:' + d.color + '0d;border-color:' + d.color + '33;border-left-color:' + d.color + '">' +
+                    '<div class="box-label" style="color:' + d.color + '">Core Teaching Idea</div>' +
+                    '<p class="key-idea-text">“' + d.keyIdea + '”</p>' +
+                '</div>' +
+                '<div class="classroom-box">' +
+                    '<div class="box-label gold-label">📚 When to Use in the Classroom</div>' +
+                    '<p class="classroom-text">' + d.classroomUse + '</p>' +
+                '</div>' +
+                '<div class="qa-box">' +
+                    '<div class="box-label gold-label">💬 Common Student Question</div>' +
+                    '<div class="student-q">“' + d.studentQ + '”</div>' +
+                    '<div class="box-label gold-label" style="margin-top:0.75rem">Faithful Answer</div>' +
+                    '<p class="faithful-answer">' + d.answer + '</p>' +
+                '</div>' +
+            '</div>' +
+            '<div class="hub-footer">' +
+                '<span class="hub-footer-note">Available in Teacher Dashboard → Vatican II Resources</span>' +
+                // TODO: replace # with real PDF path when created
+                '<a href="#" class="btn-outline" target="_blank">Download Discussion Guide →</a>' +
+            '</div>' +
+        '</div>';
+    }
+
+    function renderStudentModule() {
+        const stepLabels = ['The Early Church', 'What Never Changes', 'Vatican II', 'Collect the Cards'];
+        const pills = stepLabels.map((s, i) => {
+            const cls = i === step ? 'step-pill active' : i < step ? 'step-pill done' : 'step-pill';
+            return '<button class="' + cls + '" onclick="setStep(' + i + ')">' + (i + 1) + '. ' + s + '</button>';
+        }).join('');
+
+        const dots = [0,1,2,3].map(i =>
+            '<div class="nav-dot' + (i === step ? ' active' : '') + '"></div>'
+        ).join('');
+
+        let content = '';
+        if (step === 0) content = renderStep0();
+        else if (step === 1) content = renderStep1();
+        else if (step === 2) content = renderStep2();
+        else content = renderStep3();
+
+        return '<div class="module-shell">' +
+            '<div class="module-hero">' +
+                '<div class="hero-ring" style="width:200px;height:200px;bottom:-100px;right:-100px;opacity:.08"></div>' +
+                '<div class="hero-ring" style="width:140px;height:140px;bottom:-70px;right:-70px;opacity:.14"></div>' +
+                '<div class="hero-ring" style="width:90px;height:90px;bottom:-45px;right:-45px;opacity:.22"></div>' +
+                '<div class="hero-label">Student Module · Church History</div>' +
+                '<h2 class="hero-title">Same Church,<br>Every Century</h2>' +
+                '<p class="hero-desc">How Vatican II shows the Church returning to its roots — not abandoning them.</p>' +
+                '<div class="step-pills">' + pills + '</div>' +
+            '</div>' +
+            '<div class="step-content">' + content + '</div>' +
+            '<div class="step-nav">' +
+                '<button class="nav-btn" onclick="setStep(' + (step - 1) + ')"' + (step === 0 ? ' disabled' : '') + '>← Previous</button>' +
+                '<div class="nav-dots">' + dots + '</div>' +
+                '<button class="nav-btn next" onclick="setStep(' + (step + 1) + ')"' + (step === 3 ? ' disabled' : '') + '>Next →</button>' +
+            '</div>' +
+        '</div>';
+    }
+
+    function renderStep0() {
+        const items = [
+            { icon: '🗣', title: 'Vernacular Worship',    text: 'Early Christians prayed and celebrated the Eucharist in Greek and Aramaic — the languages of the people.' },
+            { icon: '🍞', title: 'The Breaking of Bread', text: 'Every Sunday, communities gathered for the Eucharist. It was central, communal, and participatory.' },
+            { icon: '✉️', title: 'Letters & Tradition',   text: "Paul’s letters and oral tradition passed on the faith together — long before the New Testament canon was settled." },
+            { icon: '⛪',       title: 'Apostolic Leadership',  text: 'Bishops traced their authority directly to the Apostles. That chain has never broken.' }
+        ];
+        const cards = items.map(item =>
+            '<div class="parchment-card">' +
+                '<div class="parchment-icon">' + item.icon + '</div>' +
+                '<div class="parchment-title">' + item.title + '</div>' +
+                '<p class="parchment-text">' + item.text + '</p>' +
+            '</div>'
+        ).join('');
+        return '<div class="step-panel">' +
+            '<h3 class="step-heading">What Did the Early Church Look Like?</h3>' +
+            '<p class="step-ref">Acts of the Apostles · 1st–3rd Century</p>' +
+            '<div class="card-grid">' + cards + '</div>' +
+            '<div class="callout-navy">' +
+                '<span class="callout-icon">💡</span>' +
+                '<p><strong class="gold-text">Remember:</strong> The Church you walk into on Sunday is the same Church these early Christians built. The faces change. The faith doesn’t.</p>' +
+            '</div>' +
+        '</div>';
+    }
+
+    function renderStep1() {
+        const items = [
+            { anchor: 'The Eucharist',         desc: 'Jesus said “Do this in memory of me.” Every Mass since has been that same act — same sacrifice, same Real Presence.', ref: 'Luke 22:19' },
+            { anchor: 'Apostolic Succession',  desc: 'Bishops today can trace an unbroken line of ordination back to the Apostles themselves.', ref: 'Acts 1:20–26' },
+            { anchor: 'Scripture & Tradition', desc: 'The Church has always held both as the single source of divine revelation — never Scripture alone.', ref: '2 Thess 2:15' },
+            { anchor: 'The Creed',             desc: 'The Nicene Creed (AD 325) is still prayed every Sunday. Word for word. Century to century.', ref: 'Council of Nicaea' }
+        ];
+        const rows = items.map((item, i) =>
+            '<div class="unchanged-item">' +
+                '<div class="unchanged-num">' + (i + 1) + '</div>' +
+                '<div class="unchanged-body">' +
+                    '<div class="unchanged-title">' + item.anchor + '</div>' +
+                    '<p class="unchanged-desc">' + item.desc + '</p>' +
+                    '<span class="ref-badge">' + item.ref + '</span>' +
+                '</div>' +
+            '</div>'
+        ).join('');
+        return '<div class="step-panel">' +
+            '<h3 class="step-heading">What Has Never Changed?</h3>' +
+            '<div class="unchanged-list">' + rows + '</div>' +
+        '</div>';
+    }
+
+    function renderStep2() {
+        const tl = timelineItems.map(item =>
+            '<div class="timeline-item">' +
+                '<div class="timeline-dot' + (item.hl ? ' hl' : '') + '"></div>' +
+                '<div class="timeline-card' + (item.hl ? ' hl' : '') + '">' +
+                    '<div class="timeline-meta">' +
+                        '<span class="tl-year' + (item.hl ? ' gold' : '') + '">' + item.year + '</span>' +
+                        '<span class="tl-label">' + item.label + '</span>' +
+                        (item.hl ? '<span class="tl-badge">Vatican II</span>' : '') +
+                    '</div>' +
+                    '<p class="tl-detail">' + item.detail + '</p>' +
+                '</div>' +
+            '</div>'
+        ).join('');
+        return '<div class="step-panel">' +
+            '<h3 class="step-heading">What Vatican II Actually Did</h3>' +
+            '<p class="step-ref">Reform that echoes the early Church — not abandons it</p>' +
+            '<div class="timeline"><div class="timeline-line"></div>' + tl + '</div>' +
+            '<div class="callout-navy">' +
+                '<p><span class="gold-text" style="font-weight:700">The punchline:</span> When Vatican II restored the vernacular Mass and active participation, it wasn’t inventing something new. It was <em>returning to something ancient.</em> The early Christians would have recognized it immediately.</p>' +
+            '</div>' +
+        '</div>';
+    }
+
+    function renderStep3() {
+        const cards = constitutionCards.map((card, i) => {
+            const flipped = flippedCard === i;
+            const borderColor = flipped ? '#C9A84C' : card.color + '55';
+            const shadow = flipped ? '0 4px 20px rgba(201,168,76,0.27)' : '0 2px 8px rgba(0,0,0,0.08)';
+            return '<div class="const-card" onclick="toggleCard(' + i + ')" style="border-color:' + borderColor + ';box-shadow:' + shadow + '">' +
+                '<div class="card-front" style="display:' + (flipped ? 'none' : 'block') + ';background:linear-gradient(135deg,' + card.color + ' 0%,' + card.color + 'cc 100%)">' +
+                    '<div class="card-symbol">' + card.symbol + '</div>' +
+                    '<div class="card-abbr">' + card.abbr + '</div>' +
+                    '<div class="card-rarity">' + card.rarity + '</div>' +
+                '</div>' +
+                '<div class="card-back" style="display:' + (flipped ? 'block' : 'none') + '">' +
+                    '<div class="card-back-tag" style="color:' + card.color + '">Vatican II · Constitution</div>' +
+                    '<div class="card-back-title">' + card.title + '</div>' +
+                    '<div class="card-back-rarity" style="color:#C9A84C">❖ ' + card.rarity + '</div>' +
+                '</div>' +
+            '</div>';
+        }).join('');
+
+        const claimBtn = xpClaimed
+            ? '<button class="claim-btn" disabled>✓ XP Claimed</button>'
+            : '<button class="claim-btn" onclick="claimXP()">Claim XP →</button>';
+
+        return '<div class="step-panel">' +
+            '<h3 class="step-heading">Collect the Four Constitutions</h3>' +
+            '<p class="step-ref">Tap a card to learn what it teaches</p>' +
+            '<div class="card-grid">' + cards + '</div>' +
+            '<div class="xp-bar">' +
+                '<div>' +
+                    '<div class="xp-label">Module Complete</div>' +
+                    '<p class="xp-desc">Earn +150 XP · Unlock the Council Pack</p>' +
+                '</div>' +
+                claimBtn +
+            '</div>' +
+        '</div>';
+    }
+
+    // Initial render before auth resolves
+    renderContent();
+</script>
+
+</body>
+</html>
