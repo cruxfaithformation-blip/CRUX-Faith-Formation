@@ -354,6 +354,28 @@ const NEW_CARDS = [
     ],
   },
   {
+    slug: 'john-apostle', navName: 'John',
+    title: 'CRUX — St. John the Apostle', saintName: 'St. John the Apostle',
+    badge: '✦✦✦ Legendary', feast: 'December 27', patron: 'Love, theologians, authors',
+    bio: '"Beloved disciple." He was the only Apostle who did not flee — and the only one who did not die a martyr.',
+    setNum: '014 / 052', backName: 'John, Son of Zebedee', backDates: 'c. 6–100 AD · Ephesus',
+    prayer: [
+      'O St. John the Apostle, Beloved Disciple, you who rested your head on the heart of Christ at the Last Supper and received His Mother at the foot of the Cross — intercede for all who seek to love as Christ loves, and for all theologians who dare to speak of God.',
+      'Teach us your one commandment — the commandment Jesus said was new: that we love one another as He has loved us. Help us remain in that love when it costs something, and to find in it the whole of the Gospel. Pray for all who read your words and all who are still learning what love means.',
+    ],
+    bioParagraphs: [
+      'John, son of Zebedee and brother of James, was a Galilean fisherman whom Jesus called from his boat. He and James were nicknamed "Sons of Thunder." John became part of the inner circle — with Peter and James — present at the Transfiguration, in Gethsemane, and at the empty tomb. He is the only Apostle confirmed to have been present at the Crucifixion, where Jesus entrusted His mother to his care.',
+      'John outlived all the other Apostles, dying of old age in Ephesus around 100 AD — the only one not martyred, though he survived being thrown into boiling oil under Domitian. He wrote the Gospel of John, three letters, and the Book of Revelation. His Gospel opens with the most theologically dense sentence in Scripture: "In the beginning was the Word, and the Word was with God, and the Word was God."',
+    ],
+    facts: [
+      { label: 'Also Known', value: 'Beloved Disciple · John the Evangelist · Son of Thunder' },
+      { label: 'Key Text',   value: 'Gospel of John · 1–3 John · Revelation' },
+      { label: 'Patron of',  value: 'Love · Theologians · Authors · Publishers · Friendships' },
+      { label: 'Symbols',    value: 'Eagle · Chalice with serpent · Book · Palm' },
+      { label: 'Death',      value: 'Natural death, c. 100 AD · Ephesus — only Apostle not martyred' },
+    ],
+  },
+  {
     slug: 'augustine', navName: 'Augustine',
     title: 'CRUX — St. Augustine of Hippo', saintName: 'St. Augustine of Hippo',
     badge: '✦✦ Rare', feast: 'August 28', patron: 'Theologians, brewers, those with bad habits',
@@ -434,6 +456,7 @@ const ALL_CARD_NAV = [
   { slug: 'james-less',   navName: 'James the Less' },
   { slug: 'simon-zealot', navName: 'Simon' },
   { slug: 'jude',         navName: 'Jude' },
+  { slug: 'john-apostle', navName: 'John' },
   { slug: 'thomas',       navName: 'Thomas' },
   { slug: 'augustine',    navName: 'Augustine' },
   { slug: 'aquinas',      navName: 'Aquinas' },
