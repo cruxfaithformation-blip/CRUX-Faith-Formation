@@ -1,0 +1,1151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUX Jeopardy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --navy: #1a1f36;
+            --navy-mid: #242a45;
+            --navy-light: #2f3659;
+            --gold: #d4a574;
+            --gold-light: #e8c9a0;
+            --gold-dark: #b8895a;
+            --white: #ffffff;
+            --green: #2e7d32;
+            --red: #c62828;
+            --border: rgba(255,255,255,0.12);
+        }
+        * { margin:0; padding:0; box-sizing:border-box; }
+        body {
+            font-family:'Inter',sans-serif;
+            background:var(--navy);
+            color:var(--white);
+            min-height:100vh;
+            display:flex;
+            flex-direction:column;
+        }
+        header {
+            background:var(--navy-mid);
+            border-bottom:1px solid var(--border);
+            padding:0.85rem 2rem;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            flex-shrink:0;
+        }
+        .logo {
+            font-family:'Playfair Display',serif;
+            font-size:1.3rem;
+            font-weight:900;
+            color:var(--gold);
+            letter-spacing:4px;
+            text-decoration:none;
+        }
+        .back-link {
+            color:rgba(255,255,255,0.5);
+            font-size:0.82rem;
+            font-weight:500;
+            cursor:pointer;
+            background:none;
+            border:none;
+            transition:color 0.2s;
+        }
+        .back-link:hover { color:var(--gold); }
+
+        /* SCREENS */
+        .screen { display:none; flex:1; flex-direction:column; align-items:center; padding:3rem 2rem; overflow-y:auto; }
+        .screen.active { display:flex; }
+
+        /* LANDING */
+        .page-title {
+            font-family:'Playfair Display',serif;
+            font-size:2.6rem;
+            font-weight:900;
+            color:var(--gold);
+            letter-spacing:2px;
+            text-align:center;
+            margin-bottom:0.5rem;
+        }
+        .page-sub { color:rgba(255,255,255,0.5); font-size:0.95rem; text-align:center; margin-bottom:2.5rem; }
+        .board-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+            gap:1rem;
+            width:100%;
+            max-width:920px;
+        }
+        .board-card {
+            background:var(--navy-mid);
+            border:1.5px solid var(--border);
+            border-radius:10px;
+            padding:1.5rem;
+            cursor:pointer;
+            transition:all 0.2s;
+        }
+        .board-card:hover { border-color:var(--gold); transform:translateY(-3px); }
+        .board-eyebrow {
+            font-size:0.68rem;
+            font-weight:700;
+            letter-spacing:2px;
+            text-transform:uppercase;
+            color:var(--gold);
+            margin-bottom:0.35rem;
+        }
+        .board-name {
+            font-family:'Playfair Display',serif;
+            font-size:1.1rem;
+            font-weight:700;
+            margin-bottom:0.35rem;
+        }
+        .board-desc { font-size:0.8rem; color:rgba(255,255,255,0.45); }
+        .custom-card { border-style:dashed; border-color:rgba(212,165,116,0.3); text-align:center; }
+        .custom-icon { font-size:1.6rem; margin-bottom:0.4rem; }
+
+        /* CUSTOM PICKER */
+        .picker-grid {
+            display:grid;
+            grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+            gap:0.6rem;
+            width:100%;
+            max-width:820px;
+            margin-bottom:2rem;
+        }
+        .picker-item {
+            display:flex;
+            align-items:center;
+            gap:0.75rem;
+            padding:0.8rem 1rem;
+            background:var(--navy-mid);
+            border:1.5px solid var(--border);
+            border-radius:8px;
+            cursor:pointer;
+            transition:all 0.15s;
+            user-select:none;
+        }
+        .picker-item:hover { border-color:rgba(212,165,116,0.4); }
+        .picker-item.selected { border-color:var(--gold); background:rgba(212,165,116,0.07); }
+        .picker-check {
+            width:20px; height:20px;
+            border-radius:4px;
+            border:1.5px solid rgba(255,255,255,0.2);
+            display:flex; align-items:center; justify-content:center;
+            font-size:0.72rem; font-weight:700;
+            color:transparent;
+            flex-shrink:0;
+            transition:all 0.15s;
+        }
+        .picker-item.selected .picker-check { background:var(--gold); border-color:var(--gold); color:var(--navy); }
+        .picker-label { font-size:0.86rem; font-weight:500; color:rgba(255,255,255,0.85); }
+        .picker-pillar { font-size:0.68rem; color:rgba(255,255,255,0.35); margin-top:0.1rem; }
+
+        /* TEAMS */
+        .teams-list { display:flex; flex-direction:column; gap:0.75rem; width:100%; max-width:400px; margin-bottom:1.25rem; }
+        .team-row { display:flex; align-items:center; gap:0.75rem; }
+        .team-dot { width:14px; height:14px; border-radius:50%; flex-shrink:0; }
+        .team-input {
+            flex:1;
+            background:var(--navy-mid);
+            border:1.5px solid var(--border);
+            border-radius:8px;
+            padding:0.72rem 1rem;
+            color:var(--white);
+            font-family:'Inter',sans-serif;
+            font-size:0.9rem;
+            outline:none;
+            transition:border-color 0.2s;
+        }
+        .team-input:focus { border-color:var(--gold); }
+        .rm-btn {
+            width:28px; height:28px;
+            border-radius:50%;
+            border:1px solid rgba(255,255,255,0.18);
+            background:none;
+            color:rgba(255,255,255,0.4);
+            font-size:1.1rem;
+            cursor:pointer;
+            display:flex; align-items:center; justify-content:center;
+            transition:all 0.15s;
+        }
+        .rm-btn:hover { background:rgba(255,255,255,0.1); color:var(--white); }
+
+        /* BUTTONS */
+        .btn {
+            display:inline-flex; align-items:center; justify-content:center; gap:0.5rem;
+            padding:0.82rem 1.75rem;
+            border-radius:8px;
+            font-family:'Inter',sans-serif;
+            font-size:0.88rem;
+            font-weight:700;
+            cursor:pointer;
+            transition:all 0.2s;
+            border:none;
+            letter-spacing:0.3px;
+        }
+        .btn-gold { background:var(--gold); color:var(--navy); }
+        .btn-gold:hover { background:var(--gold-light); }
+        .btn-gold:disabled { background:rgba(255,255,255,0.12); color:rgba(255,255,255,0.3); cursor:not-allowed; }
+        .btn-outline { background:transparent; border:1.5px solid var(--border); color:rgba(255,255,255,0.65); }
+        .btn-outline:hover { border-color:var(--gold); color:var(--gold); }
+        .btn-green { background:var(--green); color:var(--white); }
+        .btn-green:hover { background:#1b5e20; }
+        .btn-red { background:var(--red); color:var(--white); }
+        .btn-red:hover { background:#b71c1c; }
+        .btn-sm { padding:0.45rem 1rem; font-size:0.8rem; }
+        .row { display:flex; gap:1rem; flex-wrap:wrap; justify-content:center; }
+
+        /* BOARD SCREEN */
+        #screenBoard { padding:0; overflow:hidden; }
+        .board-topbar {
+            background:var(--navy-mid);
+            border-bottom:1px solid var(--border);
+            padding:0.6rem 1rem;
+            display:flex;
+            align-items:center;
+            justify-content:space-between;
+            gap:1rem;
+            flex-shrink:0;
+            flex-wrap:wrap;
+        }
+        .score-chips { display:flex; gap:0.5rem; flex-wrap:wrap; }
+        .score-chip {
+            display:flex; align-items:center; gap:0.4rem;
+            background:rgba(255,255,255,0.05);
+            border:1px solid var(--border);
+            border-radius:20px;
+            padding:0.28rem 0.75rem;
+            font-size:0.78rem;
+            font-weight:600;
+        }
+        .chip-dot { width:8px; height:8px; border-radius:50%; }
+        .chip-score { color:var(--gold); font-weight:700; }
+        .board-scroll { flex:1; overflow:auto; padding:0.6rem; }
+        .j-board { display:grid; gap:0.35rem; min-width:480px; }
+        .j-cat-hd {
+            background:var(--navy-mid);
+            border:1.5px solid var(--border);
+            border-radius:6px;
+            padding:0.7rem 0.5rem;
+            text-align:center;
+            font-family:'Playfair Display',serif;
+            font-size:0.82rem;
+            font-weight:700;
+            color:var(--gold);
+            line-height:1.3;
+        }
+        .j-cell {
+            background:var(--navy-light);
+            border:1.5px solid var(--border);
+            border-radius:6px;
+            display:flex; align-items:center; justify-content:center;
+            cursor:pointer;
+            aspect-ratio:16/9;
+            min-height:56px;
+            transition:all 0.15s;
+        }
+        .j-cell:hover:not(.done) { background:rgba(212,165,116,0.12); border-color:var(--gold); transform:scale(1.02); }
+        .j-cell.done { background:rgba(255,255,255,0.03); border-color:rgba(255,255,255,0.05); cursor:default; }
+        .j-val { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; color:var(--gold); }
+        .j-cell.done .j-val { opacity:0; }
+
+        /* QUESTION OVERLAY */
+        #qOverlay {
+            display:none;
+            position:fixed; inset:0;
+            background:rgba(10,13,28,0.97);
+            z-index:200;
+            flex-direction:column;
+            align-items:center;
+            justify-content:center;
+            padding:2rem;
+        }
+        #qOverlay.open { display:flex; }
+        .q-dismiss {
+            position:absolute; top:1.25rem; right:1.5rem;
+            background:none; border:none;
+            color:rgba(255,255,255,0.3);
+            font-size:1.5rem;
+            cursor:pointer;
+            transition:color 0.2s;
+        }
+        .q-dismiss:hover { color:var(--gold); }
+        .q-eyebrow {
+            font-size:0.72rem; font-weight:700;
+            letter-spacing:2px; text-transform:uppercase;
+            color:var(--gold); margin-bottom:1rem; text-align:center;
+        }
+        .q-clue {
+            font-family:'Playfair Display',serif;
+            font-size:clamp(1.1rem,2.8vw,1.9rem);
+            font-weight:700;
+            color:var(--white);
+            text-align:center;
+            line-height:1.5;
+            max-width:760px;
+            margin-bottom:2rem;
+        }
+        .q-ans-box {
+            display:none;
+            background:rgba(212,165,116,0.08);
+            border:1px solid var(--gold);
+            border-radius:10px;
+            padding:1.1rem 1.75rem;
+            max-width:760px;
+            width:100%;
+            text-align:center;
+            margin-bottom:2rem;
+        }
+        .q-ans-box.show { display:block; }
+        .q-ans-label {
+            font-size:0.68rem; font-weight:700;
+            letter-spacing:1.5px; text-transform:uppercase;
+            color:var(--gold); margin-bottom:0.4rem;
+        }
+        .q-ans-text { font-size:1rem; color:var(--white); line-height:1.65; }
+        .q-award-section { display:none; flex-direction:column; gap:0.65rem; width:100%; max-width:400px; }
+        .q-award-section.show { display:flex; }
+        .q-award-lbl {
+            font-size:0.72rem; font-weight:700;
+            letter-spacing:1px; text-transform:uppercase;
+            color:rgba(255,255,255,0.4); text-align:center;
+            margin-bottom:0.1rem;
+        }
+        .award-btn {
+            display:flex; align-items:center; gap:0.6rem;
+            padding:0.78rem 1.25rem;
+            background:var(--navy-mid);
+            border:1.5px solid var(--border);
+            border-radius:8px;
+            color:var(--white);
+            font-family:'Inter',sans-serif;
+            font-size:0.88rem; font-weight:700;
+            cursor:pointer;
+            transition:all 0.15s;
+            width:100%;
+        }
+        .award-btn:hover { border-color:var(--gold); background:rgba(212,165,116,0.1); color:var(--gold); }
+        .award-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+
+        /* FINAL JEOPARDY */
+        .fj-title {
+            font-family:'Playfair Display',serif;
+            font-size:2rem; font-weight:900;
+            color:var(--gold); text-align:center;
+            letter-spacing:2px; margin-bottom:0.5rem;
+        }
+        .wager-list { display:flex; flex-direction:column; gap:0.75rem; width:100%; max-width:480px; margin-bottom:2rem; }
+        .wager-row {
+            background:var(--navy-mid);
+            border:1.5px solid var(--border);
+            border-radius:10px;
+            padding:1rem 1.25rem;
+            display:flex; align-items:center; gap:1rem;
+        }
+        .wager-info { flex:1; }
+        .wager-name { font-weight:700; font-size:0.92rem; display:flex; align-items:center; gap:0.5rem; margin-bottom:0.18rem; }
+        .wager-current { font-size:0.75rem; color:rgba(255,255,255,0.45); }
+        .wager-input {
+            width:110px;
+            background:var(--navy);
+            border:1.5px solid var(--border);
+            border-radius:8px;
+            padding:0.6rem 0.75rem;
+            color:var(--gold);
+            font-family:'Inter',sans-serif;
+            font-size:1rem; font-weight:700;
+            text-align:center;
+            outline:none;
+            transition:border-color 0.2s;
+        }
+        .wager-input:focus { border-color:var(--gold); }
+
+        .fq-rows { display:flex; flex-direction:column; gap:0.7rem; width:100%; max-width:500px; margin-bottom:2rem; }
+        .fq-row {
+            background:var(--navy-mid);
+            border:1.5px solid var(--border);
+            border-radius:10px;
+            padding:0.85rem 1.25rem;
+            display:flex; align-items:center; gap:1rem;
+            transition:border-color 0.3s;
+        }
+        .fq-info { flex:1; }
+        .fq-name { font-weight:700; font-size:0.9rem; display:flex; align-items:center; gap:0.5rem; }
+        .fq-wager { font-size:0.75rem; color:var(--gold); margin-top:0.15rem; }
+        .fq-btns { display:flex; gap:0.5rem; }
+        .fq-btn {
+            padding:0.42rem 0.85rem;
+            border-radius:6px;
+            font-size:0.8rem; font-weight:700;
+            border:none; cursor:pointer;
+            transition:all 0.15s;
+        }
+        .fq-btn.cor { background:var(--green); color:#fff; }
+        .fq-btn.wrg { background:var(--red); color:#fff; }
+        .fq-btn:disabled { opacity:0.38; cursor:default; }
+
+        /* RESULTS */
+        .results-list { display:flex; flex-direction:column; gap:0.75rem; width:100%; max-width:460px; margin-bottom:2.5rem; }
+        .result-row {
+            background:var(--navy-mid);
+            border:1.5px solid var(--border);
+            border-radius:10px;
+            padding:1.1rem 1.5rem;
+            display:flex; align-items:center; gap:1rem;
+        }
+        .result-row.top { border-color:var(--gold); background:rgba(212,165,116,0.07); }
+        .result-rank {
+            font-family:'Playfair Display',serif;
+            font-size:1.4rem; font-weight:700;
+            color:rgba(255,255,255,0.2); width:32px; text-align:center;
+        }
+        .result-row.top .result-rank { color:var(--gold); }
+        .result-name { flex:1; font-weight:700; font-size:0.95rem; }
+        .result-score { font-family:'Playfair Display',serif; font-size:1.35rem; font-weight:700; color:var(--gold); }
+
+        @media(max-width:600px){
+            .page-title { font-size:1.9rem; }
+            .j-val { font-size:1.1rem; }
+            .q-clue { font-size:1rem; }
+            .board-scroll { padding:0.3rem; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <a href="index.html" class="logo">CRUX</a>
+    <button class="back-link" onclick="window.location.href='index.html'">← Back to CRUX</button>
+</header>
+
+<!-- LANDING -->
+<div class="screen active" id="screenLanding">
+    <div class="page-title">CRUX Jeopardy</div>
+    <p class="page-sub">Choose a preset pillar board or build your own from any combination of modules.</p>
+    <div class="board-grid" id="presetGrid"></div>
+</div>
+
+<!-- CUSTOM PICKER -->
+<div class="screen" id="screenCustom">
+    <div class="page-title" style="font-size:1.8rem;">Build Your Board</div>
+    <p class="page-sub" style="margin-bottom:1.75rem;">Select 3–6 modules. Each becomes one category.</p>
+    <div class="picker-grid" id="pickerGrid"></div>
+    <div class="row">
+        <button class="btn btn-outline" onclick="showScreen('screenLanding')">← Back</button>
+        <button class="btn btn-gold" id="buildBtn" onclick="startCustom()" disabled>Select 3 more modules</button>
+    </div>
+</div>
+
+<!-- TEAMS -->
+<div class="screen" id="screenTeams">
+    <div class="page-title" style="font-size:1.8rem;">Set Up Teams</div>
+    <p class="page-sub" style="margin-bottom:1.75rem;">2 to 4 teams. Edit names, then start.</p>
+    <div class="teams-list" id="teamsList"></div>
+    <button class="btn btn-outline" id="addTeamBtn" onclick="addTeam()" style="margin-bottom:2rem;">+ Add Team</button>
+    <div class="row">
+        <button class="btn btn-outline" onclick="teamsBack()">← Back</button>
+        <button class="btn btn-gold" onclick="startGame()">Start Game →</button>
+    </div>
+</div>
+
+<!-- BOARD -->
+<div class="screen" id="screenBoard" style="padding:0;">
+    <div class="board-topbar">
+        <div class="score-chips" id="scoreChips"></div>
+        <button class="btn btn-gold btn-sm" onclick="beginFinalJeopardy()">Final Jeopardy →</button>
+    </div>
+    <div class="board-scroll">
+        <div class="j-board" id="jBoard"></div>
+    </div>
+</div>
+
+<!-- QUESTION OVERLAY -->
+<div id="qOverlay">
+    <button class="q-dismiss" onclick="dismissQ()" title="Close without answering">✕</button>
+    <div class="q-eyebrow" id="qEyebrow"></div>
+    <div class="q-clue" id="qClue"></div>
+    <div class="q-ans-box" id="qAnsBox">
+        <div class="q-ans-label">Answer</div>
+        <div class="q-ans-text" id="qAnsText"></div>
+    </div>
+    <div class="q-award-section" id="qAward"></div>
+    <div class="row">
+        <button class="btn btn-gold" id="qRevealBtn" onclick="revealAnswer()">Reveal Answer</button>
+    </div>
+</div>
+
+<!-- FINAL JEOPARDY: WAGER -->
+<div class="screen" id="screenFinalWager">
+    <div class="fj-title">Final Jeopardy</div>
+    <p class="page-sub" style="margin-bottom:2rem;">Each team enters a wager — maximum is their current score.</p>
+    <div class="wager-list" id="wagerList"></div>
+    <button class="btn btn-gold" onclick="lockWagers()">Lock Wagers & Reveal Question →</button>
+</div>
+
+<!-- FINAL JEOPARDY: QUESTION -->
+<div class="screen" id="screenFinalQuestion">
+    <div class="fj-title" style="margin-bottom:1.5rem;">Final Jeopardy</div>
+    <div class="q-clue" id="fjClue" style="margin-bottom:2rem;"></div>
+    <div class="q-ans-box" id="fjAnsBox" style="margin-bottom:2rem;">
+        <div class="q-ans-label">Answer</div>
+        <div class="q-ans-text" id="fjAnsText"></div>
+    </div>
+    <div class="fq-rows" id="fqRows"></div>
+    <div class="row">
+        <button class="btn btn-gold" id="fjRevealBtn" onclick="revealFinalAnswer()">Reveal Answer</button>
+        <button class="btn btn-gold" id="fjDoneBtn" style="display:none;" onclick="showResults()">See Final Scores →</button>
+    </div>
+</div>
+
+<!-- RESULTS -->
+<div class="screen" id="screenResults">
+    <div class="page-title">Game Over</div>
+    <p class="page-sub" id="winnerLine" style="font-size:1.1rem;margin-bottom:2rem;"></p>
+    <div class="results-list" id="resultsList"></div>
+    <div class="row">
+        <button class="btn btn-outline" onclick="showScreen('screenLanding')">Play Again</button>
+        <button class="btn btn-gold" onclick="window.location.href='index.html'">← Back to CRUX</button>
+    </div>
+</div>
+
+<script>
+// ── CONSTANTS ────────────────────────────────────────────────────
+const COLORS = ['#e74c3c','#3498db','#2ecc71','#f39c12'];
+
+// ── QUESTION BANK ────────────────────────────────────────────────
+// 5 questions per module, difficulty escalates 100 → 500
+const QB = {
+  trinity: { label:'The Holy Trinity', q:[
+    { c:'The Trinity is one God in how many Persons?',
+      a:'Three — Father, Son, and Holy Spirit' },
+    { c:'Jesus commands baptism "in the name of" what three Persons in Matthew 28:19?',
+      a:'The Father, and of the Son, and of the Holy Spirit' },
+    { c:'This Person of the Trinity is said to "proceed from the Father and the Son" — a teaching called the Filioque.',
+      a:'The Holy Spirit' },
+    { c:'The Council of Nicaea defined the Son as "homoousios" with the Father. What does homoousios mean?',
+      a:'Of the same substance — the Son is not a lesser or created being, but fully God' },
+    { c:'Explain the difference between the "immanent Trinity" and the "economic Trinity."',
+      a:'Immanent = God as He is in Himself in eternal Trinitarian communion. Economic = God as He acts in salvation history. Rahner\'s Rule: the economic Trinity is the immanent Trinity.' }
+  ]},
+  jesus: { label:'Who Is Jesus Christ?', q:[
+    { c:'The Catholic Church teaches Jesus is fully God and fully ___.',
+      a:'Human (the doctrine of the Incarnation)' },
+    { c:'Jesus grew up working as a carpenter before his public ministry. In which town?',
+      a:'Nazareth' },
+    { c:'What does the word "Incarnation" mean?',
+      a:'God taking on human flesh — the eternal Son of God becoming a human being' },
+    { c:'The Council of Chalcedon (451 AD) defined Christ has two natures. What heresy claimed he had only one divine nature that absorbed the human?',
+      a:'Monophysitism' },
+    { c:'Gregory of Nazianzus wrote: "What has not been assumed has not been healed." What does this argue about the Incarnation?',
+      a:'Jesus had to take on the full range of human nature — body, soul, and mind — because whatever he did not assume remained unredeemed' }
+  ]},
+  mary: { label:'Mary & the Saints', q:[
+    { c:'What does the title "Theotokos" mean?',
+      a:'God-bearer, or Mother of God' },
+    { c:'The "Immaculate Conception" refers to which event in Mary\'s life?',
+      a:'Mary being conceived without original sin — not the conception of Jesus' },
+    { c:'What is the theological term for the highest honor given to any creature — distinct from worship — which Catholics give to Mary?',
+      a:'Hyperdulia (latria = worship of God; dulia = honor of saints; hyperdulia = unique honor of Mary)' },
+    { c:'In what year did Pope Pius XII define the Assumption of Mary as infallible dogma?',
+      a:'1950' },
+    { c:'Duns Scotus proposed "preservative redemption" to defend the Immaculate Conception. What was his argument?',
+      a:'Christ\'s merits were applied to Mary in advance — she was preserved from sin rather than rescued from it. Redemption by preservation is still redemption.' }
+  ]},
+  prodigal_son: { label:'The Prodigal Son', q:[
+    { c:'In Luke 15, Jesus tells the Parable of the Prodigal Son in response to which audience?',
+      a:'Pharisees and scribes who complained he ate with sinners' },
+    { c:'The younger son demands his inheritance while his father still lives. In first-century culture, this was equivalent to what?',
+      a:'Wishing his father were dead' },
+    { c:'When the father sees his son returning, he runs to him and restores him with three things. Name them.',
+      a:'A robe (honor), a ring (authority), and sandals (the status of a son, not a slave)' },
+    { c:'Timothy Keller identifies two ways to be lost in this parable. What are they?',
+      a:'The younger son\'s open rebellion, and the older son\'s self-righteous obedience — both keep you from the father\'s love' },
+    { c:'The parable ends without telling us if the older brother enters the feast. Why do theologians say this ambiguity is the point?',
+      a:'The actual audience — the Pharisees — were the "older brothers." Jesus left the ending open for them to write. He is not closing the door; he is holding it open.' }
+  ]},
+  geography: { label:'Bible Geography', q:[
+    { c:'In what modern city did Jesus live and work as a carpenter before his public ministry?',
+      a:'Nazareth' },
+    { c:'The Jordan River, where Jesus was baptized, forms the border between which two modern countries?',
+      a:'Israel and Jordan' },
+    { c:'The "Via Dolorosa" — the Way of Sorrows — runs through which modern city?',
+      a:'Jerusalem' },
+    { c:'Paul was converted on the road to Damascus. Damascus is the capital of which modern country?',
+      a:'Syria' },
+    { c:'The "scandal of particularity" describes what aspect of the Incarnation?',
+      a:'God chose to enter history at a specific time, place, and through a specific people — this particularity is theologically intentional, not a limitation' }
+  ]},
+  sacraments: { label:'The Seven Sacraments', q:[
+    { c:'How many sacraments did Jesus give the Church?',
+      a:'Seven' },
+    { c:'Name the three Sacraments of Initiation.',
+      a:'Baptism, Confirmation, and Eucharist' },
+    { c:'"Ex opere operato" means the sacraments are effective because of what?',
+      a:'The rite itself — Christ\'s action through the sacrament — not the personal holiness of the minister' },
+    { c:'Which three sacraments imprint an indelible mark on the soul and can never be repeated?',
+      a:'Baptism, Confirmation, and Holy Orders' },
+    { c:'In sacramental theology, what is the distinction between "matter" and "form"?',
+      a:'Matter = the physical element (water, oil, bread and wine). Form = the words spoken that give the element its sacramental meaning. Both are required.' }
+  ]},
+  mass: { label:'The Mass & Real Presence', q:[
+    { c:'What does the Church teach happens to the bread and wine at the words of consecration?',
+      a:'They become the true Body and Blood of Christ — transubstantiation' },
+    { c:'In John 6, after the Bread of Life discourse, many disciples leave. What does Jesus do?',
+      a:'He does not soften his teaching — he turns to the Twelve and asks "Will you also go?"' },
+    { c:'What is transubstantiation?',
+      a:'The substance of bread and wine is entirely changed into the Body and Blood of Christ, while the outward appearances remain' },
+    { c:'Writing around 107 AD, Ignatius of Antioch says those who reject the Eucharist deny what?',
+      a:'The flesh of Christ — his physical Incarnation and suffering. The Eucharist cannot be separated from belief in the reality of Jesus.' },
+    { c:'What is the primary Catholic argument against the view that the Last Supper was only a symbolic memorial?',
+      a:'Jesus said "This IS my body" and refused to soften it even when disciples left. The early Church universally understood it as truly his Body and Blood — not a figure of speech.' }
+  ]},
+  reconciliation: { label:'Reconciliation', q:[
+    { c:'What three conditions make a sin mortal?',
+      a:'Grave matter, full knowledge, and deliberate consent' },
+    { c:'In John 20:22–23, the risen Jesus breathes on the Apostles and gives them authority to do what?',
+      a:'Forgive sins — or retain them' },
+    { c:'What is the "seal of confession"?',
+      a:'The priest\'s absolute, inviolable obligation never to reveal anything heard in the sacrament — no exceptions exist' },
+    { c:'When the priest gives absolution "in persona Christi," what does this mean?',
+      a:'He acts in the person of Christ — the absolution he pronounces is Christ\'s own absolution, not merely a human declaration' },
+    { c:'Name the five parts of the Sacrament of Reconciliation in order.',
+      a:'1. Examination of conscience  2. Contrition  3. Confession of sins  4. Absolution  5. Penance / Satisfaction' }
+  ]},
+  conscience: { label:'Conscience', q:[
+    { c:'In Catholic teaching, conscience is best described as what?',
+      a:'The practical judgment of reason about whether a specific act is morally good or evil' },
+    { c:'The Church teaches you must always follow your conscience. What is equally required?',
+      a:'The duty to form your conscience correctly — an ignorant conscience can still lead you wrong' },
+    { c:'The term "synderesis" refers to what?',
+      a:'The natural moral awareness all humans have — the innate knowledge that good should be done and evil avoided' },
+    { c:'A person acts wrongly with an "invincibly ignorant" conscience they cannot correct. Are they morally guilty?',
+      a:'No — invincible ignorance removes moral culpability, though it doesn\'t make the act good in itself' },
+    { c:'Veritatis Splendor (1993) teaches some acts are "intrinsically evil." What does this mean, and what does it rule out?',
+      a:'Intrinsically evil = wrong by their very nature regardless of intent or consequence. It rules out proportionalism — the idea that a good end can justify an evil act.' }
+  ]},
+  fruits: { label:'Fruits of the Spirit', q:[
+    { c:'How many fruits of the Holy Spirit does the Catholic tradition list?',
+      a:'Twelve' },
+    { c:'Name any four of the nine fruits Paul lists in Galatians 5:22–23.',
+      a:'Love, joy, peace, patience, kindness, generosity, faithfulness, gentleness, self-control (any four)' },
+    { c:'Paul uses the singular "fruit of the Spirit" rather than "fruits." What does this imply?',
+      a:'All the fruits are expressions of one life — the life of the Spirit. They are facets of one reality, not separate achievements.' },
+    { c:'What is the key difference between the Gifts of the Spirit and the Fruits of the Spirit?',
+      a:'Gifts are capacities the Spirit gives us to act. Fruits are the results that appear when we cooperate with those gifts.' },
+    { c:'According to Aquinas, what distinguishes a "fruit" of the Spirit from merely a virtuous act?',
+      a:'A fruit comes with delight — it is done joyfully and freely, not merely from duty. It is virtue made pleasant by love.' }
+  ]},
+  commandments: { label:'Ten Commandments', q:[
+    { c:'Jesus summarized all the commandments in two. What are they?',
+      a:'Love God with all your heart, soul, and mind; and love your neighbor as yourself' },
+    { c:'Which commandment forbids murder in Catholic numbering?',
+      a:'The Fifth Commandment' },
+    { c:'The commandments begin "I am the Lord your God who brought you out of Egypt." Why does this opening matter theologically?',
+      a:'It grounds the commandments in grace — God rescues first, then asks for faithfulness. The law is a response to love, not the way to earn it.' },
+    { c:'Why does Catholic numbering of the Ten Commandments differ from most Protestant traditions?',
+      a:'Catholics combine the first two (no other gods + no graven images) and split the last one (coveting a wife vs. coveting property)' },
+    { c:'Aquinas explains why moral precepts like the Commandments still bind Christians even though ceremonial laws do not. What is his argument?',
+      a:'The moral precepts reflect natural law written on every human heart. Ceremonial and judicial precepts were historically conditioned applications that Christ fulfilled and superseded.' }
+  ]},
+  beatitudes: { label:'The Beatitudes', q:[
+    { c:'How many Beatitudes are listed in Matthew 5?',
+      a:'Eight' },
+    { c:'The Greek word "makarios," translated "blessed," most closely means what?',
+      a:'Deeply happy, flourishing, or fortunate — not simply religiously approved' },
+    { c:'Aquinas calls the Commandments the "floor" and the Beatitudes the "ceiling" of Christian life. What does he mean?',
+      a:'The Commandments are the minimum — what you must not do. The Beatitudes describe the perfection of love: what you become when grace fully transforms you.' },
+    { c:'Luke 6 includes four "woes" that Matthew\'s version omits. What is Jesus warning against?',
+      a:'The spiritual trap of placing ultimate security in wealth, comfort, popularity, and flattery — the exact opposites of the beatitudes' },
+    { c:'Which beatitude does Jesus most directly embody at Gethsemane when he prays "not my will, but yours"? Make the argument.',
+      a:'"Blessed are the meek" — meekness means surrendering your will to God\'s. Gethsemane is the supreme act of submitting one\'s own will to the Father\'s.' }
+  ]},
+  lords_prayer: { label:"The Lord's Prayer", q:[
+    { c:'How many petitions are in the Lord\'s Prayer in Matthew 6?',
+      a:'Seven' },
+    { c:'Which petition of the Lord\'s Prayer is the only one with a condition attached?',
+      a:'"Forgive us our trespasses as we forgive those who trespass against us" — our forgiveness depends on our forgiving others' },
+    { c:'The Lord\'s Prayer most closely resembles which ancient Jewish prayer?',
+      a:'The Kaddish — which also includes "may his name be hallowed" and "may his kingdom come"' },
+    { c:'The petition "thy kingdom come" reflects what theological tension in Christianity?',
+      a:'The "already / not yet" — the Kingdom truly began in Christ but has not yet reached its full consummation' },
+    { c:'Augustine argued in his Letter to Proba that the Lord\'s Prayer is uniquely comprehensive. What did he mean?',
+      a:'Every legitimate human desire can be reduced to one of its seven petitions. If you want something that cannot map onto the Lord\'s Prayer, Augustine says you should not ask for it.' }
+  ]},
+  rosary: { label:'The Rosary', q:[
+    { c:'How many total mysteries of the Rosary are there across all four sets?',
+      a:'Twenty — four sets of five mysteries each' },
+    { c:'The first half of the Hail Mary is drawn from which two figures in Luke\'s Gospel?',
+      a:'The Angel Gabriel ("Hail, full of grace") and Elizabeth ("Blessed are you among women")' },
+    { c:'Pope John Paul II added the Luminous Mysteries in 2002. What gap in the Rosary did they fill?',
+      a:'The public ministry of Jesus — the Joyful Mysteries ended at his childhood and the Sorrowful began at Gethsemane, skipping his entire adult ministry' },
+    { c:'At the Wedding at Cana, Mary\'s instruction "Do whatever he tells you" captures her entire role in Christian life. Why?',
+      a:'She always directs us away from herself and toward her Son — the perfect intercessor points only to Christ' },
+    { c:'John Paul II called the Rosary "a compendium of the Gospel." What does this mean?',
+      a:'The 20 mysteries span the entire arc of salvation from Annunciation to Glorification. To meditate on all of them is to meditate on the whole Gospel.' }
+  ]},
+  liturgical_year: { label:'The Liturgical Year', q:[
+    { c:'What is the first season of the Church\'s liturgical year?',
+      a:'Advent' },
+    { c:'What liturgical color is worn during Ordinary Time, and what does "Ordinary" actually mean?',
+      a:'Green. "Ordinary" comes from "ordinal" — numbered or counted weeks — not "regular" or "unimportant."' },
+    { c:'What is the Sacred Triduum?',
+      a:'The three holiest days: Holy Thursday evening, Good Friday, and Holy Saturday — culminating in the Easter Vigil. The heart of the entire liturgical year.' },
+    { c:'The Easter season lasts 50 days. Why is 50 theologically significant?',
+      a:'50 is the jubilee number (7×7+1). Pentecost fulfills the jubilee: the Spirit is poured out and freedom given to all.' },
+    { c:'Theologically, the liturgical year is best described as what — and how does this differ from a historical calendar?',
+      a:'An annual re-entry into the mysteries of Christ — making the past present sacramentally so the community can encounter it now, not merely remember it.' }
+  ]},
+  creation: { label:'Creation & the Human Person', q:[
+    { c:'What Latin phrase from Genesis describes humans as made in God\'s image?',
+      a:'Imago Dei' },
+    { c:'Does the Catholic Church teach that humans are souls temporarily imprisoned in physical bodies?',
+      a:'No — this is Gnostic/Platonic, not Catholic. Humans are a unity of body and soul; both are essential and both will be raised.' },
+    { c:'What is the Catholic Church\'s official position on biological evolution?',
+      a:'Compatible with faith — evolutionary science is accepted, provided the human soul is understood as directly created by God, not reducible to matter alone' },
+    { c:'What does original sin do to the image of God (imago Dei) in every human being?',
+      a:'It wounds and darkens it — weakening the intellect and will — but does not destroy it. Every human retains inherent dignity.' },
+    { c:'The Catechism says humans are "the only creature on earth that God has willed for its own sake." What does this mean ethically?',
+      a:'No human can ever be treated as a pure means to an end. Every person has inherent dignity that precedes all utility, ability, or social function — from conception to natural death.' }
+  ]},
+  creed: { label:'The Nicene Creed', q:[
+    { c:'The Nicene Creed is structured around which three Persons of the Trinity?',
+      a:'Father (creation), Son (salvation/Incarnation), and Holy Spirit (the Church and sanctification)' },
+    { c:'What does "consubstantial with the Father" mean in the Creed?',
+      a:'The Son is of the same being and substance as the Father — fully God, not a created or lesser being' },
+    { c:'The Creed states Jesus "descended into hell." What does the Church teach this means?',
+      a:'He descended to the realm of the dead (Sheol/Hades) to proclaim salvation to those who died before the Resurrection — not the hell of the damned' },
+    { c:'The Creed calls the Church "apostolic." What does this mean?',
+      a:'The Church is founded on the Apostles, teaches what they taught, and maintains unbroken succession from them through the bishops' },
+    { c:'The Creed was written to refute a specific heresy. Name it, what it taught, and the one word the Creed used to defeat it.',
+      a:'Arianism — taught the Son was the greatest creature, not fully God. Refuted with "homoousios" (consubstantial) — the Son is of the exact same substance as the Father, not similar or derivative.' }
+  ]},
+  gifts: { label:'Gifts of the Spirit', q:[
+    { c:'How many gifts of the Holy Spirit are in the traditional Catholic list?',
+      a:'Seven' },
+    { c:'Which Old Testament prophet first names the seven gifts, describing them as resting on the coming Messiah?',
+      a:'Isaiah (chapter 11:2–3)' },
+    { c:'In Catholic teaching, "Fear of the Lord" primarily means what — and what does it not mean?',
+      a:'Reverent awe before God — a filial love-fear of offending one deeply loved. Not servile terror of punishment.' },
+    { c:'Which sacrament is specifically ordered toward strengthening the seven gifts first received at Baptism?',
+      a:'Confirmation' },
+    { c:'1 Corinthians 13 says that without one thing, all other gifts make you "nothing." What is it, and why does Paul place it above all gifts?',
+      a:'Love (agape/charity). The gifts are instruments; love is the end. It cannot be exercised for self-glorification — it is a participation in God\'s own nature (1 John 4:8).' }
+  ]},
+  romans_8: { label:'Romans 8', q:[
+    { c:'What is the opening declaration of Romans 8:1?',
+      a:'"There is therefore now no condemnation for those who are in Christ Jesus"' },
+    { c:'What does Paul mean by "flesh" (sarx) in Romans 8? What is he NOT talking about?',
+      a:'The fallen, self-oriented nature — not the physical body. "Flesh" is the will turned inward and away from God.' },
+    { c:'Romans 8:26 says the Spirit intercedes for us "with groans too deep for words." What does this mean for prayer?',
+      a:'When we don\'t know how to pray, the Spirit prays within us. We are never without intercession — the Spirit bridges our inadequacy.' },
+    { c:'Romans 8:28 says "all things work together for good." What is the Greek word, and what modern concept does it give us?',
+      a:'Synergei — giving us "synergy." God actively draws all circumstances, including suffering, toward his purposes.' },
+    { c:'In Romans 8:9–11, Paul uses "Spirit of God," "Spirit of Christ," "Christ in you," and "Spirit of him who raised Jesus" interchangeably. What is theologically significant?',
+      a:'The full divinity and co-equality of the Holy Spirit — not a force or lesser being, but God himself, interchangeable with Father and Son. Foundational for Trinitarian theology.' }
+  ]}
+};
+
+// ── PRESET BOARDS ────────────────────────────────────────────────
+const BOARDS = [
+  { id:'p1', eyebrow:'Pillar I', name:'What We Believe',
+    desc:'Trinity · Jesus Christ · Mary & Saints · Prodigal Son · Bible Geography',
+    cats:['trinity','jesus','mary','prodigal_son','geography'],
+    fj:{ c:'This Greek word — meaning "of the same substance" — was the pivotal term at the Council of Nicaea in 325 AD. It differed from the heretical alternative by a single letter, yet the difference was everything. Name the term, name the heresy it refuted, and state what that heresy taught.',
+         a:'Homoousios. It refuted Arianism, which taught that the Son was the greatest of all creatures — but a creature nonetheless ("there was a time when he was not"). Homoousios declared the Son identical in substance to the Father: truly and fully God.' }},
+  { id:'p2', eyebrow:'Pillar II', name:'What We Celebrate',
+    desc:'Seven Sacraments · The Mass & Real Presence · Reconciliation',
+    cats:['sacraments','mass','reconciliation'],
+    fj:{ c:'Three sacraments — Baptism, Confirmation, and Holy Orders — leave an indelible mark on the soul. Name the one that completes Christian initiation, strengthens the gifts of Baptism, and is typically administered by a bishop. Then explain why the "indelible mark" matters theologically.',
+         a:'Confirmation. The indelible mark means the sacrament permanently configures the recipient to Christ — it cannot be undone or repeated. Once sealed, always sealed. This is why Confirmation is never repeated even if someone leaves and returns to the faith.' }},
+  { id:'p3', eyebrow:'Pillar III', name:'How We Live',
+    desc:'Conscience · Fruits of the Spirit · Ten Commandments · The Beatitudes',
+    cats:['conscience','fruits','commandments','beatitudes'],
+    fj:{ c:'Aquinas calls the Commandments the "floor" and the Beatitudes the "ceiling" of Christian moral life. Identify which virtue the Beatitudes primarily perfect, explain why it cannot be reduced to rule-following, and name the Gift of the Spirit Aquinas says most directly perfects the intellect\'s orientation toward God.',
+         a:'The Beatitudes perfect charity (love) — which cannot be reduced to rules because charity is a participation in God\'s own nature, not an obligation. It is its own end. The Gift of Wisdom most directly perfects the intellect by giving a taste (savor) of divine things — allowing us to judge all of life from God\'s perspective.' }},
+  { id:'p4', eyebrow:'Pillar IV', name:'How We Pray',
+    desc:"Lord's Prayer · The Rosary · The Liturgical Year · Gifts of the Spirit",
+    cats:['lords_prayer','rosary','liturgical_year','gifts'],
+    fj:{ c:'In his 2002 letter Rosarium Virginis Mariae, Pope John Paul II added five new mysteries to the Rosary and called it "a compendium of the Gospel." Name the set he added. Then identify which mystery from that set shows Mary\'s role as intercessor, and state the instruction she gives that captures her entire purpose in Christian life.',
+         a:'The Luminous Mysteries (Mysteries of Light). The Wedding at Cana shows Mary as intercessor: she brings a human need to Jesus and he acts. Her instruction to the servants: "Do whatever he tells you" — her perpetual message to all Christians, always directing away from herself and toward her Son.' }},
+  { id:'p5', eyebrow:'Pillar V', name:'Who We Are',
+    desc:'Creation & the Human Person · The Nicene Creed · Romans 8',
+    cats:['creation','creed','romans_8'],
+    fj:{ c:'The Nicene Creed, the imago Dei, and Romans 8 each approach a single claim about the human person from a different angle. State what that claim is. Then identify which of the three grounds it most foundationally — and explain why.',
+         a:'The claim: every human being has infinite, irreducible dignity because of their relationship to God — not because of what they can do or produce. Most foundationally grounded in imago Dei (Genesis 1:27): God\'s image is the ontological root. The Creed declares what God has done to restore it; Romans 8 describes what God\'s Spirit does within it.' }}
+];
+
+const ALL_MODULES = [
+  { id:'trinity',        label:'The Holy Trinity',              pillar:'Pillar I' },
+  { id:'jesus',          label:'Who Is Jesus Christ?',          pillar:'Pillar I' },
+  { id:'mary',           label:'Mary & the Saints',             pillar:'Pillar I' },
+  { id:'prodigal_son',   label:'The Prodigal Son',              pillar:'Pillar I' },
+  { id:'geography',      label:'Bible Geography',               pillar:'Pillar I' },
+  { id:'sacraments',     label:'The Seven Sacraments',          pillar:'Pillar II' },
+  { id:'mass',           label:'The Mass & Real Presence',      pillar:'Pillar II' },
+  { id:'reconciliation', label:'Reconciliation',                pillar:'Pillar II' },
+  { id:'conscience',     label:'Conscience',                    pillar:'Pillar III' },
+  { id:'fruits',         label:'Fruits of the Spirit',          pillar:'Pillar III' },
+  { id:'commandments',   label:'Ten Commandments',              pillar:'Pillar III' },
+  { id:'beatitudes',     label:'The Beatitudes',                pillar:'Pillar III' },
+  { id:'lords_prayer',   label:"The Lord's Prayer",             pillar:'Pillar IV' },
+  { id:'rosary',         label:'The Rosary',                    pillar:'Pillar IV' },
+  { id:'liturgical_year',label:'The Liturgical Year',          pillar:'Pillar IV' },
+  { id:'gifts',          label:'Gifts of the Spirit',           pillar:'Pillar IV' },
+  { id:'creation',       label:'Creation & the Human Person',   pillar:'Pillar V' },
+  { id:'creed',          label:'The Nicene Creed',              pillar:'Pillar V' },
+  { id:'romans_8',       label:'Romans 8',                      pillar:'Pillar V' },
+];
+
+// ── GAME STATE ───────────────────────────────────────────────────
+let gs = {
+  board: null,
+  cats: [],
+  teams: [{ name:'Team 1', score:0 },{ name:'Team 2', score:0 }],
+  answered: new Set(),
+  activeCell: null,
+  customPicked: new Set(),
+  finalWagers: [],
+  finalMarked: [],
+  fromCustom: false
+};
+
+// ── SCREENS ──────────────────────────────────────────────────────
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+
+// ── LANDING ──────────────────────────────────────────────────────
+function initLanding() {
+  const grid = document.getElementById('presetGrid');
+  grid.innerHTML = BOARDS.map(b =>
+    `<div class="board-card" onclick="selectBoard('${b.id}')">
+      <div class="board-eyebrow">${b.eyebrow}</div>
+      <div class="board-name">${b.name}</div>
+      <div class="board-desc">${b.desc}</div>
+    </div>`
+  ).join('') +
+  `<div class="board-card custom-card" onclick="openCustom()">
+    <div class="custom-icon">✦</div>
+    <div class="board-name">Custom Board</div>
+    <div class="board-desc">Pick 3–6 modules from any pillar to mix your own board.</div>
+  </div>`;
+
+  buildPickerGrid();
+}
+
+function selectBoard(id) {
+  gs.board = BOARDS.find(b => b.id === id);
+  gs.cats = [...gs.board.cats];
+  gs.fromCustom = false;
+  goToTeams();
+}
+
+// ── CUSTOM PICKER ────────────────────────────────────────────────
+function buildPickerGrid() {
+  gs.customPicked = new Set();
+  document.getElementById('pickerGrid').innerHTML = ALL_MODULES.map(m =>
+    `<div class="picker-item" id="pick_${m.id}" onclick="togglePick('${m.id}')">
+      <div class="picker-check" id="chk_${m.id}">✓</div>
+      <div>
+        <div class="picker-label">${m.label}</div>
+        <div class="picker-pillar">${m.pillar}</div>
+      </div>
+    </div>`
+  ).join('');
+}
+
+function openCustom() {
+  gs.customPicked = new Set();
+  document.querySelectorAll('.picker-item').forEach(el => el.classList.remove('selected'));
+  updateBuildBtn();
+  showScreen('screenCustom');
+}
+
+function togglePick(id) {
+  if (gs.customPicked.has(id)) {
+    gs.customPicked.delete(id);
+    document.getElementById('pick_' + id).classList.remove('selected');
+  } else if (gs.customPicked.size < 6) {
+    gs.customPicked.add(id);
+    document.getElementById('pick_' + id).classList.add('selected');
+  }
+  updateBuildBtn();
+}
+
+function updateBuildBtn() {
+  const n = gs.customPicked.size;
+  const btn = document.getElementById('buildBtn');
+  btn.disabled = n < 3;
+  btn.textContent = n >= 3 ? `Build Board (${n} categories) →` : `Select ${3 - n} more module${3 - n === 1 ? '' : 's'}`;
+}
+
+function startCustom() {
+  gs.board = null;
+  gs.cats = [...gs.customPicked];
+  gs.fromCustom = true;
+  goToTeams();
+}
+
+// ── TEAMS ────────────────────────────────────────────────────────
+function goToTeams() {
+  gs.teams = [{ name:'Team 1', score:0 },{ name:'Team 2', score:0 }];
+  renderTeams();
+  showScreen('screenTeams');
+}
+
+function renderTeams() {
+  document.getElementById('teamsList').innerHTML = gs.teams.map((t, i) =>
+    `<div class="team-row">
+      <div class="team-dot" style="background:${COLORS[i]}"></div>
+      <input class="team-input" type="text" value="${t.name}"
+        oninput="gs.teams[${i}].name=this.value"
+        placeholder="Team ${i + 1}">
+      ${gs.teams.length > 2
+        ? `<button class="rm-btn" onclick="removeTeam(${i})">×</button>`
+        : '<div style="width:28px"></div>'}
+    </div>`
+  ).join('');
+  document.getElementById('addTeamBtn').style.display = gs.teams.length >= 4 ? 'none' : 'inline-flex';
+}
+
+function addTeam() {
+  if (gs.teams.length >= 4) return;
+  gs.teams.push({ name:'Team ' + (gs.teams.length + 1), score:0 });
+  renderTeams();
+}
+
+function removeTeam(i) {
+  if (gs.teams.length <= 2) return;
+  gs.teams.splice(i, 1);
+  renderTeams();
+}
+
+function teamsBack() {
+  showScreen(gs.fromCustom ? 'screenCustom' : 'screenLanding');
+}
+
+// ── GAME START & BOARD ───────────────────────────────────────────
+function startGame() {
+  gs.teams.forEach(t => t.score = 0);
+  gs.answered = new Set();
+  renderBoard();
+  showScreen('screenBoard');
+}
+
+function renderBoard() {
+  const cats = gs.cats;
+  const board = document.getElementById('jBoard');
+  board.style.gridTemplateColumns = `repeat(${cats.length}, 1fr)`;
+  board.innerHTML = '';
+
+  cats.forEach(id => {
+    const hd = document.createElement('div');
+    hd.className = 'j-cat-hd';
+    hd.textContent = QB[id].label;
+    board.appendChild(hd);
+  });
+
+  [100,200,300,400,500].forEach((val, row) => {
+    cats.forEach((id, col) => {
+      const key = col + '_' + row;
+      const cell = document.createElement('div');
+      cell.className = 'j-cell' + (gs.answered.has(key) ? ' done' : '');
+      cell.id = 'cell_' + key;
+      cell.onclick = () => openQuestion(col, row);
+      cell.innerHTML = `<span class="j-val">${val}</span>`;
+      board.appendChild(cell);
+    });
+  });
+
+  refreshScoreChips();
+}
+
+function refreshScoreChips() {
+  document.getElementById('scoreChips').innerHTML = gs.teams.map((t, i) =>
+    `<div class="score-chip">
+      <div class="chip-dot" style="background:${COLORS[i]}"></div>
+      ${t.name}: <span class="chip-score">${t.score.toLocaleString()}</span>
+    </div>`
+  ).join('');
+}
+
+// ── QUESTION FLOW ────────────────────────────────────────────────
+function openQuestion(col, row) {
+  const key = col + '_' + row;
+  if (gs.answered.has(key)) return;
+  gs.activeCell = { col, row, key };
+
+  const id = gs.cats[col];
+  const q = QB[id].q[row];
+  const val = (row + 1) * 100;
+
+  document.getElementById('qEyebrow').textContent = QB[id].label + ' — ' + val + ' points';
+  document.getElementById('qClue').textContent = q.c;
+  document.getElementById('qAnsText').textContent = q.a;
+  document.getElementById('qAnsBox').classList.remove('show');
+  document.getElementById('qRevealBtn').style.display = 'inline-flex';
+
+  const award = document.getElementById('qAward');
+  award.classList.remove('show');
+  award.innerHTML = '<div class="q-award-lbl">Who got it?</div>' +
+    gs.teams.map((t, i) =>
+      `<button class="award-btn" onclick="awardTeam(${i})">
+        <div class="award-dot" style="background:${COLORS[i]}"></div>
+        ${t.name} gets it (+${val})
+      </button>`
+    ).join('') +
+    `<button class="btn btn-outline" style="width:100%;margin-top:0.25rem;" onclick="closeQuestion()">No winner — close</button>`;
+
+  document.getElementById('qOverlay').classList.add('open');
+}
+
+function revealAnswer() {
+  document.getElementById('qAnsBox').classList.add('show');
+  document.getElementById('qAward').classList.add('show');
+  document.getElementById('qRevealBtn').style.display = 'none';
+}
+
+function awardTeam(i) {
+  const val = (gs.activeCell.row + 1) * 100;
+  gs.teams[i].score += val;
+  markAnswered();
+}
+
+function closeQuestion() { markAnswered(); }
+
+function dismissQ() {
+  // Close without marking answered (teacher accidentally opened wrong tile)
+  document.getElementById('qOverlay').classList.remove('open');
+  gs.activeCell = null;
+}
+
+function markAnswered() {
+  if (!gs.activeCell) return;
+  gs.answered.add(gs.activeCell.key);
+  const cell = document.getElementById('cell_' + gs.activeCell.key);
+  if (cell) cell.classList.add('done');
+  document.getElementById('qOverlay').classList.remove('open');
+  gs.activeCell = null;
+  refreshScoreChips();
+}
+
+// ── FINAL JEOPARDY ───────────────────────────────────────────────
+function beginFinalJeopardy() {
+  gs.finalWagers = gs.teams.map(() => 0);
+  gs.finalMarked = gs.teams.map(() => null);
+
+  document.getElementById('wagerList').innerHTML = gs.teams.map((t, i) =>
+    `<div class="wager-row">
+      <div class="wager-info">
+        <div class="wager-name">
+          <div style="width:10px;height:10px;border-radius:50%;background:${COLORS[i]};flex-shrink:0;"></div>
+          ${t.name}
+        </div>
+        <div class="wager-current">Current score: ${t.score.toLocaleString()}</div>
+      </div>
+      <input class="wager-input" type="number" min="0" max="${Math.max(t.score,0)}"
+        value="0" id="w_${i}"
+        oninput="clampWager(${i},${Math.max(t.score,0)})">
+    </div>`
+  ).join('');
+
+  showScreen('screenFinalWager');
+}
+
+function clampWager(i, max) {
+  const inp = document.getElementById('w_' + i);
+  let v = parseInt(inp.value) || 0;
+  v = Math.min(Math.max(v, 0), max);
+  gs.finalWagers[i] = v;
+}
+
+function lockWagers() {
+  gs.teams.forEach((_, i) => {
+    const inp = document.getElementById('w_' + i);
+    const max = Math.max(gs.teams[i].score, 0);
+    gs.finalWagers[i] = Math.min(Math.max(parseInt(inp.value) || 0, 0), max);
+  });
+
+  const fj = gs.board ? gs.board.fj : getFallbackFJ();
+  document.getElementById('fjClue').textContent = fj.c;
+  document.getElementById('fjAnsText').textContent = fj.a;
+  document.getElementById('fjAnsBox').classList.remove('show');
+  document.getElementById('fjRevealBtn').style.display = 'inline-flex';
+  document.getElementById('fjDoneBtn').style.display = 'none';
+  gs.finalMarked = gs.teams.map(() => null);
+
+  document.getElementById('fqRows').innerHTML = gs.teams.map((t, i) =>
+    `<div class="fq-row" id="fqrow_${i}">
+      <div class="fq-info">
+        <div class="fq-name">
+          <div style="width:10px;height:10px;border-radius:50%;background:${COLORS[i]};flex-shrink:0;"></div>
+          ${t.name}
+        </div>
+        <div class="fq-wager">Wagered: ${gs.finalWagers[i].toLocaleString()}</div>
+      </div>
+      <div class="fq-btns">
+        <button class="fq-btn cor" id="fqc_${i}" onclick="markFinal(${i},true)"  disabled>✓ Correct</button>
+        <button class="fq-btn wrg" id="fqw_${i}" onclick="markFinal(${i},false)" disabled>✗ Wrong</button>
+      </div>
+    </div>`
+  ).join('');
+
+  showScreen('screenFinalQuestion');
+}
+
+function revealFinalAnswer() {
+  document.getElementById('fjAnsBox').classList.add('show');
+  document.getElementById('fjRevealBtn').style.display = 'none';
+  gs.teams.forEach((_, i) => {
+    document.getElementById('fqc_' + i).disabled = false;
+    document.getElementById('fqw_' + i).disabled = false;
+  });
+}
+
+function markFinal(i, correct) {
+  gs.finalMarked[i] = correct;
+  const wager = gs.finalWagers[i];
+  gs.teams[i].score += correct ? wager : -wager;
+  document.getElementById('fqc_' + i).disabled = true;
+  document.getElementById('fqw_' + i).disabled = true;
+  document.getElementById('fqrow_' + i).style.borderColor = correct ? '#2e7d32' : '#c62828';
+  if (gs.finalMarked.every(v => v !== null)) {
+    document.getElementById('fjDoneBtn').style.display = 'inline-flex';
+  }
+}
+
+function getFallbackFJ() {
+  const id = gs.cats[Math.floor(Math.random() * gs.cats.length)];
+  const q = QB[id].q[4];
+  return { c:'[' + QB[id].label + '] ' + q.c, a:q.a };
+}
+
+// ── RESULTS ──────────────────────────────────────────────────────
+function showResults() {
+  const sorted = [...gs.teams].sort((a, b) => b.score - a.score);
+  document.getElementById('winnerLine').textContent =
+    '🏆 ' + sorted[0].name + ' wins with ' + sorted[0].score.toLocaleString() + ' points!';
+
+  const medals = ['🥇','🥈','🥉','4'];
+  document.getElementById('resultsList').innerHTML = sorted.map((t, i) => {
+    const orig = gs.teams.indexOf(t);
+    return `<div class="result-row${i === 0 ? ' top' : ''}">
+      <div class="result-rank">${medals[i]}</div>
+      <div style="display:flex;align-items:center;gap:0.5rem;flex:1;">
+        <div style="width:10px;height:10px;border-radius:50%;background:${COLORS[orig]};flex-shrink:0;"></div>
+        <div class="result-name">${t.name}</div>
+      </div>
+      <div class="result-score">${t.score.toLocaleString()}</div>
+    </div>`;
+  }).join('');
+
+  showScreen('screenResults');
+}
+
+// ── BOOT ─────────────────────────────────────────────────────────
+initLanding();
+</script>
+</body>
+</html>
