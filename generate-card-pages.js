@@ -106,10 +106,14 @@ const ALPHA_CARDS = [
     ],
     imgFile: path.join(GRAYSONS_DIR, 'Bernadette.jpg'),
   },
+];
+
+// New cards use external image files in images/saints/{slug}.jpg
+const NEW_CARDS = [
   {
     slug: 'bvm', navName: 'Mary',
     title: 'CRUX — Blessed Virgin Mary', saintName: 'Blessed Virgin Mary',
-    badge: '✦ Rare', feast: 'January 1 (Solemnity)', patron: 'All of humanity, the Church',
+    badge: '✦✦✦✦ Legendary', feast: 'January 1 (Solemnity)', patron: 'All of humanity, the Church',
     bio: '"Do whatever he tells you." The last recorded words of Mary in Scripture — and perhaps the most important.',
     setNum: '001 / 052', backName: 'Mary, Mother of God', backDates: 'c. 18 BC – c. 40 AD · Nazareth',
     prayer: [
@@ -127,12 +131,7 @@ const ALPHA_CARDS = [
       { label: 'Symbols',     value: 'Blue mantle · White lily · Crescent moon · Crown of stars' },
       { label: 'Apparitions', value: 'Guadalupe · Lourdes · Fatima · Knock · Akita' },
     ],
-    imgFile: '/Users/andrewcross/Documents/CRUX/Saint Cards/LEGENDARY/MaryGuadalupe001.jpg',
   },
-];
-
-// New cards use external image files in images/saints/{slug}.jpg
-const NEW_CARDS = [
   {
     slug: 'peter', navName: 'Peter',
     title: 'CRUX — St. Peter', saintName: 'St. Peter',
