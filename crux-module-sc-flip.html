@@ -433,7 +433,7 @@ scene.addEventListener('mousemove', (e) => {
 scene.addEventListener('mouseleave', () => { if (!isFlipped) flipper.style.transform = ''; });
 
 document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') window.location.href = 'crux-account.html';
+  if (e.key === 'Escape') history.length > 1 ? history.back() : (document.body.style.transition = 'opacity 0.1s ease', document.body.style.opacity = '0', setTimeout(() => { window.location.href = 'crux-account.html'; }, 100));
 });
 </script>
 
