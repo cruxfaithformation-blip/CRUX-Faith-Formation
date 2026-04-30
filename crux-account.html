@@ -14,7 +14,7 @@
         gtag('config', 'G-LQ35DLTVKY');
     </script>
 
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
 
     <!-- Firebase SDK v10 -->
     <script type="module">
@@ -1176,8 +1176,8 @@
                     <div class="no-data" style="padding:1rem 0;">Loading your cards…</div>
                 </div>
                 <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;">
-                    <div style="font-size:0.78rem;color:rgba(255,255,255,0.35);font-family:'DM Mono',monospace;letter-spacing:0.5px;">Spend XP to unlock more cards</div>
-                    <a href="crux-pack-store.html" style="background:#d4a574;color:#1a1f36;border:none;padding:8px 16px;font-family:'DM Mono',monospace;font-size:0.62rem;letter-spacing:1.5px;text-transform:uppercase;font-weight:700;border-radius:4px;cursor:pointer;text-decoration:none;transition:opacity 0.2s;">Open Packs →</a>
+                    <div style="font-size:0.72rem;color:rgba(255,255,255,0.35);font-family:'Cinzel',serif;letter-spacing:1px;">Spend XP to unlock more cards</div>
+                    <a href="crux-pack-store.html" style="background:#d4a574;color:#1a1f36;border:none;padding:8px 16px;font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;font-weight:700;border-radius:4px;cursor:pointer;text-decoration:none;transition:opacity 0.2s;">Open Packs →</a>
                 </div>
             </div>
 
@@ -1760,11 +1760,9 @@
                     `<div class="card-saint-name">${card.name}</div>` +
                 `</${tag}>`;
             }).join('');
-            const hasThomas = cardsOwned.includes('thomas');
             row.innerHTML = cardEls +
                 `<div class="card-cta">` +
-                    (hasThomas ? `<a href="crux-thomas-flip.html" class="view-all-link">&#127183; View St. Thomas &rarr;</a>` : '') +
-                    `<div class="cards-hint" style="font-size:0.72rem;color:var(--text-muted);margin-top:${hasThomas ? '0.5rem' : '0'};">` +
+                    `<div class="cards-hint" style="font-size:0.72rem;color:var(--text-muted);">` +
                         `More cards coming with new modules.` +
                     `</div>` +
                 `</div>`;
