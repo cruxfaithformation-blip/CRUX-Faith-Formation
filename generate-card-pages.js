@@ -1242,7 +1242,7 @@ const MODULE_CARDS = [
   },
 ];
 
-function buildModuleHTML(card) {
+function buildModuleHTML(card, imgSrc) {
   const highlightsHTML = card.highlights.map((h, i) =>
     `          <div class="mod-fact-row"><span class="mod-fact-label">${h.label}</span><span class="mod-fact-value">${h.value}</span></div>${i < card.highlights.length - 1 ? '\n          <div class="mod-fact-row"><div class="mod-fact-divider"></div></div>' : ''}`
   ).join('\n');
@@ -1319,6 +1319,20 @@ body {
     0 0 0 3px rgba(212,165,116,0.08),
     0 8px 50px rgba(0,0,0,0.8),
     0 0 40px rgba(212,165,116,0.06);
+}
+
+.mod-portrait {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: center; z-index: 1;
+}
+
+.mod-darken {
+  position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(
+    to bottom,
+    rgba(8,10,22,0.25) 0%, rgba(8,10,22,0.4) 35%,
+    rgba(8,10,22,0.82) 65%, rgba(8,10,22,0.97) 100%
+  );
 }
 
 .mod-gold-strip {
@@ -1534,6 +1548,8 @@ body {
         <circle cx="2" cy="2" r="2" fill="rgba(212,165,116,0.35)"/>
       </svg>
 
+${imgSrc ? `      <img class="mod-portrait" src="${imgSrc}" alt="${card.moduleName}">
+      <div class="mod-darken"></div>` : ''}
       <div class="mod-watermark">
         <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line x1="50" y1="5" x2="50" y2="95" stroke="#d4a574" stroke-width="3"/>
@@ -1717,10 +1733,13 @@ function showLocked() {
 </html>`;
 }
 
-// Generate module cards
+// Generate module cards (image optional — drop {slug}.jpg in images/module-cards/)
 for (const card of MODULE_CARDS) {
   console.log('Building module-' + card.slug + '...');
-  const html = buildModuleHTML(card);
+  const imgFile = path.join(OUT_DIR, 'images/module-cards/' + card.slug + '.jpg');
+  const imgSrc  = fs.existsSync(imgFile) ? 'images/module-cards/' + card.slug + '.jpg' : null;
+  if (imgSrc) console.log('  (image found)');
+  const html = buildModuleHTML(card, imgSrc);
   const outPath = path.join(OUT_DIR, 'crux-module-' + card.slug + '-flip.html');
   fs.writeFileSync(outPath, html, 'utf8');
   console.log('  -> ' + outPath + ' (' + Math.round(html.length / 1024) + ' KB)');
