@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — Vatican II · Module Card</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: radial-gradient(ellipse at center, #1a1510 0%, #0a0806 100%);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 2rem;
+  gap: 1.2rem;
+  font-family: 'EB Garamond', serif;
+}
+
+.flip-hint {
+  font-family: 'Cinzel', serif;
+  font-size: 0.52rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.35);
+  text-align: center;
+  pointer-events: none;
+}
+
+.card-nav {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0.6rem; margin-top: 0.4rem;
+}
+
+.nav-btn {
+  font-family: 'Cinzel', serif; font-size: 0.5rem; letter-spacing: 1.5px;
+  text-transform: uppercase; text-decoration: none;
+  padding: 0.55rem 0.9rem; border-radius: 5px;
+  border: 1px solid rgba(212,165,116,0.18); color: rgba(212,165,116,0.55);
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  touch-action: manipulation; -webkit-tap-highlight-color: transparent;
+  white-space: nowrap;
+}
+.nav-btn:hover { color: rgba(212,165,116,0.95); border-color: rgba(212,165,116,0.4); background: rgba(212,165,116,0.06); }
+
+.card-scene { width: 300px; height: 420px; perspective: 1000px; cursor: pointer; }
+
+.card-flipper {
+  width: 100%; height: 100%; position: relative;
+  transform-style: preserve-3d; -webkit-transform-style: preserve-3d;
+  transition: transform 0.72s cubic-bezier(0.45, 0.05, 0.2, 1.0);
+}
+
+.card-scene.flipped .card-flipper { transform: rotateY(180deg); }
+
+.card-face {
+  position: absolute; inset: 0; border-radius: 18px; overflow: hidden;
+  backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+
+/* ── FRONT ── */
+.card-front {
+  background: linear-gradient(160deg, #0b0e1f 0%, #080a16 60%, #0d0c18 100%);
+  cursor: pointer; touch-action: manipulation;
+  box-shadow:
+    0 0 0 1.5px rgba(212,165,116,0.2),
+    0 0 0 3px rgba(212,165,116,0.08),
+    0 8px 50px rgba(0,0,0,0.8),
+    0 0 40px rgba(212,165,116,0.06);
+}
+
+.mod-gold-strip {
+  position: absolute; top: 0; left: 0; right: 0; height: 4px; z-index: 20;
+  background: linear-gradient(90deg, #8B6914, #d4a574, #f0c987, #d4a574, #8B6914);
+  background-size: 200% 100%;
+  animation: gold-sweep 4s linear infinite;
+}
+@keyframes gold-sweep { 0% { background-position: 0% 0; } 100% { background-position: 200% 0; } }
+
+.mod-border {
+  position: absolute; inset: 4px; border-radius: 14px; z-index: 19;
+  border: 1px solid rgba(212,165,116,0.2);
+  box-shadow: inset 0 0 30px rgba(212,165,116,0.04);
+  animation: gold-glow 5s ease-in-out infinite alternate;
+}
+@keyframes gold-glow {
+  0%   { border-color: rgba(212,165,116,0.15); box-shadow: inset 0 0 30px rgba(212,165,116,0.03); }
+  100% { border-color: rgba(212,165,116,0.35); box-shadow: inset 0 0 30px rgba(212,165,116,0.08); }
+}
+
+.mod-corner { position: absolute; z-index: 18; width: 28px; height: 28px; }
+.mc-tl { top:10px; left:10px; }
+.mc-tr { top:10px; right:10px; transform:scaleX(-1); }
+.mc-bl { bottom:10px; left:10px; transform:scaleY(-1); }
+.mc-br { bottom:10px; right:10px; transform:scale(-1,-1); }
+
+.mod-watermark {
+  position: absolute; inset: 0; display: flex; align-items: center;
+  justify-content: center; opacity: 0.04; pointer-events: none; z-index: 1;
+}
+.mod-watermark svg { width: 220px; height: 220px; }
+
+.mod-foil {
+  position: absolute; inset: 0; z-index: 2; mix-blend-mode: overlay; opacity: 0.15;
+  background-image: repeating-linear-gradient(105deg,
+    transparent 0px, transparent 3px,
+    rgba(212,165,116,0.08) 3px, rgba(212,165,116,0.08) 4px
+  );
+  pointer-events: none;
+}
+
+.mod-content {
+  position: absolute; inset: 0; z-index: 15;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  padding: 2rem 1.4rem 1.4rem;
+  text-align: center;
+}
+
+.mod-category {
+  font-family: 'Cinzel', serif; font-size: 0.46rem; font-weight: 600;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(212,165,116,0.5); margin-bottom: 0.9rem;
+}
+
+.mod-ornament { display: flex; align-items: center; gap: 0.5rem; width: 100%; margin-bottom: 1rem; }
+.mod-ornament-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(212,165,116,0.3), transparent); }
+.mod-ornament-diamond { font-size: 0.5rem; color: rgba(212,165,116,0.4); }
+
+.mod-name {
+  font-family: 'Cinzel', serif; font-size: 1.45rem; font-weight: 900;
+  color: rgba(255,245,225,0.9); letter-spacing: 1px; line-height: 1.2;
+  text-shadow: 0 0 30px rgba(212,165,116,0.3), 0 2px 8px rgba(0,0,0,0.8);
+  margin-bottom: 1.1rem;
+}
+
+.mod-quote {
+  font-family: 'EB Garamond', serif; font-size: 0.75rem; font-style: italic;
+  color: rgba(230,210,175,0.55); line-height: 1.65;
+  border-left: 2px solid rgba(212,165,116,0.2); padding-left: 0.75rem;
+  text-align: left; margin-bottom: auto;
+}
+
+.mod-footer {
+  width: 100%; display: flex; align-items: center; justify-content: space-between;
+  padding-top: 0.75rem; border-top: 1px solid rgba(212,165,116,0.12);
+  margin-top: 1rem;
+}
+.mod-badge {
+  font-family: 'Cinzel', serif; font-size: 0.44rem; letter-spacing: 2px;
+  text-transform: uppercase; color: rgba(212,165,116,0.45);
+}
+.mod-set {
+  font-family: 'Cinzel', serif; font-size: 0.44rem; letter-spacing: 1.5px;
+  color: rgba(212,165,116,0.35);
+}
+
+/* ── BACK ── */
+.card-back {
+  transform: rotateY(180deg);
+  background: linear-gradient(160deg, #0b0e1f 0%, #080a16 60%, #0d0c18 100%);
+  display: flex; flex-direction: column;
+  box-shadow:
+    0 0 0 1.5px rgba(212,165,116,0.2),
+    0 0 0 3px rgba(212,165,116,0.08),
+    0 8px 50px rgba(0,0,0,0.8);
+}
+
+.back-gold-strip {
+  height: 4px; flex-shrink: 0;
+  background: linear-gradient(90deg, #8B6914, #d4a574, #f0c987, #d4a574, #8B6914);
+  background-size: 200% 100%;
+  animation: gold-sweep 4s linear infinite;
+}
+
+.back-gold-border {
+  position: absolute; inset: 4px; border-radius: 14px; pointer-events: none;
+  border: 1px solid rgba(212,165,116,0.15);
+  animation: gold-glow 5s ease-in-out infinite alternate; z-index: 10;
+}
+
+.back-mod-watermark {
+  position: absolute; inset: 0; display: flex; align-items: center;
+  justify-content: center; opacity: 0.035; pointer-events: none; z-index: 1;
+}
+.back-mod-watermark svg { width: 200px; height: 200px; }
+
+.mod-back-content {
+  position: relative; z-index: 20; flex: 1; display: flex;
+  flex-direction: column; padding: 1.25rem 1.2rem 1rem; overflow: hidden;
+}
+
+.mod-back-header { text-align: center; margin-bottom: 0.75rem; flex-shrink: 0; }
+.mod-back-title {
+  font-family: 'Cinzel', serif; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase;
+  color: rgba(212,165,116,0.85);
+  text-shadow: 0 0 16px rgba(212,165,116,0.3); line-height: 1.3;
+}
+.mod-back-dates {
+  font-family: 'EB Garamond', serif; font-size: 0.7rem; font-style: italic;
+  color: rgba(212,165,116,0.35); margin-top: 0.15rem;
+}
+
+.mod-back-ornament { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; flex-shrink: 0; }
+.mod-back-ornament-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(212,165,116,0.2), transparent); }
+.mod-back-ornament-diamond { font-size: 0.55rem; color: rgba(212,165,116,0.3); letter-spacing: 3px; }
+
+.mod-back-summary {
+  font-family: 'EB Garamond', serif; font-size: 0.8rem;
+  color: rgba(230,210,175,0.7); line-height: 1.65;
+  margin-bottom: 0.85rem; flex-shrink: 0;
+}
+
+.mod-facts-label {
+  font-family: 'Cinzel', serif; font-size: 0.42rem; letter-spacing: 2px;
+  text-transform: uppercase; color: rgba(212,165,116,0.4); margin-bottom: 0.5rem; flex-shrink: 0;
+}
+
+.mod-fact-row {
+  display: grid; grid-template-columns: auto 1fr;
+  gap: 0.2rem 0.55rem; margin-bottom: 0.4rem; align-items: start;
+}
+.mod-fact-label {
+  font-family: 'Cinzel', serif; font-size: 0.4rem; letter-spacing: 1.5px;
+  text-transform: uppercase; color: rgba(212,165,116,0.5); padding-top: 3px; white-space: nowrap;
+}
+.mod-fact-value {
+  font-family: 'EB Garamond', serif; font-size: 0.76rem;
+  color: rgba(230,210,175,0.75); line-height: 1.4;
+}
+.mod-fact-divider { grid-column: 1/-1; height: 1px; background: rgba(212,165,116,0.08); margin: 0.15rem 0; }
+
+.mod-verse {
+  font-family: 'EB Garamond', serif; font-size: 0.74rem; font-style: italic;
+  color: rgba(212,165,116,0.45); line-height: 1.55; margin-top: auto;
+  padding-top: 0.6rem; border-top: 1px solid rgba(212,165,116,0.1);
+  flex-shrink: 0;
+}
+
+.mod-back-footer {
+  flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
+  padding-top: 0.5rem; margin-top: 0.4rem;
+  border-top: 1px solid rgba(212,165,116,0.1);
+}
+.mod-back-footer-set { font-family:'Cinzel',serif; font-size:0.42rem; letter-spacing:2px; text-transform:uppercase; color:rgba(212,165,116,0.25); }
+.mod-back-footer-num { font-family:'Cinzel',serif; font-size:0.42rem; letter-spacing:1px; color:rgba(212,165,116,0.25); }
+</style>
+</head>
+<body>
+
+<div class="flip-hint" id="flipHint">Tap card to flip &nbsp;✦</div>
+
+<div class="card-scene" id="cardScene">
+  <div class="card-flipper">
+
+    <!-- FRONT -->
+    <div class="card-face card-front" id="modCardFront">
+      <div class="mod-gold-strip"></div>
+      <div class="mod-border"></div>
+
+      <svg class="mod-corner mc-tl" viewBox="0 0 28 28" fill="none">
+        <path d="M2 14 L2 2 L14 2" stroke="rgba(212,165,116,0.45)" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M2 2 L9 9" stroke="rgba(212,165,116,0.2)" stroke-width="0.7"/>
+        <circle cx="2" cy="2" r="2" fill="rgba(212,165,116,0.35)"/>
+        <circle cx="14" cy="2" r="1.2" fill="rgba(212,165,116,0.2)"/>
+        <circle cx="2" cy="14" r="1.2" fill="rgba(212,165,116,0.2)"/>
+      </svg>
+      <svg class="mod-corner mc-tr" viewBox="0 0 28 28" fill="none">
+        <path d="M2 14 L2 2 L14 2" stroke="rgba(212,165,116,0.45)" stroke-width="1.2" stroke-linecap="round"/>
+        <path d="M2 2 L9 9" stroke="rgba(212,165,116,0.2)" stroke-width="0.7"/>
+        <circle cx="2" cy="2" r="2" fill="rgba(212,165,116,0.35)"/>
+        <circle cx="14" cy="2" r="1.2" fill="rgba(212,165,116,0.2)"/>
+        <circle cx="2" cy="14" r="1.2" fill="rgba(212,165,116,0.2)"/>
+      </svg>
+      <svg class="mod-corner mc-bl" viewBox="0 0 28 28" fill="none">
+        <path d="M2 14 L2 2 L14 2" stroke="rgba(212,165,116,0.45)" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="2" cy="2" r="2" fill="rgba(212,165,116,0.35)"/>
+      </svg>
+      <svg class="mod-corner mc-br" viewBox="0 0 28 28" fill="none">
+        <path d="M2 14 L2 2 L14 2" stroke="rgba(212,165,116,0.45)" stroke-width="1.2" stroke-linecap="round"/>
+        <circle cx="2" cy="2" r="2" fill="rgba(212,165,116,0.35)"/>
+      </svg>
+
+      <div class="mod-watermark">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="50" y1="5" x2="50" y2="95" stroke="#d4a574" stroke-width="3"/>
+          <line x1="5" y1="35" x2="95" y2="35" stroke="#d4a574" stroke-width="3"/>
+          <circle cx="50" cy="50" r="44" stroke="#d4a574" stroke-width="1.5" stroke-dasharray="4 6"/>
+          <circle cx="50" cy="50" r="30" stroke="#d4a574" stroke-width="0.8"/>
+          <text x="50" y="78" text-anchor="middle" font-family="serif" font-size="10" fill="#d4a574" letter-spacing="4">CRUX</text>
+        </svg>
+      </div>
+      <div class="mod-foil"></div>
+
+      <div class="mod-content">
+        <div class="mod-category">Church History</div>
+        <div class="mod-ornament">
+          <div class="mod-ornament-line"></div>
+          <div class="mod-ornament-diamond">◆</div>
+          <div class="mod-ornament-line"></div>
+        </div>
+        <div class="mod-name">Vatican II</div>
+        <div class="mod-quote">"The joys and hopes, the griefs and anxieties of the people of this age are the joys and hopes, the griefs and anxieties of the followers of Christ." — Gaudium et Spes</div>
+        <div class="mod-footer">
+          <span class="mod-badge">Common · Module Card</span>
+          <span class="mod-set">M-001</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- BACK -->
+    <div class="card-face card-back">
+      <div class="back-gold-strip"></div>
+      <div class="back-gold-border"></div>
+      <div class="back-mod-watermark">
+        <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <line x1="50" y1="5" x2="50" y2="95" stroke="#d4a574" stroke-width="3"/>
+          <line x1="5" y1="35" x2="95" y2="35" stroke="#d4a574" stroke-width="3"/>
+          <circle cx="50" cy="50" r="44" stroke="#d4a574" stroke-width="1.5" stroke-dasharray="4 6"/>
+          <circle cx="50" cy="50" r="30" stroke="#d4a574" stroke-width="0.8"/>
+          <text x="50" y="78" text-anchor="middle" font-family="serif" font-size="10" fill="#d4a574" letter-spacing="4">CRUX</text>
+        </svg>
+      </div>
+
+      <div class="mod-back-content">
+        <div class="mod-back-header">
+          <div class="mod-back-title">The Second Vatican Council</div>
+          <div class="mod-back-dates">1962–1965 · Vatican City</div>
+        </div>
+
+        <div class="mod-back-ornament">
+          <div class="mod-back-ornament-line"></div>
+          <div class="mod-back-ornament-diamond">◆ ◆ ◆</div>
+          <div class="mod-back-ornament-line"></div>
+        </div>
+
+        <div class="mod-back-summary">Vatican II called the Church to engage the modern world without losing its ancient roots — renewing the liturgy, reaffirming Scripture and Tradition, and speaking to human dignity and freedom.</div>
+
+        <div class="mod-facts-label">Key Constitutions</div>
+          <div class="mod-fact-row"><span class="mod-fact-label">Sacrosanctum Concilium</span><span class="mod-fact-value">Reformed the liturgy; Mass in the vernacular</span></div>
+          <div class="mod-fact-row"><div class="mod-fact-divider"></div></div>
+          <div class="mod-fact-row"><span class="mod-fact-label">Lumen Gentium</span><span class="mod-fact-value">The Church as the whole People of God</span></div>
+          <div class="mod-fact-row"><div class="mod-fact-divider"></div></div>
+          <div class="mod-fact-row"><span class="mod-fact-label">Gaudium et Spes</span><span class="mod-fact-value">The Church reading the signs of the times</span></div>
+          <div class="mod-fact-row"><div class="mod-fact-divider"></div></div>
+          <div class="mod-fact-row"><span class="mod-fact-label">Dei Verbum</span><span class="mod-fact-value">Scripture and Tradition as one source of revelation</span></div>
+
+        <div class="mod-verse">"Your word is a lamp to my feet and a light to my path." — Psalm 119:105</div>
+
+        <div class="mod-back-footer">
+          <button class="flip-back-btn" style="background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:rgba(212,165,116,0.4);padding:0;transition:color 0.2s;" onmouseover="this.style.color='rgba(212,165,116,0.9)'" onmouseout="this.style.color='rgba(212,165,116,0.4)'">&#x21A9; Flip</button>
+          <span class="mod-back-footer-set">CRUX · Modules · Series I</span>
+          <span class="mod-back-footer-num">M-001</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<nav class="card-nav">
+  <a class="nav-btn" href="core-beliefs.html">&#8592; Back to Module</a>
+  <a class="nav-btn" href="crux-account.html">My Collection</a>
+</nav>
+
+<script>
+const scene     = document.getElementById('cardScene');
+const hint      = document.getElementById('flipHint');
+const frontFace = document.getElementById('modCardFront');
+const flipper   = scene.querySelector('.card-flipper');
+const backFace  = scene.querySelector('.card-back');
+let isFlipped   = false;
+
+function onTap(element, handler) {
+  element.addEventListener('touchend', function(e) { e.preventDefault(); handler(e); }, { passive: false });
+  element.addEventListener('click', handler);
+}
+
+onTap(frontFace, () => {
+  isFlipped = true;
+  flipper.style.transform = '';
+  scene.classList.add('flipped');
+  hint.textContent = 'Tap ↩ to flip back';
+  frontFace.style.pointerEvents = 'none';
+  setTimeout(() => { if (isFlipped) frontFace.style.opacity = '0'; }, 360);
+});
+
+onTap(scene.querySelector('.flip-back-btn'), () => {
+  isFlipped = false;
+  frontFace.style.opacity = '';
+  flipper.style.transform = '';
+  scene.classList.remove('flipped');
+  hint.textContent = 'Tap card to flip  ✦';
+  frontFace.style.pointerEvents = 'auto';
+  setTimeout(() => { if (!isFlipped) backFace.style.opacity = '0'; }, 360);
+  setTimeout(() => { if (!isFlipped) backFace.style.opacity = ''; }, 720);
+});
+
+scene.addEventListener('mousemove', (e) => {
+  if (isFlipped) return;
+  const rect = scene.getBoundingClientRect();
+  const x = (e.clientX - rect.left) / rect.width;
+  const y = (e.clientY - rect.top)  / rect.height;
+  if (x < 0 || x > 1 || y < 0 || y > 1) return;
+  flipper.style.transform = 'rotateX(' + ((y - 0.5) * -18) + 'deg) rotateY(' + ((x - 0.5) * 18) + 'deg)';
+});
+
+scene.addEventListener('mouseleave', () => { if (!isFlipped) flipper.style.transform = ''; });
+</script>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+const app = initializeApp({
+  apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+  authDomain: "crux-faith-formation.firebaseapp.com",
+  projectId: "crux-faith-formation",
+  storageBucket: "crux-faith-formation.firebasestorage.app",
+  messagingSenderId: "838141015985",
+  appId: "1:838141015985:web:2655e570663e182d75ef90"
+});
+
+const auth = getAuth(app);
+const db   = getFirestore(app);
+const ADMIN_UIDS  = ['ratIiHiOj6Qnd2nHRvQsLBiQj953'];
+const THIS_MODULE = 'vatican2';
+
+onAuthStateChanged(auth, async (user) => {
+  if (!user) { window.location.href = 'crux-account.html'; return; }
+  if (ADMIN_UIDS.includes(user.uid)) return;
+
+  const snap  = await getDoc(doc(db, 'userProgress', user.uid));
+  const owned = snap.exists() ? (snap.data().moduleCards || []) : [];
+  if (!owned.includes(THIS_MODULE)) showLocked();
+});
+
+function showLocked() {
+  document.getElementById('flipHint').style.display = 'none';
+  document.querySelector('.card-nav').style.display = 'none';
+  const scene = document.getElementById('cardScene');
+  scene.style.cursor = 'default';
+  scene.innerHTML = `
+    <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;
+      justify-content:center;background:linear-gradient(160deg,#0b0e1f,#080a16);border-radius:18px;
+      gap:1.2rem;padding:2rem;text-align:center;border:1px solid rgba(212,165,116,0.12);
+      box-shadow:0 8px 50px rgba(0,0,0,0.8);">
+      <div style="font-size:1.5rem;color:rgba(212,165,116,0.2);">◆</div>
+      <div style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:3px;
+        text-transform:uppercase;color:rgba(212,165,116,0.3);">Module Not Completed</div>
+      <div style="font-family:'EB Garamond',serif;font-size:0.88rem;
+        color:rgba(212,165,116,0.25);line-height:1.7;max-width:200px;">
+        Complete the Vatican II module to earn this card.
+      </div>
+      <a href="core-beliefs.html" style="font-family:'Cinzel',serif;font-size:0.5rem;
+        letter-spacing:2px;text-transform:uppercase;padding:0.6rem 1.2rem;
+        border:1px solid rgba(212,165,116,0.25);color:rgba(212,165,116,0.6);
+        border-radius:4px;text-decoration:none;"
+        onmouseover="this.style.color='rgba(212,165,116,1)';this.style.borderColor='rgba(212,165,116,0.5)'"
+        onmouseout="this.style.color='rgba(212,165,116,0.6)';this.style.borderColor='rgba(212,165,116,0.25)'">
+        Go to Module →
+      </a>
+    </div>
+  `;
+}
+</script>
+
+</body>
+</html>

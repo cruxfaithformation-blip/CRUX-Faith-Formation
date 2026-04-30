@@ -1181,6 +1181,17 @@
                 </div>
             </div>
 
+            <!-- Module Cards -->
+            <div class="card-showcase-section" id="moduleCardSection" style="display:none;">
+                <div class="showcase-header">
+                    <div class="showcase-title" style="color:rgba(212,165,116,0.9);">◆ Module Cards</div>
+                    <div class="showcase-sub" id="moduleCardCount"></div>
+                </div>
+                <div class="card-row" id="moduleCardRow">
+                    <div class="no-data" style="padding:1rem 0;">Complete modules to earn cards.</div>
+                </div>
+            </div>
+
             <!-- Main Grid -->
             <div class="dash-grid">
 
@@ -1719,6 +1730,10 @@
             'jacinta':      { name: 'St. Jacinta Marto',        rarity: 'uncommon',  url: null },
         };
 
+        const MODULE_CARD_CATALOG = {
+            'vatican2': { name: 'Vatican II', url: 'crux-module-vatican2-flip.html' },
+        };
+
         const ADMIN_UIDS = ['ratIiHiOj6Qnd2nHRvQsLBiQj953'];
 
         function renderCardShowcase(cardsOwned, isAdmin) {
@@ -1752,6 +1767,28 @@
                 `</div>`;
         }
 
+        function renderModuleCards(moduleCards, isAdmin) {
+            const section  = document.getElementById('moduleCardSection');
+            const row      = document.getElementById('moduleCardRow');
+            const countEl  = document.getElementById('moduleCardCount');
+            const displayIds = isAdmin ? Object.keys(MODULE_CARD_CATALOG) : (moduleCards || []);
+            if (!displayIds || displayIds.length === 0) return;
+            section.style.display = '';
+            countEl.textContent = displayIds.length + ' card' + (displayIds.length !== 1 ? 's' : '');
+            row.innerHTML = displayIds.map(id => {
+                const card = MODULE_CARD_CATALOG[id];
+                if (!card) return '';
+                const tag  = card.url ? 'a' : 'div';
+                const href = card.url ? ` href="${card.url}"` : '';
+                return `<${tag}${href} class="saint-card${card.url ? ' clickable' : ''}" title="${card.name}"
+                    style="border-color:rgba(212,165,116,0.25);">` +
+                    `<div class="card-rarity-bar" style="background:linear-gradient(90deg,#8B6914,#d4a574,#f0c987,#d4a574,#8B6914);background-size:200% 100%;animation:none;"></div>` +
+                    `<div class="card-wordmark" style="color:rgba(212,165,116,0.6);">CRUX</div>` +
+                    `<div class="card-saint-name" style="color:rgba(212,165,116,0.85);">${card.name}</div>` +
+                `</${tag}>`;
+            }).join('');
+        }
+
         // ── LOAD USER PROGRESS & XP ────────────────────────
         async function loadUserProgress(userId) {
             try {
@@ -1765,6 +1802,7 @@
                 }
 
                 renderCardShowcase(data.cardsOwned || [], ADMIN_UIDS.includes(userId));
+                renderModuleCards(data.moduleCards || [], ADMIN_UIDS.includes(userId));
 
                 if (data.alphaPackGifted && data.alphaPackNotified !== true) {
                     showGiftBanner(userId);

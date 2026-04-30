@@ -8,7 +8,7 @@
 
     <script type="module">
         import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
-        import { getFirestore, doc, getDoc, updateDoc, increment } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, doc, getDoc, updateDoc, increment, arrayUnion } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
         import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
 
         const firebaseConfig = {
@@ -27,7 +27,8 @@
         window.db = db;
         window.fbDoc = doc;
         window.fbUpdateDoc = updateDoc;
-        window.fbIncrement = increment;
+        window.fbIncrement  = increment;
+        window.fbArrayUnion = arrayUnion;
 
         onAuthStateChanged(auth, async (user) => {
             if (user) {
@@ -731,7 +732,8 @@
             await window.fbUpdateDoc(window.fbDoc(window.db, 'userProgress', window.currentUid), {
                 totalXP: window.fbIncrement(150),
                 'unlockedPacks.councilPack': true,
-                'completedModules.vaticanII': true
+                'completedModules.vaticanII': true,
+                moduleCards: window.fbArrayUnion('vatican2')
             });
             xpClaimed = true;
             renderContent();
