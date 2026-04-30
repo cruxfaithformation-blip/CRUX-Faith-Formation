@@ -1221,24 +1221,100 @@ for (const card of NEW_CARDS) {
 
 const MODULE_CARDS = [
   {
-    slug:       'vatican2',
-    fileSlug:   'module-vatican2',
-    title:      'CRUX — Vatican II · Module Card',
-    moduleName: 'Vatican II',
-    category:   'Church History',
-    quote:      '"The joys and hopes, the griefs and anxieties of the people of this age are the joys and hopes, the griefs and anxieties of the followers of Christ." — Gaudium et Spes',
+    slug:       'sc',
+    abbrev:     'SC',
+    title:      'CRUX — Sacrosanctum Concilium · Vatican II',
+    moduleName: 'Sacrosanctum Concilium',
+    category:   'Vatican II · Constitution',
+    badge:      '✦✦ Rare',
+    rarity:     'rare',
+    accentRgb:  '130,170,255',
+    stripColors:'rgba(60,100,180,0.9), rgba(100,150,240,1), rgba(150,195,255,1), rgba(100,150,240,1), rgba(60,100,180,0.9)',
+    quote:      '"The liturgy is the summit toward which the activity of the Church is directed; at the same time it is the font from which all her power flows." — SC 10',
     setNum:     'M-001',
     moduleUrl:  'core-beliefs.html',
-    backName:   'The Second Vatican Council',
-    backDates:  '1962–1965 · Vatican City',
-    summary:    'Vatican II called the Church to engage the modern world without losing its ancient roots — renewing the liturgy, reaffirming Scripture and Tradition, and speaking to human dignity and freedom.',
+    backName:   'On the Sacred Liturgy',
+    backDates:  'Promulgated December 4, 1963',
+    summary:    'The first document of Vatican II called for active, conscious, full participation by the faithful in Mass — and authorized the use of vernacular languages alongside Latin for the first time in the Roman Rite.',
     highlights: [
-      { label: 'Sacrosanctum Concilium', value: 'Reformed the liturgy; Mass in the vernacular' },
-      { label: 'Lumen Gentium',          value: 'The Church as the whole People of God' },
-      { label: 'Gaudium et Spes',        value: 'The Church reading the signs of the times' },
-      { label: 'Dei Verbum',             value: 'Scripture and Tradition as one source of revelation' },
+      { label: 'Core Reform',   value: 'Mass in the vernacular; full, conscious, active participation' },
+      { label: 'Preserved',     value: 'Latin and Gregorian chant retain their rightful place' },
+      { label: 'Key Principle', value: 'Liturgy is source and summit of all Christian life' },
+      { label: 'Promulgated',   value: 'December 4, 1963 · First document of Vatican II' },
+    ],
+    verse: '"Sing to the Lord a new song." — Psalm 96:1',
+  },
+  {
+    slug:       'lg',
+    abbrev:     'LG',
+    title:      'CRUX — Lumen Gentium · Vatican II',
+    moduleName: 'Lumen Gentium',
+    category:   'Vatican II · Constitution',
+    badge:      '✦✦✦ Epic',
+    rarity:     'epic',
+    accentRgb:  '180,100,255',
+    stripColors:'rgba(100,40,160,0.9), rgba(155,70,230,1), rgba(195,120,255,1), rgba(155,70,230,1), rgba(100,40,160,0.9)',
+    quote:      '"The Church, in Christ, is in the nature of a sacrament — a sign and instrument of communion with God and of unity among all people." — LG 1',
+    setNum:     'M-002',
+    moduleUrl:  'core-beliefs.html',
+    backName:   'On the Church',
+    backDates:  'Promulgated November 21, 1964',
+    summary:    'Lumen Gentium reframed how the Church understands itself — not primarily as a hierarchy but as the whole People of God, with bishops sharing authority with the Pope through collegiality.',
+    highlights: [
+      { label: 'Key Image',    value: 'Church as "People of God" — not just institution' },
+      { label: 'Collegiality', value: 'Bishops share in governing the universal Church with the Pope' },
+      { label: 'The Laity',   value: 'All the baptized share Christ\'s priestly, prophetic, kingly mission' },
+      { label: 'Promulgated', value: 'November 21, 1964 · Longest document of Vatican II' },
+    ],
+    verse: '"You are a chosen race, a royal priesthood, a holy nation." — 1 Peter 2:9',
+  },
+  {
+    slug:       'dv',
+    abbrev:     'DV',
+    title:      'CRUX — Dei Verbum · Vatican II',
+    moduleName: 'Dei Verbum',
+    category:   'Vatican II · Constitution',
+    badge:      '✦✦ Rare',
+    rarity:     'rare',
+    accentRgb:  '130,170,255',
+    stripColors:'rgba(60,100,180,0.9), rgba(100,150,240,1), rgba(150,195,255,1), rgba(100,150,240,1), rgba(60,100,180,0.9)',
+    quote:      '"Sacred Scripture is the speech of God as it is put down in writing under the breath of the Holy Spirit." — DV 9',
+    setNum:     'M-003',
+    moduleUrl:  'core-beliefs.html',
+    backName:   'On Divine Revelation',
+    backDates:  'Promulgated November 18, 1965',
+    summary:    'Dei Verbum affirmed that Scripture and Tradition are not two separate sources but one sacred deposit of the Word of God — and called all Catholics to read Scripture regularly for the first time.',
+    highlights: [
+      { label: 'Key Teaching', value: 'Scripture and Tradition: one sacred deposit of God\'s Word' },
+      { label: 'Historic Shift',value: 'Catholics encouraged to read Scripture personally and regularly' },
+      { label: 'Inspiration',   value: 'God is true author; human authors used their own faculties fully' },
+      { label: 'Promulgated',   value: 'November 18, 1965 · Most debated document of the Council' },
     ],
     verse: '"Your word is a lamp to my feet and a light to my path." — Psalm 119:105',
+  },
+  {
+    slug:       'gs',
+    abbrev:     'GS',
+    title:      'CRUX — Gaudium et Spes · Vatican II',
+    moduleName: 'Gaudium et Spes',
+    category:   'Vatican II · Constitution',
+    badge:      '✦✦✦✦ Legendary',
+    rarity:     'legendary',
+    accentRgb:  '212,165,116',
+    stripColors:'#8B6914, #d4a574, #f0c987, #d4a574, #8B6914',
+    quote:      '"The joys and hopes, the griefs and anxieties of the people of this age are the joys and hopes, the griefs and anxieties of the followers of Christ." — GS 1',
+    setNum:     'M-004',
+    moduleUrl:  'core-beliefs.html',
+    backName:   'On the Church in the Modern World',
+    backDates:  'Promulgated December 7, 1965',
+    summary:    'The first Church document written not to Catholics but to all humanity — affirming human dignity, the common good, marriage, culture, and peace. Gaudium et Spes is the Church turning outward.',
+    highlights: [
+      { label: 'Audience',      value: 'Written to all humanity — not just Catholics' },
+      { label: 'Human Dignity', value: 'Every person made in God\'s image; dignity is inviolable' },
+      { label: 'Modern Topics', value: 'Marriage, family, culture, economics, war, and peace' },
+      { label: 'Promulgated',   value: 'December 7, 1965 · Last and longest Vatican II document' },
+    ],
+    verse: '"Go into all the world and proclaim the good news." — Mark 16:15',
   },
 ];
 
@@ -1246,6 +1322,8 @@ function buildModuleHTML(card, imgSrc) {
   const highlightsHTML = card.highlights.map((h, i) =>
     `          <div class="mod-fact-row"><span class="mod-fact-label">${h.label}</span><span class="mod-fact-value">${h.value}</span></div>${i < card.highlights.length - 1 ? '\n          <div class="mod-fact-row"><div class="mod-fact-divider"></div></div>' : ''}`
   ).join('\n');
+
+  const a = card.accentRgb;
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -1337,7 +1415,7 @@ body {
 
 .mod-gold-strip {
   position: absolute; top: 0; left: 0; right: 0; height: 4px; z-index: 20;
-  background: linear-gradient(90deg, #8B6914, #d4a574, #f0c987, #d4a574, #8B6914);
+  background: linear-gradient(90deg, ${card.stripColors});
   background-size: 200% 100%;
   animation: gold-sweep 4s linear infinite;
 }
@@ -1345,13 +1423,13 @@ body {
 
 .mod-border {
   position: absolute; inset: 4px; border-radius: 14px; z-index: 19;
-  border: 1px solid rgba(212,165,116,0.2);
-  box-shadow: inset 0 0 30px rgba(212,165,116,0.04);
+  border: 1px solid rgba(${a},0.2);
+  box-shadow: inset 0 0 30px rgba(${a},0.04);
   animation: gold-glow 5s ease-in-out infinite alternate;
 }
 @keyframes gold-glow {
-  0%   { border-color: rgba(212,165,116,0.15); box-shadow: inset 0 0 30px rgba(212,165,116,0.03); }
-  100% { border-color: rgba(212,165,116,0.35); box-shadow: inset 0 0 30px rgba(212,165,116,0.08); }
+  0%   { border-color: rgba(${a},0.15); box-shadow: inset 0 0 30px rgba(${a},0.03); }
+  100% { border-color: rgba(${a},0.35); box-shadow: inset 0 0 30px rgba(${a},0.08); }
 }
 
 .mod-corner { position: absolute; z-index: 18; width: 28px; height: 28px; }
@@ -1390,35 +1468,35 @@ body {
 }
 
 .mod-ornament { display: flex; align-items: center; gap: 0.5rem; width: 100%; margin-bottom: 1rem; }
-.mod-ornament-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(212,165,116,0.3), transparent); }
-.mod-ornament-diamond { font-size: 0.5rem; color: rgba(212,165,116,0.4); }
+.mod-ornament-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(${a},0.3), transparent); }
+.mod-ornament-diamond { font-size: 0.5rem; color: rgba(${a},0.4); }
 
 .mod-name {
   font-family: 'Cinzel', serif; font-size: 1.45rem; font-weight: 900;
   color: rgba(255,245,225,0.9); letter-spacing: 1px; line-height: 1.2;
-  text-shadow: 0 0 30px rgba(212,165,116,0.3), 0 2px 8px rgba(0,0,0,0.8);
+  text-shadow: 0 0 30px rgba(${a},0.4), 0 2px 8px rgba(0,0,0,0.8);
   margin-bottom: 1.1rem;
 }
 
 .mod-quote {
   font-family: 'EB Garamond', serif; font-size: 0.75rem; font-style: italic;
   color: rgba(230,210,175,0.55); line-height: 1.65;
-  border-left: 2px solid rgba(212,165,116,0.2); padding-left: 0.75rem;
+  border-left: 2px solid rgba(${a},0.25); padding-left: 0.75rem;
   text-align: left; margin-bottom: auto;
 }
 
 .mod-footer {
   width: 100%; display: flex; align-items: center; justify-content: space-between;
-  padding-top: 0.75rem; border-top: 1px solid rgba(212,165,116,0.12);
+  padding-top: 0.75rem; border-top: 1px solid rgba(${a},0.15);
   margin-top: 1rem;
 }
 .mod-badge {
   font-family: 'Cinzel', serif; font-size: 0.44rem; letter-spacing: 2px;
-  text-transform: uppercase; color: rgba(212,165,116,0.45);
+  text-transform: uppercase; color: rgba(${a},0.7);
 }
 .mod-set {
   font-family: 'Cinzel', serif; font-size: 0.44rem; letter-spacing: 1.5px;
-  color: rgba(212,165,116,0.35);
+  color: rgba(${a},0.4);
 }
 
 /* ── BACK ── */
@@ -1434,14 +1512,14 @@ body {
 
 .back-gold-strip {
   height: 4px; flex-shrink: 0;
-  background: linear-gradient(90deg, #8B6914, #d4a574, #f0c987, #d4a574, #8B6914);
+  background: linear-gradient(90deg, ${card.stripColors});
   background-size: 200% 100%;
   animation: gold-sweep 4s linear infinite;
 }
 
 .back-gold-border {
   position: absolute; inset: 4px; border-radius: 14px; pointer-events: none;
-  border: 1px solid rgba(212,165,116,0.15);
+  border: 1px solid rgba(${a},0.15);
   animation: gold-glow 5s ease-in-out infinite alternate; z-index: 10;
 }
 
@@ -1460,17 +1538,17 @@ body {
 .mod-back-title {
   font-family: 'Cinzel', serif; font-size: 0.72rem; font-weight: 700;
   letter-spacing: 2.5px; text-transform: uppercase;
-  color: rgba(212,165,116,0.85);
-  text-shadow: 0 0 16px rgba(212,165,116,0.3); line-height: 1.3;
+  color: rgba(${a},0.85);
+  text-shadow: 0 0 16px rgba(${a},0.3); line-height: 1.3;
 }
 .mod-back-dates {
   font-family: 'EB Garamond', serif; font-size: 0.7rem; font-style: italic;
-  color: rgba(212,165,116,0.35); margin-top: 0.15rem;
+  color: rgba(${a},0.35); margin-top: 0.15rem;
 }
 
 .mod-back-ornament { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; flex-shrink: 0; }
-.mod-back-ornament-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(212,165,116,0.2), transparent); }
-.mod-back-ornament-diamond { font-size: 0.55rem; color: rgba(212,165,116,0.3); letter-spacing: 3px; }
+.mod-back-ornament-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(${a},0.2), transparent); }
+.mod-back-ornament-diamond { font-size: 0.55rem; color: rgba(${a},0.3); letter-spacing: 3px; }
 
 .mod-back-summary {
   font-family: 'EB Garamond', serif; font-size: 0.8rem;
@@ -1480,7 +1558,7 @@ body {
 
 .mod-facts-label {
   font-family: 'Cinzel', serif; font-size: 0.42rem; letter-spacing: 2px;
-  text-transform: uppercase; color: rgba(212,165,116,0.4); margin-bottom: 0.5rem; flex-shrink: 0;
+  text-transform: uppercase; color: rgba(${a},0.4); margin-bottom: 0.5rem; flex-shrink: 0;
 }
 
 .mod-fact-row {
@@ -1489,7 +1567,7 @@ body {
 }
 .mod-fact-label {
   font-family: 'Cinzel', serif; font-size: 0.4rem; letter-spacing: 1.5px;
-  text-transform: uppercase; color: rgba(212,165,116,0.5); padding-top: 3px; white-space: nowrap;
+  text-transform: uppercase; color: rgba(${a},0.5); padding-top: 3px; white-space: nowrap;
 }
 .mod-fact-value {
   font-family: 'EB Garamond', serif; font-size: 0.76rem;
@@ -1499,18 +1577,18 @@ body {
 
 .mod-verse {
   font-family: 'EB Garamond', serif; font-size: 0.74rem; font-style: italic;
-  color: rgba(212,165,116,0.45); line-height: 1.55; margin-top: auto;
-  padding-top: 0.6rem; border-top: 1px solid rgba(212,165,116,0.1);
+  color: rgba(${a},0.45); line-height: 1.55; margin-top: auto;
+  padding-top: 0.6rem; border-top: 1px solid rgba(${a},0.1);
   flex-shrink: 0;
 }
 
 .mod-back-footer {
   flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
   padding-top: 0.5rem; margin-top: 0.4rem;
-  border-top: 1px solid rgba(212,165,116,0.1);
+  border-top: 1px solid rgba(${a},0.1);
 }
-.mod-back-footer-set { font-family:'Cinzel',serif; font-size:0.42rem; letter-spacing:2px; text-transform:uppercase; color:rgba(212,165,116,0.25); }
-.mod-back-footer-num { font-family:'Cinzel',serif; font-size:0.42rem; letter-spacing:1px; color:rgba(212,165,116,0.25); }
+.mod-back-footer-set { font-family:'Cinzel',serif; font-size:0.42rem; letter-spacing:2px; text-transform:uppercase; color:rgba(${a},0.25); }
+.mod-back-footer-num { font-family:'Cinzel',serif; font-size:0.42rem; letter-spacing:1px; color:rgba(${a},0.25); }
 </style>
 </head>
 <body>
@@ -1571,7 +1649,7 @@ ${imgSrc ? `      <img class="mod-portrait" src="${imgSrc}" alt="${card.moduleNa
         <div class="mod-name">${card.moduleName}</div>
         <div class="mod-quote">${card.quote}</div>
         <div class="mod-footer">
-          <span class="mod-badge">Common · Module Card</span>
+          <span class="mod-badge">${card.badge} · Module</span>
           <span class="mod-set">${card.setNum}</span>
         </div>
       </div>
@@ -1611,7 +1689,7 @@ ${highlightsHTML}
         <div class="mod-verse">${card.verse}</div>
 
         <div class="mod-back-footer">
-          <button class="flip-back-btn" style="background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:rgba(212,165,116,0.4);padding:0;transition:color 0.2s;" onmouseover="this.style.color='rgba(212,165,116,0.9)'" onmouseout="this.style.color='rgba(212,165,116,0.4)'">&#x21A9; Flip</button>
+          <button class="flip-back-btn" style="background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:rgba(${a},0.4);padding:0;transition:color 0.2s;" onmouseover="this.style.color='rgba(${a},0.9)'" onmouseout="this.style.color='rgba(${a},0.4)'">&#x21A9; Flip</button>
           <span class="mod-back-footer-set">CRUX · Modules · Series I</span>
           <span class="mod-back-footer-num">${card.setNum}</span>
         </div>
@@ -1707,21 +1785,21 @@ function showLocked() {
   scene.innerHTML = \`
     <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;
       justify-content:center;background:linear-gradient(160deg,#0b0e1f,#080a16);border-radius:18px;
-      gap:1.2rem;padding:2rem;text-align:center;border:1px solid rgba(212,165,116,0.12);
+      gap:1.2rem;padding:2rem;text-align:center;border:1px solid rgba(${a},0.12);
       box-shadow:0 8px 50px rgba(0,0,0,0.8);">
-      <div style="font-size:1.5rem;color:rgba(212,165,116,0.2);">◆</div>
+      <div style="font-size:1.5rem;color:rgba(${a},0.2);">◆</div>
       <div style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:3px;
-        text-transform:uppercase;color:rgba(212,165,116,0.3);">Module Not Completed</div>
+        text-transform:uppercase;color:rgba(${a},0.3);">Module Not Completed</div>
       <div style="font-family:'EB Garamond',serif;font-size:0.88rem;
-        color:rgba(212,165,116,0.25);line-height:1.7;max-width:200px;">
+        color:rgba(${a},0.25);line-height:1.7;max-width:200px;">
         Complete the ${card.moduleName} module to earn this card.
       </div>
       <a href="${card.moduleUrl}" style="font-family:'Cinzel',serif;font-size:0.5rem;
         letter-spacing:2px;text-transform:uppercase;padding:0.6rem 1.2rem;
-        border:1px solid rgba(212,165,116,0.25);color:rgba(212,165,116,0.6);
+        border:1px solid rgba(${a},0.25);color:rgba(${a},0.6);
         border-radius:4px;text-decoration:none;"
-        onmouseover="this.style.color='rgba(212,165,116,1)';this.style.borderColor='rgba(212,165,116,0.5)'"
-        onmouseout="this.style.color='rgba(212,165,116,0.6)';this.style.borderColor='rgba(212,165,116,0.25)'">
+        onmouseover="this.style.color='rgba(${a},1)';this.style.borderColor='rgba(${a},0.5)'"
+        onmouseout="this.style.color='rgba(${a},0.6)';this.style.borderColor='rgba(${a},0.25)'">
         Go to Module →
       </a>
     </div>

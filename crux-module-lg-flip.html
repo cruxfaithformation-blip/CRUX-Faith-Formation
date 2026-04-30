@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>CRUX — Vatican II · Module Card</title>
+<title>CRUX — Lumen Gentium · Vatican II</title>
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 <style>
 * { margin:0; padding:0; box-sizing:border-box; }
@@ -88,7 +88,7 @@ body {
 
 .mod-gold-strip {
   position: absolute; top: 0; left: 0; right: 0; height: 4px; z-index: 20;
-  background: linear-gradient(90deg, #8B6914, #d4a574, #f0c987, #d4a574, #8B6914);
+  background: linear-gradient(90deg, rgba(100,40,160,0.9), rgba(155,70,230,1), rgba(195,120,255,1), rgba(155,70,230,1), rgba(100,40,160,0.9));
   background-size: 200% 100%;
   animation: gold-sweep 4s linear infinite;
 }
@@ -96,13 +96,13 @@ body {
 
 .mod-border {
   position: absolute; inset: 4px; border-radius: 14px; z-index: 19;
-  border: 1px solid rgba(212,165,116,0.2);
-  box-shadow: inset 0 0 30px rgba(212,165,116,0.04);
+  border: 1px solid rgba(180,100,255,0.2);
+  box-shadow: inset 0 0 30px rgba(180,100,255,0.04);
   animation: gold-glow 5s ease-in-out infinite alternate;
 }
 @keyframes gold-glow {
-  0%   { border-color: rgba(212,165,116,0.15); box-shadow: inset 0 0 30px rgba(212,165,116,0.03); }
-  100% { border-color: rgba(212,165,116,0.35); box-shadow: inset 0 0 30px rgba(212,165,116,0.08); }
+  0%   { border-color: rgba(180,100,255,0.15); box-shadow: inset 0 0 30px rgba(180,100,255,0.03); }
+  100% { border-color: rgba(180,100,255,0.35); box-shadow: inset 0 0 30px rgba(180,100,255,0.08); }
 }
 
 .mod-corner { position: absolute; z-index: 18; width: 28px; height: 28px; }
@@ -141,35 +141,35 @@ body {
 }
 
 .mod-ornament { display: flex; align-items: center; gap: 0.5rem; width: 100%; margin-bottom: 1rem; }
-.mod-ornament-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(212,165,116,0.3), transparent); }
-.mod-ornament-diamond { font-size: 0.5rem; color: rgba(212,165,116,0.4); }
+.mod-ornament-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(180,100,255,0.3), transparent); }
+.mod-ornament-diamond { font-size: 0.5rem; color: rgba(180,100,255,0.4); }
 
 .mod-name {
   font-family: 'Cinzel', serif; font-size: 1.45rem; font-weight: 900;
   color: rgba(255,245,225,0.9); letter-spacing: 1px; line-height: 1.2;
-  text-shadow: 0 0 30px rgba(212,165,116,0.3), 0 2px 8px rgba(0,0,0,0.8);
+  text-shadow: 0 0 30px rgba(180,100,255,0.4), 0 2px 8px rgba(0,0,0,0.8);
   margin-bottom: 1.1rem;
 }
 
 .mod-quote {
   font-family: 'EB Garamond', serif; font-size: 0.75rem; font-style: italic;
   color: rgba(230,210,175,0.55); line-height: 1.65;
-  border-left: 2px solid rgba(212,165,116,0.2); padding-left: 0.75rem;
+  border-left: 2px solid rgba(180,100,255,0.25); padding-left: 0.75rem;
   text-align: left; margin-bottom: auto;
 }
 
 .mod-footer {
   width: 100%; display: flex; align-items: center; justify-content: space-between;
-  padding-top: 0.75rem; border-top: 1px solid rgba(212,165,116,0.12);
+  padding-top: 0.75rem; border-top: 1px solid rgba(180,100,255,0.15);
   margin-top: 1rem;
 }
 .mod-badge {
   font-family: 'Cinzel', serif; font-size: 0.44rem; letter-spacing: 2px;
-  text-transform: uppercase; color: rgba(212,165,116,0.45);
+  text-transform: uppercase; color: rgba(180,100,255,0.7);
 }
 .mod-set {
   font-family: 'Cinzel', serif; font-size: 0.44rem; letter-spacing: 1.5px;
-  color: rgba(212,165,116,0.35);
+  color: rgba(180,100,255,0.4);
 }
 
 /* ── BACK ── */
@@ -185,14 +185,14 @@ body {
 
 .back-gold-strip {
   height: 4px; flex-shrink: 0;
-  background: linear-gradient(90deg, #8B6914, #d4a574, #f0c987, #d4a574, #8B6914);
+  background: linear-gradient(90deg, rgba(100,40,160,0.9), rgba(155,70,230,1), rgba(195,120,255,1), rgba(155,70,230,1), rgba(100,40,160,0.9));
   background-size: 200% 100%;
   animation: gold-sweep 4s linear infinite;
 }
 
 .back-gold-border {
   position: absolute; inset: 4px; border-radius: 14px; pointer-events: none;
-  border: 1px solid rgba(212,165,116,0.15);
+  border: 1px solid rgba(180,100,255,0.15);
   animation: gold-glow 5s ease-in-out infinite alternate; z-index: 10;
 }
 
@@ -211,17 +211,17 @@ body {
 .mod-back-title {
   font-family: 'Cinzel', serif; font-size: 0.72rem; font-weight: 700;
   letter-spacing: 2.5px; text-transform: uppercase;
-  color: rgba(212,165,116,0.85);
-  text-shadow: 0 0 16px rgba(212,165,116,0.3); line-height: 1.3;
+  color: rgba(180,100,255,0.85);
+  text-shadow: 0 0 16px rgba(180,100,255,0.3); line-height: 1.3;
 }
 .mod-back-dates {
   font-family: 'EB Garamond', serif; font-size: 0.7rem; font-style: italic;
-  color: rgba(212,165,116,0.35); margin-top: 0.15rem;
+  color: rgba(180,100,255,0.35); margin-top: 0.15rem;
 }
 
 .mod-back-ornament { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; flex-shrink: 0; }
-.mod-back-ornament-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(212,165,116,0.2), transparent); }
-.mod-back-ornament-diamond { font-size: 0.55rem; color: rgba(212,165,116,0.3); letter-spacing: 3px; }
+.mod-back-ornament-line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, rgba(180,100,255,0.2), transparent); }
+.mod-back-ornament-diamond { font-size: 0.55rem; color: rgba(180,100,255,0.3); letter-spacing: 3px; }
 
 .mod-back-summary {
   font-family: 'EB Garamond', serif; font-size: 0.8rem;
@@ -231,7 +231,7 @@ body {
 
 .mod-facts-label {
   font-family: 'Cinzel', serif; font-size: 0.42rem; letter-spacing: 2px;
-  text-transform: uppercase; color: rgba(212,165,116,0.4); margin-bottom: 0.5rem; flex-shrink: 0;
+  text-transform: uppercase; color: rgba(180,100,255,0.4); margin-bottom: 0.5rem; flex-shrink: 0;
 }
 
 .mod-fact-row {
@@ -240,7 +240,7 @@ body {
 }
 .mod-fact-label {
   font-family: 'Cinzel', serif; font-size: 0.4rem; letter-spacing: 1.5px;
-  text-transform: uppercase; color: rgba(212,165,116,0.5); padding-top: 3px; white-space: nowrap;
+  text-transform: uppercase; color: rgba(180,100,255,0.5); padding-top: 3px; white-space: nowrap;
 }
 .mod-fact-value {
   font-family: 'EB Garamond', serif; font-size: 0.76rem;
@@ -250,18 +250,18 @@ body {
 
 .mod-verse {
   font-family: 'EB Garamond', serif; font-size: 0.74rem; font-style: italic;
-  color: rgba(212,165,116,0.45); line-height: 1.55; margin-top: auto;
-  padding-top: 0.6rem; border-top: 1px solid rgba(212,165,116,0.1);
+  color: rgba(180,100,255,0.45); line-height: 1.55; margin-top: auto;
+  padding-top: 0.6rem; border-top: 1px solid rgba(180,100,255,0.1);
   flex-shrink: 0;
 }
 
 .mod-back-footer {
   flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
   padding-top: 0.5rem; margin-top: 0.4rem;
-  border-top: 1px solid rgba(212,165,116,0.1);
+  border-top: 1px solid rgba(180,100,255,0.1);
 }
-.mod-back-footer-set { font-family:'Cinzel',serif; font-size:0.42rem; letter-spacing:2px; text-transform:uppercase; color:rgba(212,165,116,0.25); }
-.mod-back-footer-num { font-family:'Cinzel',serif; font-size:0.42rem; letter-spacing:1px; color:rgba(212,165,116,0.25); }
+.mod-back-footer-set { font-family:'Cinzel',serif; font-size:0.42rem; letter-spacing:2px; text-transform:uppercase; color:rgba(180,100,255,0.25); }
+.mod-back-footer-num { font-family:'Cinzel',serif; font-size:0.42rem; letter-spacing:1px; color:rgba(180,100,255,0.25); }
 </style>
 </head>
 <body>
@@ -312,17 +312,17 @@ body {
       <div class="mod-foil"></div>
 
       <div class="mod-content">
-        <div class="mod-category">Church History</div>
+        <div class="mod-category">Vatican II · Constitution</div>
         <div class="mod-ornament">
           <div class="mod-ornament-line"></div>
           <div class="mod-ornament-diamond">◆</div>
           <div class="mod-ornament-line"></div>
         </div>
-        <div class="mod-name">Vatican II</div>
-        <div class="mod-quote">"The joys and hopes, the griefs and anxieties of the people of this age are the joys and hopes, the griefs and anxieties of the followers of Christ." — Gaudium et Spes</div>
+        <div class="mod-name">Lumen Gentium</div>
+        <div class="mod-quote">"The Church, in Christ, is in the nature of a sacrament — a sign and instrument of communion with God and of unity among all people." — LG 1</div>
         <div class="mod-footer">
-          <span class="mod-badge">Common · Module Card</span>
-          <span class="mod-set">M-001</span>
+          <span class="mod-badge">✦✦✦ Epic · Module</span>
+          <span class="mod-set">M-002</span>
         </div>
       </div>
     </div>
@@ -343,8 +343,8 @@ body {
 
       <div class="mod-back-content">
         <div class="mod-back-header">
-          <div class="mod-back-title">The Second Vatican Council</div>
-          <div class="mod-back-dates">1962–1965 · Vatican City</div>
+          <div class="mod-back-title">On the Church</div>
+          <div class="mod-back-dates">Promulgated November 21, 1964</div>
         </div>
 
         <div class="mod-back-ornament">
@@ -353,23 +353,23 @@ body {
           <div class="mod-back-ornament-line"></div>
         </div>
 
-        <div class="mod-back-summary">Vatican II called the Church to engage the modern world without losing its ancient roots — renewing the liturgy, reaffirming Scripture and Tradition, and speaking to human dignity and freedom.</div>
+        <div class="mod-back-summary">Lumen Gentium reframed how the Church understands itself — not primarily as a hierarchy but as the whole People of God, with bishops sharing authority with the Pope through collegiality.</div>
 
         <div class="mod-facts-label">Key Constitutions</div>
-          <div class="mod-fact-row"><span class="mod-fact-label">Sacrosanctum Concilium</span><span class="mod-fact-value">Reformed the liturgy; Mass in the vernacular</span></div>
+          <div class="mod-fact-row"><span class="mod-fact-label">Key Image</span><span class="mod-fact-value">Church as "People of God" — not just institution</span></div>
           <div class="mod-fact-row"><div class="mod-fact-divider"></div></div>
-          <div class="mod-fact-row"><span class="mod-fact-label">Lumen Gentium</span><span class="mod-fact-value">The Church as the whole People of God</span></div>
+          <div class="mod-fact-row"><span class="mod-fact-label">Collegiality</span><span class="mod-fact-value">Bishops share in governing the universal Church with the Pope</span></div>
           <div class="mod-fact-row"><div class="mod-fact-divider"></div></div>
-          <div class="mod-fact-row"><span class="mod-fact-label">Gaudium et Spes</span><span class="mod-fact-value">The Church reading the signs of the times</span></div>
+          <div class="mod-fact-row"><span class="mod-fact-label">The Laity</span><span class="mod-fact-value">All the baptized share Christ's priestly, prophetic, kingly mission</span></div>
           <div class="mod-fact-row"><div class="mod-fact-divider"></div></div>
-          <div class="mod-fact-row"><span class="mod-fact-label">Dei Verbum</span><span class="mod-fact-value">Scripture and Tradition as one source of revelation</span></div>
+          <div class="mod-fact-row"><span class="mod-fact-label">Promulgated</span><span class="mod-fact-value">November 21, 1964 · Longest document of Vatican II</span></div>
 
-        <div class="mod-verse">"Your word is a lamp to my feet and a light to my path." — Psalm 119:105</div>
+        <div class="mod-verse">"You are a chosen race, a royal priesthood, a holy nation." — 1 Peter 2:9</div>
 
         <div class="mod-back-footer">
-          <button class="flip-back-btn" style="background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:rgba(212,165,116,0.4);padding:0;transition:color 0.2s;" onmouseover="this.style.color='rgba(212,165,116,0.9)'" onmouseout="this.style.color='rgba(212,165,116,0.4)'">&#x21A9; Flip</button>
+          <button class="flip-back-btn" style="background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:rgba(180,100,255,0.4);padding:0;transition:color 0.2s;" onmouseover="this.style.color='rgba(180,100,255,0.9)'" onmouseout="this.style.color='rgba(180,100,255,0.4)'">&#x21A9; Flip</button>
           <span class="mod-back-footer-set">CRUX · Modules · Series I</span>
-          <span class="mod-back-footer-num">M-001</span>
+          <span class="mod-back-footer-num">M-002</span>
         </div>
       </div>
     </div>
@@ -444,7 +444,7 @@ const app = initializeApp({
 const auth = getAuth(app);
 const db   = getFirestore(app);
 const ADMIN_UIDS  = ['ratIiHiOj6Qnd2nHRvQsLBiQj953'];
-const THIS_MODULE = 'vatican2';
+const THIS_MODULE = 'lg';
 
 onAuthStateChanged(auth, async (user) => {
   if (!user) { window.location.href = 'crux-account.html'; return; }
@@ -463,21 +463,21 @@ function showLocked() {
   scene.innerHTML = `
     <div style="width:100%;height:100%;display:flex;flex-direction:column;align-items:center;
       justify-content:center;background:linear-gradient(160deg,#0b0e1f,#080a16);border-radius:18px;
-      gap:1.2rem;padding:2rem;text-align:center;border:1px solid rgba(212,165,116,0.12);
+      gap:1.2rem;padding:2rem;text-align:center;border:1px solid rgba(180,100,255,0.12);
       box-shadow:0 8px 50px rgba(0,0,0,0.8);">
-      <div style="font-size:1.5rem;color:rgba(212,165,116,0.2);">◆</div>
+      <div style="font-size:1.5rem;color:rgba(180,100,255,0.2);">◆</div>
       <div style="font-family:'Cinzel',serif;font-size:0.55rem;letter-spacing:3px;
-        text-transform:uppercase;color:rgba(212,165,116,0.3);">Module Not Completed</div>
+        text-transform:uppercase;color:rgba(180,100,255,0.3);">Module Not Completed</div>
       <div style="font-family:'EB Garamond',serif;font-size:0.88rem;
-        color:rgba(212,165,116,0.25);line-height:1.7;max-width:200px;">
-        Complete the Vatican II module to earn this card.
+        color:rgba(180,100,255,0.25);line-height:1.7;max-width:200px;">
+        Complete the Lumen Gentium module to earn this card.
       </div>
       <a href="core-beliefs.html" style="font-family:'Cinzel',serif;font-size:0.5rem;
         letter-spacing:2px;text-transform:uppercase;padding:0.6rem 1.2rem;
-        border:1px solid rgba(212,165,116,0.25);color:rgba(212,165,116,0.6);
+        border:1px solid rgba(180,100,255,0.25);color:rgba(180,100,255,0.6);
         border-radius:4px;text-decoration:none;"
-        onmouseover="this.style.color='rgba(212,165,116,1)';this.style.borderColor='rgba(212,165,116,0.5)'"
-        onmouseout="this.style.color='rgba(212,165,116,0.6)';this.style.borderColor='rgba(212,165,116,0.25)'">
+        onmouseover="this.style.color='rgba(180,100,255,1)';this.style.borderColor='rgba(180,100,255,0.5)'"
+        onmouseout="this.style.color='rgba(180,100,255,0.6)';this.style.borderColor='rgba(180,100,255,0.25)'">
         Go to Module →
       </a>
     </div>
