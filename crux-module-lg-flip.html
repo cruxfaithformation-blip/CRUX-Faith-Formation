@@ -432,8 +432,8 @@ scene.addEventListener('mousemove', (e) => {
 
 scene.addEventListener('mouseleave', () => { if (!isFlipped) flipper.style.transform = ''; });
 
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') { document.body.style.transition = 'opacity 0.1s ease'; document.body.style.opacity = '0'; setTimeout(() => { window.location.href = 'crux-account.html'; }, 100); }
+window.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { e.preventDefault(); document.body.style.transition = 'opacity 0.12s ease'; document.body.style.opacity = '0'; setTimeout(function() { window.location.href = 'crux-account.html'; }, 120); }
 });
 </script>
 

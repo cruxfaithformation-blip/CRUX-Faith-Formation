@@ -1127,16 +1127,19 @@ scene.addEventListener('mouseleave', () => {
   specular.style.background = '';
 });
 
+let navigating = false;
 function navTo(url) {
-  document.body.style.transition = 'opacity 0.1s ease';
+  if (navigating) return;
+  navigating = true;
+  document.body.style.transition = 'opacity 0.12s ease';
   document.body.style.opacity = '0';
-  setTimeout(() => { window.location.href = url; }, 100);
+  setTimeout(function() { window.location.href = url; }, 120);
 }
 
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'ArrowLeft')  navTo('crux-${card.prevSlug}-flip.html');
-  if (e.key === 'ArrowRight') navTo('crux-${card.nextSlug}-flip.html');
-  if (e.key === 'Escape')     navTo('crux-account.html');
+window.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); navTo('crux-${card.prevSlug}-flip.html'); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); navTo('crux-${card.nextSlug}-flip.html'); }
+  if (e.key === 'Escape')     { e.preventDefault(); navTo('crux-account.html'); }
 });
 </script>
 
@@ -1765,8 +1768,8 @@ scene.addEventListener('mousemove', (e) => {
 
 scene.addEventListener('mouseleave', () => { if (!isFlipped) flipper.style.transform = ''; });
 
-document.addEventListener('keydown', (e) => {
-  if (e.key === 'Escape') { document.body.style.transition = 'opacity 0.1s ease'; document.body.style.opacity = '0'; setTimeout(() => { window.location.href = 'crux-account.html'; }, 100); }
+window.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { e.preventDefault(); document.body.style.transition = 'opacity 0.12s ease'; document.body.style.opacity = '0'; setTimeout(function() { window.location.href = 'crux-account.html'; }, 120); }
 });
 </script>
 
