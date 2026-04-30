@@ -1408,8 +1408,11 @@ body {
   position: absolute; inset: 0; z-index: 2;
   background: linear-gradient(
     to bottom,
-    rgba(8,10,22,0.25) 0%, rgba(8,10,22,0.4) 35%,
-    rgba(8,10,22,0.82) 65%, rgba(8,10,22,0.97) 100%
+    rgba(8,10,22,0) 0%,
+    rgba(8,10,22,0) 38%,
+    rgba(8,10,22,0.7) 58%,
+    rgba(8,10,22,0.95) 70%,
+    rgba(8,10,22,1) 100%
   );
 }
 
@@ -1454,10 +1457,10 @@ body {
 }
 
 .mod-content {
-  position: absolute; inset: 0; z-index: 15;
+  position: absolute; bottom: 0; left: 0; right: 0; z-index: 15;
   display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  padding: 2rem 1.4rem 1.4rem;
+  align-items: center; justify-content: flex-end;
+  padding: 0 1.2rem 1.1rem;
   text-align: center;
 }
 
@@ -1472,17 +1475,18 @@ body {
 .mod-ornament-diamond { font-size: 0.5rem; color: rgba(${a},0.4); }
 
 .mod-name {
-  font-family: 'Cinzel', serif; font-size: 1.45rem; font-weight: 900;
+  font-family: 'Cinzel', serif; font-size: 1.05rem; font-weight: 900;
   color: rgba(255,245,225,0.9); letter-spacing: 1px; line-height: 1.2;
   text-shadow: 0 0 30px rgba(${a},0.4), 0 2px 8px rgba(0,0,0,0.8);
-  margin-bottom: 1.1rem;
+  margin-bottom: 0.6rem;
 }
 
 .mod-quote {
-  font-family: 'EB Garamond', serif; font-size: 0.75rem; font-style: italic;
-  color: rgba(230,210,175,0.55); line-height: 1.65;
+  font-family: 'EB Garamond', serif; font-size: 0.7rem; font-style: italic;
+  color: rgba(230,210,175,0.55); line-height: 1.5;
   border-left: 2px solid rgba(${a},0.25); padding-left: 0.75rem;
-  text-align: left; margin-bottom: auto;
+  text-align: left; margin-bottom: 0.6rem;
+  display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden;
 }
 
 .mod-footer {
@@ -1553,7 +1557,7 @@ body {
 .mod-back-summary {
   font-family: 'EB Garamond', serif; font-size: 0.8rem;
   color: rgba(230,210,175,0.7); line-height: 1.65;
-  margin-bottom: 0.85rem; flex-shrink: 0;
+  margin-bottom: 0.85rem;
 }
 
 .mod-facts-label {
@@ -1579,8 +1583,12 @@ body {
   font-family: 'EB Garamond', serif; font-size: 0.74rem; font-style: italic;
   color: rgba(${a},0.45); line-height: 1.55; margin-top: auto;
   padding-top: 0.6rem; border-top: 1px solid rgba(${a},0.1);
-  flex-shrink: 0;
 }
+
+.mod-back-scroll {
+  flex: 1; overflow-y: auto; scrollbar-width: none; min-height: 0;
+}
+.mod-back-scroll::-webkit-scrollbar { display: none; }
 
 .mod-back-footer {
   flex-shrink: 0; display: flex; align-items: center; justify-content: space-between;
@@ -1641,11 +1649,6 @@ ${imgSrc ? `      <img class="mod-portrait" src="${imgSrc}" alt="${card.moduleNa
 
       <div class="mod-content">
         <div class="mod-category">${card.category}</div>
-        <div class="mod-ornament">
-          <div class="mod-ornament-line"></div>
-          <div class="mod-ornament-diamond">◆</div>
-          <div class="mod-ornament-line"></div>
-        </div>
         <div class="mod-name">${card.moduleName}</div>
         <div class="mod-quote">${card.quote}</div>
         <div class="mod-footer">
@@ -1681,12 +1684,14 @@ ${imgSrc ? `      <img class="mod-portrait" src="${imgSrc}" alt="${card.moduleNa
           <div class="mod-back-ornament-line"></div>
         </div>
 
-        <div class="mod-back-summary">${card.summary}</div>
+        <div class="mod-back-scroll">
+          <div class="mod-back-summary">${card.summary}</div>
 
-        <div class="mod-facts-label">Key Constitutions</div>
+          <div class="mod-facts-label">Key Constitutions</div>
 ${highlightsHTML}
 
-        <div class="mod-verse">${card.verse}</div>
+          <div class="mod-verse">${card.verse}</div>
+        </div>
 
         <div class="mod-back-footer">
           <button class="flip-back-btn" style="background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:0.5rem;letter-spacing:2px;text-transform:uppercase;color:rgba(${a},0.4);padding:0;transition:color 0.2s;" onmouseover="this.style.color='rgba(${a},0.9)'" onmouseout="this.style.color='rgba(${a},0.4)'">&#x21A9; Flip</button>
