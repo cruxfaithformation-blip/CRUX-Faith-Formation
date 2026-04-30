@@ -645,6 +645,12 @@ scene.addEventListener('mouseleave', () => {
   rainbow2.style.transform = '';
   specular.style.background = '';
 });
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft')  window.location.href = 'crux-david-flip.html';
+  if (e.key === 'ArrowRight') window.location.href = 'crux-bernadette-flip.html';
+  if (e.key === 'Escape')     window.location.href = 'crux-account.html';
+});
 </script>
 
 <script type="module">

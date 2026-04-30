@@ -1126,6 +1126,12 @@ scene.addEventListener('mouseleave', () => {
   rainbow2.style.transform = '';
   specular.style.background = '';
 });
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'ArrowLeft')  window.location.href = 'crux-${card.prevSlug}-flip.html';
+  if (e.key === 'ArrowRight') window.location.href = 'crux-${card.nextSlug}-flip.html';
+  if (e.key === 'Escape')     window.location.href = 'crux-account.html';
+});
 </script>
 
 <script type="module">
@@ -1752,6 +1758,10 @@ scene.addEventListener('mousemove', (e) => {
 });
 
 scene.addEventListener('mouseleave', () => { if (!isFlipped) flipper.style.transform = ''; });
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') window.location.href = 'crux-account.html';
+});
 </script>
 
 <script type="module">

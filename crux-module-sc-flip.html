@@ -431,6 +431,10 @@ scene.addEventListener('mousemove', (e) => {
 });
 
 scene.addEventListener('mouseleave', () => { if (!isFlipped) flipper.style.transform = ''; });
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') window.location.href = 'crux-account.html';
+});
 </script>
 
 <script type="module">
