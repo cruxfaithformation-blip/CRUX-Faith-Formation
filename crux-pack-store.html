@@ -967,12 +967,8 @@
                 btnHtml = '<button class="open-btn" onclick="startOpen(\'' + pack.id + '\')">Open Pack →</button>';
             }
 
-            const oddsHtml = pack.earnedOnly
-                ? '<div class="pack-odds">' +
-                    '<span class="odds-pip legendary">L ' + Math.round(pack.odds.legendary * 100) + '%</span>' +
-                    '<span class="odds-pip rare">R ' + Math.round(pack.odds.rare * 100) + '%</span>' +
-                    '<span class="odds-pip uncommon">U ' + Math.round(pack.odds.uncommon * 100) + '%</span>' +
-                  '</div>'
+            const oddsHtml = pack.fixedCards
+                ? '<div class="pack-odds"><span class="odds-pip rare">SC · LG · DV · GS</span></div>'
                 : '<div class="pack-odds">' +
                     '<span class="odds-pip legendary">L ' + Math.round(pack.odds.legendary * 100) + '%</span>' +
                     '<span class="odds-pip rare">R ' + Math.round(pack.odds.rare * 100) + '%</span>' +
