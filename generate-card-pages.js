@@ -376,6 +376,28 @@ const NEW_CARDS = [
     ],
   },
   {
+    slug: 'thomas', navName: 'Thomas',
+    title: 'CRUX — St. Thomas the Apostle', saintName: 'St. Thomas the Apostle',
+    badge: '✦✦✦ Legendary', feast: 'July 3', patron: 'Architects, India, those who doubt',
+    bio: '"My Lord and my God." — The moment doubt became the deepest act of faith.',
+    setNum: '012 / 052', backName: 'Thomas Didymus', backDates: 'd. c. 72 AD · Mylapore, India',
+    prayer: [
+      'O St. Thomas the Apostle, you who moved from doubt to the boldest confession of faith in the Gospels — "My Lord and my God" — intercede for all who struggle to believe, for all who need to see before they can trust.',
+      'Teach us that honest doubt, brought before the living Christ, becomes the ground of deeper faith. You traveled farther than any other Apostle — all the way to India — carrying the Gospel to the ends of the earth. Pray for missionaries, for those who go where no one else will go, and for all of us in our moments of unbelief.',
+    ],
+    bioParagraphs: [
+      'Thomas, called Didymus — "the Twin" — was one of the Twelve. He is remembered for his honest absence at the first resurrection appearance and his refusal to believe without seeing. When Christ appeared again and invited Thomas to touch His wounds, Thomas\'s doubt collapsed into the most complete confession of faith in the Gospels: "My Lord and my God." Jesus replied: "Blessed are those who have not seen and yet believed."',
+      'Tradition holds that Thomas traveled farther than any other Apostle — all the way to India, where he founded seven churches along the Malabar Coast. The Thomas Christians of Kerala trace their lineage directly to him. He was martyred by spear in Mylapore, now Chennai, around 72 AD. His body was later transferred to Edessa. He is patron of architects because he built churches — and because he built his faith on solid ground.',
+    ],
+    facts: [
+      { label: 'Also Known', value: 'Didymus · The Twin · Apostle to India' },
+      { label: 'Key Text',   value: 'John 20:24–29 · John 11:16 · John 14:5' },
+      { label: 'Patron of',  value: 'Architects · India · Sri Lanka · Those who doubt' },
+      { label: 'Symbols',    value: 'Spear · Carpenter\'s square · Builder\'s tools' },
+      { label: 'Martyrdom',  value: 'Spear, c. 72 AD · Mylapore, India — furthest traveled apostle' },
+    ],
+  },
+  {
     slug: 'augustine', navName: 'Augustine',
     title: 'CRUX — St. Augustine of Hippo', saintName: 'St. Augustine of Hippo',
     badge: '✦✦ Rare', feast: 'August 28', patron: 'Theologians, brewers, those with bad habits',
