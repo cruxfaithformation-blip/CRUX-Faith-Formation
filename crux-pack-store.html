@@ -549,6 +549,11 @@
             border-color: #6495ed;
             box-shadow: 0 0 16px rgba(100,149,237,0.25);
         }
+        .card-slot.epic .card-front-face {
+            background: linear-gradient(145deg, #1a0a2e 0%, #2a1045 50%, #130820 100%);
+            border-color: #b464ff;
+            box-shadow: 0 0 20px rgba(180,100,255,0.3);
+        }
         .card-slot.uncommon .card-front-face {
             background: linear-gradient(145deg, #1a1f36 0%, #242a45 100%);
             border-color: rgba(255,255,255,0.15);
@@ -583,6 +588,8 @@
         .legendary .cf-rarity-badge { background: rgba(212,165,116,0.2); color: var(--gold); border: 1px solid rgba(212,165,116,0.4); }
         .rare .cf-wordmark { color: #8ab4f8; }
         .rare .cf-rarity-badge { background: rgba(100,149,237,0.15); color: #8ab4f8; border: 1px solid rgba(100,149,237,0.3); }
+        .epic .cf-wordmark { color: #c97fff; }
+        .epic .cf-rarity-badge { background: rgba(180,100,255,0.15); color: #c97fff; border: 1px solid rgba(180,100,255,0.35); }
         .uncommon .cf-wordmark { color: rgba(255,255,255,0.35); }
         .uncommon .cf-rarity-badge { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.12); }
 
@@ -823,11 +830,16 @@
             icon: '🏛',
             cardCount: 4,
             cost: 0,
-            odds: { legendary: 0.10, rare: 0.40, uncommon: 0.50 },
             unlockLevel: 1,
             earnedOnly: true,
             gradient: 'linear-gradient(145deg, #0a2a1e 0%, #123d2e 100%)',
-            artColor: 'rgba(107,203,119,0.8)'
+            artColor: 'rgba(107,203,119,0.8)',
+            fixedCards: [
+                { id: 'sc', name: 'Sacrosanctum Concilium', rarity: 'rare' },
+                { id: 'lg', name: 'Lumen Gentium',          rarity: 'epic' },
+                { id: 'dv', name: 'Dei Verbum',             rarity: 'rare' },
+                { id: 'gs', name: 'Gaudium et Spes',        rarity: 'legendary' }
+            ]
         }
     ];
 
@@ -892,6 +904,7 @@
     }
 
     function drawPack(pack) {
+        if (pack.fixedCards) return [...pack.fixedCards];
         const cards = [];
         // Guarantee at least 1 rare in premium pack
         if (pack.id === 'premium') {
@@ -994,9 +1007,10 @@
         pendingPack = pack;
 
         document.getElementById('modalTitle').textContent = pack.name;
-        document.getElementById('modalDesc').textContent =
-            pack.cardCount + ' cards · ' + Math.round(pack.odds.legendary * 100) + '% Legendary · ' +
-            Math.round(pack.odds.rare * 100) + '% Rare';
+        document.getElementById('modalDesc').textContent = pack.fixedCards
+            ? pack.cardCount + ' cards · Vatican II Constitutions · Preset collection'
+            : pack.cardCount + ' cards · ' + Math.round(pack.odds.legendary * 100) + '% Legendary · ' +
+              Math.round(pack.odds.rare * 100) + '% Rare';
 
         const isEarned = pack.earnedOnly;
         document.getElementById('modalCost').textContent = isEarned ? 'Free (earned)' : pack.cost + ' XP';
@@ -1033,10 +1047,10 @@
 
         // Write to Firestore immediately
         try {
-            const updates = {
-                cardsOwned:  window.fbArrayUnion(...drawnCards.map(c => c.id)),
-                packsOpened: window.fbIncrement(1)
-            };
+            const cardIds = drawnCards.map(c => c.id);
+            const updates = pack.fixedCards
+                ? { moduleCards: window.fbArrayUnion(...cardIds), packsOpened: window.fbIncrement(1) }
+                : { cardsOwned:  window.fbArrayUnion(...cardIds), packsOpened: window.fbIncrement(1) };
             if (!pack.earnedOnly) {
                 updates.xpSpent = window.fbIncrement(pack.cost);
             }
@@ -1044,7 +1058,7 @@
 
             // Update local state
             if (!pack.earnedOnly) userXPSpent += pack.cost;
-            drawnCards.forEach(c => { if (!userCards.includes(c.id)) userCards.push(c.id); });
+            if (!pack.fixedCards) drawnCards.forEach(c => { if (!userCards.includes(c.id)) userCards.push(c.id); });
 
         } catch (e) {
             console.error('Pack open write failed:', e);
@@ -1081,6 +1095,7 @@
 
     function rarityIcon(r) {
         if (r === 'legendary') return '✦';
+        if (r === 'epic')      return '◆';
         if (r === 'rare')      return '★';
         return '·';
     }
