@@ -1154,12 +1154,27 @@ scene.addEventListener('mouseleave', () => {
   rainbow2.style.transform = '';
   specular.style.background = '';
 });
+
+let navigating = false;
+function navTo(url) {
+  if (navigating) return;
+  navigating = true;
+  document.body.style.transition = 'opacity 0.12s ease';
+  document.body.style.opacity = '0';
+  setTimeout(function() { window.location.href = url; }, 120);
+}
+
+window.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); navTo('crux-john-apostle-flip.html'); }
+  if (e.key === 'ArrowRight') { e.preventDefault(); navTo('crux-augustine-flip.html'); }
+  if (e.key === 'Escape')     { e.preventDefault(); navTo('crux-account.html'); }
+});
 </script>
 
 <nav class="card-nav">
-  <a class="nav-btn" href="crux-bvm-flip.html">&#8592; Mary</a>
+  <a class="nav-btn" href="crux-john-apostle-flip.html">&#8592; John</a>
   <a class="nav-btn nav-home" href="crux-account.html">My Cards</a>
-  <a class="nav-btn" href="crux-cecilia-flip.html">Cecilia &#8594;</a>
+  <a class="nav-btn" href="crux-augustine-flip.html">Augustine &#8594;</a>
 </nav>
 
 </body>
