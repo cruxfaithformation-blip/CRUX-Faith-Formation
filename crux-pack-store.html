@@ -28,10 +28,30 @@
         window.fbIncrement = increment;
         window.fbArrayUnion = arrayUnion;
 
+        function getActiveChild(uid) {
+            try {
+                const s = localStorage.getItem('crux_active_child');
+                if (!s) return null;
+                const d = JSON.parse(s);
+                return (d.parentUid === uid) ? d : null;
+            } catch (e) { return null; }
+        }
+
+        function storeProgressRef(uid) {
+            const ac = getActiveChild(uid);
+            return ac
+                ? doc(db, 'userProgress', uid, 'children', ac.childId)
+                : doc(db, 'userProgress', uid);
+        }
+
+        window.storeProgressRef = storeProgressRef;
+
         onAuthStateChanged(auth, async (user) => {
             if (user) {
                 window.currentUid = user.uid;
-                const snap = await getDoc(doc(db, 'userProgress', user.uid));
+                window.activeChildData = getActiveChild(user.uid);
+                const ref  = storeProgressRef(user.uid);
+                const snap = await getDoc(ref);
                 if (snap.exists()) {
                     const d = snap.data();
                     if (typeof window.onStoreAuth === 'function') {
@@ -50,6 +70,7 @@
                 }
             } else {
                 window.currentUid = null;
+                window.activeChildData = null;
                 if (typeof window.onStoreAuth === 'function') window.onStoreAuth(null);
             }
         });
@@ -1029,6 +1050,9 @@
         <a href="crux-account.html" class="signin-link">Sign in</a> to open packs with your XP
     </div>
 </div>
+<div style="text-align:center;padding:0.5rem 1rem 0;display:none;" id="activeChildChipWrap">
+    <span id="activeChildChip" style="display:none;align-items:center;gap:0.4rem;background:rgba(212,165,116,0.1);border:1px solid rgba(212,165,116,0.28);color:var(--gold);padding:0.3rem 0.85rem;border-radius:20px;font-size:0.72rem;font-weight:600;letter-spacing:0.4px;"></span>
+</div>
 
 <main>
     <div>
@@ -1317,6 +1341,19 @@
         userLevel    = getLevelName(userXP).level;
         unlockedPacks = data.unlockedPacks;
 
+        // Show "Playing as [child]" chip if a child is active
+        const childChip = document.getElementById('activeChildChip');
+        if (childChip) {
+            if (window.activeChildData) {
+                childChip.textContent = '👤 ' + window.activeChildData.childName;
+                childChip.style.display = 'inline-flex';
+                document.getElementById('activeChildChipWrap').style.display = 'block';
+            } else {
+                childChip.style.display = 'none';
+                document.getElementById('activeChildChipWrap').style.display = 'none';
+            }
+        }
+
         // Update balance strip
         const strip = document.getElementById('balanceStrip');
         const lvl = getLevelName(userXP);
@@ -1494,14 +1531,15 @@
 
         // Write to Firestore immediately
         try {
-            const cardIds = drawnCards.map(c => c.id);
+            const cardIds    = drawnCards.map(c => c.id);
+            const progressRef = window.storeProgressRef(window.currentUid);
             const updates = pack.fixedCards
                 ? { moduleCards: window.fbArrayUnion(...cardIds), packsOpened: window.fbIncrement(1) }
                 : { cardsOwned:  window.fbArrayUnion(...cardIds), packsOpened: window.fbIncrement(1) };
             if (!pack.earnedOnly) {
                 updates.xpSpent = window.fbIncrement(pack.cost);
             }
-            await window.fbUpdateDoc(window.fbDoc(window.db, 'userProgress', window.currentUid), updates);
+            await window.fbUpdateDoc(progressRef, updates);
 
             // Update local state
             if (!pack.earnedOnly) userXPSpent += pack.cost;

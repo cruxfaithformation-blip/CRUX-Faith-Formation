@@ -1122,6 +1122,168 @@
         }
         .pack-nudge-btn:hover { opacity: 0.85; }
 
+        /* ─── PARENT / CHILD SYSTEM ─────────────────────── */
+        .parent-section {
+            background: rgba(28, 34, 64, 0.55);
+            border: 1px solid rgba(212, 165, 116, 0.18);
+            border-radius: 16px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .parent-section-head {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+        .parent-section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .children-grid {
+            display: flex;
+            gap: 0.85rem;
+            flex-wrap: wrap;
+        }
+        .child-card {
+            background: rgba(255,255,255,0.04);
+            border: 2px solid rgba(212,165,116,0.14);
+            border-radius: 12px;
+            padding: 1.1rem 1.1rem 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 110px;
+            text-align: center;
+            position: relative;
+            user-select: none;
+        }
+        .child-card:hover {
+            border-color: rgba(212,165,116,0.4);
+            background: rgba(212,165,116,0.06);
+            transform: translateY(-2px);
+        }
+        .child-card.active-child {
+            border-color: var(--gold);
+            background: rgba(212,165,116,0.1);
+        }
+        .child-avatar {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+            color: var(--navy-deep);
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 0.6rem;
+        }
+        .child-name {
+            font-weight: 700;
+            font-size: 0.85rem;
+            color: var(--text-primary);
+            margin-bottom: 0.2rem;
+        }
+        .child-meta {
+            font-size: 0.66rem;
+            color: var(--text-muted);
+            letter-spacing: 0.3px;
+        }
+        .child-active-dot {
+            position: absolute;
+            top: 0.5rem;
+            right: 0.5rem;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--gold);
+            display: none;
+        }
+        .child-card.active-child .child-active-dot { display: block; }
+        .add-child-tile {
+            background: transparent;
+            border: 2px dashed rgba(212,165,116,0.22);
+            border-radius: 12px;
+            padding: 1.1rem 1.1rem 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            min-width: 110px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            font-family: 'Inter', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        .add-child-tile:hover {
+            border-color: rgba(212,165,116,0.5);
+            color: var(--gold);
+            background: rgba(212,165,116,0.04);
+            transform: translateY(-2px);
+        }
+        .active-child-bar {
+            display: none;
+            margin-top: 1rem;
+            padding: 0.65rem 1rem;
+            background: rgba(212,165,116,0.07);
+            border: 1px solid rgba(212,165,116,0.18);
+            border-radius: 8px;
+            font-size: 0.8rem;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+        .active-child-bar.visible { display: flex; }
+        .active-child-bar-text { color: var(--text-muted); }
+        .active-child-bar-text strong { color: var(--gold); }
+        .active-child-bar-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.72rem;
+            font-family: 'Inter', sans-serif;
+            cursor: pointer;
+            text-decoration: underline;
+            white-space: nowrap;
+            padding: 0;
+        }
+        .active-child-bar-btn:hover { color: var(--text-secondary); }
+        /* Add child modal */
+        .add-child-modal-inner {
+            background: var(--navy-mid);
+            border: 1px solid rgba(212,165,116,0.22);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 380px;
+            padding: 2rem;
+        }
+        .add-child-modal-head {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 1.25rem;
+        }
+        .add-child-modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.3rem;
+        }
+        .add-child-modal-sub {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+            max-width: 260px;
+        }
+
         /* ─── PROGRESS BAR ──────────────────────────────── */
         .progress-label-row {
             display: flex;
@@ -1478,7 +1640,7 @@
                 <!-- Role toggle -->
                 <div class="form-group" style="margin-bottom:1.25rem;">
                     <label style="margin-bottom:0.6rem;display:block;">I am a&#8230;</label>
-                    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;">
+                    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.6rem;">
                         <label id="roleStudentLabel" class="role-option role-active" style="cursor:pointer;" onclick="selectRole('student')">
                             <input type="radio" name="role" value="student" id="roleStudent" checked style="display:none;">
                             <span style="font-size:1.3rem;display:block;">&#127891;</span>
@@ -1490,6 +1652,12 @@
                             <span style="font-size:1.3rem;display:block;">&#128203;</span>
                             <span style="font-weight:700;display:block;">Teacher</span>
                             <span style="font-size:0.78rem;color:var(--text-muted);">Create a class &amp; award XP</span>
+                        </label>
+                        <label id="roleParentLabel" class="role-option" style="cursor:pointer;" onclick="selectRole('parent')">
+                            <input type="radio" name="role" value="parent" id="roleParent" style="display:none;">
+                            <span style="font-size:1.3rem;display:block;">&#128106;</span>
+                            <span style="font-weight:700;display:block;">Parent</span>
+                            <span style="font-size:0.78rem;color:var(--text-muted);">Manage child accounts</span>
                         </label>
                     </div>
                 </div>
@@ -1516,6 +1684,20 @@
 
         <!-- ─── DASHBOARD ────────────────────────────────── -->
         <div id="dashboard" style="display: none;">
+
+            <!-- Parent: Children Panel (shown for parent accounts) -->
+            <div id="parentSection" style="display:none;">
+                <div class="parent-section">
+                    <div class="parent-section-head">
+                        <div class="parent-section-title">&#128106; My Children</div>
+                    </div>
+                    <div class="children-grid" id="childrenGrid"></div>
+                    <div class="active-child-bar" id="activeChildBar">
+                        <div class="active-child-bar-text">Viewing <strong id="activeChildBarName"></strong>'s dashboard</div>
+                        <button class="active-child-bar-btn" onclick="clearActiveChild()">Switch child</button>
+                    </div>
+                </div>
+            </div>
 
             <!-- Alpha Pack Gift Notification -->
             <div class="alpha-gift-banner" id="alphaGiftBanner">
@@ -1567,6 +1749,26 @@
                         <button class="favorites-pick-btn" onclick="openFavModal()">Pick Your Favorite Cards →</button>
                     </div>
                     <div class="favorites-row" id="favRow" style="display:none;"></div>
+                </div>
+            </div>
+
+            <!-- Add Child Modal -->
+            <div class="fav-modal-overlay" id="addChildModal">
+                <div class="add-child-modal-inner">
+                    <div class="add-child-modal-head">
+                        <div>
+                            <div class="add-child-modal-title">Add a Child Account</div>
+                            <div class="add-child-modal-sub">Enter your child's name. Their XP, cards, and progress will be saved separately under your account.</div>
+                        </div>
+                        <button class="fav-modal-close" onclick="closeAddChildModal()">&times;</button>
+                    </div>
+                    <div id="addChildError"></div>
+                    <div class="form-group">
+                        <label>Child's Name</label>
+                        <input type="text" id="addChildName" placeholder="e.g. Emma" maxlength="30"
+                            style="width:100%;padding:0.9rem 1rem;border:1.5px solid rgba(212,165,116,0.18);border-radius:8px;font-size:0.95rem;font-family:'Inter',sans-serif;color:var(--text-primary);background:rgba(255,255,255,0.05);">
+                    </div>
+                    <button class="btn btn-primary" id="addChildSubmitBtn" onclick="submitAddChild()" style="margin-top:0.5rem;">Add Child</button>
                 </div>
             </div>
 
@@ -1736,6 +1938,32 @@
         const auth = window.auth;
         const db = window.db;
 
+        // ── CHILD ACCOUNT STATE ────────────────────────────
+        let _activeChildId   = null;
+        let _activeChildName = null;
+        let _parentUid       = null;
+
+        function getSavedActiveChild(uid) {
+            try {
+                const s = localStorage.getItem('crux_active_child');
+                if (!s) return null;
+                const d = JSON.parse(s);
+                return (d.parentUid === uid) ? d : null;
+            } catch (e) { return null; }
+        }
+
+        function progressDocRef(uid) {
+            return (_activeChildId && _parentUid)
+                ? doc(db, 'userProgress', _parentUid, 'children', _activeChildId)
+                : doc(db, 'userProgress', uid);
+        }
+
+        function journalCollRef(uid) {
+            return (_activeChildId && _parentUid)
+                ? collection(db, 'userProgress', _parentUid, 'children', _activeChildId, 'studyReflections')
+                : collection(db, 'userProgress', uid, 'studyReflections');
+        }
+
         // ── LEVEL SYSTEM ──────────────────────────────────
         const LEVELS = [
             { level: 1, name: 'Seeker',   minXP: 0 },
@@ -1780,8 +2008,10 @@
         window.selectRole = function(role) {
             document.getElementById('roleStudent').checked = (role === 'student');
             document.getElementById('roleTeacher').checked = (role === 'teacher');
+            document.getElementById('roleParent').checked  = (role === 'parent');
             document.getElementById('roleStudentLabel').classList.toggle('role-active', role === 'student');
             document.getElementById('roleTeacherLabel').classList.toggle('role-active', role === 'teacher');
+            document.getElementById('roleParentLabel').classList.toggle('role-active',  role === 'parent');
             document.getElementById('teacherRegFields').style.display = (role === 'teacher') ? 'block' : 'none';
         };
 
@@ -1959,6 +2189,7 @@
             const email    = document.getElementById('registerEmail').value.trim();
             const password = document.getElementById('registerPassword').value;
             const isTeacher = document.getElementById('roleTeacher').checked;
+            const isParent  = document.getElementById('roleParent').checked;
             const teacherName = isTeacher ? (document.getElementById('registerTeacherName').value || '').trim() : '';
             const school      = isTeacher ? (document.getElementById('registerSchool').value || '').trim() : '';
             document.getElementById('registerError').innerHTML = '';
@@ -1973,16 +2204,19 @@
                 const user = userCredential.user;
 
                 await setDoc(doc(db, 'users', user.uid), {
-                    username, email, role: isTeacher ? 'teacher' : 'student',
+                    username, email,
+                    role: isTeacher ? 'teacher' : (isParent ? 'parent' : 'student'),
                     joinedDate: serverTimestamp(), createdAt: serverTimestamp()
                 });
 
                 await setDoc(doc(db, 'userProgress', user.uid), {
                     totalXP: 0, xpFromQuizzes: 0, xpFromTeachers: 0,
                     level: 1, teacherIds: [],
-                    cardsOwned: ['thomas', 'cecilia', 'david', 'clare', 'bernadette', 'bvm'],
-                    packsOpened: 1, alphaPackReceived: true,
-                    alphaPackGifted: true, alphaPackNotified: false,
+                    cardsOwned: isParent ? [] : ['thomas', 'cecilia', 'david', 'clare', 'bernadette', 'bvm'],
+                    packsOpened: isParent ? 0 : 1,
+                    alphaPackReceived: !isParent,
+                    alphaPackGifted: !isParent,
+                    alphaPackNotified: isParent ? true : false,
                     createdAt: serverTimestamp()
                 });
 
@@ -2041,13 +2275,37 @@
                     document.getElementById('dashJoined').textContent   = 'Recently';
                 }
 
+                const role = userData.role || '';
+
+                // ── Parent account: show children panel and load child data ──
+                if (role === 'parent') {
+                    _parentUid = user.uid;
+                    document.getElementById('parentSection').style.display = 'block';
+                    document.getElementById('becomeTeacherCard').style.display = 'none';
+                    await loadParentChildren(user.uid);
+                    const saved = getSavedActiveChild(user.uid);
+                    if (saved) {
+                        _activeChildId   = saved.childId;
+                        _activeChildName = saved.childName;
+                        updateActiveChildUI(saved.childId, saved.childName, userData.username || 'Parent');
+                        await Promise.all([
+                            loadUserProgress(user.uid),
+                            loadStudyJournal(user.uid)
+                        ]);
+                        document.getElementById('awardsList').innerHTML =
+                            '<div class="no-data">Teacher awards are shown on the child\'s student account.</div>';
+                    } else {
+                        showParentNoChild(userData.username || 'Parent');
+                    }
+                    return;
+                }
+
                 await Promise.all([
                     loadUserProgress(user.uid),
                     loadTeacherAwards(user.uid),
                     loadStudyJournal(user.uid)
                 ]);
 
-                const role = userData.role || '';
                 let isTeacher = (role === 'teacher');
                 if (!isTeacher) {
                     try {
@@ -2387,11 +2645,12 @@
         // ── LOAD USER PROGRESS & XP ────────────────────────
         async function loadUserProgress(userId) {
             try {
-                let snap = await getDoc(doc(db, 'userProgress', userId));
-                let data = {};
+                const ref  = progressDocRef(userId);
+                let snap   = await getDoc(ref);
+                let data   = {};
                 if (!snap.exists()) {
                     data = { totalXP: 0, xpFromQuizzes: 0, xpFromTeachers: 0, level: 1, teacherIds: [] };
-                    await setDoc(doc(db, 'userProgress', userId), { ...data, createdAt: serverTimestamp() });
+                    await setDoc(ref, { ...data, createdAt: serverTimestamp() });
                 } else {
                     data = snap.data();
                 }
@@ -2514,7 +2773,7 @@
         async function loadStudyJournal(userId) {
             const container = document.getElementById('journalList');
             try {
-                const snap = await getDocs(collection(db, 'userProgress', userId, 'studyReflections'));
+                const snap = await getDocs(journalCollRef(userId));
                 if (snap.empty) {
                     container.innerHTML = '<div class="no-data">No saved reflections yet. <a href="crux-bible-study.html" style="color:var(--gold-dark);font-weight:600;">Visit a Bible Study</a> to start your journal.</div>';
                     return;
@@ -2574,6 +2833,158 @@
             body.style.display = isOpen ? 'none' : 'block';
             if (chevron) chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
         };
+
+        // ── PARENT / CHILD MANAGEMENT ─────────────────────
+
+        function updateActiveChildUI(childId, childName, parentName) {
+            document.getElementById('activeChildBar').classList.add('visible');
+            document.getElementById('activeChildBarName').textContent = childName;
+            document.getElementById('dashUsername').textContent = childName;
+            document.getElementById('dashEmail').textContent = 'Family account';
+            document.getElementById('profileGreeting') && (document.getElementById('profileGreeting').textContent = 'Viewing profile for');
+            document.querySelectorAll('.child-card').forEach(c => {
+                c.classList.toggle('active-child', c.dataset.childId === childId);
+            });
+        }
+
+        function showParentNoChild(parentName) {
+            document.getElementById('dashUsername').textContent = parentName;
+            document.getElementById('levelBadge').textContent = 'Select a child below to view their progress';
+            const placeholder = '<div class="no-data">Select a child above to view their dashboard.</div>';
+            document.getElementById('cardRow').innerHTML = '<div class="no-data" style="padding:1rem 0;">Select a child above to view their card collection.</div>';
+            document.getElementById('cardCount').textContent = '';
+            document.getElementById('journalList').innerHTML = placeholder;
+            document.getElementById('classList').innerHTML = '<li class="no-data">Select a child above to view their classes.</li>';
+            document.getElementById('awardsList').innerHTML = placeholder;
+            document.getElementById('xpQuiz').textContent = '–';
+            document.getElementById('xpTeachers').textContent = '–';
+            document.getElementById('xpTotal').textContent = '–';
+            document.getElementById('packNudge').style.display = 'none';
+        }
+
+        async function loadParentChildren(parentUid) {
+            const grid = document.getElementById('childrenGrid');
+            try {
+                const snap = await getDocs(collection(db, 'userProgress', parentUid, 'children'));
+                const children = [];
+                snap.forEach(d => children.push({ id: d.id, ...d.data() }));
+
+                grid.innerHTML = children.map(child => {
+                    const initial = (child.name || '?')[0].toUpperCase();
+                    const xp      = (child.totalXP || 0).toLocaleString();
+                    const cards   = (child.cardsOwned || []).length;
+                    return `<div class="child-card" data-child-id="${child.id}"
+                        onclick="switchToChild('${parentUid}','${child.id}','${child.name.replace(/'/g, "\\'")}')">
+                        <div class="child-active-dot"></div>
+                        <div class="child-avatar">${initial}</div>
+                        <div class="child-name">${child.name}</div>
+                        <div class="child-meta">${xp} XP · ${cards} card${cards !== 1 ? 's' : ''}</div>
+                    </div>`;
+                }).join('') +
+                `<button class="add-child-tile" onclick="openAddChildModal()">
+                    <span style="font-size:1.5rem;opacity:0.6;">+</span>
+                    <span>Add Child</span>
+                </button>`;
+            } catch (err) {
+                console.error('loadParentChildren error:', err);
+                grid.innerHTML = '<div class="no-data">Could not load children.</div>';
+            }
+        }
+
+        window.switchToChild = async function(parentUid, childId, childName) {
+            _parentUid       = parentUid;
+            _activeChildId   = childId;
+            _activeChildName = childName;
+            localStorage.setItem('crux_active_child', JSON.stringify({ parentUid, childId, childName }));
+
+            updateActiveChildUI(childId, childName, '');
+            const user = auth.currentUser;
+            if (!user) return;
+
+            await Promise.all([
+                loadUserProgress(user.uid),
+                loadStudyJournal(user.uid)
+            ]);
+            document.getElementById('awardsList').innerHTML =
+                '<div class="no-data">Teacher awards are shown on the child\'s student account.</div>';
+            await loadTeachers(
+                (await getDoc(doc(db, 'userProgress', parentUid, 'children', childId))).data()?.teacherIds || []
+            );
+            document.querySelector('.profile-hero')?.scrollIntoView({ behavior: 'smooth' });
+        };
+
+        window.clearActiveChild = function() {
+            const user = auth.currentUser;
+            if (!user) return;
+            _activeChildId   = null;
+            _activeChildName = null;
+            localStorage.removeItem('crux_active_child');
+            document.getElementById('activeChildBar').classList.remove('visible');
+            document.querySelectorAll('.child-card').forEach(c => c.classList.remove('active-child'));
+            const userDoc = { username: document.querySelector('.profile-greeting + .profile-username') };
+            showParentNoChild(document.getElementById('dashUsername').textContent || 'Parent');
+            loadParentChildren(user.uid);
+        };
+
+        window.openAddChildModal = function() {
+            document.getElementById('addChildName').value = '';
+            document.getElementById('addChildError').innerHTML = '';
+            document.getElementById('addChildModal').classList.add('open');
+            setTimeout(() => document.getElementById('addChildName').focus(), 100);
+        };
+
+        window.closeAddChildModal = function() {
+            document.getElementById('addChildModal').classList.remove('open');
+        };
+
+        window.submitAddChild = async function() {
+            const nameInput = document.getElementById('addChildName');
+            const name      = nameInput.value.trim();
+            const errEl     = document.getElementById('addChildError');
+            errEl.innerHTML = '';
+
+            if (!name) {
+                errEl.innerHTML = '<div class="error-message">Please enter your child\'s name.</div>';
+                return;
+            }
+
+            const user = auth.currentUser;
+            if (!user) return;
+
+            const btn = document.getElementById('addChildSubmitBtn');
+            btn.disabled = true;
+            btn.textContent = 'Adding…';
+
+            try {
+                const childId  = 'child_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+                const childRef = doc(db, 'userProgress', user.uid, 'children', childId);
+                await setDoc(childRef, {
+                    name,
+                    totalXP: 0, xpFromQuizzes: 0, xpFromTeachers: 0,
+                    level: 1, teacherIds: [],
+                    cardsOwned: ['thomas', 'cecilia', 'david', 'clare', 'bernadette', 'bvm'],
+                    packsOpened: 1,
+                    alphaPackGifted: true, alphaPackNotified: true,
+                    createdAt: serverTimestamp()
+                });
+                closeAddChildModal();
+                await loadParentChildren(user.uid);
+                await window.switchToChild(user.uid, childId, name);
+            } catch (err) {
+                console.error('submitAddChild error:', err);
+                errEl.innerHTML = '<div class="error-message">Something went wrong. Please try again.</div>';
+            } finally {
+                btn.disabled = false;
+                btn.textContent = 'Add Child';
+            }
+        };
+
+        document.getElementById('addChildModal').addEventListener('click', function(e) {
+            if (e.target === this) closeAddChildModal();
+        });
+        document.getElementById('addChildName')?.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') window.submitAddChild();
+        });
 
         // ── JOIN CLASS ─────────────────────────────────────
         window.joinClass = async function() {
