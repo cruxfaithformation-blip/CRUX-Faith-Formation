@@ -1066,6 +1066,62 @@
             color: var(--gold);
         }
 
+        /* ─── PACK NUDGE ─────────────────────────────────── */
+        .pack-nudge {
+            background: linear-gradient(135deg, rgba(212,165,116,0.1) 0%, rgba(212,165,116,0.04) 100%);
+            border: 1px solid rgba(212,165,116,0.28);
+            border-radius: 8px;
+            padding: 1.1rem 1.25rem;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+        }
+        .pack-nudge-bal {
+            flex-shrink: 0;
+        }
+        .pack-nudge-label {
+            font-size: 0.56rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(212,165,116,0.5);
+            margin-bottom: 0.15rem;
+        }
+        .pack-nudge-xp {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.35rem;
+            font-weight: 900;
+            color: var(--gold);
+            line-height: 1;
+        }
+        .pack-nudge-copy {
+            flex: 1;
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.5);
+            line-height: 1.5;
+            min-width: 120px;
+        }
+        .pack-nudge-btn {
+            background: var(--gold);
+            color: #1a1f36;
+            border: none;
+            padding: 9px 18px;
+            font-family: 'Cinzel', serif;
+            font-size: 0.54rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 700;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+        }
+        .pack-nudge-btn:hover { opacity: 0.85; }
+
         /* ─── PROGRESS BAR ──────────────────────────────── */
         .progress-label-row {
             display: flex;
@@ -1587,6 +1643,15 @@
                                 <div class="xp-label">Total XP</div>
                                 <div class="xp-value" id="xpTotal">–</div>
                             </div>
+                        </div>
+                        <!-- Pack nudge: shown when user has ≥200 spendable XP -->
+                        <div class="pack-nudge" id="packNudge" style="display:none">
+                            <div class="pack-nudge-bal">
+                                <div class="pack-nudge-label">Available</div>
+                                <div class="pack-nudge-xp" id="packNudgeXP">0 XP</div>
+                            </div>
+                            <div class="pack-nudge-copy" id="packNudgeCopy">You have enough XP to open a pack — grow your saint card collection.</div>
+                            <a href="crux-pack-store.html" class="pack-nudge-btn">Open Packs →</a>
                         </div>
                         <div class="progress-label-row">
                             <span id="progressLabelLeft">Level 1: Seeker</span>
@@ -2349,6 +2414,22 @@
                 document.getElementById('xpTotal').textContent    = totalXP.toLocaleString();
                 document.getElementById('levelBadge').textContent =
                     `⚔️ Level ${current.level} – ${current.name} (${totalXP} XP)`;
+
+                // Pack nudge
+                const xpSpent   = data.xpSpent || 0;
+                const xpBalance = totalXP - xpSpent;
+                const nudge     = document.getElementById('packNudge');
+                if (xpBalance >= 200) {
+                    document.getElementById('packNudgeXP').textContent  = xpBalance.toLocaleString() + ' XP';
+                    const packs = Math.floor(xpBalance / 200);
+                    document.getElementById('packNudgeCopy').textContent =
+                        packs === 1
+                            ? 'You have enough XP to open a Standard Pack — grow your saint card collection.'
+                            : `You have enough XP to open ${packs}+ packs — grow your saint card collection.`;
+                    nudge.style.display = 'flex';
+                } else {
+                    nudge.style.display = 'none';
+                }
                 document.getElementById('progressLabelLeft').textContent  = `Level ${current.level}: ${current.name}`;
                 document.getElementById('progressLabelRight').textContent = next
                     ? `${pct}% to Level ${next.level} (${next.name})`
