@@ -180,8 +180,42 @@ body::before {
 .rarity-examples { font-size: 0.75rem; color: rgba(255,255,255,0.35); font-style: italic; line-height: 1.55; }
 
 /* CARD PREVIEW STRIP */
-.card-strip { display: flex; gap: 1rem; overflow-x: auto; padding: 2rem 0 1rem; scrollbar-width: none; width: 100%; }
-.card-strip::-webkit-scrollbar { display: none; }
+.strip-wrapper {
+  position: relative;
+}
+.strip-overflow {
+  overflow: hidden;
+  width: 100%;
+}
+.card-strip {
+  display: flex;
+  gap: 1rem;
+  padding: 2rem 0 1rem;
+  width: max-content;
+  scroll-behavior: smooth;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.strip-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(212,165,116,0.35);
+  background: rgba(15,18,34,0.85);
+  color: var(--gold);
+  font-size: 1.2rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.2s, border-color 0.2s;
+  z-index: 2;
+  padding: 0;
+}
+.strip-btn:hover { background: rgba(212,165,116,0.15); border-color: var(--gold); }
+.strip-btn:disabled { opacity: 0.2; cursor: default; }
+.strip-btn.prev { left: -18px; }
+.strip-btn.next { right: -18px; }
 .preview-card {
   width: 110px; flex-shrink: 0;
   border-radius: 10px; overflow: hidden;
@@ -213,9 +247,9 @@ body::before {
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .strip-label {
-  font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 600;
-  letter-spacing: 1.5px; text-transform: uppercase;
-  color: rgba(255,255,255,0.25); margin-top: 0.5rem; text-align: center;
+  font-family: 'DM Mono', monospace; font-size: 0.6rem;
+  letter-spacing: 2px;
+  color: rgba(255,255,255,0.25); margin-top: 0.75rem; text-align: center;
 }
 
 /* PACKS TABLE */
@@ -408,10 +442,16 @@ body::before {
   <!-- Card preview strip -->
   <div style="margin-top:3rem;">
     <p class="section-eyebrow" style="margin-bottom:0.5rem;">A Few Cards From the Collection</p>
-    <div class="card-strip" id="cardStrip">
-      <!-- populated by JS -->
+    <div class="strip-wrapper">
+      <button class="strip-btn prev" id="stripPrev" onclick="stripNav(-1)" disabled>&#8249;</button>
+      <div class="strip-overflow">
+        <div class="card-strip" id="cardStrip">
+          <!-- populated by JS -->
+        </div>
+      </div>
+      <button class="strip-btn next" id="stripNext" onclick="stripNav(1)">&#8250;</button>
     </div>
-    <p class="strip-label">Scroll to see more ›</p>
+    <p class="strip-label" id="stripLabel">1 / 12</p>
   </div>
 </section>
 
@@ -557,6 +597,19 @@ strip.innerHTML = PREVIEW_CARDS.map(c => {
     `<div class="preview-card-name">${c.name}</div>` +
   `</div>`;
 }).join('');
+
+// Strip navigation
+const CARD_STEP = 126; // card width (110px) + gap (16px)
+let stripIndex = 0;
+
+function stripNav(dir) {
+  const total = PREVIEW_CARDS.length;
+  stripIndex = Math.max(0, Math.min(stripIndex + dir, total - 1));
+  strip.style.transform = `translateX(-${stripIndex * CARD_STEP}px)`;
+  document.getElementById('stripPrev').disabled = stripIndex === 0;
+  document.getElementById('stripNext').disabled = stripIndex >= total - 1;
+  document.getElementById('stripLabel').textContent = (stripIndex + 1) + ' / ' + total;
+}
 </script>
 
 </body>
