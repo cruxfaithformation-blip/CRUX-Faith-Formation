@@ -2110,7 +2110,10 @@
                 const imgPath = 'images/saints/' + id + '.jpg';
                 const isSel = _selectedFavs.includes(id);
                 return '<div class="fav-selectable' + (isSel ? ' selected' : '') + '" data-id="' + id + '" onclick="toggleFavSelect(this)">' +
-                    '<img src="' + imgPath + '" alt="' + card.name + '" onerror="this.parentElement.style.display=\'none\'">' +
+                    '<img src="' + imgPath + '" alt="' + card.name + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+                    '<div style="display:none;width:100%;aspect-ratio:3/4;background:linear-gradient(170deg,#1c2650,#0f1535);align-items:center;justify-content:center;font-family:\'Playfair Display\',serif;font-weight:900;font-size:0.75rem;letter-spacing:3px;color:rgba(212,165,116,0.4);position:relative;">' +
+                        '<span style="position:absolute;font-size:4rem;color:rgba(212,165,116,0.06);">✟</span>CRUX' +
+                    '</div>' +
                     '<div class="fav-selectable-name">' + card.name + '</div>' +
                 '</div>';
             }).join('');
