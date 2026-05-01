@@ -2326,6 +2326,17 @@
                     document.getElementById('becomeTeacherCard').style.display = 'block';
                 }
 
+                // Show child accounts panel for all users (any parent can add children)
+                _parentUid = user.uid;
+                document.getElementById('parentSection').style.display = 'block';
+                await loadParentChildren(user.uid);
+                const savedChild = getSavedActiveChild(user.uid);
+                if (savedChild) {
+                    _activeChildId   = savedChild.childId;
+                    _activeChildName = savedChild.childName;
+                    updateActiveChildUI(savedChild.childId, savedChild.childName, userData.username || '');
+                }
+
             } catch (error) {
                 console.error('Error loading user profile:', error);
                 document.getElementById('dashboard').style.display    = 'block';
