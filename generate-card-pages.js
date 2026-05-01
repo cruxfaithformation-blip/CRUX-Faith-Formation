@@ -682,6 +682,94 @@ const NEW_CARDS = [
       { label: 'Doctor',     value: 'Doctor of the Church (1997) · Youngest Doctor ever at death age 24' },
     ],
   },
+  {
+    slug: 'john-cross', navName: 'John of the Cross',
+    title: 'CRUX — St. John of the Cross', saintName: 'St. John of the Cross',
+    badge: '✦✦ Rare', feast: 'December 14', patron: 'Contemplatives, mystics, Spanish poets',
+    bio: 'He was imprisoned by his own Carmelite brothers in a tiny cell for nine months. In the dark, he wrote the greatest mystical poetry in any language.',
+    setNum: '027 / 052', backName: 'Juan de Yepes Álvarez', backDates: '1542–1591 AD · Fontiveros, Spain',
+    prayer: [
+      'O St. John of the Cross, Doctor of the Dark Night, you who found God not in consolation but in desolation — intercede for all who are in the darkness right now and cannot feel God anywhere.',
+      '"In the evening of life, we will be judged on love alone." You said this from inside a prison cell. Pray for those who have given everything and seem to have received nothing in return. Pray for those in spiritual dryness. Pray for those who have lost their way. And remind us that the dark night is not the absence of God but the nearness of God — that the One who seems farthest away is burning closest.',
+    ],
+    bioParagraphs: [
+      'Juan de Yepes was born into poverty in Castile and spent his childhood in an orphanage after his father died. He joined the Carmelites and met Teresa of Ávila, who enlisted him in her reform of the order — the return to strict poverty and contemplative prayer. His Carmelite brothers, resisting the reform, seized him and imprisoned him in Toledo in a cell six feet wide for nine months.',
+      'In that cell, in the dark, he composed the opening stanzas of the Spiritual Canticle. Released, he wrote the Dark Night of the Soul and The Ascent of Mount Carmel — systematic accounts of the contemplative path that remain the definitive Catholic mystical theology. He spent his final years in obscurity, stripped of his offices by the same order he had reformed. He died in 1591, asking the friars to read him the Song of Songs.',
+    ],
+    facts: [
+      { label: 'Also Known',  value: 'Doctor of the Dark Night · Doctor Mysticus' },
+      { label: 'Key Text',    value: 'Dark Night of the Soul · Spiritual Canticle · Ascent of Mount Carmel' },
+      { label: 'Patron of',   value: 'Contemplatives · Mystics · Spanish poets · Those in spiritual darkness' },
+      { label: 'Symbols',     value: 'Quill · Flame · Dark cell · Cross · Song of Songs scroll' },
+      { label: 'Doctor',      value: 'Doctor of the Church (1926) · Co-reformer of the Carmelites with Teresa of Ávila' },
+    ],
+  },
+  {
+    slug: 'francis-xavier', navName: 'Francis Xavier',
+    title: 'CRUX — St. Francis Xavier', saintName: 'St. Francis Xavier',
+    badge: '✦✦ Rare', feast: 'December 3', patron: 'Missions, India, Japan, Navarre, Australia',
+    bio: 'He baptized over 30,000 people in eleven years, crossing the Indian Ocean, the Bay of Bengal, and the South China Sea. He died alone on a beach in sight of China.',
+    setNum: '028 / 052', backName: 'Francisco de Jaso y Azpilicueta', backDates: '1506–1552 AD · Kingdom of Navarre',
+    prayer: [
+      'O St. Francis Xavier, Apostle of the Indies and Japan, you who carried the Gospel to the ends of the earth with nothing but a crucifix, a breviary, and the burning conviction that souls were worth dying for — intercede for all missionaries today.',
+      'You covered more ground than any apostle since Paul. You wrote letters home from the edge of the world, describing the people you loved and the mission you could not finish alone. You died at forty-six, in sight of China, unable to cross the last water. Pray for those who labor in the mission field and see little fruit. Pray for the Church in Asia. And pray for all of us — that we might feel, as you felt, that every soul is worth crossing an ocean for.',
+    ],
+    bioParagraphs: [
+      'Francisco de Jaso was a Navarrese nobleman studying philosophy in Paris when his roommate Ignatius of Loyola began asking him: "Francisco, what does it profit a man to gain the whole world and lose his soul?" He became one of the original seven Jesuits, taking his vows with Ignatius at Montmartre in 1534. In 1541 he boarded a ship for India and never came home.',
+      'In eleven years he traveled to Goa, the Pearl Fishery Coast, Sri Lanka, the Moluccas, and Japan — learning languages, adapting to cultures, and baptizing tens of thousands. He spent two years in Japan establishing a Christian community and left it thriving. He was on his way to China when he fell ill on the island of Shangchuan and died on December 3, 1552, with his face turned toward the mainland he never reached. He was canonized with Ignatius in 1622.',
+    ],
+    facts: [
+      { label: 'Also Known',  value: 'Apostle of the Indies · Apostle of Japan · The Great Missionary' },
+      { label: 'Key Text',    value: 'Letters from Asia (1542–1552) · still read by Jesuit missionaries' },
+      { label: 'Patron of',   value: 'Missions · India · Japan · Navarre · Australia · Borneo' },
+      { label: 'Symbols',     value: 'Ship · Crucifix · Crab · Torch · Globe · Jesuit IHS monogram' },
+      { label: 'Canonized',   value: '1622 AD by Pope Gregory XV · Same day as Ignatius of Loyola' },
+    ],
+  },
+  {
+    slug: 'dominic', navName: 'Dominic',
+    title: 'CRUX — St. Dominic', saintName: 'St. Dominic',
+    badge: '✦✦ Rare', feast: 'August 8', patron: 'Astronomers, the Dominican Republic, falsely accused',
+    bio: 'He walked into the heresy capital of southern France with nothing but Scripture and his voice, and preached for twenty years until the truth held.',
+    setNum: '029 / 052', backName: 'Domingo de Guzmán', backDates: '1170–1221 AD · Caleruega, Castile',
+    prayer: [
+      'O St. Dominic, Founder of the Order of Preachers, you who gave your life to the truth and carried it into the places where it was most violently rejected — intercede for all who preach the Gospel in the face of opposition.',
+      'You slept on the ground, fasted for months, and wept at night for souls you had not yet met. You saw heresy not as an enemy to be crushed but as an error to be corrected with charity and argument. Pray for preachers. Pray for teachers. Pray for those who defend the faith in classrooms and in public squares. And pray for us — that we might love truth as you loved it: not as a weapon but as a gift, given freely to all who will receive it.',
+    ],
+    bioParagraphs: [
+      'Domingo de Guzmán was a Spanish canon who accompanied his bishop on a mission through southern France in 1203 and encountered the Albigensian heresy — a dualist movement that denied the goodness of creation and the Incarnation. He spent a night in debate with an innkeeper and was converted to a mission: not crusade but preaching. He gave away everything, walked barefoot, and began to talk.',
+      'He preached throughout the Languedoc for twelve years, founding the Order of Preachers in 1216 with papal approval from Honorius III. The Dominicans were the first religious order built specifically around study and preaching — their constitutions required intellectual formation as a condition of ministry. Tradition credits him with spreading the Rosary, which he is said to have received from the Virgin Mary in a vision at Prouille. He died in Bologna in 1221, surrounded by his brothers.',
+    ],
+    facts: [
+      { label: 'Also Known',  value: 'Hammer of Heretics · Founder of the Dominicans · Apostle of Truth' },
+      { label: 'Key Text',    value: 'Nine Ways of Prayer of St. Dominic · Dominican Constitutions' },
+      { label: 'Patron of',   value: 'Astronomers · Falsely accused · Dominican Republic · Preachers' },
+      { label: 'Symbols',     value: 'Black and white habit · Lily · Dog with torch · Star · Rosary' },
+      { label: 'Canonized',   value: '1234 AD by Pope Gregory IX · Thirteen years after death' },
+    ],
+  },
+  {
+    slug: 'thomas-more', navName: 'Thomas More',
+    title: 'CRUX — St. Thomas More', saintName: 'St. Thomas More',
+    badge: '✦✦ Rare', feast: 'June 22', patron: 'Lawyers, statesmen, politicians, difficult marriages',
+    bio: '"The king\'s good servant, but God\'s first." He was the second most powerful man in England. He chose a prison cell over a lie.',
+    setNum: '030 / 052', backName: 'Sir Thomas More', backDates: '1478–1535 AD · London, England',
+    prayer: [
+      'O St. Thomas More, patron of statesmen and lawyers, you who served your king faithfully in everything that was not God\'s — intercede for all who hold public office and face pressure to compromise what they know to be true.',
+      'You were funny. You were brilliant. You were the best lawyer in England and the most honest man at court. And when the moment came — when the king demanded that you call a lie the truth — you simply went quiet. You did not argue. You did not denounce. You went to the Tower and waited. Pray for all politicians and judges under pressure. Pray for all who know the right thing and are afraid to do it. And pray for us — that we might hold as you held: cheerfully, without bitterness, to the end.',
+    ],
+    bioParagraphs: [
+      'Thomas More was a lawyer, humanist scholar, and close friend of Erasmus who rose to become Lord Chancellor of England under Henry VIII — the highest judicial office in the land. He was brilliant, witty, devout, and incorruptible. His home in Chelsea was a gathering place for scholars; his family life was by all accounts warm and joyful. He wrote Utopia at thirty-eight.',
+      'When Henry VIII sought an annulment of his marriage to Catherine of Aragon and required his officers to swear to the Act of Succession acknowledging him as Supreme Head of the Church, More refused. He resigned the Chancellorship, was imprisoned in the Tower of London for fifteen months, and was beheaded on Tower Hill on July 6, 1535. His last words were that he died "the king\'s good servant, but God\'s first." He was canonized in 1935, four hundred years after his death.',
+    ],
+    facts: [
+      { label: 'Also Known',  value: 'Man for All Seasons · Lord Chancellor of England' },
+      { label: 'Key Text',    value: 'Utopia (1516) · A Dialogue of Comfort Against Tribulation (written in the Tower)' },
+      { label: 'Patron of',   value: 'Lawyers · Statesmen · Politicians · Difficult marriages · Adopted children' },
+      { label: 'Symbols',     value: 'Gold chain of office · Axe · Tower of London · Legal scroll · Crucifix' },
+      { label: 'Canonized',   value: '1935 AD by Pope Pius XI · Martyred 1535 · 400-year cause' },
+    ],
+  },
 ];
 
 // Full circular nav chain across all cards (including Thomas which is pre-built)
@@ -712,6 +800,10 @@ const ALL_CARD_NAV = [
   { slug: 'carlo-acutis',   navName: 'Carlo' },
   { slug: 'francis-assisi', navName: 'Francis' },
   { slug: 'therese',        navName: 'Thérèse' },
+  { slug: 'john-cross',     navName: 'John of the Cross' },
+  { slug: 'francis-xavier', navName: 'Francis Xavier' },
+  { slug: 'dominic',        navName: 'Dominic' },
+  { slug: 'thomas-more',    navName: 'Thomas More' },
   { slug: 'cecilia',        navName: 'Cecilia' },
   { slug: 'david',          navName: 'David' },
   { slug: 'clare',          navName: 'Clare' },

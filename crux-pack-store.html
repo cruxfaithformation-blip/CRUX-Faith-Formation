@@ -236,14 +236,22 @@
             position: relative;
             z-index: 1;
         }
-        .pack-art-icon {
-            font-size: 2.5rem;
+        .pack-art-img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center;
         }
         .pack-art-wordmark {
             font-family: 'Playfair Display', serif;
             font-weight: 900;
             font-size: 1rem;
             letter-spacing: 4px;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 1px 6px rgba(0,0,0,0.7);
         }
         .pack-art-bg {
             position: absolute;
@@ -788,7 +796,7 @@
             id: 'standard',
             name: 'Standard Pack',
             desc: '4 cards drawn from the full saint catalog.',
-            icon: '✦',
+            image: 'images/packs/pack-standard.jpg',
             cardCount: 4,
             cost: 200,
             odds: { legendary: 0.05, rare: 0.20, uncommon: 0.75 },
@@ -801,7 +809,7 @@
             id: 'premium',
             name: 'Premium Pack',
             desc: '5 cards with significantly boosted Rare odds.',
-            icon: '★',
+            image: 'images/packs/pack-premium.jpg',
             cardCount: 5,
             cost: 400,
             odds: { legendary: 0.08, rare: 0.35, uncommon: 0.57 },
@@ -814,7 +822,7 @@
             id: 'apostles',
             name: 'Apostles Pack',
             desc: '4 cards with greatly boosted Legendary odds — Apostles tier.',
-            icon: '⛪',
+            image: 'images/packs/pack-apostles.jpg',
             cardCount: 4,
             cost: 500,
             odds: { legendary: 0.25, rare: 0.40, uncommon: 0.35 },
@@ -827,7 +835,7 @@
             id: 'council',
             name: 'Council Pack',
             desc: 'Unlocked by completing the Vatican II module. Cannot be purchased.',
-            icon: '🏛',
+            image: 'images/packs/pack-council.jpg',
             cardCount: 4,
             cost: 0,
             unlockLevel: 1,
@@ -977,8 +985,8 @@
 
             return '<div class="pack-tile ' + (state === 'locked' ? 'locked' : '') + (pack.earnedOnly && state === 'earned' ? ' earned-only' : '') + '">' +
                 '<div class="pack-art" style="background:' + pack.gradient + '">' +
+                    (pack.image ? '<img class="pack-art-img" src="' + pack.image + '" alt="' + pack.name + '">' : '') +
                     '<div class="pack-art-inner">' +
-                        '<span class="pack-art-icon" style="color:' + pack.artColor + '">' + pack.icon + '</span>' +
                         '<span class="pack-art-wordmark" style="color:' + pack.artColor + '">CRUX</span>' +
                     '</div>' +
                 '</div>' +
