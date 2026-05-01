@@ -244,18 +244,67 @@
             object-fit: cover;
             object-position: center;
         }
-        .pack-art-wordmark {
-            font-family: 'Playfair Display', serif;
-            font-weight: 900;
-            font-size: 1rem;
-            letter-spacing: 4px;
-            position: relative;
-            z-index: 1;
-            text-shadow: 0 1px 6px rgba(0,0,0,0.7);
-        }
         .pack-art-bg {
             position: absolute;
             inset: 0;
+        }
+        .pack-rarity-strip {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            z-index: 2;
+        }
+        .pack-rarity-strip.standard {
+            background: linear-gradient(90deg, transparent, #9a9a9a, #c8c8c8, #9a9a9a, transparent);
+        }
+        .pack-rarity-strip.rare {
+            background: linear-gradient(90deg, transparent, #8ab4d4, #c0d8ec, #8ab4d4, transparent);
+        }
+        .pack-rarity-strip.legendary {
+            background: linear-gradient(90deg, transparent, #d4a574 20%, #f5e6c8 50%, #d4a574 80%, transparent);
+            animation: legendaryPackShimmer 2.5s ease-in-out infinite;
+        }
+        .pack-rarity-strip.earned {
+            background: linear-gradient(90deg, transparent, #6dbd8a, #a0d8b4, #6dbd8a, transparent);
+        }
+        @keyframes legendaryPackShimmer {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+        .pack-rarity-badge {
+            position: absolute;
+            top: 0.6rem;
+            right: 0.6rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.55rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 0.2rem 0.5rem;
+            border-radius: 3px;
+            z-index: 2;
+        }
+        .pack-rarity-badge.standard {
+            background: rgba(0,0,0,0.55);
+            color: #c8c8c8;
+            border: 1px solid rgba(200,200,200,0.25);
+        }
+        .pack-rarity-badge.rare {
+            background: rgba(0,0,0,0.55);
+            color: #8ab4d4;
+            border: 1px solid rgba(138,180,212,0.35);
+        }
+        .pack-rarity-badge.legendary {
+            background: rgba(0,0,0,0.55);
+            color: #d4a574;
+            border: 1px solid rgba(212,165,116,0.4);
+        }
+        .pack-rarity-badge.earned {
+            background: rgba(0,0,0,0.55);
+            color: #6dbd8a;
+            border: 1px solid rgba(109,189,138,0.35);
         }
 
         .pack-body {
@@ -797,6 +846,7 @@
             name: 'Standard Pack',
             desc: '4 cards drawn from the full saint catalog.',
             image: 'images/packs/pack-standard.jpg',
+            rarity: 'standard',
             cardCount: 4,
             cost: 200,
             odds: { legendary: 0.05, rare: 0.20, uncommon: 0.75 },
@@ -810,6 +860,7 @@
             name: 'Premium Pack',
             desc: '5 cards with significantly boosted Rare odds.',
             image: 'images/packs/pack-premium.jpg',
+            rarity: 'rare',
             cardCount: 5,
             cost: 400,
             odds: { legendary: 0.08, rare: 0.35, uncommon: 0.57 },
@@ -823,6 +874,7 @@
             name: 'Apostles Pack',
             desc: '4 cards with greatly boosted Legendary odds — Apostles tier.',
             image: 'images/packs/pack-apostles.jpg',
+            rarity: 'legendary',
             cardCount: 4,
             cost: 500,
             odds: { legendary: 0.25, rare: 0.40, uncommon: 0.35 },
@@ -836,6 +888,7 @@
             name: 'Council Pack',
             desc: 'Unlocked by completing the Vatican II module. Cannot be purchased.',
             image: 'images/packs/pack-council.jpg',
+            rarity: 'earned',
             cardCount: 4,
             cost: 0,
             unlockLevel: 1,
@@ -983,12 +1036,12 @@
                     '<span class="odds-pip uncommon">U ' + Math.round(pack.odds.uncommon * 100) + '%</span>' +
                   '</div>';
 
+            const rarityLabel = { standard: 'Standard', rare: 'Rare', legendary: 'Legendary', earned: 'Earned' };
             return '<div class="pack-tile ' + (state === 'locked' ? 'locked' : '') + (pack.earnedOnly && state === 'earned' ? ' earned-only' : '') + '">' +
                 '<div class="pack-art" style="background:' + pack.gradient + '">' +
                     (pack.image ? '<img class="pack-art-img" src="' + pack.image + '" alt="' + pack.name + '">' : '') +
-                    '<div class="pack-art-inner">' +
-                        '<span class="pack-art-wordmark" style="color:' + pack.artColor + '">CRUX</span>' +
-                    '</div>' +
+                    '<div class="pack-rarity-badge ' + (pack.rarity || 'standard') + '">' + (rarityLabel[pack.rarity] || 'Standard') + '</div>' +
+                    '<div class="pack-rarity-strip ' + (pack.rarity || 'standard') + '"></div>' +
                 '</div>' +
                 '<div class="pack-body">' +
                     '<div class="pack-name">' + pack.name + '</div>' +
