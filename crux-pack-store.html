@@ -196,6 +196,138 @@
             line-height: 1.6;
         }
 
+        /* ── How It Works ── */
+        .hiw {
+            background: var(--navy-mid);
+            border: 1px solid var(--border-g);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem 1.1rem;
+            margin-bottom: 2rem;
+        }
+        .hiw-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+        }
+        .hiw-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+        .hiw-link {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1.5px;
+            color: rgba(255,255,255,0.35);
+            text-decoration: none;
+            transition: color 0.2s;
+        }
+        .hiw-link:hover { color: var(--gold); }
+        .hiw-steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+        .hiw-step {
+            display: flex;
+            gap: 0.65rem;
+            align-items: flex-start;
+        }
+        .hiw-num {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: rgba(212,165,116,0.15);
+            border: 1px solid rgba(212,165,116,0.3);
+            color: var(--gold);
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+        .hiw-step-title {
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--white);
+            margin-bottom: 0.2rem;
+        }
+        .hiw-step-desc {
+            font-size: 0.7rem;
+            color: rgba(255,255,255,0.4);
+            line-height: 1.5;
+            margin-bottom: 0.3rem;
+        }
+        .hiw-xp {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            color: var(--gold);
+            letter-spacing: 1px;
+        }
+        .hiw-divider {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin-bottom: 0.85rem;
+        }
+        .hiw-rarities {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .hiw-rarity-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.3);
+            margin-right: 0.25rem;
+        }
+        .hiw-rarity {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+            padding: 0.2rem 0.55rem;
+            border-radius: 3px;
+        }
+        .hiw-rarity.legendary {
+            color: #d4a574;
+            background: rgba(212,165,116,0.1);
+            border: 1px solid rgba(212,165,116,0.25);
+        }
+        .hiw-rarity.rare {
+            color: #8ab4d4;
+            background: rgba(138,180,212,0.1);
+            border: 1px solid rgba(138,180,212,0.25);
+        }
+        .hiw-rarity.uncommon {
+            color: #6dbd8a;
+            background: rgba(109,189,138,0.1);
+            border: 1px solid rgba(109,189,138,0.25);
+        }
+        .hiw-rarity.common {
+            color: rgba(255,255,255,0.45);
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .hiw-dup-note {
+            font-size: 0.65rem;
+            color: rgba(255,255,255,0.28);
+            margin-left: auto;
+        }
+        @media (max-width: 560px) {
+            .hiw-steps { grid-template-columns: 1fr; gap: 0.75rem; }
+            .hiw-dup-note { display: none; }
+        }
+
         /* ── Pack grid ── */
         .packs-grid {
             display: grid;
@@ -710,6 +842,49 @@
         <div class="section-eyebrow">Saint Cards</div>
         <h1 class="section-title">Pack Store</h1>
         <p class="section-desc">Spend XP earned from modules and quizzes to open packs and grow your saint card collection.</p>
+    </div>
+
+    <!-- How It Works -->
+    <div class="hiw">
+        <div class="hiw-header">
+            <span class="hiw-label">How It Works</span>
+            <a href="crux-how-cards-work.html" class="hiw-link">Full guide →</a>
+        </div>
+        <div class="hiw-steps">
+            <div class="hiw-step">
+                <div class="hiw-num">1</div>
+                <div>
+                    <div class="hiw-step-title">Complete Modules</div>
+                    <div class="hiw-step-desc">Earn XP from every lesson, quiz, and module you finish.</div>
+                    <span class="hiw-xp">50–75 XP per module</span>
+                </div>
+            </div>
+            <div class="hiw-step">
+                <div class="hiw-num">2</div>
+                <div>
+                    <div class="hiw-step-title">Spend Your XP</div>
+                    <div class="hiw-step-desc">Open packs starting at 200 XP. Better packs give better odds at Rare and Legendary pulls.</div>
+                    <span class="hiw-xp">From 200 XP</span>
+                </div>
+            </div>
+            <div class="hiw-step">
+                <div class="hiw-num">3</div>
+                <div>
+                    <div class="hiw-step-title">Collect Saints</div>
+                    <div class="hiw-step-desc">52 cards across 4 rarity tiers. Duplicates automatically convert to 50 XP.</div>
+                    <span class="hiw-xp">52 cards total</span>
+                </div>
+            </div>
+        </div>
+        <hr class="hiw-divider">
+        <div class="hiw-rarities">
+            <span class="hiw-rarity-label">Rarities</span>
+            <span class="hiw-rarity legendary">✦ Legendary</span>
+            <span class="hiw-rarity rare">Rare</span>
+            <span class="hiw-rarity uncommon">Uncommon</span>
+            <span class="hiw-rarity common">Common</span>
+            <span class="hiw-dup-note">Duplicates → +50 XP</span>
+        </div>
     </div>
 
     <div class="packs-grid" id="packsGrid">
