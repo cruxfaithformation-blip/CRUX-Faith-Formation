@@ -2158,6 +2158,9 @@
         };
 
         // ── AUTH STATE ─────────────────────────────────────
+        // Always start on the parent's own account; child selection is on-demand
+        localStorage.removeItem('crux_active_child');
+
         try {
             onAuthStateChanged(auth, async (user) => {
                 if (user) {
@@ -2286,23 +2289,10 @@
                     document.getElementById('parentSection').style.display = 'block';
                     document.getElementById('becomeTeacherCard').style.display = 'none';
                     await loadParentChildren(user.uid);
-                    const saved = getSavedActiveChild(user.uid);
-                    if (saved) {
-                        _activeChildId   = saved.childId;
-                        _activeChildName = saved.childName;
-                        updateActiveChildUI(saved.childId, saved.childName, userData.username || 'Parent');
-                        await Promise.all([
-                            loadUserProgress(user.uid),
-                            loadStudyJournal(user.uid)
-                        ]);
-                        document.getElementById('awardsList').innerHTML =
-                            '<div class="no-data">Teacher awards are shown on the child\'s student account.</div>';
-                    } else {
-                        await Promise.all([
-                            loadUserProgress(user.uid),
-                            loadStudyJournal(user.uid)
-                        ]);
-                    }
+                    await Promise.all([
+                        loadUserProgress(user.uid),
+                        loadStudyJournal(user.uid)
+                    ]);
                     return;
                 }
 
@@ -2342,12 +2332,6 @@
                 const childCount = await loadParentChildren(user.uid);
                 if (childCount > 0) {
                     document.getElementById('parentSection').style.display = 'block';
-                    const savedChild = getSavedActiveChild(user.uid);
-                    if (savedChild) {
-                        _activeChildId   = savedChild.childId;
-                        _activeChildName = savedChild.childName;
-                        updateActiveChildUI(savedChild.childId, savedChild.childName, userData.username || '');
-                    }
                 } else {
                     document.getElementById('manageChildrenBtn').style.display = 'block';
                 }
