@@ -2159,6 +2159,12 @@
             btn.textContent = 'Save';
         }
 
+        // expose to global scope for onclick attributes
+        window.openFavModal    = openFavModal;
+        window.closeFavModal   = closeFavModal;
+        window.toggleFavSelect = toggleFavSelect;
+        window.saveFavorites   = saveFavorites;
+
         // close modal on overlay click
         document.getElementById('favModalOverlay').addEventListener('click', function(e) {
             if (e.target === this) closeFavModal();
