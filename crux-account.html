@@ -1606,6 +1606,106 @@
         }
         .username-cancel-btn:hover { color: var(--text-primary); border-color: rgba(255,255,255,0.2); }
 
+        /* ─── PUBLIC PROFILE SECTION ───────────────────── */
+        .public-profile-section {
+            background: rgba(22, 27, 48, 0.7);
+            border: 1px solid rgba(212, 165, 116, 0.12);
+            border-radius: 16px;
+            padding: 2rem 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .public-profile-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+        }
+        .public-profile-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.2rem;
+        }
+        .public-profile-sub {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+        .profile-share-btn {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--gold-dark);
+            background: transparent;
+            border: 1px solid rgba(212,165,116,0.25);
+            border-radius: 20px;
+            padding: 0.3rem 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+        .profile-share-btn:hover { background: rgba(212,165,116,0.08); border-color: var(--gold); color: var(--gold); }
+        .profile-field-group { margin-bottom: 1rem; }
+        .profile-field-label {
+            display: block;
+            font-weight: 600;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+            letter-spacing: 0.9px;
+            text-transform: uppercase;
+        }
+        .profile-field-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 1.5px solid rgba(212, 165, 116, 0.18);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-primary);
+            background: rgba(255, 255, 255, 0.05);
+            transition: border-color 0.2s ease;
+            resize: vertical;
+        }
+        .profile-field-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 0 3px rgba(212, 165, 116, 0.1);
+        }
+        .profile-field-input::placeholder { color: rgba(240, 236, 228, 0.22); }
+        .profile-save-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1.25rem;
+        }
+        .profile-save-btn {
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--navy-deep);
+            background: var(--gold);
+            border: none;
+            border-radius: 4px;
+            padding: 0.55rem 1.25rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .profile-save-btn:hover { opacity: 0.85; }
+        .profile-save-btn:disabled { opacity: 0.45; cursor: default; }
+        .profile-save-feedback {
+            font-size: 0.8rem;
+            color: #86efac;
+            display: none;
+        }
+        .profile-save-feedback.visible { display: block; }
+
         /* ─── BACK LINK ─────────────────────────────────── */
         .back-link {
             position: fixed;
@@ -2001,6 +2101,29 @@
             </div>
             <!-- /dash-grid -->
 
+            <!-- Public Profile -->
+            <div class="public-profile-section" id="publicProfileSection">
+                <div class="public-profile-header">
+                    <div>
+                        <div class="public-profile-title">&#127760; Public Profile</div>
+                        <div class="public-profile-sub">Share your faith journey. Anyone with your link can view your profile.</div>
+                    </div>
+                    <button class="profile-share-btn" id="copyProfileLinkBtn" onclick="copyProfileLink()">Copy Profile Link</button>
+                </div>
+                <div class="profile-field-group">
+                    <label class="profile-field-label" for="profileBioInput">Bio</label>
+                    <textarea id="profileBioInput" class="profile-field-input" rows="3" maxlength="280" placeholder="Share a little about your faith journey&#8230;"></textarea>
+                </div>
+                <div class="profile-field-group">
+                    <label class="profile-field-label" for="profileVerseInput">Favorite Verse</label>
+                    <input type="text" id="profileVerseInput" class="profile-field-input" maxlength="200" placeholder='e.g. "I can do all things through Christ." &#8212; Philippians 4:13'>
+                </div>
+                <div class="profile-save-row">
+                    <button class="profile-save-btn" id="profileSaveBtn" onclick="savePublicProfile()">Save Profile</button>
+                    <span class="profile-save-feedback" id="profileSaveFeedback">Profile saved!</span>
+                </div>
+            </div>
+
             <!-- Account Actions -->
             <div class="account-actions">
                 <button class="btn btn-secondary" id="goToWebsiteBtn">Go to CRUX Website</button>
@@ -2220,6 +2343,7 @@
             btn.textContent = 'Saving…';
             try {
                 await updateDoc(doc(db, 'users', user.uid), { username: newName });
+                try { await updateDoc(doc(db, 'profiles', user.uid), { username: newName }); } catch(e) {}
                 document.getElementById('dashUsername').textContent = newName;
                 _parentUsername = newName;
                 cancelUsernameEdit();
@@ -2355,6 +2479,16 @@
                     createdAt: serverTimestamp()
                 });
 
+                // Public profile stub (readable by anyone, no PII)
+                await setDoc(doc(db, 'profiles', user.uid), {
+                    username,
+                    level: 1,
+                    cardCount: isParent ? 0 : 6,
+                    packsOpened: isParent ? 0 : 1,
+                    favoriteCards: [],
+                    joinedDate: serverTimestamp()
+                });
+
                 if (isTeacher) {
                     let code = generateClassCode();
                     let attempts = 0;
@@ -2421,7 +2555,8 @@
                     await loadParentChildren(user.uid);
                     await Promise.all([
                         loadUserProgress(user.uid),
-                        loadStudyJournal(user.uid)
+                        loadStudyJournal(user.uid),
+                        loadPublicProfile(user.uid)
                     ]);
                     return;
                 }
@@ -2433,7 +2568,8 @@
                 await Promise.all([
                     loadUserProgress(user.uid),
                     loadTeacherAwards(user.uid),
-                    loadStudyJournal(user.uid)
+                    loadStudyJournal(user.uid),
+                    loadPublicProfile(user.uid)
                 ]);
 
                 let isTeacher = (role === 'teacher');
@@ -2691,6 +2827,15 @@
             btn.disabled = true;
             try {
                 await updateDoc(progressDocRef(_favUserId), { favoriteCards: _selectedFavs });
+                if (!_activeChildId) {
+                    try {
+                        const user = auth.currentUser;
+                        if (user) await updateDoc(doc(db, 'profiles', user.uid), {
+                            favoriteCards: _selectedFavs,
+                            cardCount: _favOwnedIds.length
+                        });
+                    } catch(e) {}
+                }
                 renderFavorites(_selectedFavs, _favOwnedIds, _favUserId);
                 closeFavModal();
             } catch(e) {
@@ -2966,6 +3111,59 @@
             }
         }
 
+        // ── PUBLIC PROFILE ─────────────────────────────────
+        async function loadPublicProfile(uid) {
+            try {
+                const snap = await getDoc(doc(db, 'profiles', uid));
+                if (snap.exists()) {
+                    const d = snap.data();
+                    document.getElementById('profileBioInput').value   = d.bio           || '';
+                    document.getElementById('profileVerseInput').value = d.favoriteVerse || '';
+                }
+            } catch(e) { /* non-critical */ }
+        }
+
+        window.savePublicProfile = async function() {
+            const user = auth.currentUser;
+            if (!user || _activeChildId) return;
+            const btn  = document.getElementById('profileSaveBtn');
+            const feed = document.getElementById('profileSaveFeedback');
+            const bio   = document.getElementById('profileBioInput').value.trim();
+            const verse = document.getElementById('profileVerseInput').value.trim();
+            btn.disabled    = true;
+            btn.textContent = 'Saving…';
+            feed.classList.remove('visible');
+            try {
+                await setDoc(doc(db, 'profiles', user.uid), { bio, favoriteVerse: verse }, { merge: true });
+                feed.style.color = '';
+                feed.textContent = 'Profile saved!';
+                feed.classList.add('visible');
+                setTimeout(() => feed.classList.remove('visible'), 2500);
+            } catch(e) {
+                console.error('savePublicProfile error:', e);
+                feed.style.color = '#fca5a5';
+                feed.textContent = 'Error saving — try again.';
+                feed.classList.add('visible');
+                setTimeout(() => { feed.classList.remove('visible'); feed.style.color = ''; }, 2500);
+            }
+            btn.disabled    = false;
+            btn.textContent = 'Save Profile';
+        };
+
+        window.copyProfileLink = function() {
+            const user = auth.currentUser;
+            if (!user) return;
+            const url = 'https://cruxfaith.com/crux-profile.html?uid=' + user.uid;
+            const btn = document.getElementById('copyProfileLinkBtn');
+            const orig = btn.textContent;
+            navigator.clipboard.writeText(url).then(() => {
+                btn.textContent = 'Copied!';
+                setTimeout(() => { btn.textContent = orig; }, 1500);
+            }).catch(() => {
+                prompt('Your profile link:', url);
+            });
+        };
+
         window.toggleJournalEntry = function(id) {
             const body    = document.getElementById(id);
             const chevron = document.getElementById(id + '-chevron');
@@ -2988,6 +3186,7 @@
             document.querySelectorAll('.child-card').forEach(c => {
                 c.classList.toggle('active-child', c.dataset.childId === childId);
             });
+            document.getElementById('publicProfileSection').style.display = 'none';
         }
 
         function showParentNoChild(parentName) {
@@ -3090,6 +3289,7 @@
                 loadUserProgress(user.uid),
                 loadStudyJournal(user.uid)
             ]);
+            document.getElementById('publicProfileSection').style.display = '';
             loadParentChildren(user.uid);
         };
 

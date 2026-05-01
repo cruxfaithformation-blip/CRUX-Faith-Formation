@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUX – Profile</title>
+    <meta name="description" content="Faith formation profile on CRUX">
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Firebase -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, doc, getDoc } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+        const app = initializeApp({
+            apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+            authDomain: "crux-faith-formation.firebaseapp.com",
+            projectId: "crux-faith-formation",
+            storageBucket: "crux-faith-formation.firebasestorage.app",
+            messagingSenderId: "838141015985",
+            appId: "1:838141015985:web:2655e570663e182d75ef90"
+        });
+        const db = getFirestore(app);
+
+        const uid = new URLSearchParams(location.search).get('uid');
+        if (!uid) {
+            window.profileError = 'no-uid';
+        } else {
+            try {
+                const snap = await getDoc(doc(db, 'profiles', uid));
+                if (snap.exists()) {
+                    window.profileData = { uid, ...snap.data() };
+                } else {
+                    window.profileError = 'not-found';
+                }
+            } catch (e) {
+                console.error(e);
+                window.profileError = 'load-failed';
+            }
+        }
+        document.dispatchEvent(new Event('profile-ready'));
+    </script>
+
+    <style>
+        :root {
+            --navy-deep: #0f1222;
+            --navy-mid:  #161b30;
+            --navy-card: #1c2240;
+            --navy-light: #263055;
+            --gold:       #d4a574;
+            --gold-light: #e8c9a0;
+            --gold-dark:  #b8895a;
+            --white:      #f0ece4;
+            --text-primary:   #f0ece4;
+            --text-secondary: rgba(240,236,228,0.7);
+            --text-muted:     rgba(240,236,228,0.38);
+            --border:      rgba(212,165,116,0.15);
+            --border-gold: rgba(212,165,116,0.32);
+            color-scheme: dark;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--navy-deep);
+            min-height: 100vh;
+            color: var(--text-primary);
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed; inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            background-size: 200px; opacity: 0.035; pointer-events: none; z-index: 0;
+        }
+
+        /* ─── NAV ─────────────────────────────────────────── */
+        .profile-nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 1.5rem;
+            border-bottom: 1px solid rgba(212,165,116,0.1);
+            position: relative; z-index: 1;
+        }
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 1.4rem;
+            letter-spacing: 8px;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            text-decoration: none;
+        }
+        .nav-back {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            letter-spacing: 0.3px;
+            transition: color 0.2s;
+        }
+        .nav-back:hover { color: var(--gold); }
+
+        /* ─── CONTAINER ───────────────────────────────────── */
+        .profile-container {
+            max-width: 720px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem 6rem;
+            position: relative; z-index: 1;
+        }
+
+        /* ─── LOADING / ERROR ─────────────────────────────── */
+        .state-center {
+            text-align: center;
+            padding: 5rem 1rem;
+        }
+        .state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.4;
+        }
+        .state-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .state-body {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+        }
+
+        /* ─── PROFILE HERO ────────────────────────────────── */
+        .profile-hero {
+            display: flex;
+            align-items: flex-start;
+            gap: 1.75rem;
+            margin-bottom: 2rem;
+        }
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+            color: var(--navy-deep);
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 3px rgba(212,165,116,0.25), 0 8px 28px rgba(0,0,0,0.5);
+        }
+        .profile-hero-text { flex: 1; }
+        .profile-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.4rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold-light), var(--gold), var(--gold-dark));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1.1;
+            margin-bottom: 0.6rem;
+        }
+        .profile-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .profile-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            background: rgba(212,165,116,0.1);
+            color: var(--gold);
+            border: 1px solid rgba(212,165,116,0.25);
+            padding: 0.3rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .profile-joined {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            letter-spacing: 0.3px;
+        }
+
+        /* ─── BIO ─────────────────────────────────────────── */
+        .profile-bio {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 1.7;
+            margin-bottom: 2rem;
+            padding: 1.25rem 1.5rem;
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(212,165,116,0.1);
+            border-radius: 12px;
+        }
+
+        /* ─── VERSE ───────────────────────────────────────── */
+        .profile-verse {
+            margin-bottom: 2rem;
+            padding: 1.25rem 1.5rem 1.25rem 1.75rem;
+            border-left: 3px solid var(--gold);
+            background: rgba(212,165,116,0.05);
+            border-radius: 0 12px 12px 0;
+        }
+        .profile-verse-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 1.05rem;
+            color: var(--text-primary);
+            line-height: 1.7;
+            margin-bottom: 0.4rem;
+        }
+        .profile-verse-label {
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+        }
+
+        /* ─── SECTION HEADER ──────────────────────────────── */
+        .section-eyebrow {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            margin-bottom: 1rem;
+        }
+
+        /* ─── FAVORITE CARDS ──────────────────────────────── */
+        .fav-cards-section { margin-bottom: 2rem; }
+        .fav-cards-row {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .fav-card-wrap {
+            text-decoration: none;
+            display: block;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(212,165,116,0.22);
+            transition: transform 0.22s, box-shadow 0.22s;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.5);
+            width: 120px;
+            flex-shrink: 0;
+        }
+        .fav-card-wrap:hover {
+            transform: translateY(-5px) rotate(1deg);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.7), 0 0 20px rgba(212,165,116,0.15);
+        }
+        .fav-card-img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            display: block;
+        }
+        .fav-card-fallback {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: linear-gradient(170deg, #1c2650, #0f1535);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 0.85rem;
+            letter-spacing: 4px;
+            color: rgba(212,165,116,0.5);
+            position: relative;
+        }
+        .fav-card-fallback::before {
+            content: '✟';
+            position: absolute;
+            font-size: 3.5rem;
+            color: rgba(212,165,116,0.07);
+        }
+        .fav-card-label {
+            padding: 0.4rem 0.55rem;
+            background: rgba(15,18,34,0.97);
+            font-size: 0.58rem;
+            font-weight: 600;
+            letter-spacing: 0.4px;
+            color: rgba(212,165,116,0.75);
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .fav-cards-empty {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        /* ─── STATS ───────────────────────────────────────── */
+        .profile-stats {
+            display: flex;
+            gap: 0;
+            border: 1px solid rgba(212,165,116,0.12);
+            border-radius: 12px;
+            overflow: hidden;
+            margin-bottom: 2.5rem;
+        }
+        .stat-item {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            background: rgba(28,34,64,0.5);
+            border-right: 1px solid rgba(212,165,116,0.1);
+        }
+        .stat-item:last-child { border-right: none; }
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1;
+            margin-bottom: 0.3rem;
+        }
+        .stat-label {
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* ─── CTA ─────────────────────────────────────────── */
+        .profile-cta {
+            text-align: center;
+            padding: 2rem;
+            border: 1px solid rgba(212,165,116,0.14);
+            border-radius: 16px;
+            background: rgba(28,34,64,0.4);
+        }
+        .profile-cta-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: 0.4rem;
+        }
+        .profile-cta-body {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            margin-bottom: 1.25rem;
+            line-height: 1.6;
+        }
+        .btn-join-crux {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+            color: var(--navy-deep);
+            font-family: 'Cinzel', serif;
+            font-size: 0.68rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            padding: 0.75rem 2rem;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: opacity 0.2s;
+        }
+        .btn-join-crux:hover { opacity: 0.85; }
+
+        @media (max-width: 480px) {
+            .profile-hero { flex-direction: column; gap: 1rem; }
+            .profile-name { font-size: 1.9rem; }
+            .profile-avatar { width: 64px; height: 64px; font-size: 1.7rem; }
+            .fav-card-wrap { width: 100px; }
+            .profile-stats { flex-direction: column; }
+            .stat-item { border-right: none; border-bottom: 1px solid rgba(212,165,116,0.1); }
+            .stat-item:last-child { border-bottom: none; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="profile-nav">
+        <a href="index.html" class="nav-logo">CRUX</a>
+        <a href="index.html" class="nav-back">&#8592; Back to CRUX</a>
+    </nav>
+
+    <div class="profile-container" id="profileContainer">
+        <div class="state-center" id="loadingState">
+            <div class="state-icon">✟</div>
+            <div class="state-title">Loading…</div>
+        </div>
+    </div>
+
+    <script>
+        const CARD_CATALOG = {
+            thomas:           { name: 'St. Thomas',               url: 'crux-thomas-flip.html' },
+            cecilia:          { name: 'St. Cecilia',              url: 'crux-cecilia-flip.html' },
+            david:            { name: 'St. David of Wales',       url: 'crux-david-flip.html' },
+            clare:            { name: 'St. Clare of Assisi',      url: 'crux-clare-flip.html' },
+            bernadette:       { name: 'St. Bernadette',           url: 'crux-bernadette-flip.html' },
+            bvm:              { name: 'Blessed Virgin Mary',      url: 'crux-bvm-flip.html' },
+            peter:            { name: 'St. Peter',                url: 'crux-peter-flip.html' },
+            paul:             { name: 'St. Paul',                 url: 'crux-paul-flip.html' },
+            'john-apostle':   { name: 'St. John the Apostle',    url: 'crux-john-apostle-flip.html' },
+            'james-greater':  { name: 'St. James the Greater',   url: 'crux-james-greater-flip.html' },
+            andrew:           { name: 'St. Andrew',               url: 'crux-andrew-flip.html' },
+            philip:           { name: 'St. Philip',               url: 'crux-philip-flip.html' },
+            bartholomew:      { name: 'St. Bartholomew',          url: 'crux-bartholomew-flip.html' },
+            matthew:          { name: 'St. Matthew',              url: 'crux-matthew-flip.html' },
+            'james-less':     { name: 'St. James the Less',      url: 'crux-james-less-flip.html' },
+            'simon-zealot':   { name: 'St. Simon the Zealot',    url: 'crux-simon-zealot-flip.html' },
+            jude:             { name: 'St. Jude Thaddaeus',       url: 'crux-jude-flip.html' },
+            joseph:           { name: 'St. Joseph',               url: 'crux-joseph-flip.html' },
+            augustine:        { name: 'St. Augustine of Hippo',  url: 'crux-augustine-flip.html' },
+            aquinas:          { name: 'St. Thomas Aquinas',       url: 'crux-aquinas-flip.html' },
+            'teresa-avila':   { name: 'St. Teresa of Ávila',     url: 'crux-teresa-avila-flip.html' },
+            'john-cross':     { name: 'St. John of the Cross',   url: 'crux-john-cross-flip.html' },
+            ignatius:         { name: 'St. Ignatius of Loyola',  url: 'crux-ignatius-flip.html' },
+            'francis-xavier': { name: 'St. Francis Xavier',      url: 'crux-francis-xavier-flip.html' },
+            dominic:          { name: 'St. Dominic',              url: 'crux-dominic-flip.html' },
+            bonaventure:      { name: 'St. Bonaventure',          url: 'crux-bonaventure-flip.html' },
+            'catherine-siena':{ name: 'St. Catherine of Siena',  url: 'crux-catherine-siena-flip.html' },
+            'joan-arc':       { name: 'St. Joan of Arc',         url: 'crux-joan-arc-flip.html' },
+            kolbe:            { name: 'St. Maximilian Kolbe',    url: 'crux-kolbe-flip.html' },
+            'edith-stein':    { name: 'St. Edith Stein',         url: 'crux-edith-stein-flip.html' },
+            'john-paul-ii':   { name: 'St. John Paul II',        url: 'crux-john-paul-ii-flip.html' },
+            'padre-pio':      { name: 'St. Padre Pio',           url: 'crux-padre-pio-flip.html' },
+            'pier-giorgio':   { name: 'Bl. Pier Giorgio Frassati',url: 'crux-pier-giorgio-flip.html' },
+            polycarp:         { name: 'St. Polycarp',             url: 'crux-polycarp-flip.html' },
+            perpetua:         { name: 'Sts. Perpetua & Felicity', url: 'crux-perpetua-flip.html' },
+            lucy:             { name: 'St. Lucy',                 url: 'crux-lucy-flip.html' },
+            stephen:          { name: 'St. Stephen',              url: 'crux-stephen-flip.html' },
+            'carlo-acutis':   { name: 'Bl. Carlo Acutis',        url: 'crux-carlo-acutis-flip.html' },
+            'mother-teresa':  { name: 'Bl. Teresa of Calcutta',  url: 'crux-mother-teresa-flip.html' },
+            'thomas-more':    { name: 'St. Thomas More',         url: 'crux-thomas-more-flip.html' },
+            'francis-assisi': { name: 'St. Francis of Assisi',   url: 'crux-francis-assisi-flip.html' },
+            therese:          { name: 'St. Thérèse of Lisieux',  url: 'crux-therese-flip.html' },
+            benedict:         { name: 'St. Benedict',             url: 'crux-benedict-flip.html' },
+            scholastica:      { name: 'St. Scholastica',          url: 'crux-scholastica-flip.html' },
+            patrick:          { name: 'St. Patrick',              url: 'crux-patrick-flip.html' },
+            brigid:           { name: 'St. Brigid of Ireland',   url: 'crux-brigid-flip.html' },
+            nicolas:          { name: 'St. Nicholas of Myra',    url: 'crux-nicolas-flip.html' },
+            'rose-lima':      { name: 'St. Rose of Lima',        url: 'crux-rose-lima-flip.html' },
+            'martin-tours':   { name: 'St. Martin of Tours',     url: 'crux-martin-tours-flip.html' },
+            kateri:           { name: 'St. Kateri Tekakwitha',   url: 'crux-kateri-flip.html' },
+            'elizabeth-ann':  { name: 'St. Elizabeth Ann Seton', url: 'crux-elizabeth-ann-flip.html' },
+            'charles-lwanga': { name: 'St. Charles Lwanga',      url: 'crux-charles-lwanga-flip.html' },
+            'maria-goretti':  { name: 'St. Maria Goretti',       url: 'crux-maria-goretti-flip.html' },
+            'dominic-savio':  { name: 'St. Dominic Savio',       url: 'crux-dominic-savio-flip.html' },
+            aloysius:         { name: 'St. Aloysius Gonzaga',    url: 'crux-aloysius-flip.html' },
+            gemma:            { name: 'St. Gemma Galgani',       url: 'crux-gemma-flip.html' },
+            'jose-sanchez':   { name: 'St. José Sánchez del Río',url: 'crux-jose-sanchez-flip.html' },
+            'oscar-romero':   { name: 'St. Oscar Romero',        url: 'crux-oscar-romero-flip.html' },
+            'miguel-pro':     { name: 'Bl. Miguel Pro',          url: 'crux-miguel-pro-flip.html' },
+            francisco:        { name: 'St. Francisco Marto',     url: 'crux-francisco-flip.html' },
+            jacinta:          { name: 'St. Jacinta Marto',       url: 'crux-jacinta-flip.html' },
+        };
+
+        const LEVEL_NAMES = [
+            { level:1, name:'Seeker', min:0 },
+            { level:2, name:'Learner', min:100 },
+            { level:3, name:'Student', min:300 },
+            { level:4, name:'Disciple', min:600 },
+            { level:5, name:'Apostle', min:1000 },
+            { level:6, name:'Teacher', min:2000 },
+            { level:7, name:'Saint', min:4000 }
+        ];
+
+        function levelName(n) {
+            return (LEVEL_NAMES.find(l => l.level === n) || LEVEL_NAMES[0]).name;
+        }
+
+        function formatDate(ts) {
+            if (!ts) return '';
+            const d = ts.toDate ? ts.toDate() : new Date(ts);
+            return d.toLocaleDateString('en-US', { month: 'long', year: 'numeric' });
+        }
+
+        function cardHtml(id) {
+            const meta   = CARD_CATALOG[id];
+            const name   = meta ? meta.name : id;
+            const url    = meta ? meta.url  : null;
+            const imgSrc = 'images/saints/' + id + '.jpg';
+            const tag    = url ? 'a' : 'div';
+            const href   = url ? ' href="' + url + '"' : '';
+            return '<' + tag + href + ' class="fav-card-wrap">' +
+                '<img class="fav-card-img" src="' + imgSrc + '" alt="' + name + '" ' +
+                    'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+                '<div class="fav-card-fallback" style="display:none"><span>CRUX</span></div>' +
+                '<div class="fav-card-label">' + name + '</div>' +
+            '</' + tag + '>';
+        }
+
+        function renderProfile(data) {
+            const container = document.getElementById('profileContainer');
+            const initial   = (data.username || '?')[0].toUpperCase();
+            const level     = data.level || 1;
+            const cards     = data.cardCount || 0;
+            const packs     = data.packsOpened || 0;
+            const favIds    = data.favoriteCards || [];
+            const joined    = formatDate(data.joinedDate);
+
+            const bioHtml = data.bio
+                ? '<div class="profile-bio">' + data.bio.replace(/</g,'&lt;') + '</div>'
+                : '';
+
+            const verseHtml = data.favoriteVerse
+                ? '<div class="profile-verse">' +
+                    '<div class="profile-verse-text">&ldquo;' + data.favoriteVerse.replace(/</g,'&lt;') + '&rdquo;</div>' +
+                    '<div class="profile-verse-label">Favorite Verse</div>' +
+                  '</div>'
+                : '';
+
+            const favCardsHtml = favIds.length
+                ? favIds.map(cardHtml).join('')
+                : '<div class="fav-cards-empty">No favorite cards chosen yet.</div>';
+
+            container.innerHTML =
+                '<div class="profile-hero">' +
+                    '<div class="profile-avatar">' + initial + '</div>' +
+                    '<div class="profile-hero-text">' +
+                        '<div class="profile-name">' + (data.username || 'Anonymous') + '</div>' +
+                        '<div class="profile-badges">' +
+                            '<span class="profile-badge">⚔ Level ' + level + ' — ' + levelName(level) + '</span>' +
+                        '</div>' +
+                        (joined ? '<div class="profile-joined">Member since ' + joined + '</div>' : '') +
+                    '</div>' +
+                '</div>' +
+                bioHtml +
+                verseHtml +
+                '<div class="fav-cards-section">' +
+                    '<div class="section-eyebrow">✦ Patron Saints</div>' +
+                    '<div class="fav-cards-row">' + favCardsHtml + '</div>' +
+                '</div>' +
+                '<div class="profile-stats">' +
+                    '<div class="stat-item"><div class="stat-value">' + cards + '</div><div class="stat-label">Cards</div></div>' +
+                    '<div class="stat-item"><div class="stat-value">' + packs + '</div><div class="stat-label">Packs Opened</div></div>' +
+                    '<div class="stat-item"><div class="stat-value">' + level + '</div><div class="stat-label">Level</div></div>' +
+                '</div>' +
+                '<div class="profile-cta">' +
+                    '<div class="profile-cta-title">Start your own faith journey</div>' +
+                    '<div class="profile-cta-body">Earn XP through Bible study, collect saint cards, and build your confirmation profile on CRUX.</div>' +
+                    '<a href="crux-account.html" class="btn-join-crux">Join CRUX →</a>' +
+                '</div>';
+
+            // Update page title
+            document.title = (data.username || 'Profile') + ' — CRUX';
+        }
+
+        function renderError(type) {
+            const container = document.getElementById('profileContainer');
+            const msgs = {
+                'no-uid':      ['No profile specified', 'Check the link you were given and try again.'],
+                'not-found':   ['Profile not found', 'This user hasn\'t set up a public profile yet.'],
+                'load-failed': ['Couldn\'t load profile', 'Check your connection and try again.']
+            };
+            const [title, body] = msgs[type] || msgs['load-failed'];
+            container.innerHTML =
+                '<div class="state-center">' +
+                    '<div class="state-icon">✟</div>' +
+                    '<div class="state-title">' + title + '</div>' +
+                    '<div class="state-body">' + body + '</div>' +
+                    '<a href="index.html" class="btn-join-crux">Go to CRUX</a>' +
+                '</div>';
+        }
+
+        document.addEventListener('profile-ready', function() {
+            if (window.profileError) {
+                renderError(window.profileError);
+            } else if (window.profileData) {
+                renderProfile(window.profileData);
+            }
+        });
+    </script>
+</body>
+</html>
