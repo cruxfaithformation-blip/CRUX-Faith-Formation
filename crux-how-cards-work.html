@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — How Cards Work</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Cinzel:wght@400;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --navy-deep: #0f1222;
+  --navy-light: #252b47;
+  --navy-mid: #2e3555;
+  --gold: #d4a574;
+  --gold-light: #e8c99a;
+  --gold-pale: #f5ead8;
+  --gold-dim: rgba(212,165,116,0.12);
+  --cream: #faf8f4;
+  --off-white: #f4f2ee;
+  --white: #ffffff;
+  --text-primary: #1a1f36;
+  --text-secondary: #5a6080;
+  --text-muted: #8a90aa;
+  --text-soft: rgba(255,255,255,0.7);
+  --text-muted-dark: rgba(255,255,255,0.45);
+  --border: rgba(26,31,54,0.1);
+  --border-gold: rgba(212,165,116,0.25);
+  --purple: #b464ff;
+  --rare-blue: #8ab4d4;
+  --uncommon-green: #6dbd8a;
+}
+
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: var(--navy-deep); color: var(--white); overflow-x: hidden; }
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.6;
+}
+
+/* NAV */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 1rem 2.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(15,18,34,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+.nav-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 900; letter-spacing: 5px; color: var(--gold); text-decoration: none; }
+.nav-back { font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 1px; color: var(--text-muted-dark); text-decoration: none; display: flex; align-items: center; gap: 0.4rem; transition: color 0.2s; }
+.nav-back:hover { color: var(--gold); }
+
+/* HERO */
+.hero {
+  padding: 7rem 2rem 4rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(212,165,116,0.1) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1rem;
+  animation: fadeUp 0.7s ease both;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.4rem, 7vw, 4.5rem); font-weight: 900;
+  color: var(--white); line-height: 1.1; margin-bottom: 1.25rem;
+  animation: fadeUp 0.7s ease 0.1s both;
+}
+.hero-title span { color: var(--gold); }
+.hero-subtitle {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 1.15rem; color: rgba(255,255,255,0.6);
+  max-width: 520px; margin: 0 auto 2.5rem;
+  line-height: 1.7;
+  animation: fadeUp 0.7s ease 0.2s both;
+}
+.hero-cta {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--gold); color: var(--navy);
+  font-family: 'Cinzel', serif; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 0.85rem 2rem; border-radius: 6px; text-decoration: none;
+  transition: background 0.2s;
+  animation: fadeUp 0.7s ease 0.3s both;
+}
+.hero-cta:hover { background: var(--gold-light); }
+
+/* SECTIONS */
+.page-section { padding: 5rem 2rem; max-width: 1000px; margin: 0 auto; }
+.page-section + .page-section { border-top: 1px solid rgba(255,255,255,0.05); }
+
+.section-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 3.5px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.75rem;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem); font-weight: 900;
+  color: var(--white); margin-bottom: 1.25rem; line-height: 1.2;
+}
+.section-body {
+  font-size: 1rem; color: rgba(255,255,255,0.62); line-height: 1.8;
+  max-width: 680px;
+}
+.section-body p { margin-bottom: 1rem; }
+.section-body p:last-child { margin-bottom: 0; }
+
+/* HOW IT WORKS STEPS */
+.steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 3rem; }
+.step {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 12px;
+  padding: 1.75rem 1.5rem;
+  position: relative;
+}
+.step-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--gold-dim); border: 1px solid var(--border-gold);
+  color: var(--gold); font-family: 'Cinzel', serif; font-size: 0.85rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  margin-bottom: 1rem;
+}
+.step-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 0.5rem; }
+.step-desc { font-size: 0.85rem; color: rgba(255,255,255,0.55); line-height: 1.65; }
+.step-xp {
+  display: inline-block; margin-top: 0.85rem;
+  padding: 0.2rem 0.65rem;
+  background: rgba(212,165,116,0.1); border: 1px solid rgba(212,165,116,0.25);
+  border-radius: 20px; font-family: 'Cinzel', serif;
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 1px; color: var(--gold);
+}
+
+/* RARITY TIERS */
+.rarity-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.25rem; margin-top: 3rem; }
+.rarity-tier {
+  border-radius: 12px; overflow: hidden;
+  border: 1px solid rgba(255,255,255,0.08);
+}
+.rarity-tier-bar { height: 4px; }
+.rarity-tier-bar.legendary { background: linear-gradient(90deg, transparent, #d4a574, #f5e6c8, #d4a574, transparent); animation: shimmer 2.5s ease-in-out infinite; }
+.rarity-tier-bar.epic      { background: linear-gradient(90deg, transparent, #b464ff, #dba8ff, #b464ff, transparent); animation: shimmer 2.5s ease-in-out infinite; }
+.rarity-tier-bar.rare      { background: linear-gradient(90deg, transparent, #8ab4d4, #c0d8ec, #8ab4d4, transparent); }
+.rarity-tier-bar.uncommon  { background: linear-gradient(90deg, transparent, #6dbd8a, #a0d8b4, #6dbd8a, transparent); }
+.rarity-tier-bar.common    { background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), rgba(255,255,255,0.5), rgba(255,255,255,0.3), transparent); }
+@keyframes shimmer { 0%, 100% { opacity: 0.7; } 50% { opacity: 1; } }
+.rarity-tier-body { padding: 1.25rem; background: rgba(255,255,255,0.03); }
+.rarity-name {
+  font-family: 'Cinzel', serif; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; margin-bottom: 0.5rem;
+}
+.rarity-name.legendary { color: var(--gold); }
+.rarity-name.epic      { color: var(--purple); }
+.rarity-name.rare      { color: var(--rare-blue); }
+.rarity-name.uncommon  { color: var(--uncommon-green); }
+.rarity-name.common    { color: rgba(255,255,255,0.45); }
+.rarity-desc { font-size: 0.8rem; color: rgba(255,255,255,0.5); line-height: 1.6; margin-bottom: 0.85rem; }
+.rarity-examples { font-size: 0.75rem; color: rgba(255,255,255,0.35); font-style: italic; line-height: 1.55; }
+
+/* CARD PREVIEW STRIP */
+.card-strip { display: flex; gap: 1rem; overflow-x: auto; padding: 2rem 0 1rem; scrollbar-width: none; }
+.card-strip::-webkit-scrollbar { display: none; }
+.preview-card {
+  width: 110px; flex-shrink: 0;
+  border-radius: 10px; overflow: hidden;
+  border: 1px solid rgba(212,165,116,0.22);
+  text-decoration: none; display: block;
+  transition: transform 0.22s ease, box-shadow 0.22s ease;
+  box-shadow: 0 6px 24px rgba(0,0,0,0.55);
+}
+.preview-card:hover { transform: translateY(-6px) rotate(1deg); box-shadow: 0 16px 40px rgba(0,0,0,0.7), 0 0 20px rgba(212,165,116,0.15); }
+.preview-card img { width: 100%; aspect-ratio: 3/4; object-fit: cover; display: block; }
+.preview-card-back {
+  width: 100%; aspect-ratio: 3/4;
+  background: linear-gradient(170deg, #1c2650, #0f1535);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Playfair Display', serif; font-weight: 900; font-size: 0.8rem;
+  letter-spacing: 4px; color: rgba(212,165,116,0.5);
+  position: relative;
+}
+.preview-card-back::before {
+  content: '✟'; position: absolute; font-size: 5rem;
+  color: rgba(212,165,116,0.06); top: 50%; left: 50%;
+  transform: translate(-50%, -56%);
+}
+.preview-card-name {
+  padding: 0.4rem 0.5rem;
+  background: rgba(15,18,34,0.95);
+  font-family: 'Inter', sans-serif; font-size: 0.58rem; font-weight: 600;
+  color: rgba(212,165,116,0.7); text-align: center;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.strip-label {
+  font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.25); margin-top: 0.5rem; text-align: center;
+}
+
+/* PACKS TABLE */
+.packs-table { width: 100%; margin-top: 2.5rem; border-collapse: collapse; }
+.packs-table th {
+  font-family: 'Cinzel', serif; font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); padding: 0.75rem 1rem;
+  border-bottom: 1px solid rgba(212,165,116,0.2);
+  text-align: left;
+}
+.packs-table td {
+  font-size: 0.85rem; color: rgba(255,255,255,0.62);
+  padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05);
+  vertical-align: top;
+}
+.packs-table tr:last-child td { border-bottom: none; }
+.packs-table td:first-child { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; color: var(--white); }
+.pack-cost { font-family: 'Cinzel', serif; font-size: 0.72rem; font-weight: 700; color: var(--gold); }
+.pack-odds-cell span { display: inline-block; padding: 0.15rem 0.5rem; border-radius: 3px; font-size: 0.7rem; font-weight: 600; margin: 0.1rem 0.1rem 0.1rem 0; }
+.odds-l { background: rgba(212,165,116,0.12); color: var(--gold); }
+.odds-r { background: rgba(138,180,212,0.12); color: var(--rare-blue); }
+.odds-u { background: rgba(109,189,138,0.12); color: var(--uncommon-green); }
+.earned-badge { font-family: 'Cinzel', serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 1px; color: var(--uncommon-green); }
+
+/* DUPLICATE CALLOUT */
+.callout {
+  margin-top: 2.5rem;
+  padding: 1.75rem 2rem;
+  background: rgba(212,165,116,0.06);
+  border: 1px solid rgba(212,165,116,0.18);
+  border-radius: 12px;
+  display: flex; gap: 1.25rem; align-items: flex-start;
+}
+.callout-icon { font-size: 1.5rem; flex-shrink: 0; margin-top: 0.1rem; }
+.callout-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--white); margin-bottom: 0.4rem; }
+.callout-body { font-size: 0.85rem; color: rgba(255,255,255,0.58); line-height: 1.7; }
+
+/* LEVELS */
+.levels-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 0.85rem; margin-top: 2.5rem; }
+.level-chip {
+  padding: 0.85rem 1rem;
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 8px; text-align: center;
+}
+.level-num { font-family: 'Cinzel', serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 2px; color: var(--gold); margin-bottom: 0.25rem; }
+.level-name { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; color: var(--white); margin-bottom: 0.25rem; }
+.level-xp { font-size: 0.72rem; color: rgba(255,255,255,0.35); }
+
+/* BOTTOM CTA */
+.bottom-cta {
+  text-align: center;
+  padding: 5rem 2rem 6rem;
+  border-top: 1px solid rgba(255,255,255,0.05);
+  position: relative; overflow: hidden;
+}
+.bottom-cta::before {
+  content: '';
+  position: absolute; width: 600px; height: 400px;
+  background: radial-gradient(ellipse, rgba(212,165,116,0.09) 0%, transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.bottom-cta-title { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 900; color: var(--white); margin-bottom: 1rem; line-height: 1.2; }
+.bottom-cta-sub { font-size: 0.95rem; color: rgba(255,255,255,0.5); margin-bottom: 2rem; }
+.cta-row { display: flex; gap: 1rem; align-items: center; justify-content: center; flex-wrap: wrap; }
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--gold); color: var(--navy);
+  font-family: 'Cinzel', serif; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 0.85rem 2rem; border-radius: 6px; text-decoration: none;
+  transition: background 0.2s;
+}
+.btn-primary:hover { background: var(--gold-light); }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  border: 1px solid rgba(212,165,116,0.3); color: var(--gold);
+  font-family: 'Cinzel', serif; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 0.85rem 2rem; border-radius: 6px; text-decoration: none;
+  transition: all 0.2s; background: transparent;
+}
+.btn-secondary:hover { background: rgba(212,165,116,0.08); border-color: var(--gold); }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 600px) {
+  .site-nav { padding: 0.85rem 1.25rem; }
+  .page-section { padding: 3.5rem 1.25rem; }
+  .hero { padding: 6rem 1.25rem 3rem; }
+  .callout { flex-direction: column; gap: 0.75rem; }
+  .packs-table { font-size: 0.8rem; }
+  .packs-table th, .packs-table td { padding: 0.65rem 0.75rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">CRUX</a>
+  <a href="crux-account.html" class="nav-back">← My Account</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-eyebrow">The Saint Card Collection</p>
+  <h1 class="hero-title">52 Saints.<br><span>One Collection.</span></h1>
+  <p class="hero-subtitle">Every lesson you complete, every quiz you pass, every module you finish — it's all building toward something you can hold.</p>
+  <a href="crux-pack-store.html" class="hero-cta">Open Packs →</a>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="page-section">
+  <p class="section-eyebrow">How It Works</p>
+  <h2 class="section-title">Learn. Earn. Collect.</h2>
+  <div class="section-body">
+    <p>Every faith formation activity on CRUX earns you XP — experience points that build your level and fund your card collection. Spend XP in the Pack Store to open packs and discover which saints you'll receive. The more you study, the more cards you can unlock.</p>
+  </div>
+  <div class="steps">
+    <div class="step">
+      <div class="step-num">1</div>
+      <div class="step-title">Complete Modules</div>
+      <div class="step-desc">Finish any Faith Formation or Bible Study module to earn XP. Each module rewards based on depth and difficulty.</div>
+      <span class="step-xp">50–75 XP per module</span>
+    </div>
+    <div class="step">
+      <div class="step-num">2</div>
+      <div class="step-title">Pass Quizzes</div>
+      <div class="step-desc">Score higher on quizzes to earn bonus XP. A perfect score on a challenge awards up to 25% extra.</div>
+      <span class="step-xp">Up to 100 XP per quiz</span>
+    </div>
+    <div class="step">
+      <div class="step-num">3</div>
+      <div class="step-title">Earn Teacher Awards</div>
+      <div class="step-desc">Teachers can grant XP awards to students who go above and beyond in class.</div>
+      <span class="step-xp">Varies by teacher</span>
+    </div>
+    <div class="step">
+      <div class="step-num">4</div>
+      <div class="step-title">Open Packs</div>
+      <div class="step-desc">Head to the Pack Store, spend your XP, and discover which saints you've earned — including rare and legendary pulls.</div>
+      <span class="step-xp">Starting at 200 XP</span>
+    </div>
+  </div>
+</section>
+
+<!-- RARITY TIERS -->
+<section class="page-section">
+  <p class="section-eyebrow">Rarity Tiers</p>
+  <h2 class="section-title">Not All Saints Are Equal.<br>In the Pack, Anyway.</h2>
+  <div class="section-body">
+    <p>Every card in the collection belongs to a rarity tier. Rarer cards have lower pull odds — but they're worth the chase. The most powerful packs give you the best shot at Legendary pulls.</p>
+  </div>
+  <div class="rarity-grid">
+    <div class="rarity-tier">
+      <div class="rarity-tier-bar legendary"></div>
+      <div class="rarity-tier-body">
+        <div class="rarity-name legendary">✦ Legendary</div>
+        <div class="rarity-desc">The Blessed Virgin Mary, the Twelve Apostles, and the greatest figures in the faith. The rarest pulls in the deck.</div>
+        <div class="rarity-examples">BVM · St. Peter · St. Paul · St. Thomas · St. Joseph</div>
+      </div>
+    </div>
+    <div class="rarity-tier">
+      <div class="rarity-tier-bar epic"></div>
+      <div class="rarity-tier-body">
+        <div class="rarity-name epic">◆ Epic</div>
+        <div class="rarity-desc">Reserved for the most monumental documents and moments in Church history. Only in special packs.</div>
+        <div class="rarity-examples">Lumen Gentium · Gaudium et Spes</div>
+      </div>
+    </div>
+    <div class="rarity-tier">
+      <div class="rarity-tier-bar rare"></div>
+      <div class="rarity-tier-body">
+        <div class="rarity-name rare">Rare</div>
+        <div class="rarity-desc">Doctors of the Church, martyrs, reformers, and modern saints. Significantly harder to pull than Uncommon.</div>
+        <div class="rarity-examples">St. Augustine · St. Teresa of Ávila · St. Joan of Arc · St. John Paul II · Bl. Carlo Acutis</div>
+      </div>
+    </div>
+    <div class="rarity-tier">
+      <div class="rarity-tier-bar uncommon"></div>
+      <div class="rarity-tier-body">
+        <div class="rarity-name uncommon">Uncommon</div>
+        <div class="rarity-desc">Beloved saints from across the centuries and every corner of the world. The heart of the collection.</div>
+        <div class="rarity-examples">St. Francis · St. Thérèse · St. Patrick · St. Nicholas · Bl. Pier Giorgio</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card preview strip -->
+  <div style="margin-top:3rem;">
+    <p class="section-eyebrow" style="margin-bottom:0.5rem;">A Few Cards From the Collection</p>
+    <div class="card-strip" id="cardStrip">
+      <!-- populated by JS -->
+    </div>
+    <p class="strip-label">Scroll to see more ›</p>
+  </div>
+</section>
+
+<!-- THE PACKS -->
+<section class="page-section">
+  <p class="section-eyebrow">The Packs</p>
+  <h2 class="section-title">Four Ways to Pull.</h2>
+  <div class="section-body">
+    <p>Different packs offer different odds and card counts. Save up for the Apostles Pack if you're chasing Legendaries — or spend XP consistently on Standard Packs to build out your Uncommon collection faster.</p>
+  </div>
+  <table class="packs-table">
+    <thead>
+      <tr>
+        <th>Pack</th>
+        <th>Cost</th>
+        <th>Cards</th>
+        <th>Pull Odds</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Standard Pack</td>
+        <td><span class="pack-cost">200 XP</span></td>
+        <td>4 cards</td>
+        <td class="pack-odds-cell"><span class="odds-l">Leg 5%</span><span class="odds-r">Rare 20%</span><span class="odds-u">Unc 75%</span></td>
+      </tr>
+      <tr>
+        <td>Premium Pack</td>
+        <td><span class="pack-cost">400 XP</span></td>
+        <td>5 cards</td>
+        <td class="pack-odds-cell"><span class="odds-l">Leg 8%</span><span class="odds-r">Rare 35%</span><span class="odds-u">Unc 57%</span></td>
+      </tr>
+      <tr>
+        <td>Apostles Pack</td>
+        <td><span class="pack-cost">500 XP</span></td>
+        <td>4 cards</td>
+        <td class="pack-odds-cell"><span class="odds-l">Leg 25%</span><span class="odds-r">Rare 40%</span><span class="odds-u">Unc 35%</span></td>
+      </tr>
+      <tr>
+        <td>Council Pack</td>
+        <td><span class="earned-badge">✦ Earned Only</span></td>
+        <td>4 cards</td>
+        <td style="font-size:0.8rem;color:rgba(255,255,255,0.45);">Complete the Vatican II module to unlock. Contains all four Vatican II documents — guaranteed.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout">
+    <div class="callout-icon">♻</div>
+    <div>
+      <div class="callout-title">What happens if you pull a card you already own?</div>
+      <div class="callout-body">Duplicates don't exist in your collection — each saint appears once. If a pack draws a card you already own, it automatically converts to <strong style="color:var(--gold);">50 bonus XP</strong> instead. Every pull is worth something.</div>
+    </div>
+  </div>
+</section>
+
+<!-- LEVELS -->
+<section class="page-section">
+  <p class="section-eyebrow">Your Level</p>
+  <h2 class="section-title">Seven Levels.<br>One Path.</h2>
+  <div class="section-body">
+    <p>As your XP grows, so does your level — unlocking new packs and marking your progress in the faith. Every level has a name drawn from the tradition itself.</p>
+  </div>
+  <div class="levels-grid">
+    <div class="level-chip">
+      <div class="level-num">Level 1</div>
+      <div class="level-name">Seeker</div>
+      <div class="level-xp">0 XP</div>
+    </div>
+    <div class="level-chip">
+      <div class="level-num">Level 2</div>
+      <div class="level-name">Learner</div>
+      <div class="level-xp">100 XP</div>
+    </div>
+    <div class="level-chip">
+      <div class="level-num">Level 3</div>
+      <div class="level-name">Student</div>
+      <div class="level-xp">300 XP</div>
+    </div>
+    <div class="level-chip">
+      <div class="level-num">Level 4</div>
+      <div class="level-name">Disciple</div>
+      <div class="level-xp">600 XP</div>
+    </div>
+    <div class="level-chip">
+      <div class="level-num">Level 5</div>
+      <div class="level-name">Apostle</div>
+      <div class="level-xp">1,000 XP</div>
+    </div>
+    <div class="level-chip">
+      <div class="level-num">Level 6</div>
+      <div class="level-name">Teacher</div>
+      <div class="level-xp">2,000 XP</div>
+    </div>
+    <div class="level-chip">
+      <div class="level-num">Level 7</div>
+      <div class="level-name">Saint</div>
+      <div class="level-xp">4,000 XP</div>
+    </div>
+  </div>
+</section>
+
+<!-- BOTTOM CTA -->
+<div class="bottom-cta">
+  <h2 class="bottom-cta-title">52 Saints Are Waiting.</h2>
+  <p class="bottom-cta-sub">Start with a module, earn your first XP, and pull your first pack.</p>
+  <div class="cta-row">
+    <a href="crux-pack-store.html" class="btn-primary">Open Packs →</a>
+    <a href="index.html#modules" class="btn-secondary">Earn XP →</a>
+  </div>
+</div>
+
+<script>
+// Populate preview card strip with a curated selection
+const PREVIEW_CARDS = [
+  { slug: 'bvm',           name: 'Bl. Virgin Mary',      rarity: 'legendary' },
+  { slug: 'peter',         name: 'St. Peter',            rarity: 'legendary' },
+  { slug: 'thomas',        name: 'St. Thomas',           rarity: 'legendary' },
+  { slug: 'joan-arc',      name: 'St. Joan of Arc',      rarity: 'rare' },
+  { slug: 'john-paul-ii',  name: 'St. John Paul II',     rarity: 'rare' },
+  { slug: 'carlo-acutis',  name: 'Bl. Carlo Acutis',     rarity: 'rare' },
+  { slug: 'kolbe',         name: 'St. Max. Kolbe',       rarity: 'rare' },
+  { slug: 'francis-assisi',name: 'St. Francis',          rarity: 'uncommon' },
+  { slug: 'therese',       name: 'St. Thérèse',          rarity: 'uncommon' },
+  { slug: 'patrick',       name: 'St. Patrick',          rarity: 'uncommon' },
+  { slug: 'paul',          name: 'St. Paul',             rarity: 'legendary' },
+  { slug: 'mother-teresa', name: 'Bl. Mother Teresa',    rarity: 'rare' },
+];
+
+const RARITY_BORDERS = {
+  legendary: 'rgba(212,165,116,0.45)',
+  rare:      'rgba(138,180,212,0.35)',
+  uncommon:  'rgba(109,189,138,0.3)',
+  common:    'rgba(255,255,255,0.15)'
+};
+
+const strip = document.getElementById('cardStrip');
+strip.innerHTML = PREVIEW_CARDS.map(c => {
+  const border = RARITY_BORDERS[c.rarity] || RARITY_BORDERS.common;
+  return `<div class="preview-card" style="border-color:${border}">` +
+    `<img src="images/saints/${c.slug}.jpg" alt="${c.name}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">` +
+    `<div class="preview-card-back" style="display:none;">CRUX</div>` +
+    `<div class="preview-card-name">${c.name}</div>` +
+  `</div>`;
+}).join('');
+</script>
+
+</body>
+</html>
