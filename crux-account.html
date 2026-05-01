@@ -1318,17 +1318,28 @@
 
         /* ─── BACK LINK ─────────────────────────────────── */
         .back-link {
-            display: block;
-            text-align: center;
-            margin-top: 2rem;
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: rgba(28, 34, 64, 0.85);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(212,165,116,0.2);
+            border-radius: 6px;
+            padding: 0.45rem 0.85rem;
             color: var(--text-muted);
-            font-size: 0.78rem;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.72rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
             text-decoration: none;
-            letter-spacing: 0.5px;
-            transition: color 0.2s;
+            transition: color 0.2s, border-color 0.2s;
+            z-index: 200;
         }
 
-        .back-link:hover { color: var(--gold); }
+        .back-link:hover { color: var(--gold); border-color: rgba(212,165,116,0.5); }
 
         /* ─── RESPONSIVE ─────────────────────────────────── */
         @media (max-width: 780px) {
@@ -1354,6 +1365,7 @@
     </style>
 </head>
 <body>
+    <a href="/" class="back-link">&#8592; Main Site</a>
     <div class="account-container">
 
         <!-- CRUX Wordmark -->
@@ -1648,8 +1660,6 @@
 
         </div>
         <!-- /dashboard -->
-
-        <a href="/" class="back-link">← Return to cruxfaith.com</a>
 
     </div>
     <!-- /account-container -->
