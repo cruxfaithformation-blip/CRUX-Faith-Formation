@@ -1,0 +1,8 @@
+{
+  "name": "CRUX Games",
+  "short_name": "CRUX",
+  "start_url": "/cruxgames.html",
+  "display": "standalone",
+  "background_color": "#0f1222",
+  "theme_color": "#d4a574"
+}
