@@ -709,6 +709,255 @@
             line-height: 1.5;
         }
 
+        /* ─── FAVORITE CARDS ───────────────────────────── */
+        .favorites-section {
+            background: rgba(22, 27, 48, 0.7);
+            border: 1px solid rgba(212, 165, 116, 0.12);
+            border-radius: 16px;
+            padding: 2rem 2.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .favorites-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+        .favorites-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .favorites-edit-btn {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: var(--gold-dark);
+            background: transparent;
+            border: 1px solid rgba(212,165,116,0.25);
+            border-radius: 20px;
+            padding: 0.3rem 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .favorites-edit-btn:hover { background: rgba(212,165,116,0.08); border-color: var(--gold); color: var(--gold); }
+
+        .favorites-empty {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 1.5rem 0 0.5rem;
+        }
+        .favorites-empty-text {
+            font-size: 0.82rem;
+            color: var(--text-muted);
+            text-align: center;
+        }
+        .favorites-pick-btn {
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--navy);
+            background: var(--gold);
+            border: none;
+            border-radius: 4px;
+            padding: 0.5rem 1.1rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .favorites-pick-btn:hover { opacity: 0.85; }
+
+        .favorites-row {
+            display: flex;
+            gap: 1.25rem;
+            flex-wrap: wrap;
+        }
+        .fav-card {
+            width: 130px;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(212,165,116,0.22);
+            text-decoration: none;
+            display: block;
+            transition: transform 0.22s ease, box-shadow 0.22s ease;
+            box-shadow: 0 6px 24px rgba(0,0,0,0.55);
+            flex-shrink: 0;
+        }
+        .fav-card:hover { transform: translateY(-5px) rotate(1deg); box-shadow: 0 16px 40px rgba(0,0,0,0.7), 0 0 20px rgba(212,165,116,0.15); }
+        .fav-card-img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            display: block;
+        }
+        .fav-card-img-placeholder {
+            width: 100%;
+            aspect-ratio: 3/4;
+            background: linear-gradient(170deg, #1c2650 0%, #0f1535 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.9rem;
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: rgba(212,165,116,0.5);
+        }
+        .fav-card-name {
+            padding: 0.45rem 0.6rem;
+            background: rgba(15,18,34,0.95);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.62rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            color: rgba(212,165,116,0.75);
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* ─── FAVORITES MODAL ───────────────────────────── */
+        .fav-modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.75);
+            z-index: 500;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+        }
+        .fav-modal-overlay.open { display: flex; }
+        .fav-modal {
+            background: var(--navy-light);
+            border: 1px solid rgba(212,165,116,0.2);
+            border-radius: 16px;
+            width: 100%;
+            max-width: 560px;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        .fav-modal-head {
+            padding: 1.25rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.07);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .fav-modal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .fav-modal-sub {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-top: 0.15rem;
+        }
+        .fav-modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.2rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 0.25rem;
+            transition: color 0.15s;
+        }
+        .fav-modal-close:hover { color: var(--gold); }
+        .fav-modal-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            gap: 0.75rem;
+            padding: 1.25rem 1.5rem;
+            overflow-y: auto;
+            flex: 1;
+        }
+        .fav-selectable {
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid transparent;
+            cursor: pointer;
+            transition: all 0.15s;
+            position: relative;
+        }
+        .fav-selectable:hover { border-color: rgba(212,165,116,0.4); }
+        .fav-selectable.selected { border-color: var(--gold); box-shadow: 0 0 12px rgba(212,165,116,0.3); }
+        .fav-selectable.selected::after {
+            content: '✓';
+            position: absolute;
+            top: 0.3rem;
+            right: 0.3rem;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            background: var(--gold);
+            color: var(--navy);
+            font-size: 0.65rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .fav-selectable img {
+            width: 100%;
+            aspect-ratio: 3/4;
+            object-fit: cover;
+            display: block;
+        }
+        .fav-selectable-name {
+            padding: 0.3rem 0.4rem;
+            background: rgba(15,18,34,0.95);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.55rem;
+            font-weight: 600;
+            color: rgba(212,165,116,0.7);
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .fav-modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid rgba(255,255,255,0.07);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-shrink: 0;
+        }
+        .fav-count-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.72rem;
+            color: var(--text-muted);
+        }
+        .fav-save-btn {
+            font-family: 'Cinzel', serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--navy);
+            background: var(--gold);
+            border: none;
+            border-radius: 4px;
+            padding: 0.5rem 1.25rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .fav-save-btn:hover { opacity: 0.85; }
+        .fav-save-btn:disabled { opacity: 0.4; cursor: default; }
+
         /* ─── DASHBOARD GRID ────────────────────────────── */
         .dash-grid {
             display: grid;
@@ -1202,6 +1451,39 @@
                             <div class="profile-meta-label">Member since</div>
                             <div class="profile-meta-value" id="dashJoined">—</div>
                         </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Favorite Cards -->
+            <div class="favorites-section">
+                <div class="favorites-header">
+                    <div class="favorites-title">&#9733; Favorite Cards</div>
+                    <button class="favorites-edit-btn" id="favEditBtn" onclick="openFavModal()" style="display:none;">Edit</button>
+                </div>
+                <div id="favoritesDisplay">
+                    <div class="favorites-empty" id="favEmpty">
+                        <div class="favorites-empty-text">Showcase up to 5 of your favorite cards.</div>
+                        <button class="favorites-pick-btn" onclick="openFavModal()">Pick Your Favorite Cards →</button>
+                    </div>
+                    <div class="favorites-row" id="favRow" style="display:none;"></div>
+                </div>
+            </div>
+
+            <!-- Favorites Modal -->
+            <div class="fav-modal-overlay" id="favModalOverlay">
+                <div class="fav-modal">
+                    <div class="fav-modal-head">
+                        <div>
+                            <div class="fav-modal-title">Choose Favorite Cards</div>
+                            <div class="fav-modal-sub">Select up to 5 cards to showcase on your profile.</div>
+                        </div>
+                        <button class="fav-modal-close" onclick="closeFavModal()">&times;</button>
+                    </div>
+                    <div class="fav-modal-grid" id="favModalGrid"></div>
+                    <div class="fav-modal-footer">
+                        <span class="fav-count-label" id="favCountLabel">0 of 5 selected</span>
+                        <button class="fav-save-btn" id="favSaveBtn" onclick="saveFavorites()">Save</button>
                     </div>
                 </div>
             </div>
@@ -1779,6 +2061,106 @@
 
         const ADMIN_UIDS = ['ratIiHiOj6Qnd2nHRvQsLBiQj953'];
 
+        // ── FAVORITE CARDS ─────────────────────────────────
+        let _favUserId = null;
+        let _favOwnedIds = [];
+        let _selectedFavs = [];
+
+        function renderFavorites(favoriteCards, cardsOwned, userId) {
+            _favUserId  = userId;
+            _favOwnedIds = cardsOwned;
+            _selectedFavs = (favoriteCards || []).slice(0, 5);
+
+            const favRow   = document.getElementById('favRow');
+            const favEmpty = document.getElementById('favEmpty');
+            const editBtn  = document.getElementById('favEditBtn');
+
+            editBtn.style.display = _favOwnedIds.length > 0 ? '' : 'none';
+
+            if (_selectedFavs.length === 0) {
+                favEmpty.style.display = '';
+                favRow.style.display   = 'none';
+                return;
+            }
+
+            favEmpty.style.display = 'none';
+            favRow.style.display   = '';
+            favRow.innerHTML = _selectedFavs.map(id => {
+                const card = CARD_CATALOG[id] || { name: id, rarity: 'common', url: null };
+                const imgPath = 'images/saints/' + id + '.jpg';
+                const tag  = card.url ? 'a' : 'div';
+                const href = card.url ? ' href="' + card.url + '"' : '';
+                const imgEl = '<img class="fav-card-img" src="' + imgPath + '" alt="' + card.name + '" onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+                    '<div class="fav-card-img-placeholder" style="display:none;">CRUX</div>';
+                return '<' + tag + href + ' class="fav-card">' + imgEl +
+                    '<div class="fav-card-name">' + card.name + '</div>' +
+                '</' + tag + '>';
+            }).join('');
+        }
+
+        function openFavModal() {
+            const grid = document.getElementById('favModalGrid');
+            const displayIds = _favOwnedIds.length > 0 ? _favOwnedIds : Object.keys(CARD_CATALOG);
+
+            grid.innerHTML = displayIds.map(id => {
+                const card = CARD_CATALOG[id] || { name: id, rarity: 'common', url: null };
+                const imgPath = 'images/saints/' + id + '.jpg';
+                const isSel = _selectedFavs.includes(id);
+                return '<div class="fav-selectable' + (isSel ? ' selected' : '') + '" data-id="' + id + '" onclick="toggleFavSelect(this)">' +
+                    '<img src="' + imgPath + '" alt="' + card.name + '" onerror="this.parentElement.style.display=\'none\'">' +
+                    '<div class="fav-selectable-name">' + card.name + '</div>' +
+                '</div>';
+            }).join('');
+
+            updateFavCount();
+            document.getElementById('favModalOverlay').classList.add('open');
+        }
+
+        function closeFavModal() {
+            document.getElementById('favModalOverlay').classList.remove('open');
+        }
+
+        function toggleFavSelect(el) {
+            const id = el.dataset.id;
+            if (el.classList.contains('selected')) {
+                el.classList.remove('selected');
+                _selectedFavs = _selectedFavs.filter(s => s !== id);
+            } else {
+                if (_selectedFavs.length >= 5) return;
+                el.classList.add('selected');
+                _selectedFavs.push(id);
+            }
+            updateFavCount();
+        }
+
+        function updateFavCount() {
+            document.getElementById('favCountLabel').textContent = _selectedFavs.length + ' of 5 selected';
+            document.getElementById('favSaveBtn').disabled = _selectedFavs.length === 0;
+        }
+
+        async function saveFavorites() {
+            if (!_favUserId) return;
+            const btn = document.getElementById('favSaveBtn');
+            btn.textContent = 'Saving…';
+            btn.disabled = true;
+            try {
+                await updateDoc(doc(db, 'userProgress', _favUserId), { favoriteCards: _selectedFavs });
+                renderFavorites(_selectedFavs, _favOwnedIds, _favUserId);
+                closeFavModal();
+            } catch(e) {
+                console.error('Favorites save error:', e);
+                btn.textContent = 'Error — try again';
+                btn.disabled = false;
+                return;
+            }
+            btn.textContent = 'Save';
+        }
+
+        // close modal on overlay click
+        document.getElementById('favModalOverlay').addEventListener('click', function(e) {
+            if (e.target === this) closeFavModal();
+        });
+
         function renderCardShowcase(cardsOwned, isAdmin) {
             const container = document.getElementById('cardRow');
             const countEl   = document.getElementById('cardCount');
@@ -1859,6 +2241,7 @@
                     data = snap.data();
                 }
 
+                renderFavorites(data.favoriteCards || [], data.cardsOwned || [], userId);
                 renderCardShowcase(data.cardsOwned || [], ADMIN_UIDS.includes(userId));
                 renderModuleCards(data.moduleCards || [], ADMIN_UIDS.includes(userId));
 
