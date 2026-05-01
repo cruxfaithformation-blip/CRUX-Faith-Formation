@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saint Card Binder — CRUX</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --navy:    #1a1f36;
+            --navy-mid:#242a45;
+            --gold:    #d4a574;
+            --gold-lt: #e8c9a0;
+            --white:   #ffffff;
+            --border:  rgba(255,255,255,0.08);
+        }
+        body {
+            font-family: 'Cinzel', serif;
+            background: var(--navy);
+            color: var(--white);
+            min-height: 100vh;
+        }
+
+        /* ── Header ── */
+        .binder-header {
+            background: var(--navy-mid);
+            border-bottom: 1px solid rgba(212,165,116,0.2);
+            padding: 2rem 2rem 1.75rem;
+            text-align: center;
+        }
+        .binder-eyebrow {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(212,165,116,0.6);
+            margin-bottom: 0.6rem;
+        }
+        .binder-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-lt) 50%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.6rem;
+        }
+        .binder-subtitle {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.45);
+            line-height: 1.6;
+            max-width: 560px;
+            margin: 0 auto 1.25rem;
+            letter-spacing: 0.3px;
+        }
+        .binder-teacher-note {
+            display: inline-block;
+            background: rgba(212,165,116,0.1);
+            border: 1px solid rgba(212,165,116,0.22);
+            border-radius: 5px;
+            padding: 0.55rem 1rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            color: rgba(212,165,116,0.75);
+            letter-spacing: 0.5px;
+            line-height: 1.5;
+        }
+
+        /* ── Search ── */
+        .search-bar {
+            padding: 1.25rem 2rem;
+            background: var(--navy-mid);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .search-input {
+            flex: 1;
+            max-width: 420px;
+            background: rgba(255,255,255,0.06);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 6px;
+            padding: 0.6rem 1rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.75rem;
+            color: var(--white);
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .search-input::placeholder { color: rgba(255,255,255,0.25); }
+        .search-input:focus { border-color: rgba(212,165,116,0.45); }
+        .search-count {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 1px;
+            color: rgba(255,255,255,0.3);
+            white-space: nowrap;
+        }
+        .filter-btns {
+            display: flex;
+            gap: 0.4rem;
+            flex-wrap: wrap;
+        }
+        .filter-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.4);
+            padding: 4px 10px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .filter-btn:hover { border-color: rgba(255,255,255,0.3); color: rgba(255,255,255,0.7); }
+        .filter-btn.active { border-color: var(--gold); color: var(--gold); background: rgba(212,165,116,0.08); }
+
+        /* ── Card grid ── */
+        .binder-main {
+            padding: 2rem;
+            max-width: 1300px;
+            margin: 0 auto;
+        }
+        .binder-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(145px, 1fr));
+            gap: 1.25rem;
+        }
+        .binder-card {
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            border-radius: 10px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            position: relative;
+        }
+        .binder-card:hover { transform: translateY(-5px); }
+
+        /* Rarity border colors */
+        .binder-card.legendary {
+            box-shadow: 0 0 0 2px var(--gold), 0 8px 24px rgba(0,0,0,0.5);
+        }
+        .binder-card.legendary:hover {
+            box-shadow: 0 0 0 2px var(--gold), 0 0 22px rgba(212,165,116,0.45), 0 12px 28px rgba(0,0,0,0.5);
+        }
+        .binder-card.rare {
+            box-shadow: 0 0 0 2px #6495ed, 0 8px 24px rgba(0,0,0,0.5);
+        }
+        .binder-card.rare:hover {
+            box-shadow: 0 0 0 2px #6495ed, 0 0 18px rgba(100,149,237,0.4), 0 12px 28px rgba(0,0,0,0.5);
+        }
+        .binder-card.uncommon {
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.15), 0 8px 24px rgba(0,0,0,0.5);
+        }
+        .binder-card.uncommon:hover {
+            box-shadow: 0 0 0 1px rgba(255,255,255,0.3), 0 12px 28px rgba(0,0,0,0.5);
+        }
+
+        /* Card image area */
+        .binder-img-wrap {
+            width: 100%;
+            aspect-ratio: 2/3;
+            background: var(--navy-mid);
+            position: relative;
+            overflow: hidden;
+        }
+        .binder-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+        }
+        .binder-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+        .binder-card.legendary .binder-fallback { background: linear-gradient(145deg, #2a1a05, #3d2510); }
+        .binder-card.rare      .binder-fallback { background: linear-gradient(145deg, #0d1e3a, #152d56); }
+        .binder-card.uncommon  .binder-fallback { background: linear-gradient(145deg, #1a1f36, #242a45); }
+        .fallback-wordmark {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 0.9rem;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-lt) 50%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .fallback-cross { font-size: 1.2rem; opacity: 0.25; }
+
+        /* Hover overlay */
+        .binder-hover-overlay {
+            position: absolute;
+            inset: 0;
+            background: rgba(0,0,0,0.55);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+        .binder-card:hover .binder-hover-overlay { opacity: 1; }
+        .binder-hover-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.58rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--white);
+            background: rgba(0,0,0,0.6);
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+
+        /* Card label footer */
+        .binder-label {
+            background: var(--navy-mid);
+            padding: 0.55rem 0.6rem 0.5rem;
+        }
+        .binder-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.3;
+            margin-bottom: 0.2rem;
+        }
+        .binder-rarity {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.42rem;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            font-weight: 700;
+        }
+        .legendary .binder-rarity { color: var(--gold); }
+        .rare      .binder-rarity { color: #8ab4f8; }
+        .uncommon  .binder-rarity { color: rgba(255,255,255,0.35); }
+
+        /* No results */
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 3rem 1rem;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.72rem;
+            color: rgba(255,255,255,0.25);
+            letter-spacing: 1px;
+        }
+
+        /* Footer */
+        .binder-footer {
+            text-align: center;
+            padding: 2.5rem 2rem;
+            border-top: 1px solid var(--border);
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            color: rgba(255,255,255,0.2);
+            letter-spacing: 1px;
+        }
+        .binder-footer a { color: var(--gold); text-decoration: none; opacity: 0.65; }
+        .binder-footer a:hover { opacity: 1; }
+
+        @media (max-width: 600px) {
+            .binder-header { padding: 1.5rem 1.25rem; }
+            .binder-title  { font-size: 1.7rem; }
+            .search-bar    { padding: 0.9rem 1.25rem; flex-wrap: wrap; gap: 0.6rem; }
+            .binder-main   { padding: 1.25rem; }
+            .binder-grid   { grid-template-columns: repeat(auto-fill, minmax(120px, 1fr)); gap: 0.9rem; }
+            .filter-btns   { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="binder-header">
+    <div class="binder-eyebrow">CRUX · Catholic Faith Formation</div>
+    <div class="binder-title">Saint Card Binder</div>
+    <p class="binder-subtitle">Browse all 61 saint cards in the CRUX collection. Click any card to read the biography and see the full card.</p>
+    <div class="binder-teacher-note">
+        For Confirmation teachers — share this page with students to help them choose a patron saint.<br>
+        Each card links to a full biography. No account required.
+    </div>
+</div>
+
+<div class="search-bar">
+    <input type="text" class="search-input" id="searchInput"
+           placeholder="Search by saint name…" oninput="filterCards()">
+    <div class="filter-btns">
+        <button class="filter-btn active" data-filter="all" onclick="setFilter('all', this)">All</button>
+        <button class="filter-btn" data-filter="legendary" onclick="setFilter('legendary', this)">Legendary</button>
+        <button class="filter-btn" data-filter="rare" onclick="setFilter('rare', this)">Rare</button>
+        <button class="filter-btn" data-filter="uncommon" onclick="setFilter('uncommon', this)">Uncommon</button>
+    </div>
+    <span class="search-count" id="searchCount">61 saints</span>
+</div>
+
+<main class="binder-main">
+    <div class="binder-grid" id="binderGrid"></div>
+</main>
+
+<div class="binder-footer">
+    <a href="index.html">← Back to CRUX</a>
+    &nbsp;·&nbsp;
+    cruxfaith.com
+    &nbsp;·&nbsp;
+    Click any card to view the full biography
+</div>
+
+<script>
+    var ALL_CARDS = [
+        // ── Alpha Holographic ──────────────────────────────────────────────────────
+        { id: 'bvm',             name: 'Blessed Virgin Mary',       sort: 'blessed virgin mary', rarity: 'legendary' },
+        { id: 'bernadette',      name: 'St. Bernadette',            sort: 'bernadette',           rarity: 'legendary', noImg: true },
+        { id: 'cecilia',         name: 'St. Cecilia',               sort: 'cecilia',              rarity: 'legendary', noImg: true },
+        { id: 'clare',           name: 'St. Clare of Assisi',       sort: 'clare',                rarity: 'legendary', noImg: true },
+        { id: 'david',           name: 'St. David',                 sort: 'david',                rarity: 'legendary', noImg: true },
+        { id: 'thomas',          name: 'St. Thomas (Apostle)',      sort: 'thomas apostle',       rarity: 'legendary' },
+        // ── Legendary ─────────────────────────────────────────────────────────────
+        { id: 'andrew',          name: 'St. Andrew',                sort: 'andrew',               rarity: 'legendary' },
+        { id: 'bartholomew',     name: 'St. Bartholomew',           sort: 'bartholomew',          rarity: 'legendary' },
+        { id: 'james-greater',   name: 'St. James the Greater',     sort: 'james greater',        rarity: 'legendary' },
+        { id: 'james-less',      name: 'St. James the Less',        sort: 'james less',           rarity: 'legendary' },
+        { id: 'john-apostle',    name: 'St. John the Apostle',      sort: 'john apostle',         rarity: 'legendary' },
+        { id: 'joseph',          name: 'St. Joseph',                sort: 'joseph',               rarity: 'legendary' },
+        { id: 'jude',            name: 'St. Jude Thaddaeus',        sort: 'jude',                 rarity: 'legendary' },
+        { id: 'matthew',         name: 'St. Matthew',               sort: 'matthew',              rarity: 'legendary' },
+        { id: 'paul',            name: 'St. Paul',                  sort: 'paul',                 rarity: 'legendary' },
+        { id: 'peter',           name: 'St. Peter',                 sort: 'peter',                rarity: 'legendary' },
+        { id: 'philip',          name: 'St. Philip',                sort: 'philip',               rarity: 'legendary' },
+        { id: 'simon-zealot',    name: 'St. Simon the Zealot',      sort: 'simon',                rarity: 'legendary' },
+        // ── Rare ──────────────────────────────────────────────────────────────────
+        { id: 'aquinas',         name: 'St. Thomas Aquinas',        sort: 'aquinas',              rarity: 'rare' },
+        { id: 'augustine',       name: 'St. Augustine',             sort: 'augustine',            rarity: 'rare' },
+        { id: 'benedict',        name: 'St. Benedict',              sort: 'benedict',             rarity: 'rare' },
+        { id: 'carlo-acutis',    name: 'Bl. Carlo Acutis',          sort: 'carlo acutis',         rarity: 'rare' },
+        { id: 'catherine-siena', name: 'St. Catherine of Siena',    sort: 'catherine',            rarity: 'rare' },
+        { id: 'dominic',         name: 'St. Dominic',               sort: 'dominic',              rarity: 'rare' },
+        { id: 'edith-stein',     name: 'St. Edith Stein',           sort: 'edith stein',          rarity: 'rare' },
+        { id: 'francis-xavier',  name: 'St. Francis Xavier',        sort: 'francis xavier',       rarity: 'rare' },
+        { id: 'ignatius',        name: 'St. Ignatius of Loyola',    sort: 'ignatius',             rarity: 'rare' },
+        { id: 'joan-arc',        name: 'St. Joan of Arc',           sort: 'joan arc',             rarity: 'rare' },
+        { id: 'john-cross',      name: 'St. John of the Cross',     sort: 'john cross',           rarity: 'rare' },
+        { id: 'john-paul-ii',    name: 'St. John Paul II',          sort: 'john paul',            rarity: 'rare' },
+        { id: 'kolbe',           name: 'St. Maximilian Kolbe',      sort: 'kolbe',                rarity: 'rare' },
+        { id: 'madre-teresa',    name: 'St. Teresa of Calcutta',    sort: 'madre teresa',         rarity: 'rare', id: 'mother-teresa' },
+        { id: 'padre-pio',       name: 'St. Padre Pio',             sort: 'padre pio',            rarity: 'rare' },
+        { id: 'patrick',         name: 'St. Patrick',               sort: 'patrick',              rarity: 'rare' },
+        { id: 'pier-giorgio',    name: 'Bl. Pier Giorgio Frassati', sort: 'pier giorgio',         rarity: 'rare' },
+        { id: 'stephen',         name: 'St. Stephen',               sort: 'stephen',              rarity: 'rare' },
+        { id: 'teresa-avila',    name: 'St. Teresa of Ávila',       sort: 'teresa avila',         rarity: 'rare' },
+        { id: 'thomas-more',     name: 'St. Thomas More',           sort: 'thomas more',          rarity: 'rare' },
+        // ── Uncommon ──────────────────────────────────────────────────────────────
+        { id: 'aloysius',        name: 'St. Aloysius Gonzaga',      sort: 'aloysius',             rarity: 'uncommon' },
+        { id: 'bonaventure',     name: 'St. Bonaventure',           sort: 'bonaventure',          rarity: 'uncommon' },
+        { id: 'brigid',          name: 'St. Brigid of Ireland',     sort: 'brigid',               rarity: 'uncommon' },
+        { id: 'charles-lwanga',  name: 'St. Charles Lwanga',        sort: 'charles lwanga',       rarity: 'uncommon' },
+        { id: 'dominic-savio',   name: 'St. Dominic Savio',         sort: 'dominic savio',        rarity: 'uncommon' },
+        { id: 'elizabeth-ann',   name: 'St. Elizabeth Ann Seton',   sort: 'elizabeth ann',        rarity: 'uncommon' },
+        { id: 'francis-assisi',  name: 'St. Francis of Assisi',     sort: 'francis assisi',       rarity: 'uncommon' },
+        { id: 'francisco',       name: 'Bl. Francisco Marto',       sort: 'francisco marto',      rarity: 'uncommon' },
+        { id: 'gemma',           name: 'St. Gemma Galgani',         sort: 'gemma',                rarity: 'uncommon' },
+        { id: 'jacinta',         name: 'Bl. Jacinta Marto',         sort: 'jacinta marto',        rarity: 'uncommon' },
+        { id: 'jose-sanchez',    name: 'Bl. José Sánchez del Río',  sort: 'jose sanchez',         rarity: 'uncommon' },
+        { id: 'kateri',          name: 'St. Kateri Tekakwitha',     sort: 'kateri',               rarity: 'uncommon' },
+        { id: 'lucy',            name: 'St. Lucy',                  sort: 'lucy',                 rarity: 'uncommon' },
+        { id: 'maria-goretti',   name: 'St. Maria Goretti',         sort: 'maria goretti',        rarity: 'uncommon' },
+        { id: 'martin-tours',    name: 'St. Martin of Tours',       sort: 'martin tours',         rarity: 'uncommon' },
+        { id: 'miguel-pro',      name: 'Bl. Miguel Pro',            sort: 'miguel pro',           rarity: 'uncommon' },
+        { id: 'nicolas',         name: 'St. Nicholas of Myra',      sort: 'nicholas',             rarity: 'uncommon' },
+        { id: 'oscar-romero',    name: 'St. Oscar Romero',          sort: 'oscar romero',         rarity: 'uncommon' },
+        { id: 'perpetua',        name: 'St. Perpetua',              sort: 'perpetua',             rarity: 'uncommon' },
+        { id: 'polycarp',        name: 'St. Polycarp',              sort: 'polycarp',             rarity: 'uncommon' },
+        { id: 'rose-lima',       name: 'St. Rose of Lima',          sort: 'rose lima',            rarity: 'uncommon' },
+        { id: 'scholastica',     name: 'St. Scholastica',           sort: 'scholastica',          rarity: 'uncommon' },
+        { id: 'therese',         name: 'St. Thérèse of Lisieux',    sort: 'therese',              rarity: 'uncommon' },
+    ];
+
+    // Fix the duplicate id property on mother-teresa entry
+    ALL_CARDS = ALL_CARDS.map(function(c) {
+        if (c.sort === 'madre teresa') return { id: 'mother-teresa', name: 'St. Teresa of Calcutta', sort: 'madre teresa', rarity: 'rare' };
+        return c;
+    });
+
+    // Sort alphabetically by sort key
+    ALL_CARDS.sort(function(a, b) { return a.sort.localeCompare(b.sort); });
+
+    var activeFilter = 'all';
+
+    function rarityLabel(r) {
+        if (r === 'legendary') return 'Legendary';
+        if (r === 'rare')      return 'Rare';
+        return 'Uncommon';
+    }
+
+    function buildCard(card) {
+        var imgSrc   = 'images/saints/' + card.id + '.jpg';
+        var flipPage = 'crux-' + card.id + '-flip.html';
+        var fallback = card.noImg
+            ? '<div class="binder-fallback"><span class="fallback-cross">✝</span><span class="fallback-wordmark">CRUX</span></div>'
+            : '';
+        var imgTag = !card.noImg
+            ? '<img class="binder-img" src="' + imgSrc + '" alt="' + card.name + '" ' +
+              'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+              '<div class="binder-fallback" style="display:none"><span class="fallback-cross">✝</span><span class="fallback-wordmark">CRUX</span></div>'
+            : fallback;
+
+        return '<a href="' + flipPage + '" target="_blank" rel="noopener" ' +
+               'class="binder-card ' + card.rarity + '" data-name="' + card.name.toLowerCase() + '" data-rarity="' + card.rarity + '">' +
+               '<div class="binder-img-wrap">' + imgTag +
+               '<div class="binder-hover-overlay"><span class="binder-hover-label">View Card →</span></div>' +
+               '</div>' +
+               '<div class="binder-label">' +
+               '<div class="binder-name">' + card.name + '</div>' +
+               '<div class="binder-rarity">' + rarityLabel(card.rarity) + '</div>' +
+               '</div>' +
+               '</a>';
+    }
+
+    function render(cards) {
+        var grid = document.getElementById('binderGrid');
+        if (cards.length === 0) {
+            grid.innerHTML = '<div class="no-results">No saints found — try a different search.</div>';
+            document.getElementById('searchCount').textContent = '0 saints';
+            return;
+        }
+        grid.innerHTML = cards.map(buildCard).join('');
+        document.getElementById('searchCount').textContent = cards.length + ' saint' + (cards.length !== 1 ? 's' : '');
+    }
+
+    function filterCards() {
+        var q = document.getElementById('searchInput').value.toLowerCase().trim();
+        var filtered = ALL_CARDS.filter(function(c) {
+            var matchesSearch = !q || c.name.toLowerCase().indexOf(q) !== -1 || c.sort.indexOf(q) !== -1;
+            var matchesFilter = activeFilter === 'all' || c.rarity === activeFilter;
+            return matchesSearch && matchesFilter;
+        });
+        render(filtered);
+    }
+
+    function setFilter(filter, btn) {
+        activeFilter = filter;
+        document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+        btn.classList.add('active');
+        filterCards();
+    }
+
+    // Initial render
+    render(ALL_CARDS);
+</script>
+</body>
+</html>
