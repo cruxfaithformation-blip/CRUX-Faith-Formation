@@ -2071,7 +2071,7 @@
 
         function renderFavorites(favoriteCards, cardsOwned, userId) {
             _favUserId  = userId;
-            _favOwnedIds = cardsOwned;
+            _favOwnedIds = ADMIN_UIDS.includes(userId) ? Object.keys(CARD_CATALOG) : cardsOwned;
             _selectedFavs = (favoriteCards || []).slice(0, 5);
 
             const favRow   = document.getElementById('favRow');
