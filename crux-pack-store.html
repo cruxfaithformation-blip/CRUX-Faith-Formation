@@ -888,6 +888,93 @@
             animation: flash-blue 0.7s ease-out forwards;
         }
 
+        /* ── Pack opening state ── */
+        .pack-open-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.4rem;
+            text-align: center;
+        }
+        .po-eyebrow {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+        .po-art {
+            position: relative;
+            cursor: pointer;
+            border-radius: 14px;
+            animation: pack-float 2.8s ease-in-out infinite;
+        }
+        .po-art.no-img {
+            width: 180px;
+            height: 240px;
+            border-radius: 14px;
+        }
+        @keyframes pack-float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            40%       { transform: translateY(-10px) rotate(0.6deg); }
+            70%       { transform: translateY(-5px) rotate(-0.4deg); }
+        }
+        .po-img {
+            width: 190px;
+            height: auto;
+            border-radius: 14px;
+            display: block;
+            box-shadow: 0 0 50px rgba(212,165,116,0.28), 0 24px 60px rgba(0,0,0,0.7);
+            transition: box-shadow 0.3s;
+        }
+        .po-art:hover .po-img {
+            box-shadow: 0 0 75px rgba(212,165,116,0.5), 0 24px 60px rgba(0,0,0,0.7);
+        }
+        .po-tap {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.38);
+            animation: tap-blink 1.8s ease-in-out infinite;
+            transition: opacity 0.25s;
+        }
+        @keyframes tap-blink {
+            0%, 100% { opacity: 0.38; }
+            50%       { opacity: 0.85; }
+        }
+        .po-art.is-opening {
+            animation: pack-rip 0.55s ease-in forwards !important;
+            cursor: default;
+        }
+        @keyframes pack-rip {
+            0%   { transform: scale(1) rotate(0deg); }
+            15%  { transform: scale(1.04) rotate(-3deg); }
+            30%  { transform: scale(1.05) rotate(3deg); }
+            48%  { transform: scale(1.07) rotate(-2deg); }
+            65%  { transform: scale(1.18) rotate(1deg); }
+            82%  { transform: scale(1.55) rotate(0deg); opacity: 0.6; }
+            100% { transform: scale(2.4) rotate(0deg); opacity: 0; }
+        }
+        @keyframes flash-pack {
+            0%   { opacity: 0; }
+            8%   { opacity: 0.88; }
+            100% { opacity: 0; }
+        }
+        .reveal-flash.flash-pack {
+            background: radial-gradient(ellipse at center,
+                rgba(255,245,200,0.95) 0%,
+                rgba(212,165,116,0.55) 30%,
+                transparent 65%);
+            animation: flash-pack 0.65s ease-out forwards;
+        }
+        .card-reveal-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
         .reveal-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
         .reveal-again-btn {
             background: var(--gold); color: var(--navy); border: none;
@@ -977,8 +1064,8 @@
                 <div class="hiw-num">3</div>
                 <div>
                     <div class="hiw-step-title">Collect Saints</div>
-                    <div class="hiw-step-desc">52 cards across 4 rarity tiers. Duplicates automatically convert to 50 XP.</div>
-                    <span class="hiw-xp">52 cards total</span>
+                    <div class="hiw-step-desc">55 cards across rarity tiers. Duplicates automatically convert to 50 XP.</div>
+                    <span class="hiw-xp">55 cards total</span>
                 </div>
             </div>
         </div>
@@ -1033,15 +1120,29 @@
 <!-- Reveal overlay -->
 <div class="reveal-overlay" id="revealOverlay" style="display:none">
     <div id="revealFlash" class="reveal-flash"></div>
-    <div class="reveal-eyebrow" id="revealEyebrow"></div>
-    <div class="reveal-title">Your Cards</div>
-    <div class="reveal-hint" id="revealHint">Tap each card to reveal</div>
-    <div class="reveal-cards" id="revealCards"></div>
-    <div class="reveal-actions" id="revealActions" style="display:none">
-        <button class="reveal-again-btn" id="openAgainBtn" onclick="openAgain()">Open Another →</button>
-        <button class="reveal-done-btn" onclick="closeReveal()">Done</button>
+
+    <!-- State 1: Pack opening -->
+    <div id="packOpenWrap" class="pack-open-wrap">
+        <div class="po-eyebrow" id="poEyebrow"></div>
+        <div class="po-art" id="poArt">
+            <img id="poImg" src="" alt="" class="po-img"
+                 onerror="this.style.display='none'">
+        </div>
+        <div class="po-tap" id="poTap">Tap to open</div>
     </div>
-    <button class="reveal-tap-all" id="tapAllBtn" onclick="revealAll()" style="display:none">Reveal All</button>
+
+    <!-- State 2: Card reveal -->
+    <div id="cardRevealWrap" class="card-reveal-wrap" style="display:none">
+        <div class="reveal-eyebrow" id="revealEyebrow"></div>
+        <div class="reveal-title">Your Cards</div>
+        <div class="reveal-hint" id="revealHint">Tap each card to reveal</div>
+        <div class="reveal-cards" id="revealCards"></div>
+        <div class="reveal-actions" id="revealActions" style="display:none">
+            <button class="reveal-again-btn" id="openAgainBtn" onclick="openAgain()">Open Another →</button>
+            <button class="reveal-done-btn" onclick="closeReveal()">Done</button>
+        </div>
+        <button class="reveal-tap-all" id="tapAllBtn" onclick="revealAll()" style="display:none">Reveal All</button>
+    </div>
 </div>
 
 <script>
@@ -1061,63 +1162,68 @@
         return cur;
     }
 
-    // ── Card pool (52 planned set — Alpha Pack exclusives are separate) ──
+    // ── Card pool (55 cards — thomas & bvm are Alpha Pack exclusives) ──
     const CARD_POOL = {
         legendary: [
-            { id: 'joseph',       name: 'St. Joseph' },
-            { id: 'peter',        name: 'St. Peter' },
-            { id: 'paul',         name: 'St. Paul' },
-            { id: 'john-apostle', name: 'St. John the Apostle' },
-            { id: 'james-greater',name: 'St. James the Greater' },
-            { id: 'andrew',       name: 'St. Andrew' },
-            { id: 'philip',       name: 'St. Philip' },
-            { id: 'bartholomew',  name: 'St. Bartholomew' },
-            { id: 'matthew',      name: 'St. Matthew' },
-            { id: 'james-less',   name: 'St. James the Less' },
-            { id: 'simon-zealot', name: 'St. Simon the Zealot' },
-            { id: 'jude',         name: 'St. Jude Thaddaeus' }
+            { id: 'joseph',        name: 'St. Joseph' },
+            { id: 'peter',         name: 'St. Peter' },
+            { id: 'paul',          name: 'St. Paul' },
+            { id: 'john-apostle',  name: 'St. John the Apostle' },
+            { id: 'james-greater', name: 'St. James the Greater' },
+            { id: 'andrew',        name: 'St. Andrew' },
+            { id: 'philip',        name: 'St. Philip' },
+            { id: 'bartholomew',   name: 'St. Bartholomew' },
+            { id: 'matthew',       name: 'St. Matthew' },
+            { id: 'james-less',    name: 'St. James the Less' },
+            { id: 'simon-zealot',  name: 'St. Simon the Zealot' },
+            { id: 'jude',          name: 'St. Jude Thaddaeus' }
         ],
         rare: [
-            { id: 'augustine',      name: 'St. Augustine' },
-            { id: 'aquinas',        name: 'St. Thomas Aquinas' },
-            { id: 'teresa-avila',   name: 'St. Teresa of Ávila' },
-            { id: 'john-cross',     name: 'St. John of the Cross' },
-            { id: 'ignatius',       name: 'St. Ignatius of Loyola' },
-            { id: 'dominic',        name: 'St. Dominic' },
-            { id: 'joan-arc',       name: 'St. Joan of Arc' },
-            { id: 'thomas-more',    name: 'St. Thomas More' },
-            { id: 'catherine-siena',name: 'St. Catherine of Siena' },
-            { id: 'patrick',        name: 'St. Patrick' },
-            { id: 'benedict',       name: 'St. Benedict' },
-            { id: 'francis-xavier', name: 'St. Francis Xavier' },
-            { id: 'kolbe',          name: 'St. Maximilian Kolbe' },
-            { id: 'mother-teresa',  name: 'St. Teresa of Calcutta' },
-            { id: 'john-paul-ii',   name: 'St. John Paul II' },
-            { id: 'stephen',        name: 'St. Stephen' },
-            { id: 'john-baptist',   name: 'St. John the Baptist' },
-            { id: 'carlo-acutis',   name: 'Bl. Carlo Acutis' }
+            { id: 'augustine',       name: 'St. Augustine' },
+            { id: 'aquinas',         name: 'St. Thomas Aquinas' },
+            { id: 'teresa-avila',    name: 'St. Teresa of Ávila' },
+            { id: 'john-cross',      name: 'St. John of the Cross' },
+            { id: 'ignatius',        name: 'St. Ignatius of Loyola' },
+            { id: 'dominic',         name: 'St. Dominic' },
+            { id: 'joan-arc',        name: 'St. Joan of Arc' },
+            { id: 'thomas-more',     name: 'St. Thomas More' },
+            { id: 'catherine-siena', name: 'St. Catherine of Siena' },
+            { id: 'patrick',         name: 'St. Patrick' },
+            { id: 'benedict',        name: 'St. Benedict' },
+            { id: 'francis-xavier',  name: 'St. Francis Xavier' },
+            { id: 'kolbe',           name: 'St. Maximilian Kolbe' },
+            { id: 'mother-teresa',   name: 'St. Teresa of Calcutta' },
+            { id: 'john-paul-ii',    name: 'St. John Paul II' },
+            { id: 'stephen',         name: 'St. Stephen' },
+            { id: 'carlo-acutis',    name: 'Bl. Carlo Acutis' },
+            { id: 'pier-giorgio',    name: 'Bl. Pier Giorgio Frassati' },
+            { id: 'edith-stein',     name: 'St. Edith Stein' },
+            { id: 'padre-pio',       name: 'St. Padre Pio' }
         ],
         uncommon: [
-            { id: 'francis-assisi',   name: 'St. Francis of Assisi' },
-            { id: 'therese',          name: 'St. Thérèse of Lisieux' },
-            { id: 'augustine-young',  name: 'St. Augustine (Young)' },
-            { id: 'cecilia',          name: 'St. Cecilia' },
-            { id: 'lawrence',         name: 'St. Lawrence' },
-            { id: 'nicholas',         name: 'St. Nicholas of Myra' },
-            { id: 'anthony-padua',    name: 'St. Anthony of Padua' },
-            { id: 'christopher',      name: 'St. Christopher' },
-            { id: 'sebastian',        name: 'St. Sebastian' },
-            { id: 'damien',           name: 'St. Damien of Molokai' },
-            { id: 'edith-stein',      name: 'St. Edith Stein' },
-            { id: 'kateri',           name: 'St. Kateri Tekakwitha' },
-            { id: 'oscar-romero',     name: 'St. Oscar Romero' },
-            { id: 'pier-giorgio',     name: 'Bl. Pier Giorgio Frassati' },
-            { id: 'miguel-pro',       name: 'Bl. Miguel Pro' },
-            { id: 'maria-goretti',    name: 'St. Maria Goretti' },
-            { id: 'frances-cabrini',  name: 'St. Frances Xavier Cabrini' },
-            { id: 'dominic-savio',    name: 'St. Dominic Savio' },
-            { id: 'jose-sanchez',     name: 'Bl. José Sánchez del Río' },
-            { id: 'jacinta',          name: 'Bl. Jacinta Marto' }
+            { id: 'francis-assisi',  name: 'St. Francis of Assisi' },
+            { id: 'therese',         name: 'St. Thérèse of Lisieux' },
+            { id: 'kateri',          name: 'St. Kateri Tekakwitha' },
+            { id: 'oscar-romero',    name: 'St. Oscar Romero' },
+            { id: 'miguel-pro',      name: 'Bl. Miguel Pro' },
+            { id: 'maria-goretti',   name: 'St. Maria Goretti' },
+            { id: 'dominic-savio',   name: 'St. Dominic Savio' },
+            { id: 'jose-sanchez',    name: 'Bl. José Sánchez del Río' },
+            { id: 'jacinta',         name: 'Bl. Jacinta Marto' },
+            { id: 'nicolas',         name: 'St. Nicholas of Myra' },
+            { id: 'aloysius',        name: 'St. Aloysius Gonzaga' },
+            { id: 'bonaventure',     name: 'St. Bonaventure' },
+            { id: 'brigid',          name: 'St. Brigid of Ireland' },
+            { id: 'charles-lwanga',  name: 'St. Charles Lwanga' },
+            { id: 'elizabeth-ann',   name: 'St. Elizabeth Ann Seton' },
+            { id: 'francisco',       name: 'Bl. Francisco Marto' },
+            { id: 'gemma',           name: 'St. Gemma Galgani' },
+            { id: 'lucy',            name: 'St. Lucy' },
+            { id: 'martin-tours',    name: 'St. Martin of Tours' },
+            { id: 'perpetua',        name: 'St. Perpetua' },
+            { id: 'polycarp',        name: 'St. Polycarp' },
+            { id: 'rose-lima',       name: 'St. Rose of Lima' },
+            { id: 'scholastica',     name: 'St. Scholastica' }
         ]
     };
 
@@ -1410,13 +1516,26 @@
 
     // ── Reveal screen ──
     function showReveal(pack) {
+        document.getElementById('revealFlash').className = 'reveal-flash';
+
+        // Set up pack open state
+        document.getElementById('poEyebrow').textContent = pack.name + ' · ' + pack.cardCount + ' Cards';
+        var poImg = document.getElementById('poImg');
+        poImg.style.display = 'block';
+        poImg.src = pack.image || '';
+        if (!pack.image) poImg.style.display = 'none';
+        var poArt = document.getElementById('poArt');
+        poArt.style.background = (!pack.image) ? pack.gradient : 'none';
+        poArt.className = 'po-art' + (!pack.image ? ' no-img' : '');
+        poArt.onclick = function() { triggerPackOpen(pack); };
+
+        // Pre-build card grid (hidden until after open animation)
         document.getElementById('revealEyebrow').textContent = pack.name + ' · ' + pack.cardCount + ' Cards';
         document.getElementById('revealHint').textContent = 'Tap each card to reveal';
         document.getElementById('revealActions').style.display = 'none';
         document.getElementById('tapAllBtn').style.display = 'inline-block';
-        document.getElementById('revealFlash').className = 'reveal-flash';
 
-        const container = document.getElementById('revealCards');
+        var container = document.getElementById('revealCards');
         container.innerHTML = drawnCards.map(function(card, i) {
             var imgSrc = 'images/saints/' + card.id + '.jpg';
             var flipPage = 'crux-' + card.id + '-flip.html';
@@ -1447,21 +1566,45 @@
             '</div>';
         }).join('');
 
+        // Show pack open state; card grid stays hidden until animation
+        document.getElementById('packOpenWrap').style.display = 'flex';
+        document.getElementById('cardRevealWrap').style.display = 'none';
+        document.getElementById('poTap').style.opacity = '1';
         document.getElementById('revealOverlay').style.display = 'flex';
+    }
 
-        // Staggered entry animation
-        drawnCards.forEach(function(_, i) {
-            var slot = document.getElementById('slot-' + i);
-            if (!slot) return;
-            slot.style.opacity = '0';
-            slot.style.transform = 'translateY(14px)';
-            slot.style.transition = 'none';
-            setTimeout(function() {
-                slot.style.transition = 'opacity 0.32s ease, transform 0.32s ease';
-                slot.style.opacity = '1';
-                slot.style.transform = 'translateY(0)';
-            }, i * 75 + 40);
-        });
+    function triggerPackOpen(pack) {
+        var art = document.getElementById('poArt');
+        art.onclick = null; // prevent double-tap
+        art.classList.add('is-opening');
+        document.getElementById('poTap').style.opacity = '0';
+
+        setTimeout(function() {
+            // Bright flash as pack bursts
+            var flash = document.getElementById('revealFlash');
+            flash.className = 'reveal-flash';
+            void flash.offsetWidth;
+            flash.className = 'reveal-flash flash-pack';
+
+            // Swap to card reveal
+            document.getElementById('packOpenWrap').style.display = 'none';
+            document.getElementById('cardRevealWrap').style.display = 'flex';
+
+            // Cards fly in from center — more dramatic than the gentle fade
+            drawnCards.forEach(function(_, i) {
+                var slot = document.getElementById('slot-' + i);
+                if (!slot) return;
+                slot.style.opacity = '0';
+                slot.style.transform = 'translateY(55px) scale(0.75)';
+                slot.style.transition = 'none';
+                setTimeout(function() {
+                    slot.style.transition =
+                        'opacity 0.38s ease, transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    slot.style.opacity = '1';
+                    slot.style.transform = 'translateY(0) scale(1)';
+                }, i * 85 + 60);
+            });
+        }, 520);
     }
 
     function rarityIcon(r) {
@@ -1540,6 +1683,10 @@
 
     window.closeReveal = function() {
         document.getElementById('revealOverlay').style.display = 'none';
+        document.getElementById('packOpenWrap').style.display = 'flex';
+        document.getElementById('cardRevealWrap').style.display = 'none';
+        var art = document.getElementById('poArt');
+        art.classList.remove('is-opening');
         pendingPack = null;
         // Re-render store with updated balance
         renderStore(!!window.currentUid);
