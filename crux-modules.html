@@ -998,10 +998,32 @@
             font-weight: 700;
             color: var(--gold-dark);
             margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
 
         .landing-card:hover .landing-card-footer {
             color: var(--navy);
+        }
+
+        .landing-card-games {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--gold-dark);
+            text-decoration: none;
+            opacity: 0.7;
+            transition: opacity 0.15s;
+        }
+
+        .landing-card:hover .landing-card-games {
+            color: var(--navy);
+            opacity: 1;
+        }
+
+        .landing-card-games:hover {
+            opacity: 1 !important;
+            text-decoration: underline;
         }
 
     </style>
@@ -1050,7 +1072,7 @@
                     </div>
                     <h3 class="landing-card-title">The Holy Trinity</h3>
                     <p class="landing-card-desc">One God in three Persons — Father, Son, and Holy Spirit. The central mystery of the Christian faith.</p>
-                    <div class="landing-card-footer">Start →</div>
+                    <div class="landing-card-footer"><span>Start →</span><a href="crux-games.html?module=trinity" class="landing-card-games" onclick="event.stopPropagation()">🎮 Practice Games</a></div>
                 </div>
                 <div class="landing-card" onclick="window.location.href='crux-modules.html?module=jesus'">
                     <div class="landing-card-top">
@@ -1059,7 +1081,7 @@
                     </div>
                     <h3 class="landing-card-title">Who Is Jesus Christ?</h3>
                     <p class="landing-card-desc">Fully God and fully human — what that means and why it matters for everything else in the faith.</p>
-                    <div class="landing-card-footer">Start →</div>
+                    <div class="landing-card-footer"><span>Start →</span><a href="crux-games.html?module=jesus" class="landing-card-games" onclick="event.stopPropagation()">🎮 Practice Games</a></div>
                 </div>
                 <div class="landing-card" onclick="window.location.href='crux-modules.html?module=mary'">
                     <div class="landing-card-top">
@@ -1068,7 +1090,7 @@
                     </div>
                     <h3 class="landing-card-title">Mary &amp; the Saints</h3>
                     <p class="landing-card-desc">The Communion of Saints — why the Church honors Mary, what it means to have a patron saint, and how the saints intercede for us.</p>
-                    <div class="landing-card-footer">Start →</div>
+                    <div class="landing-card-footer"><span>Start →</span><a href="crux-games.html?module=mary" class="landing-card-games" onclick="event.stopPropagation()">🎮 Practice Games</a></div>
                 </div>
                 <div class="landing-card" onclick="window.location.href='crux-modules.html?module=prodigal_son'">
                     <div class="landing-card-top">
@@ -1109,7 +1131,7 @@
                     </div>
                     <h3 class="landing-card-title">The Seven Sacraments</h3>
                     <p class="landing-card-desc">Seven sacred signs instituted by Christ — what they are, what they do, and why the Church calls them encounters with God.</p>
-                    <div class="landing-card-footer">Start →</div>
+                    <div class="landing-card-footer"><span>Start →</span><a href="crux-games.html?module=sacraments" class="landing-card-games" onclick="event.stopPropagation()">🎮 Practice Games</a></div>
                 </div>
                 <div class="landing-card" onclick="window.location.href='crux-modules.html?module=mass_real_presence'">
                     <div class="landing-card-top">
@@ -1118,7 +1140,7 @@
                     </div>
                     <h3 class="landing-card-title">The Mass &amp; the Real Presence</h3>
                     <p class="landing-card-desc">What actually happens at Mass — and why the Eucharist is the source and summit of the Catholic faith.</p>
-                    <div class="landing-card-footer">Start →</div>
+                    <div class="landing-card-footer"><span>Start →</span><a href="crux-games.html?module=mass_real_presence" class="landing-card-games" onclick="event.stopPropagation()">🎮 Practice Games</a></div>
                 </div>
                 <div class="landing-card" onclick="window.location.href='crux-modules.html?module=reconciliation'">
                     <div class="landing-card-top">
@@ -1127,7 +1149,7 @@
                     </div>
                     <h3 class="landing-card-title">Reconciliation &amp; Confession</h3>
                     <p class="landing-card-desc">What happens in the confessional, why we need it, and what the Church means by God's mercy being inexhaustible.</p>
-                    <div class="landing-card-footer">Start →</div>
+                    <div class="landing-card-footer"><span>Start →</span><a href="crux-games.html?module=reconciliation" class="landing-card-games" onclick="event.stopPropagation()">🎮 Practice Games</a></div>
                 </div>
             </div>
         </div>
@@ -1150,7 +1172,7 @@
                     </div>
                     <h3 class="landing-card-title">Conscience &amp; Moral Decision-Making</h3>
                     <p class="landing-card-desc">What the Church teaches about conscience — and why it is not a permission slip to do whatever you want.</p>
-                    <div class="landing-card-footer">Start →</div>
+                    <div class="landing-card-footer"><span>Start →</span><a href="crux-games.html?module=conscience" class="landing-card-games" onclick="event.stopPropagation()">🎮 Practice Games</a></div>
                 </div>
                 <div class="landing-card" onclick="window.location.href='crux-modules.html?module=fruits_holy_spirit'">
                     <div class="landing-card-top">

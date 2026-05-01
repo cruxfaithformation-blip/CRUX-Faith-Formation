@@ -730,6 +730,136 @@
             background: var(--gold-light);
         }
 
+        /* ─── DASHBOARD SECTIONS ─────────────────────────── */
+        .challenge-section { margin-bottom: 2.75rem; }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-icon { font-size: 1.2rem; line-height: 1; }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy);
+        }
+
+        .section-sub {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-left: auto;
+        }
+
+        .link-card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 0.875rem;
+        }
+
+        .link-card {
+            display: flex;
+            align-items: center;
+            gap: 0.875rem;
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem 1.25rem;
+            box-shadow: var(--shadow-sm);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+        }
+
+        .link-card:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--border-gold);
+        }
+
+        .link-card-icon { font-size: 1.3rem; flex-shrink: 0; line-height: 1; }
+
+        .link-card-body { flex: 1; min-width: 0; }
+
+        .link-card-type {
+            font-size: 0.67rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            margin-bottom: 0.2rem;
+        }
+
+        .link-card-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--navy);
+            line-height: 1.35;
+        }
+
+        .link-card-badge {
+            display: inline-block;
+            background: rgba(212, 165, 116, 0.12);
+            color: var(--gold-dark);
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 0.15rem 0.5rem;
+            border-radius: 12px;
+            margin-top: 0.3rem;
+        }
+
+        .link-card-arrow {
+            font-size: 1rem;
+            color: rgba(212, 165, 116, 0.5);
+            flex-shrink: 0;
+            transition: color 0.15s, transform 0.15s;
+        }
+
+        .link-card:hover .link-card-arrow {
+            color: var(--gold-dark);
+            transform: translateX(3px);
+        }
+
+        /* ─── LOGIN NUDGE ─────────────────────────────────── */
+        .login-nudge {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+            background: var(--navy);
+            border-radius: 10px;
+            padding: 1rem 1.5rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .login-nudge p {
+            color: rgba(255,255,255,0.7);
+            font-size: 0.88rem;
+            margin: 0;
+        }
+
+        .login-nudge-btn {
+            display: inline-block;
+            background: var(--gold);
+            color: var(--navy);
+            font-size: 0.78rem;
+            font-weight: 700;
+            padding: 0.5rem 1.25rem;
+            border-radius: 6px;
+            text-decoration: none;
+            white-space: nowrap;
+            transition: background 0.2s;
+        }
+
+        .login-nudge-btn:hover { background: var(--gold-light); }
+
         /* ─── RESPONSIVE ──────────────────────────────────── */
         @media (max-width: 768px) {
             .page-title { font-size: 2rem; }
@@ -759,19 +889,16 @@
         <div class="page-hero-inner">
             <span class="page-eyebrow">Faith Formation</span>
             <h1 class="page-title">Challenges</h1>
-            <p class="page-subtitle">Test your knowledge · Earn XP · Level up your faith</p>
+            <p class="page-subtitle">Everything you can do to earn XP — modules, games, and quizzes</p>
         </div>
     </div>
 
     <div class="container">
 
-        <!-- Login Prompt (shown if not logged in) -->
-        <div id="loginPrompt" class="login-prompt hidden">
-            <h2>Create an Account to Track Your Progress</h2>
-            <p>Sign in to earn XP, level up, and track your achievements!</p>
-            <button class="btn btn-primary" onclick="window.location.href='crux-account.html'">
-                Sign In / Create Account
-            </button>
+        <!-- Login nudge (shown if not logged in) -->
+        <div id="loginNudge" class="login-nudge hidden">
+            <p>Sign in to track XP and see your progress as you complete challenges</p>
+            <a href="crux-account.html" class="login-nudge-btn">Sign In / Create Account →</a>
         </div>
 
         <!-- Progress Card (shown when logged in) -->
@@ -799,10 +926,8 @@
             </div>
         </div>
 
-        <!-- Challenges List -->
-        <div id="challengesList" class="challenges-grid">
-            <!-- Challenges will be loaded here -->
-        </div>
+        <!-- Dashboard content -->
+        <div id="challengesList"></div>
 
         <!-- Quiz Interface (hidden by default) -->
         <div id="quizContainer" class="quiz-container hidden">
@@ -823,8 +948,31 @@
         let score = 0;
         let selectedAnswer = null;
 
-        // Quiz data - stored here for MVP (will move to Firestore later)
-        const challenges = [
+        // Modules that can be completed for XP
+        const MODULES = [
+            { title: 'The Holy Trinity',                    xp: 50,  url: 'crux-modules.html?module=trinity' },
+            { title: 'Who Is Jesus Christ?',                xp: 50,  url: 'crux-modules.html?module=jesus' },
+            { title: 'Mary & the Saints',                   xp: 50,  url: 'crux-modules.html?module=mary' },
+            { title: 'The Seven Sacraments',                xp: 50,  url: 'crux-modules.html?module=sacraments' },
+            { title: 'The Mass & the Real Presence',        xp: 60,  url: 'crux-modules.html?module=mass_real_presence' },
+            { title: 'Reconciliation & Confession',         xp: 60,  url: 'crux-modules.html?module=reconciliation' },
+            { title: 'Conscience & Moral Decision-Making',  xp: 60,  url: 'crux-modules.html?module=conscience' },
+            { title: 'The Prodigal Son',                    xp: 60,  url: 'crux-modules.html?module=prodigal_son' },
+        ];
+
+        // Practice game topics
+        const GAMES = [
+            { title: 'The Holy Trinity',                    url: 'crux-games.html?module=trinity' },
+            { title: 'Who Is Jesus Christ?',                url: 'crux-games.html?module=jesus' },
+            { title: 'Mary & the Saints',                   url: 'crux-games.html?module=mary' },
+            { title: 'The Seven Sacraments',                url: 'crux-games.html?module=sacraments' },
+            { title: 'The Mass & the Real Presence',        url: 'crux-games.html?module=mass_real_presence' },
+            { title: 'Reconciliation & Confession',         url: 'crux-games.html?module=reconciliation' },
+            { title: 'Conscience & Moral Decision-Making',  url: 'crux-games.html?module=conscience' },
+        ];
+
+        // Standalone quizzes
+        const QUIZZES = [
             {
                 id: 'old-testament-1',
                 title: 'Old Testament Heroes',
@@ -1045,7 +1193,7 @@
             }
         ];
 
-        // Level thresholds
+        // Level thresholds (same as account page)
         const levels = [
             { level: 1, name: 'Seeker', xp: 0 },
             { level: 2, name: 'Learner', xp: 100 },
@@ -1061,11 +1209,12 @@
             if (user) {
                 currentUser = user;
                 await loadUserProgress();
-                showChallenges();
+                document.getElementById('loginNudge').classList.add('hidden');
             } else {
-                document.getElementById('loginPrompt').classList.remove('hidden');
+                document.getElementById('loginNudge').classList.remove('hidden');
                 document.getElementById('progressCard').classList.add('hidden');
             }
+            renderDashboard();
         });
 
         // Load user progress from Firestore
@@ -1142,36 +1291,83 @@
             return levels[0];
         }
 
-        // Show available challenges
-        function showChallenges() {
+        // Render the full challenges dashboard
+        function renderDashboard() {
             const container = document.getElementById('challengesList');
-            container.innerHTML = '';
 
-            challenges.forEach(challenge => {
-                const isCompleted = userProgress && userProgress.completedChallenges.includes(challenge.id);
-                
-                const card = document.createElement('div');
-                card.className = 'challenge-card';
-                card.innerHTML = `
-                    <div class="challenge-title">${challenge.title}</div>
-                    <div class="challenge-meta">
-                        <span class="meta-badge">${challenge.questions} Questions</span>
-                        <span class="meta-badge">${challenge.xpReward} XP</span>
-                        <span class="meta-badge">${challenge.difficulty}</span>
-                        ${isCompleted ? '<span class="meta-badge completed">✓ Completed</span>' : ''}
-                    </div>
-                    <div class="challenge-description">${challenge.description}</div>
-                    <button class="start-btn${isCompleted ? ' retake' : ''}" onclick="startChallenge('${challenge.id}')">
-                        ${isCompleted ? 'Retake Challenge' : 'Start Challenge →'}
-                    </button>
-                `;
-                container.appendChild(card);
-            });
+            const moduleCards = MODULES.map(m =>
+                '<a class="link-card" href="' + m.url + '">' +
+                '<span class="link-card-icon">✟</span>' +
+                '<div class="link-card-body">' +
+                '<div class="link-card-type">Module</div>' +
+                '<div class="link-card-title">' + m.title + '</div>' +
+                '<span class="link-card-badge">⭐ ' + m.xp + ' XP</span>' +
+                '</div>' +
+                '<span class="link-card-arrow">→</span>' +
+                '</a>'
+            ).join('');
+
+            const gameCards = GAMES.map(g =>
+                '<a class="link-card" href="' + g.url + '">' +
+                '<span class="link-card-icon">🃏</span>' +
+                '<div class="link-card-body">' +
+                '<div class="link-card-type">Practice Games</div>' +
+                '<div class="link-card-title">' + g.title + '</div>' +
+                '<span class="link-card-badge">Multiple activities</span>' +
+                '</div>' +
+                '<span class="link-card-arrow">→</span>' +
+                '</a>'
+            ).join('');
+
+            const quizCards = QUIZZES.map(q => {
+                const isCompleted = userProgress && userProgress.completedChallenges && userProgress.completedChallenges.includes(q.id);
+                return '<div class="challenge-card">' +
+                    '<div class="challenge-title">' + q.title + '</div>' +
+                    '<div class="challenge-meta">' +
+                    '<span class="meta-badge">' + q.questions + ' Questions</span>' +
+                    '<span class="meta-badge">' + q.xpReward + ' XP</span>' +
+                    '<span class="meta-badge">' + q.difficulty + '</span>' +
+                    (isCompleted ? '<span class="meta-badge completed">✓ Completed</span>' : '') +
+                    '</div>' +
+                    '<div class="challenge-description">' + q.description + '</div>' +
+                    '<button class="start-btn' + (isCompleted ? ' retake' : '') + '" onclick="startChallenge(\'' + q.id + '\')">' +
+                    (isCompleted ? 'Retake Quiz' : 'Start Quiz →') +
+                    '</button>' +
+                    '</div>';
+            }).join('');
+
+            container.innerHTML =
+                '<div class="challenge-section">' +
+                '<div class="section-header">' +
+                '<span class="section-icon">📖</span>' +
+                '<span class="section-title">Faith Formation Modules</span>' +
+                '<span class="section-sub">' + MODULES.length + ' modules · earn XP per module</span>' +
+                '</div>' +
+                '<div class="link-card-grid">' + moduleCards + '</div>' +
+                '</div>' +
+
+                '<div class="challenge-section">' +
+                '<div class="section-header">' +
+                '<span class="section-icon">🎮</span>' +
+                '<span class="section-title">Practice Games</span>' +
+                '<span class="section-sub">' + GAMES.length + ' topics · flashcards, matching & more</span>' +
+                '</div>' +
+                '<div class="link-card-grid">' + gameCards + '</div>' +
+                '</div>' +
+
+                '<div class="challenge-section">' +
+                '<div class="section-header">' +
+                '<span class="section-icon">⚡</span>' +
+                '<span class="section-title">Quick Quizzes</span>' +
+                '<span class="section-sub">Standalone challenges · earn up to 150 XP each</span>' +
+                '</div>' +
+                '<div class="challenges-grid">' + quizCards + '</div>' +
+                '</div>';
         }
 
-        // Start a challenge
+        // Start a quiz challenge
         window.startChallenge = function(challengeId) {
-            currentChallenge = challenges.find(c => c.id === challengeId);
+            currentChallenge = QUIZZES.find(c => c.id === challengeId);
             currentQuestionIndex = 0;
             score = 0;
             selectedAnswer = null;
@@ -1381,22 +1577,13 @@
             }
         }
 
-        // Return to challenges
+        // Return to dashboard
         window.returnToChallenges = async function() {
-            console.log('Returning to challenges, reloading progress...');
-            
-            // Reload progress from Firebase to get updated XP
             await loadUserProgress();
-            
-            // Show the challenges page
             document.getElementById('quizContainer').classList.add('hidden');
             document.getElementById('challengesList').classList.remove('hidden');
             document.getElementById('progressCard').classList.remove('hidden');
-            
-            // Refresh challenges list to show completed status
-            showChallenges();
-            
-            console.log('✅ Challenges refreshed with updated progress!');
+            renderDashboard();
         };
     </script>
 </body>
