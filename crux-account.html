@@ -2568,7 +2568,7 @@
             btn.textContent = 'Saving…';
             btn.disabled = true;
             try {
-                await updateDoc(doc(db, 'userProgress', _favUserId), { favoriteCards: _selectedFavs });
+                await updateDoc(progressDocRef(_favUserId), { favoriteCards: _selectedFavs });
                 renderFavorites(_selectedFavs, _favOwnedIds, _favUserId);
                 closeFavModal();
             } catch(e) {
@@ -3055,7 +3055,8 @@
                 const teacherId   = teacherDoc.id;
                 const teacherData = teacherDoc.data();
 
-                const progressSnap = await getDoc(doc(db, 'userProgress', user.uid));
+                const progressRef  = progressDocRef(user.uid);
+                const progressSnap = await getDoc(progressRef);
                 const existing = progressSnap.exists() ? (progressSnap.data().teacherIds || []) : [];
                 if (existing.includes(teacherId)) {
                     feedback.className = 'join-feedback error';
@@ -3066,11 +3067,11 @@
                 }
 
                 if (progressSnap.exists()) {
-                    await updateDoc(doc(db, 'userProgress', user.uid), {
+                    await updateDoc(progressRef, {
                         teacherIds: arrayUnion(teacherId)
                     });
                 } else {
-                    await setDoc(doc(db, 'userProgress', user.uid), {
+                    await setDoc(progressRef, {
                         totalXP: 0, xpFromQuizzes: 0, xpFromTeachers: 0,
                         level: 1, teacherIds: [teacherId], createdAt: serverTimestamp()
                     });
