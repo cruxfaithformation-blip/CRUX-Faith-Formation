@@ -426,11 +426,38 @@
             letter-spacing: 0.5px;
         }
 
-        .card-row {
-            display: flex;
-            align-items: flex-start;
-            gap: 1.25rem;
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 1rem;
         }
+
+        .rarity-group { margin-bottom: 1.5rem; }
+        .rarity-group:last-child { margin-bottom: 0; }
+
+        .rarity-group-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.58rem;
+            font-weight: 700;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+        .rarity-group-label::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: currentColor;
+            opacity: 0.15;
+        }
+        .rarity-group-label.legendary { color: #d4a574; }
+        .rarity-group-label.epic      { color: #b464ff; }
+        .rarity-group-label.rare      { color: #8ab4d4; }
+        .rarity-group-label.uncommon  { color: #6dbd8a; }
+        .rarity-group-label.common    { color: rgba(255,255,255,0.35); }
 
         /* CSS-only saint card (CRUX card back design) */
         .saint-card {
@@ -538,6 +565,19 @@
         @keyframes legendaryShimmer {
             0%, 100% { opacity: 0.7; }
             50% { opacity: 1; }
+        }
+        .card-rarity-bar.epic {
+            background: linear-gradient(90deg, transparent 0%, #b464ff 20%, #dba8ff 50%, #b464ff 80%, transparent 100%);
+            height: 3px;
+            animation: legendaryShimmer 2.5s ease-in-out infinite;
+        }
+        .card-rarity-bar.rare {
+            background: linear-gradient(90deg, transparent 0%, #8ab4d4 50%, transparent 100%);
+            height: 2px;
+        }
+        .card-rarity-bar.uncommon {
+            background: linear-gradient(90deg, transparent 0%, #6dbd8a 50%, transparent 100%);
+            height: 2px;
         }
 
         .card-rarity-badge {
@@ -1022,8 +1062,8 @@
             .auth-card { padding: 1.75rem 1.25rem; }
             .profile-hero { padding: 1.75rem 1.25rem; }
             .card-showcase-section { padding: 1.5rem 1.25rem; }
-            .card-row { gap: 0.85rem; flex-wrap: wrap; }
-            .saint-card { width: 84px; height: 120px; }
+            .card-grid { grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 0.7rem; }
+            .saint-card { width: 100%; height: 120px; }
             .card-wordmark { font-size: 0.78rem; letter-spacing: 4px; }
             .join-row { flex-direction: column; }
             .btn-join { width: 100%; }
@@ -1172,7 +1212,7 @@
                     <div class="showcase-title">&#127183; Card Collection</div>
                     <div class="showcase-sub" id="cardCount">Loading…</div>
                 </div>
-                <div class="card-row" id="cardRow">
+                <div id="cardRow">
                     <div class="no-data" style="padding:1rem 0;">Loading your cards…</div>
                 </div>
                 <div style="margin-top:1rem;padding-top:1rem;border-top:1px solid rgba(255,255,255,0.07);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:0.75rem;">
@@ -1187,7 +1227,7 @@
                     <div class="showcase-title" style="color:rgba(212,165,116,0.9);">◆ Module Cards</div>
                     <div class="showcase-sub" id="moduleCardCount"></div>
                 </div>
-                <div class="card-row" id="moduleCardRow">
+                <div class="card-grid" id="moduleCardRow">
                     <div class="no-data" style="padding:1rem 0;">Complete modules to earn cards.</div>
                 </div>
             </div>
@@ -1740,32 +1780,49 @@
         const ADMIN_UIDS = ['ratIiHiOj6Qnd2nHRvQsLBiQj953'];
 
         function renderCardShowcase(cardsOwned, isAdmin) {
-            const row = document.getElementById('cardRow');
-            const countEl = document.getElementById('cardCount');
+            const container = document.getElementById('cardRow');
+            const countEl   = document.getElementById('cardCount');
             const displayIds = isAdmin ? Object.keys(CARD_CATALOG) : cardsOwned;
             if (!displayIds || displayIds.length === 0) {
-                row.innerHTML = '<div class="no-data" style="padding:1rem 0;">No cards yet — keep exploring to earn your first card.</div>';
+                container.innerHTML = '<div class="no-data" style="padding:1rem 0;">No cards yet — keep exploring to earn your first card.</div>';
                 countEl.textContent = '0 cards';
                 return;
             }
             countEl.textContent = displayIds.length + ' card' + (displayIds.length !== 1 ? 's' : '') + (isAdmin ? ' (admin view)' : '');
-            const cardEls = displayIds.map(id => {
+
+            const RARITY_ORDER = ['legendary', 'epic', 'rare', 'uncommon', 'common'];
+            const RARITY_LABELS = { legendary: '✦ Legendary', epic: '◆ Epic', rare: 'Rare', uncommon: 'Uncommon', common: 'Common' };
+
+            const groups = {};
+            displayIds.forEach(id => {
                 const card = CARD_CATALOG[id] || { name: id, rarity: 'common', url: null };
-                const isLegendary = card.rarity === 'legendary';
-                const tag = card.url ? 'a' : 'div';
+                const r = card.rarity || 'common';
+                if (!groups[r]) groups[r] = [];
+                groups[r].push({ id, card });
+            });
+
+            function cardHtml(id, card) {
+                const tag  = card.url ? 'a' : 'div';
                 const href = card.url ? ` href="${card.url}"` : '';
+                const barClass = ['legendary','epic','rare','uncommon'].includes(card.rarity) ? card.rarity : '';
                 return `<${tag}${href} class="saint-card${card.url ? ' clickable' : ''}" title="${card.name}">` +
-                    `<div class="card-rarity-bar${isLegendary ? ' legendary' : ''}"></div>` +
+                    `<div class="card-rarity-bar${barClass ? ' ' + barClass : ''}"></div>` +
                     `<div class="card-wordmark">CRUX</div>` +
                     `<div class="card-saint-name">${card.name}</div>` +
                 `</${tag}>`;
-            }).join('');
-            row.innerHTML = cardEls +
-                `<div class="card-cta">` +
-                    `<div class="cards-hint" style="font-size:0.72rem;color:var(--text-muted);">` +
-                        `More cards coming with new modules.` +
-                    `</div>` +
-                `</div>`;
+            }
+
+            const html = RARITY_ORDER
+                .filter(r => groups[r] && groups[r].length > 0)
+                .map(r => {
+                    const cards = groups[r].map(({ id, card }) => cardHtml(id, card)).join('');
+                    return `<div class="rarity-group">` +
+                        `<div class="rarity-group-label ${r}">${RARITY_LABELS[r]}</div>` +
+                        `<div class="card-grid">${cards}</div>` +
+                    `</div>`;
+                }).join('');
+
+            container.innerHTML = html;
         }
 
         function renderModuleCards(moduleCards, isAdmin) {
