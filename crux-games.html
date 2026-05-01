@@ -508,7 +508,143 @@ conscience: {
     },
 },
 
+// ─── MASS & REAL PRESENCE ─────────────────────────────────
+mass_real_presence: {
+    title: 'The Mass & Real Presence',
+    eyebrow: 'Pillar II · What We Celebrate',
+    desc: 'Six games on the Eucharist, transubstantiation, and why the Real Presence is the center of Catholic life.',
+    moduleLink: 'crux-module-mass.html',
+    games: [
+        { id:'flashcard',   icon:'🃏', name:'Flashcards',        desc:'Key terms: Real Presence, transubstantiation, John 6, and the early Church witnesses.',    xp:15 },
+        { id:'scramble',    icon:'🔤', name:'Word Scramble',     desc:'Unscramble Eucharistic vocabulary.',                                                        xp:15 },
+        { id:'matching',    icon:'🔗', name:'Matching Pairs',    desc:'Match terms, councils, and figures to their correct descriptions.',                         xp:20 },
+        { id:'truefalse',   icon:'✅', name:'True or False',     desc:'Statements about the Real Presence, transubstantiation, and the Mass.',                     xp:15 },
+        { id:'fillinblank', icon:'✏️', name:'Fill in the Blank', desc:'Complete key sentences about Eucharistic theology.',                                        xp:15 },
+        { id:'dragdrop',    icon:'🗂️', name:'Catholic or Memorial?', desc:'Sort each statement: is it Catholic teaching on the Eucharist or the memorial-only view?', xp:20 },
+    ],
+    flashcards: [
+        { term:'Real Presence',          def:'The Catholic doctrine that Jesus Christ is truly, really, and substantially present — Body, Blood, Soul, and Divinity — in the Eucharist. Not symbolic. Not spiritual only. Actually present.' },
+        { term:'Transubstantiation',     def:'The substance of the bread and wine is wholly changed into the Body and Blood of Christ while the outward appearances (taste, color, smell) remain unchanged.' },
+        { term:'John 6',                 def:'The Bread of Life discourse. Jesus says "my flesh is real food and my blood is real drink." Many disciples leave. Jesus does not correct their literal understanding — he asks the Twelve if they want to leave too.' },
+        { term:'Source and Summit',      def:'The Eucharist is the "source and summit" of the Christian life (Lumen Gentium §11). Everything else in the Church flows from it and leads back to it.' },
+        { term:'Ignatius of Antioch',    def:'Writing around 107 AD, he called the Eucharist "the flesh of our Savior Jesus Christ." He treated the Real Presence not as a disputed doctrine but as established common ground — within living memory of the Apostles.' },
+        { term:'Zwingli',                def:'Swiss reformer who taught the Lord\'s Supper is a memorial only — the bread and wine symbolize Christ but are not his actual Body and Blood.' },
+        { term:'Eucharistic Miracle',    def:'A physical phenomenon in which a consecrated host has been found to contain human cardiac tissue or blood. Lanciano (700 AD) and Buenos Aires (1996) are among the most studied.' },
+    ],
+    scrambles: [
+        { word:'EUCHARIST',         clue:'The sacrament in which bread and wine become the Body and Blood of Christ.' },
+        { word:'TRANSUBSTANTIATION',clue:'The Catholic term for the change of substance that occurs at the consecration.' },
+        { word:'CONSECRATION',      clue:'The moment at Mass when the priest speaks the words of Christ and the bread and wine become his Body and Blood.' },
+        { word:'SACRIFICE',         clue:'The Mass is a re-presentation of this — the one offering of Christ at Calvary, made present again on the altar.' },
+        { word:'PRESENCE',          clue:'Real ___ — the teaching that Christ is truly and substantially present in the Eucharist, not merely symbolically.' },
+    ],
+    matching: [
+        { term:'Real Presence',         def:'Christ is truly present — Body, Blood, Soul, Divinity' },
+        { term:'Transubstantiation',    def:'Substance changes; outward appearances remain' },
+        { term:'John 6',                def:'Bread of Life discourse; disciples leave rather than accept it' },
+        { term:'Source and Summit',     def:'How the Church describes the Eucharist\'s role in Christian life' },
+        { term:'Ignatius of Antioch',   def:'Called the Eucharist "the flesh of our Savior" around 107 AD' },
+        { term:'Zwingli',               def:'Taught the Lord\'s Supper is a memorial only' },
+        { term:'Buenos Aires (1996)',   def:'Eucharistic miracle: consecrated host found to contain cardiac muscle tissue' },
+    ],
+    truefalse: [
+        { stmt:'The Catholic Church teaches that the bread and wine at Mass become symbols of Christ\'s Body and Blood.',          ans:false, expl:'False! The Church teaches the Real Presence — the bread and wine truly become the Body and Blood of Christ. They are not symbols.' },
+        { stmt:'Transubstantiation means the outward appearance of the bread and wine changes at consecration.',                   ans:false, expl:'False! In transubstantiation the substance (what something actually is) changes, while the accidents (appearance, taste, smell) remain the same.' },
+        { stmt:'In John 6, when disciples objected to his teaching, Jesus clarified that he was speaking metaphorically.',         ans:false, expl:'False! Jesus let the disciples leave without correction, then asked the Twelve if they wanted to leave too — confirming he meant what he said literally.' },
+        { stmt:'Ignatius of Antioch, writing around 107 AD, treated the Real Presence as settled common ground.',                  ans:true,  expl:'Correct! Writing within living memory of the Apostles, Ignatius called the Eucharist "the flesh of our Savior" and described those who deny it as in serious error.' },
+        { stmt:'The Eucharist is described as the "source and summit" of the Christian life in Lumen Gentium.',                   ans:true,  expl:'Correct! Lumen Gentium §11 uses exactly this language — all of the Church\'s activity flows from the Eucharist and leads back to it.' },
+        { stmt:'The Council of Trent defined the doctrine of transubstantiation.',                                                 ans:true,  expl:'Correct! The Council of Trent formally defined and named transubstantiation as the term for what happens at the consecration.' },
+    ],
+    fillinblank: [
+        { sentence:'The doctrine that Christ is truly present in the Eucharist is called the ___ Presence.',                answer:'Real',              wordBank:['Real','Spiritual','Symbolic','Memorial'] },
+        { sentence:'The substance of the bread and wine is changed into the Body and Blood of Christ through ___.',         answer:'Transubstantiation', wordBank:['Transubstantiation','Consecration','Blessing','Transformation'] },
+        { sentence:'The Eucharist is the "source and ___" of the Christian life (Lumen Gentium §11).',                     answer:'summit',            wordBank:['summit','center','foundation','crown'] },
+        { sentence:'In John ___, Jesus gives the Bread of Life discourse and many disciples leave rather than accept it.', answer:'6',                 wordBank:['6','3','13','21'] },
+        { sentence:'Ignatius of Antioch called the Eucharist "the flesh of our ___" around 107 AD.',                      answer:'Savior',            wordBank:['Savior','Lord','God','King'] },
+    ],
+    dragdrop: {
+        items:['The bread becomes Christ\'s Body at consecration','The bread and wine are symbols of Christ','The Mass re-presents the sacrifice of Calvary','The Last Supper was a memorial meal only','Christ is truly present — Body, Blood, Soul, and Divinity','The Eucharist is a sign that points to Christ'],
+        cols: 2,
+        categories:{ 'Catholic Teaching':['The bread becomes Christ\'s Body at consecration','The Mass re-presents the sacrifice of Calvary','Christ is truly present — Body, Blood, Soul, and Divinity'], 'Memorial / Symbolic View':['The bread and wine are symbols of Christ','The Last Supper was a memorial meal only','The Eucharist is a sign that points to Christ'] }
+    },
+},
+
+// ─── RECONCILIATION ───────────────────────────────────────
+reconciliation: {
+    title: 'Reconciliation & Confession',
+    eyebrow: 'Pillar II · What We Celebrate',
+    desc: 'Five games on the sacrament of Confession — what it is, why it works, and what happens inside.',
+    moduleLink: 'crux-module-reconciliation.html',
+    games: [
+        { id:'flashcard',   icon:'🃏', name:'Flashcards',        desc:'Key terms: contrition, the sacramental seal, in persona Christi, and the five parts.',    xp:15 },
+        { id:'scramble',    icon:'🔤', name:'Word Scramble',     desc:'Unscramble words from the theology of Reconciliation.',                                    xp:15 },
+        { id:'matching',    icon:'🔗', name:'Matching Pairs',    desc:'Match theological terms, Scripture passages, and Church law to their definitions.',        xp:20 },
+        { id:'truefalse',   icon:'✅', name:'True or False',     desc:'Statements about confession, the seal, contrition, and the role of the priest.',           xp:15 },
+        { id:'fillinblank', icon:'✏️', name:'Fill in the Blank', desc:'Complete sentences about the five parts of Reconciliation and its theology.',              xp:15 },
+    ],
+    flashcards: [
+        { term:'Reconciliation',        def:'Also called Confession or Penance. The sacrament in which God\'s forgiveness is given through a priest to those who confess sins with genuine contrition.' },
+        { term:'John 20:22–23',         def:'Jesus breathes on the Apostles and says: "Receive the Holy Spirit. If you forgive the sins of any, they are forgiven; if you retain them, they are retained." The scriptural foundation for auricular confession.' },
+        { term:'In Persona Christi',    def:'"In the person of Christ." The priest forgives not on his own authority but as Christ himself — meaning the priest\'s personal holiness does not affect the validity of absolution.' },
+        { term:'Contrition',            def:'Sorrow for sin. Perfect contrition is sorrow arising from love of God. Imperfect contrition (attrition) is sorrow arising from fear of punishment — both are valid for the sacrament.' },
+        { term:'Sacramental Seal',      def:'The absolute, unconditional prohibition on a priest revealing anything he heard in confession. No exceptions — not civil courts, bishops, or emergencies. Canon 983. Breaking it brings automatic excommunication.' },
+        { term:'Examination of Conscience', def:'The prayerful review of one\'s thoughts, words, and actions since the last confession, measured against God\'s law. The first step of Reconciliation.' },
+        { term:'Penance',               def:'The act assigned by the priest after absolution — a prayer, sacrifice, or act of service — that expresses the penitent\'s desire to repair the damage of sin and reorient toward God.' },
+    ],
+    scrambles: [
+        { word:'CONFESSION',     clue:'Another name for the sacrament of Reconciliation — the act of naming sins to a priest.' },
+        { word:'CONTRITION',     clue:'Genuine sorrow for sins. Without this, the sacrament is invalid.' },
+        { word:'ABSOLUTION',     clue:'The priest\'s pronouncement of forgiveness, spoken in the person of Christ.' },
+        { word:'PENANCE',        clue:'The assigned act that follows absolution — a prayer or sacrifice to repair and reorient.' },
+        { word:'SEAL',           clue:'The sacramental ___ — the absolute prohibition on ever revealing what was confessed.' },
+    ],
+    matching: [
+        { term:'John 20:22–23',           def:'Scriptural basis for the authority to forgive sins' },
+        { term:'In persona Christi',       def:'Priest acts in Christ\'s person — not his own authority' },
+        { term:'Sacramental Seal',         def:'Absolute confidentiality of confession — no exceptions' },
+        { term:'Perfect contrition',       def:'Sorrow for sin arising from love of God' },
+        { term:'Imperfect contrition',     def:'Sorrow for sin arising from fear of punishment' },
+        { term:'Examination of conscience',def:'Prayerful review of sins before confession' },
+        { term:'Canon 983',               def:'Church law establishing the absolute seal of confession' },
+    ],
+    truefalse: [
+        { stmt:'The sacramental seal of confession can be broken by a priest if the crime is serious enough.',                  ans:false, expl:'False! Canon 983 makes the seal absolute — no exceptions. Not civil courts, not bishops, not emergencies. A priest who breaks it faces automatic excommunication.' },
+        { stmt:'Jesus gave the Apostles authority to both forgive and retain sins in John 20.',                                  ans:true,  expl:'Correct! "If you forgive the sins of any they are forgiven; if you retain them they are retained." This authority to make a discriminating judgment requires hearing the sins — which is why auricular confession follows.' },
+        { stmt:'Perfect contrition alone is enough to forgive mortal sins without any intention of going to confession.',       ans:false, expl:'False! The Council of Trent acknowledged perfect contrition can restore grace, but only with the intention to confess. The sacrament is the ordinary path God established — perfect contrition is the extraordinary provision when confession is genuinely impossible.' },
+        { stmt:'A sinful priest\'s absolution is invalid because his unworthiness taints the sacrament.',                      ans:false, expl:'False! The priest acts in persona Christi — in the person of Christ. The grace flows through the office, not the man. A sinful priest absolves validly. This is why the sacrament can be trusted regardless of the minister\'s holiness.' },
+        { stmt:'The five parts of Reconciliation include examination of conscience, contrition, confession, absolution, and penance.',ans:true,  expl:'Correct! These are the five essential parts in order. Each is necessary: without examination you may not know your sins; without contrition the sacrament is invalid; without confession and absolution the sacrament doesn\'t happen; penance expresses the intention to repair.' },
+        { stmt:'Imperfect contrition (attrition) — sorrow out of fear of punishment — is sufficient for a valid confession.',  ans:true,  expl:'Correct! While perfect contrition (from love of God) is higher, the Church teaches that attrition — sorrow from fear of hell or the ugliness of sin — is a sufficient disposition for the sacrament of Reconciliation.' },
+    ],
+    fillinblank: [
+        { sentence:'Jesus gave the Apostles authority to forgive sins in the Gospel of ___, chapter 20.',        answer:'John',            wordBank:['John','Matthew','Luke','Acts'] },
+        { sentence:'The priest forgives sins not by his own power but ___ — in the person of Christ.',          answer:'in persona Christi',wordBank:['in persona Christi','ex opere operato','in nomine Dei','per se'] },
+        { sentence:'The absolute prohibition on revealing what is heard in confession is called the sacramental ___.',answer:'seal',       wordBank:['seal','vow','secret','promise'] },
+        { sentence:'Sorrow for sin arising from love of God is called ___ contrition.',                         answer:'perfect',         wordBank:['perfect','imperfect','complete','total'] },
+        { sentence:'The five parts of Reconciliation in order are: examination, contrition, confession, ___, penance.',answer:'absolution',wordBank:['absolution','prayer','blessing','penance'] },
+    ],
+    dragdrop: {
+        items:['Examination of Conscience','Contrition','Confession of Sins','Absolution','Penance'],
+        cols: 3,
+        categories:{ 'Before the Confessional':['Examination of Conscience','Contrition'], 'In the Confessional':['Confession of Sins','Absolution'], 'After Confession':['Penance'] }
+    },
+},
+
 }; // end GAME_MODULES
+
+// Titles for modules that exist but don't yet have practice games
+const COMING_SOON_MODULES = {
+    prodigal_son:          'The Prodigal Son',
+    bible_geography:       'The Geography of the Bible',
+    fruits_holy_spirit:    'Fruits of the Holy Spirit',
+    ten_commandments:      'The Ten Commandments',
+    beatitudes:            'The Beatitudes',
+    lords_prayer:          'The Lord\'s Prayer',
+    gifts_holy_spirit:     'Gifts of the Holy Spirit',
+    liturgical_year:       'The Liturgical Year',
+    rosary:                'The Rosary',
+    creation_human_person: 'Creation & the Human Person',
+    nicene_creed:          'The Nicene Creed',
+};
 
 // ══════════════════════════════════════════════════════════
 // INIT — read URL param
@@ -560,12 +696,27 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function renderNotFound() {
-    document.querySelector('.page-wrap').innerHTML = `
-        <div class="not-found">
-            <h2>Module Not Found</h2>
-            <p>That module doesn't exist yet. Check back soon!</p>
-            <a href="index.html" class="btn-game">← Back to CRUX</a>
-        </div>`;
+    const title = COMING_SOON_MODULES[MODULE_ID];
+    if (title) {
+        document.title = `CRUX — ${title} Games`;
+        document.getElementById('heroEyebrow').textContent = 'Practice Games';
+        document.getElementById('heroTitle').textContent   = title;
+        document.getElementById('heroDesc').textContent    = '';
+        document.getElementById('gameGrid').innerHTML = `
+            <div style="grid-column:1/-1;text-align:center;padding:3rem 1rem;">
+                <div style="font-size:2.5rem;margin-bottom:1rem;">🕊️</div>
+                <div style="font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:#1a1f36;margin-bottom:0.5rem;">Practice Games Coming Soon</div>
+                <p style="font-size:0.88rem;color:#6b7280;max-width:340px;margin:0 auto 1.5rem;">Games for <strong>${title}</strong> are in development. Finish the lesson to earn XP and check back soon.</p>
+                <a href="crux-modules.html" class="btn-game outline">← Back to Modules</a>
+            </div>`;
+    } else {
+        document.querySelector('.page-wrap').innerHTML = `
+            <div style="text-align:center;padding:4rem 1rem;">
+                <h2 style="font-family:'Playfair Display',serif;color:#1a1f36;margin-bottom:0.75rem;">Module Not Found</h2>
+                <p style="color:#6b7280;margin-bottom:1.5rem;">This module doesn't exist.</p>
+                <a href="index.html" class="btn-game">← Back to CRUX</a>
+            </div>`;
+    }
 }
 
 // ══════════════════════════════════════════════════════════
