@@ -711,16 +711,14 @@
 
         .card-front-face {
             display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 0.75rem;
-            text-align: center;
-            gap: 0.4rem;
+            position: absolute;
+            inset: 0;
+            border-radius: 10px;
+            overflow: hidden;
             border: 2px solid;
         }
         .card-slot.revealed .card-back-face { display: none; }
-        .card-slot.revealed .card-front-face { display: flex; }
+        .card-slot.revealed .card-front-face { display: block; }
         .card-slot.revealed { cursor: default; animation: reveal-pop 0.3s ease-out; }
         @keyframes reveal-pop {
             0%   { transform: scale(0.85); opacity: 0; }
@@ -731,24 +729,110 @@
         .card-slot.legendary .card-front-face {
             background: linear-gradient(145deg, #2a1a05 0%, #3d2510 50%, #1e1204 100%);
             border-color: var(--gold);
-            box-shadow: 0 0 24px rgba(212,165,116,0.35);
+            box-shadow: 0 0 24px rgba(212,165,116,0.45);
         }
         .card-slot.rare .card-front-face {
             background: linear-gradient(145deg, #0d1e3a 0%, #152d56 50%, #0a1628 100%);
             border-color: #6495ed;
-            box-shadow: 0 0 16px rgba(100,149,237,0.25);
+            box-shadow: 0 0 18px rgba(100,149,237,0.35);
         }
         .card-slot.epic .card-front-face {
             background: linear-gradient(145deg, #1a0a2e 0%, #2a1045 50%, #130820 100%);
             border-color: #b464ff;
-            box-shadow: 0 0 20px rgba(180,100,255,0.3);
+            box-shadow: 0 0 20px rgba(180,100,255,0.4);
         }
         .card-slot.uncommon .card-front-face {
             background: linear-gradient(145deg, #1a1f36 0%, #242a45 100%);
-            border-color: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.18);
         }
 
-        .cf-rarity-icon { font-size: 1.1rem; }
+        /* Saint portrait image */
+        .cf-saint-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+        }
+
+        /* Bottom info overlay */
+        .cf-overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 0.55rem 0.4rem 0.38rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 55%, transparent 100%);
+        }
+        .cf-name {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 0.22rem;
+        }
+        .cf-bottom-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.25rem;
+        }
+        .cf-rarity-badge {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.43rem;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            padding: 1px 5px;
+            border-radius: 2px;
+            font-weight: 700;
+        }
+        .cf-view-link {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.42rem;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .cf-view-link:hover { color: #fff; }
+
+        /* Rarity icon top-right corner */
+        .cf-rarity-icon {
+            position: absolute;
+            top: 6px; right: 7px;
+            font-size: 0.9rem;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.95);
+            z-index: 2;
+        }
+
+        /* Duplicate badge top-left corner */
+        .cf-dupe-badge {
+            position: absolute;
+            top: 6px; left: 6px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.38rem;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            background: rgba(0,0,0,0.78);
+            color: var(--gold);
+            padding: 2px 5px;
+            border-radius: 3px;
+            z-index: 3;
+        }
+
+        /* Text fallback for cards without saint images */
+        .cf-text-fallback {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            padding: 0.75rem;
+            text-align: center;
+        }
         .cf-wordmark {
             font-family: 'Playfair Display', serif;
             font-weight: 900;
@@ -756,31 +840,53 @@
             letter-spacing: 3px;
             opacity: 0.5;
         }
-        .cf-name {
+        .cf-text-name {
             font-family: 'Playfair Display', serif;
-            font-size: 0.78rem;
+            font-size: 0.76rem;
             font-weight: 700;
             color: var(--white);
             line-height: 1.25;
         }
-        .cf-rarity-badge {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.48rem;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            padding: 2px 7px;
-            border-radius: 3px;
-            font-weight: 700;
-            margin-top: 0.15rem;
-        }
-        .legendary .cf-wordmark { color: var(--gold); }
-        .legendary .cf-rarity-badge { background: rgba(212,165,116,0.2); color: var(--gold); border: 1px solid rgba(212,165,116,0.4); }
-        .rare .cf-wordmark { color: #8ab4f8; }
+
+        .legendary .cf-rarity-badge { background: rgba(212,165,116,0.22); color: var(--gold); border: 1px solid rgba(212,165,116,0.4); }
         .rare .cf-rarity-badge { background: rgba(100,149,237,0.15); color: #8ab4f8; border: 1px solid rgba(100,149,237,0.3); }
-        .epic .cf-wordmark { color: #c97fff; }
         .epic .cf-rarity-badge { background: rgba(180,100,255,0.15); color: #c97fff; border: 1px solid rgba(180,100,255,0.35); }
+        .uncommon .cf-rarity-badge { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.14); }
+        .legendary .cf-wordmark { color: var(--gold); }
+        .rare .cf-wordmark { color: #8ab4f8; }
+        .epic .cf-wordmark { color: #c97fff; }
         .uncommon .cf-wordmark { color: rgba(255,255,255,0.35); }
-        .uncommon .cf-rarity-badge { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.12); }
+
+        /* Rarity flash overlay */
+        .reveal-flash {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 500;
+            opacity: 0;
+        }
+        @keyframes flash-gold {
+            0%   { opacity: 0; }
+            12%  { opacity: 0.65; }
+            100% { opacity: 0; }
+        }
+        @keyframes flash-blue {
+            0%   { opacity: 0; }
+            12%  { opacity: 0.5; }
+            100% { opacity: 0; }
+        }
+        .reveal-flash.flash-legendary {
+            background: radial-gradient(ellipse at center, rgba(212,175,80,0.72) 0%, transparent 60%);
+            animation: flash-gold 0.9s ease-out forwards;
+        }
+        .reveal-flash.flash-rare {
+            background: radial-gradient(ellipse at center, rgba(80,120,220,0.65) 0%, transparent 60%);
+            animation: flash-blue 0.7s ease-out forwards;
+        }
+        .reveal-flash.flash-epic {
+            background: radial-gradient(ellipse at center, rgba(160,80,240,0.65) 0%, transparent 60%);
+            animation: flash-blue 0.7s ease-out forwards;
+        }
 
         .reveal-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
         .reveal-again-btn {
@@ -926,6 +1032,7 @@
 
 <!-- Reveal overlay -->
 <div class="reveal-overlay" id="revealOverlay" style="display:none">
+    <div id="revealFlash" class="reveal-flash"></div>
     <div class="reveal-eyebrow" id="revealEyebrow"></div>
     <div class="reveal-title">Your Cards</div>
     <div class="reveal-hint" id="revealHint">Tap each card to reveal</div>
@@ -1088,6 +1195,7 @@
     let pendingPack = null;
     let drawnCards = [];
     let revealedCount = 0;
+    let ownedBeforeOpen = new Set();
 
     function balance() { return userXP - userXPSpent; }
 
@@ -1274,6 +1382,7 @@
         document.getElementById('confirmModal').style.display = 'none';
 
         // Draw cards
+        ownedBeforeOpen = new Set(userCards);
         drawnCards = drawPack(pack);
         revealedCount = 0;
 
@@ -1305,24 +1414,54 @@
         document.getElementById('revealHint').textContent = 'Tap each card to reveal';
         document.getElementById('revealActions').style.display = 'none';
         document.getElementById('tapAllBtn').style.display = 'inline-block';
+        document.getElementById('revealFlash').className = 'reveal-flash';
 
         const container = document.getElementById('revealCards');
-        container.innerHTML = drawnCards.map((card, i) =>
-            '<div class="card-slot ' + card.rarity + '" id="slot-' + i + '" onclick="revealCard(' + i + ')">' +
+        container.innerHTML = drawnCards.map(function(card, i) {
+            var imgSrc = 'images/saints/' + card.id + '.jpg';
+            var flipPage = 'crux-' + card.id + '-flip.html';
+            var isDupe = ownedBeforeOpen.has(card.id) ? '' : 'display:none';
+            return '<div class="card-slot ' + card.rarity + '" id="slot-' + i + '" onclick="revealCard(' + i + ')">' +
                 '<div class="card-back-face pulsing">' +
                     '<span class="card-back-cross">✝</span>' +
                     '<span class="card-back-wordmark">CRUX</span>' +
                 '</div>' +
                 '<div class="card-front-face">' +
+                    '<img class="cf-saint-img" src="' + imgSrc + '" alt="' + card.name + '" ' +
+                        'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+                    '<div class="cf-text-fallback" style="display:none">' +
+                        '<span class="cf-wordmark">CRUX</span>' +
+                        '<span class="cf-text-name">' + card.name + '</span>' +
+                        '<span class="cf-rarity-badge">' + card.rarity + '</span>' +
+                    '</div>' +
+                    '<div class="cf-overlay">' +
+                        '<span class="cf-name">' + card.name + '</span>' +
+                        '<div class="cf-bottom-row">' +
+                            '<span class="cf-rarity-badge">' + rarityLabel(card.rarity) + '</span>' +
+                            '<a href="' + flipPage + '" class="cf-view-link" style="display:none" onclick="event.stopPropagation()">View →</a>' +
+                        '</div>' +
+                    '</div>' +
                     '<span class="cf-rarity-icon">' + rarityIcon(card.rarity) + '</span>' +
-                    '<span class="cf-wordmark">CRUX</span>' +
-                    '<span class="cf-name">' + card.name + '</span>' +
-                    '<span class="cf-rarity-badge">' + card.rarity + '</span>' +
+                    '<span class="cf-dupe-badge" style="' + isDupe + '">Dupe +50 XP</span>' +
                 '</div>' +
-            '</div>'
-        ).join('');
+            '</div>';
+        }).join('');
 
         document.getElementById('revealOverlay').style.display = 'flex';
+
+        // Staggered entry animation
+        drawnCards.forEach(function(_, i) {
+            var slot = document.getElementById('slot-' + i);
+            if (!slot) return;
+            slot.style.opacity = '0';
+            slot.style.transform = 'translateY(14px)';
+            slot.style.transition = 'none';
+            setTimeout(function() {
+                slot.style.transition = 'opacity 0.32s ease, transform 0.32s ease';
+                slot.style.opacity = '1';
+                slot.style.transform = 'translateY(0)';
+            }, i * 75 + 40);
+        });
     }
 
     function rarityIcon(r) {
@@ -1332,15 +1471,39 @@
         return '·';
     }
 
+    function rarityLabel(r) {
+        if (r === 'legendary') return 'Legendary';
+        if (r === 'epic')      return 'Epic';
+        if (r === 'rare')      return 'Rare';
+        return 'Uncommon';
+    }
+
     window.revealCard = function(i) {
-        const slot = document.getElementById('slot-' + i);
+        var slot = document.getElementById('slot-' + i);
         if (!slot || slot.classList.contains('revealed')) return;
+        // Clear entry transition so reveal-pop takes over cleanly
+        slot.style.transition = '';
+        slot.style.opacity = '';
+        slot.style.transform = '';
         slot.classList.add('revealed');
         revealedCount++;
 
+        // Flash for rare/legendary/epic
+        var card = drawnCards[i];
+        if (card && (card.rarity === 'legendary' || card.rarity === 'rare' || card.rarity === 'epic')) {
+            var flash = document.getElementById('revealFlash');
+            flash.className = 'reveal-flash';
+            void flash.offsetWidth; // force reflow to restart animation
+            flash.className = 'reveal-flash flash-' + card.rarity;
+        }
+
         if (revealedCount === drawnCards.length) {
             document.getElementById('tapAllBtn').style.display = 'none';
-            document.getElementById('revealHint').textContent = drawnCards.length + ' new cards added to your collection';
+            var newCount = drawnCards.filter(function(c) { return !ownedBeforeOpen.has(c.id); }).length;
+            var dupeCount = drawnCards.length - newCount;
+            var msg = newCount + ' new card' + (newCount !== 1 ? 's' : '') + ' added to your collection';
+            if (dupeCount > 0) msg += ' · ' + dupeCount + ' duplicate' + (dupeCount !== 1 ? 's' : '') + ' converted to XP';
+            document.getElementById('revealHint').textContent = msg;
             showRevealActions();
         }
     };
@@ -1355,10 +1518,15 @@
     };
 
     function showRevealActions() {
-        const again = document.getElementById('openAgainBtn');
-        const bal = balance();
-        const pack = pendingPack;
-        const canAgain = pack && !pack.earnedOnly && bal >= pack.cost;
+        // Reveal View links on each card
+        drawnCards.forEach(function(_, i) {
+            var link = document.querySelector('#slot-' + i + ' .cf-view-link');
+            if (link) link.style.display = '';
+        });
+        var again = document.getElementById('openAgainBtn');
+        var bal = balance();
+        var pack = pendingPack;
+        var canAgain = pack && !pack.earnedOnly && bal >= pack.cost;
         again.disabled = !canAgain;
         again.title = !canAgain ? 'Not enough XP' : '';
         document.getElementById('revealActions').style.display = 'flex';
