@@ -1943,6 +1943,7 @@
         let _activeChildId   = null;
         let _activeChildName = null;
         let _parentUid       = null;
+        let _parentUsername  = '';
 
         function getSavedActiveChild(uid) {
             try {
@@ -2280,7 +2281,8 @@
 
                 // ── Parent account: show children panel and load child data ──
                 if (role === 'parent') {
-                    _parentUid = user.uid;
+                    _parentUid      = user.uid;
+                    _parentUsername = userData.username || 'Parent';
                     document.getElementById('parentSection').style.display = 'block';
                     document.getElementById('becomeTeacherCard').style.display = 'none';
                     await loadParentChildren(user.uid);
@@ -2296,11 +2298,17 @@
                         document.getElementById('awardsList').innerHTML =
                             '<div class="no-data">Teacher awards are shown on the child\'s student account.</div>';
                     } else {
-                        showParentNoChild(userData.username || 'Parent');
+                        await Promise.all([
+                            loadUserProgress(user.uid),
+                            loadStudyJournal(user.uid)
+                        ]);
                     }
                     return;
                 }
 
+
+                _parentUid      = user.uid;
+                _parentUsername = userData.username || user.email.split('@')[0];
 
                 await Promise.all([
                     loadUserProgress(user.uid),
@@ -2944,7 +2952,7 @@
             document.querySelector('.profile-hero')?.scrollIntoView({ behavior: 'smooth' });
         };
 
-        window.clearActiveChild = function() {
+        window.clearActiveChild = async function() {
             const user = auth.currentUser;
             if (!user) return;
             _activeChildId   = null;
@@ -2952,8 +2960,15 @@
             localStorage.removeItem('crux_active_child');
             document.getElementById('activeChildBar').classList.remove('visible');
             document.querySelectorAll('.child-card').forEach(c => c.classList.remove('active-child'));
-            const userDoc = { username: document.querySelector('.profile-greeting + .profile-username') };
-            showParentNoChild(document.getElementById('dashUsername').textContent || 'Parent');
+
+            // Restore parent's own name and reload their data
+            document.getElementById('dashUsername').textContent = _parentUsername || user.email.split('@')[0];
+            document.getElementById('dashEmail').textContent    = user.email;
+
+            await Promise.all([
+                loadUserProgress(user.uid),
+                loadStudyJournal(user.uid)
+            ]);
             loadParentChildren(user.uid);
         };
 
