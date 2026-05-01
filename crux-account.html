@@ -839,8 +839,9 @@
             border: 1px solid rgba(212,165,116,0.2);
             border-radius: 16px;
             width: 100%;
-            max-width: 560px;
-            max-height: 80vh;
+            max-width: 700px;
+            height: 90vh;
+            max-height: 760px;
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -878,10 +879,11 @@
         .fav-modal-close:hover { color: var(--gold); }
         .fav-modal-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+            grid-template-columns: repeat(4, 1fr);
             gap: 0.75rem;
             padding: 1.25rem 1.5rem;
-            overflow-y: scroll;
+            align-content: start;
+            overflow-y: auto;
             flex: 1;
             min-height: 0;
         }
@@ -958,6 +960,35 @@
         }
         .fav-save-btn:hover { opacity: 0.85; }
         .fav-save-btn:disabled { opacity: 0.4; cursor: default; }
+        .fav-page-nav {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .fav-page-btn {
+            background: rgba(255,255,255,0.07);
+            border: 1px solid rgba(255,255,255,0.12);
+            border-radius: 4px;
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            line-height: 1;
+            width: 28px;
+            height: 28px;
+            cursor: pointer;
+            transition: background 0.15s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .fav-page-btn:hover:not(:disabled) { background: rgba(212,165,116,0.15); color: var(--gold); }
+        .fav-page-btn:disabled { opacity: 0.3; cursor: default; }
+        .fav-page-label {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.68rem;
+            color: var(--text-muted);
+            min-width: 60px;
+            text-align: center;
+        }
 
         /* ─── DASHBOARD GRID ────────────────────────────── */
         .dash-grid {
@@ -1483,6 +1514,11 @@
                     </div>
                     <div class="fav-modal-grid" id="favModalGrid"></div>
                     <div class="fav-modal-footer">
+                        <div class="fav-page-nav">
+                            <button class="fav-page-btn" id="favPrevBtn" onclick="favPageNav(-1)" disabled>&#8249;</button>
+                            <span class="fav-page-label" id="favPageLabel">1 / 1</span>
+                            <button class="fav-page-btn" id="favNextBtn" onclick="favPageNav(1)" disabled>&#8250;</button>
+                        </div>
                         <span class="fav-count-label" id="favCountLabel">0 of 5 selected</span>
                         <button class="fav-save-btn" id="favSaveBtn" onclick="saveFavorites()">Save</button>
                     </div>
@@ -2105,11 +2141,21 @@
             }).join('');
         }
 
-        function openFavModal() {
-            const grid = document.getElementById('favModalGrid');
-            const displayIds = _favOwnedIds.length > 0 ? _favOwnedIds : Object.keys(CARD_CATALOG);
+        const FAV_PAGE_SIZE = 12;
+        let _favPage = 0;
 
-            grid.innerHTML = displayIds.map(id => {
+        function _favAllIds() {
+            return _favOwnedIds.length > 0 ? _favOwnedIds : Object.keys(CARD_CATALOG);
+        }
+
+        function renderFavPage() {
+            const allIds = _favAllIds();
+            const totalPages = Math.max(1, Math.ceil(allIds.length / FAV_PAGE_SIZE));
+            const start = _favPage * FAV_PAGE_SIZE;
+            const pageIds = allIds.slice(start, start + FAV_PAGE_SIZE);
+            const grid = document.getElementById('favModalGrid');
+
+            grid.innerHTML = pageIds.map(id => {
                 const card = CARD_CATALOG[id] || { name: id, rarity: 'common', url: null };
                 const imgPath = 'images/saints/' + id + '.jpg';
                 const isSel = _selectedFavs.includes(id);
@@ -2122,7 +2168,22 @@
                 '</div>';
             }).join('');
 
+            document.getElementById('favPageLabel').textContent = (_favPage + 1) + ' / ' + totalPages;
+            document.getElementById('favPrevBtn').disabled = _favPage === 0;
+            document.getElementById('favNextBtn').disabled = _favPage >= totalPages - 1;
+            grid.scrollTop = 0;
             updateFavCount();
+        }
+
+        function favPageNav(dir) {
+            const totalPages = Math.max(1, Math.ceil(_favAllIds().length / FAV_PAGE_SIZE));
+            _favPage = Math.max(0, Math.min(_favPage + dir, totalPages - 1));
+            renderFavPage();
+        }
+
+        function openFavModal() {
+            _favPage = 0;
+            renderFavPage();
             document.getElementById('favModalOverlay').classList.add('open');
         }
 
@@ -2171,6 +2232,7 @@
         window.closeFavModal   = closeFavModal;
         window.toggleFavSelect = toggleFavSelect;
         window.saveFavorites   = saveFavorites;
+        window.favPageNav      = favPageNav;
 
         // close modal on overlay click
         document.getElementById('favModalOverlay').addEventListener('click', function(e) {
