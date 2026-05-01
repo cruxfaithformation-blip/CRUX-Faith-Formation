@@ -1534,6 +1534,78 @@
             gap: 0.75rem;
         }
 
+        /* ─── USERNAME INLINE EDIT ─────────────────────── */
+        .username-edit-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 0.85rem;
+        }
+        .username-edit-wrap .profile-username { margin-bottom: 0; }
+        .username-edit-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 0.25rem 0.35rem;
+            border-radius: 4px;
+            opacity: 0;
+            transition: opacity 0.2s, color 0.2s;
+            flex-shrink: 0;
+            line-height: 1;
+        }
+        .username-edit-wrap:hover .username-edit-btn { opacity: 1; }
+        .username-edit-btn:hover { color: var(--gold); }
+        .username-edit-row { margin-bottom: 0.85rem; }
+        .username-edit-input {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.75rem;
+            font-weight: 900;
+            background: rgba(255,255,255,0.06);
+            border: 1.5px solid rgba(212,165,116,0.4);
+            border-radius: 8px;
+            color: var(--text-primary);
+            padding: 0.3rem 0.65rem;
+            width: 100%;
+            max-width: 300px;
+            outline: none;
+        }
+        .username-edit-input:focus { border-color: var(--gold); }
+        .username-edit-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        .username-save-btn {
+            font-family: 'Cinzel', serif;
+            font-size: 0.62rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--navy-deep);
+            background: var(--gold);
+            border: none;
+            border-radius: 4px;
+            padding: 0.45rem 1rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+        .username-save-btn:hover { opacity: 0.85; }
+        .username-save-btn:disabled { opacity: 0.45; cursor: default; }
+        .username-cancel-btn {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 4px;
+            padding: 0.45rem 0.85rem;
+            cursor: pointer;
+            transition: color 0.2s, border-color 0.2s;
+        }
+        .username-cancel-btn:hover { color: var(--text-primary); border-color: rgba(255,255,255,0.2); }
+
         /* ─── BACK LINK ─────────────────────────────────── */
         .back-link {
             position: fixed;
@@ -1720,8 +1792,18 @@
             <div class="profile-hero">
                 <div class="profile-hero-inner">
                     <div class="profile-hero-text">
-                        <div class="profile-greeting">Welcome back</div>
-                        <h1 class="profile-username" id="dashUsername">Loading…</h1>
+                        <div class="profile-greeting" id="profileGreeting">Welcome back</div>
+                        <div class="username-edit-wrap" id="usernameDisplayWrap">
+                            <h1 class="profile-username" id="dashUsername">Loading…</h1>
+                            <button class="username-edit-btn" id="usernameEditBtn" onclick="openUsernameEdit()" title="Edit display name">✏</button>
+                        </div>
+                        <div class="username-edit-row" id="usernameEditRow" style="display:none;">
+                            <input type="text" id="usernameEditInput" class="username-edit-input" maxlength="30" placeholder="Display name">
+                            <div class="username-edit-actions">
+                                <button class="username-save-btn" id="usernameSaveBtn" onclick="saveUsername()">Save</button>
+                                <button class="username-cancel-btn" onclick="cancelUsernameEdit()">Cancel</button>
+                            </div>
+                        </div>
                         <div class="profile-level" id="levelBadge">⚔️ Level 1 – Seeker</div>
                     </div>
                     <div class="profile-meta">
@@ -2109,6 +2191,54 @@
             fb.className='join-feedback'; fb.textContent='';
             renderTeacherSetup(null);
         };
+
+        // ── EDIT DISPLAY NAME ─────────────────────────────
+        window.openUsernameEdit = function() {
+            // Don't allow editing while viewing a child's profile
+            if (_activeChildId) return;
+            document.getElementById('usernameEditInput').value =
+                document.getElementById('dashUsername').textContent;
+            document.getElementById('usernameDisplayWrap').style.display = 'none';
+            document.getElementById('usernameEditRow').style.display = 'block';
+            const input = document.getElementById('usernameEditInput');
+            input.focus();
+            input.select();
+        };
+
+        window.cancelUsernameEdit = function() {
+            document.getElementById('usernameEditRow').style.display = 'none';
+            document.getElementById('usernameDisplayWrap').style.display = 'flex';
+        };
+
+        window.saveUsername = async function() {
+            const newName = document.getElementById('usernameEditInput').value.trim();
+            if (!newName) return;
+            const user = auth.currentUser;
+            if (!user) return;
+            const btn = document.getElementById('usernameSaveBtn');
+            btn.disabled = true;
+            btn.textContent = 'Saving…';
+            try {
+                await updateDoc(doc(db, 'users', user.uid), { username: newName });
+                document.getElementById('dashUsername').textContent = newName;
+                _parentUsername = newName;
+                cancelUsernameEdit();
+            } catch (err) {
+                console.error('saveUsername error:', err);
+                btn.textContent = 'Error';
+                setTimeout(() => { btn.disabled = false; btn.textContent = 'Save'; }, 1500);
+                return;
+            }
+            btn.disabled = false;
+            btn.textContent = 'Save';
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('usernameEditInput')?.addEventListener('keydown', e => {
+                if (e.key === 'Enter')  window.saveUsername();
+                if (e.key === 'Escape') window.cancelUsernameEdit();
+            });
+        });
 
         // ── COPY CLASS CODE TO CLIPBOARD ──────────────────
         window.copyCode = function(code) {
@@ -2851,7 +2981,10 @@
             document.getElementById('activeChildBarName').textContent = childName;
             document.getElementById('dashUsername').textContent = childName;
             document.getElementById('dashEmail').textContent = 'Family account';
-            document.getElementById('profileGreeting') && (document.getElementById('profileGreeting').textContent = 'Viewing profile for');
+            const greet = document.getElementById('profileGreeting');
+            if (greet) greet.textContent = 'Viewing profile for';
+            const editBtn = document.getElementById('usernameEditBtn');
+            if (editBtn) editBtn.style.display = 'none';
             document.querySelectorAll('.child-card').forEach(c => {
                 c.classList.toggle('active-child', c.dataset.childId === childId);
             });
@@ -2948,6 +3081,10 @@
             // Restore parent's own name and reload their data
             document.getElementById('dashUsername').textContent = _parentUsername || user.email.split('@')[0];
             document.getElementById('dashEmail').textContent    = user.email;
+            const greet = document.getElementById('profileGreeting');
+            if (greet) greet.textContent = 'Welcome back';
+            const editBtn = document.getElementById('usernameEditBtn');
+            if (editBtn) editBtn.style.display = '';
 
             await Promise.all([
                 loadUserProgress(user.uid),
