@@ -197,6 +197,75 @@
 
         .nav-inner::-webkit-scrollbar { display: none; }
 
+        /* ── Update bar ── */
+        .update-bar {
+            background: linear-gradient(90deg, #1e2340 0%, #242a4a 50%, #1e2340 100%);
+            border-bottom: 1px solid rgba(212,165,116,0.22);
+            padding: 0.6rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            position: relative;
+            animation: bar-slide-in 0.4s ease-out;
+        }
+        @keyframes bar-slide-in {
+            from { opacity: 0; transform: translateY(-6px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        .update-bar-inner {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 900px;
+        }
+        .update-bar-tag {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.55rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--navy, #1a1f36);
+            background: var(--gold, #d4a574);
+            padding: 2px 7px;
+            border-radius: 3px;
+            font-weight: 700;
+            flex-shrink: 0;
+        }
+        .update-bar-text {
+            font-size: 0.8rem;
+            color: rgba(255,255,255,0.72);
+            line-height: 1.4;
+        }
+        .update-bar-text strong { color: #fff; }
+        .update-bar-link {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.62rem;
+            letter-spacing: 1px;
+            color: var(--gold, #d4a574);
+            text-decoration: none;
+            white-space: nowrap;
+            transition: opacity 0.2s;
+            flex-shrink: 0;
+        }
+        .update-bar-link:hover { opacity: 0.75; }
+        .update-bar-dismiss {
+            position: absolute;
+            right: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: rgba(255,255,255,0.3);
+            font-size: 1rem;
+            cursor: pointer;
+            line-height: 1;
+            padding: 4px 6px;
+            transition: color 0.2s;
+        }
+        .update-bar-dismiss:hover { color: rgba(255,255,255,0.7); }
+
         .nav-btn {
             background: transparent;
             border: none;
@@ -2180,6 +2249,28 @@
             </div>
         </nav>
     </header>
+
+    <!-- Alpha update bar — keyed to 'crux_update_v2'; bump key for next announcement -->
+    <div class="update-bar" id="updateBar" style="display:none">
+        <div class="update-bar-inner">
+            <span class="update-bar-tag">Alpha Update</span>
+            <span class="update-bar-text"><strong>Saint Card Packs are live.</strong> Earn XP from modules &amp; quizzes, then open packs to collect all 55 saints.</span>
+            <a href="crux-pack-store.html" class="update-bar-link">Open Pack Store →</a>
+        </div>
+        <button class="update-bar-dismiss" onclick="dismissUpdateBar()" title="Dismiss">&times;</button>
+    </div>
+    <script>
+        (function() {
+            var KEY = 'crux_update_v2';
+            if (!localStorage.getItem(KEY)) {
+                document.getElementById('updateBar').style.display = 'flex';
+            }
+        })();
+        function dismissUpdateBar() {
+            document.getElementById('updateBar').style.display = 'none';
+            localStorage.setItem('crux_update_v2', '1');
+        }
+    </script>
 
     <div class="container">
 
