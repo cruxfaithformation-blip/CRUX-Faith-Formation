@@ -1922,6 +1922,7 @@
             <!-- Account Actions -->
             <div class="account-actions">
                 <button class="btn btn-secondary" id="goToWebsiteBtn">Go to CRUX Website</button>
+                <button class="btn btn-secondary" id="manageChildrenBtn" style="display:none;" onclick="openChildrenPanel()">Manage Child Accounts</button>
                 <button class="btn btn-logout" id="logoutBtn">Sign Out</button>
             </div>
 
@@ -2300,6 +2301,7 @@
                     return;
                 }
 
+
                 await Promise.all([
                     loadUserProgress(user.uid),
                     loadTeacherAwards(user.uid),
@@ -2326,15 +2328,20 @@
                     document.getElementById('becomeTeacherCard').style.display = 'block';
                 }
 
-                // Show child accounts panel for all users (any parent can add children)
+                // Show child panel only if this user already has children; otherwise
+                // surface a discrete opt-in button in Account Actions.
                 _parentUid = user.uid;
-                document.getElementById('parentSection').style.display = 'block';
-                await loadParentChildren(user.uid);
-                const savedChild = getSavedActiveChild(user.uid);
-                if (savedChild) {
-                    _activeChildId   = savedChild.childId;
-                    _activeChildName = savedChild.childName;
-                    updateActiveChildUI(savedChild.childId, savedChild.childName, userData.username || '');
+                const childCount = await loadParentChildren(user.uid);
+                if (childCount > 0) {
+                    document.getElementById('parentSection').style.display = 'block';
+                    const savedChild = getSavedActiveChild(user.uid);
+                    if (savedChild) {
+                        _activeChildId   = savedChild.childId;
+                        _activeChildName = savedChild.childName;
+                        updateActiveChildUI(savedChild.childId, savedChild.childName, userData.username || '');
+                    }
+                } else {
+                    document.getElementById('manageChildrenBtn').style.display = 'block';
                 }
 
             } catch (error) {
@@ -2896,11 +2903,24 @@
                     <span style="font-size:1.5rem;opacity:0.6;">+</span>
                     <span>Add Child</span>
                 </button>`;
+
+                return children.length;
             } catch (err) {
                 console.error('loadParentChildren error:', err);
-                grid.innerHTML = '<div class="no-data">Could not load children.</div>';
+                grid.innerHTML =
+                    `<button class="add-child-tile" onclick="openAddChildModal()">
+                        <span style="font-size:1.5rem;opacity:0.6;">+</span>
+                        <span>Add Child</span>
+                    </button>`;
+                return 0;
             }
         }
+
+        window.openChildrenPanel = function() {
+            document.getElementById('parentSection').style.display = 'block';
+            document.getElementById('manageChildrenBtn').style.display = 'none';
+            document.getElementById('parentSection').scrollIntoView({ behavior: 'smooth' });
+        };
 
         window.switchToChild = async function(parentUid, childId, childName) {
             _parentUid       = parentUid;
