@@ -865,6 +865,7 @@
                     <button class="tab-btn" onclick="showTab('spotify', this)">Spotify Playlists</button>
                     <button class="tab-btn" onclick="showTab('applemusic', this)">Apple Music</button>
                     <button class="tab-btn" onclick="showTab('users', this)">Users</button>
+                    <button class="tab-btn" onclick="showTab('oneof1', this)">1-of-1 Cards</button>
                 </div>
             </nav>
         </header>
@@ -1077,12 +1078,80 @@
 
             </div>
 
+            <!-- ─── 1-OF-1 CARDS TAB ─── -->
+            <div id="oneof1" class="tab-content">
+
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2>Register a 1-of-1 Card</h2>
+                    </div>
+                    <p style="font-size:0.88rem;color:var(--text-muted);margin-bottom:1.25rem;line-height:1.6;">
+                        Creates a card document in Firestore and assigns it to a user's collection.
+                    </p>
+                    <div style="display:grid;gap:0.85rem;">
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.85rem;">
+                            <div>
+                                <label class="form-label">Card ID (unique slug)</label>
+                                <input class="form-input" id="oneof1-id" type="text" placeholder="e.g. clare-grayson-first-communion" value="clare-grayson-first-communion">
+                            </div>
+                            <div>
+                                <label class="form-label">Recipient Name</label>
+                                <input class="form-input" id="oneof1-name" type="text" placeholder="e.g. Clare Grayson" value="Clare Grayson">
+                            </div>
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.85rem;">
+                            <div>
+                                <label class="form-label">Occasion</label>
+                                <input class="form-input" id="oneof1-occasion" type="text" placeholder="e.g. First Holy Communion" value="First Holy Communion">
+                            </div>
+                            <div>
+                                <label class="form-label">Date</label>
+                                <input class="form-input" id="oneof1-date" type="text" placeholder="e.g. May 3, 2026" value="May 3, 2026">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="form-label">Scripture Text</label>
+                            <input class="form-input" id="oneof1-scripture" type="text" placeholder="Scripture quote" value="I am the bread of life; he who comes to Me will not hunger, and he who believes in Me will never thirst.">
+                        </div>
+                        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.85rem;">
+                            <div>
+                                <label class="form-label">Scripture Reference</label>
+                                <input class="form-input" id="oneof1-ref" type="text" placeholder="e.g. John 6:35" value="John 6:35">
+                            </div>
+                            <div>
+                                <label class="form-label">Card Page URL (relative)</label>
+                                <input class="form-input" id="oneof1-url" type="text" placeholder="e.g. cards/1of1/clare-grayson.html" value="cards/1of1/clare-grayson.html">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="form-label">Assign to User UID</label>
+                            <input class="form-input" id="oneof1-uid" type="text" placeholder="Firebase UID" value="Q3GsgWkenah3dXOHY3UBi2WY3no1">
+                        </div>
+                    </div>
+                    <div style="margin-top:1.25rem;display:flex;gap:0.75rem;">
+                        <button class="btn btn-gold" onclick="register1of1Card()">Register &amp; Assign Card</button>
+                    </div>
+                    <div id="oneof1-log" style="margin-top:1rem;font-size:0.82rem;font-family:monospace;line-height:1.8;"></div>
+                </div>
+
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2>1-of-1 Card Registry</h2>
+                        <span class="count-badge" id="oneof1Count">—</span>
+                    </div>
+                    <div id="oneof1List" class="items-list">
+                        <div class="loading">Loading cards from Firebase</div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </div>
 
     <script type="module">
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, serverTimestamp, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, setDoc, arrayUnion, serverTimestamp, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         const auth = window.auth;
         const db = window.db;
@@ -1191,7 +1260,7 @@
 
         // ── Load all data ────────────────────────────────
         async function loadAllData() {
-            await Promise.all([loadVideos(), loadSpotify(), loadAppleMusic(), loadUsers()]);
+            await Promise.all([loadVideos(), loadSpotify(), loadAppleMusic(), loadUsers(), load1of1Cards()]);
             await updateStats();
         }
 
@@ -1575,6 +1644,64 @@
             document.getElementById('videoListCount').textContent = `${vSnap.size} video${vSnap.size !== 1 ? 's' : ''}`;
             document.getElementById('spotifyListCount').textContent = `${sSnap.size} playlist${sSnap.size !== 1 ? 's' : ''}`;
             document.getElementById('appleMusicListCount').textContent = `${aSnap.size} playlist${aSnap.size !== 1 ? 's' : ''}`;
+        }
+
+        // ── 1-of-1 Cards ─────────────────────────────────
+        window.register1of1Card = async function() {
+            const log = document.getElementById('oneof1-log');
+            const id       = document.getElementById('oneof1-id').value.trim();
+            const name     = document.getElementById('oneof1-name').value.trim();
+            const occasion = document.getElementById('oneof1-occasion').value.trim();
+            const date     = document.getElementById('oneof1-date').value.trim();
+            const scripture = document.getElementById('oneof1-scripture').value.trim();
+            const ref      = document.getElementById('oneof1-ref').value.trim();
+            const url      = document.getElementById('oneof1-url').value.trim();
+            const uid      = document.getElementById('oneof1-uid').value.trim();
+            if (!id || !name || !uid) { log.innerHTML = '<span style="color:#f87171;">Card ID, name, and UID are required.</span>'; return; }
+            log.innerHTML = 'Writing card to Firestore…';
+            try {
+                await setDoc(doc(db, 'cards', id), {
+                    id, name, occasion, date, scripture, scriptureRef: ref,
+                    cardUrl: url, type: '1of1', rarity: '1of1',
+                    assignedTo: uid, createdAt: serverTimestamp()
+                });
+                log.innerHTML += '<br>✓ Card registered in <code>cards/' + escHtml(id) + '</code>';
+                await updateDoc(doc(db, 'userProgress', uid), { cardsOwned: arrayUnion(id) });
+                log.innerHTML += '<br>✓ Card assigned to user <code>' + escHtml(uid) + '</code>';
+                log.innerHTML += '<br><strong style="color:#6ee7b7;">Done. ' + escHtml(name) + ' owns this card.</strong>';
+                load1of1Cards();
+            } catch (err) {
+                log.innerHTML = '<span style="color:#f87171;">Error: ' + escHtml(err.message) + '</span>';
+            }
+        };
+
+        async function load1of1Cards() {
+            const container = document.getElementById('oneof1List');
+            const countEl   = document.getElementById('oneof1Count');
+            try {
+                const snap = await getDocs(collection(db, 'cards'));
+                const cards = snap.docs.filter(d => d.data().type === '1of1');
+                countEl.textContent = cards.length;
+                if (!cards.length) { container.innerHTML = '<div class="loading">No 1-of-1 cards registered yet.</div>'; return; }
+                container.innerHTML = '';
+                cards.forEach(docSnap => {
+                    const d = docSnap.data();
+                    const div = document.createElement('div');
+                    div.className = 'item-row';
+                    div.innerHTML = `
+                        <div class="item-info">
+                            <div class="item-title">${escHtml(d.name)}</div>
+                            <div class="item-desc">${escHtml(d.occasion)} &middot; ${escHtml(d.date)}</div>
+                            <div class="item-desc" style="font-family:monospace;font-size:0.76rem;margin-top:0.2rem;">UID: ${escHtml(d.assignedTo)}</div>
+                        </div>
+                        <div class="item-actions">
+                            <span class="item-category-badge" style="background:rgba(212,165,116,0.12);color:var(--gold);">&#10022; 1 of 1</span>
+                        </div>`;
+                    container.appendChild(div);
+                });
+            } catch (err) {
+                container.innerHTML = `<div class="error-message">Error: ${escHtml(err.message)}</div>`;
+            }
         }
 
         // ── Helpers ──────────────────────────────────────
