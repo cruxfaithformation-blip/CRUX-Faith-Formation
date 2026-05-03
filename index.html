@@ -849,6 +849,25 @@
             margin-top: 0.75rem;
         }
 
+        .media-module-badge {
+            display: inline-block;
+            background: rgba(99,102,241,0.1);
+            color: #4f46e5;
+            border: 1px solid rgba(99,102,241,0.2);
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-top: 0.75rem;
+            margin-left: 0.4rem;
+            text-decoration: none;
+            transition: background 0.2s;
+        }
+
+        .media-module-badge:hover {
+            background: rgba(99,102,241,0.18);
+        }
+
         .spotify-embed {
             border-radius: 8px;
             width: 100%;
@@ -3416,7 +3435,11 @@
                             iframe.setAttribute('loading', 'lazy');
                             const mediaInfo = document.createElement('div');
                             mediaInfo.className = 'media-info';
-                            mediaInfo.innerHTML = `<h4>${video.title}</h4><p>${video.description}</p><span class="media-category">${video.category}</span>`;
+                            const moduleNames = {
+                                trinity:'The Holy Trinity',jesus:'Who Is Jesus Christ?',mary:'Mary & the Saints',prodigal_son:'The Prodigal Son',bible_geography:'The Geography of the Bible',nicene_creed:'The Nicene Creed',creation_human_person:'Creation & the Human Person',sacraments:'The Sacraments',mass_real_presence:'The Mass & Real Presence',reconciliation:'Reconciliation & Confession',liturgical_year:'The Liturgical Year',conscience:'Conscience',fruits_holy_spirit:'Fruits of the Holy Spirit',gifts_holy_spirit:'Gifts of the Holy Spirit',ten_commandments:'The Ten Commandments',beatitudes:'The Beatitudes',lords_prayer:"The Lord's Prayer",rosary:'The Rosary'
+                            };
+                            const moduleBadge = video.moduleTag ? `<a class="media-module-badge" href="crux-modules.html?module=${video.moduleTag}">📌 ${moduleNames[video.moduleTag] || video.moduleTag}</a>` : '';
+                            mediaInfo.innerHTML = `<h4>${video.title}</h4><p>${video.description}</p><span class="media-category">${video.category}</span>${moduleBadge}`;
                             mediaCard.appendChild(iframe);
                             mediaCard.appendChild(mediaInfo);
                             mediaGrid.appendChild(mediaCard);

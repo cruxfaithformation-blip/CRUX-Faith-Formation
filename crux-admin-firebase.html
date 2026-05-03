@@ -42,6 +42,57 @@
             serverTimestamp
         };
         console.log('✅ Firebase initialized');
+
+        window.MODULE_NAMES = {
+            'trinity':              'The Holy Trinity',
+            'jesus':                'Who Is Jesus Christ?',
+            'mary':                 'Mary & the Saints',
+            'prodigal_son':         'The Prodigal Son',
+            'bible_geography':      'The Geography of the Bible',
+            'nicene_creed':         'The Nicene Creed',
+            'creation_human_person':'Creation & the Human Person',
+            'sacraments':           'The Sacraments',
+            'mass_real_presence':   'The Mass & Real Presence',
+            'reconciliation':       'Reconciliation & Confession',
+            'liturgical_year':      'The Liturgical Year',
+            'conscience':           'Conscience',
+            'fruits_holy_spirit':   'Fruits of the Holy Spirit',
+            'gifts_holy_spirit':    'Gifts of the Holy Spirit',
+            'ten_commandments':     'The Ten Commandments',
+            'beatitudes':           'The Beatitudes',
+            'lords_prayer':         "The Lord's Prayer",
+            'rosary':               'The Rosary',
+        };
+
+        window.moduleSelectOptions = (selected = '') => `
+            <option value="">No module tag</option>
+            <optgroup label="Pillar I — What We Believe">
+                <option value="trinity" ${selected==='trinity'?'selected':''}>The Holy Trinity</option>
+                <option value="jesus" ${selected==='jesus'?'selected':''}>Who Is Jesus Christ?</option>
+                <option value="mary" ${selected==='mary'?'selected':''}>Mary &amp; the Saints</option>
+                <option value="prodigal_son" ${selected==='prodigal_son'?'selected':''}>The Prodigal Son</option>
+                <option value="bible_geography" ${selected==='bible_geography'?'selected':''}>The Geography of the Bible</option>
+                <option value="nicene_creed" ${selected==='nicene_creed'?'selected':''}>The Nicene Creed</option>
+                <option value="creation_human_person" ${selected==='creation_human_person'?'selected':''}>Creation &amp; the Human Person</option>
+            </optgroup>
+            <optgroup label="Pillar II — What We Celebrate">
+                <option value="sacraments" ${selected==='sacraments'?'selected':''}>The Sacraments</option>
+                <option value="mass_real_presence" ${selected==='mass_real_presence'?'selected':''}>The Mass &amp; Real Presence</option>
+                <option value="reconciliation" ${selected==='reconciliation'?'selected':''}>Reconciliation &amp; Confession</option>
+                <option value="liturgical_year" ${selected==='liturgical_year'?'selected':''}>The Liturgical Year</option>
+            </optgroup>
+            <optgroup label="Pillar III — What We Live">
+                <option value="conscience" ${selected==='conscience'?'selected':''}>Conscience</option>
+                <option value="fruits_holy_spirit" ${selected==='fruits_holy_spirit'?'selected':''}>Fruits of the Holy Spirit</option>
+                <option value="gifts_holy_spirit" ${selected==='gifts_holy_spirit'?'selected':''}>Gifts of the Holy Spirit</option>
+                <option value="ten_commandments" ${selected==='ten_commandments'?'selected':''}>The Ten Commandments</option>
+                <option value="beatitudes" ${selected==='beatitudes'?'selected':''}>The Beatitudes</option>
+            </optgroup>
+            <optgroup label="Pillar IV — How We Pray">
+                <option value="lords_prayer" ${selected==='lords_prayer'?'selected':''}>The Lord's Prayer</option>
+                <option value="rosary" ${selected==='rosary'?'selected':''}>The Rosary</option>
+            </optgroup>
+        `;
     </script>
     
     <style>
@@ -577,6 +628,19 @@
             letter-spacing: 0.3px;
         }
 
+        .item-module-badge {
+            display: inline-block;
+            background: rgba(99,102,241,0.12);
+            color: #4f46e5;
+            border: 1px solid rgba(99,102,241,0.25);
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.3px;
+            margin-left: 0.4rem;
+        }
+
         .item-actions {
             display: flex;
             gap: 0.5rem;
@@ -832,6 +896,38 @@
                                 </select>
                             </div>
                             <div class="form-group">
+                                <label>Module Tag <span style="opacity:0.5;font-weight:400;">(optional)</span></label>
+                                <select id="videoModuleTag">
+                                    <option value="">No module tag</option>
+                                    <optgroup label="Pillar I — What We Believe">
+                                        <option value="trinity">The Holy Trinity</option>
+                                        <option value="jesus">Who Is Jesus Christ?</option>
+                                        <option value="mary">Mary &amp; the Saints</option>
+                                        <option value="prodigal_son">The Prodigal Son</option>
+                                        <option value="bible_geography">The Geography of the Bible</option>
+                                        <option value="nicene_creed">The Nicene Creed</option>
+                                        <option value="creation_human_person">Creation &amp; the Human Person</option>
+                                    </optgroup>
+                                    <optgroup label="Pillar II — What We Celebrate">
+                                        <option value="sacraments">The Sacraments</option>
+                                        <option value="mass_real_presence">The Mass &amp; Real Presence</option>
+                                        <option value="reconciliation">Reconciliation &amp; Confession</option>
+                                        <option value="liturgical_year">The Liturgical Year</option>
+                                    </optgroup>
+                                    <optgroup label="Pillar III — What We Live">
+                                        <option value="conscience">Conscience</option>
+                                        <option value="fruits_holy_spirit">Fruits of the Holy Spirit</option>
+                                        <option value="gifts_holy_spirit">Gifts of the Holy Spirit</option>
+                                        <option value="ten_commandments">The Ten Commandments</option>
+                                        <option value="beatitudes">The Beatitudes</option>
+                                    </optgroup>
+                                    <optgroup label="Pillar IV — How We Pray">
+                                        <option value="lords_prayer">The Lord's Prayer</option>
+                                        <option value="rosary">The Rosary</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+                            <div class="form-group">
                                 <label>Video Title *</label>
                                 <input type="text" id="videoTitle" required placeholder="e.g., Understanding the Trinity">
                             </div>
@@ -1038,6 +1134,7 @@
                     title:       document.getElementById('videoTitle').value.trim(),
                     description: document.getElementById('videoDescription').value.trim(),
                     category:    document.getElementById('videoCategory').value,
+                    moduleTag:   document.getElementById('videoModuleTag').value || '',
                     createdAt:   serverTimestamp()
                 };
                 try {
@@ -1121,6 +1218,7 @@
                             <div class="item-meta">ID: ${escHtml(v.videoId)}</div>
                             <div class="item-desc">${escHtml(v.description)}</div>
                             <span class="item-category-badge">${escHtml(v.category)}</span>
+                            ${v.moduleTag ? `<span class="item-module-badge">📌 ${escHtml(window.MODULE_NAMES[v.moduleTag] || v.moduleTag)}</span>` : ''}
 
                             <div class="edit-form" id="edit-video-${docSnap.id}">
                                 <div class="edit-grid">
@@ -1134,6 +1232,12 @@
                                             <option value="Culture & Apologetics" ${v.category==='Culture & Apologetics'?'selected':''}>Culture & Apologetics</option>
                                             <option value="Scripture & Theology" ${v.category==='Scripture & Theology'?'selected':''}>Scripture & Theology</option>
                                             <option value="For Youth & Families" ${v.category==='For Youth & Families'?'selected':''}>For Youth & Families</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label>Module Tag</label>
+                                        <select id="ev-module-${docSnap.id}">
+                                            ${window.moduleSelectOptions(v.moduleTag || '')}
                                         </select>
                                     </div>
                                     <div class="full">
@@ -1182,7 +1286,8 @@
                 videoId:     document.getElementById(`ev-id-${id}`).value.trim(),
                 title:       document.getElementById(`ev-title-${id}`).value.trim(),
                 description: document.getElementById(`ev-desc-${id}`).value.trim(),
-                category:    document.getElementById(`ev-cat-${id}`).value
+                category:    document.getElementById(`ev-cat-${id}`).value,
+                moduleTag:   document.getElementById(`ev-module-${id}`).value || '',
             };
             if (!updates.videoId || !updates.title || !updates.category) {
                 alert('Video ID, title, and category are required.');
