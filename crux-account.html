@@ -557,6 +557,74 @@
         .saint-card.clickable::after { content: 'View →'; position: absolute; bottom: 26px; font-size: 0.42rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(212,165,116,0.6); opacity: 0; transition: opacity 0.2s; }
         .saint-card.clickable:hover::after { opacity: 1; }
 
+        .saint-card.oneof1 {
+            border: none;
+            padding: 0;
+            overflow: hidden;
+            position: relative;
+        }
+        .saint-card.oneof1::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            border-radius: 12px;
+            background: linear-gradient(90deg,#ff0080,#ff8c00,#ffe000,#00ff80,#00c8ff,#8000ff,#ff0080);
+            background-size: 200% 100%;
+            animation: rainbow-strip 3s linear infinite;
+            z-index: 0;
+        }
+        .saint-card.oneof1 .oneof1-inner {
+            position: relative;
+            z-index: 1;
+            background: #0c0a14;
+            border-radius: 10px;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 0.5rem;
+            gap: 0.35rem;
+        }
+        .saint-card.oneof1 .oneof1-name {
+            font-family: 'Cinzel', serif;
+            font-size: 0.62rem;
+            font-weight: 700;
+            color: #fff;
+            text-align: center;
+            letter-spacing: 0.5px;
+            line-height: 1.3;
+        }
+        .saint-card.oneof1 .oneof1-sub {
+            font-family: 'EB Garamond', serif;
+            font-size: 0.65rem;
+            font-style: italic;
+            color: rgba(255,255,255,0.45);
+            text-align: center;
+        }
+        .saint-card.oneof1 .oneof1-badge {
+            font-family: 'Cinzel', serif;
+            font-size: 0.42rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(90deg,#ff0080,#ff8c00,#ffe000,#00ff80,#00c8ff,#8000ff);
+            background-size: 200% 100%;
+            animation: rainbow-strip 3s linear infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .saint-card.oneof1:hover::after { content: 'View Card →'; }
+        @keyframes rainbow-text {
+            0%   { background-position: 0% 0; }
+            100% { background-position: 200% 0; }
+        }
+        @keyframes rainbow-strip {
+            0%   { background-position: 0% 0; }
+            100% { background-position: 200% 0; }
+        }
+
         .card-rarity-bar.legendary {
             background: linear-gradient(90deg, transparent 0%, #d4a574 20%, #f5e6c8 50%, #d4a574 80%, transparent 100%);
             height: 3px;
@@ -1977,6 +2045,15 @@
                 </div>
             </div>
 
+            <!-- 1-of-1 Cards -->
+            <div class="card-showcase-section" id="oneof1Section" style="display:none;">
+                <div class="showcase-header">
+                    <div class="showcase-title" style="background:linear-gradient(90deg,#ff0080,#ff8c00,#ffe000,#00ff80,#00c8ff,#8000ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;background-size:200% 100%;animation:rainbow-text 3s linear infinite;">✦ 1 of 1</div>
+                    <div class="showcase-sub" id="oneof1Count"></div>
+                </div>
+                <div class="card-grid" id="oneof1Row"></div>
+            </div>
+
             <!-- Card Showcase -->
             <div class="card-showcase-section">
                 <div class="showcase-header">
@@ -2905,6 +2982,33 @@
             container.innerHTML = html;
         }
 
+        async function load1of1Cards(cardsOwned) {
+            const section   = document.getElementById('oneof1Section');
+            const row       = document.getElementById('oneof1Row');
+            const countEl   = document.getElementById('oneof1Count');
+            try {
+                const snap = await getDocs(collection(db, 'cards'));
+                const owned = snap.docs
+                    .map(d => d.data())
+                    .filter(c => c.type === '1of1' && cardsOwned.includes(c.id));
+                if (!owned.length) return;
+                section.style.display = '';
+                countEl.textContent = owned.length + ' card' + (owned.length !== 1 ? 's' : '');
+                row.innerHTML = owned.map(c => {
+                    const url = c.cardUrl || '#';
+                    return `<a href="${url}" class="saint-card oneof1 clickable" title="${c.name}">
+                        <div class="oneof1-inner">
+                            <div class="oneof1-badge">✦ 1 of 1</div>
+                            <div class="oneof1-name">${c.name}</div>
+                            <div class="oneof1-sub">${c.occasion || ''}</div>
+                        </div>
+                    </a>`;
+                }).join('');
+            } catch (err) {
+                console.error('1-of-1 load error:', err);
+            }
+        }
+
         function renderModuleCards(moduleCards, isAdmin) {
             const section  = document.getElementById('moduleCardSection');
             const row      = document.getElementById('moduleCardRow');
@@ -2942,6 +3046,7 @@
 
                 renderFavorites(data.favoriteCards || [], data.cardsOwned || [], userId);
                 renderCardShowcase(data.cardsOwned || [], ADMIN_UIDS.includes(userId));
+                load1of1Cards(data.cardsOwned || []);
                 renderModuleCards(data.moduleCards || [], ADMIN_UIDS.includes(userId));
 
                 if (data.alphaPackGifted && data.alphaPackNotified !== true) {
