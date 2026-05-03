@@ -1225,13 +1225,35 @@
                     const p = docSnap.data();
                     const card = document.createElement('div');
                     card.className = 'item-card';
+                    card.id = `spotify-card-${docSnap.id}`;
                     card.innerHTML = `
                         <div class="item-info">
                             <div class="item-title">${escHtml(p.name)}</div>
                             <div class="item-desc">${escHtml(p.description)}</div>
                             <span class="item-category-badge">Spotify</span>
+                            <div class="edit-form" id="edit-spotify-${docSnap.id}">
+                                <div class="edit-grid">
+                                    <div>
+                                        <label>Playlist Name</label>
+                                        <input type="text" id="es-name-${docSnap.id}" value="${escHtml(p.name)}">
+                                    </div>
+                                    <div>
+                                        <label>Description</label>
+                                        <input type="text" id="es-desc-${docSnap.id}" value="${escHtml(p.description)}">
+                                    </div>
+                                    <div class="full">
+                                        <label>Embed Code</label>
+                                        <textarea id="es-embed-${docSnap.id}">${escHtml(p.embedCode)}</textarea>
+                                    </div>
+                                </div>
+                                <div class="edit-actions">
+                                    <button class="btn btn-cancel-edit" onclick="cancelEditSpotify('${docSnap.id}')">Cancel</button>
+                                    <button class="btn btn-save" onclick="saveSpotify('${docSnap.id}')">Save Changes</button>
+                                </div>
+                            </div>
                         </div>
                         <div class="item-actions">
+                            <button class="btn btn-edit" onclick="editSpotify('${docSnap.id}')">Edit</button>
                             <button class="btn btn-danger" onclick="deleteSpotify('${docSnap.id}')">Delete</button>
                         </div>
                     `;
@@ -1241,6 +1263,27 @@
                 container.innerHTML = `<div class="error-message">Error loading playlists: ${err.message}</div>`;
             }
         }
+
+        window.editSpotify = (id) => {
+            document.getElementById(`edit-spotify-${id}`).style.display = 'block';
+        };
+
+        window.cancelEditSpotify = (id) => {
+            document.getElementById(`edit-spotify-${id}`).style.display = 'none';
+        };
+
+        window.saveSpotify = async (id) => {
+            try {
+                await updateDoc(doc(db, 'spotify', id), {
+                    name:      document.getElementById(`es-name-${id}`).value.trim(),
+                    description: document.getElementById(`es-desc-${id}`).value.trim(),
+                    embedCode: document.getElementById(`es-embed-${id}`).value.trim(),
+                });
+                await loadSpotify();
+            } catch (err) {
+                alert('Error: ' + err.message);
+            }
+        };
 
         window.deleteSpotify = async (id) => {
             if (confirm('Delete this playlist?')) {
@@ -1270,13 +1313,35 @@
                     const p = docSnap.data();
                     const card = document.createElement('div');
                     card.className = 'item-card';
+                    card.id = `applemusic-card-${docSnap.id}`;
                     card.innerHTML = `
                         <div class="item-info">
                             <div class="item-title">${escHtml(p.name)}</div>
                             <div class="item-desc">${escHtml(p.description)}</div>
                             <span class="item-category-badge">Apple Music</span>
+                            <div class="edit-form" id="edit-applemusic-${docSnap.id}">
+                                <div class="edit-grid">
+                                    <div>
+                                        <label>Playlist Name</label>
+                                        <input type="text" id="ea-name-${docSnap.id}" value="${escHtml(p.name)}">
+                                    </div>
+                                    <div>
+                                        <label>Description</label>
+                                        <input type="text" id="ea-desc-${docSnap.id}" value="${escHtml(p.description)}">
+                                    </div>
+                                    <div class="full">
+                                        <label>Embed Code</label>
+                                        <textarea id="ea-embed-${docSnap.id}">${escHtml(p.embedCode)}</textarea>
+                                    </div>
+                                </div>
+                                <div class="edit-actions">
+                                    <button class="btn btn-cancel-edit" onclick="cancelEditAppleMusic('${docSnap.id}')">Cancel</button>
+                                    <button class="btn btn-save" onclick="saveAppleMusic('${docSnap.id}')">Save Changes</button>
+                                </div>
+                            </div>
                         </div>
                         <div class="item-actions">
+                            <button class="btn btn-edit" onclick="editAppleMusic('${docSnap.id}')">Edit</button>
                             <button class="btn btn-danger" onclick="deleteAppleMusic('${docSnap.id}')">Delete</button>
                         </div>
                     `;
@@ -1286,6 +1351,27 @@
                 container.innerHTML = `<div class="error-message">Error loading playlists: ${err.message}</div>`;
             }
         }
+
+        window.editAppleMusic = (id) => {
+            document.getElementById(`edit-applemusic-${id}`).style.display = 'block';
+        };
+
+        window.cancelEditAppleMusic = (id) => {
+            document.getElementById(`edit-applemusic-${id}`).style.display = 'none';
+        };
+
+        window.saveAppleMusic = async (id) => {
+            try {
+                await updateDoc(doc(db, 'applemusic', id), {
+                    name:      document.getElementById(`ea-name-${id}`).value.trim(),
+                    description: document.getElementById(`ea-desc-${id}`).value.trim(),
+                    embedCode: document.getElementById(`ea-embed-${id}`).value.trim(),
+                });
+                await loadAppleMusic();
+            } catch (err) {
+                alert('Error: ' + err.message);
+            }
+        };
 
         window.deleteAppleMusic = async (id) => {
             if (confirm('Delete this playlist?')) {
