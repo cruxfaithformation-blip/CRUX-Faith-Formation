@@ -564,12 +564,16 @@ setTimeout(() => {
 }, 5200);
 
 // ── CARD REVEAL ──
+const frontFace = document.getElementById('card-front');
+const backFace  = document.querySelector('.card-back');
 let revealed = false;
 window.revealCard = function() {
   if (revealed) return;
   revealed = true;
   document.getElementById('reveal-btn').style.display = 'none';
   document.getElementById('card-scene').classList.add('revealed');
+  // iOS Safari fix: hide front at flip midpoint (450ms = half of 900ms transition)
+  setTimeout(() => { if (revealed) frontFace.style.opacity = '0'; }, 450);
   document.getElementById('beam').classList.add('bright');
   setTimeout(() => {
     document.getElementById('beam').classList.remove('bright');
@@ -585,10 +589,14 @@ window.revealCard = function() {
 // ── FLIP BACK ──
 document.getElementById('flip-back').addEventListener('click', () => {
   revealed = false;
+  frontFace.style.opacity = '';
   document.getElementById('card-scene').classList.remove('revealed');
   document.getElementById('reveal-btn').style.display = '';
   document.getElementById('act-scripture').classList.remove('visible');
   document.getElementById('act-closing').classList.remove('visible');
+  // iOS Safari fix: hide back at flip midpoint then restore
+  setTimeout(() => { if (!revealed) backFace.style.opacity = '0'; }, 450);
+  setTimeout(() => { if (!revealed) backFace.style.opacity = ''; }, 900);
 });
 
 // ── HOLO MOUSE TRACKING ──

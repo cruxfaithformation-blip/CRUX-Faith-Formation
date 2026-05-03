@@ -495,20 +495,28 @@ const rainbow2 = card.querySelector('.holo-rainbow-2');
 const specular = card.querySelector('.holo-specular');
 let isFlipped  = false;
 
+const backFace = scene.querySelector('.card-back');
+
 card.addEventListener('click', () => {
   isFlipped = true;
   scene.querySelector('.card-flipper').style.transform = '';
   scene.classList.add('flipped');
   hint.textContent = 'Tap ↩ to flip back';
   card.style.pointerEvents = 'none';
+  // iOS Safari fix: hide front at flip midpoint
+  setTimeout(() => { if (isFlipped) card.style.opacity = '0'; }, 360);
 });
 
 scene.querySelector('.flip-back-btn').addEventListener('click', () => {
   isFlipped = false;
+  card.style.opacity = '';
   scene.querySelector('.card-flipper').style.transform = '';
   scene.classList.remove('flipped');
   hint.textContent = 'Tap card to flip  ✦';
   card.style.pointerEvents = 'auto';
+  // iOS Safari fix: hide back at flip midpoint then restore
+  setTimeout(() => { if (!isFlipped) backFace.style.opacity = '0'; }, 360);
+  setTimeout(() => { if (!isFlipped) backFace.style.opacity = ''; }, 720);
 });
 
 scene.addEventListener('mousemove', (e) => {
