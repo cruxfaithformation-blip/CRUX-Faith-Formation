@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A Card Has Been Made For You</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;1,300;1,400&family=Cinzel:wght@400;600;700&family=EB+Garamond:ital,wght@0,400;1,400&family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --navy: #0f1222;
+  --navy-deep: #080b14;
+  --gold: #d4a574;
+  --gold-light: #f0c987;
+}
+
+html, body {
+  width: 100%; min-height: 100vh;
+  background: var(--navy-deep);
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* ── GRAIN ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 1; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+  opacity: 0.35;
+}
+
+/* ── DIVINE BEAM ── */
+#beam {
+  position: fixed; top: 0; left: 50%; transform: translateX(-50%);
+  width: 600px; height: 100vh; pointer-events: none; z-index: 0;
+  background: radial-gradient(ellipse 280px 700px at 50% 0%,
+    rgba(255,248,220,0.13) 0%,
+    rgba(212,165,116,0.07) 35%,
+    transparent 70%);
+  opacity: 0;
+  transition: opacity 2s ease;
+}
+#beam.visible { opacity: 1; }
+#beam.bright {
+  background: radial-gradient(ellipse 300px 700px at 50% 0%,
+    rgba(255,255,240,0.22) 0%,
+    rgba(212,165,116,0.12) 35%,
+    transparent 70%);
+}
+
+/* ── CROSS WATERMARK ── */
+#cross-wm {
+  position: fixed; top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 38rem; line-height: 1;
+  color: rgba(212,165,116,0.025);
+  pointer-events: none; z-index: 0;
+  animation: crossPulse 8s ease-in-out infinite;
+  user-select: none;
+}
+@keyframes crossPulse { 0%,100%{opacity:0.6} 50%{opacity:1} }
+
+/* ── PARTICLES ── */
+#particles {
+  position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden;
+}
+.particle {
+  position: absolute; border-radius: 50%;
+  background: radial-gradient(circle, rgba(240,201,135,0.9) 0%, rgba(212,165,116,0.3) 60%, transparent 100%);
+  animation: floatUp linear infinite;
+}
+@keyframes floatUp {
+  0%   { transform: translateY(0) translateX(0) scale(1); opacity: 0; }
+  10%  { opacity: 1; }
+  85%  { opacity: 0.6; }
+  100% { transform: translateY(-100vh) translateX(var(--drift)) scale(0.3); opacity: 0; }
+}
+
+/* ── MAIN STAGE ── */
+#stage {
+  position: relative; z-index: 2;
+  min-height: 100vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start;
+  padding: 0 1.5rem 6rem;
+}
+
+/* ── ACT 1: ARRIVAL ── */
+#act-arrival {
+  display: flex; flex-direction: column; align-items: center;
+  padding-top: 14vh; text-align: center;
+  gap: 0;
+}
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 0.75rem;
+  font-family: 'Inter', sans-serif; font-size: 0.65rem;
+  font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 2.5rem;
+  opacity: 0; animation: fadeUp 0.8s ease 1.8s both;
+}
+.eyebrow::before, .eyebrow::after {
+  content: ''; display: block; width: 28px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold));
+}
+.eyebrow::after { background: linear-gradient(90deg, var(--gold), transparent); }
+
+.for-label {
+  font-family: 'Crimson Pro', serif; font-size: 1.1rem;
+  font-style: italic; font-weight: 300;
+  color: rgba(255,255,255,0.45); letter-spacing: 3px;
+  margin-bottom: 0.6rem;
+  opacity: 0; animation: fadeUp 0.9s ease 2.3s both;
+}
+
+.recipient-name {
+  font-family: 'Playfair Display', serif; font-size: clamp(3rem, 8vw, 5.5rem);
+  font-weight: 900; line-height: 1.05; letter-spacing: -1px;
+  background: linear-gradient(135deg, #f0c987 0%, #d4a574 40%, #b8894a 70%, #d4a574 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1.2rem;
+  opacity: 0; animation: fadeUp 1s ease 2.7s both;
+}
+
+.occasion-line {
+  font-family: 'Crimson Pro', serif; font-size: 1.15rem;
+  font-style: italic; font-weight: 300;
+  color: rgba(255,255,255,0.6); letter-spacing: 1.5px;
+  margin-bottom: 0.5rem;
+  opacity: 0; animation: fadeUp 0.9s ease 3.2s both;
+}
+
+.date-line {
+  font-family: 'Cinzel', serif; font-size: 0.65rem;
+  font-weight: 400; letter-spacing: 4px; text-transform: uppercase;
+  color: rgba(212,165,116,0.55);
+  margin-bottom: 2.5rem;
+  opacity: 0; animation: fadeUp 0.8s ease 3.5s both;
+}
+
+.ornament {
+  display: flex; align-items: center; gap: 1rem;
+  margin-bottom: 4rem;
+  opacity: 0; animation: fadeUp 0.8s ease 3.9s both;
+}
+.ornament-line {
+  width: 60px; height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,165,116,0.4));
+}
+.ornament-line:last-child { background: linear-gradient(90deg, rgba(212,165,116,0.4), transparent); }
+.ornament-cross { font-size: 0.6rem; color: rgba(212,165,116,0.5); letter-spacing: 6px; }
+
+/* ── ACT 2: CARD DESCENDS ── */
+#card-wrap {
+  display: flex; flex-direction: column; align-items: center; gap: 2rem;
+  opacity: 0;
+  transform: translateY(-60px);
+  transition: opacity 1.2s ease, transform 1.4s cubic-bezier(0.22, 1, 0.36, 1);
+}
+#card-wrap.descended { opacity: 1; transform: translateY(0); }
+
+/* glow behind the card */
+#card-glow {
+  position: absolute;
+  width: 340px; height: 340px; border-radius: 50%;
+  background: radial-gradient(circle,
+    rgba(212,165,116,0.15) 0%, rgba(180,100,255,0.08) 50%, transparent 75%);
+  pointer-events: none;
+  animation: glowPulse 3s ease-in-out infinite;
+}
+@keyframes glowPulse {
+  0%,100% { transform: scale(1); opacity: 0.7; }
+  50%      { transform: scale(1.12); opacity: 1; }
+}
+
+.reveal-note {
+  font-family: 'Crimson Pro', serif; font-size: 1rem;
+  font-style: italic; color: rgba(255,255,255,0.4);
+  letter-spacing: 1px; text-align: center;
+  opacity: 0; transition: opacity 1s ease 0.4s;
+}
+#card-wrap.descended .reveal-note { opacity: 1; }
+
+#reveal-btn {
+  font-family: 'Cinzel', serif; font-size: 0.62rem;
+  font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--navy-deep); background: linear-gradient(135deg, #f0c987, #d4a574);
+  border: none; border-radius: 6px; padding: 14px 36px; cursor: pointer;
+  opacity: 0; transition: opacity 1s ease 0.8s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 24px rgba(212,165,116,0.25);
+  animation: btnPulse 2.5s ease-in-out 5s infinite;
+}
+#card-wrap.descended #reveal-btn { opacity: 1; }
+#reveal-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 36px rgba(212,165,116,0.4); }
+#reveal-btn:active { transform: translateY(0); }
+@keyframes btnPulse {
+  0%,100% { box-shadow: 0 4px 24px rgba(212,165,116,0.25); }
+  50%      { box-shadow: 0 4px 40px rgba(212,165,116,0.5), 0 0 60px rgba(212,165,116,0.15); }
+}
+
+/* ── ACT 3: CARD (HOLO) ── */
+.card-scene {
+  width: 300px; height: 420px; perspective: 1000px; cursor: pointer;
+  position: relative; z-index: 2;
+}
+.card-flipper {
+  width: 100%; height: 100%; position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.9s cubic-bezier(0.45, 0.05, 0.2, 1.0);
+}
+.card-scene.revealed .card-flipper { transform: rotateY(180deg); }
+.card-face {
+  position: absolute; inset: 0; border-radius: 18px;
+  overflow: hidden; backface-visibility: hidden; -webkit-backface-visibility: hidden;
+}
+.card-holo {
+  width: 300px; height: 420px; border-radius: 18px;
+  overflow: hidden; position: relative;
+  box-shadow: 0 0 0 1.5px rgba(255,255,255,0.15), 0 0 0 3px rgba(120,80,200,0.3),
+    0 12px 60px rgba(0,0,0,0.85), 0 0 80px rgba(150,100,255,0.12);
+}
+.holo-portrait {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; object-position: center 63%; z-index: 1;
+}
+.holo-darken {
+  position: absolute; inset: 0; z-index: 2;
+  background: linear-gradient(to bottom,
+    rgba(4,2,8,0) 0%, rgba(4,2,8,0) 28%,
+    rgba(4,2,8,0.45) 50%, rgba(4,2,8,0.88) 68%, rgba(2,1,5,0.97) 100%);
+}
+.holo-rainbow {
+  position: absolute; inset: -50%; width: 200%; height: 200%;
+  background: linear-gradient(115deg, transparent 0%, transparent 20%,
+    rgba(255,0,128,0.18) 25%, rgba(255,100,0,0.15) 30%,
+    rgba(255,220,0,0.18) 35%, rgba(0,255,128,0.15) 42%,
+    rgba(0,200,255,0.18) 48%, rgba(100,0,255,0.15) 54%,
+    rgba(255,0,200,0.12) 60%, transparent 65%);
+  z-index: 3; mix-blend-mode: screen;
+  animation: holo-sweep 4s linear infinite; pointer-events: none;
+}
+@keyframes holo-sweep {
+  0%   { transform: translateX(-30%) translateY(-30%); }
+  100% { transform: translateX(30%) translateY(30%); }
+}
+.holo-rainbow-2 {
+  position: absolute; inset: -50%; width: 200%; height: 200%;
+  background: linear-gradient(245deg, transparent 0%, transparent 25%,
+    rgba(0,255,200,0.1) 30%, rgba(100,0,255,0.12) 36%,
+    rgba(255,0,100,0.1) 42%, rgba(255,180,0,0.08) 48%,
+    rgba(0,150,255,0.1) 54%, transparent 60%);
+  z-index: 3; mix-blend-mode: screen;
+  animation: holo-sweep-2 6s linear infinite; pointer-events: none;
+}
+@keyframes holo-sweep-2 {
+  0%   { transform: translateX(20%) translateY(20%); }
+  100% { transform: translateX(-20%) translateY(-20%); }
+}
+.holo-foil {
+  position: absolute; inset: 0; z-index: 4; mix-blend-mode: overlay; opacity: 0.4;
+  background-image: repeating-linear-gradient(105deg,
+    transparent 0px, transparent 2px, rgba(255,255,255,0.03) 2px, rgba(255,255,255,0.03) 3px);
+  pointer-events: none;
+}
+.holo-specular {
+  position: absolute; inset: 0; z-index: 5; pointer-events: none;
+  background: radial-gradient(ellipse 60% 40% at 35% 25%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 40%, transparent 70%);
+  animation: specular-shift 4s ease-in-out infinite alternate;
+}
+@keyframes specular-shift {
+  0%   { background: radial-gradient(ellipse 60% 40% at 30% 20%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 40%, transparent 70%); }
+  50%  { background: radial-gradient(ellipse 60% 40% at 70% 40%, rgba(200,180,255,0.10) 0%, rgba(255,255,255,0.03) 40%, transparent 70%); }
+  100% { background: radial-gradient(ellipse 60% 40% at 40% 70%, rgba(180,255,220,0.10) 0%, rgba(255,255,255,0.03) 40%, transparent 70%); }
+}
+.holo-rarity-strip {
+  position: absolute; top: 0; left: 0; right: 0; height: 5px; z-index: 20;
+  background: linear-gradient(90deg, #ff0080, #ff8c00, #ffe000, #00ff80, #00c8ff, #8000ff, #ff0080);
+  background-size: 200% 100%; animation: rainbow-strip 3s linear infinite;
+}
+@keyframes rainbow-strip { 0%{background-position:0% 0} 100%{background-position:200% 0} }
+.holo-border {
+  position: absolute; inset: 4px; border-radius: 14px; z-index: 19;
+  pointer-events: none; border: 1px solid rgba(255,255,255,0.15);
+  animation: border-glow 4s ease-in-out infinite alternate;
+}
+@keyframes border-glow {
+  0%   { border-color: rgba(255,100,200,0.2); box-shadow: inset 0 0 20px rgba(255,0,150,0.06); }
+  33%  { border-color: rgba(100,200,255,0.2); box-shadow: inset 0 0 20px rgba(0,200,255,0.06); }
+  66%  { border-color: rgba(200,255,100,0.2); box-shadow: inset 0 0 20px rgba(100,255,0,0.06); }
+  100% { border-color: rgba(255,200,100,0.2); box-shadow: inset 0 0 20px rgba(255,150,0,0.06); }
+}
+.holo-content {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  padding: 1rem 1.1rem 0.9rem; z-index: 15;
+}
+.holo-name-row {
+  display: flex; align-items: flex-start; justify-content: space-between;
+  margin-bottom: 0.45rem; gap: 0.5rem;
+}
+.holo-saint-name {
+  font-family: 'Cinzel', serif; font-size: 1.05rem; font-weight: 700;
+  color: #fff; letter-spacing: 0.5px; line-height: 1.2;
+  text-shadow: 0 0 20px rgba(200,150,255,0.6), 0 1px 8px rgba(0,0,0,0.9);
+}
+.holo-badge {
+  display: inline-flex; align-items: center; gap: 4px; padding: 3px 8px;
+  border-radius: 4px; font-family: 'Cinzel', serif; font-size: 0.52rem;
+  font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  background: rgba(0,0,0,0.5); border: 1px solid rgba(255,255,255,0.25);
+  color: #fff; text-shadow: 0 0 8px rgba(200,150,255,0.8);
+  backdrop-filter: blur(4px); flex-shrink: 0; margin-top: 2px;
+  animation: badge-glow 3s ease-in-out infinite alternate;
+}
+@keyframes badge-glow {
+  0%   { border-color: rgba(255,100,200,0.5); color: #ffb0e0; }
+  33%  { border-color: rgba(100,200,255,0.5); color: #b0e0ff; }
+  66%  { border-color: rgba(180,255,100,0.5); color: #d0ffb0; }
+  100% { border-color: rgba(255,200,50,0.5);  color: #ffe8b0; }
+}
+.holo-divider {
+  width: 100%; height: 1px; margin: 0.4rem 0;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+  position: relative; overflow: hidden;
+}
+.holo-divider::after {
+  content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,200,255,0.6), transparent);
+  animation: divider-sweep 3s ease-in-out infinite;
+}
+@keyframes divider-sweep { 0%{left:-60%} 100%{left:160%} }
+.holo-info-grid { display: grid; grid-template-columns: auto 1fr; gap: 0.22rem 0.6rem; margin-bottom: 0.45rem; }
+.holo-label { font-family:'Cinzel',serif; font-size:0.5rem; font-weight:600; letter-spacing:1.5px; text-transform:uppercase; color:rgba(255,255,255,0.4); padding-top:2px; white-space:nowrap; }
+.holo-value { font-family:'EB Garamond',serif; font-size:0.8rem; color:rgba(255,240,220,0.9); line-height:1.35; }
+.holo-bio { font-family:'EB Garamond',serif; font-size:0.78rem; font-style:italic; color:rgba(230,210,255,0.75); line-height:1.5; border-left:2px solid rgba(255,255,255,0.2); padding-left:0.6rem; margin-bottom:0.5rem; }
+.holo-footer { display:flex; align-items:center; justify-content:space-between; padding-top:0.4rem; border-top:1px solid rgba(255,255,255,0.1); }
+.holo-set { font-family:'Cinzel',serif; font-size:0.48rem; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.25); }
+.holo-num { font-family:'Cinzel',serif; font-size:0.48rem; letter-spacing:1px; color:rgba(255,255,255,0.25); }
+
+/* ── CARD BACK ── */
+.card-back {
+  transform: rotateY(180deg);
+  background: #0c0a07;
+  display: flex; flex-direction: column;
+  box-shadow: 0 0 0 1.5px rgba(255,255,255,0.12), 0 0 0 3px rgba(120,80,200,0.25),
+    0 8px 50px rgba(0,0,0,0.8), 0 0 60px rgba(150,100,255,0.08);
+}
+.back-strip { height:5px; flex-shrink:0; background:linear-gradient(90deg,#ff0080,#ff8c00,#ffe000,#00ff80,#00c8ff,#8000ff,#ff0080); background-size:200% 100%; animation:rainbow-strip 3s linear infinite; }
+.back-border { position:absolute; inset:4px; border-radius:14px; pointer-events:none; border:1px solid rgba(255,255,255,0.1); animation:border-glow 4s ease-in-out infinite alternate; z-index:10; }
+.back-crest { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; opacity:0.05; pointer-events:none; z-index:1; }
+.back-crest svg { width:200px; height:200px; }
+.back-foil { position:absolute; inset:0; z-index:2; mix-blend-mode:overlay; opacity:0.25; background-image:repeating-linear-gradient(105deg,transparent 0px,transparent 2px,rgba(255,255,255,0.03) 2px,rgba(255,255,255,0.03) 3px); pointer-events:none; }
+.back-vignette { position:absolute; inset:0; background:radial-gradient(ellipse 80% 80% at 50% 50%,transparent 40%,rgba(0,0,0,0.6) 100%); z-index:3; pointer-events:none; }
+.back-content { position:relative; z-index:20; flex:1; display:flex; flex-direction:column; padding:1.25rem 1.2rem 1rem; justify-content:center; align-items:center; text-align:center; }
+.back-saint-name { font-family:'Cinzel',serif; font-size:0.82rem; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:rgba(255,255,255,0.85); text-shadow:0 0 16px rgba(200,150,255,0.5); }
+.back-dates { font-family:'EB Garamond',serif; font-size:0.72rem; font-style:italic; color:rgba(255,255,255,0.3); margin-top:0.15rem; }
+.back-ornament { display:flex; align-items:center; gap:0.5rem; margin:0.9rem 0; width:100%; }
+.back-ornament-line { flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.15),transparent); }
+.back-ornament-cross { font-size:0.6rem; color:rgba(255,255,255,0.2); letter-spacing:3px; }
+.back-scripture { font-family:'EB Garamond',serif; font-size:0.82rem; font-style:italic; color:rgba(230,210,255,0.65); line-height:1.65; border-left:2px solid rgba(255,255,255,0.12); padding-left:0.75rem; text-align:left; margin:0.5rem 0; }
+.back-scripture-ref { font-family:'Cinzel',serif; font-size:0.46rem; letter-spacing:2px; text-transform:uppercase; color:rgba(212,165,116,0.5); margin-top:0.5rem; }
+.back-footer { flex-shrink:0; display:flex; align-items:center; justify-content:space-between; padding-top:0.5rem; margin-top:0.75rem; border-top:1px solid rgba(255,255,255,0.06); width:100%; }
+.back-footer-set { font-family:'Cinzel',serif; font-size:0.44rem; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.2); }
+.back-footer-num { font-family:'Cinzel',serif; font-size:0.44rem; letter-spacing:1px; color:rgba(255,255,255,0.2); }
+.flip-back-btn { background:none; border:none; cursor:pointer; font-family:'Cinzel',serif; font-size:0.44rem; letter-spacing:2px; text-transform:uppercase; color:rgba(200,150,255,0.4); padding:0; transition:color 0.2s; }
+.flip-back-btn:hover { color:rgba(200,150,255,0.85); }
+
+/* ── ACT 4: SCRIPTURE ── */
+#act-scripture {
+  text-align: center; max-width: 480px; width: 100%;
+  margin-top: 3.5rem; padding: 0 1rem;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity 1.2s ease, transform 1.2s ease;
+}
+#act-scripture.visible { opacity: 1; transform: translateY(0); }
+
+.scripture-ornament { display:flex; align-items:center; gap:0.75rem; margin-bottom:1.8rem; }
+.scripture-ornament-line { flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(212,165,116,0.3)); }
+.scripture-ornament-line:last-child { background:linear-gradient(90deg,rgba(212,165,116,0.3),transparent); }
+.scripture-ornament-mark { font-size:0.55rem; color:rgba(212,165,116,0.45); letter-spacing:4px; }
+
+.scripture-verse {
+  font-family: 'Crimson Pro', serif; font-size: 1.35rem;
+  font-weight: 300; font-style: italic; line-height: 1.75;
+  color: rgba(255,255,255,0.82); letter-spacing: 0.2px;
+}
+.scripture-ref {
+  font-family: 'Cinzel', serif; font-size: 0.58rem;
+  font-weight: 400; letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(212,165,116,0.6); margin-top: 1.1rem;
+}
+
+/* ── ACT 5: CLOSING ── */
+#act-closing {
+  margin-top: 3rem; text-align: center;
+  opacity: 0; transform: translateY(16px);
+  transition: opacity 1s ease 0.5s, transform 1s ease 0.5s;
+}
+#act-closing.visible { opacity: 1; transform: translateY(0); }
+
+.closing-line {
+  font-family: 'Crimson Pro', serif; font-size: 0.9rem;
+  font-style: italic; color: rgba(255,255,255,0.35); letter-spacing: 1px;
+}
+.closing-crux {
+  margin-top: 1.5rem;
+  font-family: 'Cinzel', serif; font-size: 0.55rem;
+  letter-spacing: 5px; text-transform: uppercase;
+  color: rgba(212,165,116,0.3);
+}
+
+/* ── SHARED ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+
+<div id="beam"></div>
+<div id="cross-wm">✟</div>
+<div id="particles"></div>
+
+<div id="stage">
+
+  <!-- ACT 1 — ARRIVAL -->
+  <div id="act-arrival">
+    <div class="eyebrow">CRUX &nbsp;·&nbsp; 1 of 1</div>
+    <div class="for-label">For</div>
+    <div class="recipient-name">Clare Grayson</div>
+    <div class="occasion-line">First Holy Communion</div>
+    <div class="date-line">May 3, 2026</div>
+    <div class="ornament">
+      <div class="ornament-line"></div>
+      <div class="ornament-cross">✦ &nbsp; ✦ &nbsp; ✦</div>
+      <div class="ornament-line"></div>
+    </div>
+  </div>
+
+  <!-- ACT 2 + 3 — CARD DESCENDS & REVEALS -->
+  <div id="card-wrap">
+    <div id="card-glow"></div>
+
+    <div class="card-scene" id="card-scene">
+      <div class="card-flipper">
+
+        <!-- FRONT FACE -->
+        <div class="card-face card-holo" id="card-front">
+          <img class="holo-portrait" src="images/ClareGrayson_FirstCommunion.jpg" alt="Clare Grayson">
+          <div class="holo-darken"></div>
+          <div class="holo-rainbow"></div>
+          <div class="holo-rainbow-2"></div>
+          <div class="holo-foil"></div>
+          <div class="holo-specular"></div>
+          <div class="holo-rarity-strip"></div>
+          <div class="holo-border"></div>
+          <div class="holo-content">
+            <div class="holo-name-row">
+              <div class="holo-saint-name">Clare Grayson</div>
+              <div class="holo-badge">✦ 1 of 1</div>
+            </div>
+            <div class="holo-divider"></div>
+            <div class="holo-info-grid">
+              <span class="holo-label">Sacrament</span><span class="holo-value">First Holy Communion</span>
+              <span class="holo-label">Date</span><span class="holo-value">May 3, 2026</span>
+            </div>
+            <div class="holo-bio">I am the bread of life; he who comes to Me will not hunger, and he who believes in Me will never thirst.</div>
+            <div class="holo-footer">
+              <span class="holo-set">CRUX · 1 of 1 · Grayson Family</span>
+              <span class="holo-num">1 / 1</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- BACK FACE -->
+        <div class="card-face card-back">
+          <div class="back-strip"></div>
+          <div class="back-border"></div>
+          <div class="back-foil"></div>
+          <div class="back-vignette"></div>
+          <div class="back-crest">
+            <svg viewBox="0 0 100 100" fill="none">
+              <line x1="50" y1="5" x2="50" y2="95" stroke="white" stroke-width="3"/>
+              <line x1="5" y1="35" x2="95" y2="35" stroke="white" stroke-width="3"/>
+              <circle cx="50" cy="50" r="44" stroke="white" stroke-width="1.5" stroke-dasharray="4 6"/>
+              <text x="50" y="78" text-anchor="middle" font-family="serif" font-size="10" fill="white" letter-spacing="4">CRUX</text>
+            </svg>
+          </div>
+          <div class="back-content">
+            <div class="back-saint-name">Clare Grayson</div>
+            <div class="back-dates">First Holy Communion · May 3, 2026</div>
+            <div class="back-ornament">
+              <div class="back-ornament-line"></div>
+              <div class="back-ornament-cross">✦ ✦ ✦</div>
+              <div class="back-ornament-line"></div>
+            </div>
+            <div class="back-scripture">"I am the bread of life; he who comes to Me will not hunger, and he who believes in Me will never thirst."</div>
+            <div class="back-scripture-ref">John 6:35</div>
+            <div class="back-footer">
+              <button class="flip-back-btn" id="flip-back">&#x21A9; Flip</button>
+              <span class="back-footer-set">CRUX · 1 of 1</span>
+              <span class="back-footer-num">1 / 1</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div><!-- end card-scene -->
+
+    <div class="reveal-note">A card has been made for Clare.</div>
+    <button id="reveal-btn" onclick="revealCard()">Open Your Card &nbsp;→</button>
+  </div>
+
+  <!-- ACT 4 — SCRIPTURE -->
+  <div id="act-scripture">
+    <div class="scripture-ornament">
+      <div class="scripture-ornament-line"></div>
+      <div class="scripture-ornament-mark">✦ &nbsp; ✦ &nbsp; ✦</div>
+      <div class="scripture-ornament-line"></div>
+    </div>
+    <div class="scripture-verse">"I am the bread of life; he who comes to Me will not hunger, and he who believes in Me will never thirst."</div>
+    <div class="scripture-ref">John 6:35</div>
+  </div>
+
+  <!-- ACT 5 — CLOSING -->
+  <div id="act-closing">
+    <div class="closing-line">With love on your First Holy Communion.</div>
+    <div class="closing-crux">CRUX</div>
+  </div>
+
+</div><!-- end stage -->
+
+<script>
+// ── PARTICLES ──
+(function() {
+  const container = document.getElementById('particles');
+  for (let i = 0; i < 40; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random() * 3 + 1.5;
+    const left = Math.random() * 100;
+    const delay = Math.random() * 12;
+    const dur = Math.random() * 10 + 12;
+    const drift = (Math.random() - 0.5) * 80;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${left}%; bottom:-10px;
+      opacity:${Math.random() * 0.6 + 0.2};
+      animation-delay:${delay}s;
+      animation-duration:${dur}s;
+      --drift:${drift}px;
+    `;
+    container.appendChild(p);
+  }
+})();
+
+// ── SEQUENCE ──
+setTimeout(() => document.getElementById('beam').classList.add('visible'), 400);
+setTimeout(() => {
+  const wrap = document.getElementById('card-wrap');
+  wrap.classList.add('descended');
+}, 5200);
+
+// ── CARD REVEAL ──
+let revealed = false;
+window.revealCard = function() {
+  if (revealed) return;
+  revealed = true;
+  document.getElementById('reveal-btn').style.display = 'none';
+  document.getElementById('card-scene').classList.add('revealed');
+  document.getElementById('beam').classList.add('bright');
+  setTimeout(() => {
+    document.getElementById('beam').classList.remove('bright');
+  }, 800);
+  setTimeout(() => {
+    document.getElementById('act-scripture').classList.add('visible');
+  }, 1100);
+  setTimeout(() => {
+    document.getElementById('act-closing').classList.add('visible');
+  }, 2400);
+};
+
+// ── FLIP BACK ──
+document.getElementById('flip-back').addEventListener('click', () => {
+  revealed = false;
+  document.getElementById('card-scene').classList.remove('revealed');
+  document.getElementById('reveal-btn').style.display = '';
+  document.getElementById('act-scripture').classList.remove('visible');
+  document.getElementById('act-closing').classList.remove('visible');
+});
+
+// ── HOLO MOUSE TRACKING ──
+const scene    = document.getElementById('card-scene');
+const front    = document.getElementById('card-front');
+const rainbow  = front.querySelector('.holo-rainbow');
+const rainbow2 = front.querySelector('.holo-rainbow-2');
+const specular = front.querySelector('.holo-specular');
+const flipper  = scene.querySelector('.card-flipper');
+
+scene.addEventListener('mousemove', (e) => {
+  if (revealed) return;
+  const rect = scene.getBoundingClientRect();
+  const x = (e.clientX - rect.left) / rect.width;
+  const y = (e.clientY - rect.top)  / rect.height;
+  if (x < 0 || x > 1 || y < 0 || y > 1) return;
+  flipper.style.transform = `rotateX(${(y - 0.5) * -22}deg) rotateY(${(x - 0.5) * 22}deg)`;
+  rainbow.style.transform  = `translateX(${(x-0.5)*60}%) translateY(${(y-0.5)*60}%)`;
+  rainbow2.style.transform = `translateX(${(x-0.5)*-42}%) translateY(${(y-0.5)*-42}%)`;
+  specular.style.background = `radial-gradient(ellipse 55% 35% at ${Math.round(x*100)}% ${Math.round(y*100)}%, rgba(255,255,255,0.18) 0%, rgba(255,255,255,0.05) 40%, transparent 70%)`;
+});
+scene.addEventListener('mouseleave', () => {
+  if (!revealed) flipper.style.transform = '';
+  rainbow.style.transform  = '';
+  rainbow2.style.transform = '';
+  specular.style.background = '';
+});
+</script>
+</body>
+</html>
