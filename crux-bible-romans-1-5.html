@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
+<title>CRUX — Romans 1–5: The Gospel Explained</title>
+<meta name="description" content="A guided scripture study of Romans 1–5 with Greek word studies, Church Fathers, CCC references, and reflection prompts.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --navy-deep: #0f1222;
+  --navy-light: #252b47;
+  --navy-mid: #2e3555;
+  --gold: #d4a574;
+  --gold-light: #e8c99a;
+  --gold-pale: #f5ead8;
+  --gold-dim: rgba(212,165,116,0.15);
+  --cream: #faf8f4;
+  --off-white: #f4f2ee;
+  --white: #ffffff;
+  --text-primary: #1a1f36;
+  --text-secondary: #5a6080;
+  --text-muted: #8a90aa;
+  --text-muted-dark: rgba(255,255,255,0.45);
+  --text-soft: rgba(255,255,255,0.7);
+  --border: rgba(26,31,54,0.1);
+  --border-gold: rgba(212,165,116,0.3);
+  --green: #2d6a4f;
+  --green-light: #e8f5ee;
+  --purple: #4a2c6b;
+  --purple-light: #f0eaf8;
+  --amber: #7a4a1e;
+  --amber-light: #fdf3e7;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: var(--navy-deep);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.6;
+}
+
+/* NAV */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 1rem 2.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(15,18,34,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+.nav-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 900; letter-spacing: 5px; color: var(--gold); text-decoration: none; }
+.nav-back { font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 1px; color: var(--text-muted-dark); text-decoration: none; transition: color 0.2s; display: flex; align-items: center; gap: 0.4rem; }
+.nav-back:hover { color: var(--gold); }
+
+/* HERO */
+.hero { padding: 6rem 2rem 3rem; text-align: center; position: relative; overflow: hidden; background: var(--navy-deep); }
+.hero::before { content: ''; position: absolute; width: 700px; height: 500px; background: radial-gradient(ellipse, rgba(212,165,116,0.09) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%,-50%); pointer-events: none; }
+.hero-track { font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; animation: fadeUp 0.7s ease both; }
+.hero-book { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem,6vw,4rem); font-weight: 900; color: var(--white); line-height: 1; margin-bottom: 0.4rem; animation: fadeUp 0.7s ease 0.1s both; }
+.hero-subtitle { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.15rem; color: var(--gold); margin-bottom: 1.25rem; animation: fadeUp 0.7s ease 0.2s both; }
+.hero-meta { display: flex; align-items: center; justify-content: center; gap: 1.25rem; flex-wrap: wrap; animation: fadeUp 0.7s ease 0.3s both; }
+.hero-tag { font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600; letter-spacing: 1px; color: var(--text-muted-dark); padding: 0.25rem 0.65rem; border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; }
+
+/* BOOK CONTEXT BAR */
+.book-context-bar { background: var(--navy-light); border-bottom: 1px solid rgba(255,255,255,0.06); position: sticky; top: 57px; z-index: 150; }
+.book-context-toggle { display: flex; align-items: center; justify-content: space-between; padding: 0.7rem 2rem; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; user-select: none; transition: background 0.2s; }
+.book-context-toggle:hover { background: rgba(255,255,255,0.03); }
+.context-chevron { transition: transform 0.25s; font-size: 0.6rem; }
+.context-chevron.open { transform: rotate(180deg); }
+.book-context-content { display: none; padding: 1.25rem 2rem 1.75rem; border-top: 1px solid rgba(255,255,255,0.06); }
+.book-context-content.open { display: block; }
+.context-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px,1fr)); gap: 1rem; max-width: 900px; margin-bottom: 1rem; }
+.context-label { font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.2rem; }
+.context-value { font-family: 'Crimson Pro', serif; font-size: 0.92rem; color: rgba(255,255,255,0.72); line-height: 1.5; }
+.context-note { padding: 0.75rem 1rem; background: rgba(212,165,116,0.07); border-left: 2px solid var(--gold); border-radius: 0 6px 6px 0; font-family: 'Crimson Pro', serif; font-size: 0.9rem; color: rgba(255,255,255,0.62); line-height: 1.6; max-width: 820px; }
+
+/* PROGRESS BAR */
+.progress-bar { background: var(--navy-light); padding: 0.6rem 2rem; display: flex; align-items: center; gap: 1rem; border-bottom: 0.5px solid rgba(255,255,255,0.06); position: sticky; top: 94px; z-index: 145; }
+.progress-label { font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+.progress-track { flex: 1; height: 3px; background: var(--navy-mid); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: var(--gold); border-radius: 2px; transition: width 0.5s ease; }
+.progress-count { font-family: 'Inter', sans-serif; font-size: 0.68rem; color: rgba(255,255,255,0.35); white-space: nowrap; }
+
+/* STUDY LAYOUT */
+.study-area { background: var(--cream); color: var(--text-primary); }
+.study-layout { display: grid; grid-template-columns: 1fr 268px; gap: 2rem; max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem; align-items: start; }
+
+/* SIDEBAR */
+.study-sidebar { position: sticky; top: 135px; display: flex; flex-direction: column; gap: 1rem; }
+.sidebar-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.sidebar-card-head { padding: 0.7rem 1rem; background: var(--navy); font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+.sidebar-toc { list-style: none; padding: 0.5rem 0; }
+.sidebar-toc a { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 1rem; font-family: 'Inter', sans-serif; font-size: 0.78rem; color: var(--text-secondary); text-decoration: none; transition: all 0.15s; border-left: 2px solid transparent; }
+.sidebar-toc a:hover { color: var(--navy); background: var(--off-white); }
+.sidebar-toc a.active { color: var(--navy); font-weight: 600; border-left-color: var(--gold); background: var(--off-white); }
+.toc-num { width: 20px; height: 20px; border-radius: 50%; background: var(--navy); color: var(--gold); font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sidebar-key-terms { list-style: none; padding: 0.75rem 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.sidebar-key-terms li { font-size: 0.82rem; color: var(--text-secondary); padding-bottom: 0.6rem; border-bottom: 1px solid var(--border); line-height: 1.5; }
+.sidebar-key-terms li:last-child { border: none; padding: 0; }
+.sidebar-key-terms strong { display: block; font-family: 'Playfair Display', serif; font-size: 0.88rem; color: var(--navy); font-weight: 600; }
+.sidebar-resource-list { list-style: none; padding: 0.75rem 1rem; display: flex; flex-direction: column; gap: 0; }
+.sidebar-resource-list li { font-family: 'Crimson Pro', serif; font-size: 0.85rem; color: var(--text-secondary); padding: 0.45rem 0; border-bottom: 1px solid var(--border); line-height: 1.45; }
+.sidebar-resource-list li:last-child { border: none; padding-bottom: 0; }
+.sidebar-resource-list li strong { display: block; font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--text-primary); font-weight: 600; margin-bottom: 0.1rem; }
+
+/* LECTIONARY WIDGET */
+.lectionary-widget { background: linear-gradient(135deg, var(--navy), var(--navy-light)); border-radius: 10px; padding: 1rem; border: 1px solid rgba(212,165,116,0.2); }
+.lect-label { font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.35rem; }
+.lect-date { font-family: 'Inter', sans-serif; font-size: 0.7rem; color: rgba(255,255,255,0.35); margin-bottom: 0.55rem; }
+.lect-passage { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.88rem; color: rgba(255,255,255,0.8); line-height: 1.55; margin-bottom: 0.5rem; }
+.lect-ref { font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600; color: var(--gold); letter-spacing: 1px; }
+.lect-link { display: inline-block; margin-top: 0.55rem; font-family: 'Inter', sans-serif; font-size: 0.7rem; color: var(--gold); text-decoration: none; font-weight: 600; opacity: 0.8; }
+.lect-link:hover { opacity: 1; text-decoration: underline; }
+
+/* MAIN CONTENT */
+.study-section { margin-bottom: 0.5rem; }
+.section-inner { padding: 2rem 0; }
+.section-sep { height: 1px; background: var(--border); margin: 2rem 0 0; }
+.section-eyebrow { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+.section-number { width: 28px; height: 28px; border-radius: 50%; background: var(--navy); color: var(--gold); font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.section-label { font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-muted); }
+.section-label-verses { font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 600; color: var(--gold); letter-spacing: 1px; margin-left: auto; background: var(--navy); padding: 0.2rem 0.55rem; border-radius: 3px; }
+.section-divider { flex: 1; height: 0.5px; background: var(--border); }
+.section-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--navy); margin-bottom: 0.3rem; line-height: 1.25; }
+.section-title-sub { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+.section-body p { font-family: 'Crimson Pro', Georgia, serif; font-size: 1.1rem; color: var(--text-secondary); line-height: 1.85; margin-bottom: 1.1rem; }
+.section-body p:last-child { margin-bottom: 0; }
+
+/* SCRIPTURE OPENING */
+.scripture-opening { margin-bottom: 1.75rem; padding: 1.5rem 1.75rem; background: var(--navy); border-radius: 8px; border-left: 3px solid var(--gold); }
+.scripture-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.65; display: block; margin-bottom: 0.75rem; }
+.scripture-ref { font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; }
+
+/* WORD STUDY */
+.word-study { margin: 1.75rem 0; border: 1px solid var(--border-gold); border-radius: 8px; overflow: hidden; }
+.word-study-head { background: var(--gold-pale); padding: 0.65rem 1rem; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.ws-label { font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+.ws-term { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; color: var(--navy); }
+.ws-transliteration { font-family: 'Crimson Pro', serif; font-size: 0.88rem; color: var(--text-muted); font-style: italic; }
+.ws-phonetic { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--text-muted); font-style: italic; opacity: 0.85; }
+.ws-strongs { margin-left: auto; font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 600; color: var(--text-muted); background: white; border: 1px solid var(--border-gold); padding: 0.15rem 0.5rem; border-radius: 4px; text-decoration: none; transition: color 0.2s, border-color 0.2s; }
+.ws-strongs:hover { color: var(--gold); border-color: var(--gold); }
+.word-study-body { padding: 1rem 1.25rem; }
+.ws-definitions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.85rem; }
+.ws-def-chip { padding: 0.2rem 0.65rem; background: var(--navy); color: var(--gold-light); border-radius: 20px; font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 500; }
+.ws-def-chip.primary { background: var(--gold); color: var(--navy); font-weight: 700; }
+.ws-note { font-family: 'Crimson Pro', serif; font-size: 0.98rem; color: var(--text-secondary); line-height: 1.65; }
+.ws-note strong { color: var(--text-primary); font-weight: 600; }
+.ws-speak { background: none; border: none; cursor: pointer; font-size: 0.8rem; padding: 0; opacity: 0.4; line-height: 1; transition: opacity 0.15s; }
+.ws-speak:hover { opacity: 1; }
+
+/* SCRIPTURE CALLOUT */
+.scripture-callout { margin: 1.5rem 0; padding: 1.25rem 1.5rem; background: var(--off-white); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; }
+.sc-ref { font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 0.5rem; }
+.scripture-callout p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: var(--text-primary); line-height: 1.65; margin: 0; }
+
+/* PATRISTIC QUOTE */
+.patristic-quote { margin: 1.75rem 0; padding: 1.25rem 1.5rem 1.25rem 1.75rem; background: var(--navy); border-radius: 8px; position: relative; }
+.patristic-quote::before { content: '\201C'; position: absolute; top: -0.6rem; left: 1rem; font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--gold); line-height: 1; opacity: 0.55; }
+.patristic-label { font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.65rem; }
+.patristic-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.98rem; color: rgba(255,255,255,0.82); line-height: 1.7; margin-bottom: 0.75rem; }
+.patristic-attribution { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: rgba(255,255,255,0.38); }
+
+/* COMMENTARY TOGGLE */
+.commentary-toggle-wrap { margin: 1.25rem 0; }
+.commentary-toggle { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.45rem 1rem; border: 1px solid var(--border-gold); border-radius: 20px; background: var(--gold-pale); color: var(--navy); font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; user-select: none; }
+.commentary-toggle:hover { background: var(--gold-light); }
+.ct-icon { font-size: 0.8rem; transition: transform 0.2s; }
+.commentary-toggle.open .ct-icon { transform: rotate(45deg); }
+.commentary-panel { display: none; margin-top: 0.75rem; padding: 1.25rem; background: var(--white); border: 1px solid var(--border-gold); border-radius: 8px; }
+.commentary-panel.open { display: block; }
+.commentary-panel-label { font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+.commentary-panel p { font-family: 'Crimson Pro', serif; font-size: 0.98rem; color: var(--text-secondary); line-height: 1.75; margin-bottom: 0.75rem; }
+.commentary-panel p:last-child { margin-bottom: 0; }
+.commentary-ccc { display: inline-block; margin-top: 0.4rem; padding: 0.22rem 0.6rem; background: var(--navy); color: var(--gold); border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600; }
+
+/* LECTIONARY TIE */
+.lectionary-tie { margin: 1.5rem 0; padding: 0.85rem 1rem; background: var(--green-light); border-left: 3px solid var(--green); border-radius: 0 6px 6px 0; display: flex; align-items: flex-start; gap: 0.75rem; }
+.lect-tie-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.15rem; }
+.lect-tie-label { font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--green); margin-bottom: 0.2rem; }
+.lect-tie-text { font-family: 'Crimson Pro', serif; font-size: 0.9rem; color: #2d5a45; line-height: 1.55; }
+
+/* REFLECTION */
+.reflection-block { margin: 1.75rem 0; padding: 1.5rem; background: var(--purple-light); border-radius: 8px; border-left: 3px solid var(--purple); }
+.reflection-block h4 { font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--purple); margin-bottom: 0.5rem; }
+.reflection-prompt { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.98rem; color: var(--text-primary); line-height: 1.65; margin-bottom: 0.85rem; }
+.reflection-textarea { width: 100%; min-height: 80px; padding: 0.75rem 1rem; border: 1px solid rgba(74,44,107,0.2); border-radius: 6px; font-family: 'Crimson Pro', Georgia, serif; font-size: 1rem; color: var(--text-primary); background: white; resize: vertical; line-height: 1.6; }
+.reflection-textarea:focus { outline: none; border-color: var(--purple); }
+.journal-status { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--text-muted); min-height: 1.2rem; margin-top: 0.4rem; transition: opacity 0.3s; }
+.journal-status.saved { color: var(--green); }
+.journal-status.error { color: #b91c1c; }
+.journal-signin-prompt { display: none; align-items: center; gap: 0.5rem; margin-top: 0.75rem; padding: 0.6rem 0.85rem; background: rgba(212,165,116,0.08); border: 1px solid rgba(212,165,116,0.2); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.78rem; color: var(--text-secondary); }
+.journal-signin-prompt a { color: var(--purple); font-weight: 600; text-decoration: none; }
+.journal-signin-prompt a:hover { text-decoration: underline; }
+
+/* ADD TO PLAN */
+.add-to-plan-btn { display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem; width: 100%; padding: 0.55rem 1rem; border: 1.5px solid rgba(212,165,116,0.3); border-radius: 8px; background: transparent; color: rgba(212,165,116,0.7); font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.2s; text-decoration: none; letter-spacing: 0.5px; }
+.add-to-plan-btn:hover { background: rgba(212,165,116,0.08); border-color: var(--gold); color: var(--gold); }
+.add-to-plan-btn.saved { background: rgba(212,165,116,0.12); border-color: var(--gold); color: var(--gold); }
+
+/* BOTTOM NAV */
+.module-bottom-nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; background: var(--white); border-top: 1px solid var(--border); position: sticky; bottom: 0; z-index: 100; }
+.nav-btn { padding: 0.6rem 1.25rem; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600; cursor: pointer; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; transition: all 0.2s; }
+.nav-btn:not(.primary) { background: var(--off-white); color: var(--text-secondary); }
+.nav-btn:not(.primary):hover { background: var(--border); }
+.nav-btn.primary { background: var(--gold); color: var(--navy); }
+.nav-btn.primary:hover { background: var(--gold-light); }
+.nav-btn-plan { padding: 0.6rem 1.25rem; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600; cursor: pointer; display: inline-flex; align-items: center; gap: 0.4rem; transition: all 0.2s; background: transparent; border: 1.5px solid rgba(26,31,54,0.2); color: var(--text-secondary); }
+.nav-btn-plan:hover { border-color: var(--navy); color: var(--navy); background: var(--off-white); }
+.nav-btn-plan.saved { border-color: var(--green); color: var(--green); background: var(--green-light); }
+
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+@media (max-width: 900px) {
+  .study-layout { grid-template-columns: 1fr; }
+  .study-sidebar { position: static; order: -1; }
+}
+@media (max-width: 600px) {
+  .site-nav { padding: 0.85rem 1.25rem; }
+  .study-layout { padding: 1.5rem 1rem; }
+  .hero { padding: 5.5rem 1.25rem 2.5rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">CRUX</a>
+  <a href="crux-bible-romans-1-5-read.html" class="nav-back">← Read the Text</a>
+</nav>
+
+<section class="hero">
+  <p class="hero-track">Bible Study · Guided · Romans</p>
+  <h1 class="hero-book">Romans 1–5</h1>
+  <p class="hero-subtitle">The Diagnosis Before the Cure</p>
+  <div class="hero-meta">
+    <span class="hero-tag">4 Movements</span>
+    <span class="hero-tag">Greek Word Studies</span>
+    <span class="hero-tag">Church Fathers</span>
+    <span class="hero-tag">CCC References</span>
+    <span class="hero-tag">Reflection Prompts</span>
+  </div>
+</section>
+
+<div class="book-context-bar">
+  <div class="book-context-toggle" id="contextToggle">
+    <span>Book Context — Romans</span>
+    <span class="context-chevron" id="contextChevron">▼</span>
+  </div>
+  <div class="book-context-content" id="contextContent">
+    <div class="context-grid">
+      <div>
+        <p class="context-label">Author</p>
+        <p class="context-value">Paul of Tarsus, dictated to Tertius</p>
+      </div>
+      <div>
+        <p class="context-label">Written</p>
+        <p class="context-value">c. AD 57, from Corinth</p>
+      </div>
+      <div>
+        <p class="context-label">Audience</p>
+        <p class="context-value">Jewish and Gentile Christians in Rome, likely meeting in house churches</p>
+      </div>
+      <div>
+        <p class="context-label">Political Context</p>
+        <p class="context-value">Emperor Claudius had expelled Jews from Rome (c. AD 49); many had returned under Nero. The community was fractured.</p>
+      </div>
+      <div>
+        <p class="context-label">Chapters 1–5 in the Letter</p>
+        <p class="context-value">The foundation. Before Paul can announce grace, he must establish that everyone needs it. By 3:20 every exit is sealed. By 5:21 every charge has been answered.</p>
+      </div>
+      <div>
+        <p class="context-label">Translation</p>
+        <p class="context-value">Revised Standard Version, Catholic Edition (RSV-CE)</p>
+      </div>
+    </div>
+    <p class="context-note">Romans is a letter, not a systematic theology. Paul is writing to a divided community: Jewish and Gentile Christians who had grown apart under the pressure of imperial politics. Chapters 1–5 are his case that both groups stand before the same God, share the same diagnosis, and are saved by the same grace. Read every verse with that fractured room in mind.</p>
+  </div>
+</div>
+
+<div class="progress-bar">
+  <span class="progress-label">Progress</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="progress-count" id="progressCount">0 of 4 sections</span>
+</div>
+
+<div class="study-area">
+  <div class="study-layout">
+
+    <main class="study-main">
+
+      <!-- MOVEMENT 1 -->
+      <div class="study-section" id="section-1">
+        <div class="section-inner">
+
+          <div class="section-eyebrow">
+            <div class="section-number">1</div>
+            <span class="section-label">Movement One</span>
+            <div class="section-divider"></div>
+            <span class="section-label-verses">vv. 1:1–32</span>
+          </div>
+
+          <h2 class="section-title">The Gospel and the Indictment</h2>
+          <p class="section-title-sub">Power announced; humanity exposed</p>
+
+          <div class="scripture-opening">
+            <span class="scripture-text">"For I am not ashamed of the gospel: it is the power of God for salvation to every one who has faith, to the Jew first and also to the Greek. For in it the righteousness of God is revealed through faith for faith; as it is written, 'He who through faith is righteous shall live.'"</span>
+            <span class="scripture-ref">Romans 1:16–17</span>
+          </div>
+
+          <div class="section-body">
+            <p>Paul opens with a compressed creed. Before the letter proper begins, he packs four verses with the whole skeleton of Christian belief: incarnation (Christ "descended from David according to the flesh"), resurrection ("designated Son of God in power... by his resurrection from the dead"), and divine identity. He is not warming up. He is stating everything, immediately, as the frame through which all that follows must be read.</p>
+            <p>Verses 16 and 17 are the thesis of the entire letter. The phrase "I am not ashamed" is stronger than it first sounds. Chrysostom noticed this: when something is genuinely glorious, you do not settle for "not being ashamed of it"; you boast. Paul's restraint here is rhetorical. He is writing to a Roman audience for whom crucifixion was the most degrading death the empire could design. The gospel he is announcing centers on a man who died that way. To call that the "power of God for salvation" required a complete reordering of every category the Roman world held about power, glory, and victory.</p>
+          </div>
+
+          <div class="word-study">
+            <div class="word-study-head">
+              <span class="ws-label">Word Study</span>
+              <span class="ws-term">εὐαγγέλιον</span>
+              <span class="ws-transliteration">euangelion</span>
+              <span class="ws-phonetic">yoo-ang-GEL-ee-on</span>
+              <button class="ws-speak" onclick="speakGreek('euangelion')" title="Hear pronunciation">🔊</button>
+              <a class="ws-strongs" href="https://www.blueletterbible.org/lexicon/g2098" target="_blank" rel="noopener">G2098</a>
+            </div>
+            <div class="word-study-body">
+              <div class="ws-definitions">
+                <span class="ws-def-chip primary">a royal proclamation</span>
+                <span class="ws-def-chip">good news, glad tidings</span>
+                <span class="ws-def-chip">a counter-imperial announcement</span>
+                <span class="ws-def-chip">the gospel as a complete message unit</span>
+              </div>
+              <p class="ws-note">In the Roman world, <strong>euangelion</strong> was not a religious word. It announced imperial births, victories, and accessions to the throne: official communication from the power that rules. Paul's use of the term is deliberate collision. He is announcing that a different king has arrived, that a different kind of victory has been won, and that the proclamation demands a response. The gospel is not merely comforting information. It is a summons.</p>
+            </div>
+          </div>
+
+          <div class="section-body">
+            <p>The shift to verse 18 is the hardest turn in the letter. Paul has just announced the gospel, and immediately pivots to the wrath of God. This is not an accident of arrangement. The good news only makes sense when the bad news has been heard first, and the bad news Paul delivers in chapters 1–3 is as thorough as any he could construct. Beginning with the Gentile world, he describes a progressive abandonment: not God abandoning humans, but humans abandoning God, and the consequences that follow from that choice.</p>
+            <p>The three-fold "God gave them up" in verses 24, 26, and 28 is the key. This is not a thunderbolt arriving from outside. It is God stepping back and allowing human beings to inhabit the consequences of the reality they have chosen. The wrath of God, in this passage, is structural rather than emotional: the universe's settled opposition to everything that destroys what God made. The vices catalogued in verses 29–31 are not penalties arriving from without. They are the interior collapse of a person whose loves are pointed in the wrong direction.</p>
+          </div>
+
+          <div class="scripture-callout">
+            <span class="sc-ref">Romans 1:20</span>
+            <p>"Ever since the creation of the world his invisible nature, namely, his eternal power and divine nature, has been clearly perceived in the things that have been made. So they are without excuse."</p>
+          </div>
+
+          <div class="patristic-quote">
+            <p class="patristic-label">Church Father</p>
+            <p class="patristic-text">"He does not say 'I am eager to preach the gospel' but 'I am not ashamed' — which is the stronger expression. For when a thing is glorious, men are not content with merely not being ashamed of it, but are actually proud of it."</p>
+            <p class="patristic-attribution">— St. John Chrysostom, Homilies on Romans, Homily II (c. AD 391)</p>
+          </div>
+
+          <div class="commentary-toggle-wrap">
+            <button class="commentary-toggle" onclick="toggleCommentary(this)">
+              <span class="ct-icon">+</span> Catholic reading: what does Paul mean by "the wrath of God"?
+            </button>
+            <div class="commentary-panel">
+              <p class="commentary-panel-label">Commentary</p>
+              <p>The word translated "wrath" is <em>orgē</em>, a term that carries less heat than the English suggests. It describes God's settled moral opposition to everything that destroys what he made, not a deity in a tantrum. Paul uses present tense: wrath is already being revealed. The mechanism he names is abandonment: God honors human freedom by allowing it to play out to its end. When human beings order their loves away from God, the disintegration that follows is not an added penalty. It is what disorder looks like from the inside.</p>
+              <p>The Catholic tradition holds both poles together. God's wrath is real: it is the seriousness with which he takes what he made, including human dignity and human choices. And God's mercy is its answer, not its contradiction. CCC 211 describes God's love as "not a sentimental affection" but the eternal mercy that overcomes sin. The "good news" Paul announces in verses 16–17 requires the gravity of verses 18–32 to land with force. A gospel announced to people who feel no diagnosis is not good news. It is just noise.</p>
+              <span class="commentary-ccc">CCC 211, CCC 1040</span>
+            </div>
+          </div>
+
+          <div class="lectionary-tie">
+            <span class="lect-tie-icon">📅</span>
+            <div>
+              <p class="lect-tie-label">Lectionary Connection</p>
+              <p class="lect-tie-text">Romans 1:1–7 is the second reading for the Fourth Sunday of Advent, Year A. In the context of Advent waiting, Paul's compressed creed lands differently: the announcement that a king descended from David has been designated Son of God by his resurrection is precisely the event Advent leans toward. What does it mean to "wait" for something that has already happened?</p>
+            </div>
+          </div>
+
+          <div class="reflection-block">
+            <h4>Reflection — Movement One</h4>
+            <p class="reflection-prompt">Paul says wrath is "already being revealed," not coming in the future but present now. Where in your own experience have you seen the consequences of disordered loves? What did the disintegration look like?</p>
+            <textarea class="reflection-textarea" data-reflection-key="s1_q1" placeholder="Your reflection..."></textarea>
+
+            <p class="reflection-prompt">Verse 20 says creation itself makes God's nature "clearly perceived," leaving no one without excuse. Have you ever encountered God through something that was not explicitly religious? What did it tell you about him?</p>
+            <textarea class="reflection-textarea" data-reflection-key="s1_q2" placeholder="Your reflection..."></textarea>
+            <div class="journal-status" id="journal-status-s1"></div>
+            <div class="journal-signin-prompt">
+              📖 <a href="crux-account.html">Sign in</a> to save your reflections to your Study Journal.
+            </div>
+          </div>
+
+        </div>
+        <div class="section-sep"></div>
+      </div>
+
+      <!-- MOVEMENT 2 -->
+      <div class="study-section" id="section-2">
+        <div class="section-inner">
+
+          <div class="section-eyebrow">
+            <div class="section-number">2</div>
+            <span class="section-label">Movement Two</span>
+            <div class="section-divider"></div>
+            <span class="section-label-verses">vv. 2:1–3:20</span>
+          </div>
+
+          <h2 class="section-title">Judgment Without Partiality</h2>
+          <p class="section-title-sub">The Jew first, and also the Greek</p>
+
+          <div class="scripture-opening">
+            <span class="scripture-text">"For God shows no partiality."</span>
+            <span class="scripture-ref">Romans 2:11</span>
+          </div>
+
+          <div class="section-body">
+            <p>Paul's rhetorical strategy in chapter 2 is a trap sprung slowly. He has just delivered a catalog of Gentile wickedness in chapter 1, and his Jewish readers, familiar with the prophetic tradition of cataloging pagan sin, are nodding. Chapter 2 opens the spring: "Therefore you have no excuse, O man, whoever you are, when you judge another; for in passing judgment upon him you condemn yourself, because you, the judge, are doing the very same things" (2:1). The teacher who found chapter 1 satisfying has just been included in the indictment. The finger has swung around.</p>
+            <p>The argument that follows rests on a premise that would have been uncomfortable in Paul's context: God's judgment is impartial. The same God who will judge Gentiles by the light they received will judge Jews by the Torah they were given. The standard shifts; the seriousness does not.</p>
+          </div>
+
+          <div class="word-study">
+            <div class="word-study-head">
+              <span class="ws-label">Word Study</span>
+              <span class="ws-term">συνείδησις</span>
+              <span class="ws-transliteration">syneidēsis</span>
+              <span class="ws-phonetic">soo-NAY-day-sis</span>
+              <button class="ws-speak" onclick="speakGreek('syneidesis')" title="Hear pronunciation">🔊</button>
+              <a class="ws-strongs" href="https://www.blueletterbible.org/lexicon/g4893" target="_blank" rel="noopener">G4893</a>
+            </div>
+            <div class="word-study-body">
+              <div class="ws-definitions">
+                <span class="ws-def-chip primary">conscience — moral self-knowledge</span>
+                <span class="ws-def-chip">co-knowledge, shared knowledge</span>
+                <span class="ws-def-chip">inner moral witness</span>
+                <span class="ws-def-chip">seat of moral testimony</span>
+              </div>
+              <p class="ws-note">The word builds from <em>syn</em> (together) + <em>eidenai</em> (to know): literally, co-knowledge, knowledge that stands beside the self and evaluates it. Paul is not describing cultural conditioning or social squeamishness. He is pointing to a moral faculty universal to human beings, which is why Gentiles who never received the Torah can still "do by nature what the law requires" (2:14). The conscience is not infallible, but it is real. Its testimony is genuine evidence of the law written on the heart.</p>
+            </div>
+          </div>
+
+          <div class="section-body">
+            <p>The argument tightens further in 2:17–29. Paul turns to the Jewish reader directly: you have the Torah, you know the will of God, you can discern what is excellent. What, then, does it mean that the prophets report God's name is blasphemed among the Gentiles because of you (v.24, quoting Isaiah 52:5)? The teacher of the law who does not keep it dishonors the law more visibly than the pagan who never had it.</p>
+            <p>Chapter 3 closes every remaining exit. In verses 9–18, Paul stacks seven Old Testament quotations from Psalms, Isaiah, and elsewhere as a prosecutorial exhibit, using Israel's own scriptures to indict both Jew and Gentile simultaneously. "None is righteous, no, not one." By verse 20 the verdict is unanimous: "no human being will be justified in his sight by works of the law, since through the law comes knowledge of sin." The law is an accurate mirror. It cannot make you clean.</p>
+          </div>
+
+          <div class="scripture-callout">
+            <span class="sc-ref">Romans 3:23</span>
+            <p>"Since all have sinned and fall short of the glory of God."</p>
+          </div>
+
+          <div class="patristic-quote">
+            <p class="patristic-label">Church Father</p>
+            <p class="patristic-text">"Paul here shows that the Greeks have the works of the law, not the law itself... God inscribed on the conscience what he inscribed on tablets for the Jews."</p>
+            <p class="patristic-attribution">— St. John Chrysostom, Homilies on Romans, Homily V (c. AD 391)</p>
+          </div>
+
+          <div class="commentary-toggle-wrap">
+            <button class="commentary-toggle" onclick="toggleCommentary(this)">
+              <span class="ct-icon">+</span> Catholic reading: can people who never heard the gospel be saved?
+            </button>
+            <div class="commentary-panel">
+              <p class="commentary-panel-label">Commentary</p>
+              <p>Romans 2:14–16 is one of the key texts the Catholic tradition uses when addressing those who lived and died without explicit knowledge of the gospel. If Gentiles who have not the law can "do what the law requires" because it is "written on their hearts," then the moral law is not the exclusive possession of the covenant people. God's reach extends beyond his explicit revelation. This is not Paul's only word on the subject, but it is the scriptural foundation for what the tradition says next.</p>
+              <p>CCC 847 applies this directly: those who seek God with sincere hearts and act in accordance with their conscience, even without explicit knowledge of the gospel, may achieve eternal salvation. This is not universalism. It does not erase the necessity of Christ's redemption, which the tradition understands as operative even where it is not explicitly known. It is confidence in God's justice. A God whose saving reach extends only as far as the church's geographic boundaries would not be the God Paul describes in these chapters.</p>
+              <span class="commentary-ccc">CCC 847, CCC 1776</span>
+            </div>
+          </div>
+
+          <div class="reflection-block">
+            <h4>Reflection — Movement Two</h4>
+            <p class="reflection-prompt">Paul says the moralist who judges others "is doing the very same things" (2:1). Where do you find yourself most quick to judge, and what does that area reveal about your own struggle?</p>
+            <textarea class="reflection-textarea" data-reflection-key="s2_q1" placeholder="Your reflection..."></textarea>
+
+            <p class="reflection-prompt">The law "written on the heart" (2:15) means every human being has some access to moral knowledge, whether or not they received religious formation. Where have you seen that play out in someone you know?</p>
+            <textarea class="reflection-textarea" data-reflection-key="s2_q2" placeholder="Your reflection..."></textarea>
+            <div class="journal-status" id="journal-status-s2"></div>
+            <div class="journal-signin-prompt">
+              📖 <a href="crux-account.html">Sign in</a> to save your reflections to your Study Journal.
+            </div>
+          </div>
+
+        </div>
+        <div class="section-sep"></div>
+      </div>
+
+      <!-- MOVEMENT 3 -->
+      <div class="study-section" id="section-3">
+        <div class="section-inner">
+
+          <div class="section-eyebrow">
+            <div class="section-number">3</div>
+            <span class="section-label">Movement Three</span>
+            <div class="section-divider"></div>
+            <span class="section-label-verses">vv. 3:21–4:25</span>
+          </div>
+
+          <h2 class="section-title">Justification by Faith</h2>
+          <p class="section-title-sub">Apart from the law, the righteousness of God</p>
+
+          <div class="scripture-opening">
+            <span class="scripture-text">"But now the righteousness of God has been manifested apart from law, although the law and the prophets bear witness to it, the righteousness of God through faith in Jesus Christ for all who believe."</span>
+            <span class="scripture-ref">Romans 3:21–22</span>
+          </div>
+
+          <div class="section-body">
+            <p>Two words change everything: "But now." In Greek, <em>nuni de</em>, a hinge in the argument, the turn from problem to solution. Paul has spent two and a half chapters closing every exit: Gentiles condemned by the light of natural revelation, Jews by the Torah they received, and everyone by the conscience written on the heart. The verdict by 3:20 is unanimous. Nobody passes. "But now" is where the answer arrives.</p>
+            <p>What Paul announces is the "righteousness of God," the phrase he introduced in 1:17, now manifested "apart from law." This is not God abandoning his own standards. It is God fulfilling them in a way the law never could. The law could diagnose; it could not cure. The righteousness of God announced in 3:21 is both God's own righteous character acting and the standing of righteousness he confers on those who receive it by faith. Both meanings are present simultaneously, and the Catholic tradition has always insisted on holding them together.</p>
+          </div>
+
+          <div class="word-study">
+            <div class="word-study-head">
+              <span class="ws-label">Word Study</span>
+              <span class="ws-term">ἱλαστήριον</span>
+              <span class="ws-transliteration">hilastērion</span>
+              <span class="ws-phonetic">hil-as-TAY-ree-on</span>
+              <button class="ws-speak" onclick="speakGreek('hilasterion')" title="Hear pronunciation">🔊</button>
+              <a class="ws-strongs" href="https://www.blueletterbible.org/lexicon/g2435" target="_blank" rel="noopener">G2435</a>
+            </div>
+            <div class="word-study-body">
+              <div class="ws-definitions">
+                <span class="ws-def-chip primary">mercy seat — cover of the Ark of the Covenant</span>
+                <span class="ws-def-chip">propitiation — satisfying divine justice</span>
+                <span class="ws-def-chip">expiation — removing and cleansing sin</span>
+                <span class="ws-def-chip">place of atonement</span>
+              </div>
+              <p class="ws-note">The word appears in the Septuagint as the term for the mercy seat of the Ark of the Covenant (Exodus 25:17), the gold cover where the high priest sprinkled blood on the Day of Atonement. Paul places Christ in that image deliberately: Christ is the new mercy seat, the place where God and sinful humanity meet, where the blood of the sacrifice is applied, and where the verdict is rendered. The Hebrew equivalent is <strong>kapporeth</strong> (כַּפֹּרֶת), atonement cover, the place of covering and reconciliation.</p>
+            </div>
+          </div>
+
+          <div class="word-study">
+            <div class="word-study-head">
+              <span class="ws-label">Word Study</span>
+              <span class="ws-term">λογίζομαι</span>
+              <span class="ws-transliteration">logizomai</span>
+              <span class="ws-phonetic">log-ID-zoh-my</span>
+              <button class="ws-speak" onclick="speakGreek('logizomai')" title="Hear pronunciation">🔊</button>
+              <a class="ws-strongs" href="https://www.blueletterbible.org/lexicon/g3049" target="_blank" rel="noopener">G3049</a>
+            </div>
+            <div class="word-study-body">
+              <div class="ws-definitions">
+                <span class="ws-def-chip primary">to reckon, credit, or count to an account</span>
+                <span class="ws-def-chip">to consider, regard as</span>
+                <span class="ws-def-chip">to calculate, reason through</span>
+              </div>
+              <p class="ws-note"><strong>Logizomai</strong> ("reckoned" / "credited" / "counted") appears eleven times in Romans 4, making it the chapter's controlling word. It is an accounting term: to enter something into a ledger, to credit to an account. When God "reckons" Abraham's faith as righteousness, he is not pretending Abraham is something he is not. He is making a binding declaration about how Abraham stands before him. The Catholic tradition holds that this reckoning is not a legal fiction. It effects what it declares, because it comes with the grace to live accordingly.</p>
+            </div>
+          </div>
+
+          <div class="section-body">
+            <p>The Abraham section in chapter 4 is Paul's exhibit A. He reaches back behind Moses, behind Torah, behind the entire legal framework, all the way to the first recorded instance of God declaring a person righteous. Abraham believed God, "and it was reckoned to him as righteousness" (Genesis 15:6). The reckoning happened, Paul notes carefully, before Abraham was circumcised, roughly fourteen years before Genesis 17. Circumcision was a sign of the righteousness Abraham already had, not its cause. He was justified as an uncircumcised man. Therefore he is the father of all who believe: uncircumcised Gentiles and circumcised Jews alike.</p>
+            <p>The climax of the chapter is verses 18–21: "In hope he believed against hope." Abraham had nothing on his side. His body was "as good as dead," Sarah's womb was barren, and God was asking him to believe that nations would come from him. He believed anyway, not because the evidence supported it but because he knew who was making the promise. Confidence in the God who makes promises, not in the circumstances. That is Paul's definition of faith in its simplest form.</p>
+          </div>
+
+          <div class="scripture-callout">
+            <span class="sc-ref">Romans 4:18</span>
+            <p>"In hope he believed against hope, that he should become the father of many nations; as he had been told, 'So shall your descendants be.'"</p>
+          </div>
+
+          <div class="patristic-quote">
+            <p class="patristic-label">Church Father</p>
+            <p class="patristic-text">"The mercy seat is, according to the Apostle, Christ Jesus... for on that seat God is propitious to men through Jesus Christ, because he is at the right hand of the Father interceding for us."</p>
+            <p class="patristic-attribution">— Origen, Commentary on Romans, Book 3 (c. AD 240)</p>
+          </div>
+
+          <div class="commentary-toggle-wrap">
+            <button class="commentary-toggle" onclick="toggleCommentary(this)">
+              <span class="ct-icon">+</span> Catholic reading: what about faith and works? Does Paul contradict James?
+            </button>
+            <div class="commentary-panel">
+              <p class="commentary-panel-label">Commentary</p>
+              <p>Romans 3:28 ("a man is justified by faith apart from works of law") is the verse Martin Luther added the word "alone" to. The centuries of controversy that followed have sometimes obscured what Paul is actually arguing. The "works" he attacks in chapters 2–4 are specifically works of the Mosaic Law: circumcision, dietary regulations, feast days, the identity markers that separated Jewish from Gentile Christians in Rome. Paul is not attacking moral effort in general. He is attacking the idea that ethnic or ritual identity before God can substitute for grace received through faith.</p>
+              <p>James 2 ("faith without works is dead") addresses a different question entirely: not what justifies us before God, but what genuine living faith looks like in practice. Paul and James are not in tension. They are answering different questions in different pastoral contexts. The Catholic tradition synthesizes both: CCC 1993 states that justification is "not only the remission of sins, but also the sanctification and renewal of the interior man." The verdict is real. It is also transformative. What God declares, he also begins to make true.</p>
+              <span class="commentary-ccc">CCC 1987, CCC 1993</span>
+            </div>
+          </div>
+
+          <div class="reflection-block">
+            <h4>Reflection — Movement Three</h4>
+            <p class="reflection-prompt">Paul says Abraham "grew strong in his faith as he gave glory to God" (4:20), faith that strengthened precisely by being exercised against impossible odds. What is the hardest thing you have been asked to trust God with? What happened to your faith in the waiting?</p>
+            <textarea class="reflection-textarea" data-reflection-key="s3_q1" placeholder="Your reflection..."></textarea>
+
+            <p class="reflection-prompt">The mercy seat (hilastērion) is the place where God and sinful humanity meet, not at a distance but directly, over the blood of sacrifice. What does it mean to you that Paul identifies Christ as that meeting place?</p>
+            <textarea class="reflection-textarea" data-reflection-key="s3_q2" placeholder="Your reflection..."></textarea>
+            <div class="journal-status" id="journal-status-s3"></div>
+            <div class="journal-signin-prompt">
+              📖 <a href="crux-account.html">Sign in</a> to save your reflections to your Study Journal.
+            </div>
+          </div>
+
+        </div>
+        <div class="section-sep"></div>
+      </div>
+
+      <!-- MOVEMENT 4 -->
+      <div class="study-section" id="section-4">
+        <div class="section-inner">
+
+          <div class="section-eyebrow">
+            <div class="section-number">4</div>
+            <span class="section-label">Movement Four</span>
+            <div class="section-divider"></div>
+            <span class="section-label-verses">vv. 5:1–21</span>
+          </div>
+
+          <h2 class="section-title">Peace with God and the New Adam</h2>
+          <p class="section-title-sub">Where sin increased, grace abounded all the more</p>
+
+          <div class="scripture-opening">
+            <span class="scripture-text">"Therefore, since we are justified by faith, we have peace with God through our Lord Jesus Christ."</span>
+            <span class="scripture-ref">Romans 5:1</span>
+          </div>
+
+          <div class="section-body">
+            <p>The "therefore" that opens chapter 5 is the word the whole argument has been building toward. Paul has established the diagnosis (chapters 1–3), announced the remedy (3:21–4:25), and now describes what the remedy produces. The first fruit is peace with God. This is not an emotion. It is a change in legal standing. Before justification, the human being is at enmity with God, under judgment, alienated, on the wrong side of the verdict. "Peace with God" means the hostility is over. The war is finished, and the status is permanent.</p>
+            <p>Verses 3–5 add something that can startle a reader: "we also rejoice in our sufferings." Paul is not romanticizing pain. He names a chain: suffering produces endurance, endurance produces character, and character produces hope. The chain is not automatic. It requires the willingness to stay in the difficulty rather than exit it. But the terminus of the chain is hope "that does not disappoint," because at its end is not a feeling but a Person: "God's love has been poured into our hearts through the Holy Spirit which has been given to us" (v.5). This is the first explicit appearance of the Holy Spirit in Romans 1–5, and it arrives here, at the place where suffering is being redeemed.</p>
+          </div>
+
+          <div class="word-study">
+            <div class="word-study-head">
+              <span class="ws-label">Word Study</span>
+              <span class="ws-term">εἰρήνη / שָׁלוֹם</span>
+              <span class="ws-transliteration">eirēnē / shalom</span>
+              <span class="ws-phonetic">ay-RAY-nay / sha-LOME</span>
+              <button class="ws-speak" onclick="speakGreek('eirene')" title="Hear pronunciation">🔊</button>
+              <a class="ws-strongs" href="https://www.blueletterbible.org/lexicon/g1515" target="_blank" rel="noopener">G1515</a>
+            </div>
+            <div class="word-study-body">
+              <div class="ws-definitions">
+                <span class="ws-def-chip primary">peace — wholeness, right relationship, flourishing</span>
+                <span class="ws-def-chip">shalom — presence of completeness, not absence of conflict</span>
+                <span class="ws-def-chip">reconciliation, cessation of hostility</span>
+                <span class="ws-def-chip">well-being in the deepest sense</span>
+              </div>
+              <p class="ws-note">The Greek <strong>eirēnē</strong> translates the Hebrew <strong>shalom</strong>, which carries considerably more weight than the English "peace" suggests. Shalom is not the absence of conflict. It is the presence of wholeness: right relationship, things as they are meant to be, every dimension of life in its proper order. "Peace with God" through justification restores the fundamental relationship from which all other flourishing flows. Paul is not telling people to feel calm. He is announcing that the condition for genuine human flourishing has been restored, and everything else in the Christian life is the outworking of that.</p>
+            </div>
+          </div>
+
+          <div class="section-body">
+            <p>Chapter 5:12–21 pulls back to the widest possible frame. Paul introduces Adam, not as a biographical footnote but as a structural key to understanding what Christ has done. Adam is the one through whom sin and death entered: "death spread to all men because all men sinned" (v.12). But Adam is also, Paul says, "a type of the one who was to come" (v.14). The comparison is asymmetric and deliberately so. What Adam undid, Christ overturns, and then exceeds. Three times in verses 15–17, Paul insists that grace is greater than the damage: "much more have the grace of God and the free gift in the grace of that one man Jesus Christ abounded for many." Sin is real, its consequences are real, the death that entered through Adam is real. And grace exceeds all of it.</p>
+          </div>
+
+          <div class="scripture-callout">
+            <span class="sc-ref">Romans 5:8</span>
+            <p>"But God shows his love for us in that while we were yet sinners Christ died for us."</p>
+          </div>
+
+          <div class="patristic-quote">
+            <p class="patristic-label">Church Father</p>
+            <p class="patristic-text">"He does not say 'we bear suffering' but 'we glory in suffering' — not because suffering is pleasant but because of what it produces. The chain — tribulation, patience, experience, hope — shows that Paul is not describing victims but athletes."</p>
+            <p class="patristic-attribution">— St. John Chrysostom, Homilies on Romans, Homily IX (c. AD 391)</p>
+          </div>
+
+          <div class="commentary-toggle-wrap">
+            <button class="commentary-toggle" onclick="toggleCommentary(this)">
+              <span class="ct-icon">+</span> Catholic reading: what is original sin, and does Romans 5 actually teach it?
+            </button>
+            <div class="commentary-panel">
+              <p class="commentary-panel-label">Commentary</p>
+              <p>Romans 5:12 is the foundational New Testament text for the Catholic doctrine of original sin. The verse is famously difficult. The Greek phrase <em>eph' ho</em> has been translated variously as "in whom," "because," or "on the basis of which." Augustine read it as "in whom [Adam] all sinned," a participatory reading that shaped the Western doctrine of inherited guilt. Eastern Catholic and Orthodox tradition emphasizes inherited mortality and corruption more than inherited guilt. The Council of Trent (1546) defined original sin as a real transmission from Adam, not mere imitation of his example, and specified that baptism truly removes it.</p>
+              <p>Original sin is not a claim about human depravity that makes people worthless. It is a diagnosis that makes the cure necessary and meaningful. Paul is not saying human beings are irredeemable. He is saying the damage runs deeper than any human effort can reach, which is precisely why the "much more" of grace matters. CCC 404–406 covers the nature and transmission of original sin; CCC 1264 addresses the difference between what baptism removes and what remains. The doctrine is not a counsel of despair. It is the premise on which the asymmetry of grace stands.</p>
+              <span class="commentary-ccc">CCC 404–406, CCC 1264</span>
+            </div>
+          </div>
+
+          <div class="lectionary-tie">
+            <span class="lect-tie-icon">📅</span>
+            <div>
+              <p class="lect-tie-label">Lectionary Connection</p>
+              <p class="lect-tie-text">Romans 5:1–2, 5–8 is the second reading for the Third Sunday of Lent, Year A, often paired with the account of the Samaritan woman at the well (John 4). In both, what looks like need becomes the site where grace arrives. Students who have heard these verses at Mass in Lent can now read them as the culmination of the argument Paul has been building since chapter 1.</p>
+            </div>
+          </div>
+
+          <div class="reflection-block">
+            <h4>Reflection — Movement Four</h4>
+            <p class="reflection-prompt">Paul writes that "while we were yet sinners Christ died for us" (5:8). The love described here arrived before any improvement on our part. How does that change the way you think about what you have to offer before coming to God?</p>
+            <textarea class="reflection-textarea" data-reflection-key="s4_q1" placeholder="Your reflection..."></textarea>
+
+            <p class="reflection-prompt">The Adam/Christ typology in 5:12–21 insists that grace exceeds damage, not just equals it. Where in your own story has that asymmetry been true? Where have you seen grace outpace what was broken?</p>
+            <textarea class="reflection-textarea" data-reflection-key="s4_q2" placeholder="Your reflection..."></textarea>
+            <div class="journal-status" id="journal-status-s4"></div>
+            <div class="journal-signin-prompt">
+              📖 <a href="crux-account.html">Sign in</a> to save your reflections to your Study Journal.
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="study-sidebar">
+
+      <div class="lectionary-widget">
+        <div class="lect-label">Featured Verse</div>
+        <div class="lect-date" id="lectDate"></div>
+        <p class="lect-passage">"For I am not ashamed of the gospel: it is the power of God for salvation to every one who has faith."</p>
+        <div class="lect-ref">Romans 1:16</div>
+        <a href="https://bible.usccb.org/daily-bible-reading" class="lect-link" target="_blank" rel="noopener">USCCB Daily Reading →</a>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">In This Study</div>
+        <ul class="sidebar-toc">
+          <li><a href="#section-1" class="active">
+            <span class="toc-num">1</span>
+            The Gospel and the Indictment
+          </a></li>
+          <li><a href="#section-2">
+            <span class="toc-num">2</span>
+            Judgment Without Partiality
+          </a></li>
+          <li><a href="#section-3">
+            <span class="toc-num">3</span>
+            Justification by Faith
+          </a></li>
+          <li><a href="#section-4">
+            <span class="toc-num">4</span>
+            Peace with God and the New Adam
+          </a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Key Terms</div>
+        <ul class="sidebar-key-terms">
+          <li>
+            <strong>euangelion / εὐαγγέλιον</strong>
+            "Gospel" — a royal counter-proclamation, not just good news
+          </li>
+          <li>
+            <strong>syneidēsis / συνείδησις</strong>
+            "Conscience" — co-knowledge, the moral witness built into every person
+          </li>
+          <li>
+            <strong>hilastērion / כַּפֹּרֶת</strong>
+            "Mercy seat" — the place where God and sinful humanity meet
+          </li>
+          <li>
+            <strong>logizomai / λογίζομαι</strong>
+            "Reckoned" — an accounting term; God credits righteousness to the account
+          </li>
+          <li>
+            <strong>eirēnē / שָׁלוֹם</strong>
+            "Peace" — not absence of conflict but wholeness and right relationship
+          </li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Further Study</div>
+        <ul class="sidebar-resource-list">
+          <li>
+            <strong>Joseph Fitzmyer — Romans</strong>
+            Anchor Bible Commentary. The standard Catholic scholarly reference; verse-by-verse, invaluable for word studies.
+          </li>
+          <li>
+            <strong>Scott Hahn — Romans</strong>
+            Catholic Commentary on Sacred Scripture. Pastoral, typological, strong on chapter 5.
+          </li>
+          <li>
+            <strong>N.T. Wright — Paul for Everyone: Romans</strong>
+            Accessible and sharp; reframes the law/works debate in its Jewish context.
+          </li>
+          <li>
+            <strong>CCC §§ 36–38, 396–409, 1987–2011</strong>
+            Natural knowledge of God, original sin, and justification.
+          </li>
+        </ul>
+      </div>
+
+      <button class="add-to-plan-btn" id="addToPlanBtn">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+        Add to Study Plan
+      </button>
+
+    </aside>
+  </div>
+</div>
+
+<div class="module-bottom-nav">
+  <a href="crux-bible-romans-1-5-read.html" class="nav-btn">← Read the Text</a>
+  <button class="nav-btn-plan" id="addToPlanBtnBottom">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg>
+    Add to Plan
+  </button>
+  <a href="crux-bible-study.html" class="nav-btn primary">All Bible Studies →</a>
+</div>
+
+<script>
+document.getElementById('contextToggle').addEventListener('click', function() {
+  document.getElementById('contextContent').classList.toggle('open');
+  document.getElementById('contextChevron').classList.toggle('open');
+});
+
+function speakGreek(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.rate = 0.82;
+  window.speechSynthesis.speak(utt);
+}
+
+function toggleCommentary(btn) {
+  btn.classList.toggle('open');
+  btn.nextElementSibling.classList.toggle('open');
+}
+
+const sections = document.querySelectorAll('.study-section');
+const tocLinks = document.querySelectorAll('.sidebar-toc a');
+
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      tocLinks.forEach(link => link.classList.remove('active'));
+      const activeLink = document.querySelector(`.sidebar-toc a[href="#${entry.target.id}"]`);
+      if (activeLink) activeLink.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+
+sections.forEach(s => sectionObserver.observe(s));
+
+const TOTAL_SECTIONS = 4;
+const seenSections = new Set();
+
+const progressObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) seenSections.add(entry.target.id);
+    const count = seenSections.size;
+    document.getElementById('progressFill').style.width = (count / TOTAL_SECTIONS * 100) + '%';
+    document.getElementById('progressCount').textContent = count + ' of ' + TOTAL_SECTIONS + ' sections';
+  });
+}, { threshold: 0.15 });
+
+sections.forEach(s => progressObserver.observe(s));
+
+(function() {
+  const el = document.getElementById('lectDate');
+  if (el) el.textContent = new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' });
+})();
+
+(function() {
+  const btns = [document.getElementById('addToPlanBtn'), document.getElementById('addToPlanBtnBottom')];
+  let saved = false;
+  btns.forEach(btn => {
+    if (!btn) return;
+    btn.addEventListener('click', () => {
+      saved = !saved;
+      btns.forEach(b => {
+        if (!b) return;
+        const isBottom = b.id === 'addToPlanBtnBottom';
+        if (saved) {
+          b.classList.add('saved');
+          b.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg> ' + (isBottom ? 'Added' : 'Added to Plan');
+        } else {
+          b.classList.remove('saved');
+          b.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 5v14M5 12h14"/></svg> ' + (isBottom ? 'Add to Plan' : 'Add to Study Plan');
+        }
+      });
+    });
+  });
+})();
+</script>
+
+<script type="module">
+import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import { getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+  authDomain: "crux-faith-formation.firebaseapp.com",
+  projectId: "crux-faith-formation",
+  storageBucket: "crux-faith-formation.firebasestorage.app",
+  messagingSenderId: "838141015985",
+  appId: "1:838141015985:web:2655e570663e182d75ef90"
+};
+
+const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+const STUDY_ID       = 'romans_1_5';
+const STUDY_TITLE    = 'Romans 1–5';
+const STUDY_SUBTITLE = 'The Diagnosis Before the Cure';
+const STUDY_URL      = 'crux-bible-romans-1-5.html';
+
+let isDocNew = true;
+let saveTimers = {};
+
+const KEY_TO_STATUS = {
+  s1_q1: 's1', s1_q2: 's1',
+  s2_q1: 's2', s2_q2: 's2',
+  s3_q1: 's3', s3_q2: 's3',
+  s4_q1: 's4', s4_q2: 's4'
+};
+
+function setStatus(key, msg, isError) {
+  const el = document.getElementById('journal-status-' + KEY_TO_STATUS[key]);
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'journal-status' + (isError ? ' error' : (msg === 'Saving...' ? '' : ' saved'));
+  if (!isError && msg !== 'Saving...') setTimeout(() => { el.textContent = ''; el.className = 'journal-status'; }, 3000);
+}
+
+function getAssociatedPrompt(textarea) {
+  let el = textarea.previousElementSibling;
+  while (el) {
+    if (el.classList.contains('reflection-prompt')) return el.textContent.trim();
+    el = el.previousElementSibling;
+  }
+  return '';
+}
+
+async function saveResponse(uid, key, text, prompt) {
+  setStatus(key, 'Saving...');
+  const wasNew = isDocNew;
+  if (isDocNew) isDocNew = false;
+  try {
+    const ref = doc(db, 'studyJournal', uid, 'entries', STUDY_ID);
+    const payload = {
+      [key]: { text, prompt, updatedAt: serverTimestamp() },
+      studyTitle: STUDY_TITLE,
+      studySubtitle: STUDY_SUBTITLE,
+      studyUrl: STUDY_URL,
+      lastUpdated: serverTimestamp()
+    };
+    if (wasNew) {
+      await setDoc(ref, { ...payload, createdAt: serverTimestamp() }, { merge: true });
+    } else {
+      await updateDoc(ref, payload);
+    }
+    setStatus(key, 'Saved');
+  } catch (e) {
+    console.error(e);
+    setStatus(key, 'Error saving', true);
+  }
+}
+
+async function loadResponses(uid) {
+  try {
+    const snap = await getDoc(doc(db, 'studyJournal', uid, 'entries', STUDY_ID));
+    if (!snap.exists()) return;
+    isDocNew = false;
+    const data = snap.data();
+    document.querySelectorAll('.reflection-textarea').forEach(ta => {
+      const key = ta.dataset.reflectionKey;
+      if (data[key]?.text) ta.value = data[key].text;
+    });
+    document.querySelectorAll('.journal-indicator').forEach(el => el.style.display = 'flex');
+  } catch (e) { console.error(e); }
+}
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    loadResponses(user.uid);
+    document.querySelectorAll('.reflection-textarea').forEach(ta => {
+      ta.addEventListener('input', () => {
+        const key = ta.dataset.reflectionKey;
+        clearTimeout(saveTimers[key]);
+        saveTimers[key] = setTimeout(() => {
+          saveResponse(user.uid, key, ta.value, getAssociatedPrompt(ta));
+        }, 1200);
+      });
+    });
+  } else {
+    document.querySelectorAll('.journal-signin-prompt').forEach(el => el.style.display = 'flex');
+    document.querySelectorAll('.reflection-textarea').forEach(ta => ta.setAttribute('placeholder', 'Sign in to save your reflections...'));
+  }
+});
+</script>
+
+</body>
+</html>
