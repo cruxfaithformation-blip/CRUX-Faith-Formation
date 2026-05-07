@@ -471,6 +471,46 @@ footer {
   .video-grid { grid-template-columns: 1fr; }
   .filter-bar { gap: 0.5rem; }
 }
+
+/* ─── Mobile hamburger nav ──────────────────────────────────────── */
+.nav-hamburger {
+  display: none; background: none; border: none; cursor: pointer;
+  padding: 4px; flex-direction: column; gap: 5px;
+  align-items: center; justify-content: center;
+}
+.nav-hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: rgba(255,255,255,0.7); border-radius: 2px; transition: all 0.2s;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.nav-mobile-menu {
+  display: none; position: fixed; left: 0; right: 0; z-index: 199;
+  background: rgba(15,18,34,0.97); backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(212,165,116,0.15);
+  flex-direction: column; padding: 0.5rem 0 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.nav-mobile-menu.open { display: flex; }
+.nav-mobile-menu a {
+  padding: 0.85rem 1.5rem; font-family: 'Inter', sans-serif;
+  font-size: 0.88rem; font-weight: 500; letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.65); text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.04); transition: color 0.15s;
+}
+.nav-mobile-menu a:hover { color: #d4a574; }
+.nav-mobile-cta {
+  margin: 0.75rem 1.5rem 0 !important; padding: 0.65rem 1rem !important;
+  background: #d4a574; color: #1a1f36 !important; border-radius: 4px;
+  text-align: center; font-weight: 600 !important; font-size: 0.75rem;
+  letter-spacing: 1.5px; text-transform: uppercase; border-bottom: none !important;
+}
+@media (max-width: 640px) {
+  .nav-hamburger { display: flex; }
+  .nav-links { display: none !important; }
+  .nav-cta { display: none !important; }
+}
 </style>
 </head>
 <body>
@@ -495,7 +535,21 @@ footer {
     <li><a href="crux-music.html">Music</a></li>
   </ul>
   <a href="crux-account.html" class="nav-cta" id="accountBtnText">My Account</a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="nav-mobile-menu" id="navMobileMenu">
+  <a href="index.html">Home</a>
+  <a href="crux-modules.html">Faith Formation</a>
+  <a href="crux-adult-formation.html">Adult Formation</a>
+  <a href="crux-bible-study.html">Bible Study</a>
+  <a href="crux-pack-store.html">Saint Cards</a>
+  <a href="cruxgames.html">Games</a>
+  <a href="crux-videos.html">Videos</a>
+  <a href="crux-music.html">Music</a>
+  <a href="crux-account.html" class="nav-mobile-cta">My Account</a>
+</div>
 
 <section class="hero">
   <div class="hero-eyebrow">CRUX · Media</div>
@@ -613,5 +667,36 @@ footer {
   }
 </script>
 
+<script>
+(function() {
+  var btn  = document.getElementById('navHamburger');
+  var menu = document.getElementById('navMobileMenu');
+  if (!btn || !menu) return;
+  function positionMenu() {
+    var nav = document.querySelector('.site-nav');
+    if (nav) menu.style.top = nav.offsetHeight + 'px';
+  }
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    btn.classList.toggle('open');
+    menu.classList.toggle('open');
+    positionMenu();
+  });
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('#navMobileMenu') && !e.target.closest('#navHamburger')) {
+      btn.classList.remove('open');
+      menu.classList.remove('open');
+    }
+  });
+  menu.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      btn.classList.remove('open');
+      menu.classList.remove('open');
+    });
+  });
+  positionMenu();
+  window.addEventListener('resize', positionMenu);
+})();
+</script>
 </body>
 </html>
