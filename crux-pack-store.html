@@ -352,7 +352,7 @@
         /* ── Pack grid ── */
         .packs-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 1.25rem;
             margin-bottom: 3rem;
         }
@@ -374,7 +374,8 @@
         .pack-tile.earned-only { border-color: var(--border-g); }
 
         .pack-art {
-            height: 140px;
+            aspect-ratio: 3 / 4;
+            width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -926,6 +927,16 @@
 </div>
 
 <script>
+    // ── Rarity label ──
+    function rarityLabel(r) {
+        return {
+            legendary: '✦✦✦ Legendary',
+            rare:      '✦✦ Rare',
+            uncommon:  '✦ Uncommon',
+            epic:      '✦✦✦✦ Epic'
+        }[r] || r;
+    }
+
     // ── Levels ──
     const LEVELS = [
         { level: 1, name: 'Seeker',   minXP: 0 },
@@ -1394,7 +1405,7 @@
         var cinNext  = document.getElementById('cinNextBtn');
         var halo     = document.getElementById('cardHalo');
 
-        cinInner.style.transform = '';
+        document.getElementById('cinInner').style.transform = '';
         cinCard.classList.remove('flipped', 'entering');
         cinFront.className = 'cin-front';
         document.getElementById('cinImg').src = 'images/saints/' + card.id + '.jpg';
