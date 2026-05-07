@@ -683,9 +683,9 @@
         .cin-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.45, 0.05, 0.2, 1); }
         .cin-card.flipped .cin-inner { transform: rotateY(180deg); }
         .cin-back, .cin-front { position: absolute; inset: 0; border-radius: 16px; backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; }
-        .cin-back { background: linear-gradient(160deg, #141830 0%, #1c2448 50%, #141830 100%); border: 1.5px solid rgba(212,165,116,0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.6rem; box-shadow: 0 0 60px rgba(212,165,116,0.08), 0 24px 60px rgba(0,0,0,0.9); animation: cin-back-pulse 2s ease-in-out infinite; }
+        .cin-back { border: 1.5px solid rgba(212,165,116,0.2); box-shadow: 0 0 60px rgba(212,165,116,0.08), 0 24px 60px rgba(0,0,0,0.9); animation: cin-back-pulse 2s ease-in-out infinite; }
+        .cin-back-img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: block; border-radius: 16px; }
         @keyframes cin-back-pulse { 0%,100%{border-color:rgba(212,165,116,0.15)} 50%{border-color:rgba(212,165,116,0.45)} }
-        .cin-back-wm { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.6rem; letter-spacing: 8px; background: linear-gradient(135deg, #d4a574, #f0c878, #d4a574); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
         .cin-front { transform: rotateY(180deg); border: 2px solid rgba(212,165,116,0.4); box-shadow: 0 0 60px rgba(212,165,116,0.25), 0 24px 60px rgba(0,0,0,0.9); background: linear-gradient(145deg, #1a1208, #2a1e10); display: flex; align-items: flex-end; }
         .cin-saint-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
         .cin-front-overlay { position: relative; z-index: 2; width: 100%; padding: 1rem 0.9rem 0.85rem; background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 65%, transparent 100%); text-align: center; }
@@ -893,9 +893,7 @@
             <div class="cin-card" id="cinCard" onclick="flipCinCard()">
                 <div class="cin-inner" id="cinInner">
                     <div class="cin-back">
-                        <span style="font-size:1.6rem;opacity:0.12">✟</span>
-                        <span class="cin-back-wm">CRUX</span>
-                        <span style="font-family:'DM Mono',monospace;font-size:0.32rem;letter-spacing:3px;text-transform:uppercase;color:rgba(212,165,116,0.25)">Faith Formation</span>
+                        <img class="cin-back-img" src="images/card-back.jpg" alt="CRUX card back">
                     </div>
                     <div class="cin-front" id="cinFront">
                         <img class="cin-saint-img" id="cinImg" src="" alt="">
