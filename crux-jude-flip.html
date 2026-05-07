@@ -9,7 +9,7 @@
 * { margin:0; padding:0; box-sizing:border-box; }
 
 body {
-  background: radial-gradient(ellipse at center, #1a1510 0%, #0a0806 100%);
+  background: radial-gradient(ellipse at center, #120e05 0%, #080600 100%);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -62,14 +62,14 @@ body {
 }
 
 .nav-btn.nav-home {
-  color: rgba(200,150,255,0.55);
-  border-color: rgba(200,150,255,0.18);
+  color: rgba(212,165,116,0.55);
+  border-color: rgba(212,165,116,0.18);
 }
 
 .nav-btn.nav-home:hover {
-  color: rgba(200,150,255,0.95);
-  border-color: rgba(200,150,255,0.4);
-  background: rgba(200,150,255,0.06);
+  color: rgba(212,165,116,0.95);
+  border-color: rgba(212,165,116,0.4);
+  background: rgba(212,165,116,0.06);
 }
 
 .card-scene {
@@ -106,9 +106,9 @@ body {
   touch-action: manipulation;
   box-shadow:
     0 0 0 1.5px rgba(255,255,255,0.15),
-    0 0 0 3px rgba(120,80,200,0.3),
-    0 8px 50px rgba(0,0,0,0.8),
-    0 0 60px rgba(150,100,255,0.1);
+    0 0 0 3px rgba(180,135,45,0.33),
+    0 8px 50px rgba(0,0,0,0.85),
+    0 0 60px rgba(210,160,60,0.11);
 }
 
 .holo-portrait {
@@ -136,11 +136,13 @@ body {
 .holo-rainbow {
   position: absolute; inset: -50%; width: 200%; height: 200%;
   background: linear-gradient(115deg,
-    transparent 0%, transparent 20%,
-    rgba(255,0,128,0.18) 25%, rgba(255,100,0,0.15) 30%,
-    rgba(255,220,0,0.18) 35%, rgba(0,255,128,0.15) 42%,
-    rgba(0,200,255,0.18) 48%, rgba(100,0,255,0.15) 54%,
-    rgba(255,0,200,0.12) 60%, transparent 65%, transparent 100%
+    transparent 0%, transparent 22%,
+    rgba(210,165,78,0.15) 28%,
+    rgba(240,205,118,0.13) 36%,
+    rgba(255,240,188,0.14) 44%,
+    rgba(255,255,255,0.10) 52%,
+    rgba(222,175,98,0.12) 60%,
+    transparent 68%, transparent 100%
   );
   z-index: 3; mix-blend-mode: screen;
   animation: holo-sweep 4s linear infinite; pointer-events: none;
@@ -155,9 +157,11 @@ body {
   position: absolute; inset: -50%; width: 200%; height: 200%;
   background: linear-gradient(245deg,
     transparent 0%, transparent 25%,
-    rgba(0,255,200,0.1) 30%, rgba(100,0,255,0.12) 36%,
-    rgba(255,0,100,0.1) 42%, rgba(255,180,0,0.08) 48%,
-    rgba(0,150,255,0.1) 54%, transparent 60%, transparent 100%
+    rgba(195,148,55,0.10) 32%,
+    rgba(225,180,88,0.09) 40%,
+    rgba(255,220,148,0.10) 48%,
+    rgba(210,160,68,0.08) 56%,
+    transparent 63%, transparent 100%
   );
   z-index: 3; mix-blend-mode: screen;
   animation: holo-sweep-2 6s linear infinite; pointer-events: none;
@@ -180,25 +184,25 @@ body {
 
 .holo-specular {
   position: absolute; inset: 0;
-  background: radial-gradient(ellipse 60% 40% at 35% 25%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 40%, transparent 70%);
+  background: radial-gradient(ellipse 60% 40% at 35% 25%, rgba(255,255,255,0.14) 0%, rgba(245,225,172,0.05) 40%, transparent 70%);
   z-index: 5; pointer-events: none;
   animation: specular-shift 4s ease-in-out infinite alternate;
 }
 
 @keyframes specular-shift {
-  0%   { background: radial-gradient(ellipse 60% 40% at 30% 20%, rgba(255,255,255,0.12) 0%, rgba(255,255,255,0.04) 40%, transparent 70%); }
-  50%  { background: radial-gradient(ellipse 60% 40% at 70% 40%, rgba(200,180,255,0.1) 0%, rgba(255,255,255,0.03) 40%, transparent 70%); }
-  100% { background: radial-gradient(ellipse 60% 40% at 40% 70%, rgba(180,255,220,0.1) 0%, rgba(255,255,255,0.03) 40%, transparent 70%); }
+  0%   { background: radial-gradient(ellipse 60% 40% at 30% 20%, rgba(255,255,255,0.14) 0%, rgba(245,220,168,0.05) 40%, transparent 70%); }
+  50%  { background: radial-gradient(ellipse 60% 40% at 70% 40%, rgba(220,168,78,0.10) 0%, rgba(255,232,182,0.04) 40%, transparent 70%); }
+  100% { background: radial-gradient(ellipse 60% 40% at 40% 70%, rgba(210,162,74,0.10) 0%, rgba(245,218,162,0.04) 40%, transparent 70%); }
 }
 
 .holo-rarity-strip {
   position: absolute; top: 0; left: 0; right: 0; height: 5px; z-index: 20;
-  background: linear-gradient(90deg, #ff0080, #ff8c00, #ffe000, #00ff80, #00c8ff, #8000ff, #ff0080);
+  background: linear-gradient(90deg, #3c2800, #9c7010, #d4a540, #f0c870, #fffcf0, #f0c870, #d4a540, #9c7010, #3c2800);
   background-size: 200% 100%;
-  animation: rainbow-strip 3s linear infinite;
+  animation: gold-strip 4s linear infinite;
 }
 
-@keyframes rainbow-strip {
+@keyframes gold-strip {
   0%   { background-position: 0% 0; }
   100% { background-position: 200% 0; }
 }
@@ -211,10 +215,10 @@ body {
 }
 
 @keyframes border-glow {
-  0%   { border-color: rgba(255,100,200,0.2); box-shadow: inset 0 0 20px rgba(255,0,150,0.06); }
-  33%  { border-color: rgba(100,200,255,0.2); box-shadow: inset 0 0 20px rgba(0,200,255,0.06); }
-  66%  { border-color: rgba(200,255,100,0.2); box-shadow: inset 0 0 20px rgba(100,255,0,0.06); }
-  100% { border-color: rgba(255,200,100,0.2); box-shadow: inset 0 0 20px rgba(255,150,0,0.06); }
+  0%   { border-color: rgba(182,138,48,0.30);  box-shadow: inset 0 0 20px rgba(168,128,44,0.08); }
+  33%  { border-color: rgba(212,165,116,0.25); box-shadow: inset 0 0 20px rgba(200,155,90,0.06); }
+  66%  { border-color: rgba(245,210,148,0.22); box-shadow: inset 0 0 20px rgba(232,198,138,0.06); }
+  100% { border-color: rgba(255,255,255,0.20); box-shadow: inset 0 0 20px rgba(255,255,255,0.04); }
 }
 
 .holo-content {
@@ -230,7 +234,7 @@ body {
 .holo-saint-name {
   font-family: 'Cinzel', serif; font-size: 1.05rem; font-weight: 700;
   color: #ffffff; letter-spacing: 0.5px; line-height: 1.2;
-  text-shadow: 0 0 20px rgba(200,150,255,0.6), 0 1px 8px rgba(0,0,0,0.9); flex: 1;
+  text-shadow: 0 0 20px rgba(212,165,116,0.60), 0 1px 8px rgba(0,0,0,0.9); flex: 1;
 }
 
 .holo-badge {
@@ -244,10 +248,10 @@ body {
 }
 
 @keyframes badge-glow {
-  0%   { border-color: rgba(255,100,200,0.5); color: #ffb0e0; text-shadow: 0 0 8px rgba(255,0,150,0.8); }
-  33%  { border-color: rgba(100,200,255,0.5); color: #b0e0ff; text-shadow: 0 0 8px rgba(0,200,255,0.8); }
-  66%  { border-color: rgba(180,255,100,0.5); color: #d0ffb0; text-shadow: 0 0 8px rgba(100,255,0,0.8); }
-  100% { border-color: rgba(255,200,50,0.5);  color: #ffe8b0; text-shadow: 0 0 8px rgba(255,180,0,0.8); }
+  0%   { border-color: rgba(198,148,58,0.50);  color: #f8dea0; text-shadow: 0 0 8px rgba(183,136,48,0.80); }
+  33%  { border-color: rgba(225,183,108,0.50); color: #fceac0; text-shadow: 0 0 8px rgba(213,168,94,0.70); }
+  66%  { border-color: rgba(248,224,162,0.50); color: #fef4d8; text-shadow: 0 0 8px rgba(233,208,142,0.70); }
+  100% { border-color: rgba(255,255,255,0.50); color: #ffffff;  text-shadow: 0 0 8px rgba(255,255,255,0.50); }
 }
 
 .holo-divider {
@@ -258,7 +262,7 @@ body {
 
 .holo-divider::after {
   content: ''; position: absolute; top: 0; left: -100%; width: 60%; height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255,200,255,0.6), transparent);
+  background: linear-gradient(90deg, transparent, rgba(220,175,108,0.55), transparent);
   animation: divider-sweep 3s ease-in-out infinite;
 }
 
@@ -283,8 +287,8 @@ body {
 
 .holo-bio {
   font-family: 'EB Garamond', serif; font-size: 0.78rem; font-style: italic;
-  color: rgba(230,210,255,0.75); line-height: 1.5;
-  border-left: 2px solid rgba(255,255,255,0.2); padding-left: 0.6rem;
+  color: rgba(245,235,215,0.78); line-height: 1.5;
+  border-left: 2px solid rgba(212,165,116,0.28); padding-left: 0.6rem;
   margin-bottom: 0.5rem; text-shadow: 0 1px 4px rgba(0,0,0,0.8);
 }
 
@@ -304,21 +308,21 @@ body {
 
 .card-back {
   transform: rotateY(180deg);
-  background: #0c0a07;
+  background: #0d0a04;
   display: flex;
   flex-direction: column;
   box-shadow:
     0 0 0 1.5px rgba(255,255,255,0.12),
-    0 0 0 3px rgba(120,80,200,0.25),
-    0 8px 50px rgba(0,0,0,0.8),
-    0 0 60px rgba(150,100,255,0.08);
+    0 0 0 3px rgba(172,128,44,0.28),
+    0 8px 50px rgba(0,0,0,0.86),
+    0 0 60px rgba(202,152,58,0.09);
 }
 
 .back-strip {
   height: 5px; flex-shrink: 0;
-  background: linear-gradient(90deg, #ff0080, #ff8c00, #ffe000, #00ff80, #00c8ff, #8000ff, #ff0080);
+  background: linear-gradient(90deg, #3c2800, #9c7010, #d4a540, #f0c870, #fffcf0, #f0c870, #d4a540, #9c7010, #3c2800);
   background-size: 200% 100%;
-  animation: rainbow-strip 3s linear infinite;
+  animation: gold-strip 4s linear infinite;
 }
 
 .back-border {
@@ -358,7 +362,7 @@ body {
 .back-saint-name {
   font-family: 'Cinzel', serif; font-size: 0.78rem; font-weight: 700;
   letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.85);
-  text-shadow: 0 0 16px rgba(200,150,255,0.5); line-height: 1.3;
+  text-shadow: 0 0 16px rgba(212,165,116,0.50); line-height: 1.3;
 }
 
 .back-dates {
@@ -384,7 +388,7 @@ body {
   min-width: 64px; text-align: center;
   touch-action: manipulation; -webkit-tap-highlight-color: transparent;
 }
-.back-tab.active { color: rgba(200,150,255,1); border-bottom-color: rgba(200,150,255,0.8); }
+.back-tab.active { color: rgba(220,175,120,1); border-bottom-color: rgba(204,158,104,0.80); }
 .back-tab:hover:not(.active) { color: rgba(255,255,255,0.65); }
 
 .back-panel { display: none; flex: 1; overflow-y: auto; scrollbar-width: none; }
@@ -393,7 +397,7 @@ body {
 
 .back-prayer-label {
   font-family: 'Cinzel', serif; font-size: 0.44rem; letter-spacing: 2px;
-  text-transform: uppercase; color: rgba(200,150,255,0.5); margin-bottom: 0.6rem;
+  text-transform: uppercase; color: rgba(198,158,104,0.55); margin-bottom: 0.6rem;
 }
 
 .back-prayer-text {
@@ -418,7 +422,7 @@ body {
 }
 .back-fact-label {
   font-family: 'Cinzel', serif; font-size: 0.46rem; letter-spacing: 1.5px;
-  text-transform: uppercase; color: rgba(200,150,255,0.55); padding-top: 3px; white-space: nowrap;
+  text-transform: uppercase; color: rgba(198,158,104,0.60); padding-top: 3px; white-space: nowrap;
 }
 .back-fact-value {
   font-family: 'EB Garamond', serif; font-size: 0.8rem;
@@ -534,7 +538,7 @@ body {
           <div class="back-prayer-label">Prayer to St. Jude Thaddaeus</div>
           <div class="back-prayer-text">O St. Jude, Apostle and patron of desperate cases, you whose very name was avoided by early Christians lest they be confused with the traitor — intercede for all who have no one else to call, for all who have been waiting so long for a miracle that hope itself has grown thin.</div>
           <div class="back-prayer-text">You are the patron of impossible causes not because God specializes in the desperate, but because no situation is beyond His reach. Pray for all who come to you as a last resort, that they may find not just relief but faith. Hear us.</div>
-          <div class="back-prayer-text" style="font-style:italic; color:rgba(200,150,255,0.7); font-size:0.76rem;">Amen.</div>
+          <div class="back-prayer-text" style="font-style:italic; color:rgba(212,165,116,0.75); font-size:0.76rem;">Amen.</div>
         </div>
 
         <div class="back-panel" id="panel-bio">
@@ -555,7 +559,7 @@ body {
         </div>
 
         <div class="back-footer">
-          <button class="flip-back-btn" style="background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:rgba(200,150,255,0.5);padding:0;transition:color 0.2s;" onmouseover="this.style.color='rgba(200,150,255,1)'" onmouseout="this.style.color='rgba(200,150,255,0.5)'">&#x21A9; Flip</button>
+          <button class="flip-back-btn" style="background:none;border:none;cursor:pointer;font-family:'Cinzel',serif;font-size:0.52rem;letter-spacing:2px;text-transform:uppercase;color:rgba(198,153,93,0.50);padding:0;transition:color 0.2s;" onmouseover="this.style.color='rgba(225,180,118,1)'" onmouseout="this.style.color='rgba(198,153,93,0.50)'">&#x21A9; Flip</button>
           <span class="back-footer-set">CRUX · Saints · Series I</span>
           <span class="back-footer-num">011 / 052</span>
         </div>
