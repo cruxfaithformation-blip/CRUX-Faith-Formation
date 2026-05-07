@@ -656,9 +656,9 @@
         .pack-open-wrap { display: flex; flex-direction: column; align-items: center; gap: 1.4rem; text-align: center; }
         .po-eyebrow { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); }
         .po-art { position: relative; cursor: pointer; border-radius: 14px; animation: pack-float 2.8s ease-in-out infinite; }
-        .po-art.no-img { width: 180px; height: 240px; border-radius: 14px; }
+        .po-art.no-img { width: 220px; height: 308px; border-radius: 14px; }
         @keyframes pack-float { 0%,100%{transform:translateY(0) rotate(0deg)} 40%{transform:translateY(-10px) rotate(0.6deg)} 70%{transform:translateY(-5px) rotate(-0.4deg)} }
-        .po-img { width: 190px; height: auto; border-radius: 14px; display: block; box-shadow: 0 0 50px rgba(212,165,116,0.28), 0 24px 60px rgba(0,0,0,0.7); transition: box-shadow 0.3s; }
+        .po-img { width: 220px; height: 308px; object-fit: cover; object-position: center; border-radius: 14px; display: block; box-shadow: 0 0 50px rgba(212,165,116,0.28), 0 24px 60px rgba(0,0,0,0.7); transition: box-shadow 0.3s; }
         .po-art:hover .po-img { box-shadow: 0 0 75px rgba(212,165,116,0.5), 0 24px 60px rgba(0,0,0,0.7); }
         .po-tap { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.38); animation: tap-blink 1.8s ease-in-out infinite; transition: opacity 0.25s; }
         @keyframes tap-blink { 0%,100%{opacity:0.38} 50%{opacity:0.85} }
