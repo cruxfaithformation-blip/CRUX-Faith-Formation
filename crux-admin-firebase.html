@@ -975,6 +975,11 @@
                                 <label>Description *</label>
                                 <input type="text" id="spotifyDescription" required placeholder="What's in this playlist?">
                             </div>
+                            <div class="form-group">
+                                <label>Sort Order</label>
+                                <input type="number" id="spotifySortOrder" placeholder="e.g., 1" min="1">
+                                <p class="form-hint">Lower number = appears first. Leave blank to add at end.</p>
+                            </div>
                             <div class="form-group full-width">
                                 <label>Spotify Embed Code *</label>
                                 <textarea id="spotifyEmbed" required placeholder="Paste <iframe…> code here"></textarea>
@@ -1017,6 +1022,11 @@
                             <div class="form-group">
                                 <label>Description *</label>
                                 <input type="text" id="appleMusicDescription" required placeholder="What's in this playlist?">
+                            </div>
+                            <div class="form-group">
+                                <label>Sort Order</label>
+                                <input type="number" id="appleMusicSortOrder" placeholder="e.g., 1" min="1">
+                                <p class="form-hint">Lower number = appears first. Leave blank to add at end.</p>
                             </div>
                             <div class="form-group full-width">
                                 <label>Apple Music Embed Code *</label>
@@ -1243,10 +1253,12 @@
             // SPOTIFY FORM
             document.getElementById('spotifyForm')?.addEventListener('submit', async (e) => {
                 e.preventDefault();
+                const sortVal = document.getElementById('spotifySortOrder').value;
                 const playlist = {
                     name:        document.getElementById('spotifyName').value.trim(),
                     description: document.getElementById('spotifyDescription').value.trim(),
                     embedCode:   document.getElementById('spotifyEmbed').value.trim(),
+                    sortOrder:   sortVal !== '' ? parseInt(sortVal, 10) : 9999,
                     createdAt:   serverTimestamp()
                 };
                 try {
@@ -1263,10 +1275,12 @@
             // APPLE MUSIC FORM
             document.getElementById('appleMusicForm')?.addEventListener('submit', async (e) => {
                 e.preventDefault();
+                const sortVal = document.getElementById('appleMusicSortOrder').value;
                 const playlist = {
                     name:        document.getElementById('appleMusicName').value.trim(),
                     description: document.getElementById('appleMusicDescription').value.trim(),
                     embedCode:   document.getElementById('appleMusicEmbed').value.trim(),
+                    sortOrder:   sortVal !== '' ? parseInt(sortVal, 10) : 9999,
                     createdAt:   serverTimestamp()
                 };
                 try {
@@ -1438,6 +1452,10 @@
                                         <label>Description</label>
                                         <input type="text" id="es-desc-${docSnap.id}" value="${escHtml(p.description)}">
                                     </div>
+                                    <div>
+                                        <label>Sort Order</label>
+                                        <input type="number" id="es-sort-${docSnap.id}" value="${p.sortOrder !== undefined && p.sortOrder !== 9999 ? p.sortOrder : ''}" placeholder="e.g., 1" min="1">
+                                    </div>
                                     <div class="full">
                                         <label>Embed Code</label>
                                         <textarea id="es-embed-${docSnap.id}">${escHtml(p.embedCode)}</textarea>
@@ -1471,10 +1489,12 @@
 
         window.saveSpotify = async (id) => {
             try {
+                const sortVal = document.getElementById(`es-sort-${id}`).value;
                 await updateDoc(doc(db, 'spotify', id), {
-                    name:      document.getElementById(`es-name-${id}`).value.trim(),
+                    name:        document.getElementById(`es-name-${id}`).value.trim(),
                     description: document.getElementById(`es-desc-${id}`).value.trim(),
-                    embedCode: document.getElementById(`es-embed-${id}`).value.trim(),
+                    embedCode:   document.getElementById(`es-embed-${id}`).value.trim(),
+                    sortOrder:   sortVal !== '' ? parseInt(sortVal, 10) : 9999,
                 });
                 await loadSpotify();
             } catch (err) {
@@ -1526,6 +1546,10 @@
                                         <label>Description</label>
                                         <input type="text" id="ea-desc-${docSnap.id}" value="${escHtml(p.description)}">
                                     </div>
+                                    <div>
+                                        <label>Sort Order</label>
+                                        <input type="number" id="ea-sort-${docSnap.id}" value="${p.sortOrder !== undefined && p.sortOrder !== 9999 ? p.sortOrder : ''}" placeholder="e.g., 1" min="1">
+                                    </div>
                                     <div class="full">
                                         <label>Embed Code</label>
                                         <textarea id="ea-embed-${docSnap.id}">${escHtml(p.embedCode)}</textarea>
@@ -1559,10 +1583,12 @@
 
         window.saveAppleMusic = async (id) => {
             try {
+                const sortVal = document.getElementById(`ea-sort-${id}`).value;
                 await updateDoc(doc(db, 'applemusic', id), {
-                    name:      document.getElementById(`ea-name-${id}`).value.trim(),
+                    name:        document.getElementById(`ea-name-${id}`).value.trim(),
                     description: document.getElementById(`ea-desc-${id}`).value.trim(),
-                    embedCode: document.getElementById(`ea-embed-${id}`).value.trim(),
+                    embedCode:   document.getElementById(`ea-embed-${id}`).value.trim(),
+                    sortOrder:   sortVal !== '' ? parseInt(sortVal, 10) : 9999,
                 });
                 await loadAppleMusic();
             } catch (err) {

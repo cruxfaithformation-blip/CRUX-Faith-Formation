@@ -44,7 +44,7 @@
   async function loadSpotifyPlaylists() {
     const { collection, getDocs, query, orderBy } = window.firebaseModules;
     try {
-      const q = query(collection(window.db, 'spotify'), orderBy('createdAt', 'desc'));
+      const q = query(collection(window.db, 'spotify'), orderBy('sortOrder', 'asc'));
       const snapshot = await getDocs(q);
       const playlists = [];
       snapshot.forEach(doc => playlists.push({ id: doc.id, ...doc.data() }));
@@ -79,7 +79,7 @@
   async function loadAppleMusicPlaylists() {
     const { collection, getDocs, query, orderBy } = window.firebaseModules;
     try {
-      const q = query(collection(window.db, 'applemusic'), orderBy('createdAt', 'desc'));
+      const q = query(collection(window.db, 'applemusic'), orderBy('sortOrder', 'asc'));
       const snapshot = await getDocs(q);
       const playlists = [];
       snapshot.forEach(doc => playlists.push({ id: doc.id, ...doc.data() }));
