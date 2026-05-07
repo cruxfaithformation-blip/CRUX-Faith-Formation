@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="light">
 <title>CRUX — Faith Formation</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
     <!-- Google Analytics 4 -->
@@ -36,6 +37,7 @@
 *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
 
 :root {
+  color-scheme: light;
   --navy: #1a1f36;
   --navy-deep: #0f1222;
   --navy-light: #252b47;
@@ -348,6 +350,99 @@ body::before {
   .modules-wrap { padding: 2rem 1.25rem 5rem; }
   .progress-strip { padding: 1.25rem; }
   .module-grid { grid-template-columns: 1fr; }
+  .fr-grid { grid-template-columns: 1fr; }
+}
+
+/* ── ADULT FORMATION GATEWAY ── */
+.adult-gateway {
+  background: linear-gradient(135deg, var(--navy-light) 0%, var(--navy) 100%);
+  border-top: 1px solid rgba(212,165,116,0.15);
+  border-bottom: 1px solid rgba(212,165,116,0.15);
+  padding: 4rem 2rem;
+  text-align: center;
+}
+.gateway-inner { max-width: 620px; margin: 0 auto; }
+.gateway-eyebrow {
+  font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+.gateway-title {
+  font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3vw, 2rem);
+  font-weight: 700; color: var(--white); line-height: 1.25; margin-bottom: 1rem;
+}
+.gateway-body {
+  font-family: 'Crimson Pro', Georgia, serif; font-size: 1.1rem;
+  color: rgba(255,255,255,0.68); line-height: 1.75; margin-bottom: 2rem;
+}
+.gateway-actions { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; }
+.gateway-btn-primary {
+  font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 700;
+  letter-spacing: 0.5px; color: var(--navy-deep); background: var(--gold);
+  padding: 0.7rem 1.5rem; border-radius: 6px; text-decoration: none;
+  transition: opacity 0.2s;
+}
+.gateway-btn-primary:hover { opacity: 0.85; }
+.gateway-btn-secondary {
+  font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 600;
+  letter-spacing: 0.5px; color: var(--gold);
+  border: 1px solid rgba(212,165,116,0.4); padding: 0.7rem 1.5rem;
+  border-radius: 6px; text-decoration: none; transition: border-color 0.2s, color 0.2s;
+}
+.gateway-btn-secondary:hover { border-color: var(--gold); color: var(--gold-light); }
+
+/* ── FAITH & REASON ── */
+.faith-reason {
+  background: var(--navy-deep);
+  padding: 4rem 2rem 5rem;
+}
+.fr-header { max-width: 760px; margin: 0 auto 2.5rem; }
+.fr-eyebrow {
+  font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(255,255,255,0.35); margin-bottom: 0.5rem;
+}
+.fr-title {
+  font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+  font-weight: 900; color: var(--white); margin-bottom: 0.75rem;
+}
+.fr-desc {
+  font-family: 'Crimson Pro', Georgia, serif; font-size: 1.05rem;
+  color: rgba(255,255,255,0.55); line-height: 1.75;
+}
+.fr-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.25rem; max-width: 760px; margin: 0 auto;
+}
+.fr-card {
+  background: var(--navy-light); border: 1px solid rgba(212,165,116,0.12);
+  border-radius: 10px; padding: 1.5rem; position: relative;
+  display: flex; flex-direction: column; gap: 0.6rem;
+}
+.fr-card.coming-soon { opacity: 0.72; }
+.fr-card-badge {
+  position: absolute; top: 1rem; right: 1rem;
+  font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,255,255,0.4); background: rgba(255,255,255,0.06);
+  padding: 0.2rem 0.55rem; border-radius: 4px;
+}
+.fr-card-track {
+  font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase; color: var(--gold); opacity: 0.7;
+}
+.fr-card-title {
+  font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700;
+  color: var(--white); line-height: 1.3;
+}
+.fr-card-desc {
+  font-family: 'Crimson Pro', Georgia, serif; font-size: 0.95rem;
+  color: rgba(255,255,255,0.52); line-height: 1.65; flex: 1;
+}
+.fr-card-footer { margin-top: 0.5rem; }
+.fr-card-level {
+  font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 500;
+  color: rgba(255,255,255,0.3);
 }
 </style>
 </head>
@@ -668,6 +763,39 @@ body::before {
   </div>
 
 </div><!-- end modules-wrap -->
+
+<!-- ── ADULT FORMATION GATEWAY ── -->
+<section class="adult-gateway reveal">
+  <div class="gateway-inner">
+    <p class="gateway-eyebrow">For Adult Seekers</p>
+    <h2 class="gateway-title">Are you exploring the Catholic faith as an adult?</h2>
+    <p class="gateway-body">The Adult Formation track was built for you — seven modules that walk through the foundations of the faith at an adult level, alongside a complete OCIA guide for those preparing to enter the Church.</p>
+    <div class="gateway-actions">
+      <a href="crux-adult-formation.html" class="gateway-btn-primary">Begin Adult Formation →</a>
+      <a href="crux-adult-ocia.html" class="gateway-btn-secondary">Explore the OCIA Guide</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FAITH & REASON ── -->
+<section class="faith-reason reveal">
+  <div class="fr-header">
+    <div class="fr-eyebrow">Advanced Track</div>
+    <h2 class="fr-title">Faith &amp; Reason</h2>
+    <p class="fr-desc">These modules explore the harder questions — the ones your friends, teachers, or your own doubts might throw at you. The content is challenging by design. Younger students are welcome, but these topics reward the student who already knows what they believe and wants to know why it holds up.</p>
+  </div>
+  <div class="fr-grid">
+    <div class="fr-card coming-soon">
+      <div class="fr-card-badge">Coming Soon</div>
+      <div class="fr-card-track">Faith &amp; Reason · Apologetics</div>
+      <div class="fr-card-title">Was Jesus a Real Person?</div>
+      <div class="fr-card-desc">What did non-Christian historians actually say about Jesus? Roman senators, Jewish scholars, and those who opposed the faith all left a record — and what they said changes everything.</div>
+      <div class="fr-card-footer">
+        <span class="fr-card-level">Grades 6–8 · Confirmation</span>
+      </div>
+    </div>
+  </div>
+</section>
 
 
 <script>
