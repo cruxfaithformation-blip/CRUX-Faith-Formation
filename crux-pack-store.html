@@ -1405,8 +1405,12 @@
         var cinNext  = document.getElementById('cinNextBtn');
         var halo     = document.getElementById('cardHalo');
 
-        document.getElementById('cinInner').style.transform = '';
+        var cinInnerEl = document.getElementById('cinInner');
+        cinInnerEl.style.transition = 'none';
+        cinInnerEl.style.transform = '';
         cinCard.classList.remove('flipped', 'entering');
+        void cinCard.offsetWidth;
+        cinInnerEl.style.transition = '';
         cinFront.className = 'cin-front';
         document.getElementById('cinImg').src = 'images/saints/' + card.id + '.jpg';
         document.getElementById('cinImg').alt = card.name;
