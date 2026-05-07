@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — Videos</title>
+<meta name="description" content="CRUX Videos: Catholic apologetics, scripture teaching, youth content, and Christian music videos.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- Firebase SDK v10 -->
+<script type="module">
+  import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+  import { getFirestore, collection, getDocs, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+  import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+    authDomain: "crux-faith-formation.firebaseapp.com",
+    projectId: "crux-faith-formation",
+    storageBucket: "crux-faith-formation.firebasestorage.app",
+    messagingSenderId: "838141015985",
+    appId: "1:838141015985:web:2655e570663e182d75ef90",
+    measurementId: "G-LQ35DLTVKY"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  window.db = getFirestore(app);
+  window.auth = getAuth(app);
+  window.firebaseModules = { collection, getDocs, query, orderBy };
+
+  onAuthStateChanged(window.auth, (user) => {
+    window.currentUser = user || null;
+    const btn = document.getElementById('accountBtnText');
+    if (btn && user) btn.textContent = user.email.split('@')[0];
+  });
+
+  window.addEventListener('DOMContentLoaded', () => loadVideos());
+
+  async function loadVideos() {
+    const { collection, getDocs, query, orderBy } = window.firebaseModules;
+    const videos = [];
+
+    try {
+      const q = query(collection(window.db, 'videos'), orderBy('createdAt', 'desc'));
+      const snapshot = await getDocs(q);
+      snapshot.forEach(doc => videos.push({ id: doc.id, ...doc.data() }));
+    } catch (err) {
+      console.error('Error loading videos:', err);
+      showEmptyState('all');
+      return;
+    }
+
+    const shorts = videos.filter(v => v.short);
+    const longVideos = videos.filter(v => !v.short);
+
+    renderShortClips(shorts);
+
+    const sections = {
+      'Culture & Apologetics': [],
+      'Scripture & Theology': [],
+      'For Youth & Families': [],
+      'Christian Music Videos': []
+    };
+
+    longVideos.forEach(video => {
+      const cat = video.category || 'Culture & Apologetics';
+      if (sections[cat] !== undefined) sections[cat].push(video);
+      else sections['Culture & Apologetics'].push(video);
+    });
+
+    const moduleNames = {
+      trinity:'The Holy Trinity',jesus:'Who Is Jesus Christ?',mary:'Mary & the Saints',
+      prodigal_son:'The Prodigal Son',bible_geography:'The Geography of the Bible',
+      nicene_creed:'The Nicene Creed',creation_human_person:'Creation & the Human Person',
+      sacraments:'The Sacraments',mass_real_presence:'The Mass & Real Presence',
+      reconciliation:'Reconciliation & Confession',liturgical_year:'The Liturgical Year',
+      conscience:'Conscience',fruits_holy_spirit:'Fruits of the Holy Spirit',
+      gifts_holy_spirit:'Gifts of the Holy Spirit',ten_commandments:'The Ten Commandments',
+      beatitudes:'The Beatitudes',lords_prayer:"The Lord's Prayer",rosary:'The Rosary'
+    };
+
+    Object.entries(sections).forEach(([sectionName, sectionVideos]) => {
+      const slug = sectionName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/-$/, '');
+      const grid = document.querySelector(`[data-category="${slug}"] .video-grid`);
+      const emptyEl = document.querySelector(`[data-category="${slug}"] .category-empty`);
+      if (!grid) return;
+
+      if (sectionVideos.length === 0) {
+        if (emptyEl) emptyEl.style.display = 'flex';
+        return;
+      }
+
+      if (emptyEl) emptyEl.remove();
+
+      sectionVideos.forEach(video => {
+        const card = document.createElement('div');
+        card.className = 'video-card';
+        const moduleBadge = video.moduleTag
+          ? `<a class="video-module-badge" href="crux-modules.html?module=${video.moduleTag}">📌 ${moduleNames[video.moduleTag] || video.moduleTag}</a>`
+          : '';
+        card.innerHTML =
+          '<div class="video-embed-wrap">' +
+            '<iframe src="https://www.youtube-nocookie.com/embed/' + video.videoId + '?rel=0&modestbranding=1"' +
+            ' title="' + (video.title || '') + '" frameborder="0"' +
+            ' allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"' +
+            ' allowfullscreen loading="lazy"></iframe>' +
+          '</div>' +
+          '<div class="video-info">' +
+            '<h4 class="video-title">' + (video.title || '') + '</h4>' +
+            '<p class="video-desc">' + (video.description || '') + '</p>' +
+            moduleBadge +
+          '</div>';
+        grid.appendChild(card);
+      });
+    });
+  }
+
+  function renderShortClips(shorts) {
+    const block = document.getElementById('shortClipsBlock');
+    const scroll = document.getElementById('shortClipsScroll');
+    if (!block || !scroll || shorts.length === 0) return;
+
+    block.style.display = '';
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        const wrap = entry.target.querySelector('.short-embed-wrap');
+        const src = entry.target.dataset.src;
+        if (!wrap || !src || wrap.querySelector('iframe')) return;
+        const iframe = document.createElement('iframe');
+        iframe.className = 'short-embed';
+        iframe.src = src;
+        iframe.title = entry.target.dataset.title || '';
+        iframe.frameBorder = '0';
+        iframe.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen');
+        iframe.setAttribute('allowfullscreen', '');
+        wrap.innerHTML = '';
+        wrap.appendChild(iframe);
+        observer.unobserve(entry.target);
+      });
+    }, { root: scroll, rootMargin: '0px 200px', threshold: 0 });
+
+    shorts.forEach(video => {
+      const embedSrc = video.platform === 'tiktok'
+        ? 'https://www.tiktok.com/embed/v2/' + video.videoId
+        : 'https://www.youtube-nocookie.com/embed/' + video.videoId + '?rel=0&modestbranding=1';
+
+      const platformLabel = video.platform === 'tiktok' ? 'TikTok' : 'YouTube';
+      const platformClass = video.platform === 'tiktok' ? 'short-platform-tt' : 'short-platform-yt';
+
+      const card = document.createElement('div');
+      card.className = 'short-card';
+      card.dataset.src = embedSrc;
+      card.dataset.title = video.title || '';
+      card.innerHTML =
+        '<div class="short-embed-wrap"><div class="short-embed-placeholder">···</div></div>' +
+        '<div class="short-info">' +
+          '<div class="short-title">' + (video.title || '') + '</div>' +
+          '<span class="short-platform ' + platformClass + '">' + platformLabel + '</span>' +
+        '</div>';
+      scroll.appendChild(card);
+      observer.observe(card);
+    });
+
+    block.style.display = 'block';
+  }
+
+  function showEmptyState(which) {
+    document.querySelectorAll('.category-empty').forEach(el => el.style.display = 'flex');
+  }
+</script>
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --navy-deep: #0f1222;
+  --navy-light: #252b47;
+  --gold: #d4a574;
+  --gold-light: #e8c99a;
+  --gold-dim: rgba(212,165,116,0.15);
+  --cream: #faf8f4;
+  --white: #ffffff;
+  --text-muted: rgba(255,255,255,0.45);
+  --text-soft: rgba(255,255,255,0.7);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: var(--navy-deep);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.6;
+}
+
+/* NAV */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 1.25rem 2.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(15,18,34,0.88);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 900; letter-spacing: 5px;
+  color: var(--gold); text-decoration: none;
+}
+
+.nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+
+.nav-links a {
+  font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 500;
+  letter-spacing: 1px; color: var(--text-muted); text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-links a.active { color: var(--gold); }
+
+.nav-dropdown { position: relative; }
+.nav-dropdown > a::after { content: ' ▾'; font-size: 0.6rem; opacity: 0.55; }
+.nav-dropdown-menu {
+  position: absolute; top: calc(100% + 0.75rem); left: -0.75rem;
+  min-width: 190px; background: rgba(15,18,34,0.97);
+  border: 1px solid rgba(212,165,116,0.18); border-radius: 6px;
+  padding: 0.4rem 0; display: none; flex-direction: column;
+  backdrop-filter: blur(14px); z-index: 300;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+.nav-dropdown:hover .nav-dropdown-menu { display: flex; }
+.nav-dropdown-menu a {
+  padding: 0.55rem 1.1rem; font-family: 'Inter', sans-serif;
+  font-size: 0.72rem; font-weight: 500;
+  color: rgba(255,255,255,0.45); text-decoration: none; white-space: nowrap;
+  transition: color 0.15s, background 0.15s; letter-spacing: 0;
+}
+.nav-dropdown-menu a:hover { color: var(--gold); background: rgba(255,255,255,0.04); }
+.nav-dropdown-menu a::after { display: none; }
+.nav-drop-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 0.3rem 0; }
+
+.nav-cta {
+  font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--navy-deep) !important;
+  background: var(--gold);
+  padding: 0.45rem 1.1rem; border-radius: 4px;
+  transition: opacity 0.2s !important;
+}
+.nav-cta:hover { opacity: 0.85; color: var(--navy-deep) !important; }
+
+/* HERO */
+.hero {
+  min-height: 55vh;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center; padding: 8rem 2rem 4rem;
+  position: relative; overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute; width: 700px; height: 700px;
+  background: radial-gradient(ellipse, rgba(212,165,116,0.09) 0%, transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.hero::after {
+  content: '▶';
+  position: absolute; font-size: 28rem;
+  color: rgba(212,165,116,0.025);
+  top: 50%; left: 50%; transform: translate(-50%, -50%);
+  line-height: 1; pointer-events: none;
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.75rem;
+  font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 600;
+  letter-spacing: 4px; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 1.5rem; animation: fadeUp 0.8s ease both;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: ''; display: block; width: 28px; height: 1px;
+  background: var(--gold); opacity: 0.5;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 8vw, 5.5rem);
+  font-weight: 900; letter-spacing: 0.05em; color: var(--white);
+  line-height: 1; margin-bottom: 1rem; animation: fadeUp 0.8s ease 0.1s both;
+}
+.hero-title span {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, #b8895a 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+.hero-tagline {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.35rem); color: var(--text-soft);
+  margin-bottom: 1rem; font-weight: 400; animation: fadeUp 0.8s ease 0.2s both;
+}
+
+/* CATEGORY FILTER */
+.filter-bar {
+  display: flex; justify-content: center; gap: 0.75rem; flex-wrap: wrap;
+  padding: 2rem 2rem 3rem; border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+.filter-btn {
+  font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--text-muted); background: transparent;
+  border: 1px solid rgba(212,165,116,0.2); border-radius: 30px;
+  padding: 0.5rem 1.25rem; cursor: pointer; transition: all 0.2s;
+}
+.filter-btn:hover, .filter-btn.active {
+  color: var(--navy-deep); background: var(--gold); border-color: var(--gold);
+}
+
+/* SHORT CLIPS */
+#shortClipsBlock { display: none; padding: 4rem 2rem; }
+.shorts-inner { max-width: 1200px; margin: 0 auto; }
+.section-eyebrow {
+  font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 4px; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 0.75rem;
+}
+.section-title {
+  font-family: 'Playfair Display', serif; font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 700; color: var(--white); margin-bottom: 2rem;
+}
+
+.short-clips-scroll {
+  display: flex; gap: 1.25rem; overflow-x: auto;
+  padding-bottom: 1rem; scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+.short-clips-scroll::-webkit-scrollbar { height: 4px; }
+.short-clips-scroll::-webkit-scrollbar-track { background: rgba(255,255,255,0.05); border-radius: 2px; }
+.short-clips-scroll::-webkit-scrollbar-thumb { background: var(--gold); border-radius: 2px; }
+
+.short-card {
+  flex: 0 0 200px; scroll-snap-align: start;
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(212,165,116,0.12);
+  border-radius: 10px; overflow: hidden;
+}
+.short-embed-wrap { aspect-ratio: 9/16; background: #0a0c18; }
+.short-embed-placeholder { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; color: var(--text-muted); font-size: 1.5rem; }
+.short-embed { width: 100%; height: 100%; border: none; }
+.short-info { padding: 0.75rem; }
+.short-title { font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 500; color: var(--text-soft); margin-bottom: 0.35rem; line-height: 1.3; }
+.short-platform { font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; padding: 0.15rem 0.5rem; border-radius: 3px; }
+.short-platform-yt { background: rgba(255,0,0,0.15); color: #ff6b6b; }
+.short-platform-tt { background: rgba(0,200,200,0.1); color: #69e0e0; }
+
+/* VIDEO SECTIONS */
+.video-section {
+  padding: 4.5rem 2rem; border-bottom: 1px solid rgba(212,165,116,0.07);
+}
+.video-section-inner { max-width: 1200px; margin: 0 auto; }
+.category-header { margin-bottom: 2.5rem; }
+.category-eyebrow {
+  font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 600;
+  letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem;
+}
+.category-title {
+  font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 2.5vw, 2rem);
+  font-weight: 700; color: var(--white);
+}
+.category-desc {
+  font-family: 'Crimson Pro', serif; font-size: 1.05rem;
+  color: var(--text-soft); margin-top: 0.5rem; font-style: italic;
+}
+
+.video-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 2rem;
+}
+
+.video-card {
+  background: rgba(255,255,255,0.03); border: 1px solid rgba(212,165,116,0.1);
+  border-radius: 10px; overflow: hidden;
+  transition: border-color 0.25s, transform 0.25s;
+}
+.video-card:hover { border-color: rgba(212,165,116,0.3); transform: translateY(-3px); }
+
+.video-embed-wrap { aspect-ratio: 16/9; background: #0a0c18; }
+.video-embed-wrap iframe { width: 100%; height: 100%; border: none; }
+
+.video-info { padding: 1.25rem 1.25rem 1.5rem; }
+.video-title {
+  font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700;
+  color: var(--white); margin-bottom: 0.4rem; line-height: 1.35;
+}
+.video-desc {
+  font-family: 'Crimson Pro', serif; font-size: 0.95rem;
+  color: var(--text-soft); line-height: 1.5; margin-bottom: 0.75rem;
+}
+.video-module-badge {
+  display: inline-block; font-family: 'Inter', sans-serif; font-size: 0.65rem;
+  font-weight: 600; letter-spacing: 0.5px; color: var(--gold);
+  background: var(--gold-dim); border: 1px solid rgba(212,165,116,0.2);
+  border-radius: 4px; padding: 0.25rem 0.6rem; text-decoration: none;
+  transition: background 0.2s;
+}
+.video-module-badge:hover { background: rgba(212,165,116,0.25); }
+
+.category-empty {
+  display: none; flex-direction: column; align-items: center; justify-content: center;
+  gap: 0.75rem; padding: 4rem 2rem; text-align: center;
+  border: 1px dashed rgba(212,165,116,0.15); border-radius: 10px;
+  color: var(--text-muted);
+}
+.category-empty-icon { font-size: 2rem; opacity: 0.4; }
+.category-empty p { font-family: 'Inter', sans-serif; font-size: 0.8rem; letter-spacing: 0.5px; }
+
+/* FOOTER */
+footer {
+  padding: 3rem 2rem; text-align: center;
+  border-top: 1px solid rgba(212,165,116,0.08);
+}
+.footer-logo {
+  font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 900;
+  letter-spacing: 5px; color: var(--gold); margin-bottom: 0.75rem;
+}
+.footer-links {
+  display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap;
+  list-style: none; margin-bottom: 1.5rem;
+}
+.footer-links a {
+  font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--text-muted);
+  text-decoration: none; transition: color 0.2s;
+}
+.footer-links a:hover { color: var(--gold); }
+.footer-copy {
+  font-family: 'Inter', sans-serif; font-size: 0.68rem; color: var(--text-muted);
+}
+
+/* REVEAL */
+.reveal { opacity: 0; transform: translateY(20px); transition: opacity 0.7s ease, transform 0.7s ease; }
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .site-nav { padding: 1rem 1.25rem; }
+  .nav-links { display: none; }
+  .video-grid { grid-template-columns: 1fr; }
+  .filter-bar { gap: 0.5rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">CRUX</a>
+  <ul class="nav-links">
+    <li class="nav-dropdown">
+      <a href="crux-modules.html">Faith Formation</a>
+      <div class="nav-dropdown-menu">
+        <a href="crux-modules.html">Five Pillars (Grades 3–8)</a>
+        <div class="nav-drop-divider"></div>
+        <a href="crux-adult-formation.html">Adult Formation</a>
+        <a href="crux-adult-ocia.html">OCIA Guide</a>
+      </div>
+    </li>
+    <li><a href="crux-bible-study.html">Bible Study</a></li>
+    <li><a href="crux-alpha.html">Saint Cards</a></li>
+    <li><a href="index.html#games">Games</a></li>
+    <li><a href="crux-videos.html" class="active">Videos</a></li>
+    <li><a href="crux-music.html">Music</a></li>
+    <li><a href="crux-account.html" class="nav-cta" id="accountBtnText">My Account</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">CRUX · Media</div>
+  <h1 class="hero-title"><span>Videos</span></h1>
+  <p class="hero-tagline">Apologetics, scripture, and stories that move you.</p>
+</section>
+
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="scrollToCategory('culture-apologetics', this)">Culture & Apologetics</button>
+  <button class="filter-btn" onclick="scrollToCategory('scripture-theology', this)">Scripture & Theology</button>
+  <button class="filter-btn" onclick="scrollToCategory('for-youth-families', this)">For Youth & Families</button>
+  <button class="filter-btn" onclick="scrollToCategory('christian-music-videos', this)">Music Videos</button>
+</div>
+
+<!-- Short Clips (hidden until Firebase populates) -->
+<div id="shortClipsBlock" style="display:none;">
+  <div class="shorts-inner">
+    <p class="section-eyebrow">Short Clips</p>
+    <h2 class="section-title">Quick Takes</h2>
+    <div class="short-clips-scroll" id="shortClipsScroll"></div>
+  </div>
+</div>
+
+<!-- Culture & Apologetics -->
+<section class="video-section reveal" data-category="culture-apologetics">
+  <div class="video-section-inner">
+    <div class="category-header">
+      <p class="category-eyebrow">Category</p>
+      <h2 class="category-title">Culture & Apologetics</h2>
+      <p class="category-desc">Defending the faith, engaging the culture.</p>
+    </div>
+    <div class="video-grid"></div>
+    <div class="category-empty">
+      <div class="category-empty-icon">▶</div>
+      <p>No videos yet. Add them in the Admin Portal.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Scripture & Theology -->
+<section class="video-section reveal" data-category="scripture-theology">
+  <div class="video-section-inner">
+    <div class="category-header">
+      <p class="category-eyebrow">Category</p>
+      <h2 class="category-title">Scripture & Theology</h2>
+      <p class="category-desc">Going deeper into the Word and the tradition.</p>
+    </div>
+    <div class="video-grid"></div>
+    <div class="category-empty">
+      <div class="category-empty-icon">✦</div>
+      <p>No videos yet. Add them in the Admin Portal.</p>
+    </div>
+  </div>
+</section>
+
+<!-- For Youth & Families -->
+<section class="video-section reveal" data-category="for-youth-families">
+  <div class="video-section-inner">
+    <div class="category-header">
+      <p class="category-eyebrow">Category</p>
+      <h2 class="category-title">For Youth & Families</h2>
+      <p class="category-desc">Formation for the whole household.</p>
+    </div>
+    <div class="video-grid"></div>
+    <div class="category-empty">
+      <div class="category-empty-icon">⛪</div>
+      <p>No videos yet. Add them in the Admin Portal.</p>
+    </div>
+  </div>
+</section>
+
+<!-- Christian Music Videos -->
+<section class="video-section reveal" data-category="christian-music-videos">
+  <div class="video-section-inner">
+    <div class="category-header">
+      <p class="category-eyebrow">Category</p>
+      <h2 class="category-title">Christian Music Videos</h2>
+      <p class="category-desc">Worship, praise, and music that points upward.</p>
+    </div>
+    <div class="video-grid"></div>
+    <div class="category-empty">
+      <div class="category-empty-icon">♪</div>
+      <p>No videos yet. Add them in the Admin Portal.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">CRUX</div>
+  <ul class="footer-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="crux-modules.html">Faith Formation</a></li>
+    <li><a href="crux-bible-study.html">Bible Study</a></li>
+    <li><a href="crux-alpha.html">Saint Cards</a></li>
+    <li><a href="crux-videos.html">Videos</a></li>
+    <li><a href="crux-music.html">Music</a></li>
+    <li><a href="crux-account.html">My Account</a></li>
+  </ul>
+  <p class="footer-copy">© 2025 CRUX Faith Formation. All rights reserved.</p>
+</footer>
+
+<script>
+  // Reveal on scroll
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Filter buttons scroll to section
+  function scrollToCategory(slug, btn) {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const target = document.querySelector('[data-category="' + slug + '"]');
+    if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+</script>
+
+</body>
+</html>
