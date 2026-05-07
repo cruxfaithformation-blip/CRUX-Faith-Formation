@@ -645,385 +645,106 @@
 
         /* ── Reveal overlay ── */
         .reveal-overlay {
-            position: fixed;
-            inset: 0;
-            background: linear-gradient(160deg, #0f1222 0%, #1a1f36 60%, #0d1528 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 400;
-            padding: 2rem 1rem;
-        }
-        .reveal-eyebrow {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.6rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--gold);
-            margin-bottom: 0.75rem;
-        }
-        .reveal-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 1.5rem;
-            font-weight: 900;
-            color: var(--white);
-            margin-bottom: 0.4rem;
-        }
-        .reveal-hint {
-            font-size: 0.78rem;
-            color: rgba(255,255,255,0.35);
-            margin-bottom: 2.5rem;
-        }
-        .reveal-cards {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-            margin-bottom: 2.5rem;
-            max-width: 700px;
+            position: fixed; inset: 0;
+            background: linear-gradient(160deg, #07090f 0%, #0f1222 60%, #07090f 100%);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            z-index: 400; padding: 2rem 1rem;
         }
 
-        .card-slot {
-            width: 110px;
-            height: 155px;
-            border-radius: 10px;
-            cursor: pointer;
-            position: relative;
-            transition: transform 0.15s;
-        }
-        .card-slot:hover:not(.revealed) { transform: translateY(-4px); }
+        /* ── Pack open state ── */
+        .pack-open-wrap { display: flex; flex-direction: column; align-items: center; gap: 1.4rem; text-align: center; }
+        .po-eyebrow { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); }
+        .po-art { position: relative; cursor: pointer; border-radius: 14px; animation: pack-float 2.8s ease-in-out infinite; }
+        .po-art.no-img { width: 180px; height: 240px; border-radius: 14px; }
+        @keyframes pack-float { 0%,100%{transform:translateY(0) rotate(0deg)} 40%{transform:translateY(-10px) rotate(0.6deg)} 70%{transform:translateY(-5px) rotate(-0.4deg)} }
+        .po-img { width: 190px; height: auto; border-radius: 14px; display: block; box-shadow: 0 0 50px rgba(212,165,116,0.28), 0 24px 60px rgba(0,0,0,0.7); transition: box-shadow 0.3s; }
+        .po-art:hover .po-img { box-shadow: 0 0 75px rgba(212,165,116,0.5), 0 24px 60px rgba(0,0,0,0.7); }
+        .po-tap { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(255,255,255,0.38); animation: tap-blink 1.8s ease-in-out infinite; transition: opacity 0.25s; }
+        @keyframes tap-blink { 0%,100%{opacity:0.38} 50%{opacity:0.85} }
+        .po-art.is-opening { animation: pack-rip 0.55s ease-in forwards !important; cursor: default; }
+        @keyframes pack-rip { 0%{transform:scale(1) rotate(0deg)} 15%{transform:scale(1.04) rotate(-3deg)} 30%{transform:scale(1.05) rotate(3deg)} 48%{transform:scale(1.07) rotate(-2deg)} 65%{transform:scale(1.18) rotate(1deg)} 82%{transform:scale(1.55) rotate(0deg);opacity:0.6} 100%{transform:scale(2.4) rotate(0deg);opacity:0} }
 
-        .card-back-face, .card-front-face {
-            position: absolute;
-            inset: 0;
-            border-radius: 10px;
-            overflow: hidden;
-        }
-        .card-back-face {
-            background: var(--navy-mid);
-            border: 1px solid var(--border-g);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 0.3rem;
-        }
-        .card-back-wordmark {
-            font-family: 'Playfair Display', serif;
-            font-weight: 900;
-            font-size: 1.1rem;
-            letter-spacing: 4px;
-            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-lt) 50%, var(--gold) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        .card-back-cross {
-            font-size: 1.4rem;
-            opacity: 0.3;
-        }
-        .card-back-face.pulsing {
-            animation: pulse-border 1.5s ease-in-out infinite;
-        }
-        @keyframes pulse-border {
-            0%, 100% { border-color: rgba(212,165,116,0.25); }
-            50%       { border-color: rgba(212,165,116,0.65); }
-        }
+        /* ── Loading bar ── */
+        .po-loading-wrap { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+        .po-loading-cross { font-size: 2rem; opacity: 0.1; }
+        .po-loading-text { font-family: 'DM Mono', monospace; font-size: 0.54rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(212,165,116,0.4); }
+        .po-loading-bar-wrap { width: 180px; height: 2px; background: rgba(212,165,116,0.1); border-radius: 2px; overflow: hidden; }
+        .po-loading-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #d4a574, #f0c878); border-radius: 2px; transition: width 0.15s ease; }
 
-        .card-front-face {
-            display: none;
-            position: absolute;
-            inset: 0;
-            border-radius: 10px;
-            overflow: hidden;
-            border: 2px solid;
-        }
-        .card-slot.revealed .card-back-face { display: none; }
-        .card-slot.revealed .card-front-face { display: block; }
-        .card-slot.revealed { cursor: default; animation: reveal-pop 0.3s ease-out; }
-        @keyframes reveal-pop {
-            0%   { transform: scale(0.85); opacity: 0; }
-            60%  { transform: scale(1.05); }
-            100% { transform: scale(1);    opacity: 1; }
-        }
+        /* ── Cinematic single-card reveal ── */
+        .cinematic-wrap { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; }
+        .cinematic-counter { font-family: 'DM Mono', monospace; font-size: 0.52rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(212,165,116,0.35); }
+        .cinematic-stage { position: relative; display: flex; align-items: center; justify-content: center; }
+        .card-halo { position: absolute; inset: -40px; border-radius: 50%; background: radial-gradient(ellipse at center, rgba(212,165,116,0.2) 0%, transparent 65%); pointer-events: none; opacity: 0; transition: opacity 0.8s ease, background 0.4s ease; z-index: 0; }
+        .card-halo.visible { opacity: 1; }
+        .card-halo.epic-halo { background: radial-gradient(ellipse at center, rgba(180,100,255,0.2) 0%, transparent 65%); }
+        .cin-card { width: 220px; height: 308px; position: relative; transform-style: preserve-3d; perspective: 1200px; cursor: pointer; z-index: 1; }
+        .cin-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.8s cubic-bezier(0.45, 0.05, 0.2, 1); }
+        .cin-card.flipped .cin-inner { transform: rotateY(180deg); }
+        .cin-back, .cin-front { position: absolute; inset: 0; border-radius: 16px; backface-visibility: hidden; -webkit-backface-visibility: hidden; overflow: hidden; }
+        .cin-back { background: linear-gradient(160deg, #141830 0%, #1c2448 50%, #141830 100%); border: 1.5px solid rgba(212,165,116,0.2); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.6rem; box-shadow: 0 0 60px rgba(212,165,116,0.08), 0 24px 60px rgba(0,0,0,0.9); animation: cin-back-pulse 2s ease-in-out infinite; }
+        @keyframes cin-back-pulse { 0%,100%{border-color:rgba(212,165,116,0.15)} 50%{border-color:rgba(212,165,116,0.45)} }
+        .cin-back-wm { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.6rem; letter-spacing: 8px; background: linear-gradient(135deg, #d4a574, #f0c878, #d4a574); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        .cin-front { transform: rotateY(180deg); border: 2px solid rgba(212,165,116,0.4); box-shadow: 0 0 60px rgba(212,165,116,0.25), 0 24px 60px rgba(0,0,0,0.9); background: linear-gradient(145deg, #1a1208, #2a1e10); display: flex; align-items: flex-end; }
+        .cin-saint-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+        .cin-front-overlay { position: relative; z-index: 2; width: 100%; padding: 1rem 0.9rem 0.85rem; background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 65%, transparent 100%); text-align: center; }
+        .cin-name { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 0.95rem; color: #fff; margin-bottom: 0.25rem; text-shadow: 0 2px 8px rgba(0,0,0,0.8); line-height: 1.2; }
+        .cin-rarity { font-family: 'DM Mono', monospace; font-size: 0.42rem; letter-spacing: 2px; text-transform: uppercase; }
+        .cin-front.uncommon { border-color: rgba(180,200,220,0.5); }
+        .cin-front.uncommon .cin-rarity { color: #b4c8dc; }
+        .cin-front.rare { border-color: rgba(196,60,60,0.7); box-shadow: 0 0 60px rgba(196,60,60,0.25), 0 24px 60px rgba(0,0,0,0.9); }
+        .cin-front.rare .cin-rarity { color: #e87878; }
+        .cin-front.legendary { border-color: rgba(212,165,116,0.85); box-shadow: 0 0 80px rgba(212,165,116,0.4), 0 0 160px rgba(212,165,116,0.1); }
+        .cin-front.legendary .cin-rarity { color: #d4a574; }
+        .cin-front.epic { border-color: rgba(180,100,255,0.7); box-shadow: 0 0 60px rgba(180,100,255,0.25), 0 24px 60px rgba(0,0,0,0.9); }
+        .cin-front.epic .cin-rarity { color: #c97fff; }
+        @keyframes cin-enter { 0%{transform:translateY(80px) scale(0.85);opacity:0} 55%{transform:translateY(-8px) scale(1.02);opacity:1} 100%{transform:translateY(0) scale(1);opacity:1} }
+        .cin-card.entering { animation: cin-enter 0.65s cubic-bezier(0.2, 0.85, 0.3, 1) forwards; }
+        .cin-tap-hint { font-family: 'DM Mono', monospace; font-size: 0.5rem; letter-spacing: 2.5px; text-transform: uppercase; color: rgba(212,165,116,0.45); animation: tap-blink 1.8s ease-in-out infinite; transition: opacity 0.3s ease; }
+        .cin-dupe-badge { position: absolute; top: 8px; left: 8px; font-family: 'DM Mono', monospace; font-size: 0.36rem; letter-spacing: 0.7px; text-transform: uppercase; background: rgba(0,0,0,0.78); color: var(--gold); padding: 2px 5px; border-radius: 3px; z-index: 5; }
+        .cin-next-btn { font-family: 'DM Mono', monospace; font-size: 0.6rem; letter-spacing: 2px; text-transform: uppercase; background: transparent; border: 1px solid rgba(212,165,116,0.3); color: rgba(212,165,116,0.7); padding: 0.6rem 1.8rem; border-radius: 5px; cursor: pointer; opacity: 0; pointer-events: none; transform: translateY(8px); transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.2s, color 0.2s; }
+        .cin-next-btn.visible { opacity: 1; pointer-events: all; transform: translateY(0); }
+        .cin-next-btn:hover { border-color: rgba(212,165,116,0.7); color: rgba(212,165,116,1); background: rgba(212,165,116,0.06); }
+        .cin-dots { display: flex; gap: 0.55rem; }
+        .cin-dot { width: 5px; height: 5px; border-radius: 50%; background: rgba(212,165,116,0.15); transition: background 0.4s, transform 0.4s; }
+        .cin-dot.done { background: rgba(212,165,116,0.7); transform: scale(1.3); }
+        .cin-dot.now { background: rgba(212,165,116,0.4); animation: dot-now 1s ease-in-out infinite; }
+        @keyframes dot-now { 0%,100%{transform:scale(1)} 50%{transform:scale(1.6)} }
+        .gold-particle { position: fixed; pointer-events: none; z-index: 450; font-size: 0.55rem; opacity: 0; animation: gold-fall linear forwards; }
+        @keyframes gold-fall { 0%{transform:translateY(-20px) rotate(0deg);opacity:0.8} 100%{transform:translateY(100vh) rotate(360deg);opacity:0} }
 
-        .card-slot.legendary .card-front-face {
-            background: linear-gradient(145deg, #2a1a05 0%, #3d2510 50%, #1e1204 100%);
-            border-color: var(--gold);
-            box-shadow: 0 0 24px rgba(212,165,116,0.45);
-        }
-        .card-slot.rare .card-front-face {
-            background: linear-gradient(145deg, #0d1e3a 0%, #152d56 50%, #0a1628 100%);
-            border-color: #6495ed;
-            box-shadow: 0 0 18px rgba(100,149,237,0.35);
-        }
-        .card-slot.epic .card-front-face {
-            background: linear-gradient(145deg, #1a0a2e 0%, #2a1045 50%, #130820 100%);
-            border-color: #b464ff;
-            box-shadow: 0 0 20px rgba(180,100,255,0.4);
-        }
-        .card-slot.uncommon .card-front-face {
-            background: linear-gradient(145deg, #1a1f36 0%, #242a45 100%);
-            border-color: rgba(255,255,255,0.18);
-        }
+        /* ── Summary screen ── */
+        .summary-wrap { display: flex; flex-direction: column; align-items: center; gap: 1.75rem; width: 100%; }
+        .summary-eyebrow { font-family: 'DM Mono', monospace; font-size: 0.52rem; letter-spacing: 4px; text-transform: uppercase; color: rgba(212,165,116,0.4); }
+        .summary-title { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.3rem; color: #fff; text-align: center; margin-top: -1rem; }
+        .summary-stats { font-family: 'DM Mono', monospace; font-size: 0.56rem; letter-spacing: 1px; color: rgba(255,255,255,0.3); text-align: center; margin-top: -1rem; }
+        .summary-cards-row { display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap; max-width: 560px; }
+        .sum-card { width: 88px; height: 124px; border-radius: 10px; overflow: hidden; border: 1.5px solid rgba(212,165,116,0.2); background: linear-gradient(145deg,#1a1f36,#252b47); position: relative; transform: scale(0.85) translateY(20px); opacity: 0; transition: transform 0.5s ease, opacity 0.5s ease; }
+        .sum-card.in { transform: scale(1) translateY(0); opacity: 1; }
+        .sum-card-img { width: 100%; height: 100%; object-fit: cover; object-position: center top; display: block; }
+        .sum-card-label { position: absolute; bottom: 0; left: 0; right: 0; padding: 0.3rem; background: linear-gradient(to top,rgba(0,0,0,0.9),transparent); font-family: 'Playfair Display', serif; font-size: 0.4rem; font-weight: 700; color: #fff; text-align: center; line-height: 1.2; }
+        .sum-card.rare { border-color: rgba(196,60,60,0.5); }
+        .sum-card.legendary { border-color: rgba(212,165,116,0.6); }
+        .sum-card.uncommon { border-color: rgba(180,200,220,0.3); }
+        .sum-card.epic { border-color: rgba(180,100,255,0.5); }
 
-        /* Saint portrait image */
-        .cf-saint-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            object-position: center top;
-            display: block;
-        }
-
-        /* Bottom info overlay */
-        .cf-overlay {
-            position: absolute;
-            bottom: 0; left: 0; right: 0;
-            padding: 0.55rem 0.4rem 0.38rem;
-            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 55%, transparent 100%);
-        }
-        .cf-name {
-            display: block;
-            font-family: 'Playfair Display', serif;
-            font-size: 0.7rem;
-            font-weight: 700;
-            color: #fff;
-            line-height: 1.2;
-            margin-bottom: 0.22rem;
-        }
-        .cf-bottom-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 0.25rem;
-        }
-        .cf-rarity-badge {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.43rem;
-            letter-spacing: 1.2px;
-            text-transform: uppercase;
-            padding: 1px 5px;
-            border-radius: 2px;
-            font-weight: 700;
-        }
-        .cf-view-link {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.42rem;
-            letter-spacing: 0.8px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.65);
-            text-decoration: none;
-            white-space: nowrap;
-        }
-        .cf-view-link:hover { color: #fff; }
-
-        /* Rarity icon top-right corner */
-        .cf-rarity-icon {
-            position: absolute;
-            top: 6px; right: 7px;
-            font-size: 0.9rem;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.95);
-            z-index: 2;
-        }
-
-        /* Duplicate badge top-left corner */
-        .cf-dupe-badge {
-            position: absolute;
-            top: 6px; left: 6px;
-            font-family: 'DM Mono', monospace;
-            font-size: 0.38rem;
-            letter-spacing: 0.7px;
-            text-transform: uppercase;
-            background: rgba(0,0,0,0.78);
-            color: var(--gold);
-            padding: 2px 5px;
-            border-radius: 3px;
-            z-index: 3;
-        }
-
-        /* Text fallback for cards without saint images */
-        .cf-text-fallback {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 0.35rem;
-            padding: 0.75rem;
-            text-align: center;
-        }
-        .cf-wordmark {
-            font-family: 'Playfair Display', serif;
-            font-weight: 900;
-            font-size: 0.65rem;
-            letter-spacing: 3px;
-            opacity: 0.5;
-        }
-        .cf-text-name {
-            font-family: 'Playfair Display', serif;
-            font-size: 0.76rem;
-            font-weight: 700;
-            color: var(--white);
-            line-height: 1.25;
-        }
-
-        .legendary .cf-rarity-badge { background: rgba(212,165,116,0.22); color: var(--gold); border: 1px solid rgba(212,165,116,0.4); }
-        .rare .cf-rarity-badge { background: rgba(100,149,237,0.15); color: #8ab4f8; border: 1px solid rgba(100,149,237,0.3); }
-        .epic .cf-rarity-badge { background: rgba(180,100,255,0.15); color: #c97fff; border: 1px solid rgba(180,100,255,0.35); }
-        .uncommon .cf-rarity-badge { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.14); }
-        .legendary .cf-wordmark { color: var(--gold); }
-        .rare .cf-wordmark { color: #8ab4f8; }
-        .epic .cf-wordmark { color: #c97fff; }
-        .uncommon .cf-wordmark { color: rgba(255,255,255,0.35); }
-
-        /* Rarity flash overlay */
-        .reveal-flash {
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 500;
-            opacity: 0;
-        }
-        @keyframes flash-gold {
-            0%   { opacity: 0; }
-            12%  { opacity: 0.65; }
-            100% { opacity: 0; }
-        }
-        @keyframes flash-blue {
-            0%   { opacity: 0; }
-            12%  { opacity: 0.5; }
-            100% { opacity: 0; }
-        }
-        .reveal-flash.flash-legendary {
-            background: radial-gradient(ellipse at center, rgba(212,175,80,0.72) 0%, transparent 60%);
-            animation: flash-gold 0.9s ease-out forwards;
-        }
-        .reveal-flash.flash-rare {
-            background: radial-gradient(ellipse at center, rgba(80,120,220,0.65) 0%, transparent 60%);
-            animation: flash-blue 0.7s ease-out forwards;
-        }
-        .reveal-flash.flash-epic {
-            background: radial-gradient(ellipse at center, rgba(160,80,240,0.65) 0%, transparent 60%);
-            animation: flash-blue 0.7s ease-out forwards;
-        }
-
-        /* ── Pack opening state ── */
-        .pack-open-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.4rem;
-            text-align: center;
-        }
-        .po-eyebrow {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.6rem;
-            letter-spacing: 3px;
-            text-transform: uppercase;
-            color: var(--gold);
-        }
-        .po-art {
-            position: relative;
-            cursor: pointer;
-            border-radius: 14px;
-            animation: pack-float 2.8s ease-in-out infinite;
-        }
-        .po-art.no-img {
-            width: 180px;
-            height: 240px;
-            border-radius: 14px;
-        }
-        @keyframes pack-float {
-            0%, 100% { transform: translateY(0) rotate(0deg); }
-            40%       { transform: translateY(-10px) rotate(0.6deg); }
-            70%       { transform: translateY(-5px) rotate(-0.4deg); }
-        }
-        .po-img {
-            width: 190px;
-            height: auto;
-            border-radius: 14px;
-            display: block;
-            box-shadow: 0 0 50px rgba(212,165,116,0.28), 0 24px 60px rgba(0,0,0,0.7);
-            transition: box-shadow 0.3s;
-        }
-        .po-art:hover .po-img {
-            box-shadow: 0 0 75px rgba(212,165,116,0.5), 0 24px 60px rgba(0,0,0,0.7);
-        }
-        .po-tap {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.6rem;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            color: rgba(255,255,255,0.38);
-            animation: tap-blink 1.8s ease-in-out infinite;
-            transition: opacity 0.25s;
-        }
-        @keyframes tap-blink {
-            0%, 100% { opacity: 0.38; }
-            50%       { opacity: 0.85; }
-        }
-        .po-art.is-opening {
-            animation: pack-rip 0.55s ease-in forwards !important;
-            cursor: default;
-        }
-        @keyframes pack-rip {
-            0%   { transform: scale(1) rotate(0deg); }
-            15%  { transform: scale(1.04) rotate(-3deg); }
-            30%  { transform: scale(1.05) rotate(3deg); }
-            48%  { transform: scale(1.07) rotate(-2deg); }
-            65%  { transform: scale(1.18) rotate(1deg); }
-            82%  { transform: scale(1.55) rotate(0deg); opacity: 0.6; }
-            100% { transform: scale(2.4) rotate(0deg); opacity: 0; }
-        }
-        @keyframes flash-pack {
-            0%   { opacity: 0; }
-            8%   { opacity: 0.88; }
-            100% { opacity: 0; }
-        }
-        .reveal-flash.flash-pack {
-            background: radial-gradient(ellipse at center,
-                rgba(255,245,200,0.95) 0%,
-                rgba(212,165,116,0.55) 30%,
-                transparent 65%);
-            animation: flash-pack 0.65s ease-out forwards;
-        }
-        .card-reveal-wrap {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-        }
-
+        /* ── Reveal actions ── */
         .reveal-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
-        .reveal-again-btn {
-            background: var(--gold); color: var(--navy); border: none;
-            padding: 11px 22px;
-            font-family: 'DM Mono', monospace; font-size: 0.68rem;
-            letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700;
-            border-radius: 5px; cursor: pointer; transition: opacity 0.2s;
-        }
+        .reveal-again-btn { background: var(--gold); color: var(--navy); border: none; padding: 11px 22px; font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700; border-radius: 5px; cursor: pointer; transition: opacity 0.2s; }
         .reveal-again-btn:hover { opacity: 0.88; }
         .reveal-again-btn:disabled { opacity: 0.35; cursor: default; }
-        .reveal-done-btn {
-            background: transparent; border: 1px solid var(--border-g);
-            color: rgba(255,255,255,0.6);
-            padding: 11px 22px;
-            font-family: 'DM Mono', monospace; font-size: 0.68rem;
-            letter-spacing: 1.5px; text-transform: uppercase;
-            border-radius: 5px; cursor: pointer; transition: all 0.2s;
-        }
+        .reveal-done-btn { background: transparent; border: 1px solid var(--border-g); color: rgba(255,255,255,0.6); padding: 11px 22px; font-family: 'DM Mono', monospace; font-size: 0.68rem; letter-spacing: 1.5px; text-transform: uppercase; border-radius: 5px; cursor: pointer; transition: all 0.2s; }
         .reveal-done-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.3); }
-        .reveal-tap-all {
-            font-family: 'DM Mono', monospace;
-            font-size: 0.65rem; letter-spacing: 1px;
-            color: var(--gold); cursor: pointer;
-            background: none; border: none;
-            text-decoration: underline; text-underline-offset: 3px;
-            padding: 6px 0; transition: opacity 0.2s;
-        }
-        .reveal-tap-all:hover { opacity: 0.7; }
+
+        /* ── Rarity flash ── */
+        .reveal-flash { position: fixed; inset: 0; pointer-events: none; z-index: 500; opacity: 0; }
+        @keyframes flash-gold  { 0%{opacity:0} 12%{opacity:0.65} 100%{opacity:0} }
+        @keyframes flash-blue  { 0%{opacity:0} 12%{opacity:0.5}  100%{opacity:0} }
+        @keyframes flash-pack  { 0%{opacity:0} 8%{opacity:0.88}  100%{opacity:0} }
+        .reveal-flash.flash-legendary { background: radial-gradient(ellipse at center, rgba(212,175,80,0.72) 0%, transparent 60%); animation: flash-gold 0.9s ease-out forwards; }
+        .reveal-flash.flash-rare      { background: radial-gradient(ellipse at center, rgba(196,60,60,0.65) 0%, transparent 60%); animation: flash-blue 0.7s ease-out forwards; }
+        .reveal-flash.flash-epic      { background: radial-gradient(ellipse at center, rgba(160,80,240,0.65) 0%, transparent 60%); animation: flash-blue 0.7s ease-out forwards; }
+        .reveal-flash.flash-pack      { background: radial-gradient(ellipse at center, rgba(255,245,200,0.95) 0%, rgba(212,165,116,0.55) 30%, transparent 65%); animation: flash-pack 0.65s ease-out forwards; }
 
         /* ── Responsive ── */
         @media (max-width: 560px) {
@@ -1145,27 +866,62 @@
 <div class="reveal-overlay" id="revealOverlay" style="display:none">
     <div id="revealFlash" class="reveal-flash"></div>
 
-    <!-- State 1: Pack opening -->
+    <!-- State 1: Pack art + tap to open -->
     <div id="packOpenWrap" class="pack-open-wrap">
         <div class="po-eyebrow" id="poEyebrow"></div>
         <div class="po-art" id="poArt">
-            <img id="poImg" src="" alt="" class="po-img"
-                 onerror="this.style.display='none'">
+            <img id="poImg" src="" alt="" class="po-img" onerror="this.style.display='none'">
         </div>
         <div class="po-tap" id="poTap">Tap to open</div>
     </div>
 
-    <!-- State 2: Card reveal -->
-    <div id="cardRevealWrap" class="card-reveal-wrap" style="display:none">
-        <div class="reveal-eyebrow" id="revealEyebrow"></div>
-        <div class="reveal-title">Your Cards</div>
-        <div class="reveal-hint" id="revealHint">Tap each card to reveal</div>
-        <div class="reveal-cards" id="revealCards"></div>
-        <div class="reveal-actions" id="revealActions" style="display:none">
+    <!-- State 2: Loading bar -->
+    <div id="poLoadingWrap" class="po-loading-wrap" style="display:none">
+        <span class="po-loading-cross">✟</span>
+        <p class="po-loading-text" id="poLoadingText">Preparing your saints</p>
+        <div class="po-loading-bar-wrap">
+            <div class="po-loading-bar" id="poLoadingBar"></div>
+        </div>
+    </div>
+
+    <!-- State 3: Cinematic single-card reveal -->
+    <div id="cinematicWrap" class="cinematic-wrap" style="display:none">
+        <p class="cinematic-counter" id="cinematicCounter">Card 1 of 5</p>
+        <div class="cinematic-stage">
+            <div class="card-halo" id="cardHalo"></div>
+            <div class="cin-card" id="cinCard" onclick="flipCinCard()">
+                <div class="cin-inner" id="cinInner">
+                    <div class="cin-back">
+                        <span style="font-size:1.6rem;opacity:0.12">✟</span>
+                        <span class="cin-back-wm">CRUX</span>
+                        <span style="font-family:'DM Mono',monospace;font-size:0.32rem;letter-spacing:3px;text-transform:uppercase;color:rgba(212,165,116,0.25)">Faith Formation</span>
+                    </div>
+                    <div class="cin-front" id="cinFront">
+                        <img class="cin-saint-img" id="cinImg" src="" alt="">
+                        <div class="cin-dupe-badge" id="cinDupe" style="display:none">Dupe +50 XP</div>
+                        <div class="cin-front-overlay">
+                            <div class="cin-name" id="cinName"></div>
+                            <div class="cin-rarity" id="cinRarity"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="cin-tap-hint" id="cinHint">Tap to reveal</p>
+        <button class="cin-next-btn" id="cinNextBtn" onclick="cinNext()"></button>
+        <div class="cin-dots" id="cinDots"></div>
+    </div>
+
+    <!-- State 4: Summary -->
+    <div id="summaryWrap" class="summary-wrap" style="display:none">
+        <p class="summary-eyebrow">Pack opened</p>
+        <h2 class="summary-title">Your Saints</h2>
+        <p class="summary-stats" id="summaryStats"></p>
+        <div class="summary-cards-row" id="summaryCardsRow"></div>
+        <div class="reveal-actions">
             <button class="reveal-again-btn" id="openAgainBtn" onclick="openAgain()">Open Another →</button>
             <button class="reveal-done-btn" onclick="closeReveal()">Done</button>
         </div>
-        <button class="reveal-tap-all" id="tapAllBtn" onclick="revealAll()" style="display:none">Reveal All</button>
     </div>
 </div>
 
@@ -1219,8 +975,8 @@
             { id: 'mother-teresa',   name: 'St. Teresa of Calcutta' },
             { id: 'john-paul-ii',    name: 'St. John Paul II' },
             { id: 'stephen',         name: 'St. Stephen' },
-            { id: 'carlo-acutis',    name: 'Bl. Carlo Acutis' },
-            { id: 'pier-giorgio',    name: 'Bl. Pier Giorgio Frassati' },
+            { id: 'carlo-acutis',    name: 'St. Carlo Acutis' },
+            { id: 'pier-giorgio',    name: 'St. Pier Giorgio Frassati' },
             { id: 'edith-stein',     name: 'St. Edith Stein' },
             { id: 'padre-pio',       name: 'St. Padre Pio' }
         ],
@@ -1552,11 +1308,13 @@
         showReveal(pack);
     };
 
+    // ── Cinematic reveal state ──
+    let cinCurrentIdx = 0;
+    let cinFlipped = false;
+
     // ── Reveal screen ──
     function showReveal(pack) {
         document.getElementById('revealFlash').className = 'reveal-flash';
-
-        // Set up pack open state
         document.getElementById('poEyebrow').textContent = pack.name + ' · ' + pack.cardCount + ' Cards';
         var poImg = document.getElementById('poImg');
         poImg.style.display = 'block';
@@ -1566,173 +1324,218 @@
         poArt.style.background = (!pack.image) ? pack.gradient : 'none';
         poArt.className = 'po-art' + (!pack.image ? ' no-img' : '');
         poArt.onclick = function() { triggerPackOpen(pack); };
-
-        // Pre-build card grid (hidden until after open animation)
-        document.getElementById('revealEyebrow').textContent = pack.name + ' · ' + pack.cardCount + ' Cards';
-        document.getElementById('revealHint').textContent = 'Tap each card to reveal';
-        document.getElementById('revealActions').style.display = 'none';
-        document.getElementById('tapAllBtn').style.display = 'inline-block';
-
-        var container = document.getElementById('revealCards');
-        container.innerHTML = drawnCards.map(function(card, i) {
-            var imgSrc = 'images/saints/' + card.id + '.jpg';
-            var flipPage = 'crux-' + card.id + '-flip.html';
-            var isDupe = ownedBeforeOpen.has(card.id) ? '' : 'display:none';
-            return '<div class="card-slot ' + card.rarity + '" id="slot-' + i + '" onclick="revealCard(' + i + ')">' +
-                '<div class="card-back-face pulsing">' +
-                    '<span class="card-back-cross">✝</span>' +
-                    '<span class="card-back-wordmark">CRUX</span>' +
-                '</div>' +
-                '<div class="card-front-face">' +
-                    '<img class="cf-saint-img" src="' + imgSrc + '" alt="' + card.name + '" ' +
-                        'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
-                    '<div class="cf-text-fallback" style="display:none">' +
-                        '<span class="cf-wordmark">CRUX</span>' +
-                        '<span class="cf-text-name">' + card.name + '</span>' +
-                        '<span class="cf-rarity-badge">' + card.rarity + '</span>' +
-                    '</div>' +
-                    '<div class="cf-overlay">' +
-                        '<span class="cf-name">' + card.name + '</span>' +
-                        '<div class="cf-bottom-row">' +
-                            '<span class="cf-rarity-badge">' + rarityLabel(card.rarity) + '</span>' +
-                            '<a href="' + flipPage + '" class="cf-view-link" style="display:none" onclick="event.stopPropagation()">View →</a>' +
-                        '</div>' +
-                    '</div>' +
-                    '<span class="cf-rarity-icon">' + rarityIcon(card.rarity) + '</span>' +
-                    '<span class="cf-dupe-badge" style="' + isDupe + '">Dupe +50 XP</span>' +
-                '</div>' +
-            '</div>';
-        }).join('');
-
-        // Show pack open state; card grid stays hidden until animation
         document.getElementById('packOpenWrap').style.display = 'flex';
-        document.getElementById('cardRevealWrap').style.display = 'none';
+        document.getElementById('poLoadingWrap').style.display = 'none';
+        document.getElementById('cinematicWrap').style.display = 'none';
+        document.getElementById('summaryWrap').style.display = 'none';
         document.getElementById('poTap').style.opacity = '1';
         document.getElementById('revealOverlay').style.display = 'flex';
     }
 
     function triggerPackOpen(pack) {
         var art = document.getElementById('poArt');
-        art.onclick = null; // prevent double-tap
+        art.onclick = null;
         art.classList.add('is-opening');
         document.getElementById('poTap').style.opacity = '0';
-
         setTimeout(function() {
-            // Bright flash as pack bursts
             var flash = document.getElementById('revealFlash');
             flash.className = 'reveal-flash';
             void flash.offsetWidth;
             flash.className = 'reveal-flash flash-pack';
-
-            // Swap to card reveal
             document.getElementById('packOpenWrap').style.display = 'none';
-            document.getElementById('cardRevealWrap').style.display = 'flex';
-
-            // Cards fly in from center — more dramatic than the gentle fade
-            drawnCards.forEach(function(_, i) {
-                var slot = document.getElementById('slot-' + i);
-                if (!slot) return;
-                slot.style.opacity = '0';
-                slot.style.transform = 'translateY(55px) scale(0.75)';
-                slot.style.transition = 'none';
-                setTimeout(function() {
-                    slot.style.transition =
-                        'opacity 0.38s ease, transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
-                    slot.style.opacity = '1';
-                    slot.style.transform = 'translateY(0) scale(1)';
-                }, i * 85 + 60);
-            });
+            document.getElementById('poLoadingWrap').style.display = 'flex';
+            document.getElementById('poLoadingBar').style.width = '0%';
+            document.getElementById('poLoadingText').textContent = 'Preparing your saints';
+            runCinLoadingBar();
         }, 520);
     }
 
-    function rarityIcon(r) {
-        if (r === 'legendary') return '✦';
-        if (r === 'epic')      return '◆';
-        if (r === 'rare')      return '★';
-        return '·';
-    }
-
-    function rarityLabel(r) {
-        if (r === 'legendary') return 'Legendary';
-        if (r === 'epic')      return 'Epic';
-        if (r === 'rare')      return 'Rare';
-        return 'Uncommon';
-    }
-
-    window.revealCard = function(i) {
-        var slot = document.getElementById('slot-' + i);
-        if (!slot || slot.classList.contains('revealed')) return;
-        // Clear entry transition so reveal-pop takes over cleanly
-        slot.style.transition = '';
-        slot.style.opacity = '';
-        slot.style.transform = '';
-        slot.classList.add('revealed');
-        revealedCount++;
-
-        // Flash for rare/legendary/epic
-        var card = drawnCards[i];
-        if (card && (card.rarity === 'legendary' || card.rarity === 'rare' || card.rarity === 'epic')) {
-            var flash = document.getElementById('revealFlash');
-            flash.className = 'reveal-flash';
-            void flash.offsetWidth; // force reflow to restart animation
-            flash.className = 'reveal-flash flash-' + card.rarity;
-        }
-
-        if (revealedCount === drawnCards.length) {
-            document.getElementById('tapAllBtn').style.display = 'none';
-            var newCount = drawnCards.filter(function(c) { return !ownedBeforeOpen.has(c.id); }).length;
-            var dupeCount = drawnCards.length - newCount;
-            var msg = newCount + ' new card' + (newCount !== 1 ? 's' : '') + ' added to your collection';
-            if (dupeCount > 0) msg += ' · ' + dupeCount + ' duplicate' + (dupeCount !== 1 ? 's' : '') + ' converted to XP';
-            document.getElementById('revealHint').textContent = msg;
-            showRevealActions();
-        }
-    };
-
-    window.revealAll = function() {
-        drawnCards.forEach((_, i) => {
-            const slot = document.getElementById('slot-' + i);
-            if (slot && !slot.classList.contains('revealed')) {
-                setTimeout(() => revealCard(i), i * 120);
+    function runCinLoadingBar() {
+        var bar  = document.getElementById('poLoadingBar');
+        var lbl  = document.getElementById('poLoadingText');
+        var msgs = ['Preparing your saints', 'Invoking the saints', 'Almost ready'];
+        var pct = 0, t = 0;
+        var tick = setInterval(function() {
+            pct += 3 + Math.random() * 5;
+            if (pct > 100) pct = 100;
+            bar.style.width = pct + '%';
+            if (pct >= 35 && t === 0) { lbl.textContent = msgs[1]; t++; }
+            if (pct >= 72 && t === 1) { lbl.textContent = msgs[2]; t++; }
+            if (pct >= 100) {
+                clearInterval(tick);
+                setTimeout(function() {
+                    document.getElementById('poLoadingWrap').style.display = 'none';
+                    cinCurrentIdx = 0;
+                    cinFlipped = false;
+                    showCinCard(0);
+                }, 350);
             }
-        });
+        }, 55);
+    }
+
+    function buildCinDots(count) {
+        var dots = document.getElementById('cinDots');
+        dots.innerHTML = '';
+        for (var i = 0; i < count; i++) {
+            var d = document.createElement('div');
+            d.className = 'cin-dot';
+            d.id = 'cindot-' + i;
+            dots.appendChild(d);
+        }
+    }
+
+    function showCinCard(idx) {
+        cinCurrentIdx = idx;
+        cinFlipped = false;
+        var card     = drawnCards[idx];
+        var cinCard  = document.getElementById('cinCard');
+        var cinFront = document.getElementById('cinFront');
+        var cinHint  = document.getElementById('cinHint');
+        var cinNext  = document.getElementById('cinNextBtn');
+        var halo     = document.getElementById('cardHalo');
+
+        cinInner.style.transform = '';
+        cinCard.classList.remove('flipped', 'entering');
+        cinFront.className = 'cin-front';
+        document.getElementById('cinImg').src = 'images/saints/' + card.id + '.jpg';
+        document.getElementById('cinImg').alt = card.name;
+        document.getElementById('cinName').textContent = card.name;
+        document.getElementById('cinRarity').textContent = rarityLabel(card.rarity);
+        document.getElementById('cinDupe').style.display = ownedBeforeOpen.has(card.id) ? 'block' : 'none';
+        cinHint.style.opacity = '';
+        cinNext.classList.remove('visible');
+        halo.classList.remove('visible', 'epic-halo');
+        cinNext.textContent = idx + 1 < drawnCards.length ? 'Next Saint →' : 'See All Your Saints';
+        document.getElementById('cinematicCounter').textContent = 'Card ' + (idx + 1) + ' of ' + drawnCards.length;
+
+        if (idx === 0) buildCinDots(drawnCards.length);
+        for (var i = 0; i < drawnCards.length; i++) {
+            var d = document.getElementById('cindot-' + i);
+            if (!d) continue;
+            d.className = 'cin-dot';
+            if (i < idx)        d.classList.add('done');
+            else if (i === idx) d.classList.add('now');
+        }
+
+        document.getElementById('cinematicWrap').style.display = 'flex';
+        void cinCard.offsetWidth;
+        cinCard.classList.add('entering');
+    }
+
+    window.flipCinCard = function() {
+        if (cinFlipped) return;
+        cinFlipped = true;
+        var card    = drawnCards[cinCurrentIdx];
+        var cinCard = document.getElementById('cinCard');
+        var cinFront = document.getElementById('cinFront');
+        var halo    = document.getElementById('cardHalo');
+
+        cinCard.classList.add('flipped');
+        cinFront.classList.add(card.rarity);
+        document.getElementById('cinHint').style.opacity = '0';
+
+        var flash = document.getElementById('revealFlash');
+        flash.className = 'reveal-flash';
+        void flash.offsetWidth;
+        if      (card.rarity === 'legendary') flash.classList.add('flash-legendary');
+        else if (card.rarity === 'rare')      flash.classList.add('flash-rare');
+        else if (card.rarity === 'epic')      flash.classList.add('flash-epic');
+
+        if (card.rarity === 'legendary') { halo.classList.add('visible'); cinGoldRain(false); }
+        if (card.rarity === 'epic')      { halo.classList.add('epic-halo'); halo.classList.add('visible'); }
+
+        setTimeout(function() {
+            document.getElementById('cinNextBtn').classList.add('visible');
+        }, 900);
     };
 
-    function showRevealActions() {
-        // Reveal View links on each card
-        drawnCards.forEach(function(_, i) {
-            var link = document.querySelector('#slot-' + i + ' .cf-view-link');
-            if (link) link.style.display = '';
+    window.cinNext = function() {
+        var wrap = document.getElementById('cinematicWrap');
+        wrap.style.opacity = '0';
+        wrap.style.transition = 'opacity 0.3s ease';
+        setTimeout(function() {
+            wrap.style.opacity = '';
+            wrap.style.transition = '';
+            if (cinCurrentIdx + 1 < drawnCards.length) {
+                showCinCard(cinCurrentIdx + 1);
+            } else {
+                wrap.style.display = 'none';
+                showCinSummary();
+            }
+        }, 320);
+    };
+
+    function cinGoldRain(isEpic) {
+        var symbols = isEpic ? ['◆','·','◆'] : ['✦','✟','✦','·'];
+        var color   = isEpic ? '#c97fff' : '#d4a574';
+        for (var i = 0; i < 25; i++) {
+            (function(ii) {
+                setTimeout(function() {
+                    var p = document.createElement('div');
+                    p.className = 'gold-particle';
+                    p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                    p.style.color = color;
+                    p.style.left  = (10 + Math.random() * 80) + '%';
+                    p.style.top   = '-20px';
+                    p.style.animationDuration  = (1.5 + Math.random() * 2) + 's';
+                    p.style.animationDelay     = (Math.random() * 0.4) + 's';
+                    document.body.appendChild(p);
+                    setTimeout(function() { p.remove(); }, 4000);
+                }, ii * 60);
+            })(i);
+        }
+    }
+
+    function showCinSummary() {
+        var row = document.getElementById('summaryCardsRow');
+        row.innerHTML = '';
+        var newCount  = drawnCards.filter(function(c) { return !ownedBeforeOpen.has(c.id); }).length;
+        var dupeCount = drawnCards.length - newCount;
+        var msg = newCount + ' new · ' + dupeCount + ' dupe' + (dupeCount !== 1 ? 's' : '') + ' (+' + (dupeCount * 50) + ' XP)';
+        document.getElementById('summaryStats').textContent = msg;
+
+        var flipPage = function(id) { return 'crux-' + id + '-flip.html'; };
+        drawnCards.forEach(function(card, i) {
+            var d = document.createElement('div');
+            d.className = 'sum-card ' + card.rarity;
+            d.style.transitionDelay = (i * 0.1) + 's';
+            d.style.cursor = 'pointer';
+            d.onclick = function() { window.location.href = flipPage(card.id); };
+            d.innerHTML =
+                '<img class="sum-card-img" src="images/saints/' + card.id + '.jpg" alt="' + card.name + '" ' +
+                    'onerror="this.style.display=\'none\'">' +
+                '<div class="sum-card-label">' + card.name.replace(/^(St\.|Bl\.) /, '') + '</div>';
+            row.appendChild(d);
+            setTimeout(function() { d.classList.add('in'); }, 80 + i * 110);
         });
+
         var again = document.getElementById('openAgainBtn');
-        var bal = balance();
-        var pack = pendingPack;
-        var canAgain = pack && !pack.earnedOnly && bal >= pack.cost;
+        var canAgain = pendingPack && !pendingPack.earnedOnly && balance() >= pendingPack.cost;
         again.disabled = !canAgain;
-        again.title = !canAgain ? 'Not enough XP' : '';
-        document.getElementById('revealActions').style.display = 'flex';
+
+        document.getElementById('summaryWrap').style.display = 'flex';
     }
 
     window.openAgain = function() {
         if (!pendingPack) return;
         closeReveal();
-        setTimeout(() => startOpen(pendingPack.id), 100);
+        setTimeout(function() { startOpen(pendingPack.id); }, 100);
     };
 
     window.closeReveal = function() {
         document.getElementById('revealOverlay').style.display = 'none';
         document.getElementById('packOpenWrap').style.display = 'flex';
-        document.getElementById('cardRevealWrap').style.display = 'none';
+        document.getElementById('poLoadingWrap').style.display = 'none';
+        document.getElementById('cinematicWrap').style.display = 'none';
+        document.getElementById('summaryWrap').style.display = 'none';
         var art = document.getElementById('poArt');
         art.classList.remove('is-opening');
         pendingPack = null;
-        // Re-render store with updated balance
         renderStore(!!window.currentUid);
-        // Update balance strip
         if (window.currentUid) {
-            const lvl = getLevelName(userXP);
-            document.getElementById('balanceStrip').querySelector('.balance-value').textContent =
-                balance().toLocaleString() + ' XP';
+            var strip = document.getElementById('balanceStrip');
+            var valEl = strip.querySelector('.balance-value');
+            if (valEl) valEl.textContent = balance().toLocaleString() + ' XP';
             document.getElementById('collectionSub').textContent =
                 userCards.length + ' card' + (userCards.length !== 1 ? 's' : '');
         }
