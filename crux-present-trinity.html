@@ -32,11 +32,11 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   letter-spacing: 4px; color: var(--gold); text-decoration: none; flex-shrink: 0;
 }
 .hdr-title {
-  font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.5);
-  letter-spacing: 0.5px; flex: 1; text-align: center;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  font-size: 0.78rem; font-weight: 500; color: rgba(255,255,255,0.45);
+  letter-spacing: 0.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .hdr-title span { color: rgba(255,255,255,0.2); margin: 0 0.4rem; }
+.hdr-mid { display: flex; align-items: center; gap: 0.75rem; flex: 1; justify-content: center; }
 .hdr-actions { display: flex; gap: 0.5rem; align-items: center; flex-shrink: 0; }
 .hdr-btn {
   font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
@@ -49,6 +49,25 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .hdr-btn.present:hover { opacity: 0.9; }
 .hdr-btn.danger { background: rgba(163,45,45,0.15); color: #e07070; }
 .hdr-btn.danger:hover { background: rgba(163,45,45,0.28); }
+
+/* Vocab toggle (shared style for header + present controls) */
+.vocab-toggle {
+  display: flex; align-items: center;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px; padding: 3px; gap: 2px; flex-shrink: 0;
+}
+.vocab-toggle .vtog-label {
+  font-size: 0.62rem; letter-spacing: 1px; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); padding: 0 0.4rem; white-space: nowrap;
+}
+.vtog {
+  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.3px;
+  padding: 0.28rem 0.7rem; border-radius: 4px; cursor: pointer;
+  border: none; background: transparent; color: rgba(255,255,255,0.4);
+  transition: all 0.15s; white-space: nowrap;
+}
+.vtog.active { background: var(--gold); color: var(--navy); }
+.vtog:not(.active):hover { color: rgba(255,255,255,0.7); }
 
 /* Editor body */
 #editorBody { display: flex; flex: 1; overflow: hidden; }
@@ -66,8 +85,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   padding: 0.75rem 0.9rem; cursor: pointer;
   border-left: 3px solid transparent;
   border-bottom: 1px solid rgba(255,255,255,0.04);
-  transition: all 0.13s; position: relative;
-  display: flex; gap: 0.65rem; align-items: flex-start;
+  transition: all 0.13s; display: flex; gap: 0.65rem; align-items: flex-start;
 }
 .slide-thumb:hover { background: rgba(255,255,255,0.04); }
 .slide-thumb.active { border-left-color: var(--gold); background: rgba(212,165,116,0.06); }
@@ -81,18 +99,11 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .thumb-info { flex: 1; min-width: 0; }
 .thumb-title {
   font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.65);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-  margin-bottom: 2px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; margin-bottom: 2px;
 }
 .slide-thumb.active .thumb-title { color: var(--gold-light); }
-.thumb-type {
-  font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px;
-  color: rgba(255,255,255,0.25);
-}
-.thumb-actions {
-  display: flex; flex-direction: column; gap: 2px; opacity: 0;
-  transition: opacity 0.15s; flex-shrink: 0;
-}
+.thumb-type { font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.25); }
+.thumb-actions { display: flex; flex-direction: column; gap: 2px; opacity: 0; transition: opacity 0.15s; flex-shrink: 0; }
 .slide-thumb:hover .thumb-actions { opacity: 1; }
 .thumb-move {
   background: rgba(255,255,255,0.08); border: none; color: rgba(255,255,255,0.5);
@@ -106,57 +117,43 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   background: rgba(212,165,116,0.08); border: 1px dashed rgba(212,165,116,0.25);
   border-radius: 6px; color: rgba(212,165,116,0.6);
   font-size: 0.72rem; font-weight: 600; letter-spacing: 0.5px;
-  cursor: pointer; text-align: center; transition: all 0.15s;
+  cursor: pointer; text-align: center; transition: all 0.15s; flex-shrink: 0;
 }
 #addSlideBtn:hover { background: rgba(212,165,116,0.14); color: var(--gold); border-color: rgba(212,165,116,0.5); }
 
 /* Edit panel */
-#editPanel {
-  flex: 1; overflow-y: auto; background: var(--cream);
-  padding: 2rem 2.5rem;
-}
+#editPanel { flex: 1; overflow-y: auto; background: var(--cream); padding: 2rem 2.5rem; }
 #editPanel::-webkit-scrollbar { width: 5px; }
 #editPanel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
 
 .edit-row { margin-bottom: 1.5rem; }
 .edit-label {
   display: block; font-size: 0.65rem; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
-  margin-bottom: 0.45rem;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 0.45rem;
 }
 .edit-select, .edit-input, .edit-textarea {
   width: 100%; font-family: 'Inter', sans-serif; font-size: 0.88rem;
   color: var(--navy); background: var(--white);
   border: 1.5px solid var(--border); border-radius: 8px;
-  padding: 0.65rem 0.9rem; outline: none; transition: border-color 0.15s;
-  resize: vertical;
+  padding: 0.65rem 0.9rem; outline: none; transition: border-color 0.15s; resize: vertical;
 }
 .edit-select:focus, .edit-input:focus, .edit-textarea:focus { border-color: var(--gold); }
 .edit-input.title-input {
-  font-family: 'Playfair Display', serif; font-size: 1.15rem;
-  font-weight: 700; padding: 0.75rem 1rem;
+  font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; padding: 0.75rem 1rem;
 }
 .edit-textarea { min-height: 130px; line-height: 1.65; }
 .edit-textarea.notes { min-height: 80px; background: #fefef8; }
-.edit-help {
-  font-size: 0.7rem; color: var(--muted); margin-top: 0.4rem; line-height: 1.55;
-}
-.edit-help code {
-  background: rgba(26,31,54,0.07); padding: 0.1rem 0.35rem;
-  border-radius: 3px; font-family: monospace; font-size: 0.75rem;
-}
+.edit-help { font-size: 0.7rem; color: var(--muted); margin-top: 0.4rem; line-height: 1.55; }
+.edit-help code { background: rgba(26,31,54,0.07); padding: 0.1rem 0.35rem; border-radius: 3px; font-family: monospace; font-size: 0.75rem; }
 .edit-divider { border: none; border-top: 1px solid var(--border); margin: 1.75rem 0; }
 .edit-footer { display: flex; justify-content: flex-end; }
 .edit-delete {
   font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
   padding: 0.45rem 1rem; border-radius: 4px; cursor: pointer;
-  background: rgba(163,45,45,0.08); color: #a32d2d; border: 1px solid rgba(163,45,45,0.18);
-  transition: all 0.15s;
+  background: rgba(163,45,45,0.08); color: #a32d2d; border: 1px solid rgba(163,45,45,0.18); transition: all 0.15s;
 }
 .edit-delete:hover { background: rgba(163,45,45,0.15); }
-.type-grid {
-  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;
-}
+.type-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 0.5rem; }
 .type-opt {
   padding: 0.55rem 0.5rem; border: 1.5px solid var(--border);
   border-radius: 6px; cursor: pointer; text-align: center;
@@ -167,7 +164,26 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .type-opt.selected { border-color: var(--gold); background: var(--gold-pale); color: var(--navy); }
 .type-opt .type-icon { display: block; font-size: 1rem; margin-bottom: 3px; }
 
-/* ─── EMPTY STATE ───────────────────────────────────────────────── */
+/* Body tabs */
+.body-tabs { display: flex; gap: 0; margin-bottom: 0; }
+.body-tab {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 0.38rem 0.85rem; border: 1.5px solid var(--border); border-bottom: none;
+  border-radius: 6px 6px 0 0; cursor: pointer; color: var(--muted);
+  background: rgba(26,31,54,0.03); transition: all 0.13s; white-space: nowrap;
+}
+.body-tab.active { background: var(--white); color: var(--navy); border-color: var(--border); }
+.body-tab.active-simple { background: var(--white); color: #3b6d11; border-color: rgba(59,109,17,0.3); }
+.body-tab:not(.active):not(.active-simple):hover { color: var(--navy); }
+.body-tab + .body-tab { margin-left: 4px; }
+.body-tab-content { border-radius: 0 8px 8px 8px; border-top-left-radius: 0; }
+.body-tab-label {
+  font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 0.3rem 0.5rem; border-radius: 4px; display: inline-block; margin-bottom: 0.5rem;
+}
+.body-tab-label.advanced { background: rgba(26,31,54,0.07); color: var(--navy); }
+.body-tab-label.simple { background: rgba(59,109,17,0.1); color: #3b6d11; }
+
 .empty-panel {
   height: 100%; display: flex; flex-direction: column;
   align-items: center; justify-content: center;
@@ -179,9 +195,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 /* ─── PRESENTATION OVERLAY ──────────────────────────────────────── */
 #presentOverlay {
   display: none; position: fixed; inset: 0; z-index: 9999;
-  background: var(--navy-deep);
-  flex-direction: column; align-items: stretch;
-  font-family: 'Inter', sans-serif;
+  background: var(--navy-deep); flex-direction: column; align-items: stretch;
 }
 #presentOverlay.active { display: flex; }
 
@@ -189,23 +203,25 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   flex: 1; display: flex; align-items: center; justify-content: center;
   padding: 4rem 6rem; overflow: hidden; position: relative;
 }
-
-/* Slide type backgrounds */
 #presentSlide.type-title { background: linear-gradient(150deg, #0a0d1c 0%, #1a1f36 60%, #1e2545 100%); }
 #presentSlide.type-callout { background: var(--navy); }
 #presentSlide.type-takehome { background: linear-gradient(135deg, #0f1222 0%, #1a1f36 100%); }
 #presentSlide.type-content, #presentSlide.type-scripture, #presentSlide.type-discussion,
 #presentSlide.type-question-opening { background: var(--navy-deep); }
 
+/* Simple-mode tint — subtle green tint on slide bg to signal the mode */
+#presentSlide.simple-mode::after {
+  content: ''; position: absolute; inset: 0; pointer-events: none;
+  background: rgba(59,109,17,0.03);
+}
+
 .slide-bg-glow {
   position: absolute; inset: 0; pointer-events: none;
   background: radial-gradient(ellipse at 50% 80%, rgba(212,165,116,0.06) 0%, transparent 65%);
 }
-
-/* Slide content containers */
 .slide-content { max-width: 900px; width: 100%; position: relative; z-index: 1; }
 
-/* Title slide */
+/* ─── SLIDE TYPES ───────────────────────────────────────────────── */
 .sc-title { text-align: center; }
 .sc-title .slide-eyebrow {
   font-size: 0.72rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
@@ -218,21 +234,17 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .sc-title h1 {
   font-family: 'Playfair Display', serif;
   font-size: clamp(2.8rem, 7vw, 5.5rem);
-  font-weight: 900; color: var(--white); line-height: 1.05;
-  letter-spacing: 0.02em; margin-bottom: 0.9rem;
+  font-weight: 900; color: var(--white); line-height: 1.05; letter-spacing: 0.02em; margin-bottom: 0.9rem;
 }
 .sc-title h1 em {
   background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 60%, #b8895a 100%);
-  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-  font-style: normal;
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; font-style: normal;
 }
 .sc-title .slide-subtitle {
   font-family: 'Playfair Display', serif; font-style: italic;
-  font-size: clamp(1rem, 2.5vw, 1.4rem); color: rgba(255,255,255,0.45);
-  font-weight: 400;
+  font-size: clamp(1rem, 2.5vw, 1.4rem); color: rgba(255,255,255,0.45); font-weight: 400;
 }
 
-/* Content slide */
 .sc-content .slide-label {
   font-size: 0.65rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
   color: var(--gold); margin-bottom: 0.75rem;
@@ -240,8 +252,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .sc-content h2 {
   font-family: 'Playfair Display', serif;
   font-size: clamp(1.8rem, 4.5vw, 3rem);
-  font-weight: 700; color: var(--white); line-height: 1.15;
-  margin-bottom: 1.5rem;
+  font-weight: 700; color: var(--white); line-height: 1.15; margin-bottom: 1.5rem;
 }
 .sc-content .slide-body { color: rgba(255,255,255,0.8); line-height: 1.75; }
 .sc-content .slide-body p { font-size: clamp(1rem, 2.2vw, 1.4rem); margin-bottom: 0.5rem; }
@@ -251,19 +262,15 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   border-bottom: 1px solid rgba(255,255,255,0.06);
   display: flex; align-items: baseline; gap: 0.75rem;
 }
-.sc-content .slide-body ul li::before {
-  content: '—'; color: var(--gold); font-size: 0.85em; flex-shrink: 0;
-}
+.sc-content .slide-body ul li::before { content: '—'; color: var(--gold); font-size: 0.85em; flex-shrink: 0; }
 .sc-content .slide-body ul li.highlight { color: var(--gold-light); font-weight: 600; }
 .sc-content .slide-body ul li.highlight::before { content: '★'; }
 .sc-content .slide-body blockquote {
-  border-left: 3px solid var(--gold); padding: 0.6rem 1.25rem;
-  margin: 0.75rem 0; font-style: italic;
-  font-family: 'Playfair Display', serif;
+  border-left: 3px solid var(--gold); padding: 0.6rem 1.25rem; margin: 0.75rem 0;
+  font-style: italic; font-family: 'Playfair Display', serif;
   font-size: clamp(1rem, 2.2vw, 1.35rem); color: rgba(255,255,255,0.7);
 }
 
-/* Scripture slide */
 .sc-scripture { text-align: center; }
 .sc-scripture .scripture-ref {
   font-size: 0.75rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
@@ -278,10 +285,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   font-size: clamp(1.4rem, 3.5vw, 2.4rem); color: var(--white);
   line-height: 1.5; margin-bottom: 1.5rem; max-width: 720px; margin-left: auto; margin-right: auto;
 }
-.sc-scripture .scripture-notes p {
-  font-size: clamp(0.88rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.5);
-  line-height: 1.7; margin-bottom: 0.3rem;
-}
+.sc-scripture .scripture-notes p { font-size: clamp(0.88rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.5); line-height: 1.7; margin-bottom: 0.3rem; }
 .sc-scripture .scripture-notes ul { list-style: none; }
 .sc-scripture .scripture-notes ul li {
   font-size: clamp(0.88rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.5);
@@ -290,17 +294,13 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 }
 .sc-scripture .scripture-notes ul li::before { content: '·'; color: var(--gold); }
 
-/* Callout slide */
 .sc-callout { text-align: center; }
 .sc-callout h2 {
   font-family: 'Playfair Display', serif;
   font-size: clamp(1.5rem, 3.5vw, 2.5rem);
   font-weight: 700; color: var(--gold); margin-bottom: 1.75rem; line-height: 1.2;
 }
-.sc-callout .callout-body p {
-  font-size: clamp(1.1rem, 2.8vw, 1.8rem); color: rgba(255,255,255,0.8);
-  line-height: 1.65; margin-bottom: 0.4rem;
-}
+.sc-callout .callout-body p { font-size: clamp(1.1rem, 2.8vw, 1.8rem); color: rgba(255,255,255,0.8); line-height: 1.65; margin-bottom: 0.4rem; }
 .sc-callout .callout-body ul { list-style: none; }
 .sc-callout .callout-body ul li {
   font-size: clamp(1.1rem, 2.5vw, 1.65rem); color: rgba(255,255,255,0.75);
@@ -311,29 +311,16 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .sc-callout .callout-body ul li.highlight { color: var(--gold-light); font-weight: 600; }
 .sc-callout .callout-body ul li.highlight::before { content: '★'; }
 
-/* Question-opening slide */
 .sc-question-opening { text-align: center; }
-.sc-question-opening .qo-label {
-  font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase;
-  color: rgba(255,255,255,0.3); margin-bottom: 2rem;
-}
+.sc-question-opening .qo-label { font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase; color: rgba(255,255,255,0.3); margin-bottom: 2rem; }
 .sc-question-opening .qo-text {
   font-family: 'Playfair Display', serif; font-style: italic;
-  font-size: clamp(1.8rem, 5vw, 3.8rem); color: var(--white);
-  line-height: 1.35; max-width: 700px; margin: 0 auto;
+  font-size: clamp(1.8rem, 5vw, 3.8rem); color: var(--white); line-height: 1.35; max-width: 700px; margin: 0 auto;
 }
 .sc-question-opening .qo-text em { color: var(--gold); font-style: normal; }
 
-/* Discussion slide */
-.sc-discussion .disc-label {
-  font-size: 0.65rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 0.75rem;
-}
-.sc-discussion h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.5rem, 3.5vw, 2.4rem);
-  font-weight: 700; color: var(--white); margin-bottom: 1.5rem;
-}
+.sc-discussion .disc-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+.sc-discussion h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3.5vw, 2.4rem); font-weight: 700; color: var(--white); margin-bottom: 1.5rem; }
 .disc-questions { list-style: none; }
 .disc-questions li {
   font-size: clamp(0.92rem, 2vw, 1.2rem); color: rgba(255,255,255,0.75);
@@ -341,8 +328,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   display: flex; gap: 0.85rem; align-items: flex-start; line-height: 1.55;
 }
 .disc-questions li::before {
-  content: attr(data-num); flex-shrink: 0;
-  width: 24px; height: 24px; border-radius: 50%;
+  content: attr(data-num); flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
   background: rgba(212,165,116,0.12); border: 1px solid rgba(212,165,116,0.3);
   color: var(--gold); font-size: 0.68rem; font-weight: 700;
   display: flex; align-items: center; justify-content: center; margin-top: 1px;
@@ -350,22 +336,20 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .disc-questions li.highlight { color: var(--gold-light); }
 .disc-questions li.highlight::before { background: rgba(212,165,116,0.2); }
 
-/* Takehome slide */
 .sc-takehome { text-align: center; }
 .sc-takehome .th-icon { font-size: 2.5rem; margin-bottom: 1.25rem; }
-.sc-takehome .th-label {
-  font-size: 0.68rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 0.75rem;
+.sc-takehome .th-label { font-size: 0.68rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+.sc-takehome h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3.5vw, 2.5rem); font-weight: 700; color: var(--white); margin-bottom: 1.25rem; }
+.sc-takehome .th-body p { font-size: clamp(1rem, 2.2vw, 1.3rem); color: rgba(255,255,255,0.65); line-height: 1.75; margin-bottom: 0.3rem; }
+
+/* Vocab badge shown on slide */
+.vocab-badge {
+  position: absolute; top: 1.25rem; right: 1.5rem; z-index: 2;
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 0.28rem 0.65rem; border-radius: 99px;
 }
-.sc-takehome h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
-  font-weight: 700; color: var(--white); margin-bottom: 1.25rem;
-}
-.sc-takehome .th-body p {
-  font-size: clamp(1rem, 2.2vw, 1.3rem); color: rgba(255,255,255,0.65);
-  line-height: 1.75; margin-bottom: 0.3rem;
-}
+.vocab-badge.advanced { background: rgba(26,31,54,0.6); color: rgba(255,255,255,0.3); border: 1px solid rgba(255,255,255,0.08); }
+.vocab-badge.simple { background: rgba(59,109,17,0.25); color: #8fcc5a; border: 1px solid rgba(59,109,17,0.3); }
 
 /* ─── PRESENT CONTROLS ──────────────────────────────────────────── */
 #presentControls {
@@ -385,27 +369,15 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .ctrl-btn.exit { border-color: rgba(163,45,45,0.4); color: rgba(255,100,100,0.7); }
 .ctrl-btn.exit:hover { background: rgba(163,45,45,0.2); color: #ff8080; }
 .ctrl-btn.notes-active { background: rgba(212,165,116,0.15); border-color: rgba(212,165,116,0.4); color: var(--gold); }
-
 .ctrl-center { display: flex; align-items: center; gap: 1rem; }
-.slide-counter {
-  font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.4);
-  min-width: 60px; text-align: center; letter-spacing: 1px;
-}
-.ctrl-progress {
-  display: flex; gap: 4px; align-items: center;
-}
-.prog-dot {
-  width: 6px; height: 6px; border-radius: 50%;
-  background: rgba(255,255,255,0.2); transition: all 0.2s; cursor: pointer;
-}
+.slide-counter { font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.4); min-width: 60px; text-align: center; letter-spacing: 1px; }
+.ctrl-progress { display: flex; gap: 4px; align-items: center; }
+.prog-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.2); transition: all 0.2s; cursor: pointer; }
 .prog-dot.active { background: var(--gold); transform: scale(1.4); }
 .prog-dot:hover { background: rgba(212,165,116,0.6); }
+#ctrl-hint { font-size: 0.62rem; color: rgba(255,255,255,0.2); letter-spacing: 0.5px; }
 
-#ctrl-hint {
-  font-size: 0.62rem; color: rgba(255,255,255,0.2); letter-spacing: 0.5px;
-}
-
-/* Notes overlay (inside present slide) */
+/* Notes overlay */
 #notesOverlay {
   position: absolute; bottom: 0; left: 0; right: 0;
   background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
@@ -413,15 +385,10 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   padding: 0.85rem 1.5rem; display: none;
 }
 #notesOverlay.visible { display: block; }
-.notes-label {
-  font-size: 0.58rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 0.3rem;
-}
-#notesText {
-  font-size: 0.88rem; color: rgba(255,255,255,0.65); line-height: 1.55;
-}
+.notes-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem; }
+#notesText { font-size: 0.88rem; color: rgba(255,255,255,0.65); line-height: 1.55; }
 
-/* ─── TOAST ─────────────────────────────────────────────────────── */
+/* Toast */
 #toast {
   position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(60px);
   background: var(--navy); color: var(--white); padding: 0.6rem 1.25rem;
@@ -431,7 +398,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 }
 #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
 
-/* ─── RESPONSIVE ────────────────────────────────────────────────── */
+/* Responsive */
 @media (max-width: 700px) {
   #slideList { width: 180px; }
   #editPanel { padding: 1.25rem; }
@@ -440,40 +407,43 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   .sc-content h2 { font-size: 1.6rem; }
   #ctrl-hint { display: none; }
   .ctrl-progress { display: none; }
+  .hdr-title { display: none; }
 }
-@media (max-width: 520px) {
-  #slideList { display: none; }
-}
+@media (max-width: 520px) { #slideList { display: none; } }
 </style>
 </head>
 <body>
-
 <div id="editorShell">
 
-  <!-- Header -->
   <header id="editorHeader">
     <a href="crux-teach-trinity.html" class="hdr-logo">CRUX</a>
-    <div class="hdr-title">Teaching Guide <span>›</span> The Holy Trinity <span>›</span> Classroom Presentation</div>
+    <div class="hdr-mid">
+      <div class="hdr-title">The Holy Trinity <span>›</span> Classroom Presentation</div>
+    </div>
     <div class="hdr-actions">
+      <!-- Vocab toggle -->
+      <div class="vocab-toggle" id="editorVocabToggle">
+        <span class="vtog-label">Vocab:</span>
+        <button class="vtog active" id="eVtogAdv" onclick="setVocab('advanced')">Advanced</button>
+        <button class="vtog" id="eVtogSimple" onclick="setVocab('simple')">Child-Friendly</button>
+      </div>
       <button class="hdr-btn ghost" onclick="resetDefaults()">Reset</button>
-      <button class="hdr-btn danger" onclick="confirmDelete()" id="deleteBtn" style="display:none">Delete Slide</button>
+      <button class="hdr-btn danger" id="deleteBtn" onclick="confirmDelete()" style="display:none">Delete</button>
       <button class="hdr-btn present" onclick="enterPresent()">▶ Present</button>
     </div>
   </header>
 
   <div id="editorBody">
 
-    <!-- Slide List -->
     <div id="slideList">
       <!-- rendered by JS -->
       <div id="addSlideBtn" onclick="addSlide()">+ Add Slide</div>
     </div>
 
-    <!-- Edit Panel -->
     <div id="editPanel">
       <div class="empty-panel" id="emptyState">
         <div class="ep-icon">📋</div>
-        <p>Select a slide from the list to edit it,<br>or click <strong>+ Add Slide</strong> to begin.</p>
+        <p>Select a slide to edit it,<br>or click <strong>+ Add Slide</strong>.</p>
       </div>
       <div id="editForm" style="display:none">
         <div class="edit-row">
@@ -482,21 +452,24 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
         </div>
         <div class="edit-row">
           <label class="edit-label">Title</label>
-          <input type="text" class="edit-input title-input" id="editTitle" placeholder="Slide title…" oninput="updateField('title', this.value)">
+          <input type="text" class="edit-input title-input" id="editTitle" placeholder="Slide title…" oninput="updateField('title',this.value)">
         </div>
         <div class="edit-row">
           <label class="edit-label">Body Content</label>
-          <textarea class="edit-textarea" id="editBody" placeholder="Type content here…&#10;&#10;Start a line with - for a bullet&#10;Start a line with ★ for a gold highlight&#10;Start a line with > for a quote block" oninput="updateField('body', this.value)"></textarea>
+          <div class="body-tabs">
+            <button class="body-tab active" id="tabAdv" onclick="setBodyTab('advanced')">Advanced</button>
+            <button class="body-tab" id="tabSimple" onclick="setBodyTab('simple')">Child-Friendly</button>
+          </div>
+          <div id="bodyTabHint" class="body-tab-label advanced" style="margin-top:0.45rem"></div>
+          <textarea class="edit-textarea" id="editBody" placeholder="Type content here…&#10;&#10;- bullet point&#10;★ gold highlight&#10;&gt; quote block" oninput="onBodyInput(this.value)"></textarea>
           <div class="edit-help">
-            Lines starting with <code>- </code> become bullets &nbsp;·&nbsp;
-            <code>★ </code> becomes a gold highlight &nbsp;·&nbsp;
-            <code>&gt; </code> becomes a quote block
+            <code>- </code> bullet &nbsp;·&nbsp; <code>★ </code> gold highlight &nbsp;·&nbsp; <code>&gt; </code> quote block
           </div>
         </div>
         <hr class="edit-divider">
         <div class="edit-row">
-          <label class="edit-label">Presenter Notes <span style="font-weight:400;opacity:.6">(private — shown only in notes overlay)</span></label>
-          <textarea class="edit-textarea notes" id="editNote" placeholder="Notes visible only to you during presentation…" oninput="updateField('note', this.value)"></textarea>
+          <label class="edit-label">Presenter Notes <span style="font-weight:400;opacity:.6">(private)</span></label>
+          <textarea class="edit-textarea notes" id="editNote" placeholder="Shown only to you during presentation…" oninput="updateField('note',this.value)"></textarea>
         </div>
       </div>
     </div>
@@ -508,6 +481,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 <div id="presentOverlay">
   <div id="presentSlide">
     <div class="slide-bg-glow"></div>
+    <div id="vocabBadge" class="vocab-badge advanced">Advanced</div>
     <div id="slideContentArea" class="slide-content"></div>
     <div id="notesOverlay">
       <div class="notes-label">Presenter Notes</div>
@@ -524,6 +498,11 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
     </div>
     <div style="display:flex;align-items:center;gap:0.75rem">
       <span id="ctrl-hint">← → navigate · N notes · ESC exit</span>
+      <!-- Vocab toggle in present controls -->
+      <div class="vocab-toggle" id="presentVocabToggle">
+        <button class="vtog active" id="pVtogAdv" onclick="setVocab('advanced')">Advanced</button>
+        <button class="vtog" id="pVtogSimple" onclick="setVocab('simple')">Simple</button>
+      </div>
       <button class="ctrl-btn" id="notesBtn" onclick="toggleNotes()">Notes</button>
     </div>
   </div>
@@ -532,90 +511,102 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 <div id="toast"></div>
 
 <script>
-/* ─── SLIDE TYPES ──────────────────────────────────────────────── */
+/* ─── SLIDE TYPES ───────────────────────────────────────────────── */
 const TYPES = [
-  { id: 'title',            icon: '✟', label: 'Title' },
-  { id: 'content',          icon: '☰', label: 'Content' },
-  { id: 'scripture',        icon: '✦', label: 'Scripture' },
-  { id: 'callout',          icon: '◈', label: 'Callout' },
-  { id: 'question-opening', icon: '?',  label: 'Question' },
-  { id: 'discussion',       icon: '◎', label: 'Discussion' },
-  { id: 'takehome',         icon: '↑',  label: 'Take-Home' },
+  { id:'title',            icon:'✟', label:'Title' },
+  { id:'content',          icon:'☰', label:'Content' },
+  { id:'scripture',        icon:'✦', label:'Scripture' },
+  { id:'callout',          icon:'◈', label:'Callout' },
+  { id:'question-opening', icon:'?', label:'Question' },
+  { id:'discussion',       icon:'◎', label:'Discussion' },
+  { id:'takehome',         icon:'↑', label:'Take-Home' },
 ];
 
-/* ─── DEFAULT SLIDES ────────────────────────────────────────────── */
+/* ─── DEFAULT SLIDES ─────────────────────────────────────────────── */
 const DEFAULT_SLIDES = [
   {
-    id: 1, type: 'title',
-    title: 'The Holy Trinity',
-    body: 'Pillar I — What We Believe',
-    note: 'Welcome students. Tell them to look at the question written on the board before you begin. Do not answer it yet.'
+    id:1, type:'title',
+    title:'The Holy Trinity',
+    body:'Pillar I — What We Believe',
+    bodySimple:'Pillar I — What We Believe',
+    note:'Welcome students. Tell them to look at the question written on the board before you begin.'
   },
   {
-    id: 2, type: 'question-opening',
-    title: 'Before we begin…',
-    body: 'If God is love —\nwho did he love\nbefore he created anything?',
-    note: 'Let this sit in silence for a moment. Ask for answers without correcting them. Then tell students: this is exactly what the doctrine of the Trinity answers.'
+    id:2, type:'question-opening',
+    title:'Before we begin…',
+    body:'If God is love —\nwho did he love\nbefore he created anything?',
+    bodySimple:'Think about this...\n\nIf God is love —\nwho did he love\nbefore he made anything?',
+    note:'Let this sit in silence. Ask for answers without correcting them. Then say: this is the question the Trinity answers.'
   },
   {
-    id: 3, type: 'content',
-    title: 'What the Church Teaches',
-    body: '- One God in three Persons\n- Not three gods (tritheism)\n- Not one God in three disguises (modalism)\n- Father, Son, and Holy Spirit — each fully God\n- Distinct from each other, but not separate',
-    note: 'Name both errors clearly. Students often carry a vague tritheism (three separate gods) or a vague modalism (one person, three modes). Both are wrong in important ways.'
+    id:3, type:'content',
+    title:'What the Church Teaches',
+    body:'- One God in three Persons\n- Not three gods (tritheism)\n- Not one God in three disguises (modalism)\n- Father, Son, and Holy Spirit — each fully God\n- Distinct from each other, but not separate',
+    bodySimple:'- God is ONE — there is only one God\n- But God is also THREE Persons: Father, Son, and Holy Spirit\n- They are not three separate gods\n- They are not the same Person in different disguises\n★ God is, inside himself, a family of love',
+    note:'Name both errors clearly. Students often carry a vague tritheism or modalism. Both are wrong in important ways.'
   },
   {
-    id: 4, type: 'content',
-    title: 'The Three Persons',
-    body: '- The Father — unbegotten, the eternal source\n- The Son — eternally begotten of the Father\n- The Holy Spirit — proceeds from Father and Son\n★ "Begotten, not made, consubstantial with the Father"',
-    note: 'The starred line is from the Nicene Creed. Ask if anyone recognizes it — they recite it every Sunday at Mass. That is today\'s doctrine being prayed in real time.'
+    id:4, type:'content',
+    title:'The Three Persons',
+    body:'- The Father — unbegotten, the eternal source\n- The Son — eternally begotten of the Father\n- The Holy Spirit — proceeds from Father and Son\n★ "Begotten, not made, consubstantial with the Father"',
+    bodySimple:'- God the Father — who loves and creates everything\n- God the Son — Jesus, who became human for us\n- God the Holy Spirit — who lives in our hearts\n★ We meet all three Persons at our Baptism',
+    note:'The starred line is from the Nicene Creed. Ask if they recognize it — they say it every Sunday at Mass.'
   },
   {
-    id: 5, type: 'content',
-    title: 'The Crisis',
-    body: '> "There was a time when He was not."\n\n- Arius (4th century): Jesus = the greatest creature\n- A creature cannot redeem creation\n- Only the Creator can bear the weight of sin\n- The whole faith hangs on this distinction',
-    note: 'Arius was popular, eloquent, and had emperors on his side. Help students feel the weight of the moment. This was not a debate among academics. It was the pivotal crisis of early Christianity.'
+    id:5, type:'content',
+    title:'The Crisis',
+    body:'> "There was a time when He was not."\n\n- Arius (4th century): Jesus = the greatest creature\n- A creature cannot redeem creation\n- Only the Creator can bear the weight of sin\n- The whole faith hangs on this distinction',
+    bodySimple:'- Long ago, a man named Arius taught something new\n- He said: "Jesus was created — he wasn\'t always there"\n- The Church said: if Jesus isn\'t fully God, he can\'t save us\n- You cannot fix something that is bigger than you\n★ The whole Church had to decide what was true',
+    note:'Help students feel the stakes. This was not an academic debate — it was the pivotal crisis of early Christianity.'
   },
   {
-    id: 6, type: 'callout',
-    title: 'Council of Nicaea — 325 AD',
-    body: 'homoiousios\n"similar substance" — Arius\n\nvs.\n\nhomoousios\n"same substance" — Athanasius\n\n★ One letter of difference. The entire faith at stake.',
-    note: 'Write both words on the board if you can. The visual difference of one iota (ι) is the point. Students find it memorable that the whole argument was over one letter.'
+    id:6, type:'callout',
+    title:'Council of Nicaea — 325 AD',
+    body:'homoiousios\n"similar substance" — Arius\n\nvs.\n\nhomoousios\n"same substance" — Athanasius\n\n★ One letter of difference. The entire faith at stake.',
+    bodySimple:'All the bishops of the Church gathered together.\n\nThey voted on one question:\nIs Jesus the same as God — or just like God?\n\n★ Their answer: Jesus IS God.\nSame — not just similar.\n\nThis became part of the Creed we pray every Sunday.',
+    note:'Write both Greek words on the board. The visual difference of one letter (iota) makes the point powerfully.'
   },
   {
-    id: 7, type: 'content',
-    title: 'Athanasius contra mundum',
-    body: '- Bishop of Alexandria\n- Exiled five times by emperors who backed Arius\n- Stood alone while the world bent\n★ "Athanasius against the world"\n- He outlasted four emperors. He was right.',
-    note: 'This is worth dwelling on. Ask students: would you hold a position if everyone — including the government — told you to let it go? His courage is the argument that doctrine matters.'
+    id:7, type:'content',
+    title:'Athanasius contra mundum',
+    body:'- Bishop of Alexandria\n- Exiled five times by emperors who backed Arius\n- Stood alone while the world bent\n★ "Athanasius against the world"\n- He outlasted four emperors. He was right.',
+    bodySimple:'- A bishop named Athanasius knew the Church was right\n- Almost everyone disagreed with him — even the Emperor\n- He was forced to leave his home five times\n- He never gave up telling the truth about Jesus\n★ He was right. The Church remembered him.',
+    note:'Ask students: would you hold a position if everyone told you to let it go? His courage is the argument that doctrine matters.'
   },
   {
-    id: 8, type: 'scripture',
-    title: 'Matthew 28:19',
-    body: '"Go and baptize them in the name of the Father, and of the Son, and of the Holy Spirit."\n\n- "in the name" — singular, one God\n- Three Persons, one name\n- The baptismal formula used at every Catholic baptism',
-    note: 'Ask students: how many names? One — singular. Jesus does not say "in the names of." One name that belongs equally to three Persons. Trinitarian theology embedded in the oldest Christian rite.'
+    id:8, type:'scripture',
+    title:'Matthew 28:19',
+    body:'"Go and baptize them in the name of the Father, and of the Son, and of the Holy Spirit."\n\n- "in the name" — singular, one God\n- Three Persons, one name\n- The baptismal formula used at every Catholic baptism',
+    bodySimple:'"Go and baptize them in the name of the Father, and of the Son, and of the Holy Spirit."\n\n- Jesus says ONE name — not three\n- Father, Son, and Holy Spirit all share that one name\n★ These same words are spoken at every Baptism',
+    note:'Ask: how many names? One — singular. Jesus does not say "in the names of." One name belonging to three Persons.'
   },
   {
-    id: 9, type: 'scripture',
-    title: '1 John 4:8',
-    body: '"God is love."\n\n- Not "God is loving" — God IS love\n- Love requires a real object\n- If God is eternally love, love must exist within God\n★ The Trinity is why this is possible',
-    note: 'This is the philosophical argument for the Trinity from within scripture. If God were a solitary person, he could not be love in himself — only loving toward creatures. The Trinity explains how God can be eternally love before creation ever existed.'
+    id:9, type:'scripture',
+    title:'1 John 4:8',
+    body:'"God is love."\n\n- Not "God is loving" — God IS love\n- Love requires a real object\n- If God is eternally love, love must exist within God\n★ The Trinity is why this is possible',
+    bodySimple:'"God is love."\n\n- The Bible doesn\'t just say God loves us\n- It says God IS love — love is what he is\n- The Father loves the Son. The Son loves the Father.\n- The Holy Spirit is the love they share\n★ God has always been a family of love — before anything was made',
+    note:'This is the philosophical argument for the Trinity. God cannot be eternally love without real relationship within himself.'
   },
   {
-    id: 10, type: 'content',
-    title: 'The Sign of the Cross',
-    body: '"In the name" — one name, one God\n"Of the Father, and of the Son, and of the Holy Spirit" — three Persons\n\n- Done at Baptism, at meals, at death\n- One of the oldest Christian practices\n★ Trinitarian theology in a gesture',
-    note: 'Have students make the Sign of the Cross slowly together. Walk through each phrase aloud. Tell them: every time they do this, they are reciting the doctrine that Athanasius was exiled five times for defending.'
+    id:10, type:'content',
+    title:'The Sign of the Cross',
+    body:'"In the name" — one name, one God\n"Of the Father, and of the Son, and of the Holy Spirit" — three Persons\n\n- Done at Baptism, at meals, at death\n- One of the oldest Christian practices\n★ Trinitarian theology in a gesture',
+    bodySimple:'"In the name" — one God\n"Of the Father, and of the Son, and of the Holy Spirit" — three Persons\n\n- You have done this since your Baptism\n- Christians have done this for 2,000 years\n★ A whole prayer about God in one small movement',
+    note:'Have students make the Sign of the Cross slowly together. Walk through each phrase aloud.'
   },
   {
-    id: 11, type: 'discussion',
-    title: 'Discussion',
-    body: '- What changes if Jesus is "similar to" God rather than the "same as" God?\n- When Jesus prayed in Gethsemane, was he praying to himself? Why or why not?\n- If God is a communion of love, what does that say about what we are made for?\n★ "Catholics believe in three gods." How do you respond?',
-    note: 'Start with the first question — it reviews the Nicaea content. The last (★) is for engaged or older classes. The third question is the one most likely to stick with students.'
+    id:11, type:'discussion',
+    title:'Discussion',
+    body:'- What changes if Jesus is "similar to" God rather than the "same as" God?\n- When Jesus prayed in Gethsemane, was he praying to himself? Why or why not?\n- If God is a communion of love, what does that say about what we are made for?\n★ "Catholics believe in three gods." How do you respond?',
+    bodySimple:'- What are the three Persons of the Trinity?\n- When Jesus prayed, was he talking to himself? How do you know?\n- If God is a family of love inside himself, why does that matter for us?\n★ How would you explain the Trinity to a friend using your own words?',
+    note:'Start with the first question. Move to deeper questions based on class energy. The last (★) is the stretch challenge.'
   },
   {
-    id: 12, type: 'takehome',
-    title: 'Take-Home',
-    body: 'Pray the Glory Be three times this week.\n\nOnce thinking about the Father.\nOnce thinking about the Son.\nOnce thinking about the Holy Spirit.\n\nCome back ready to share one thing you noticed.',
-    note: 'Keep the close simple. The goal is to let the doctrine become prayer. There are no wrong answers for what they notice — any honest observation is a starting point.'
+    id:12, type:'takehome',
+    title:'Take-Home',
+    body:'Pray the Glory Be three times this week.\n\nOnce thinking about the Father.\nOnce thinking about the Son.\nOnce thinking about the Holy Spirit.\n\nCome back ready to share one thing you noticed.',
+    bodySimple:'Pray the Glory Be three times this week.\n\nOnce thinking about the Father.\nOnce thinking about the Son.\nOnce thinking about the Holy Spirit.\n\nCome back ready to share one thing you noticed.',
+    note:'Keep the close simple. The goal is to let the doctrine become prayer. Any honest observation is a good one.'
   }
 ];
 
@@ -624,56 +615,100 @@ let slides = [];
 let selectedIndex = -1;
 let presentIndex = 0;
 let notesVisible = false;
+let vocabMode = 'advanced'; // 'advanced' | 'simple'
+let bodyTab = 'advanced';   // which tab is open in editor
 let nextId = 100;
 
 /* ─── INIT ──────────────────────────────────────────────────────── */
 (function init() {
-  const saved = localStorage.getItem('crux-present-trinity');
+  const saved = localStorage.getItem('crux-present-trinity-v2');
   if (saved) {
     try {
-      const parsed = JSON.parse(saved);
-      slides = parsed.slides || [...DEFAULT_SLIDES];
-      nextId = parsed.nextId || 100;
-    } catch(e) { slides = [...DEFAULT_SLIDES.map(s => Object.assign({}, s))]; }
+      const p = JSON.parse(saved);
+      slides = p.slides || defaultCopy();
+      nextId  = p.nextId || 100;
+      vocabMode = p.vocabMode || 'advanced';
+    } catch(e) { slides = defaultCopy(); }
   } else {
-    slides = [...DEFAULT_SLIDES.map(s => Object.assign({}, s))];
+    slides = defaultCopy();
   }
+  syncVocabUI();
   renderSlideList();
   if (slides.length > 0) selectSlide(0);
 })();
 
+function defaultCopy() {
+  return DEFAULT_SLIDES.map(function(s) { return Object.assign({}, s); });
+}
+
 /* ─── SAVE ──────────────────────────────────────────────────────── */
 function save() {
-  localStorage.setItem('crux-present-trinity', JSON.stringify({ slides, nextId }));
+  localStorage.setItem('crux-present-trinity-v2', JSON.stringify({ slides: slides, nextId: nextId, vocabMode: vocabMode }));
+}
+
+/* ─── VOCAB MODE ────────────────────────────────────────────────── */
+function setVocab(mode) {
+  vocabMode = mode;
+  save();
+  syncVocabUI();
+  if (document.getElementById('presentOverlay').classList.contains('active')) {
+    renderPresentSlide();
+  }
+  showToast(mode === 'simple' ? 'Switched to Child-Friendly' : 'Switched to Advanced');
+}
+
+function syncVocabUI() {
+  // Editor header toggles
+  document.getElementById('eVtogAdv').classList.toggle('active', vocabMode === 'advanced');
+  document.getElementById('eVtogSimple').classList.toggle('active', vocabMode === 'simple');
+  // Present controls toggles
+  document.getElementById('pVtogAdv').classList.toggle('active', vocabMode === 'advanced');
+  document.getElementById('pVtogSimple').classList.toggle('active', vocabMode === 'simple');
+}
+
+/* ─── BODY TAB ──────────────────────────────────────────────────── */
+function setBodyTab(tab) {
+  bodyTab = tab;
+  const slide = slides[selectedIndex];
+  const isAdv = tab === 'advanced';
+  document.getElementById('tabAdv').className = 'body-tab' + (isAdv ? ' active' : '');
+  document.getElementById('tabSimple').className = 'body-tab' + (!isAdv ? ' active-simple' : '');
+  const hint = document.getElementById('bodyTabHint');
+  hint.className = 'body-tab-label ' + tab;
+  hint.textContent = isAdv ? 'Editing advanced content' : 'Editing child-friendly content';
+  document.getElementById('editBody').value = isAdv ? (slide ? slide.body || '' : '') : (slide ? slide.bodySimple || '' : '');
+}
+
+function onBodyInput(val) {
+  const field = bodyTab === 'simple' ? 'bodySimple' : 'body';
+  updateField(field, val);
 }
 
 /* ─── RENDER SLIDE LIST ─────────────────────────────────────────── */
 function renderSlideList() {
   const list = document.getElementById('slideList');
   const addBtn = document.getElementById('addSlideBtn');
-  // remove old thumbs
-  list.querySelectorAll('.slide-thumb').forEach(el => el.remove());
-
+  list.querySelectorAll('.slide-thumb').forEach(function(el) { el.remove(); });
   slides.forEach(function(slide, i) {
     const el = document.createElement('div');
     el.className = 'slide-thumb' + (i === selectedIndex ? ' active' : '');
     el.onclick = function() { selectSlide(i); };
-    const typeLabel = (TYPES.find(t => t.id === slide.type) || {}).label || slide.type;
+    const typeLabel = (TYPES.find(function(t) { return t.id === slide.type; }) || {}).label || slide.type;
     el.innerHTML =
-      '<div class="thumb-num">' + (i + 1) + '</div>' +
+      '<div class="thumb-num">' + (i+1) + '</div>' +
       '<div class="thumb-info">' +
         '<div class="thumb-title">' + escHtml(slide.title || 'Untitled') + '</div>' +
         '<div class="thumb-type">' + typeLabel + '</div>' +
       '</div>' +
       '<div class="thumb-actions">' +
-        '<button class="thumb-move" title="Move up" onclick="event.stopPropagation();moveSlide(' + i + ',-1)">▲</button>' +
-        '<button class="thumb-move" title="Move down" onclick="event.stopPropagation();moveSlide(' + i + ',1)">▼</button>' +
+        '<button class="thumb-move" onclick="event.stopPropagation();moveSlide(' + i + ',-1)">▲</button>' +
+        '<button class="thumb-move" onclick="event.stopPropagation();moveSlide(' + i + ',1)">▼</button>' +
       '</div>';
     list.insertBefore(el, addBtn);
   });
 }
 
-/* ─── SELECT SLIDE ──────────────────────────────────────────────── */
+/* ─── SELECT & EDIT ─────────────────────────────────────────────── */
 function selectSlide(i) {
   selectedIndex = i;
   renderSlideList();
@@ -681,7 +716,6 @@ function selectSlide(i) {
   document.getElementById('deleteBtn').style.display = slides.length > 1 ? '' : 'none';
 }
 
-/* ─── RENDER EDIT FORM ──────────────────────────────────────────── */
 function renderEditForm() {
   const slide = slides[selectedIndex];
   if (!slide) {
@@ -691,21 +725,16 @@ function renderEditForm() {
   }
   document.getElementById('emptyState').style.display = 'none';
   document.getElementById('editForm').style.display = '';
-
-  // Type grid
-  const grid = document.getElementById('typeGrid');
-  grid.innerHTML = TYPES.map(function(t) {
+  document.getElementById('typeGrid').innerHTML = TYPES.map(function(t) {
     return '<div class="type-opt' + (slide.type === t.id ? ' selected' : '') +
       '" onclick="updateField(\'type\',\'' + t.id + '\')">' +
       '<span class="type-icon">' + t.icon + '</span>' + t.label + '</div>';
   }).join('');
-
   document.getElementById('editTitle').value = slide.title || '';
-  document.getElementById('editBody').value = slide.body || '';
-  document.getElementById('editNote').value = slide.note || '';
+  document.getElementById('editNote').value  = slide.note  || '';
+  setBodyTab(bodyTab); // re-populate body field with current tab
 }
 
-/* ─── UPDATE FIELD ──────────────────────────────────────────────── */
 function updateField(field, value) {
   if (selectedIndex < 0 || selectedIndex >= slides.length) return;
   slides[selectedIndex][field] = value;
@@ -714,182 +743,129 @@ function updateField(field, value) {
   if (field === 'type') renderEditForm();
 }
 
-/* ─── ADD SLIDE ─────────────────────────────────────────────────── */
+/* ─── ADD / MOVE / DELETE ───────────────────────────────────────── */
 function addSlide() {
-  const newSlide = {
-    id: nextId++,
-    type: 'content',
-    title: 'New Slide',
-    body: '- Point one\n- Point two\n- Point three',
-    note: ''
-  };
-  slides.push(newSlide);
-  save();
-  renderSlideList();
-  selectSlide(slides.length - 1);
-  // scroll list to bottom
-  const list = document.getElementById('slideList');
-  list.scrollTop = list.scrollHeight;
+  slides.push({ id: nextId++, type:'content', title:'New Slide', body:'- Point one\n- Point two\n- Point three', bodySimple:'- Point one\n- Point two\n- Point three', note:'' });
+  save(); renderSlideList(); selectSlide(slides.length - 1);
+  document.getElementById('slideList').scrollTop = 9999;
 }
 
-/* ─── MOVE SLIDE ────────────────────────────────────────────────── */
 function moveSlide(i, dir) {
   const j = i + dir;
   if (j < 0 || j >= slides.length) return;
-  const tmp = slides[i];
-  slides[i] = slides[j];
-  slides[j] = tmp;
+  const tmp = slides[i]; slides[i] = slides[j]; slides[j] = tmp;
   if (selectedIndex === i) selectedIndex = j;
   else if (selectedIndex === j) selectedIndex = i;
-  save();
-  renderSlideList();
+  save(); renderSlideList();
 }
 
-/* ─── DELETE SLIDE ──────────────────────────────────────────────── */
 function confirmDelete() {
   if (slides.length <= 1) return;
-  if (!confirm('Delete this slide? This cannot be undone.')) return;
+  if (!confirm('Delete this slide?')) return;
   slides.splice(selectedIndex, 1);
   selectedIndex = Math.min(selectedIndex, slides.length - 1);
-  save();
-  renderSlideList();
-  renderEditForm();
+  save(); renderSlideList(); renderEditForm();
   document.getElementById('deleteBtn').style.display = slides.length > 1 ? '' : 'none';
 }
 
-/* ─── RESET DEFAULTS ────────────────────────────────────────────── */
 function resetDefaults() {
-  if (!confirm('Reset all slides to the default content? Your edits will be lost.')) return;
-  slides = DEFAULT_SLIDES.map(function(s) { return Object.assign({}, s); });
-  nextId = 100;
-  selectedIndex = 0;
-  save();
-  renderSlideList();
-  renderEditForm();
+  if (!confirm('Reset all slides to defaults? Your edits will be lost.')) return;
+  slides = defaultCopy(); nextId = 100; selectedIndex = 0;
+  save(); renderSlideList(); renderEditForm();
   showToast('Reset to defaults');
 }
 
 /* ─── PRESENTATION ──────────────────────────────────────────────── */
 function enterPresent() {
-  presentIndex = 0;
-  notesVisible = false;
+  presentIndex = 0; notesVisible = false;
   document.getElementById('notesOverlay').classList.remove('visible');
   document.getElementById('notesBtn').classList.remove('notes-active');
   document.getElementById('presentOverlay').classList.add('active');
   renderPresentSlide();
 }
-
-function exitPresent() {
-  document.getElementById('presentOverlay').classList.remove('active');
-}
-
-function nextSlide() {
-  if (presentIndex < slides.length - 1) {
-    presentIndex++;
-    renderPresentSlide();
-  }
-}
-
-function prevSlide() {
-  if (presentIndex > 0) {
-    presentIndex--;
-    renderPresentSlide();
-  }
-}
-
+function exitPresent() { document.getElementById('presentOverlay').classList.remove('active'); }
+function nextSlide() { if (presentIndex < slides.length - 1) { presentIndex++; renderPresentSlide(); } }
+function prevSlide() { if (presentIndex > 0) { presentIndex--; renderPresentSlide(); } }
 function toggleNotes() {
   notesVisible = !notesVisible;
   document.getElementById('notesOverlay').classList.toggle('visible', notesVisible);
   document.getElementById('notesBtn').classList.toggle('notes-active', notesVisible);
 }
-
-function goToSlide(i) {
-  presentIndex = i;
-  renderPresentSlide();
-}
+function goToSlide(i) { presentIndex = i; renderPresentSlide(); }
 
 function renderPresentSlide() {
   const slide = slides[presentIndex];
   if (!slide) return;
-
-  // Set type class on container
   const container = document.getElementById('presentSlide');
-  container.className = 'type-' + slide.type;
-
-  // Render content
+  container.className = 'type-' + slide.type + (vocabMode === 'simple' ? ' simple-mode' : '');
   document.getElementById('slideContentArea').innerHTML = buildSlideHTML(slide);
-
-  // Notes
   document.getElementById('notesText').textContent = slide.note || 'No presenter notes.';
-
-  // Counter
-  document.getElementById('slideCounter').textContent = (presentIndex + 1) + ' / ' + slides.length;
-
+  document.getElementById('slideCounter').textContent = (presentIndex+1) + ' / ' + slides.length;
+  // Vocab badge
+  const badge = document.getElementById('vocabBadge');
+  badge.className = 'vocab-badge ' + vocabMode;
+  badge.textContent = vocabMode === 'simple' ? 'Child-Friendly' : 'Advanced';
   // Progress dots
-  const dots = document.getElementById('progressDots');
-  dots.innerHTML = slides.map(function(_, i) {
-    return '<div class="prog-dot' + (i === presentIndex ? ' active' : '') +
-      '" onclick="goToSlide(' + i + ')" title="Slide ' + (i+1) + '"></div>';
+  document.getElementById('progressDots').innerHTML = slides.map(function(_, i) {
+    return '<div class="prog-dot' + (i === presentIndex ? ' active' : '') + '" onclick="goToSlide(' + i + ')"></div>';
   }).join('');
-
-  // Prev/Next buttons
   document.getElementById('prevBtn').disabled = presentIndex === 0;
   document.getElementById('nextBtn').disabled = presentIndex === slides.length - 1;
+}
+
+/* ─── GET BODY for current vocab mode ──────────────────────────── */
+function getBody(slide) {
+  if (vocabMode === 'simple' && slide.bodySimple) return slide.bodySimple;
+  return slide.body || '';
 }
 
 /* ─── BUILD SLIDE HTML ──────────────────────────────────────────── */
 function buildSlideHTML(slide) {
   const type = slide.type;
-  const body = slide.body || '';
+  const body = getBody(slide);
 
   if (type === 'title') {
-    const parts = body.split('\n').filter(function(l) { return l.trim(); });
-    const subtitle = parts[0] || '';
+    const sub = body.split('\n').filter(function(l){return l.trim();})[0] || '';
     return '<div class="slide-content sc-title">' +
       '<div class="slide-eyebrow">Pillar I &nbsp;·&nbsp; What We Believe</div>' +
-      '<h1>' + formatTitleWords(slide.title) + '</h1>' +
-      (subtitle ? '<div class="slide-subtitle">' + escHtml(subtitle) + '</div>' : '') +
+      '<h1>' + formatTitle(slide.title) + '</h1>' +
+      (sub ? '<div class="slide-subtitle">' + escHtml(sub) + '</div>' : '') +
     '</div>';
   }
 
   if (type === 'question-opening') {
-    const lines = body.split('\n').filter(function(l) { return l.trim(); });
-    const qHtml = lines.map(function(l) {
-      return '<span>' + escHtml(l) + '</span>';
-    }).join('<br>');
+    const lines = body.split('\n').filter(function(l){return l.trim();});
     return '<div class="slide-content sc-question-opening">' +
       '<div class="qo-label">Opening Question</div>' +
-      '<div class="qo-text">' + qHtml + '</div>' +
+      '<div class="qo-text">' + lines.map(function(l){ return escHtml(l); }).join('<br>') + '</div>' +
     '</div>';
   }
 
   if (type === 'scripture') {
-    const lines = body.split('\n').filter(function(l) { return l.trim(); });
-    const quoteLine = lines[0] || '';
-    const noteLines = lines.slice(1);
+    const lines = body.split('\n').filter(function(l){return l.trim();});
+    const quote = lines[0] || '';
+    const rest  = lines.slice(1);
     return '<div class="slide-content sc-scripture">' +
       '<div class="scripture-ref">' + escHtml(slide.title) + '</div>' +
-      '<div class="scripture-quote">' + escHtml(quoteLine) + '</div>' +
-      (noteLines.length ? '<div class="scripture-notes">' + parseBodyLines(noteLines) + '</div>' : '') +
+      '<div class="scripture-quote">' + escHtml(quote) + '</div>' +
+      (rest.length ? '<div class="scripture-notes">' + parseLines(rest) + '</div>' : '') +
     '</div>';
   }
 
   if (type === 'callout') {
     return '<div class="slide-content sc-callout">' +
       '<h2>' + escHtml(slide.title) + '</h2>' +
-      '<div class="callout-body">' + parseBodyLines(body.split('\n').filter(function(l) { return l.trim(); })) + '</div>' +
+      '<div class="callout-body">' + parseLines(body.split('\n').filter(function(l){return l.trim();})) + '</div>' +
     '</div>';
   }
 
   if (type === 'discussion') {
-    const lines = body.split('\n').filter(function(l) { return l.trim(); });
-    let qHtml = '';
-    let num = 1;
+    const lines = body.split('\n').filter(function(l){return l.trim();});
+    let n = 1, qHtml = '';
     lines.forEach(function(line) {
-      const isHL = line.startsWith('★ ');
-      const text = line.startsWith('- ') ? line.slice(2) : (isHL ? line.slice(2) : line);
-      qHtml += '<li data-num="' + num + '"' + (isHL ? ' class="highlight"' : '') + '>' + escHtml(text) + '</li>';
-      num++;
+      const hl = line.startsWith('★ ');
+      const txt = line.startsWith('- ') ? line.slice(2) : (hl ? line.slice(2) : line);
+      qHtml += '<li data-num="' + n++ + '"' + (hl ? ' class="highlight"' : '') + '>' + escHtml(txt) + '</li>';
     });
     return '<div class="slide-content sc-discussion">' +
       '<div class="disc-label">Discussion</div>' +
@@ -899,13 +875,12 @@ function buildSlideHTML(slide) {
   }
 
   if (type === 'takehome') {
-    const lines = body.split('\n').filter(function(l) { return l.trim(); });
-    const bodyHtml = lines.map(function(l) { return '<p>' + escHtml(l) + '</p>'; }).join('');
+    const lines = body.split('\n').filter(function(l){return l.trim();});
     return '<div class="slide-content sc-takehome">' +
       '<div class="th-icon">🕯</div>' +
       '<div class="th-label">Take-Home</div>' +
       '<h2>' + escHtml(slide.title) + '</h2>' +
-      '<div class="th-body">' + bodyHtml + '</div>' +
+      '<div class="th-body">' + lines.map(function(l){ return '<p>' + escHtml(l) + '</p>'; }).join('') + '</div>' +
     '</div>';
   }
 
@@ -913,69 +888,49 @@ function buildSlideHTML(slide) {
   return '<div class="slide-content sc-content">' +
     '<div class="slide-label">Pillar I · What We Believe</div>' +
     '<h2>' + escHtml(slide.title) + '</h2>' +
-    '<div class="slide-body">' + parseBodyLines(body.split('\n').filter(function(l) { return l.trim(); })) + '</div>' +
+    '<div class="slide-body">' + parseLines(body.split('\n').filter(function(l){return l.trim();})) + '</div>' +
   '</div>';
 }
 
 /* ─── PARSE BODY LINES ──────────────────────────────────────────── */
-function parseBodyLines(lines) {
-  let html = '';
-  let inList = false;
+function parseLines(lines) {
+  let html = '', inList = false;
   lines.forEach(function(line) {
-    const isBullet = line.startsWith('- ') || line.startsWith('★ ');
-    if (isBullet && !inList) { html += '<ul>'; inList = true; }
-    if (!isBullet && inList) { html += '</ul>'; inList = false; }
-    if (line.startsWith('- ')) {
-      html += '<li>' + escHtml(line.slice(2)) + '</li>';
-    } else if (line.startsWith('★ ')) {
-      html += '<li class="highlight">' + escHtml(line.slice(2)) + '</li>';
-    } else if (line.startsWith('> ')) {
-      html += '<blockquote>' + escHtml(line.slice(2)) + '</blockquote>';
-    } else {
-      html += '<p>' + escHtml(line) + '</p>';
-    }
+    const bullet = line.startsWith('- ') || line.startsWith('★ ');
+    if (bullet && !inList) { html += '<ul>'; inList = true; }
+    if (!bullet && inList) { html += '</ul>'; inList = false; }
+    if      (line.startsWith('- '))  html += '<li>' + escHtml(line.slice(2)) + '</li>';
+    else if (line.startsWith('★ '))  html += '<li class="highlight">' + escHtml(line.slice(2)) + '</li>';
+    else if (line.startsWith('> '))  html += '<blockquote>' + escHtml(line.slice(2)) + '</blockquote>';
+    else                             html += '<p>' + escHtml(line) + '</p>';
   });
   if (inList) html += '</ul>';
   return html;
 }
 
 /* ─── HELPERS ───────────────────────────────────────────────────── */
-function escHtml(str) {
-  return String(str)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+function escHtml(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
-
-function formatTitleWords(title) {
-  const words = (title || '').split(' ');
-  if (words.length <= 1) return escHtml(title);
-  // Last word gets gold gradient treatment
-  const last = words.pop();
-  return escHtml(words.join(' ')) + ' <em>' + escHtml(last) + '</em>';
+function formatTitle(t) {
+  const w = (t||'').split(' ');
+  if (w.length <= 1) return escHtml(t);
+  const last = w.pop();
+  return escHtml(w.join(' ')) + ' <em>' + escHtml(last) + '</em>';
 }
-
 function showToast(msg) {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(function() { t.classList.remove('show'); }, 2000);
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(function(){ el.classList.remove('show'); }, 2000);
 }
 
 /* ─── KEYBOARD ──────────────────────────────────────────────────── */
 document.addEventListener('keydown', function(e) {
-  const inPresent = document.getElementById('presentOverlay').classList.contains('active');
-  if (!inPresent) return;
-  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
-    e.preventDefault(); nextSlide();
-  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
-    e.preventDefault(); prevSlide();
-  } else if (e.key === 'Escape') {
-    exitPresent();
-  } else if (e.key === 'n' || e.key === 'N') {
-    toggleNotes();
-  }
+  if (!document.getElementById('presentOverlay').classList.contains('active')) return;
+  if (e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ') { e.preventDefault(); nextSlide(); }
+  else if (e.key==='ArrowLeft'||e.key==='ArrowUp')             { e.preventDefault(); prevSlide(); }
+  else if (e.key==='Escape')                                    exitPresent();
+  else if (e.key==='n'||e.key==='N')                            toggleNotes();
 });
 </script>
 </body>
