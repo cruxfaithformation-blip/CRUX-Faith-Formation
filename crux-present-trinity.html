@@ -206,6 +206,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 #presentSlide.type-title { background: linear-gradient(150deg, #0a0d1c 0%, #1a1f36 60%, #1e2545 100%); }
 #presentSlide.type-callout { background: var(--navy); }
 #presentSlide.type-takehome { background: linear-gradient(135deg, #0f1222 0%, #1a1f36 100%); }
+#presentSlide.type-media { background: #050810; }
 #presentSlide.type-content, #presentSlide.type-scripture, #presentSlide.type-discussion,
 #presentSlide.type-question-opening { background: var(--navy-deep); }
 
@@ -342,6 +343,18 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .sc-takehome h2 { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3.5vw, 2.5rem); font-weight: 700; color: var(--white); margin-bottom: 1.25rem; }
 .sc-takehome .th-body p { font-size: clamp(1rem, 2.2vw, 1.3rem); color: rgba(255,255,255,0.65); line-height: 1.75; margin-bottom: 0.3rem; }
 
+.sc-media { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.25rem; width: 100%; }
+.media-title { font-family: 'Playfair Display', serif; font-size: clamp(1.1rem, 2.5vw, 1.7rem); font-weight: 700; color: rgba(255,255,255,0.8); text-align: center; }
+.media-frame-wrap { position: relative; width: 100%; max-width: 840px; aspect-ratio: 16 / 9; border-radius: 8px; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,0.6); }
+.media-iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: none; }
+.media-img { max-width: 100%; max-height: 72vh; border-radius: 8px; object-fit: contain; box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
+.media-placeholder { padding: 4rem 2rem; border: 1px dashed rgba(212,165,116,0.25); border-radius: 10px; color: rgba(255,255,255,0.25); font-size: 0.9rem; text-align: center; width: 100%; max-width: 600px; }
+.media-caption { font-size: clamp(0.72rem, 1.5vw, 0.9rem); color: rgba(255,255,255,0.35); text-align: center; font-style: italic; }
+
+/* ─── MEDIA EDITOR FIELDS ───────────────────────────────────────── */
+.media-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
+.edit-url-input { font-family: 'Inter', sans-serif; font-size: 0.8rem; }
+
 /* Vocab badge shown on slide */
 .vocab-badge {
   position: absolute; top: 1.25rem; right: 1.5rem; z-index: 2;
@@ -454,7 +467,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
           <label class="edit-label">Title</label>
           <input type="text" class="edit-input title-input" id="editTitle" placeholder="Slide title…" oninput="updateField('title',this.value)">
         </div>
-        <div class="edit-row">
+        <div class="edit-row" id="bodyContentRow">
           <label class="edit-label">Body Content</label>
           <div class="body-tabs">
             <button class="body-tab active" id="tabAdv" onclick="setBodyTab('advanced')">Advanced</button>
@@ -466,6 +479,31 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
             <code>- </code> bullet &nbsp;·&nbsp; <code>★ </code> gold highlight &nbsp;·&nbsp; <code>&gt; </code> quote block
           </div>
         </div>
+
+        <!-- Media fields — shown only when type = media -->
+        <div id="mediaFields" style="display:none">
+          <div class="edit-row">
+            <label class="edit-label">Media Type</label>
+            <div class="media-type-grid">
+              <div id="mtYoutube" class="type-opt selected" onclick="updateField('mediaType','youtube')">
+                <span class="type-icon">▶</span>YouTube Video
+              </div>
+              <div id="mtImage" class="type-opt" onclick="updateField('mediaType','image')">
+                <span class="type-icon">🖼</span>Image
+              </div>
+            </div>
+          </div>
+          <div class="edit-row">
+            <label class="edit-label">URL</label>
+            <input type="text" class="edit-input edit-url-input" id="editMediaUrl" placeholder="https://youtube.com/watch?v=…" oninput="updateField('mediaUrl',this.value)">
+            <div class="edit-help" id="mediaUrlHint">Paste a YouTube URL — youtube.com/watch?v=… or youtu.be/…</div>
+          </div>
+          <div class="edit-row">
+            <label class="edit-label">Caption <span style="font-weight:400;opacity:.6">(optional)</span></label>
+            <input type="text" class="edit-input" id="editMediaCaption" placeholder="Optional caption shown below the media…" oninput="updateField('mediaCaption',this.value)">
+          </div>
+        </div>
+
         <hr class="edit-divider">
         <div class="edit-row">
           <label class="edit-label">Presenter Notes <span style="font-weight:400;opacity:.6">(private)</span></label>
@@ -520,6 +558,7 @@ const TYPES = [
   { id:'question-opening', icon:'?', label:'Question' },
   { id:'discussion',       icon:'◎', label:'Discussion' },
   { id:'takehome',         icon:'↑', label:'Take-Home' },
+  { id:'media',            icon:'▶', label:'Media' },
 ];
 
 /* ─── DEFAULT SLIDES ─────────────────────────────────────────────── */
@@ -732,7 +771,21 @@ function renderEditForm() {
   }).join('');
   document.getElementById('editTitle').value = slide.title || '';
   document.getElementById('editNote').value  = slide.note  || '';
-  setBodyTab(bodyTab); // re-populate body field with current tab
+  const isMedia = slide.type === 'media';
+  document.getElementById('bodyContentRow').style.display = isMedia ? 'none' : '';
+  document.getElementById('mediaFields').style.display    = isMedia ? '' : 'none';
+  if (isMedia) {
+    document.getElementById('editMediaUrl').value     = slide.mediaUrl     || '';
+    document.getElementById('editMediaCaption').value = slide.mediaCaption || '';
+    var mt = slide.mediaType || 'youtube';
+    document.getElementById('mtYoutube').className = 'type-opt' + (mt === 'youtube' ? ' selected' : '');
+    document.getElementById('mtImage').className   = 'type-opt' + (mt === 'image'   ? ' selected' : '');
+    document.getElementById('mediaUrlHint').textContent = mt === 'image'
+      ? 'Paste a direct image URL (https://…)'
+      : 'Paste a YouTube URL — youtube.com/watch?v=… or youtu.be/…';
+  } else {
+    setBodyTab(bodyTab); // re-populate body field with current tab
+  }
 }
 
 function updateField(field, value) {
@@ -741,11 +794,18 @@ function updateField(field, value) {
   save();
   if (field === 'title' || field === 'type') renderSlideList();
   if (field === 'type') renderEditForm();
+  if (field === 'mediaType') {
+    document.getElementById('mtYoutube').className = 'type-opt' + (value === 'youtube' ? ' selected' : '');
+    document.getElementById('mtImage').className   = 'type-opt' + (value === 'image'   ? ' selected' : '');
+    document.getElementById('mediaUrlHint').textContent = value === 'image'
+      ? 'Paste a direct image URL (https://…)'
+      : 'Paste a YouTube URL — youtube.com/watch?v=… or youtu.be/…';
+  }
 }
 
 /* ─── ADD / MOVE / DELETE ───────────────────────────────────────── */
 function addSlide() {
-  slides.push({ id: nextId++, type:'content', title:'New Slide', body:'- Point one\n- Point two\n- Point three', bodySimple:'- Point one\n- Point two\n- Point three', note:'' });
+  slides.push({ id: nextId++, type:'content', title:'New Slide', body:'- Point one\n- Point two\n- Point three', bodySimple:'- Point one\n- Point two\n- Point three', note:'', mediaType:'youtube', mediaUrl:'', mediaCaption:'' });
   save(); renderSlideList(); selectSlide(slides.length - 1);
   document.getElementById('slideList').scrollTop = 9999;
 }
@@ -884,6 +944,27 @@ function buildSlideHTML(slide) {
     '</div>';
   }
 
+  if (type === 'media') {
+    var mt  = slide.mediaType || 'youtube';
+    var url = slide.mediaUrl  || '';
+    var mediaHtml;
+    if (mt === 'youtube') {
+      var vid = extractYoutubeId(url);
+      mediaHtml = vid
+        ? '<div class="media-frame-wrap"><iframe class="media-iframe" src="https://www.youtube-nocookie.com/embed/' + vid + '?rel=0&modestbranding=1" allowfullscreen allow="autoplay; encrypted-media; picture-in-picture"></iframe></div>'
+        : '<div class="media-placeholder">Paste a YouTube URL in the editor to embed the video here.</div>';
+    } else {
+      mediaHtml = url
+        ? '<img class="media-img" src="' + escHtml(url) + '" alt="' + escHtml(slide.title) + '">'
+        : '<div class="media-placeholder">Paste an image URL in the editor.</div>';
+    }
+    return '<div class="slide-content sc-media">' +
+      (slide.title ? '<div class="media-title">' + escHtml(slide.title) + '</div>' : '') +
+      mediaHtml +
+      (slide.mediaCaption ? '<div class="media-caption">' + escHtml(slide.mediaCaption) + '</div>' : '') +
+    '</div>';
+  }
+
   // Default: content
   return '<div class="slide-content sc-content">' +
     '<div class="slide-label">Pillar I · What We Believe</div>' +
@@ -909,6 +990,12 @@ function parseLines(lines) {
 }
 
 /* ─── HELPERS ───────────────────────────────────────────────────── */
+function extractYoutubeId(url) {
+  if (!url) return '';
+  var m = url.match(/(?:v=|youtu\.be\/|\/embed\/)([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : '';
+}
+
 function escHtml(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
 }
