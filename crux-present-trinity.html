@@ -112,6 +112,11 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 }
 .thumb-move:hover { background: rgba(212,165,116,0.2); color: var(--gold); }
 
+.slide-thumb[draggable="true"] { cursor: grab; }
+.slide-thumb[draggable="true"]:active { cursor: grabbing; }
+.slide-thumb.dragging { opacity: 0.3; }
+.slide-thumb.drag-over { background: rgba(212,165,116,0.1) !important; border-top: 2px solid var(--gold-light); }
+
 #addSlideBtn {
   margin: 0.75rem; padding: 0.65rem;
   background: rgba(212,165,116,0.08); border: 1px dashed rgba(212,165,116,0.25);
@@ -657,6 +662,7 @@ let notesVisible = false;
 let vocabMode = 'advanced'; // 'advanced' | 'simple'
 let bodyTab = 'advanced';   // which tab is open in editor
 let nextId = 100;
+let dragSrcIndex = -1;
 
 /* ─── INIT ──────────────────────────────────────────────────────── */
 (function init() {
@@ -731,6 +737,7 @@ function renderSlideList() {
   slides.forEach(function(slide, i) {
     const el = document.createElement('div');
     el.className = 'slide-thumb' + (i === selectedIndex ? ' active' : '');
+    el.setAttribute('draggable', 'true');
     el.onclick = function() { selectSlide(i); };
     const typeLabel = (TYPES.find(function(t) { return t.id === slide.type; }) || {}).label || slide.type;
     el.innerHTML =
@@ -743,6 +750,33 @@ function renderSlideList() {
         '<button class="thumb-move" onclick="event.stopPropagation();moveSlide(' + i + ',-1)">▲</button>' +
         '<button class="thumb-move" onclick="event.stopPropagation();moveSlide(' + i + ',1)">▼</button>' +
       '</div>';
+    el.addEventListener('dragstart', function(e) {
+      dragSrcIndex = i;
+      e.dataTransfer.effectAllowed = 'move';
+      e.dataTransfer.setData('text/plain', String(i));
+      setTimeout(function(){ el.classList.add('dragging'); }, 0);
+    });
+    el.addEventListener('dragend', function() {
+      el.classList.remove('dragging');
+      list.querySelectorAll('.slide-thumb').forEach(function(t){ t.classList.remove('drag-over'); });
+      dragSrcIndex = -1;
+    });
+    el.addEventListener('dragover', function(e) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'move';
+      list.querySelectorAll('.slide-thumb').forEach(function(t){ t.classList.remove('drag-over'); });
+      if (dragSrcIndex !== i) el.classList.add('drag-over');
+    });
+    el.addEventListener('dragleave', function(e) {
+      if (!el.contains(e.relatedTarget)) el.classList.remove('drag-over');
+    });
+    el.addEventListener('drop', function(e) {
+      e.preventDefault();
+      e.stopPropagation();
+      el.classList.remove('drag-over');
+      if (dragSrcIndex < 0 || dragSrcIndex === i) return;
+      moveSlideToIndex(dragSrcIndex, i);
+    });
     list.insertBefore(el, addBtn);
   });
 }
@@ -810,13 +844,22 @@ function addSlide() {
   document.getElementById('slideList').scrollTop = 9999;
 }
 
+function moveSlideToIndex(from, to) {
+  if (from === to || from < 0 || to < 0 || from >= slides.length || to >= slides.length) return;
+  const moved = slides.splice(from, 1)[0];
+  slides.splice(to, 0, moved);
+  if (selectedIndex === from) {
+    selectedIndex = to;
+  } else if (from < to) {
+    if (selectedIndex > from && selectedIndex <= to) selectedIndex--;
+  } else {
+    if (selectedIndex >= to && selectedIndex < from) selectedIndex++;
+  }
+  save(); renderSlideList(); renderEditForm();
+}
+
 function moveSlide(i, dir) {
-  const j = i + dir;
-  if (j < 0 || j >= slides.length) return;
-  const tmp = slides[i]; slides[i] = slides[j]; slides[j] = tmp;
-  if (selectedIndex === i) selectedIndex = j;
-  else if (selectedIndex === j) selectedIndex = i;
-  save(); renderSlideList();
+  moveSlideToIndex(i, i + dir);
 }
 
 function confirmDelete() {
