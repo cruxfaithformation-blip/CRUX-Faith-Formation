@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teaching Guide: The Holy Trinity — CRUX Faith Formation</title>
+<meta name="description" content="Complete teacher's lesson guide for the Holy Trinity module — Pillar I of the CRUX Faith Formation curriculum. Lesson plan, key concepts, scripture focus, saint spotlight, and discussion prompts.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --navy-deep: #0f1222;
+  --navy-mid: #252b47;
+  --gold: #d4a574;
+  --gold-light: #e8c99a;
+  --gold-pale: #fdf8f2;
+  --cream: #faf8f4;
+  --white: #ffffff;
+  --text: #1a1f36;
+  --muted: #6b7280;
+  --border: rgba(26,31,54,0.1);
+  --border-mid: rgba(26,31,54,0.18);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  background: var(--cream);
+  color: var(--text);
+}
+
+/* ── Site Nav ────────────────────────────────────────────────────── */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 1.25rem 2.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(15,18,34,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+.site-nav .nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 900; letter-spacing: 5px;
+  color: var(--gold); text-decoration: none;
+}
+.site-nav .nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+.site-nav .nav-links a {
+  font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 500;
+  letter-spacing: 1px; color: rgba(255,255,255,0.45); text-decoration: none;
+  transition: color 0.2s;
+}
+.site-nav .nav-links a:hover { color: var(--gold); }
+.site-nav .nav-links a.active { color: var(--gold); }
+.site-nav .nav-dropdown { position: relative; }
+.site-nav .nav-dropdown > a::after { content: ' ▾'; font-size: 0.6rem; opacity: 0.55; }
+.site-nav .nav-dropdown-menu {
+  position: absolute; top: 100%; left: -0.75rem;
+  min-width: 190px; background: rgba(15,18,34,0.97);
+  border: 1px solid rgba(212,165,116,0.18); border-radius: 6px;
+  padding: 0.75rem 0 0.4rem; display: none; flex-direction: column;
+  backdrop-filter: blur(14px); z-index: 300;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+.site-nav .nav-dropdown:hover .nav-dropdown-menu { display: flex; }
+.site-nav .nav-dropdown-menu a {
+  padding: 0.55rem 1.1rem; font-family: 'Inter', sans-serif;
+  font-size: 0.72rem; font-weight: 500;
+  color: rgba(255,255,255,0.45); text-decoration: none; white-space: nowrap;
+  transition: color 0.15s, background 0.15s; letter-spacing: 0; display: block;
+}
+.site-nav .nav-dropdown-menu a:hover { color: var(--gold); background: rgba(255,255,255,0.04); }
+.site-nav .nav-dropdown-menu a::after { display: none !important; }
+.site-nav .nav-drop-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 0.3rem 0; }
+.site-nav .nav-cta {
+  font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--navy) !important; background: var(--gold);
+  padding: 0.45rem 1.1rem; border-radius: 4px; text-decoration: none;
+  transition: opacity 0.2s;
+}
+.site-nav .nav-cta:hover { opacity: 0.85; }
+.nav-hamburger {
+  display: none; background: none; border: none; cursor: pointer;
+  padding: 4px; flex-direction: column; gap: 5px;
+  align-items: center; justify-content: center;
+}
+.nav-hamburger span {
+  display: block; width: 22px; height: 2px;
+  background: rgba(255,255,255,0.7); border-radius: 2px; transition: all 0.2s;
+}
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.nav-mobile-menu {
+  display: none; position: fixed; left: 0; right: 0; z-index: 199;
+  background: rgba(15,18,34,0.97); backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(212,165,116,0.15);
+  flex-direction: column; padding: 0.5rem 0 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.nav-mobile-menu.open { display: flex; }
+.nav-mobile-menu a {
+  padding: 0.85rem 1.5rem; font-family: 'Inter', sans-serif;
+  font-size: 0.88rem; font-weight: 500; letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.65); text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.04); transition: color 0.15s;
+}
+.nav-mobile-menu a:hover { color: #d4a574; }
+.nav-mobile-cta {
+  margin: 0.75rem 1.5rem 0 !important; padding: 0.65rem 1rem !important;
+  background: #d4a574; color: #1a1f36 !important; border-radius: 4px;
+  text-align: center; font-weight: 600 !important; font-size: 0.75rem;
+  letter-spacing: 1.5px; text-transform: uppercase; border-bottom: none !important;
+}
+@media (max-width: 640px) {
+  .site-nav { padding: 1rem 1.25rem; }
+  .nav-hamburger { display: flex; }
+  .site-nav .nav-links { display: none !important; }
+  .site-nav .nav-cta { display: none !important; }
+}
+
+/* ── Hero ────────────────────────────────────────────────────────── */
+.guide-hero {
+  background: linear-gradient(150deg, var(--navy-deep) 0%, #1e2545 100%);
+  padding: 8rem 2.5rem 3.5rem;
+  position: relative; overflow: hidden;
+}
+.guide-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at 60% 50%, rgba(212,165,116,0.07) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-inner { max-width: 860px; margin: 0 auto; position: relative; }
+.hero-breadcrumb {
+  display: flex; align-items: center; gap: 0.6rem;
+  font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(212,165,116,0.65); margin-bottom: 1.5rem;
+}
+.hero-breadcrumb a { color: inherit; text-decoration: none; transition: color 0.2s; }
+.hero-breadcrumb a:hover { color: var(--gold); }
+.hero-breadcrumb span { opacity: 0.4; }
+.guide-kicker {
+  font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.75rem;
+  display: flex; align-items: center; gap: 0.75rem;
+}
+.guide-kicker::before {
+  content: ''; display: inline-block; width: 24px; height: 1px; background: var(--gold); opacity: 0.5;
+}
+.guide-hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5vw, 3.4rem);
+  font-weight: 900; color: var(--white);
+  line-height: 1.1; margin-bottom: 1rem;
+}
+.guide-hero h1 span {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 60%, #b8895a 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.guide-tagline {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 1.15rem; color: rgba(255,255,255,0.55);
+  margin-bottom: 2rem; max-width: 560px;
+}
+.hero-meta {
+  display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center;
+  margin-bottom: 2rem;
+}
+.meta-pill {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: rgba(255,255,255,0.07); border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 99px; padding: 0.35rem 0.85rem;
+  font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 500;
+  color: rgba(255,255,255,0.6); letter-spacing: 0.5px;
+}
+.meta-pill.gold { background: rgba(212,165,116,0.12); border-color: rgba(212,165,116,0.3); color: var(--gold); }
+.hero-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.btn-ghost {
+  font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 0.55rem 1.2rem; border-radius: 4px; cursor: pointer;
+  text-decoration: none; transition: all 0.2s;
+  border: 1px solid rgba(255,255,255,0.2); color: rgba(255,255,255,0.7);
+  background: transparent;
+}
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold); }
+.btn-gold {
+  font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 0.55rem 1.2rem; border-radius: 4px; cursor: pointer;
+  text-decoration: none; transition: all 0.2s;
+  background: var(--gold); color: var(--navy); border: 1px solid var(--gold);
+}
+.btn-gold:hover { opacity: 0.88; }
+
+/* ── Page Layout ─────────────────────────────────────────────────── */
+.page-wrap { max-width: 860px; margin: 0 auto; padding: 3rem 2rem 5rem; }
+
+/* ── Section card ────────────────────────────────────────────────── */
+.guide-section {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 2.5rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 16px rgba(26,31,54,0.05);
+}
+.section-number {
+  font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.4rem;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem; font-weight: 700; color: var(--navy);
+  margin-bottom: 1.5rem; line-height: 1.2;
+}
+.section-divider {
+  border: none; border-top: 1px solid var(--border); margin: 1.75rem 0;
+}
+
+/* ── At a Glance ─────────────────────────────────────────────────── */
+.glance-grid {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1.25rem; margin-bottom: 1.5rem;
+}
+.glance-card {
+  background: var(--cream); border: 1px solid var(--border);
+  border-radius: 10px; padding: 1.25rem 1.5rem;
+}
+.glance-card.full { grid-column: 1 / -1; }
+.glance-label {
+  font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.glance-body {
+  font-family: 'Crimson Pro', serif; font-size: 1.05rem; color: var(--navy); line-height: 1.65;
+}
+.glance-body strong { font-weight: 600; }
+.objectives-list { list-style: none; }
+.objectives-list li {
+  display: flex; gap: 0.75rem; align-items: flex-start;
+  font-family: 'Crimson Pro', serif; font-size: 1rem; color: var(--text);
+  line-height: 1.55; padding: 0.6rem 0;
+  border-bottom: 1px solid var(--border);
+}
+.objectives-list li:last-child { border-bottom: none; }
+.obj-tag {
+  flex-shrink: 0; font-family: 'Inter', sans-serif; font-size: 0.6rem;
+  font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 0.25rem 0.6rem; border-radius: 4px; margin-top: 0.2rem;
+}
+.obj-tag.know { background: rgba(26,31,54,0.08); color: var(--navy); }
+.obj-tag.believe { background: rgba(212,165,116,0.15); color: #9a6f3a; }
+.obj-tag.do { background: rgba(59,109,17,0.1); color: #3b6d11; }
+
+/* ── Lesson Plan ─────────────────────────────────────────────────── */
+.lesson-beat {
+  display: grid; grid-template-columns: 90px 1fr;
+  gap: 0 1.5rem; padding: 1.5rem 0;
+  border-bottom: 1px solid var(--border);
+  position: relative;
+}
+.lesson-beat:last-child { border-bottom: none; padding-bottom: 0; }
+.beat-time {
+  font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 1px; color: var(--gold);
+  padding-top: 0.3rem; line-height: 1.4;
+}
+.beat-min {
+  font-size: 0.65rem; color: var(--muted); font-weight: 400;
+  display: block; margin-top: 2px;
+}
+.beat-content {}
+.beat-title {
+  font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700;
+  color: var(--navy); margin-bottom: 0.4rem;
+}
+.beat-body {
+  font-family: 'Crimson Pro', serif; font-size: 1rem; color: #3a3f58; line-height: 1.7;
+}
+.beat-body p { margin-bottom: 0.6rem; }
+.beat-body p:last-child { margin-bottom: 0; }
+.teacher-note {
+  background: rgba(212,165,116,0.08); border-left: 3px solid var(--gold);
+  border-radius: 0 6px 6px 0; padding: 0.75rem 1rem; margin-top: 0.75rem;
+  font-family: 'Inter', sans-serif; font-size: 0.82rem; color: #6b5530; line-height: 1.6;
+}
+.teacher-note strong {
+  font-size: 0.65rem; letter-spacing: 1.5px; text-transform: uppercase;
+  display: block; margin-bottom: 0.3rem; color: var(--gold);
+}
+
+/* ── Key Concepts ────────────────────────────────────────────────── */
+.concept-block {
+  padding: 1.5rem 0; border-bottom: 1px solid var(--border);
+  display: grid; grid-template-columns: 48px 1fr; gap: 0 1.25rem;
+}
+.concept-block:last-child { border-bottom: none; padding-bottom: 0; }
+.concept-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--navy); color: var(--gold);
+  font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 0.2rem;
+}
+.concept-title {
+  font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700;
+  color: var(--navy); margin-bottom: 0.5rem;
+}
+.concept-body {
+  font-family: 'Crimson Pro', serif; font-size: 1rem; color: #3a3f58; line-height: 1.75;
+}
+.heresy-flag {
+  display: inline-flex; align-items: center; gap: 0.4rem;
+  background: rgba(163,45,45,0.08); border: 1px solid rgba(163,45,45,0.2);
+  border-radius: 4px; padding: 0.2rem 0.6rem; margin-top: 0.5rem;
+  font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600;
+  color: #8b2020; letter-spacing: 0.5px;
+}
+
+/* ── Scripture Focus ─────────────────────────────────────────────── */
+.scripture-block {
+  border-left: 3px solid var(--gold);
+  padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;
+  background: var(--gold-pale); border-radius: 0 10px 10px 0;
+}
+.scripture-block:last-child { margin-bottom: 0; }
+.scripture-ref {
+  font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.scripture-text {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 1.15rem; color: var(--navy); line-height: 1.6;
+  margin-bottom: 0.75rem;
+}
+.scripture-note {
+  font-family: 'Crimson Pro', serif; font-size: 0.97rem; color: #4a4f68; line-height: 1.7;
+}
+
+/* ── Saint Spotlight ─────────────────────────────────────────────── */
+.saint-card {
+  display: grid; grid-template-columns: 72px 1fr;
+  gap: 0 1.5rem; align-items: start;
+}
+.saint-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--navy); display: flex; align-items: center; justify-content: center;
+  font-size: 1.6rem; flex-shrink: 0;
+  border: 2px solid rgba(212,165,116,0.3);
+}
+.saint-name {
+  font-family: 'Playfair Display', serif; font-size: 1.35rem; font-weight: 700;
+  color: var(--navy); margin-bottom: 0.2rem;
+}
+.saint-dates {
+  font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 500;
+  letter-spacing: 1px; color: var(--muted); margin-bottom: 0.75rem;
+}
+.saint-bio {
+  font-family: 'Crimson Pro', serif; font-size: 1rem; color: #3a3f58; line-height: 1.75;
+}
+.saint-connection {
+  margin-top: 1rem; padding: 0.9rem 1.2rem;
+  background: rgba(26,31,54,0.04); border: 1px solid var(--border);
+  border-radius: 8px;
+}
+.saint-connection-label {
+  font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 0.35rem;
+}
+.saint-connection-body {
+  font-family: 'Crimson Pro', serif; font-size: 0.97rem; color: #4a4f68; line-height: 1.65;
+}
+
+/* ── Discussion Prompts ──────────────────────────────────────────── */
+.prompt-block {
+  display: flex; gap: 1.25rem; align-items: flex-start;
+  padding: 1.1rem 0; border-bottom: 1px solid var(--border);
+}
+.prompt-block:last-child { border-bottom: none; padding-bottom: 0; }
+.prompt-level {
+  flex-shrink: 0; width: 80px;
+  font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  padding: 0.3rem 0.5rem; border-radius: 4px; text-align: center; margin-top: 0.15rem;
+}
+.level-1 { background: rgba(59,109,17,0.1); color: #3b6d11; }
+.level-2 { background: rgba(186,117,23,0.12); color: #7a4d0f; }
+.level-3 { background: rgba(24,95,165,0.1); color: #185fa5; }
+.level-4 { background: rgba(153,53,86,0.1); color: #7a2040; }
+.prompt-text {
+  font-family: 'Crimson Pro', serif; font-size: 1.05rem; color: var(--navy); line-height: 1.7;
+}
+
+/* ── Common Questions ────────────────────────────────────────────── */
+.qa-block {
+  padding: 1.5rem 0; border-bottom: 1px solid var(--border);
+}
+.qa-block:last-child { border-bottom: none; padding-bottom: 0; }
+.qa-q {
+  font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700;
+  color: var(--navy); margin-bottom: 0.65rem; line-height: 1.4;
+}
+.qa-q::before {
+  content: 'Q'; font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 700;
+  letter-spacing: 1px; background: var(--navy); color: var(--gold);
+  padding: 0.2rem 0.45rem; border-radius: 3px; margin-right: 0.6rem;
+  vertical-align: middle;
+}
+.qa-a {
+  font-family: 'Crimson Pro', serif; font-size: 1rem; color: #3a3f58; line-height: 1.75;
+  padding-left: 1.4rem; border-left: 2px solid var(--border);
+}
+
+/* ── Activity ────────────────────────────────────────────────────── */
+.activity-header {
+  display: flex; gap: 1rem; align-items: center; margin-bottom: 1.25rem;
+}
+.activity-icon {
+  width: 48px; height: 48px; background: var(--navy); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.4rem; flex-shrink: 0;
+}
+.activity-name {
+  font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--navy);
+}
+.activity-time {
+  font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 500;
+  color: var(--muted); margin-top: 2px;
+}
+.activity-body {
+  font-family: 'Crimson Pro', serif; font-size: 1rem; color: #3a3f58; line-height: 1.75;
+}
+.activity-body p { margin-bottom: 0.75rem; }
+.activity-body p:last-child { margin-bottom: 0; }
+.activity-steps {
+  list-style: none; counter-reset: steps; margin-top: 0.75rem;
+}
+.activity-steps li {
+  counter-increment: steps;
+  display: flex; gap: 0.85rem; align-items: flex-start;
+  font-family: 'Crimson Pro', serif; font-size: 1rem; color: #3a3f58;
+  line-height: 1.65; padding: 0.6rem 0; border-bottom: 1px solid var(--border);
+}
+.activity-steps li:last-child { border-bottom: none; }
+.activity-steps li::before {
+  content: counter(steps);
+  flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%;
+  background: rgba(212,165,116,0.15); border: 1px solid rgba(212,165,116,0.4);
+  color: #9a6f3a; font-family: 'Inter', sans-serif; font-size: 0.72rem;
+  font-weight: 700; display: flex; align-items: center; justify-content: center;
+  margin-top: 0.15rem;
+}
+
+/* ── Take-Home ───────────────────────────────────────────────────── */
+.takehome-block {
+  background: var(--navy); border-radius: 12px;
+  padding: 2rem 2.5rem; color: var(--white);
+  display: grid; grid-template-columns: 40px 1fr; gap: 0 1.25rem; align-items: start;
+}
+.takehome-icon { font-size: 1.5rem; margin-top: 0.15rem; }
+.takehome-label {
+  font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 2.5px; text-transform: uppercase; color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+.takehome-title {
+  font-family: 'Playfair Display', serif; font-size: 1.25rem; font-weight: 700;
+  color: var(--white); margin-bottom: 0.75rem;
+}
+.takehome-body {
+  font-family: 'Crimson Pro', serif; font-size: 1rem;
+  color: rgba(255,255,255,0.75); line-height: 1.75;
+}
+
+/* ── CCC References ──────────────────────────────────────────────── */
+.ccc-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 0.75rem;
+}
+.ccc-item {
+  background: var(--cream); border: 1px solid var(--border); border-radius: 8px;
+  padding: 0.9rem 1.1rem;
+}
+.ccc-num {
+  font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 1px; color: var(--gold); margin-bottom: 0.3rem;
+}
+.ccc-topic {
+  font-family: 'Crimson Pro', serif; font-size: 0.95rem; color: var(--navy); line-height: 1.5;
+}
+
+/* ── Bottom nav ──────────────────────────────────────────────────── */
+.guide-footer-nav {
+  border-top: 1px solid var(--border-mid);
+  padding: 2.5rem 2rem;
+  display: flex; justify-content: space-between; align-items: center;
+  max-width: 860px; margin: 0 auto; flex-wrap: wrap; gap: 1rem;
+}
+.footer-nav-meta {
+  font-family: 'Inter', sans-serif; font-size: 0.72rem;
+  color: var(--muted); letter-spacing: 0.5px;
+}
+.footer-nav-links { display: flex; gap: 0.75rem; flex-wrap: wrap; }
+.footer-nav-links a {
+  font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 1px; text-transform: uppercase;
+  padding: 0.45rem 1rem; border-radius: 4px;
+  text-decoration: none; transition: all 0.2s;
+  border: 1px solid var(--border-mid); color: var(--navy);
+}
+.footer-nav-links a:hover { border-color: var(--gold); color: var(--gold); }
+.footer-nav-links a.next {
+  background: var(--navy); color: var(--gold); border-color: var(--navy);
+}
+.footer-nav-links a.next:hover { opacity: 0.85; }
+
+/* ── Responsive ──────────────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .guide-hero { padding: 6.5rem 1.25rem 2.5rem; }
+  .page-wrap { padding: 2rem 1rem 4rem; }
+  .guide-section { padding: 1.5rem; }
+  .glance-grid { grid-template-columns: 1fr; }
+  .lesson-beat { grid-template-columns: 1fr; }
+  .beat-time { margin-bottom: 0.3rem; }
+  .concept-block { grid-template-columns: 1fr; gap: 0.5rem; }
+  .concept-num { display: none; }
+  .saint-card { grid-template-columns: 1fr; }
+  .saint-icon { display: none; }
+  .takehome-block { grid-template-columns: 1fr; }
+  .takehome-icon { display: none; }
+  .guide-footer-nav { flex-direction: column; align-items: flex-start; }
+}
+
+@media print {
+  .site-nav, .nav-mobile-menu, .hero-actions, .guide-footer-nav { display: none !important; }
+  body { background: white; font-size: 10pt; }
+  .guide-hero { padding: 2rem; background: white !important; color: black !important; }
+  .guide-hero h1 { font-size: 22pt; color: black !important; -webkit-text-fill-color: black !important; }
+  .guide-tagline, .guide-kicker, .hero-breadcrumb { color: #444 !important; }
+  .guide-section { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; }
+  .page-wrap { padding: 0; }
+}
+</style>
+</head>
+<body>
+
+<!-- Standard Site Nav -->
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">CRUX</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li class="nav-dropdown">
+      <a href="crux-modules.html" class="active">Faith Formation</a>
+      <div class="nav-dropdown-menu">
+        <a href="crux-modules.html">Five Pillars</a>
+        <div class="nav-drop-divider"></div>
+        <a href="crux-adult-formation.html">Adult Formation</a>
+        <a href="crux-adult-ocia.html">OCIA Guide</a>
+      </div>
+    </li>
+    <li><a href="crux-bible-study.html">Bible Study</a></li>
+    <li><a href="crux-pack-store.html">Saint Cards</a></li>
+    <li><a href="cruxgames.html">Games</a></li>
+    <li><a href="crux-videos.html">Videos</a></li>
+    <li><a href="crux-music.html">Music</a></li>
+  </ul>
+  <a href="crux-account.html" class="nav-cta">My Account</a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-mobile-menu" id="navMobileMenu">
+  <a href="index.html">Home</a>
+  <a href="crux-modules.html">Faith Formation</a>
+  <a href="crux-adult-formation.html">Adult Formation</a>
+  <a href="crux-bible-study.html">Bible Study</a>
+  <a href="crux-pack-store.html">Saint Cards</a>
+  <a href="cruxgames.html">Games</a>
+  <a href="crux-videos.html">Videos</a>
+  <a href="crux-music.html">Music</a>
+  <a href="crux-account.html" class="nav-mobile-cta">My Account</a>
+</div>
+
+<!-- Hero -->
+<header class="guide-hero">
+  <div class="hero-inner">
+    <div class="hero-breadcrumb">
+      <a href="crux-modules.html">Faith Formation</a>
+      <span>›</span>
+      <span>Teaching Guides</span>
+      <span>›</span>
+      <span>Pillar I</span>
+    </div>
+    <div class="guide-kicker">Teaching Guide · Module 1 of 5</div>
+    <h1>The Holy <span>Trinity</span></h1>
+    <p class="guide-tagline">One God in three Persons — the central mystery of the Christian faith, and the one that makes every other doctrine possible.</p>
+    <div class="hero-meta">
+      <span class="meta-pill gold">✟ Pillar I — What We Believe</span>
+      <span class="meta-pill">⏱ 55 minutes</span>
+      <span class="meta-pill">CCC 232–267</span>
+      <span class="meta-pill">St. Athanasius</span>
+    </div>
+    <div class="hero-actions">
+      <a href="crux-modules.html?module=trinity" class="btn-ghost">← Student Module</a>
+      <button class="btn-ghost" onclick="window.print()">Print / Save PDF</button>
+      <a href="crux-teach-jesus.html" class="btn-gold">Next: Who Is Jesus? →</a>
+    </div>
+  </div>
+</header>
+
+<div class="page-wrap">
+
+  <!-- ── 1. AT A GLANCE ── -->
+  <section class="guide-section">
+    <div class="section-number">Section 1</div>
+    <div class="section-title">At a Glance</div>
+
+    <div class="glance-grid">
+      <div class="glance-card">
+        <div class="glance-label">The Big Idea</div>
+        <div class="glance-body">God is not a solitary being. Before creation, before time, God existed as a perfect communion of love — Father, Son, and Holy Spirit. The Trinity is not a puzzle to solve but a mystery to enter.</div>
+      </div>
+      <div class="glance-card">
+        <div class="glance-label">Essential Question</div>
+        <div class="glance-body">If God is one, how can he be three? And once students have wrestled with that: <strong>why does it matter?</strong></div>
+      </div>
+      <div class="glance-card full">
+        <div class="glance-label">Objectives — by the end of class, students will be able to...</div>
+        <ul class="objectives-list">
+          <li>
+            <span class="obj-tag know">Know</span>
+            Name the three Persons of the Trinity and explain how they are distinct yet one God; recall the Council of Nicaea (325 AD) and the meaning of <em>homoousios</em>; identify the core error of Arianism.
+          </li>
+          <li>
+            <span class="obj-tag believe">Believe</span>
+            Understand that the Trinity is not an abstract doctrine but reveals the nature of God as eternal love — and therefore the nature of what love is.
+          </li>
+          <li>
+            <span class="obj-tag do">Do</span>
+            Pray the Gloria Patri with understanding; use basic Trinitarian language correctly; respond to the objection that Christianity teaches belief in three gods.
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 2. LESSON PLAN ── -->
+  <section class="guide-section">
+    <div class="section-number">Section 2</div>
+    <div class="section-title">Lesson Plan — 55 Minutes</div>
+
+    <div class="lesson-beat">
+      <div class="beat-time">0–5 min<span class="beat-min">Opening</span></div>
+      <div class="beat-content">
+        <div class="beat-title">The Question on the Board</div>
+        <div class="beat-body">
+          <p>Before students arrive, write this on the board: <em>"If God is love — who did he love before he created anything?"</em> Do not explain it. Let them read it when they walk in. After the opening prayer, ask for answers.</p>
+          <p>Do not correct responses yet. Let the productive confusion sit. The point is not to arrive at an answer immediately but to feel the weight of the question. Tell them: this is exactly what the doctrine of the Trinity answers.</p>
+        </div>
+        <div class="teacher-note">
+          <strong>Teacher Note</strong>
+          This question comes from the early Church's reflection on 1 John 4:8 — "God is love." If God is eternally love and not merely loving, then love must exist within God before creation. That requires real relationship within the Godhead. Students who find this interesting are already doing theology.
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-beat">
+      <div class="beat-time">5–20 min<span class="beat-min">Core I</span></div>
+      <div class="beat-content">
+        <div class="beat-title">What the Church Actually Teaches</div>
+        <div class="beat-body">
+          <p>One God. Three Persons. Not three gods — that is tritheism, and the Church explicitly rejects it. Not one God wearing three different masks depending on the situation — that is modalism, and the Church rejects that too.</p>
+          <p>The Trinity is one divine being whose inner life is a real, eternal relationship: Father, Son, and Holy Spirit. Each Person is fully God. None is more God than the others. They are genuinely distinct — the Father is not the Son, the Son is not the Spirit — yet they are not three separate beings.</p>
+          <p>Walk through each Person briefly. Introduce the language: the Father is the source, unbegotten. The Son is eternally begotten of the Father. The Spirit eternally proceeds. These are not time-bound events; they describe eternal relationships within the one God.</p>
+        </div>
+        <div class="teacher-note">
+          <strong>Teacher Note</strong>
+          Avoid analogies at this stage. Analogies come in the activity section — and part of the lesson is understanding why no analogy fully works. If a student offers one (water/ice/steam, shamrock, etc.), acknowledge it warmly and tell them you'll return to it later. The shamrock analogy, beloved as it is, accidentally teaches modalism if left uncorrected.
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-beat">
+      <div class="beat-time">20–32 min<span class="beat-min">Core II</span></div>
+      <div class="beat-content">
+        <div class="beat-title">The Battle for One Word</div>
+        <div class="beat-body">
+          <p>In the 4th century, a priest named Arius taught that the Son was the greatest creature God ever made — but still a creature. "There was a time when he was not." Arius was compelling, eloquent, and wrong in a way that mattered enormously.</p>
+          <p>Athanasius of Alexandria recognized what was at stake immediately: if Jesus is not fully God, the Cross saves no one. A creature, however magnificent, cannot redeem creation. Only the Creator can bear the weight of the world's sin.</p>
+          <p>The Council of Nicaea, 325 AD. Three hundred bishops. One word in dispute: <em>homoousios</em> — same substance — versus <em>homoiousios</em> — similar substance. One iota of difference. The Church chose <em>homoousios</em>. The Nicene Creed was born.</p>
+          <p>Athanasius spent the next four decades defending it. He was exiled five times by emperors who sided with Arius. He stood alone. The phrase that followed him: <em>Athanasius contra mundum</em>. Athanasius against the world. He was right.</p>
+        </div>
+        <div class="teacher-note">
+          <strong>Teacher Note</strong>
+          Emphasize the stakes. Students often hear the Arian controversy as a theological footnote. Help them see it as the pivotal crisis of early Christianity. If Arianism had won, the faith that spread across the Roman Empire would have been a different religion — one in which Jesus saves us as the best example of a creature rather than as God himself entering creation.
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-beat">
+      <div class="beat-time">32–47 min<span class="beat-min">Discussion</span></div>
+      <div class="beat-content">
+        <div class="beat-title">Discussion</div>
+        <div class="beat-body">
+          <p>Use the prompts in Section 6. Begin with Level 1, move to Level 2 and 3 as class energy allows. Reserve Level 4 for classes that are particularly engaged or for older students.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-beat">
+      <div class="beat-time">47–52 min<span class="beat-min">Activity</span></div>
+      <div class="beat-content">
+        <div class="beat-title">The Sign of the Cross</div>
+        <div class="beat-body">
+          <p>Ask students to make the Sign of the Cross slowly. Then walk through it: <em>"In the name"</em> — one name, singular, one God. <em>"Of the Father, and of the Son, and of the Holy Spirit"</em> — three Persons. Trinitarian theology compressed into a gesture.</p>
+          <p>This is one of the oldest Christian practices in existence. Catholics make it at baptism, before meals, before bed, in moments of fear, at death. Billions of times across twenty centuries. Point out: every time they do this, they are making a confession of the doctrine that Athanasius bled to defend.</p>
+        </div>
+        <div class="teacher-note">
+          <strong>Teacher Note</strong>
+          This moment lands differently when students realize the gesture is not decorative. If time allows, you can mention that the Eastern Church makes the Sign in reverse direction and uses three fingers pressed together to signify the Trinity — a small visual reminder that the same doctrine expresses itself in multiple traditions.
+        </div>
+      </div>
+    </div>
+
+    <div class="lesson-beat">
+      <div class="beat-time">52–55 min<span class="beat-min">Closing</span></div>
+      <div class="beat-content">
+        <div class="beat-title">Gloria Patri</div>
+        <div class="beat-body">
+          <p>Close with the Gloria Patri prayed together: <em>"Glory be to the Father, and to the Son, and to the Holy Spirit. As it was in the beginning, is now, and ever shall be, world without end. Amen."</em></p>
+          <p>Explain: this doxology has closed every psalm and every Hour of the Divine Office since the fourth century. For 1,700 years, the Church has ended its daily prayer by glorifying the Trinity. They just joined that tradition.</p>
+          <p>Assign the Take-Home from Section 9.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 3. KEY CONCEPTS ── -->
+  <section class="guide-section">
+    <div class="section-number">Section 3</div>
+    <div class="section-title">Key Concepts to Own Before Class</div>
+
+    <div class="concept-block">
+      <div class="concept-num">1</div>
+      <div>
+        <div class="concept-title">One God, Three Persons — Not Three Gods, Not Three Masks</div>
+        <div class="concept-body">The two most common errors students carry into this lesson are tritheism (three separate gods) and modalism (one God playing three roles). Tritheism treats Father, Son, and Spirit as three independent divine beings who happen to cooperate. Modalism treats God as a single person who appears differently depending on context — the Father in the Old Testament, the Son in the Gospels, the Spirit at Pentecost. Both errors resolve the tension of the doctrine by eliminating part of it. The Church holds the tension: genuinely three, genuinely one.
+          <br><span class="heresy-flag">⚠ Tritheism — three separate gods</span>
+          <span class="heresy-flag">⚠ Modalism — one God, three costumes</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="concept-block">
+      <div class="concept-num">2</div>
+      <div>
+        <div class="concept-title">Homoousios — Why One Greek Word Changed History</div>
+        <div class="concept-body">The Council of Nicaea's central achievement was the insertion of <em>homoousios</em> (same substance) into the Creed. Arius preferred <em>homoiousios</em> (similar substance). The difference seems minuscule until you ask what hangs on it. If the Son is merely similar to the Father in substance — if there is any gap, however small, between the Son's nature and the Father's nature — then the Son is not God. He is the greatest possible creature, but a creature nonetheless. And a creature cannot bear the full weight of humanity's sin or communicate authentic divine life. The entire logic of salvation turns on this word.
+        </div>
+      </div>
+    </div>
+
+    <div class="concept-block">
+      <div class="concept-num">3</div>
+      <div>
+        <div class="concept-title">The Processions — How the Three Persons Relate</div>
+        <div class="concept-body">Within the one God, there are real relationships. The Father is unbegotten — the ultimate source. The Son is eternally begotten of the Father: not made, not created, but generated from the Father's own being in a way that is beyond time and beyond anything in human experience. The Spirit proceeds from the Father and the Son (this is the <em>Filioque</em> — Latin for "and the Son" — which became the central dispute in the Great Schism of 1054). These are not events that happened once; they are the eternal structure of the divine life.
+        </div>
+      </div>
+    </div>
+
+    <div class="concept-block">
+      <div class="concept-num">4</div>
+      <div>
+        <div class="concept-title">Why the Trinity Means Love Is Not an Accident</div>
+        <div class="concept-body">This is the concept most worth landing with students. First John 4:8 does not say God is loving — it says God IS love. Love is not something God does; it is what God is. But love, by its nature, requires a real object. If God were a solitary person, he could not be love in himself — only loving toward creatures. The Trinity answers this: God is eternally love because the Father has eternally loved the Son, the Son has eternally loved the Father, and the Spirit is, in a tradition going back to Augustine, the bond of that love. Love is not a feature God added when he created; it is what he has always been.
+        </div>
+      </div>
+    </div>
+
+    <div class="concept-block">
+      <div class="concept-num">5</div>
+      <div>
+        <div class="concept-title">The Limits of Every Analogy</div>
+        <div class="concept-body">Teachers often reach for analogies: water/ice/steam, the shamrock, an egg (yolk/white/shell), the sun (star/light/heat). Each analogy captures something real and useful — and each one, taken fully, teaches a heresy. Water/ice/steam implies that God shifts form depending on circumstances (modalism). The shamrock implies three separate parts of one thing (tritheism, or partialism). The egg implies three components of one substance (partialism). The sun is probably the strongest: one source (star), the light it sends out (the Son, the eternal Word), and the warmth that reaches us (the Spirit) — but even this breaks down. Use analogies as entry points, not end points. Help students see why they fail; that failure is itself a theological education.
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 4. SCRIPTURE FOCUS ── -->
+  <section class="guide-section">
+    <div class="section-number">Section 4</div>
+    <div class="section-title">Scripture Focus</div>
+
+    <div class="scripture-block">
+      <div class="scripture-ref">Matthew 28:19</div>
+      <div class="scripture-text">"Go therefore and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit."</div>
+      <div class="scripture-note">Pay attention to the grammar: <em>one name</em> — singular — that belongs equally to three Persons. Jesus does not say "in the names of..." He says "in the name of..." The singular noun holds together what would otherwise seem impossible. This is the baptismal formula that has been spoken over every Catholic at the moment they entered the Church. It is Trinitarian theology embedded in the most fundamental rite of Christian initiation.</div>
+    </div>
+
+    <div class="scripture-block">
+      <div class="scripture-ref">John 10:30</div>
+      <div class="scripture-text">"I and the Father are one."</div>
+      <div class="scripture-note">Notice what Jesus does not say: "I am the Father." That would be modalism. He says <em>I and the Father</em> — two distinct persons, genuinely distinct, capable of saying "I" to each other — <em>are one</em>. Unity of being, plurality of person. The Jewish leaders who heard this immediately picked up stones. They understood the claim perfectly. Teach students that Jesus's audience was never confused about what he was saying. Their problem was not theological misunderstanding but theological scandal.</div>
+    </div>
+
+    <div class="scripture-block">
+      <div class="scripture-ref">1 John 4:8</div>
+      <div class="scripture-text">"Whoever does not love does not know God, for God is love."</div>
+      <div class="scripture-note">This is the verse that makes the Trinity philosophically necessary, not just scripturally asserted. Love, by its nature, requires a real object. If God is a solitary being, he cannot be love in himself before creation — only loving toward creatures. The Trinity is the only theological framework in which God can be eternally, intrinsically love: because the Father has always loved the Son, and the Son has always loved the Father, and the Spirit is the expression of that eternal exchange. The Trinity is not an addendum to the God of love. It is the explanation of how God can be love at all.</div>
+    </div>
+  </section>
+
+  <!-- ── 5. SAINT SPOTLIGHT ── -->
+  <section class="guide-section">
+    <div class="section-number">Section 5</div>
+    <div class="section-title">Saint Spotlight</div>
+
+    <div class="saint-card">
+      <div class="saint-icon">✟</div>
+      <div>
+        <div class="saint-name">St. Athanasius of Alexandria</div>
+        <div class="saint-dates">c. 296–373 AD · Feast Day: May 2 · Doctor of the Church</div>
+        <div class="saint-bio">
+          <p>Athanasius attended the Council of Nicaea in 325 as a young deacon, not yet a bishop, accompanying his predecessor Alexander of Alexandria. He left convinced that <em>homoousios</em> was not a philosophical preference but the load-bearing wall of the entire Christian faith. When Arianism regrouped after Nicaea — when emperors embraced it, bishops defected to it, and it seemed the council's decision might be reversed — Athanasius refused.</p>
+          <p>He was exiled five times over the course of forty-six years as Bishop of Alexandria. Emperors commanded him to compromise. Councils overruled him. Synods condemned him. He wrote theology from hiding places in the Egyptian desert. The phrase that attached itself to him became legendary: <em>Athanasius contra mundum</em> — Athanasius against the world. He outlasted four emperors. When he died in 373, the faith he had defended was intact.</p>
+          <p>C.S. Lewis, in his introduction to Athanasius's <em>On the Incarnation</em>, observed that Athanasius's book reads as freshly as if it were written last week — because the man who wrote it was not building a system but defending a person. That is still the right way to read him.</p>
+        </div>
+        <div class="saint-connection">
+          <div class="saint-connection-label">Why This Saint for This Module</div>
+          <div class="saint-connection-body">Every time a student recites the Nicene Creed — "God from God, Light from Light, true God from true God, begotten not made, consubstantial with the Father" — they are reciting the words Athanasius refused to surrender. His life is the best possible argument that doctrine matters. He did not suffer for a theological technicality. He suffered because he understood that a slightly-less-than-God Jesus is a Jesus who cannot save anyone.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 6. DISCUSSION PROMPTS ── -->
+  <section class="guide-section">
+    <div class="section-number">Section 6</div>
+    <div class="section-title">Discussion Prompts</div>
+
+    <div class="prompt-block">
+      <div class="prompt-level level-1">Level 1<br>Opener</div>
+      <div class="prompt-text">Make the Sign of the Cross. What are you saying? How many names does Jesus use in Matthew 28:19 — one or three?</div>
+    </div>
+    <div class="prompt-block">
+      <div class="prompt-level level-2">Level 2<br>Content</div>
+      <div class="prompt-text">Arius said Jesus was "similar" to God in substance. Athanasius said he was the "same." Why did it matter? What changes about salvation if Jesus is the greatest creature rather than fully God?</div>
+    </div>
+    <div class="prompt-block">
+      <div class="prompt-level level-3">Level 3<br>Application</div>
+      <div class="prompt-text">If God exists as a perfect communion of love — Father, Son, Spirit — before any creature existed, what does that suggest about what human beings are made for? Why do we find isolation painful?</div>
+    </div>
+    <div class="prompt-block">
+      <div class="prompt-level level-4">Level 4<br>Challenge</div>
+      <div class="prompt-text">Someone tells you: "Catholics worship three gods — that's not monotheism." Walk through your response. What's the error in their objection, and how do you hold both truths — genuinely three, genuinely one — without collapsing one into the other?</div>
+    </div>
+  </section>
+
+  <!-- ── 7. COMMON QUESTIONS ── -->
+  <section class="guide-section">
+    <div class="section-number">Section 7</div>
+    <div class="section-title">Common Questions</div>
+
+    <div class="qa-block">
+      <div class="qa-q">Isn't believing in the Trinity the same as believing in three gods?</div>
+      <div class="qa-a">No — and this is the oldest objection in the book. Three gods would be tritheism, which the Church explicitly rejects. The Trinity is one God whose inner life is a communion of three distinct Persons. Distinct does not mean separate. The three Persons are not three independent divine beings who happen to cooperate; they share one divine nature completely. Think of it this way: the Father does not have two-thirds of God's power while the Son has another third. Each Person is fully God. The mystery is holding "genuinely three" and "genuinely one" together without sacrificing either.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q">Why isn't the word "Trinity" in the Bible?</div>
+      <div class="qa-a">Neither is the word "Bible." What matters is whether the concept is present, and it clearly is: the Father is described as God, the Son is described as God, the Spirit is described as God — and throughout scripture all three are clearly distinct from each other. The doctrine of the Trinity is the Church's attempt to hold those three truths simultaneously without letting go of any of them. It is not a human invention added to scripture; it is the minimum required to account for what scripture actually says about God.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q">When Jesus prays to the Father, is he praying to himself?</div>
+      <div class="qa-a">No — and this is one of the clearest demonstrations that the three Persons are genuinely distinct. When Jesus prays in the Garden of Gethsemane, when he cries out from the Cross, when he gives thanks at the multiplication of loaves, he is addressing the Father as a real, distinct Person. The Son does not pray to himself. That is precisely the point: there is a real relationship within God. The prayer life of Jesus is not theater; it is a window into the inner life of the Trinity.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q">What does the Holy Spirit actually do?</div>
+      <div class="qa-a">The Creed calls the Spirit "the Lord and giver of life." In practical terms: the Spirit is the Person of the Trinity who acts in you. Sanctifying grace — the grace that makes you holy — is the work of the Spirit. When you are drawn to prayer, moved to forgiveness, convicted about a sin, or consoled in grief, that is the Spirit at work. The Spirit is also the one who inspired scripture, guided the councils of the Church, and makes the sacraments effective. He is not the quietest or most distant Person of the Trinity; he is the most immediately present to human experience.</div>
+    </div>
+
+    <div class="qa-block">
+      <div class="qa-q">If God already existed as love, why did he create us?</div>
+      <div class="qa-a">Because love, by its nature, wants to share itself. The Trinity is already a complete, perfect, infinite communion of love — God needs nothing outside himself. But love that is complete does not hoard itself; it pours out. Creation is an act of pure generosity, not need. We were not created because God was lonely or incomplete. We were created because God is love, and love gives. This is also why the doctrine of the Trinity protects the freedom of creation: God did not create us out of necessity. He created us out of abundance.</div>
+    </div>
+  </section>
+
+  <!-- ── 8. CLASSROOM ACTIVITY ── -->
+  <section class="guide-section">
+    <div class="section-number">Section 8</div>
+    <div class="section-title">Classroom Activity</div>
+
+    <div class="activity-header">
+      <div class="activity-icon">⚗</div>
+      <div>
+        <div class="activity-name">The Analogy Test</div>
+        <div class="activity-time">8–10 minutes · No materials required</div>
+      </div>
+    </div>
+
+    <div class="activity-body">
+      <p>Present three common Trinity analogies to the class. For each one, have students identify what it gets right — and then what heresy it accidentally teaches. The goal is not to dismiss the analogies but to understand why no human comparison fully reaches God.</p>
+    </div>
+
+    <ol class="activity-steps">
+      <li><strong>Water, ice, and steam.</strong> One substance, three forms. What it gets right: one substance — homoousios — shared by three. What it teaches by accident: the same substance shifts form depending on conditions (modalism). God does not alternate between being Father, Son, and Spirit.</li>
+      <li><strong>The shamrock.</strong> Three leaves, one plant. What it gets right: accessible image of threeness in oneness. What it teaches by accident: the three Persons are three parts of one God (partialism or tritheism). The Father is not one-third of God.</li>
+      <li><strong>The sun, its light, and its warmth.</strong> One source, an emanation of light, the warmth that reaches us. What it gets right: one source (the Father), the eternal Word sent out (the Son), the Spirit who reaches us. What it teaches by accident: the Son and Spirit are derived from or lesser than the Father — which nudges toward Arianism.</li>
+      <li><strong>Class question:</strong> Why does every analogy fail? What does that tell us about God? (Answer: God is not a scaled-up version of something human. He is genuinely beyond what created minds can fully conceptualize. Mystery is not a failure of understanding; it is an accurate report about the nature of what we are trying to understand.)</li>
+    </ol>
+  </section>
+
+  <!-- ── 9. TAKE-HOME ── -->
+  <section class="guide-section">
+    <div class="section-number">Section 9</div>
+    <div class="section-title">Take-Home</div>
+
+    <div class="takehome-block">
+      <div class="takehome-icon">🕯</div>
+      <div>
+        <div class="takehome-label">This Week</div>
+        <div class="takehome-title">The Gloria Patri — Three Ways</div>
+        <div class="takehome-body">Pray the Glory Be three times this week — once while thinking specifically about the Father, once about the Son, and once about the Holy Spirit. Then ask yourself: what felt different? What did you notice? Come back next class ready to share one thing. There are no wrong answers. The point is simply to let the doctrine become prayer, and let prayer become an encounter with the God who is, in himself, a communion of love.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── 10. CCC REFERENCES ── -->
+  <section class="guide-section">
+    <div class="section-number">Section 10</div>
+    <div class="section-title">Catechism References</div>
+
+    <div class="ccc-grid">
+      <div class="ccc-item">
+        <div class="ccc-num">CCC 232–237</div>
+        <div class="ccc-topic">Formation of Trinitarian doctrine in the early Church</div>
+      </div>
+      <div class="ccc-item">
+        <div class="ccc-num">CCC 238–248</div>
+        <div class="ccc-topic">God the Father; the name "Father"</div>
+      </div>
+      <div class="ccc-item">
+        <div class="ccc-num">CCC 249–256</div>
+        <div class="ccc-topic">The Trinity as central mystery of faith and life</div>
+      </div>
+      <div class="ccc-item">
+        <div class="ccc-num">CCC 257–260</div>
+        <div class="ccc-topic">The Trinity's works in creation and salvation history</div>
+      </div>
+      <div class="ccc-item">
+        <div class="ccc-num">CCC 683–686</div>
+        <div class="ccc-topic">Believing in the Holy Spirit; the Spirit's role</div>
+      </div>
+      <div class="ccc-item">
+        <div class="ccc-num">CCC 261–267</div>
+        <div class="ccc-topic">The Trinity and the divine missions</div>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /page-wrap -->
+
+<!-- Bottom nav -->
+<div class="guide-footer-nav">
+  <div class="footer-nav-meta">Pillar I — What We Believe · Teaching Guide 1 of 5</div>
+  <div class="footer-nav-links">
+    <a href="crux-modules.html">All Modules</a>
+    <a href="crux-modules.html?module=trinity">Student Module ↗</a>
+    <a href="crux-teach-jesus.html" class="next">Next: Who Is Jesus? →</a>
+  </div>
+</div>
+
+<script>
+(function() {
+  var btn  = document.getElementById('navHamburger');
+  var menu = document.getElementById('navMobileMenu');
+  if (!btn || !menu) return;
+  function positionMenu() {
+    var nav = document.querySelector('.site-nav');
+    if (nav) menu.style.top = nav.offsetHeight + 'px';
+  }
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    btn.classList.toggle('open');
+    menu.classList.toggle('open');
+    positionMenu();
+  });
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('#navMobileMenu') && !e.target.closest('#navHamburger')) {
+      btn.classList.remove('open');
+      menu.classList.remove('open');
+    }
+  });
+  menu.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      btn.classList.remove('open');
+      menu.classList.remove('open');
+    });
+  });
+  positionMenu();
+  window.addEventListener('resize', positionMenu);
+})();
+</script>
+
+</body>
+</html>
