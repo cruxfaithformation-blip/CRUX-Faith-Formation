@@ -636,17 +636,17 @@ const DEFAULT_SLIDES = [
     note:'Let this sit in silence. Ask for answers without correcting them. Then say: this is the question the Trinity answers.'
   },
   {
-    id:3, type:'content',
+    id:3, type:'split',
     title:'What the Church Teaches',
-    body:'- One God in three Persons\n- Not three gods (tritheism)\n- Not one God in three disguises (modalism)\n- Father, Son, and Holy Spirit — each fully God\n- Distinct from each other, but not separate',
+    body:'- One God in three Persons\n- Not three gods — tritheism\n- Not one God in three disguises — modalism\n- Father, Son, and Holy Spirit — each fully God\n- Distinct from each other, but not separate',
     bodySimple:'- God is ONE — there is only one God\n- But God is also THREE Persons: Father, Son, and Holy Spirit\n- They are not three separate gods\n- They are not the same Person in different disguises\n★ God is, inside himself, a family of love',
     note:'Name both errors clearly. Students often carry a vague tritheism or modalism. Both are wrong in important ways.'
   },
   {
-    id:4, type:'content',
-    title:'The Three Persons',
-    body:'- The Father — unbegotten, the eternal source\n- The Son — eternally begotten of the Father\n- The Holy Spirit — proceeds from Father and Son\n★ "Begotten, not made, consubstantial with the Father"',
-    bodySimple:'- God the Father — who loves and creates everything\n- God the Son — Jesus, who became human for us\n- God the Holy Spirit — who lives in our hearts\n★ We meet all three Persons at our Baptism',
+    id:4, type:'definition',
+    title:'Trinity',
+    body:'Three Persons. One God.\n\nFather, Son, and Holy Spirit — each fully God, none greater than another.\n\n- The Father — unbegotten, the eternal source\n- The Son — eternally begotten of the Father\n- The Holy Spirit — proceeds from Father and Son\n★ "Begotten, not made, consubstantial with the Father"',
+    bodySimple:'Three Persons. One God.\n\nFather, Son, and Holy Spirit.\n\n- God the Father — who loves and creates everything\n- God the Son — Jesus, who became human for us\n- God the Holy Spirit — who lives in our hearts\n★ We meet all three Persons at our Baptism',
     note:'The starred line is from the Nicene Creed. Ask if they recognize it — they say it every Sunday at Mass.'
   },
   {
@@ -657,17 +657,17 @@ const DEFAULT_SLIDES = [
     note:'Help students feel the stakes. This was not an academic debate — it was the pivotal crisis of early Christianity.'
   },
   {
-    id:6, type:'callout',
+    id:6, type:'comparison',
     title:'Council of Nicaea — 325 AD',
-    body:'homoiousios\n"similar substance" — Arius\n\nvs.\n\nhomoousios\n"same substance" — Athanasius\n\n★ One letter of difference. The entire faith at stake.',
-    bodySimple:'All the bishops of the Church gathered together.\n\nThey voted on one question:\nIs Jesus the same as God — or just like God?\n\n★ Their answer: Jesus IS God.\nSame — not just similar.\n\nThis became part of the Creed we pray every Sunday.',
+    body:'homoiousios\n"similar substance" — Arius\n- Jesus is like God\n- The greatest creature, not the Creator\n- A creature cannot bear the weight of sin\n---\nhomoousios\n"same substance" — Athanasius\n- Jesus IS God\n★ One iota of difference\n★ The entire faith at stake',
+    bodySimple:'What Arius said\n- Jesus was created by God\n- The greatest being — but not God himself\n- Similar to God, not the same as God\n---\nWhat the Church decided\n- Jesus IS God — same, not just similar\n★ If Jesus is not fully God, he cannot save us\n★ This answer became the Creed we pray at Mass',
     note:'Write both Greek words on the board. The visual difference of one letter (iota) makes the point powerfully.'
   },
   {
-    id:7, type:'content',
+    id:7, type:'split',
     title:'Athanasius contra mundum',
     body:'- Bishop of Alexandria\n- Exiled five times by emperors who backed Arius\n- Stood alone while the world bent\n★ "Athanasius against the world"\n- He outlasted four emperors. He was right.',
-    bodySimple:'- A bishop named Athanasius knew the Church was right\n- Almost everyone disagreed with him — even the Emperor\n- He was forced to leave his home five times\n- He never gave up telling the truth about Jesus\n★ He was right. The Church remembered him.',
+    bodySimple:'- A bishop who knew Jesus was fully God\n- Almost everyone disagreed — even the Emperor\n- Forced to leave his home five times\n- He never gave up telling the truth\n★ He was right. The Church remembered him.',
     note:'Ask students: would you hold a position if everyone told you to let it go? His courage is the argument that doctrine matters.'
   },
   {
@@ -719,7 +719,7 @@ let dragSrcIndex = -1;
 
 /* ─── INIT ──────────────────────────────────────────────────────── */
 (function init() {
-  const saved = localStorage.getItem('crux-present-trinity-v2');
+  const saved = localStorage.getItem('crux-present-trinity-v3');
   if (saved) {
     try {
       const p = JSON.parse(saved);
@@ -741,7 +741,7 @@ function defaultCopy() {
 
 /* ─── SAVE ──────────────────────────────────────────────────────── */
 function save() {
-  localStorage.setItem('crux-present-trinity-v2', JSON.stringify({ slides: slides, nextId: nextId, vocabMode: vocabMode }));
+  localStorage.setItem('crux-present-trinity-v3', JSON.stringify({ slides: slides, nextId: nextId, vocabMode: vocabMode }));
 }
 
 /* ─── VOCAB MODE ────────────────────────────────────────────────── */
