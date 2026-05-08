@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Classroom Presentation: The Holy Trinity — CRUX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --navy: #1a1f36; --navy-deep: #0f1222; --navy-mid: #252b47;
+  --gold: #d4a574; --gold-light: #e8c99a; --gold-pale: #fdf8f2;
+  --cream: #faf8f4; --white: #fff;
+  --text: #1a1f36; --muted: #6b7280;
+  --border: rgba(26,31,54,0.1); --sidebar: #141829;
+}
+html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; background: var(--cream); }
+
+/* ─── EDITOR SHELL ──────────────────────────────────────────────── */
+#editorShell { display: flex; flex-direction: column; height: 100vh; }
+
+/* Header */
+#editorHeader {
+  height: 56px; background: var(--navy-deep); flex-shrink: 0;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 1.25rem; border-bottom: 1px solid rgba(212,165,116,0.12);
+  gap: 1rem; z-index: 10;
+}
+.hdr-logo {
+  font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 900;
+  letter-spacing: 4px; color: var(--gold); text-decoration: none; flex-shrink: 0;
+}
+.hdr-title {
+  font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.5);
+  letter-spacing: 0.5px; flex: 1; text-align: center;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+}
+.hdr-title span { color: rgba(255,255,255,0.2); margin: 0 0.4rem; }
+.hdr-actions { display: flex; gap: 0.5rem; align-items: center; flex-shrink: 0; }
+.hdr-btn {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  padding: 0.4rem 0.9rem; border-radius: 4px; cursor: pointer; border: none;
+  transition: all 0.15s; white-space: nowrap;
+}
+.hdr-btn.ghost { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.55); }
+.hdr-btn.ghost:hover { background: rgba(255,255,255,0.13); color: rgba(255,255,255,0.8); }
+.hdr-btn.present { background: var(--gold); color: var(--navy); }
+.hdr-btn.present:hover { opacity: 0.9; }
+.hdr-btn.danger { background: rgba(163,45,45,0.15); color: #e07070; }
+.hdr-btn.danger:hover { background: rgba(163,45,45,0.28); }
+
+/* Editor body */
+#editorBody { display: flex; flex: 1; overflow: hidden; }
+
+/* Slide list sidebar */
+#slideList {
+  width: 240px; flex-shrink: 0; background: var(--sidebar);
+  overflow-y: auto; border-right: 1px solid rgba(255,255,255,0.05);
+  display: flex; flex-direction: column;
+}
+#slideList::-webkit-scrollbar { width: 4px; }
+#slideList::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+
+.slide-thumb {
+  padding: 0.75rem 0.9rem; cursor: pointer;
+  border-left: 3px solid transparent;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: all 0.13s; position: relative;
+  display: flex; gap: 0.65rem; align-items: flex-start;
+}
+.slide-thumb:hover { background: rgba(255,255,255,0.04); }
+.slide-thumb.active { border-left-color: var(--gold); background: rgba(212,165,116,0.06); }
+.thumb-num {
+  flex-shrink: 0; width: 22px; height: 22px; border-radius: 50%;
+  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.4);
+  font-size: 0.65rem; font-weight: 700; display: flex;
+  align-items: center; justify-content: center; margin-top: 1px;
+}
+.slide-thumb.active .thumb-num { background: var(--gold); color: var(--navy); }
+.thumb-info { flex: 1; min-width: 0; }
+.thumb-title {
+  font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.65);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+.slide-thumb.active .thumb-title { color: var(--gold-light); }
+.thumb-type {
+  font-size: 0.6rem; text-transform: uppercase; letter-spacing: 1px;
+  color: rgba(255,255,255,0.25);
+}
+.thumb-actions {
+  display: flex; flex-direction: column; gap: 2px; opacity: 0;
+  transition: opacity 0.15s; flex-shrink: 0;
+}
+.slide-thumb:hover .thumb-actions { opacity: 1; }
+.thumb-move {
+  background: rgba(255,255,255,0.08); border: none; color: rgba(255,255,255,0.5);
+  width: 18px; height: 18px; border-radius: 3px; cursor: pointer; font-size: 9px;
+  display: flex; align-items: center; justify-content: center; transition: all 0.12s;
+}
+.thumb-move:hover { background: rgba(212,165,116,0.2); color: var(--gold); }
+
+#addSlideBtn {
+  margin: 0.75rem; padding: 0.65rem;
+  background: rgba(212,165,116,0.08); border: 1px dashed rgba(212,165,116,0.25);
+  border-radius: 6px; color: rgba(212,165,116,0.6);
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.5px;
+  cursor: pointer; text-align: center; transition: all 0.15s;
+}
+#addSlideBtn:hover { background: rgba(212,165,116,0.14); color: var(--gold); border-color: rgba(212,165,116,0.5); }
+
+/* Edit panel */
+#editPanel {
+  flex: 1; overflow-y: auto; background: var(--cream);
+  padding: 2rem 2.5rem;
+}
+#editPanel::-webkit-scrollbar { width: 5px; }
+#editPanel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+.edit-row { margin-bottom: 1.5rem; }
+.edit-label {
+  display: block; font-size: 0.65rem; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--muted);
+  margin-bottom: 0.45rem;
+}
+.edit-select, .edit-input, .edit-textarea {
+  width: 100%; font-family: 'Inter', sans-serif; font-size: 0.88rem;
+  color: var(--navy); background: var(--white);
+  border: 1.5px solid var(--border); border-radius: 8px;
+  padding: 0.65rem 0.9rem; outline: none; transition: border-color 0.15s;
+  resize: vertical;
+}
+.edit-select:focus, .edit-input:focus, .edit-textarea:focus { border-color: var(--gold); }
+.edit-input.title-input {
+  font-family: 'Playfair Display', serif; font-size: 1.15rem;
+  font-weight: 700; padding: 0.75rem 1rem;
+}
+.edit-textarea { min-height: 130px; line-height: 1.65; }
+.edit-textarea.notes { min-height: 80px; background: #fefef8; }
+.edit-help {
+  font-size: 0.7rem; color: var(--muted); margin-top: 0.4rem; line-height: 1.55;
+}
+.edit-help code {
+  background: rgba(26,31,54,0.07); padding: 0.1rem 0.35rem;
+  border-radius: 3px; font-family: monospace; font-size: 0.75rem;
+}
+.edit-divider { border: none; border-top: 1px solid var(--border); margin: 1.75rem 0; }
+.edit-footer { display: flex; justify-content: flex-end; }
+.edit-delete {
+  font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  padding: 0.45rem 1rem; border-radius: 4px; cursor: pointer;
+  background: rgba(163,45,45,0.08); color: #a32d2d; border: 1px solid rgba(163,45,45,0.18);
+  transition: all 0.15s;
+}
+.edit-delete:hover { background: rgba(163,45,45,0.15); }
+.type-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5rem;
+}
+.type-opt {
+  padding: 0.55rem 0.5rem; border: 1.5px solid var(--border);
+  border-radius: 6px; cursor: pointer; text-align: center;
+  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.5px;
+  color: var(--muted); background: var(--white); transition: all 0.13s;
+}
+.type-opt:hover { border-color: var(--gold); color: var(--navy); }
+.type-opt.selected { border-color: var(--gold); background: var(--gold-pale); color: var(--navy); }
+.type-opt .type-icon { display: block; font-size: 1rem; margin-bottom: 3px; }
+
+/* ─── EMPTY STATE ───────────────────────────────────────────────── */
+.empty-panel {
+  height: 100%; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  color: var(--muted); gap: 0.5rem; text-align: center; padding: 2rem;
+}
+.empty-panel .ep-icon { font-size: 2.5rem; opacity: 0.3; }
+.empty-panel p { font-size: 0.85rem; }
+
+/* ─── PRESENTATION OVERLAY ──────────────────────────────────────── */
+#presentOverlay {
+  display: none; position: fixed; inset: 0; z-index: 9999;
+  background: var(--navy-deep);
+  flex-direction: column; align-items: stretch;
+  font-family: 'Inter', sans-serif;
+}
+#presentOverlay.active { display: flex; }
+
+#presentSlide {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: 4rem 6rem; overflow: hidden; position: relative;
+}
+
+/* Slide type backgrounds */
+#presentSlide.type-title { background: linear-gradient(150deg, #0a0d1c 0%, #1a1f36 60%, #1e2545 100%); }
+#presentSlide.type-callout { background: var(--navy); }
+#presentSlide.type-takehome { background: linear-gradient(135deg, #0f1222 0%, #1a1f36 100%); }
+#presentSlide.type-content, #presentSlide.type-scripture, #presentSlide.type-discussion,
+#presentSlide.type-question-opening { background: var(--navy-deep); }
+
+.slide-bg-glow {
+  position: absolute; inset: 0; pointer-events: none;
+  background: radial-gradient(ellipse at 50% 80%, rgba(212,165,116,0.06) 0%, transparent 65%);
+}
+
+/* Slide content containers */
+.slide-content { max-width: 900px; width: 100%; position: relative; z-index: 1; }
+
+/* Title slide */
+.sc-title { text-align: center; }
+.sc-title .slide-eyebrow {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
+  color: rgba(212,165,116,0.65); margin-bottom: 1.5rem;
+  display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+}
+.sc-title .slide-eyebrow::before, .sc-title .slide-eyebrow::after {
+  content: ''; display: block; width: 32px; height: 1px; background: var(--gold); opacity: 0.4;
+}
+.sc-title h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 7vw, 5.5rem);
+  font-weight: 900; color: var(--white); line-height: 1.05;
+  letter-spacing: 0.02em; margin-bottom: 0.9rem;
+}
+.sc-title h1 em {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 60%, #b8895a 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  font-style: normal;
+}
+.sc-title .slide-subtitle {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.4rem); color: rgba(255,255,255,0.45);
+  font-weight: 400;
+}
+
+/* Content slide */
+.sc-content .slide-label {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.75rem;
+}
+.sc-content h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 4.5vw, 3rem);
+  font-weight: 700; color: var(--white); line-height: 1.15;
+  margin-bottom: 1.5rem;
+}
+.sc-content .slide-body { color: rgba(255,255,255,0.8); line-height: 1.75; }
+.sc-content .slide-body p { font-size: clamp(1rem, 2.2vw, 1.4rem); margin-bottom: 0.5rem; }
+.sc-content .slide-body ul { list-style: none; }
+.sc-content .slide-body ul li {
+  font-size: clamp(1rem, 2.2vw, 1.35rem); padding: 0.45rem 0;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex; align-items: baseline; gap: 0.75rem;
+}
+.sc-content .slide-body ul li::before {
+  content: '—'; color: var(--gold); font-size: 0.85em; flex-shrink: 0;
+}
+.sc-content .slide-body ul li.highlight { color: var(--gold-light); font-weight: 600; }
+.sc-content .slide-body ul li.highlight::before { content: '★'; }
+.sc-content .slide-body blockquote {
+  border-left: 3px solid var(--gold); padding: 0.6rem 1.25rem;
+  margin: 0.75rem 0; font-style: italic;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1rem, 2.2vw, 1.35rem); color: rgba(255,255,255,0.7);
+}
+
+/* Scripture slide */
+.sc-scripture { text-align: center; }
+.sc-scripture .scripture-ref {
+  font-size: 0.75rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 2rem;
+  display: flex; align-items: center; justify-content: center; gap: 0.75rem;
+}
+.sc-scripture .scripture-ref::before, .sc-scripture .scripture-ref::after {
+  content: ''; display: block; width: 40px; height: 1px; background: var(--gold); opacity: 0.4;
+}
+.sc-scripture .scripture-quote {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: clamp(1.4rem, 3.5vw, 2.4rem); color: var(--white);
+  line-height: 1.5; margin-bottom: 1.5rem; max-width: 720px; margin-left: auto; margin-right: auto;
+}
+.sc-scripture .scripture-notes p {
+  font-size: clamp(0.88rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.5);
+  line-height: 1.7; margin-bottom: 0.3rem;
+}
+.sc-scripture .scripture-notes ul { list-style: none; }
+.sc-scripture .scripture-notes ul li {
+  font-size: clamp(0.88rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.5);
+  line-height: 1.7; padding: 0.2rem 0;
+  display: flex; align-items: baseline; justify-content: center; gap: 0.6rem;
+}
+.sc-scripture .scripture-notes ul li::before { content: '·'; color: var(--gold); }
+
+/* Callout slide */
+.sc-callout { text-align: center; }
+.sc-callout h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  font-weight: 700; color: var(--gold); margin-bottom: 1.75rem; line-height: 1.2;
+}
+.sc-callout .callout-body p {
+  font-size: clamp(1.1rem, 2.8vw, 1.8rem); color: rgba(255,255,255,0.8);
+  line-height: 1.65; margin-bottom: 0.4rem;
+}
+.sc-callout .callout-body ul { list-style: none; }
+.sc-callout .callout-body ul li {
+  font-size: clamp(1.1rem, 2.5vw, 1.65rem); color: rgba(255,255,255,0.75);
+  padding: 0.35rem 0; line-height: 1.5;
+  display: flex; align-items: baseline; justify-content: center; gap: 0.75rem;
+}
+.sc-callout .callout-body ul li::before { content: '—'; color: var(--gold); }
+.sc-callout .callout-body ul li.highlight { color: var(--gold-light); font-weight: 600; }
+.sc-callout .callout-body ul li.highlight::before { content: '★'; }
+
+/* Question-opening slide */
+.sc-question-opening { text-align: center; }
+.sc-question-opening .qo-label {
+  font-size: 0.68rem; letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); margin-bottom: 2rem;
+}
+.sc-question-opening .qo-text {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: clamp(1.8rem, 5vw, 3.8rem); color: var(--white);
+  line-height: 1.35; max-width: 700px; margin: 0 auto;
+}
+.sc-question-opening .qo-text em { color: var(--gold); font-style: normal; }
+
+/* Discussion slide */
+.sc-discussion .disc-label {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.75rem;
+}
+.sc-discussion h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 3.5vw, 2.4rem);
+  font-weight: 700; color: var(--white); margin-bottom: 1.5rem;
+}
+.disc-questions { list-style: none; }
+.disc-questions li {
+  font-size: clamp(0.92rem, 2vw, 1.2rem); color: rgba(255,255,255,0.75);
+  padding: 0.65rem 0; border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex; gap: 0.85rem; align-items: flex-start; line-height: 1.55;
+}
+.disc-questions li::before {
+  content: attr(data-num); flex-shrink: 0;
+  width: 24px; height: 24px; border-radius: 50%;
+  background: rgba(212,165,116,0.12); border: 1px solid rgba(212,165,116,0.3);
+  color: var(--gold); font-size: 0.68rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; margin-top: 1px;
+}
+.disc-questions li.highlight { color: var(--gold-light); }
+.disc-questions li.highlight::before { background: rgba(212,165,116,0.2); }
+
+/* Takehome slide */
+.sc-takehome { text-align: center; }
+.sc-takehome .th-icon { font-size: 2.5rem; margin-bottom: 1.25rem; }
+.sc-takehome .th-label {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.75rem;
+}
+.sc-takehome h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 3.5vw, 2.5rem);
+  font-weight: 700; color: var(--white); margin-bottom: 1.25rem;
+}
+.sc-takehome .th-body p {
+  font-size: clamp(1rem, 2.2vw, 1.3rem); color: rgba(255,255,255,0.65);
+  line-height: 1.75; margin-bottom: 0.3rem;
+}
+
+/* ─── PRESENT CONTROLS ──────────────────────────────────────────── */
+#presentControls {
+  height: 64px; flex-shrink: 0; background: rgba(0,0,0,0.4);
+  border-top: 1px solid rgba(255,255,255,0.05);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 0 1.5rem; gap: 1rem;
+}
+.ctrl-btn {
+  background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+  color: rgba(255,255,255,0.7); border-radius: 6px; cursor: pointer;
+  font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 500;
+  padding: 0.5rem 1rem; transition: all 0.15s; display: flex; align-items: center; gap: 0.4rem;
+}
+.ctrl-btn:hover { background: rgba(255,255,255,0.14); color: var(--white); }
+.ctrl-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.ctrl-btn.exit { border-color: rgba(163,45,45,0.4); color: rgba(255,100,100,0.7); }
+.ctrl-btn.exit:hover { background: rgba(163,45,45,0.2); color: #ff8080; }
+.ctrl-btn.notes-active { background: rgba(212,165,116,0.15); border-color: rgba(212,165,116,0.4); color: var(--gold); }
+
+.ctrl-center { display: flex; align-items: center; gap: 1rem; }
+.slide-counter {
+  font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.4);
+  min-width: 60px; text-align: center; letter-spacing: 1px;
+}
+.ctrl-progress {
+  display: flex; gap: 4px; align-items: center;
+}
+.prog-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: rgba(255,255,255,0.2); transition: all 0.2s; cursor: pointer;
+}
+.prog-dot.active { background: var(--gold); transform: scale(1.4); }
+.prog-dot:hover { background: rgba(212,165,116,0.6); }
+
+#ctrl-hint {
+  font-size: 0.62rem; color: rgba(255,255,255,0.2); letter-spacing: 0.5px;
+}
+
+/* Notes overlay (inside present slide) */
+#notesOverlay {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: rgba(0,0,0,0.85); backdrop-filter: blur(8px);
+  border-top: 1px solid rgba(212,165,116,0.2);
+  padding: 0.85rem 1.5rem; display: none;
+}
+#notesOverlay.visible { display: block; }
+.notes-label {
+  font-size: 0.58rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.3rem;
+}
+#notesText {
+  font-size: 0.88rem; color: rgba(255,255,255,0.65); line-height: 1.55;
+}
+
+/* ─── TOAST ─────────────────────────────────────────────────────── */
+#toast {
+  position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%) translateY(60px);
+  background: var(--navy); color: var(--white); padding: 0.6rem 1.25rem;
+  border-radius: 99px; font-size: 0.78rem; font-weight: 500;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.3); z-index: 10000;
+  transition: transform 0.25s, opacity 0.25s; opacity: 0; pointer-events: none;
+}
+#toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+/* ─── RESPONSIVE ────────────────────────────────────────────────── */
+@media (max-width: 700px) {
+  #slideList { width: 180px; }
+  #editPanel { padding: 1.25rem; }
+  #presentSlide { padding: 2rem 1.5rem; }
+  .sc-title h1 { font-size: 2.2rem; }
+  .sc-content h2 { font-size: 1.6rem; }
+  #ctrl-hint { display: none; }
+  .ctrl-progress { display: none; }
+}
+@media (max-width: 520px) {
+  #slideList { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div id="editorShell">
+
+  <!-- Header -->
+  <header id="editorHeader">
+    <a href="crux-teach-trinity.html" class="hdr-logo">CRUX</a>
+    <div class="hdr-title">Teaching Guide <span>›</span> The Holy Trinity <span>›</span> Classroom Presentation</div>
+    <div class="hdr-actions">
+      <button class="hdr-btn ghost" onclick="resetDefaults()">Reset</button>
+      <button class="hdr-btn danger" onclick="confirmDelete()" id="deleteBtn" style="display:none">Delete Slide</button>
+      <button class="hdr-btn present" onclick="enterPresent()">▶ Present</button>
+    </div>
+  </header>
+
+  <div id="editorBody">
+
+    <!-- Slide List -->
+    <div id="slideList">
+      <!-- rendered by JS -->
+      <div id="addSlideBtn" onclick="addSlide()">+ Add Slide</div>
+    </div>
+
+    <!-- Edit Panel -->
+    <div id="editPanel">
+      <div class="empty-panel" id="emptyState">
+        <div class="ep-icon">📋</div>
+        <p>Select a slide from the list to edit it,<br>or click <strong>+ Add Slide</strong> to begin.</p>
+      </div>
+      <div id="editForm" style="display:none">
+        <div class="edit-row">
+          <label class="edit-label">Slide Type</label>
+          <div class="type-grid" id="typeGrid"></div>
+        </div>
+        <div class="edit-row">
+          <label class="edit-label">Title</label>
+          <input type="text" class="edit-input title-input" id="editTitle" placeholder="Slide title…" oninput="updateField('title', this.value)">
+        </div>
+        <div class="edit-row">
+          <label class="edit-label">Body Content</label>
+          <textarea class="edit-textarea" id="editBody" placeholder="Type content here…&#10;&#10;Start a line with - for a bullet&#10;Start a line with ★ for a gold highlight&#10;Start a line with > for a quote block" oninput="updateField('body', this.value)"></textarea>
+          <div class="edit-help">
+            Lines starting with <code>- </code> become bullets &nbsp;·&nbsp;
+            <code>★ </code> becomes a gold highlight &nbsp;·&nbsp;
+            <code>&gt; </code> becomes a quote block
+          </div>
+        </div>
+        <hr class="edit-divider">
+        <div class="edit-row">
+          <label class="edit-label">Presenter Notes <span style="font-weight:400;opacity:.6">(private — shown only in notes overlay)</span></label>
+          <textarea class="edit-textarea notes" id="editNote" placeholder="Notes visible only to you during presentation…" oninput="updateField('note', this.value)"></textarea>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Presentation Overlay -->
+<div id="presentOverlay">
+  <div id="presentSlide">
+    <div class="slide-bg-glow"></div>
+    <div id="slideContentArea" class="slide-content"></div>
+    <div id="notesOverlay">
+      <div class="notes-label">Presenter Notes</div>
+      <div id="notesText"></div>
+    </div>
+  </div>
+  <div id="presentControls">
+    <button class="ctrl-btn exit" onclick="exitPresent()">✕ Exit</button>
+    <div class="ctrl-center">
+      <button class="ctrl-btn" id="prevBtn" onclick="prevSlide()">← Prev</button>
+      <div class="ctrl-progress" id="progressDots"></div>
+      <span class="slide-counter" id="slideCounter">1 / 12</span>
+      <button class="ctrl-btn" id="nextBtn" onclick="nextSlide()">Next →</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:0.75rem">
+      <span id="ctrl-hint">← → navigate · N notes · ESC exit</span>
+      <button class="ctrl-btn" id="notesBtn" onclick="toggleNotes()">Notes</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast"></div>
+
+<script>
+/* ─── SLIDE TYPES ──────────────────────────────────────────────── */
+const TYPES = [
+  { id: 'title',            icon: '✟', label: 'Title' },
+  { id: 'content',          icon: '☰', label: 'Content' },
+  { id: 'scripture',        icon: '✦', label: 'Scripture' },
+  { id: 'callout',          icon: '◈', label: 'Callout' },
+  { id: 'question-opening', icon: '?',  label: 'Question' },
+  { id: 'discussion',       icon: '◎', label: 'Discussion' },
+  { id: 'takehome',         icon: '↑',  label: 'Take-Home' },
+];
+
+/* ─── DEFAULT SLIDES ────────────────────────────────────────────── */
+const DEFAULT_SLIDES = [
+  {
+    id: 1, type: 'title',
+    title: 'The Holy Trinity',
+    body: 'Pillar I — What We Believe',
+    note: 'Welcome students. Tell them to look at the question written on the board before you begin. Do not answer it yet.'
+  },
+  {
+    id: 2, type: 'question-opening',
+    title: 'Before we begin…',
+    body: 'If God is love —\nwho did he love\nbefore he created anything?',
+    note: 'Let this sit in silence for a moment. Ask for answers without correcting them. Then tell students: this is exactly what the doctrine of the Trinity answers.'
+  },
+  {
+    id: 3, type: 'content',
+    title: 'What the Church Teaches',
+    body: '- One God in three Persons\n- Not three gods (tritheism)\n- Not one God in three disguises (modalism)\n- Father, Son, and Holy Spirit — each fully God\n- Distinct from each other, but not separate',
+    note: 'Name both errors clearly. Students often carry a vague tritheism (three separate gods) or a vague modalism (one person, three modes). Both are wrong in important ways.'
+  },
+  {
+    id: 4, type: 'content',
+    title: 'The Three Persons',
+    body: '- The Father — unbegotten, the eternal source\n- The Son — eternally begotten of the Father\n- The Holy Spirit — proceeds from Father and Son\n★ "Begotten, not made, consubstantial with the Father"',
+    note: 'The starred line is from the Nicene Creed. Ask if anyone recognizes it — they recite it every Sunday at Mass. That is today\'s doctrine being prayed in real time.'
+  },
+  {
+    id: 5, type: 'content',
+    title: 'The Crisis',
+    body: '> "There was a time when He was not."\n\n- Arius (4th century): Jesus = the greatest creature\n- A creature cannot redeem creation\n- Only the Creator can bear the weight of sin\n- The whole faith hangs on this distinction',
+    note: 'Arius was popular, eloquent, and had emperors on his side. Help students feel the weight of the moment. This was not a debate among academics. It was the pivotal crisis of early Christianity.'
+  },
+  {
+    id: 6, type: 'callout',
+    title: 'Council of Nicaea — 325 AD',
+    body: 'homoiousios\n"similar substance" — Arius\n\nvs.\n\nhomoousios\n"same substance" — Athanasius\n\n★ One letter of difference. The entire faith at stake.',
+    note: 'Write both words on the board if you can. The visual difference of one iota (ι) is the point. Students find it memorable that the whole argument was over one letter.'
+  },
+  {
+    id: 7, type: 'content',
+    title: 'Athanasius contra mundum',
+    body: '- Bishop of Alexandria\n- Exiled five times by emperors who backed Arius\n- Stood alone while the world bent\n★ "Athanasius against the world"\n- He outlasted four emperors. He was right.',
+    note: 'This is worth dwelling on. Ask students: would you hold a position if everyone — including the government — told you to let it go? His courage is the argument that doctrine matters.'
+  },
+  {
+    id: 8, type: 'scripture',
+    title: 'Matthew 28:19',
+    body: '"Go and baptize them in the name of the Father, and of the Son, and of the Holy Spirit."\n\n- "in the name" — singular, one God\n- Three Persons, one name\n- The baptismal formula used at every Catholic baptism',
+    note: 'Ask students: how many names? One — singular. Jesus does not say "in the names of." One name that belongs equally to three Persons. Trinitarian theology embedded in the oldest Christian rite.'
+  },
+  {
+    id: 9, type: 'scripture',
+    title: '1 John 4:8',
+    body: '"God is love."\n\n- Not "God is loving" — God IS love\n- Love requires a real object\n- If God is eternally love, love must exist within God\n★ The Trinity is why this is possible',
+    note: 'This is the philosophical argument for the Trinity from within scripture. If God were a solitary person, he could not be love in himself — only loving toward creatures. The Trinity explains how God can be eternally love before creation ever existed.'
+  },
+  {
+    id: 10, type: 'content',
+    title: 'The Sign of the Cross',
+    body: '"In the name" — one name, one God\n"Of the Father, and of the Son, and of the Holy Spirit" — three Persons\n\n- Done at Baptism, at meals, at death\n- One of the oldest Christian practices\n★ Trinitarian theology in a gesture',
+    note: 'Have students make the Sign of the Cross slowly together. Walk through each phrase aloud. Tell them: every time they do this, they are reciting the doctrine that Athanasius was exiled five times for defending.'
+  },
+  {
+    id: 11, type: 'discussion',
+    title: 'Discussion',
+    body: '- What changes if Jesus is "similar to" God rather than the "same as" God?\n- When Jesus prayed in Gethsemane, was he praying to himself? Why or why not?\n- If God is a communion of love, what does that say about what we are made for?\n★ "Catholics believe in three gods." How do you respond?',
+    note: 'Start with the first question — it reviews the Nicaea content. The last (★) is for engaged or older classes. The third question is the one most likely to stick with students.'
+  },
+  {
+    id: 12, type: 'takehome',
+    title: 'Take-Home',
+    body: 'Pray the Glory Be three times this week.\n\nOnce thinking about the Father.\nOnce thinking about the Son.\nOnce thinking about the Holy Spirit.\n\nCome back ready to share one thing you noticed.',
+    note: 'Keep the close simple. The goal is to let the doctrine become prayer. There are no wrong answers for what they notice — any honest observation is a starting point.'
+  }
+];
+
+/* ─── STATE ─────────────────────────────────────────────────────── */
+let slides = [];
+let selectedIndex = -1;
+let presentIndex = 0;
+let notesVisible = false;
+let nextId = 100;
+
+/* ─── INIT ──────────────────────────────────────────────────────── */
+(function init() {
+  const saved = localStorage.getItem('crux-present-trinity');
+  if (saved) {
+    try {
+      const parsed = JSON.parse(saved);
+      slides = parsed.slides || [...DEFAULT_SLIDES];
+      nextId = parsed.nextId || 100;
+    } catch(e) { slides = [...DEFAULT_SLIDES.map(s => Object.assign({}, s))]; }
+  } else {
+    slides = [...DEFAULT_SLIDES.map(s => Object.assign({}, s))];
+  }
+  renderSlideList();
+  if (slides.length > 0) selectSlide(0);
+})();
+
+/* ─── SAVE ──────────────────────────────────────────────────────── */
+function save() {
+  localStorage.setItem('crux-present-trinity', JSON.stringify({ slides, nextId }));
+}
+
+/* ─── RENDER SLIDE LIST ─────────────────────────────────────────── */
+function renderSlideList() {
+  const list = document.getElementById('slideList');
+  const addBtn = document.getElementById('addSlideBtn');
+  // remove old thumbs
+  list.querySelectorAll('.slide-thumb').forEach(el => el.remove());
+
+  slides.forEach(function(slide, i) {
+    const el = document.createElement('div');
+    el.className = 'slide-thumb' + (i === selectedIndex ? ' active' : '');
+    el.onclick = function() { selectSlide(i); };
+    const typeLabel = (TYPES.find(t => t.id === slide.type) || {}).label || slide.type;
+    el.innerHTML =
+      '<div class="thumb-num">' + (i + 1) + '</div>' +
+      '<div class="thumb-info">' +
+        '<div class="thumb-title">' + escHtml(slide.title || 'Untitled') + '</div>' +
+        '<div class="thumb-type">' + typeLabel + '</div>' +
+      '</div>' +
+      '<div class="thumb-actions">' +
+        '<button class="thumb-move" title="Move up" onclick="event.stopPropagation();moveSlide(' + i + ',-1)">▲</button>' +
+        '<button class="thumb-move" title="Move down" onclick="event.stopPropagation();moveSlide(' + i + ',1)">▼</button>' +
+      '</div>';
+    list.insertBefore(el, addBtn);
+  });
+}
+
+/* ─── SELECT SLIDE ──────────────────────────────────────────────── */
+function selectSlide(i) {
+  selectedIndex = i;
+  renderSlideList();
+  renderEditForm();
+  document.getElementById('deleteBtn').style.display = slides.length > 1 ? '' : 'none';
+}
+
+/* ─── RENDER EDIT FORM ──────────────────────────────────────────── */
+function renderEditForm() {
+  const slide = slides[selectedIndex];
+  if (!slide) {
+    document.getElementById('emptyState').style.display = '';
+    document.getElementById('editForm').style.display = 'none';
+    return;
+  }
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('editForm').style.display = '';
+
+  // Type grid
+  const grid = document.getElementById('typeGrid');
+  grid.innerHTML = TYPES.map(function(t) {
+    return '<div class="type-opt' + (slide.type === t.id ? ' selected' : '') +
+      '" onclick="updateField(\'type\',\'' + t.id + '\')">' +
+      '<span class="type-icon">' + t.icon + '</span>' + t.label + '</div>';
+  }).join('');
+
+  document.getElementById('editTitle').value = slide.title || '';
+  document.getElementById('editBody').value = slide.body || '';
+  document.getElementById('editNote').value = slide.note || '';
+}
+
+/* ─── UPDATE FIELD ──────────────────────────────────────────────── */
+function updateField(field, value) {
+  if (selectedIndex < 0 || selectedIndex >= slides.length) return;
+  slides[selectedIndex][field] = value;
+  save();
+  if (field === 'title' || field === 'type') renderSlideList();
+  if (field === 'type') renderEditForm();
+}
+
+/* ─── ADD SLIDE ─────────────────────────────────────────────────── */
+function addSlide() {
+  const newSlide = {
+    id: nextId++,
+    type: 'content',
+    title: 'New Slide',
+    body: '- Point one\n- Point two\n- Point three',
+    note: ''
+  };
+  slides.push(newSlide);
+  save();
+  renderSlideList();
+  selectSlide(slides.length - 1);
+  // scroll list to bottom
+  const list = document.getElementById('slideList');
+  list.scrollTop = list.scrollHeight;
+}
+
+/* ─── MOVE SLIDE ────────────────────────────────────────────────── */
+function moveSlide(i, dir) {
+  const j = i + dir;
+  if (j < 0 || j >= slides.length) return;
+  const tmp = slides[i];
+  slides[i] = slides[j];
+  slides[j] = tmp;
+  if (selectedIndex === i) selectedIndex = j;
+  else if (selectedIndex === j) selectedIndex = i;
+  save();
+  renderSlideList();
+}
+
+/* ─── DELETE SLIDE ──────────────────────────────────────────────── */
+function confirmDelete() {
+  if (slides.length <= 1) return;
+  if (!confirm('Delete this slide? This cannot be undone.')) return;
+  slides.splice(selectedIndex, 1);
+  selectedIndex = Math.min(selectedIndex, slides.length - 1);
+  save();
+  renderSlideList();
+  renderEditForm();
+  document.getElementById('deleteBtn').style.display = slides.length > 1 ? '' : 'none';
+}
+
+/* ─── RESET DEFAULTS ────────────────────────────────────────────── */
+function resetDefaults() {
+  if (!confirm('Reset all slides to the default content? Your edits will be lost.')) return;
+  slides = DEFAULT_SLIDES.map(function(s) { return Object.assign({}, s); });
+  nextId = 100;
+  selectedIndex = 0;
+  save();
+  renderSlideList();
+  renderEditForm();
+  showToast('Reset to defaults');
+}
+
+/* ─── PRESENTATION ──────────────────────────────────────────────── */
+function enterPresent() {
+  presentIndex = 0;
+  notesVisible = false;
+  document.getElementById('notesOverlay').classList.remove('visible');
+  document.getElementById('notesBtn').classList.remove('notes-active');
+  document.getElementById('presentOverlay').classList.add('active');
+  renderPresentSlide();
+}
+
+function exitPresent() {
+  document.getElementById('presentOverlay').classList.remove('active');
+}
+
+function nextSlide() {
+  if (presentIndex < slides.length - 1) {
+    presentIndex++;
+    renderPresentSlide();
+  }
+}
+
+function prevSlide() {
+  if (presentIndex > 0) {
+    presentIndex--;
+    renderPresentSlide();
+  }
+}
+
+function toggleNotes() {
+  notesVisible = !notesVisible;
+  document.getElementById('notesOverlay').classList.toggle('visible', notesVisible);
+  document.getElementById('notesBtn').classList.toggle('notes-active', notesVisible);
+}
+
+function goToSlide(i) {
+  presentIndex = i;
+  renderPresentSlide();
+}
+
+function renderPresentSlide() {
+  const slide = slides[presentIndex];
+  if (!slide) return;
+
+  // Set type class on container
+  const container = document.getElementById('presentSlide');
+  container.className = 'type-' + slide.type;
+
+  // Render content
+  document.getElementById('slideContentArea').innerHTML = buildSlideHTML(slide);
+
+  // Notes
+  document.getElementById('notesText').textContent = slide.note || 'No presenter notes.';
+
+  // Counter
+  document.getElementById('slideCounter').textContent = (presentIndex + 1) + ' / ' + slides.length;
+
+  // Progress dots
+  const dots = document.getElementById('progressDots');
+  dots.innerHTML = slides.map(function(_, i) {
+    return '<div class="prog-dot' + (i === presentIndex ? ' active' : '') +
+      '" onclick="goToSlide(' + i + ')" title="Slide ' + (i+1) + '"></div>';
+  }).join('');
+
+  // Prev/Next buttons
+  document.getElementById('prevBtn').disabled = presentIndex === 0;
+  document.getElementById('nextBtn').disabled = presentIndex === slides.length - 1;
+}
+
+/* ─── BUILD SLIDE HTML ──────────────────────────────────────────── */
+function buildSlideHTML(slide) {
+  const type = slide.type;
+  const body = slide.body || '';
+
+  if (type === 'title') {
+    const parts = body.split('\n').filter(function(l) { return l.trim(); });
+    const subtitle = parts[0] || '';
+    return '<div class="slide-content sc-title">' +
+      '<div class="slide-eyebrow">Pillar I &nbsp;·&nbsp; What We Believe</div>' +
+      '<h1>' + formatTitleWords(slide.title) + '</h1>' +
+      (subtitle ? '<div class="slide-subtitle">' + escHtml(subtitle) + '</div>' : '') +
+    '</div>';
+  }
+
+  if (type === 'question-opening') {
+    const lines = body.split('\n').filter(function(l) { return l.trim(); });
+    const qHtml = lines.map(function(l) {
+      return '<span>' + escHtml(l) + '</span>';
+    }).join('<br>');
+    return '<div class="slide-content sc-question-opening">' +
+      '<div class="qo-label">Opening Question</div>' +
+      '<div class="qo-text">' + qHtml + '</div>' +
+    '</div>';
+  }
+
+  if (type === 'scripture') {
+    const lines = body.split('\n').filter(function(l) { return l.trim(); });
+    const quoteLine = lines[0] || '';
+    const noteLines = lines.slice(1);
+    return '<div class="slide-content sc-scripture">' +
+      '<div class="scripture-ref">' + escHtml(slide.title) + '</div>' +
+      '<div class="scripture-quote">' + escHtml(quoteLine) + '</div>' +
+      (noteLines.length ? '<div class="scripture-notes">' + parseBodyLines(noteLines) + '</div>' : '') +
+    '</div>';
+  }
+
+  if (type === 'callout') {
+    return '<div class="slide-content sc-callout">' +
+      '<h2>' + escHtml(slide.title) + '</h2>' +
+      '<div class="callout-body">' + parseBodyLines(body.split('\n').filter(function(l) { return l.trim(); })) + '</div>' +
+    '</div>';
+  }
+
+  if (type === 'discussion') {
+    const lines = body.split('\n').filter(function(l) { return l.trim(); });
+    let qHtml = '';
+    let num = 1;
+    lines.forEach(function(line) {
+      const isHL = line.startsWith('★ ');
+      const text = line.startsWith('- ') ? line.slice(2) : (isHL ? line.slice(2) : line);
+      qHtml += '<li data-num="' + num + '"' + (isHL ? ' class="highlight"' : '') + '>' + escHtml(text) + '</li>';
+      num++;
+    });
+    return '<div class="slide-content sc-discussion">' +
+      '<div class="disc-label">Discussion</div>' +
+      '<h2>' + escHtml(slide.title) + '</h2>' +
+      '<ul class="disc-questions">' + qHtml + '</ul>' +
+    '</div>';
+  }
+
+  if (type === 'takehome') {
+    const lines = body.split('\n').filter(function(l) { return l.trim(); });
+    const bodyHtml = lines.map(function(l) { return '<p>' + escHtml(l) + '</p>'; }).join('');
+    return '<div class="slide-content sc-takehome">' +
+      '<div class="th-icon">🕯</div>' +
+      '<div class="th-label">Take-Home</div>' +
+      '<h2>' + escHtml(slide.title) + '</h2>' +
+      '<div class="th-body">' + bodyHtml + '</div>' +
+    '</div>';
+  }
+
+  // Default: content
+  return '<div class="slide-content sc-content">' +
+    '<div class="slide-label">Pillar I · What We Believe</div>' +
+    '<h2>' + escHtml(slide.title) + '</h2>' +
+    '<div class="slide-body">' + parseBodyLines(body.split('\n').filter(function(l) { return l.trim(); })) + '</div>' +
+  '</div>';
+}
+
+/* ─── PARSE BODY LINES ──────────────────────────────────────────── */
+function parseBodyLines(lines) {
+  let html = '';
+  let inList = false;
+  lines.forEach(function(line) {
+    const isBullet = line.startsWith('- ') || line.startsWith('★ ');
+    if (isBullet && !inList) { html += '<ul>'; inList = true; }
+    if (!isBullet && inList) { html += '</ul>'; inList = false; }
+    if (line.startsWith('- ')) {
+      html += '<li>' + escHtml(line.slice(2)) + '</li>';
+    } else if (line.startsWith('★ ')) {
+      html += '<li class="highlight">' + escHtml(line.slice(2)) + '</li>';
+    } else if (line.startsWith('> ')) {
+      html += '<blockquote>' + escHtml(line.slice(2)) + '</blockquote>';
+    } else {
+      html += '<p>' + escHtml(line) + '</p>';
+    }
+  });
+  if (inList) html += '</ul>';
+  return html;
+}
+
+/* ─── HELPERS ───────────────────────────────────────────────────── */
+function escHtml(str) {
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function formatTitleWords(title) {
+  const words = (title || '').split(' ');
+  if (words.length <= 1) return escHtml(title);
+  // Last word gets gold gradient treatment
+  const last = words.pop();
+  return escHtml(words.join(' ')) + ' <em>' + escHtml(last) + '</em>';
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(function() { t.classList.remove('show'); }, 2000);
+}
+
+/* ─── KEYBOARD ──────────────────────────────────────────────────── */
+document.addEventListener('keydown', function(e) {
+  const inPresent = document.getElementById('presentOverlay').classList.contains('active');
+  if (!inPresent) return;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+    e.preventDefault(); nextSlide();
+  } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    e.preventDefault(); prevSlide();
+  } else if (e.key === 'Escape') {
+    exitPresent();
+  } else if (e.key === 'n' || e.key === 'N') {
+    toggleNotes();
+  }
+});
+</script>
+</body>
+</html>
