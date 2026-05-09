@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — He Knows Your Name</title>
+<meta name="description" content="He Knows Your Name: What I Know About God, Doubt, and Why It's Worth Fighting For. By Andrew Conti.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --navy-deep: #0f1222;
+  --navy-light: #252b47;
+  --gold: #d4a574;
+  --gold-light: #e8c99a;
+  --gold-pale: #f5ead8;
+  --gold-dim: rgba(212,165,116,0.15);
+  --cream: #faf8f4;
+  --off-white: #f4f2ee;
+  --white: #ffffff;
+  --text-primary: #1a1f36;
+  --text-secondary: #5a6080;
+  --text-muted-dark: rgba(255,255,255,0.45);
+  --text-soft: rgba(255,255,255,0.7);
+  --border: rgba(26,31,54,0.1);
+  --border-gold: rgba(212,165,116,0.3);
+  --purple: #4a2c6b;
+  --purple-light: #f0eaf8;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: var(--navy-deep);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.6;
+}
+
+/* NAV */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 1rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(15,18,34,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: 5px;
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.nav-back {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--text-muted-dark);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--gold); }
+
+/* HERO */
+.hero {
+  padding: 7rem 2rem 5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--navy-deep);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 800px; height: 700px;
+  background: radial-gradient(ellipse, rgba(212,165,116,0.07) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.hero-track {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  animation: fadeUp 0.7s ease both;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 8vw, 5.5rem);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.05;
+  margin-bottom: 0.75rem;
+  animation: fadeUp 0.7s ease 0.1s both;
+}
+
+.hero-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  color: var(--gold);
+  margin-bottom: 1.75rem;
+  animation: fadeUp 0.7s ease 0.2s both;
+}
+
+.hero-author {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted-dark);
+  margin-bottom: 2.5rem;
+  animation: fadeUp 0.7s ease 0.3s both;
+}
+
+.hero-description {
+  max-width: 580px;
+  margin: 0 auto 3rem;
+  animation: fadeUp 0.7s ease 0.4s both;
+}
+
+.hero-description p {
+  font-size: 1.2rem;
+  color: var(--text-soft);
+  line-height: 1.85;
+}
+
+/* TOC */
+.toc-section {
+  background: rgba(255,255,255,0.02);
+  border-top: 1px solid rgba(212,165,116,0.1);
+  border-bottom: 1px solid rgba(212,165,116,0.1);
+  padding: 3rem 2rem;
+}
+
+.toc-inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.toc-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2rem;
+}
+
+.toc-part-header {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--text-muted-dark);
+  margin: 1.5rem 0 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(212,165,116,0.1);
+}
+
+.toc-list { list-style: none; }
+
+.toc-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.45rem 0;
+}
+
+.toc-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--gold);
+  min-width: 18px;
+  text-align: right;
+}
+
+.toc-link {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+.toc-link:hover { color: var(--gold); }
+
+/* READING AREA */
+.reading-area {
+  background: var(--cream);
+  color: var(--text-primary);
+}
+
+.reading-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 5rem 2rem 6rem;
+}
+
+/* PART DIVIDER */
+.part-divider {
+  text-align: center;
+  padding: 4rem 0 2rem;
+  margin-bottom: 1rem;
+}
+
+.part-divider:not(:first-child) {
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
+}
+
+.part-number {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.part-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+/* CHAPTER */
+.chapter {
+  padding: 3.5rem 0 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter:first-of-type { border-top: none; }
+
+.chapter-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+.chapter-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 2.5rem;
+}
+
+.chapter p {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.2rem;
+  line-height: 1.9;
+  color: var(--text-primary);
+  margin-bottom: 1.4rem;
+}
+
+.chapter p:last-child { margin-bottom: 0; }
+
+/* SCRIPTURE BLOCK */
+.scripture {
+  margin: 2rem 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--off-white);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+}
+
+.scripture p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.05rem !important;
+  line-height: 1.7 !important;
+  color: var(--text-secondary) !important;
+  margin-bottom: 0 !important;
+}
+
+.scripture cite {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--gold);
+  margin-top: 0.6rem;
+}
+
+/* CHAPTER CLOSING LINE */
+.chapter-close {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.35rem !important;
+  font-style: italic;
+  text-align: center;
+  padding: 1.5rem 0 0;
+  color: var(--text-primary) !important;
+}
+
+/* PAUSE PROMPT */
+.pause-prompt {
+  margin: 2.5rem 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--purple-light);
+  border-left: 3px solid var(--purple);
+  border-radius: 0 8px 8px 0;
+}
+
+.pause-prompt p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1rem !important;
+  color: var(--purple) !important;
+  line-height: 1.65 !important;
+  margin-bottom: 0 !important;
+}
+
+/* CLOSING CTA */
+.closing-cta {
+  margin-top: 5rem;
+  padding: 3rem;
+  background: var(--navy);
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid rgba(212,165,116,0.2);
+}
+
+.closing-cta h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.75rem;
+}
+
+.closing-cta p {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.7;
+  max-width: 460px;
+  margin: 0 auto 2rem;
+}
+
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 2.5rem;
+  background: var(--gold);
+  color: var(--navy-deep);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.25s ease;
+  border: 2px solid var(--gold);
+  cursor: pointer;
+}
+
+.btn-gold:hover {
+  background: var(--gold-light);
+  border-color: var(--gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(212,165,116,0.25);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 700px) {
+  .site-nav { padding: 1rem 1.25rem; }
+  .reading-inner { padding: 3rem 1.25rem 5rem; }
+  .closing-cta { padding: 2rem 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">CRUX</a>
+  <a href="index.html" class="nav-back">← Back to CRUX</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-track">About the Creator · Andrew Conti</p>
+  <h1 class="hero-title">He Knows Your Name</h1>
+  <p class="hero-subtitle">What I Know About God, Doubt, and Why It's Worth Fighting For</p>
+  <p class="hero-author">by Andrew Conti</p>
+  <div class="hero-description">
+    <p>A book written for the young believer standing at the edge of the hard years. Not a catechism. Not a lecture. A conversation from someone who has been exactly where you are going.</p>
+  </div>
+</section>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc-section">
+  <div class="toc-inner">
+    <p class="toc-label">Contents</p>
+    <ul class="toc-list">
+      <li class="toc-item">
+        <span class="toc-num">—</span>
+        <span class="toc-link" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">Introduction</span>
+      </li>
+      <li><p class="toc-part-header">Part One — Before the Hard Years</p></li>
+      <li class="toc-item"><span class="toc-num">1</span><span class="toc-link" onclick="document.getElementById('ch1').scrollIntoView({behavior:'smooth'})">The hug I didn't know I needed</span></li>
+      <li class="toc-item"><span class="toc-num">2</span><span class="toc-link" onclick="document.getElementById('ch2').scrollIntoView({behavior:'smooth'})">Father Mike</span></li>
+      <li class="toc-item"><span class="toc-num">3</span><span class="toc-link" onclick="document.getElementById('ch3').scrollIntoView({behavior:'smooth'})">Two ways to believe</span></li>
+      <li><p class="toc-part-header">Part Two — When It Gets Hard</p></li>
+      <li class="toc-item"><span class="toc-num">4</span><span class="toc-link" onclick="document.getElementById('ch4').scrollIntoView({behavior:'smooth'})">When it stops making sense</span></li>
+      <li class="toc-item"><span class="toc-num">5</span><span class="toc-link" onclick="document.getElementById('ch5').scrollIntoView({behavior:'smooth'})">Why does it take the good ones</span></li>
+      <li class="toc-item"><span class="toc-num">6</span><span class="toc-link" onclick="document.getElementById('ch6').scrollIntoView({behavior:'smooth'})">The red text</span></li>
+      <li><p class="toc-part-header">Part Three — The People Who Say It's Fake</p></li>
+      <li class="toc-item"><span class="toc-num">7</span><span class="toc-link" onclick="document.getElementById('ch7').scrollIntoView({behavior:'smooth'})">The things people will say</span></li>
+      <li><p class="toc-part-header">Part Four — What I Wish I'd Known</p></li>
+      <li class="toc-item"><span class="toc-num">8</span><span class="toc-link" onclick="document.getElementById('ch8').scrollIntoView({behavior:'smooth'})">They died for what they saw</span></li>
+      <li class="toc-item"><span class="toc-num">9</span><span class="toc-link" onclick="document.getElementById('ch9').scrollIntoView({behavior:'smooth'})">The numbers don't lie</span></li>
+      <li><p class="toc-part-header">Part Five — What Was Always True</p></li>
+      <li class="toc-item"><span class="toc-num">10</span><span class="toc-link" onclick="document.getElementById('ch10').scrollIntoView({behavior:'smooth'})">He knows your name</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- READING AREA -->
+<div class="reading-area">
+  <div class="reading-inner">
+
+    <!-- INTRODUCTION -->
+    <div class="chapter" id="intro">
+      <p class="chapter-label">Introduction</p>
+      <h2 class="chapter-title">Who I am and why I wrote this</h2>
+      <p>I'm not sure who will ever read this. Maybe only my wife and my parents. But I need to write it anyway.</p>
+      <p>I grew up in small, Central Massachusetts suburbia, born into an Italian-Irish Catholic family. The stereotypical Christian kid. Church wasn't a choice I made. It was just where we went, who we were. I didn't question it for a long time. Then I did.</p>
+      <p>I'm not a theologian or a pastor. I went to Northeastern University in Boston, studied business, coached little league and football in the city, and somewhere along the way realized I genuinely love working with kids. That grew into years of teaching religious education, which eventually put me face to face with a question I couldn't ignore: was I teaching this because I was taught it, or did I actually believe it?</p>
+      <p>So I started digging. Scripture. Ancient history. Apologetics. C.S. Lewis. I wanted to know why people throughout history have been willing to die for this faith, and I wanted to have that faith too. Not the inherited kind that sits quietly in the background, but the kind you've tested and chosen and are ten toes down ready to fight for.</p>
+      <p>I'm writing this in the hope that someone like young Andrew picks it up and realizes this faith is worth defending. Maybe it's a kid from my CCD class. Maybe it's my own son or daughter fifteen years from now. I'm thirty years old and I don't have children yet, but I'm writing this now because I don't want to wait until the moment arrives and scramble. I want it ready.</p>
+      <p>If you picked this up looking to pick a fight with a Christian, that's fine. Read it anyway. If you walk away thinking I'm full of it, okay. I'm not writing this to win an argument. But if you get to the last page and think: okay, he has a point. That's enough for me.</p>
+      <p>Here's what I know: Jesus Christ is a real historical figure. He was God becoming human to walk among us. Not for glory or worship, but because we were too broken to follow the simple rules he'd set out for us. So he came down and showed us how it's done. Whoever you are, Jesus is either the most important figure in the entire history of the world, worth learning more about, or he's a madman and a liar. I don't plan to prove which one. But if you walk away from this ready to seek him yourself, that's enough for me.</p>
+    </div>
+
+    <!-- PART 1 -->
+    <div class="part-divider">
+      <span class="part-number">Part One</span>
+      <h2 class="part-title">Before the Hard Years</h2>
+    </div>
+
+    <div class="chapter" id="ch1">
+      <p class="chapter-label">Chapter 1</p>
+      <h2 class="chapter-title">The hug I didn't know I needed</h2>
+      <p>There were about a hundred places I would rather have been. I was on my second prestige in the new Call of Duty and my progress was just sitting there, waiting. What ten year old wants to spend a day listening to church music?</p>
+      <p>But we went. We parked in some massive field you would never have known existed in whatever map-dot town this festival was in. When I got out of the car I couldn't believe how many people were there. More than that, I couldn't believe how happy everyone looked. I came from a great church — I want to be clear about that — but Catholics are usually stoic. Almost intimidating. These people were nothing like that.</p>
+      <p>I don't remember most of who played that day. I walked away with a signed hat from some Christian rap artist whose name I could not tell you now if my life depended on it. But I remember standing there watching a guy on stage rapping about God — the kind of music I listened to before football games. Wait. Is Christianity cool? My whole life I'd been the Christian kid, the one the bullies said was just a sheep following his parents. And here were thousands of people who didn't look like sheep at all. They just looked like people who believed something and weren't embarrassed about it. For the first time I looked around and thought, okay. I can get with this.</p>
+      <p>Then the priest came on stage and asked everyone to get down on their hands and knees and bow. I was ten years old and I was way too cool for that. Kneel in front of all these people? Yeah, okay. But then everyone did it, and suddenly I was the weird one for standing. So eventually I thought, fine, whatever, and I got down.</p>
+      <p>I don't remember that moment because of anything the priest said. I don't remember it because it was beautiful to watch thousands of people bowing together, though it was. I remember it because when I put my forehead to the ground, I felt God's presence. I can't explain that to you any better than that. It's a canon moment in the story of me.</p>
+      <p>I got up off that ground a different kid than the one who drove in. Not the Christian kid in class anymore. A child of God. And from that day I've wanted nothing more than for everyone to feel what I felt in that field — just once. Because if they could feel it once, they'd get it.</p>
+      <p>I'm guessing something like that brought you here too. Maybe it wasn't a festival in a field. Maybe it was something quieter, or something you can't even name yet. But something shifted enough that you picked up a book about your faith, and that's a good start. The problem is that feeling alone won't be enough. Life is going to get hard, people are going to push back, and when that happens you're going to need a lot more ammunition than a memory. That's what this book is for.</p>
+    </div>
+
+    <div class="chapter" id="ch2">
+      <p class="chapter-label">Chapter 2</p>
+      <h2 class="chapter-title">Father Mike</h2>
+      <p>Before I ever had a theology lesson, before I could argue a single point about faith, I had Father Mike.</p>
+      <p>On the outside he was just an average-height, jolly guy with a combover and a Steelers obsession he could not keep to himself for a single Sunday mass. If you were a Patriots fan sitting in his pews, and in Central Massachusetts most of us were, you were getting chirped. Gently, lovingly, but you were getting chirped. That was Father Mike.</p>
+      <p>But when he preached, you listened. I know because my mom played organ at Saint Anne's and dragged me along to every mass since before I could tie my shoes, so I heard him more than most. And what you realized, the longer you listened, was that the Steelers stuff and the jokes weren't the point. The point was that he genuinely loved every single person in those pews. Not in a general, congregation-as-a-whole way. He knew us each by name. He ended summer bible school with a water gun fight. He was a man of the people in the truest sense, and the people knew it.</p>
+      <p>He's the most like-Jesus person I've ever met. I don't say that lightly. He set the bar for every priest I've compared to since, and none of them have quite cleared it.</p>
+      <p>Saint Anne's wasn't much to look at from the outside. Driving by, you wouldn't think twice about it. But what was built inside that building — the community, the people, the sense that we all belonged to something together — followed me for the rest of my life. When the diocese decided to consolidate parishes and close Saint Anne's, our community fought it. We went all the way to Boston to protest. I was maybe in third grade, but I still remember all of us packed into that church in our Saint Anne's shirts, holding hands across the aisle as we said the Our Father together. It didn't save it. The church closed anyway, and our community scattered.</p>
+      <p>To this day I still run into people from Saint Anne's and feel it immediately. That sense of family. That's what a church is supposed to be. I've been looking for it ever since and I haven't quite found it.</p>
+      <p>Faith, for me, was a person and a place before it was ever a doctrine. I went home from that church every week and watched it live in two more people, in completely different ways.</p>
+    </div>
+
+    <div class="chapter" id="ch3">
+      <p class="chapter-label">Chapter 3</p>
+      <h2 class="chapter-title">Two ways to believe</h2>
+      <p>My mom learned to play piano from a woman named Patsy Mollica. If you want to know what that sounds like, you can still look her up. Patsy is one of those people I just know I'll see again someday. My mom carried that same spirit into everything she did. She became the organist at our church, and faith was just woven into how she moved through life. Unannounced, unperformed. Just there, steady, the way breathing is steady. For most of my childhood she was the religious core of our family. My dad tagged along.</p>
+      <p>That changed when I was around twelve.</p>
+      <p>Around that time our family had just lived through something I can only call a miracle. My Uncle Kelly (sup, Uncle Kel, if you're reading this) survived lung cancer that the doctors had guaranteed would kill him. Guaranteed. My cousin Kelly Jr., who is somehow a foot taller than me despite sharing a gene pool, had to come live with us for a while so he wouldn't have to watch his dad die. And then his dad didn't die.</p>
+      <p>One night not long after, we took Kelly Jr. to an AHL hockey game. Just a distraction, something to get his mind off everything. He caught a puck. Then, out of nowhere, he won a framed set of autographed cards from the 2008 New England Patriots — the team that went undefeated. At a minor league hockey game. I remember my dad breaking down crying. I think that was the moment something clicked for him — that there was someone up there pulling the strings, and that the community we had built around our faith wasn't just something you participated in. It was something you gave your life to.</p>
+      <p>He announced he was going to study to become a Deacon.</p>
+      <p>My dad and I aren't the mushy type. We don't need a lot of words to get a point across. Men are efficient that way, sometimes. So I won't try to dress up what watching him do that felt like. I was proud. That's the whole sentence. I was proud.</p>
+      <p>But something else happened too. When he stood up and said here I am, Lord, send me, our family dynamic shifted. My mom had always shown me that faith was something you were born into, something that ran quietly through everything. My dad showed me that faith was also something you chose, out loud, in front of everyone, at a moment when life had made it impossible to stay quiet about it.</p>
+      <p>From that point on, my dad was a Deacon. And I wasn't just the Christian kid anymore. I had a Deacon for a father, and my faith became my identity.</p>
+    </div>
+
+    <!-- PART 2 -->
+    <div class="part-divider">
+      <span class="part-number">Part Two</span>
+      <h2 class="part-title">When It Gets Hard</h2>
+    </div>
+
+    <div class="chapter" id="ch4">
+      <p class="chapter-label">Chapter 4</p>
+      <h2 class="chapter-title">When it stops making sense</h2>
+      <p>If you've ever played high school football, you know what the varsity quarterback means. He's not just popular. He's the standard. He's what everyone in the program is working toward.</p>
+      <p>Will was that guy my freshman year. And he wasn't just the right kid at the right time. He broke every record at our school, including ones set by Hal Gill, who went on to play defense in the NHL for years. When Will graduated he became one of the first players from our school to ever go Division I, signing with Wagner College. I remember thinking: guess I'm a Wagner fan now.</p>
+      <p>I didn't know Will well. We were in the same stretching line before practice. In the hallways he called me Mr. Cross the Boss and always said what's up. It was probably nothing to him. It meant a lot to me.</p>
+      <p>One morning I came to school and heard the news. Will had wrecked his car in a freak accident, skidding off the road and hitting the one telephone pole in a hundred-yard radius. He was ejected. He survived for a short time. I wrote him a card while he was in the hospital. Bend don't break, from Mr. Cross the Boss — the same speech our coach had given us a hundred times. Will never got to read it. He died of his injuries before it reached him.</p>
+      <p>The line at his wake was a mile long. Every alumni, every coach, every teammate. People who hadn't been back in years. Will wasn't even religious, and none of that mattered. What mattered was that he was gone and none of it made any sense.</p>
+      <p>I remember standing there thinking: what the hell? Not as a question. As a statement. What is the actual point of this? Why does someone like that, young and gifted, the kind of person who makes everyone around him feel seen, why does he get a telephone pole and an ejection and a card he never reads?</p>
+      <p>That was the first time God felt absent to me. Not disproved or argued away. Just gone. Or at least that's how it felt at the time.</p>
+      <p>I've thought about that a lot in the years since. A priest once told me that lives are like rocks skipping across the ocean. Some small rocks skip once and drift away. Bigger ones make a splash. But an asteroid hits the water and sends waves that extend for miles. Will's death was an asteroid. The shockwave from it changed our community, changed the people who loved him, changed me. That mile-long line of people at his wake wasn't just grief. It was evidence: a mile of individual lives, each one touched and altered by a single person who didn't make it to twenty-two.</p>
+      <p>I don't know if that was God's plan. I still wrestle with that. But I've come to believe that the waves from an asteroid don't just happen randomly. Something sent it. And maybe the point was never Will's death. Maybe the point was everything those waves built in the people left behind.</p>
+    </div>
+
+    <div class="chapter" id="ch5">
+      <p class="chapter-label">Chapter 5</p>
+      <h2 class="chapter-title">Why does it take the good ones</h2>
+      <p>Jeff and I were cut from the same cloth. Both on the shorter side. I chose to bulk up and play football. He chose motorcycles and learning to build cars from scratch. Different paths, same kind of person. We were close freshman and sophomore year until our schedules stopped syncing and we drifted the way you do. But every time I saw him after that it was like no time had passed at all. One of my best memories with him is a night we sat in his garage until the early hours of the morning — Coronas, talking about life and girls and sports and nothing in particular. We were probably twenty-four. I didn't know it would be one of the last times I'd really have him.</p>
+      <p>The call came from my best friend Brady, who lived down the street from Jeff. Jeff had wrecked his motorcycle. He didn't make it.</p>
+      <p>His death hit me like a freight train. Not because we were inseparable. We weren't, not by that point. But because Jeff was the kind of person who deserved a lifetime. He loved the people around him deeply and they loved him back. His wake line was long, same as Will's, but this one felt different. I wasn't angry this time. I was just sorry. Sorry I hadn't spent more time with him when I had the chance. Sorry that someone that good got that little time. The question his death raised wasn't what's the point. It was simpler and heavier than that. Why him? Why is it always the ones like that?</p>
+      <p>I didn't have an answer for Jeff. I still don't, not fully. But then came Chad, and Chad raised a question I wasn't equipped to answer at all.</p>
+      <p>Chad was like a little cousin to me, the younger brother of one of my closest friends, part of a family I'd spent years around. His dad coached me in football, and I'd spent plenty of Sundays scouting pop warner games across Central Massachusetts with him. Chad had that kind of family. And Chad himself — everyone loved him. I mean everyone. I don't know a single person who would have had a bad word to say about him.</p>
+      <p>His problem was never getting along with people. His problem was his own mind. He had a diagnosed mental illness, and he fought it as best he could. Eventually it won. Brady was the one who called me. "Chad is dead. He killed himself." My only response was: our Chad? No.</p>
+      <p>I've never felt so broken for someone in my life. A car accident I can make some kind of peace with. Those are waiting for any of us, any day. But suicide? And Chad, of all people? Someone so full of life, so loved, with so many people who would have shown up for him? How does that happen? And how is any of it good?</p>
+      <p>But the question that weighed on me most was the one I was almost afraid to ask. Suicide is said to be a mortal sin. Does that mean Chad goes to hell?</p>
+      <p>I couldn't accept that. I still don't. Chad had a mental illness. He didn't take his life so much as his illness took it from him. That doesn't make him unfit for heaven. Chad knew who Jesus was. He may not have declared it in this life, but I believe there's a place for people like Chad to be made ready. Some of us need more cleansing than others before we're fit for the feast, but God doesn't write off the ones who are lost. He goes looking for them.</p>
+      <p>God will always leave the ninety-nine to find the one.</p>
+    </div>
+
+    <div class="chapter" id="ch6">
+      <p class="chapter-label">Chapter 6</p>
+      <h2 class="chapter-title">The red text</h2>
+      <p>Every time I found myself in the dark, after Will, after Jeff, after Chad, I kept coming back to the same question. Not would God allow this, not where was God in this. Just: would the Jesus I know want this for me? And every time, the answer was the same. No way.</p>
+      <p>Because I know Jesus. Not through a theology degree or a systematic reading of scripture. I know him through his own words. The red text. And the Jesus in those pages is not a God who is distant from pain. He is a God who walked straight into it.</p>
+      <p>If you think you know suffering, look at his hands and feet and side. If you think you know pain, look at him being scourged, spit on, and mocked by the same people who had welcomed him into Jerusalem a week before. If you think you know what it means to lose everything, look at him hanging on that cross while his own disciples scattered and left him there alone.</p>
+      <p>And he felt it. All of it. He wept at a tomb before he performed a miracle there. He flipped tables in the temple because injustice made him furious. He cried out from the cross asking why God had forsaken him. This is not a God watching from a comfortable distance. This is a God who put on skin and felt every version of what we feel: the grief, the rage, the fear, the abandonment. And kept going anyway.</p>
+      <p>Jesus experienced all of our trauma collectively, at the same time, and he nailed it to the cross. And with his final breath he said one word that changed everything. Tetelestai. It is finished.</p>
+      <p>You don't need to have every answer. You don't need a concrete understanding of everything the Bible has ever said or how it can be proven historically. Pick up your Bible sometime and just look at the size of it. How long the Old Testament runs compared to the New. All of that, and then Jesus arrives and doesn't need much explaining at all.</p>
+      <p>I can't always wrap my head around Genesis or Revelation. But there's something in the middle, the Gospels, the red text, Jesus speaking in his own words, that I keep coming back to. He is all you need. Maybe that's the whole point.</p>
+    </div>
+
+    <!-- PART 3 -->
+    <div class="part-divider">
+      <span class="part-number">Part Three</span>
+      <h2 class="part-title">The People Who Say It's Fake</h2>
+    </div>
+
+    <div class="chapter" id="ch7">
+      <p class="chapter-label">Chapter 7</p>
+      <h2 class="chapter-title">The things people will say</h2>
+      <p>When I was in elementary school nobody cared what you believed. We were just kids. Hindu, Jewish, Christian. It didn't matter. Nobody had enough opinions yet to make it matter. I wore a cross around my neck and loved God and it was mine, private, uncontested.</p>
+      <p>Then we grew up and everyone got the internet and learned how to share their opinions, and keeping your faith to yourself got a lot harder.</p>
+      <p>I remember people saying around me that religion was a scam. They had ammunition on their side: the Catholic priest scandals, the state of the world, the general sense that believing in God was something naive people did before they knew better. I was a believer and I didn't have the words to push back, so mostly I didn't. Cross tucked under the jersey. Quiet when others made jokes. I knew what I believed. I told myself that was enough.</p>
+      <p>But as I got older, the attacks started feeling more personal. More targeted. And one day, someone commented on a Bible verse I had posted on Facebook. This was when people actually posted Bible verses on Facebook like it was Twitter. Something along the lines of: if your God is so good, why did Hurricane Katrina just wipe out thousands of lives?</p>
+      <p>I'd never really been pushed back on for my faith before, not like that. And right around that time I had come across a verse that hit differently than most:</p>
+
+      <div class="scripture">
+        <p>"So everyone who acknowledges me before men, I also will acknowledge before my Father who is in heaven. But whoever denies me before men, I also will deny before my Father who is in heaven."</p>
+        <cite>Matthew 10:32–33</cite>
+      </div>
+
+      <p>I sat with that for a second. You can't post Bible verses, wear the cross, show your faith, and then at the first sign of attack, flee. That's not faith. That's decoration.</p>
+      <p>So I commented back. Something like: God didn't kill thousands of people with a hurricane. A hurricane happened, and God is still there for the people left behind. It wasn't a great theological argument. The kid didn't even respond. But something else happened — a bunch of kids from school liked the comment. Some of them messaged me afterward. Dude, that was awesome. Good for you.</p>
+      <p>That was the first time I realized I wasn't the only one who felt this way. I was just the first one willing to say it out loud.</p>
+      <p>Here's what I want you to understand before we go any further. The goal in those moments is not to win the argument. Most of the time you won't, not because you're wrong but because someone who is trying to embarrass you isn't actually looking for an answer. The goal is to say the true thing clearly enough that the people around you who already believe it feel less alone. They're there. They're always there. They're just waiting for someone to go first.</p>
+      <p>And I'll be honest with you about something. I didn't always go first. There were moments I should have said something and I stayed quiet because the cost felt too high. Someone once said something about Mary that I won't repeat here, something designed to humiliate rather than debate, and I said nothing. I walked away and felt like I'd failed something. That feeling stayed with me a long time. I'm telling you this because if you've had a moment like that — and you will — it doesn't make you a coward. It means you weren't ready yet. This book is about getting you ready.</p>
+    </div>
+
+    <!-- PART 4 -->
+    <div class="part-divider">
+      <span class="part-number">Part Four</span>
+      <h2 class="part-title">What I Wish I'd Known</h2>
+    </div>
+
+    <div class="chapter" id="ch8">
+      <p class="chapter-label">Chapter 8</p>
+      <h2 class="chapter-title">They died for what they saw</h2>
+      <p>History was my favorite subject in middle school. Caesar, Alexander the Great, Plato, Aristotle. I loved all of it. We never talked about Jesus in class because we weren't allowed to, and I never thought much about that at the time.</p>
+      <p>What I didn't realize until I was older is that there is more historical evidence for Jesus than for any of those figures we studied. You can choose not to believe he was God. You can choose not to believe in the miracles. That's between you and him. But our entire calendar revolves around his death, and there are more manuscripts confirming his existence than there are for Caesar, Aristotle, and Alexander the Great combined, by a factor of a thousand. If the Bible belongs in the fiction section, so does your entire history textbook.</p>
+      <p>But the manuscript count isn't even the strongest argument. The strongest argument is twelve ordinary men.</p>
+      <p>We all have people we'd die for. A best friend, a parent, someone who has walked alongside you long enough that you know without question you'd lay down your life for them. So even if you weren't there, you can imagine what it meant to walk with Jesus for three years. To hear him teach. To watch him move through a crowd. To be one of the people he chose by name. You can't read every conversation the disciples had with him, but you can read the most important ones.</p>
+      <p>Here's what I want you to notice though. The most important thing about the disciples isn't their bravery. It's their fear. Jesus told Peter he would deny him three times before the rooster crowed. And Peter did. This was not a man of steel. This was a man who was so afraid of what would happen to him that he abandoned his closest friend at the moment of his death.</p>
+      <p>So what happened between that moment and Pentecost that turned a coward into the first Pope?</p>
+      <p>It wasn't a change of heart. If faith alone could do that, Peter never would have fled in the first place. What changed Peter was that he saw a man crucified, buried, and sealed in a tomb walk up to him three days later. The same Jesus who had told him he would deny him. The same Jesus he had watched die. Standing there. Telling him: you doubted on the water, you doubted at the cross. Doubt no more. Be the rock I called you to be.</p>
+      <p>That same Peter was eventually crucified himself. Upside down, because he didn't feel worthy to die in the same manner as Christ.</p>
+      <p>You can deny a lot of things about religion. I can't hand you scientific proof that Jesus healed blind men. But I can show you the historical record of every one of his disciples dying brutal deaths rather than simply say the words: he wasn't real, we made it up. None of them said it. Not one. People die for things they believe are true all the time. But people don't die for things they know are lies. These men were there. They saw what they saw. And whatever they saw was worth dying for rather than deny.</p>
+    </div>
+
+    <div class="chapter" id="ch9">
+      <p class="chapter-label">Chapter 9</p>
+      <h2 class="chapter-title">The numbers don't lie</h2>
+      <p>Around tenth grade I became obsessed with outer space. I was convinced I'd become an aerospace engineer someday, maybe even an astronaut. I was the kid who believed nothing was impossible. Spoiler alert: I'm not an astronaut. Science was not my best subject.</p>
+      <p>But during that time I kept running into the same problem with the way science explained the beginning of everything. The Big Bang Theory never scratched the itch for me. Not because I thought scientists were wrong that there was an origin point — I believed that. I just couldn't accept that we ended up here by accident. That the precise conditions required for life, for love, for consciousness, for the ability to even ask the question, just happened to align by chance. The more I looked at the science the more it felt like someone had set the table very deliberately and then walked out of the room before anyone could see them do it.</p>
+      <p>Then I read a book called <em>The Language of God</em> by Francis Collins. Collins isn't a pastor or a theologian. He's the scientist who led the Human Genome Project, the team that mapped human DNA for the first time. And instead of that work pulling him away from faith, it did the opposite. The deeper he went into the machinery of life, the more convinced he became that it was designed. His argument wasn't that science is wrong. It was that science, followed far enough, starts to sound a lot like God.</p>
+      <p>He speaks and matter is created. He breathes and life is created. The Language of God taught me that you don't have to choose between taking science seriously and believing in a creator. A world that was intentionally built and a world that science can describe are not opposites. They're the same world looked at from two different angles.</p>
+      <p>Collins isn't alone. A priest I know was originally a science major in college. The deeper he went into the intricacies of human biology the more his faith grew, not less. It eventually led him to the priesthood. And not long ago a NASA astronaut returned from the Artemis II mission, looked back at the earth floating in space, and wept at the sight of a cross. That's not a momentary emotion. That's a man who had seen more of the universe than almost any human alive and couldn't make himself believe it was random.</p>
+      <p>These aren't people who believe because they don't know enough. They're people who know more than almost anyone and arrived at the same place. When the smartest people in the room look at the evidence and keep finding God, that's worth paying attention to.</p>
+      <p>Scientists aren't wrong. They just say it louder than they realize.</p>
+    </div>
+
+    <!-- PART 5 -->
+    <div class="part-divider">
+      <span class="part-number">Part Five</span>
+      <h2 class="part-title">What Was Always True</h2>
+    </div>
+
+    <div class="chapter" id="ch10">
+      <p class="chapter-label">Chapter 10</p>
+      <h2 class="chapter-title">He knows your name</h2>
+      <p>Life is going to be difficult. You are going to face trials and tribulations. You will lose people dear to you and make mistakes you think can't be forgiven.</p>
+      <p>But I have good news for you.</p>
+      <p>Jesus doesn't care how many times you fall down. Only that you get back up. Every loss in my life, every setback, I've had the Holy Spirit right beside me saying this is part of my plan. I didn't always accept it at the time. But I could see him working, and I knew that even when nothing made sense, the view from heaven has a much better idea of where my story ends and what I need to go through to get there. That's the faith I want you to have. Just because life isn't fair doesn't mean God doesn't care. He does. More than you know. And it's never too late to start.</p>
+      <p>My favorite scene in the entire Bible isn't a miracle or a psalm. It's a conversation between Jesus and a thief, two men dying on crosses side by side. The thief asks Jesus to remember him when he comes into his kingdom. Jesus doesn't say: you think one dying prayer is enough to save you? He says: today you will dine with me in paradise. Today, before you've been cleansed, before you've earned anything, before you've had a single day to make it right. Faith saves, even in our darkest moments. Even at the very end.</p>
+      <p>This faith we have in Jesus is either the most important thing in the entire world or it's meaningless. He either is who he says he is, or we're dead wrong and walking a path to nowhere. That's still for you to decide. But I know beyond a shadow of a doubt what's waiting for me on the other side.</p>
+      <p>A God who loved me enough to lay down his only son. God is omnipresent. He exists beyond time and space. He knew Judas would betray him and invited him to follow anyway. He saw every moment of what was coming and walked toward it anyway. He did nothing by accident.</p>
+      <p>Which means he sees you. Right now. Reading this. He knew you would be here, on this page, at this moment. And when he was beaten and spat on and mocked and killed, he did it for you personally. Not for the world as an abstract idea.</p>
+      <p class="chapter-close">For you.</p>
+    </div>
+
+    <!-- CLOSING CTA -->
+    <div class="closing-cta">
+      <h3>This is why CRUX exists.</h3>
+      <p>Andrew built CRUX to give young believers the intellectual scaffolding to go with their faith. The ammunition to say "okay yeah, this is worth believing in" when the world pushes back.</p>
+      <a href="index.html" class="btn-gold">Explore CRUX →</a>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
+HTMLEOF
+echo "Done"
