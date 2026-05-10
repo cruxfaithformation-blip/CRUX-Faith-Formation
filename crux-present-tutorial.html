@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Presentation Creator — How to Use · CRUX</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1a1f36; --navy-deep: #0f1222; --navy-mid: #252b47;
+  --gold: #d4a574; --gold-light: #e8c99a; --gold-dim: rgba(212,165,116,0.1);
+  --off-white: #f8f7f4; --white: #fff;
+  --text: #1a1f36; --soft: #5a6282; --muted: #8890b0;
+  --border: rgba(26,31,54,0.1); --border-gold: rgba(212,165,116,0.25);
+  --shadow: 0 2px 12px rgba(26,31,54,0.08);
+  --shadow-md: 0 4px 24px rgba(26,31,54,0.12);
+}
+
+body { font-family: 'Inter', sans-serif; background: var(--off-white); color: var(--text); }
+
+/* ── HEADER ── */
+header {
+  background: var(--navy-deep); padding: 1.1rem 2rem;
+  display: flex; align-items: center; justify-content: space-between;
+  position: sticky; top: 0; z-index: 100;
+  border-bottom: 1px solid rgba(212,165,116,0.1);
+}
+.hdr-logo { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900; letter-spacing: 5px; color: var(--gold); text-decoration: none; }
+.hdr-label { font-size: 0.72rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.35); border-left: 1px solid rgba(255,255,255,0.12); padding-left: 1.25rem; margin-left: 1.25rem; }
+.hdr-left { display: flex; align-items: center; }
+.btn-back-hdr {
+  font-size: 0.78rem; font-weight: 600; color: rgba(255,255,255,0.5);
+  text-decoration: none; border: 1.5px solid rgba(255,255,255,0.15);
+  padding: 0.4rem 1rem; border-radius: 6px; transition: all 0.2s;
+}
+.btn-back-hdr:hover { color: var(--gold); border-color: rgba(212,165,116,0.4); }
+
+/* ── HERO ── */
+.hero {
+  background: var(--navy); padding: 4rem 2rem 3.5rem; text-align: center;
+  border-bottom: 1px solid rgba(212,165,116,0.12);
+}
+.hero-eyebrow {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
+  color: rgba(212,165,116,0.7); margin-bottom: 1rem;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 5vw, 3rem);
+  font-weight: 700; color: #fff; line-height: 1.2; margin-bottom: 0.85rem;
+}
+.hero h1 em { font-style: italic; color: var(--gold); }
+.hero p { font-size: 1.05rem; color: rgba(255,255,255,0.55); max-width: 520px; margin: 0 auto 2rem; line-height: 1.7; }
+.hero-cta {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--gold); color: var(--navy-deep); text-decoration: none;
+  font-size: 0.82rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  padding: 0.8rem 2rem; border-radius: 6px; transition: opacity 0.2s;
+}
+.hero-cta:hover { opacity: 0.88; }
+
+/* ── TOC ── */
+.toc-wrap { max-width: 860px; margin: 0 auto; padding: 2.5rem 2rem 0; }
+.toc {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.5rem 1.75rem; box-shadow: var(--shadow);
+}
+.toc-title { font-size: 0.65rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--muted); margin-bottom: 1rem; }
+.toc-list { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+.toc-list a {
+  font-size: 0.88rem; font-weight: 500; color: var(--soft); text-decoration: none;
+  display: flex; align-items: center; gap: 0.6rem; transition: color 0.15s;
+}
+.toc-list a:hover { color: var(--navy); }
+.toc-num {
+  width: 20px; height: 20px; border-radius: 50%; background: var(--gold-dim);
+  border: 1px solid var(--border-gold); color: var(--gold); font-size: 0.62rem;
+  font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+}
+
+/* ── MAIN CONTENT ── */
+.content { max-width: 860px; margin: 0 auto; padding: 3rem 2rem 6rem; }
+
+.tutorial-section { margin-bottom: 4rem; }
+.section-anchor { display: block; height: 80px; margin-top: -80px; visibility: hidden; }
+
+.section-eyebrow {
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 0.6rem;
+}
+.section-title {
+  font-family: 'Playfair Display', serif; font-size: clamp(1.4rem, 3.5vw, 2rem);
+  font-weight: 700; color: var(--navy); margin-bottom: 0.75rem; line-height: 1.25;
+}
+.section-intro { font-size: 0.97rem; color: var(--soft); line-height: 1.75; margin-bottom: 2rem; max-width: 640px; }
+
+/* ── STEP CARDS ── */
+.steps { display: flex; flex-direction: column; gap: 1.25rem; }
+.step {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 12px; padding: 1.5rem 1.75rem;
+  display: flex; gap: 1.25rem; align-items: flex-start;
+  box-shadow: var(--shadow);
+}
+.step-num {
+  width: 36px; height: 36px; border-radius: 50%; background: var(--navy);
+  color: var(--gold); font-size: 0.8rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 2px;
+}
+.step-body { flex: 1; }
+.step-title { font-size: 0.95rem; font-weight: 700; color: var(--navy); margin-bottom: 0.35rem; }
+.step-desc { font-size: 0.88rem; color: var(--soft); line-height: 1.7; }
+.step-desc code {
+  background: rgba(26,31,54,0.07); padding: 0.1rem 0.4rem;
+  border-radius: 4px; font-family: monospace; font-size: 0.82rem; color: var(--navy);
+}
+.tip {
+  margin-top: 0.65rem; padding: 0.6rem 0.9rem;
+  background: rgba(212,165,116,0.08); border-left: 3px solid var(--gold);
+  border-radius: 0 6px 6px 0; font-size: 0.82rem; color: var(--soft); line-height: 1.6;
+}
+.tip strong { color: var(--navy); }
+
+/* ── UI MOCK ── */
+.ui-mock {
+  background: #141829; border-radius: 10px; overflow: hidden;
+  box-shadow: var(--shadow-md); margin: 1.5rem 0;
+  border: 1px solid rgba(255,255,255,0.05);
+}
+.mock-header {
+  background: #0f1222; padding: 0.6rem 1rem;
+  display: flex; align-items: center; gap: 0.75rem;
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+.mock-logo { font-family: 'Playfair Display', serif; font-size: 0.85rem; font-weight: 900; letter-spacing: 3px; color: #d4a574; }
+.mock-title { font-size: 0.62rem; color: rgba(255,255,255,0.3); flex: 1; }
+.mock-btns { display: flex; gap: 0.4rem; }
+.mock-btn {
+  font-size: 0.58rem; font-weight: 600; padding: 0.22rem 0.6rem;
+  border-radius: 3px; background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.45);
+}
+.mock-btn.gold { background: #d4a574; color: #0f1222; }
+.mock-body { display: flex; height: 180px; }
+.mock-sidebar {
+  width: 100px; background: #0f1222; border-right: 1px solid rgba(255,255,255,0.04);
+  padding: 0.5rem; display: flex; flex-direction: column; gap: 0.3rem;
+}
+.mock-thumb {
+  padding: 0.35rem 0.5rem; border-radius: 4px; border-left: 2px solid transparent;
+  display: flex; flex-direction: column; gap: 2px;
+}
+.mock-thumb.active { border-left-color: #d4a574; background: rgba(212,165,116,0.06); }
+.mock-thumb-title { font-size: 0.5rem; color: rgba(255,255,255,0.5); font-weight: 600; }
+.mock-thumb.active .mock-thumb-title { color: #d4a574; }
+.mock-thumb-type { font-size: 0.42rem; color: rgba(255,255,255,0.2); text-transform: uppercase; letter-spacing: 0.5px; }
+.mock-slide {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 0.4rem; padding: 1rem;
+}
+.mock-edit { width: 220px; background: #f8f7f4; border-left: 1px solid rgba(26,31,54,0.08); padding: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; }
+.mock-field-label { font-size: 0.5rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: #8890b0; margin-bottom: 1px; }
+.mock-field { background: #fff; border: 1px solid rgba(26,31,54,0.1); border-radius: 4px; padding: 0.3rem 0.5rem; font-size: 0.55rem; color: #1a1f36; }
+.mock-field.tall { height: 35px; }
+
+/* Slide type preview cards */
+.slide-types { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 1.25rem; margin-top: 1.5rem; }
+.slide-type-card {
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: 12px; overflow: hidden; box-shadow: var(--shadow);
+}
+.slide-preview {
+  height: 130px; display: flex; flex-direction: column;
+  align-items: center; justify-content: center; padding: 1.25rem; gap: 0.4rem;
+  position: relative;
+}
+.slide-preview.navy { background: #1a1f36; }
+.slide-preview.dark { background: #0f1222; }
+.slide-preview.blue { background: linear-gradient(135deg,#0d47a1,#1565c0); }
+.slide-preview.purple { background: linear-gradient(135deg,#4a148c,#6a1b9a); }
+.slide-preview.green { background: linear-gradient(135deg,#1b5e20,#2e7d32); }
+.slide-preview.amber { background: linear-gradient(135deg,#e65100,#f57c00); }
+.slide-preview.teal { background: linear-gradient(135deg,#004d40,#00695c); }
+.slide-preview.rose { background: linear-gradient(135deg,#880e4f,#ad1457); }
+.slide-preview.split-bg { background: #1a1f36; display: grid; grid-template-columns: 1fr 1px 1fr; padding: 1rem; gap: 0; }
+.slide-preview.compare-bg { background: #1a1f36; }
+
+.prev-eyebrow { font-size: 0.48rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: rgba(212,165,116,0.7); }
+.prev-h1 { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 900; color: #fff; text-align: center; line-height: 1.2; }
+.prev-h1 em { color: #d4a574; font-style: normal; }
+.prev-sub { font-size: 0.52rem; font-style: italic; color: rgba(255,255,255,0.4); font-family: 'Playfair Display', serif; }
+.prev-label { font-size: 0.45rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #d4a574; }
+.prev-h2 { font-family: 'Playfair Display', serif; font-size: 0.75rem; font-weight: 700; color: #fff; }
+.prev-bullet { font-size: 0.5rem; color: rgba(255,255,255,0.7); width: 100%; }
+.prev-bullet::before { content: '— '; color: #d4a574; }
+.prev-quote { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.6rem; color: rgba(255,255,255,0.85); text-align: center; line-height: 1.4; }
+.prev-ref { font-size: 0.45rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #d4a574; }
+.prev-callout-h { font-family: 'Playfair Display', serif; font-size: 0.75rem; font-weight: 700; color: #d4a574; text-align: center; }
+.prev-callout-body { font-size: 0.52rem; color: rgba(255,255,255,0.75); text-align: center; }
+.prev-q-label { font-size: 0.42rem; letter-spacing: 2px; text-transform: uppercase; color: rgba(255,255,255,0.3); }
+.prev-q-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.72rem; color: #fff; text-align: center; line-height: 1.3; }
+.prev-disc-q { font-size: 0.48rem; color: rgba(255,255,255,0.7); padding: 0.2rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); width: 100%; }
+.prev-th-label { font-size: 0.42rem; letter-spacing: 2px; text-transform: uppercase; color: #d4a574; }
+.prev-th-h { font-family: 'Playfair Display', serif; font-size: 0.72rem; font-weight: 700; color: #fff; }
+.prev-th-item { font-size: 0.48rem; color: rgba(255,255,255,0.6); border: 1px solid rgba(212,165,116,0.2); border-radius: 3px; padding: 0.2rem 0.5rem; }
+.prev-def-word { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 900; color: #d4a574; }
+.prev-def-line { width: 30px; height: 1px; background: rgba(212,165,116,0.4); }
+.prev-def-body { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.52rem; color: rgba(255,255,255,0.6); text-align: center; }
+.prev-split-l { display: flex; flex-direction: column; gap: 3px; justify-content: center; padding-right: 0.5rem; }
+.prev-split-div { background: rgba(212,165,116,0.2); }
+.prev-split-r { display: flex; flex-direction: column; gap: 3px; justify-content: center; padding-left: 0.5rem; }
+.prev-split-h { font-family: 'Playfair Display', serif; font-size: 0.65rem; font-weight: 900; color: #fff; }
+.prev-split-b { font-size: 0.46rem; color: rgba(255,255,255,0.65); }
+.prev-comp-grid { display: grid; grid-template-columns: 1fr auto 1fr; width: 100%; gap: 0.5rem; }
+.prev-comp-col { display: flex; flex-direction: column; gap: 2px; }
+.prev-comp-h { font-family: 'Playfair Display', serif; font-size: 0.58rem; font-weight: 700; color: #fff; }
+.prev-comp-b { font-size: 0.44rem; color: rgba(255,255,255,0.6); }
+.prev-comp-vs { font-size: 0.42rem; color: rgba(212,165,116,0.5); writing-mode: vertical-rl; display: flex; align-items: center; }
+.prev-media-icon { font-size: 1.5rem; opacity: 0.4; }
+.prev-media-label { font-size: 0.5rem; color: rgba(255,255,255,0.3); }
+
+.slide-type-info { padding: 1rem 1.1rem; }
+.slide-type-name { font-size: 0.82rem; font-weight: 700; color: var(--navy); margin-bottom: 0.2rem; }
+.slide-type-use { font-size: 0.78rem; color: var(--soft); line-height: 1.6; }
+.slide-type-badge {
+  display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 1px;
+  text-transform: uppercase; padding: 0.12rem 0.45rem; border-radius: 20px;
+  margin-bottom: 0.4rem;
+}
+.badge-open { background: rgba(26,31,54,0.07); color: var(--muted); }
+.badge-content { background: rgba(26,31,54,0.07); color: var(--muted); }
+.badge-close { background: rgba(212,165,116,0.12); color: #b8895a; }
+
+/* ── FORMAT TIPS ── */
+.format-tips { display: flex; flex-direction: column; gap: 0.75rem; margin-top: 1.5rem; }
+.format-tip {
+  background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+  padding: 1rem 1.25rem; display: flex; gap: 1rem; align-items: flex-start; box-shadow: var(--shadow);
+}
+.format-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+.format-title { font-size: 0.85rem; font-weight: 700; color: var(--navy); margin-bottom: 0.2rem; }
+.format-desc { font-size: 0.82rem; color: var(--soft); line-height: 1.65; }
+.format-desc code { background: rgba(26,31,54,0.07); padding: 0.1rem 0.4rem; border-radius: 4px; font-family: monospace; font-size: 0.8rem; color: var(--navy); }
+
+/* ── KEYBOARD SHORTCUTS ── */
+.shortcuts { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-top: 1.5rem; }
+@media (max-width: 600px) { .shortcuts { grid-template-columns: 1fr; } }
+.shortcut {
+  background: var(--white); border: 1px solid var(--border); border-radius: 10px;
+  padding: 0.85rem 1.1rem; display: flex; align-items: center; gap: 0.85rem; box-shadow: var(--shadow);
+}
+.key {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 32px; height: 28px; padding: 0 0.5rem;
+  background: var(--navy); color: var(--gold); border-radius: 5px;
+  font-size: 0.72rem; font-weight: 700; font-family: monospace; flex-shrink: 0;
+  box-shadow: 0 2px 0 rgba(0,0,0,0.3);
+}
+.key-desc { font-size: 0.82rem; color: var(--soft); }
+
+/* ── THEME CARDS ── */
+.theme-cards { display: grid; grid-template-columns: repeat(3,1fr); gap: 1rem; margin-top: 1.5rem; }
+@media (max-width: 600px) { .theme-cards { grid-template-columns: 1fr; } }
+.theme-card { background: var(--white); border: 1px solid var(--border); border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); }
+.theme-preview { height: 80px; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 0.4rem; }
+.theme-preview.crux { background: linear-gradient(150deg,#0a0d1c,#1a1f36); }
+.theme-preview.colorful { background: linear-gradient(150deg,#fff1e0,#ffe4c4); }
+.theme-preview.chalk { background: linear-gradient(150deg,#1e3a1f,#2d4a2e); }
+.theme-preview-title { font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: 2px; font-size: 0.85rem; }
+.theme-preview.crux .theme-preview-title { color: #d4a574; }
+.theme-preview.colorful .theme-preview-title { color: #1a237e; }
+.theme-preview.chalk .theme-preview-title { color: #ffd54f; }
+.theme-preview-sub { font-size: 0.44rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; }
+.theme-preview.crux .theme-preview-sub { color: rgba(212,165,116,0.4); }
+.theme-preview.colorful .theme-preview-sub { color: rgba(26,35,126,0.4); }
+.theme-preview.chalk .theme-preview-sub { color: rgba(255,213,79,0.4); }
+.theme-info { padding: 0.85rem 1rem; }
+.theme-name { font-size: 0.85rem; font-weight: 700; color: var(--navy); margin-bottom: 0.2rem; }
+.theme-desc { font-size: 0.78rem; color: var(--soft); line-height: 1.6; }
+
+/* ── FINAL CTA ── */
+.final-cta {
+  background: var(--navy); border-radius: 16px; padding: 3rem 2.5rem; text-align: center;
+  margin-top: 3rem;
+}
+.final-cta h2 { font-family: 'Playfair Display', serif; font-size: 1.75rem; font-weight: 700; color: #fff; margin-bottom: 0.75rem; }
+.final-cta p { font-size: 0.95rem; color: rgba(255,255,255,0.5); margin-bottom: 2rem; line-height: 1.7; }
+.final-cta a {
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  background: var(--gold); color: var(--navy-deep); text-decoration: none;
+  font-size: 0.82rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  padding: 0.85rem 2.25rem; border-radius: 6px; transition: opacity 0.2s;
+}
+.final-cta a:hover { opacity: 0.88; }
+
+/* ── DIVIDER ── */
+.section-divider { border: none; border-top: 1px solid var(--border); margin: 3.5rem 0; }
+
+@media (max-width: 640px) {
+  .slide-types { grid-template-columns: 1fr; }
+  .theme-cards { grid-template-columns: 1fr; }
+  .mock-edit { display: none; }
+  .content { padding: 2rem 1.25rem 4rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="hdr-left">
+    <a href="index.html" class="hdr-logo">CRUX</a>
+    <span class="hdr-label">Presentation Tutorial</span>
+  </div>
+  <a href="crux-present-trinity.html" class="btn-back-hdr">← Open Editor</a>
+</header>
+
+<div class="hero">
+  <div class="hero-eyebrow">Teacher Resource</div>
+  <h1>How to use the<br><em>Presentation Creator</em></h1>
+  <p>A step-by-step guide to building, customizing, and presenting classroom slides — no experience required.</p>
+  <a href="crux-present-trinity.html" class="hero-cta">Open the Editor →</a>
+</div>
+
+<div class="toc-wrap">
+  <div class="toc">
+    <div class="toc-title">Contents</div>
+    <ul class="toc-list">
+      <li><a href="#overview"><span class="toc-num">1</span> Overview of the editor</a></li>
+      <li><a href="#slides"><span class="toc-num">2</span> Adding and reordering slides</a></li>
+      <li><a href="#types"><span class="toc-num">3</span> Slide types — what each one is for</a></li>
+      <li><a href="#formatting"><span class="toc-num">4</span> Formatting your content</a></li>
+      <li><a href="#vocab"><span class="toc-num">5</span> Vocabulary toggle</a></li>
+      <li><a href="#themes"><span class="toc-num">6</span> Choosing a theme</a></li>
+      <li><a href="#presenting"><span class="toc-num">7</span> Presenting to your class</a></li>
+    </ul>
+  </div>
+</div>
+
+<div class="content">
+
+  <!-- ── 1. OVERVIEW ── -->
+  <div class="tutorial-section">
+    <span class="section-anchor" id="overview"></span>
+    <div class="section-eyebrow">Section 1</div>
+    <h2 class="section-title">Overview of the editor</h2>
+    <p class="section-intro">The editor is split into three zones. Once you know what each one does, everything else clicks into place.</p>
+
+    <div class="ui-mock">
+      <div class="mock-header">
+        <span class="mock-logo">CRUX</span>
+        <span class="mock-title">The Holy Trinity › Classroom Presentation</span>
+        <div class="mock-btns">
+          <span class="mock-btn">Vocab</span>
+          <span class="mock-btn">Theme</span>
+          <span class="mock-btn">Reset</span>
+          <span class="mock-btn gold">▶ Present</span>
+        </div>
+      </div>
+      <div class="mock-body">
+        <div class="mock-sidebar">
+          <div class="mock-thumb active"><div class="mock-thumb-title">The Holy Trinity</div><div class="mock-thumb-type">Title</div></div>
+          <div class="mock-thumb"><div class="mock-thumb-title">Opening Question</div><div class="mock-thumb-type">Question</div></div>
+          <div class="mock-thumb"><div class="mock-thumb-title">What is the Trinity?</div><div class="mock-thumb-type">Content</div></div>
+          <div class="mock-thumb"><div class="mock-thumb-title">John 3:16</div><div class="mock-thumb-type">Scripture</div></div>
+        </div>
+        <div class="mock-slide">
+          <div style="font-size:0.5rem;color:rgba(212,165,116,0.5);letter-spacing:2px;text-transform:uppercase;">The Holy Trinity</div>
+          <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;color:#fff;">Holy Trinity</div>
+          <div style="font-size:0.48rem;font-style:italic;color:rgba(255,255,255,0.35);">A CRUX Faith Formation Lesson</div>
+        </div>
+        <div class="mock-edit">
+          <div class="mock-field-label">Slide Title</div>
+          <div class="mock-field">Holy Trinity</div>
+          <div class="mock-field-label">Subtitle</div>
+          <div class="mock-field">A CRUX Faith Formation Lesson</div>
+          <div class="mock-field-label">Notes</div>
+          <div class="mock-field tall"></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">A</div>
+        <div class="step-body">
+          <div class="step-title">Slide list (left panel)</div>
+          <div class="step-desc">Every slide in your presentation appears here as a thumbnail. Click any slide to select it and edit it. Drag slides up or down to reorder them, or use the small arrow buttons that appear on hover.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">B</div>
+        <div class="step-body">
+          <div class="step-title">Live preview (center)</div>
+          <div class="step-desc">This shows exactly how your selected slide will look when you present it. It updates in real time as you type in the edit panel.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">C</div>
+        <div class="step-body">
+          <div class="step-title">Edit panel (right)</div>
+          <div class="step-desc">This is where you write your content — title, body text, scripture references, notes, and more. The fields change depending on what slide type you've selected.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ── 2. ADDING SLIDES ── -->
+  <div class="tutorial-section">
+    <span class="section-anchor" id="slides"></span>
+    <div class="section-eyebrow">Section 2</div>
+    <h2 class="section-title">Adding and reordering slides</h2>
+    <p class="section-intro">Build your lesson in any order — you can always rearrange later.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Add a new slide</div>
+          <div class="step-desc">Click the <code>+ Add Slide</code> button at the bottom of the slide list. A new blank content slide will appear. You can then change its type in the edit panel.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Change the slide type</div>
+          <div class="step-desc">In the edit panel, the top row shows a grid of slide types. Click any type to switch the selected slide. The preview and edit fields update immediately.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Reorder by dragging</div>
+          <div class="step-desc">Click and hold any slide thumbnail in the left panel, then drag it to a new position. A gold line shows where it will land. Release to drop.</div>
+          <div class="tip"><strong>Tip:</strong> You can also use the small ▲ ▼ arrows that appear when you hover over a slide thumbnail.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">Delete a slide</div>
+          <div class="step-desc">Select the slide, then click the <code>Delete Slide</code> button at the bottom of the edit panel. You'll be asked to confirm before it's removed.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ── 3. SLIDE TYPES ── -->
+  <div class="tutorial-section">
+    <span class="section-anchor" id="types"></span>
+    <div class="section-eyebrow">Section 3</div>
+    <h2 class="section-title">Slide types — what each one is for</h2>
+    <p class="section-intro">There are ten slide types. Each is designed for a specific moment in the lesson. A typical lesson flows from opening to content to closing — the badges below show where each type fits.</p>
+
+    <div class="slide-types">
+
+      <div class="slide-type-card">
+        <div class="slide-preview dark">
+          <div class="prev-eyebrow">Catholic Faith Formation</div>
+          <div class="prev-h1">The Holy <em>Trinity</em></div>
+          <div class="prev-sub">A CRUX Lesson</div>
+        </div>
+        <div class="slide-type-info">
+          <span class="slide-type-badge badge-open">Opening</span>
+          <div class="slide-type-name">Title</div>
+          <div class="slide-type-use">The opening slide for your lesson. Put the lesson name, a subtitle, and optional speaker notes. Use one per lesson, always first.</div>
+        </div>
+      </div>
+
+      <div class="slide-type-card">
+        <div class="slide-preview navy" style="flex-direction:column;align-items:flex-start;justify-content:center;padding:1rem 1.25rem;gap:0.3rem;">
+          <div class="prev-label">Key Points</div>
+          <div class="prev-h2">What Is the Trinity?</div>
+          <div class="prev-bullet">One God in three Persons</div>
+          <div class="prev-bullet">Father, Son, Holy Spirit</div>
+          <div class="prev-bullet">Equal in nature and glory</div>
+        </div>
+        <div class="slide-type-info">
+          <span class="slide-type-badge badge-content">Content</span>
+          <div class="slide-type-name">Content</div>
+          <div class="slide-type-use">Your main teaching slide. Write a heading and bullet points or paragraphs. Start each bullet with a dash (<code>-</code>) on its own line. Add a <code>*</code> to highlight a line in gold.</div>
+        </div>
+      </div>
+
+      <div class="slide-type-card">
+        <div class="slide-preview blue" style="text-align:center;">
+          <div class="prev-ref">Matthew 28:19</div>
+          <div class="prev-quote">"Go and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit."</div>
+        </div>
+        <div class="slide-type-info">
+          <span class="slide-type-badge badge-content">Content</span>
+          <div class="slide-type-name">Scripture</div>
+          <div class="slide-type-use">Centers a Bible verse on screen. Enter the reference (e.g. Matthew 28:19) and the full verse text. Optional notes appear smaller below the quote.</div>
+        </div>
+      </div>
+
+      <div class="slide-type-card">
+        <div class="slide-preview amber" style="text-align:center;">
+          <div class="prev-callout-h">One God. Three Persons.</div>
+          <div class="prev-callout-body" style="margin-top:0.4rem;">Not three gods. Not one person wearing three masks. One God who exists in three.</div>
+        </div>
+        <div class="slide-type-info">
+          <span class="slide-type-badge badge-content">Content</span>
+          <div class="slide-type-name">Callout</div>
+          <div class="slide-type-use">A bold emphasis slide — great for a key statement you want students to remember. The heading appears large in gold. Use sparingly for maximum impact.</div>
+        </div>
+      </div>
+
+      <div class="slide-type-card">
+        <div class="slide-preview navy" style="text-align:center;">
+          <div class="prev-q-label">Opening Question</div>
+          <div class="prev-q-text" style="margin-top:0.4rem;">Have you ever tried to explain<br>what God is like to someone?</div>
+        </div>
+        <div class="slide-type-info">
+          <span class="slide-type-badge badge-open">Opening</span>
+          <div class="slide-type-name">Question Opening</div>
+          <div class="slide-type-use">A single large question to kick off your lesson or a discussion. Appears centered, full-screen. Ideal as the second slide, right after the title.</div>
+        </div>
+      </div>
+
+      <div class="slide-type-card">
+        <div class="slide-preview purple" style="flex-direction:column;align-items:flex-start;justify-content:center;padding:1rem 1.25rem;gap:0.25rem;">
+          <div class="prev-label" style="color:rgba(206,147,216,0.8);">Discuss</div>
+          <div class="prev-h2">Reflect Together</div>
+          <div class="prev-disc-q">1. Why does it matter that Jesus is God?</div>
+          <div class="prev-disc-q">2. How does the Spirit help us today?</div>
+          <div class="prev-disc-q">3. What part of the Trinity is hardest to grasp?</div>
+        </div>
+        <div class="slide-type-info">
+          <span class="slide-type-badge badge-content">Content</span>
+          <div class="slide-type-name">Discussion</div>
+          <div class="slide-type-use">A list of numbered reflection questions. Each line in the body becomes a question. Good for mid-lesson check-ins or small group conversations.</div>
+        </div>
+      </div>
+
+      <div class="slide-type-card">
+        <div class="slide-preview green" style="text-align:center;gap:0.3rem;">
+          <div class="prev-th-label">Take Home</div>
+          <div class="prev-th-h">Remember This</div>
+          <div style="display:flex;gap:0.35rem;margin-top:0.3rem;flex-wrap:wrap;justify-content:center;">
+            <div class="prev-th-item">God is love</div>
+            <div class="prev-th-item">Three Persons, One God</div>
+          </div>
+        </div>
+        <div class="slide-type-info">
+          <span class="slide-type-badge badge-close">Closing</span>
+          <div class="slide-type-name">Take Home</div>
+          <div class="slide-type-use">Summarizes the key ideas students should carry with them. Bullet points appear as individual cards. Use this as your second-to-last slide.</div>
+        </div>
+      </div>
+
+      <div class="slide-type-card">
+        <div class="slide-preview dark" style="text-align:center;">
+          <div class="prev-media-icon">▶</div>
+          <div class="prev-media-label">YouTube video or image</div>
+        </div>
+        <div class="slide-type-info">
+          <span class="slide-type-badge badge-content">Content</span>
+          <div class="slide-type-name">Media</div>
+          <div class="slide-type-use">Embeds a YouTube video or displays an image. Paste a YouTube URL and it plays directly in the slide. Great for BibleProject videos or visual illustrations.</div>
+        </div>
+      </div>
+
+      <div class="slide-type-card">
+        <div class="slide-preview rose" style="text-align:center;gap:0.3rem;">
+          <div class="prev-def-word">Trinity</div>
+          <div class="prev-def-line"></div>
+          <div class="prev-def-body">From the Latin <em>trinitas</em> — the threeness of God. One divine being existing as Father, Son, and Holy Spirit.</div>
+        </div>
+        <div class="slide-type-info">
+          <span class="slide-type-badge badge-content">Content</span>
+          <div class="slide-type-name">Definition</div>
+          <div class="slide-type-use">Puts a single vocabulary word front and center in large type, with its definition below. Perfect for introducing key terms like Trinity, Incarnation, or Creed.</div>
+        </div>
+      </div>
+
+      <div class="slide-type-card">
+        <div class="slide-preview split-bg">
+          <div class="prev-split-l">
+            <div class="prev-split-h">Homoiousios</div>
+            <div class="prev-split-b">Similar in substance</div>
+            <div class="prev-split-b">The Arian view</div>
+            <div class="prev-split-b">Rejected at Nicaea</div>
+          </div>
+          <div class="prev-split-div"></div>
+          <div class="prev-split-r">
+            <div class="prev-split-h">Homoousios</div>
+            <div class="prev-split-b">Same in substance</div>
+            <div class="prev-split-b">Orthodox teaching</div>
+            <div class="prev-split-b">Affirmed in the Creed</div>
+          </div>
+        </div>
+        <div class="slide-type-info">
+          <span class="slide-type-badge badge-content">Content</span>
+          <div class="slide-type-name">Split</div>
+          <div class="slide-type-use">A two-column layout with a gold vertical divider. The left side has a large heading; the right side has bullet content. Good for pairing a concept with its explanation.</div>
+        </div>
+      </div>
+
+      <div class="slide-type-card">
+        <div class="slide-preview compare-bg" style="padding:0.75rem 1rem;">
+          <div class="prev-comp-grid">
+            <div class="prev-comp-col">
+              <div class="prev-comp-h">Arianism</div>
+              <div class="prev-comp-b">Jesus is created</div>
+              <div class="prev-comp-b">Less than the Father</div>
+              <div class="prev-comp-b">Not truly God</div>
+            </div>
+            <div class="prev-comp-vs">vs</div>
+            <div class="prev-comp-col">
+              <div class="prev-comp-h">Orthodoxy</div>
+              <div class="prev-comp-b">Jesus is eternal</div>
+              <div class="prev-comp-b">Equal to the Father</div>
+              <div class="prev-comp-b">Fully God and man</div>
+            </div>
+          </div>
+        </div>
+        <div class="slide-type-info">
+          <span class="slide-type-badge badge-content">Content</span>
+          <div class="slide-type-name">Comparison</div>
+          <div class="slide-type-use">Side-by-side columns separated by a VS divider. Write your left and right columns in the body, separated by a line of three dashes (<code>---</code>). The first line of each side becomes the column heading.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ── 4. FORMATTING ── -->
+  <div class="tutorial-section">
+    <span class="section-anchor" id="formatting"></span>
+    <div class="section-eyebrow">Section 4</div>
+    <h2 class="section-title">Formatting your content</h2>
+    <p class="section-intro">The body field uses simple plain-text formatting. No HTML or special software needed.</p>
+
+    <div class="format-tips">
+      <div class="format-tip">
+        <div class="format-icon">—</div>
+        <div>
+          <div class="format-title">Bullet points</div>
+          <div class="format-desc">Start a line with <code>- </code> (dash space) to make it a bullet point. Lines without a dash appear as regular paragraphs.</div>
+        </div>
+      </div>
+      <div class="format-tip">
+        <div class="format-icon">★</div>
+        <div>
+          <div class="format-title">Highlighted bullet</div>
+          <div class="format-desc">Start a line with <code>* </code> (asterisk space) to highlight it in gold with a star. Use this for the single most important point on a slide.</div>
+        </div>
+      </div>
+      <div class="format-tip">
+        <div class="format-icon">---</div>
+        <div>
+          <div class="format-title">Comparison separator</div>
+          <div class="format-desc">On a Comparison slide, type <code>---</code> on its own line to separate the left and right columns. Everything before the <code>---</code> is the left side; everything after is the right.</div>
+        </div>
+      </div>
+      <div class="format-tip">
+        <div class="format-icon">📝</div>
+        <div>
+          <div class="format-title">Speaker notes</div>
+          <div class="format-desc">Every slide has a Notes field at the bottom of the edit panel. Notes never appear on the projected slide — only in the presenter view. Use them for reminders, talking points, or timing cues.</div>
+        </div>
+      </div>
+      <div class="format-tip">
+        <div class="format-icon">💾</div>
+        <div>
+          <div class="format-title">Saving</div>
+          <div class="format-desc">Your presentation saves automatically as you type. There is no save button. If you close and reopen the page, your slides will still be there. Use the <code>Reset</code> button in the header to restore the original CRUX Trinity lesson.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ── 5. VOCAB TOGGLE ── -->
+  <div class="tutorial-section">
+    <span class="section-anchor" id="vocab"></span>
+    <div class="section-eyebrow">Section 5</div>
+    <h2 class="section-title">Vocabulary toggle</h2>
+    <p class="section-intro">Each slide can carry two versions of its content — one for older students and one for younger children. The Vocab toggle in the header switches between them instantly, even during a live presentation.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Advanced mode</div>
+          <div class="step-desc">The default. Uses full theological vocabulary — Trinity, Incarnation, Hypostasis, Nicene Creed. Appropriate for middle school, high school, and adult groups.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Child-Friendly mode</div>
+          <div class="step-desc">Switches to simpler language written for elementary-age children. The content is the same truth, just in words a 7-year-old can understand.</div>
+          <div class="tip"><strong>How to write both versions:</strong> In the edit panel, the body field has two tabs — <strong>Advanced</strong> and <strong>Child-Friendly</strong>. Write the full version in one tab and the simplified version in the other. If you only write in one tab, both modes show the same content.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Switch during class</div>
+          <div class="step-desc">The toggle is available both in the editor and in the live presentation view. You can switch mid-lesson without interrupting the flow — useful if you teach multiple age groups back to back.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ── 6. THEMES ── -->
+  <div class="tutorial-section">
+    <span class="section-anchor" id="themes"></span>
+    <div class="section-eyebrow">Section 6</div>
+    <h2 class="section-title">Choosing a theme</h2>
+    <p class="section-intro">The three colored swatches in the header change the visual design of your slides. Your theme choice is saved automatically.</p>
+
+    <div class="theme-cards">
+      <div class="theme-card">
+        <div class="theme-preview crux">
+          <div class="theme-preview-title">CRUX</div>
+          <div class="theme-preview-sub">Classic</div>
+        </div>
+        <div class="theme-info">
+          <div class="theme-name">CRUX Classic</div>
+          <div class="theme-desc">Navy backgrounds with gold accents. The default CRUX brand. Best for middle school, high school, and adult groups.</div>
+        </div>
+      </div>
+      <div class="theme-card">
+        <div class="theme-preview colorful">
+          <div class="theme-preview-title">CRUX</div>
+          <div class="theme-preview-sub">Colorful</div>
+        </div>
+        <div class="theme-info">
+          <div class="theme-name">Colorful</div>
+          <div class="theme-desc">Bright, light backgrounds with bold color accents per slide type. Easier to read and more engaging for young children (K–5th grade).</div>
+        </div>
+      </div>
+      <div class="theme-card">
+        <div class="theme-preview chalk">
+          <div class="theme-preview-title">CRUX</div>
+          <div class="theme-preview-sub">Chalkboard</div>
+        </div>
+        <div class="theme-info">
+          <div class="theme-name">Chalkboard</div>
+          <div class="theme-desc">Dark green backgrounds with chalk-white text and yellow accents. A classic classroom feel that works for all age groups.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ── 7. PRESENTING ── -->
+  <div class="tutorial-section">
+    <span class="section-anchor" id="presenting"></span>
+    <div class="section-eyebrow">Section 7</div>
+    <h2 class="section-title">Presenting to your class</h2>
+    <p class="section-intro">When you're ready, click <strong>▶ Present</strong> in the top right. The slides go full screen. Here's how to navigate.</p>
+
+    <div class="shortcuts">
+      <div class="shortcut"><span class="key">→</span><span class="key-desc">Next slide</span></div>
+      <div class="shortcut"><span class="key">←</span><span class="key-desc">Previous slide</span></div>
+      <div class="shortcut"><span class="key">Space</span><span class="key-desc">Next slide</span></div>
+      <div class="shortcut"><span class="key">N</span><span class="key-desc">Show / hide your speaker notes</span></div>
+      <div class="shortcut"><span class="key">Esc</span><span class="key-desc">Exit presentation mode</span></div>
+      <div class="shortcut"><span class="key">Click</span><span class="key-desc">Click the dot bar to jump to any slide</span></div>
+    </div>
+
+    <div class="steps" style="margin-top:1.5rem;">
+      <div class="step">
+        <div class="step-num">💡</div>
+        <div class="step-body">
+          <div class="step-title">Projecting to a screen</div>
+          <div class="step-desc">Open the presentation on the computer connected to your projector or TV. Click <strong>Present</strong>, then use your keyboard or the on-screen arrows to advance slides. The dot bar at the bottom shows your position in the deck.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">💡</div>
+        <div class="step-body">
+          <div class="step-title">Speaker notes during class</div>
+          <div class="step-desc">Press <strong>N</strong> during the presentation to show your speaker notes at the bottom of the screen. These are visible to you but are not projected — they appear as a translucent overlay only on your device.</div>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">💡</div>
+        <div class="step-body">
+          <div class="step-title">Switching vocabulary mid-lesson</div>
+          <div class="step-desc">The Vocab toggle is available in the bottom control bar during presentation. Switch between Advanced and Child-Friendly at any time without leaving the presentation.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── FINAL CTA ── -->
+  <div class="final-cta">
+    <h2>Ready to build your lesson?</h2>
+    <p>The Trinity presentation is already built and waiting. Open it, make it your own, and present with confidence.</p>
+    <a href="crux-present-trinity.html">Open the Presentation Editor →</a>
+  </div>
+
+</div>
+
+</body>
+</html>
