@@ -126,77 +126,137 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 }
 #addSlideBtn:hover { background: rgba(212,165,116,0.14); color: var(--gold); border-color: rgba(212,165,116,0.5); }
 
-/* Edit panel */
-#editPanel { flex: 1; overflow-y: auto; background: var(--cream); padding: 2rem 2.5rem; }
-#editPanel::-webkit-scrollbar { width: 5px; }
-#editPanel::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-
-.edit-row { margin-bottom: 1.5rem; }
-.edit-label {
-  display: block; font-size: 0.65rem; font-weight: 700;
-  letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: 0.45rem;
+/* WYSIWYG Canvas */
+#slideCanvas {
+  flex: 1; overflow-y: auto; background: #0d0f1a;
+  display: flex; flex-direction: column; align-items: center;
+  padding: 1.25rem; gap: 1rem;
 }
-.edit-select, .edit-input, .edit-textarea {
-  width: 100%; font-family: 'Inter', sans-serif; font-size: 0.88rem;
+#slideCanvas::-webkit-scrollbar { width: 5px; }
+#slideCanvas::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 4px; }
+.wysiwyg-empty {
+  flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center;
+  color: rgba(255,255,255,0.2); gap: 0.5rem; text-align: center;
+}
+.wysiwyg-empty .ep-icon { font-size: 2.5rem; opacity: 0.4; }
+.wysiwyg-empty p { font-size: 0.85rem; }
+
+/* 16:9 slide wrapper */
+.wysiwyg-wrapper {
+  width: 100%; max-width: 1100px; flex-shrink: 0;
+  aspect-ratio: 16 / 9; position: relative;
+  border-radius: 6px; overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+}
+
+/* Editable slide surface — mirrors #presentSlide backgrounds */
+#editableSlide {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; justify-content: center;
+  padding: 4rem 6rem; overflow: hidden; background: var(--navy-deep);
+}
+#editableSlide.type-title    { background: linear-gradient(150deg,#0a0d1c 0%,#1a1f36 60%,#1e2545 100%); }
+#editableSlide.type-callout  { background: var(--navy); }
+#editableSlide.type-takehome { background: linear-gradient(135deg,#0f1222 0%,#1a1f36 100%); }
+#editableSlide.type-media    { background: #050810; }
+#editableSlide.type-definition { background: linear-gradient(160deg,#060810 0%,#141829 100%); }
+#editableSlide.type-comparison { background: var(--navy); }
+
+/* contenteditable base */
+[contenteditable] { outline: none; }
+.editable-field { cursor: text; border-radius: 3px; white-space: pre-wrap; transition: box-shadow 0.15s; }
+.editable-field:hover { box-shadow: 0 0 0 1px rgba(212,165,116,0.25); }
+.editable-field:focus { box-shadow: 0 0 0 1.5px rgba(212,165,116,0.5); }
+[contenteditable]:empty::before { content: attr(data-placeholder); opacity: 0.22; pointer-events: none; font-style: italic; }
+
+/* Editable body lines */
+.editable-body { outline: none; width: 100%; }
+.body-line { display: block; outline: none; cursor: text; border-radius: 3px; min-height: 1.2em; white-space: pre-wrap; transition: box-shadow 0.1s; }
+.body-line:focus { box-shadow: 0 0 0 1px rgba(212,165,116,0.35); }
+.body-line[data-type="bullet"] {
+  font-size: clamp(1rem,2.2vw,1.35rem); color: rgba(255,255,255,0.8);
+  padding: 0.4rem 0 0.4rem 1.5em;
+  border-bottom: 1px solid rgba(255,255,255,0.06); position: relative;
+}
+.body-line[data-type="bullet"]::before { content: '—'; color: var(--gold); font-size: 0.85em; position: absolute; left: 0; top: 0.4rem; pointer-events: none; }
+.body-line[data-type="highlight"] {
+  font-size: clamp(1rem,2.2vw,1.35rem); color: var(--gold-light); font-weight: 600;
+  padding: 0.4rem 0 0.4rem 1.5em;
+  border-bottom: 1px solid rgba(255,255,255,0.06); position: relative;
+}
+.body-line[data-type="highlight"]::before { content: '★'; color: var(--gold); position: absolute; left: 0; top: 0.4rem; pointer-events: none; }
+.body-line[data-type="quote"] {
+  border-left: 3px solid var(--gold); padding: 0.6rem 1.25rem; margin: 0.75rem 0;
+  font-style: italic; font-family: 'Playfair Display',serif;
+  font-size: clamp(1rem,2.2vw,1.35rem); color: rgba(255,255,255,0.7);
+}
+.body-line[data-type="para"] { font-size: clamp(1rem,2.2vw,1.4rem); color: rgba(255,255,255,0.8); margin-bottom: 0.4rem; padding: 0.2rem 0; }
+
+/* Formatting toolbar — top-right of the wrapper */
+.fmt-toolbar {
+  position: absolute; top: 0.55rem; right: 0.55rem; z-index: 20;
+  display: flex; align-items: center; gap: 0.25rem;
+  background: rgba(8,10,22,0.92); backdrop-filter: blur(6px);
+  border: 1px solid rgba(212,165,116,0.18); border-radius: 6px;
+  padding: 0.28rem 0.4rem;
+}
+.fmt-lbl { font-size: 0.55rem; color: rgba(255,255,255,0.25); letter-spacing: 1px; text-transform: uppercase; padding-right: 0.2rem; }
+.fmt-btn {
+  font-size: 0.63rem; font-weight: 700; padding: 0.25rem 0.55rem; border-radius: 4px; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.5); transition: all 0.12s; white-space: nowrap;
+}
+.fmt-btn:hover { color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.12); }
+.fmt-btn.fmt-active { background: var(--gold); color: var(--navy); border-color: var(--gold); }
+.fmt-sep { width: 1px; height: 13px; background: rgba(255,255,255,0.1); margin: 0 0.1rem; }
+
+/* Controls strip below slide */
+.wysiwyg-controls {
+  width: 100%; max-width: 1100px;
+  background: var(--cream); border-radius: 6px;
+  border: 1px solid var(--border); padding: 0.85rem 1.1rem;
+  display: flex; gap: 1rem; align-items: flex-start;
+}
+.wys-col { display: flex; flex-direction: column; gap: 0.4rem; }
+.wys-col-type { flex: 1; }
+.wys-col-notes { flex: 1.6; }
+.wys-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); }
+.wys-type-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 0.35rem; }
+.wys-type-opt {
+  padding: 0.38rem 0.3rem; border: 1.5px solid var(--border); border-radius: 5px;
+  cursor: pointer; text-align: center; font-size: 0.58rem; font-weight: 600;
+  color: var(--muted); background: var(--white); transition: all 0.12s;
+}
+.wys-type-opt:hover { border-color: var(--gold); color: var(--navy); }
+.wys-type-opt.selected { border-color: var(--gold); background: var(--gold-pale); color: var(--navy); }
+.wys-type-icon { display: block; font-size: 0.85rem; margin-bottom: 2px; }
+.wys-notes-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 0.35rem; }
+.wys-vocab { display: flex; align-items: center; background: var(--navy-deep); border-radius: 5px; padding: 2px; gap: 2px; }
+.wvt { font-size: 0.62rem; font-weight: 600; padding: 0.22rem 0.65rem; border-radius: 3px; cursor: pointer; border: none; background: transparent; color: rgba(255,255,255,0.4); transition: all 0.15s; }
+.wvt.active { background: var(--gold); color: var(--navy); }
+.wys-notes-input {
+  width: 100%; font-family: 'Inter',sans-serif; font-size: 0.82rem;
+  color: var(--navy); background: #fefef8;
+  border: 1.5px solid var(--border); border-radius: 6px;
+  padding: 0.5rem 0.75rem; outline: none; resize: vertical;
+  min-height: 50px; transition: border-color 0.15s; line-height: 1.55;
+}
+.wys-notes-input:focus { border-color: var(--gold); }
+.wys-input {
+  width: 100%; font-family: 'Inter',sans-serif; font-size: 0.82rem;
   color: var(--navy); background: var(--white);
-  border: 1.5px solid var(--border); border-radius: 8px;
-  padding: 0.65rem 0.9rem; outline: none; transition: border-color 0.15s; resize: vertical;
+  border: 1.5px solid var(--border); border-radius: 6px;
+  padding: 0.45rem 0.7rem; outline: none; margin-bottom: 0.35rem; transition: border-color 0.15s;
 }
-.edit-select:focus, .edit-input:focus, .edit-textarea:focus { border-color: var(--gold); }
-.edit-input.title-input {
-  font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; padding: 0.75rem 1rem;
+.wys-input:focus { border-color: var(--gold); }
+.wys-media-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.35rem; margin-bottom: 0.35rem; }
+.wys-media-opt {
+  padding: 0.38rem 0.5rem; border: 1.5px solid var(--border); border-radius: 5px;
+  cursor: pointer; text-align: center; font-size: 0.68rem; font-weight: 600;
+  color: var(--muted); background: var(--white); transition: all 0.12s;
 }
-.edit-textarea { min-height: 130px; line-height: 1.65; }
-.edit-textarea.notes { min-height: 80px; background: #fefef8; }
-.edit-help { font-size: 0.7rem; color: var(--muted); margin-top: 0.4rem; line-height: 1.55; }
-.edit-help code { background: rgba(26,31,54,0.07); padding: 0.1rem 0.35rem; border-radius: 3px; font-family: monospace; font-size: 0.75rem; }
-.edit-divider { border: none; border-top: 1px solid var(--border); margin: 1.75rem 0; }
-.edit-footer { display: flex; justify-content: flex-end; }
-.edit-delete {
-  font-size: 0.7rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
-  padding: 0.45rem 1rem; border-radius: 4px; cursor: pointer;
-  background: rgba(163,45,45,0.08); color: #a32d2d; border: 1px solid rgba(163,45,45,0.18); transition: all 0.15s;
-}
-.edit-delete:hover { background: rgba(163,45,45,0.15); }
-.type-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 0.5rem; }
-.type-opt { font-size: 0.62rem; }
-.type-opt {
-  padding: 0.55rem 0.5rem; border: 1.5px solid var(--border);
-  border-radius: 6px; cursor: pointer; text-align: center;
-  font-size: 0.68rem; font-weight: 600; letter-spacing: 0.5px;
-  color: var(--muted); background: var(--white); transition: all 0.13s;
-}
-.type-opt:hover { border-color: var(--gold); color: var(--navy); }
-.type-opt.selected { border-color: var(--gold); background: var(--gold-pale); color: var(--navy); }
-.type-opt .type-icon { display: block; font-size: 1rem; margin-bottom: 3px; }
-
-/* Body tabs */
-.body-tabs { display: flex; gap: 0; margin-bottom: 0; }
-.body-tab {
-  font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 0.38rem 0.85rem; border: 1.5px solid var(--border); border-bottom: none;
-  border-radius: 6px 6px 0 0; cursor: pointer; color: var(--muted);
-  background: rgba(26,31,54,0.03); transition: all 0.13s; white-space: nowrap;
-}
-.body-tab.active { background: var(--white); color: var(--navy); border-color: var(--border); }
-.body-tab.active-simple { background: var(--white); color: #3b6d11; border-color: rgba(59,109,17,0.3); }
-.body-tab:not(.active):not(.active-simple):hover { color: var(--navy); }
-.body-tab + .body-tab { margin-left: 4px; }
-.body-tab-content { border-radius: 0 8px 8px 8px; border-top-left-radius: 0; }
-.body-tab-label {
-  font-size: 0.6rem; letter-spacing: 1.5px; text-transform: uppercase;
-  padding: 0.3rem 0.5rem; border-radius: 4px; display: inline-block; margin-bottom: 0.5rem;
-}
-.body-tab-label.advanced { background: rgba(26,31,54,0.07); color: var(--navy); }
-.body-tab-label.simple { background: rgba(59,109,17,0.1); color: #3b6d11; }
-
-.empty-panel {
-  height: 100%; display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  color: var(--muted); gap: 0.5rem; text-align: center; padding: 2rem;
-}
-.empty-panel .ep-icon { font-size: 2.5rem; opacity: 0.3; }
-.empty-panel p { font-size: 0.85rem; }
+.wys-media-opt:hover { border-color: var(--gold); }
+.wys-media-opt.selected { border-color: var(--gold); background: var(--gold-pale); color: var(--navy); }
 
 /* ─── PRESENTATION OVERLAY ──────────────────────────────────────── */
 #presentOverlay {
@@ -231,6 +291,25 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 [data-theme="bright"] #presentSlide.type-question-opening { background: linear-gradient(135deg,#fff3e0 0%,#ffe0b2 100%) !important; }
 [data-theme="bright"] #presentSlide.type-media        { background: #1a1a2e !important; }
 [data-theme="bright"] .slide-bg-glow { display: none !important; }
+
+/* Bright theme for editable slide (backgrounds only — text rules apply via ancestor) */
+.wysiwyg-wrapper[data-theme="bright"] #editableSlide           { background: #fff8f0 !important; }
+.wysiwyg-wrapper[data-theme="bright"] #editableSlide.type-title        { background: linear-gradient(150deg,#fff1e0 0%,#ffe4c4 100%) !important; }
+.wysiwyg-wrapper[data-theme="bright"] #editableSlide.type-callout      { background: linear-gradient(135deg,#fff3cd 0%,#ffe082 100%) !important; }
+.wysiwyg-wrapper[data-theme="bright"] #editableSlide.type-takehome     { background: linear-gradient(135deg,#e8f5e9 0%,#c8e6c9 100%) !important; }
+.wysiwyg-wrapper[data-theme="bright"] #editableSlide.type-scripture    { background: linear-gradient(135deg,#e3f2fd 0%,#bbdefb 100%) !important; }
+.wysiwyg-wrapper[data-theme="bright"] #editableSlide.type-discussion   { background: linear-gradient(135deg,#f3e5f5 0%,#e1bee7 100%) !important; }
+.wysiwyg-wrapper[data-theme="bright"] #editableSlide.type-definition   { background: linear-gradient(135deg,#fce4ec 0%,#f8bbd0 100%) !important; }
+.wysiwyg-wrapper[data-theme="bright"] #editableSlide.type-comparison   { background: linear-gradient(135deg,#e0f7fa 0%,#b2ebf2 100%) !important; }
+.wysiwyg-wrapper[data-theme="bright"] #editableSlide.type-split        { background: linear-gradient(135deg,#f9fbe7 0%,#f0f4c3 100%) !important; }
+.wysiwyg-wrapper[data-theme="bright"] #editableSlide.type-question-opening { background: linear-gradient(135deg,#fff3e0 0%,#ffe0b2 100%) !important; }
+.wysiwyg-wrapper[data-theme="bright"] #editableSlide.type-media        { background: #1a1a2e !important; }
+.wysiwyg-wrapper[data-theme="bright"] .body-line[data-type="bullet"]   { color: #37474f !important; border-bottom-color: rgba(0,0,0,0.06) !important; }
+.wysiwyg-wrapper[data-theme="bright"] .body-line[data-type="bullet"]::before { color: #f57c00 !important; }
+.wysiwyg-wrapper[data-theme="bright"] .body-line[data-type="highlight"] { color: #e65100 !important; }
+.wysiwyg-wrapper[data-theme="bright"] .body-line[data-type="highlight"]::before { color: #f57c00 !important; }
+.wysiwyg-wrapper[data-theme="bright"] .body-line[data-type="quote"]    { color: #37474f !important; border-left-color: #e65100 !important; }
+.wysiwyg-wrapper[data-theme="bright"] .body-line[data-type="para"]     { color: #37474f !important; }
 
 /* Title slide */
 [data-theme="bright"] .sc-title h1 { color: #1a237e !important; }
@@ -364,6 +443,24 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 [data-theme="chalk"] .sc-comparison .comp-col-body { color: rgba(245,240,232,0.85) !important; }
 [data-theme="chalk"] .slide-bg-glow { background: radial-gradient(ellipse at 50% 80%, rgba(255,213,79,0.04) 0%, transparent 65%) !important; }
 [data-theme="chalk"] #presentControls { background: rgba(30,58,31,0.97) !important; border-top-color: rgba(255,213,79,0.15) !important; }
+
+/* Chalk theme for editable slide */
+.wysiwyg-wrapper[data-theme="chalk"] #editableSlide           { background: #2d4a2e !important; }
+.wysiwyg-wrapper[data-theme="chalk"] #editableSlide.type-title        { background: linear-gradient(150deg,#1e3a1f 0%,#2d4a2e 60%,#345235 100%) !important; }
+.wysiwyg-wrapper[data-theme="chalk"] #editableSlide.type-callout      { background: #243d25 !important; }
+.wysiwyg-wrapper[data-theme="chalk"] #editableSlide.type-takehome     { background: #1e3a1f !important; }
+.wysiwyg-wrapper[data-theme="chalk"] #editableSlide.type-scripture    { background: #243d25 !important; }
+.wysiwyg-wrapper[data-theme="chalk"] #editableSlide.type-discussion   { background: #2a4430 !important; }
+.wysiwyg-wrapper[data-theme="chalk"] #editableSlide.type-definition   { background: linear-gradient(160deg,#1a2e1b 0%,#243d25 100%) !important; }
+.wysiwyg-wrapper[data-theme="chalk"] #editableSlide.type-comparison   { background: #243d25 !important; }
+.wysiwyg-wrapper[data-theme="chalk"] #editableSlide.type-split        { background: #2d4a2e !important; }
+.wysiwyg-wrapper[data-theme="chalk"] #editableSlide.type-question-opening { background: #2a4430 !important; }
+.wysiwyg-wrapper[data-theme="chalk"] #editableSlide.type-media        { background: #111 !important; }
+.wysiwyg-wrapper[data-theme="chalk"] .body-line[data-type="bullet"]::before { color: #ffd54f !important; }
+.wysiwyg-wrapper[data-theme="chalk"] .body-line[data-type="highlight"] { color: #ffd54f !important; }
+.wysiwyg-wrapper[data-theme="chalk"] .body-line[data-type="quote"]    { border-left-color: #ffd54f !important; color: rgba(245,240,232,0.85) !important; }
+.wysiwyg-wrapper[data-theme="chalk"] .body-line[data-type="para"]     { color: rgba(245,240,232,0.85) !important; }
+.wysiwyg-wrapper[data-theme="chalk"] .body-line[data-type="bullet"]   { color: rgba(245,240,232,0.85) !important; }
 
 /* Theme selector */
 .theme-picker {
@@ -573,9 +670,6 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .comp-col-body ul li.highlight { color: var(--gold-light); font-weight: 600; }
 .comp-col-body ul li.highlight::before { content: '★'; }
 
-/* ─── MEDIA EDITOR FIELDS ───────────────────────────────────────── */
-.media-type-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; }
-.edit-url-input { font-family: 'Inter', sans-serif; font-size: 0.8rem; }
 
 /* Vocab badge shown on slide */
 .vocab-badge {
@@ -636,7 +730,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 /* Responsive */
 @media (max-width: 700px) {
   #slideList { width: 180px; }
-  #editPanel { padding: 1.25rem; }
+  #editableSlide { padding: 2rem 1.5rem; }
   #presentSlide { padding: 2rem 1.5rem; }
   .sc-title h1 { font-size: 2.2rem; }
   .sc-content h2 { font-size: 1.6rem; }
@@ -683,62 +777,10 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
       <div id="addSlideBtn" onclick="addSlide()">+ Add Slide</div>
     </div>
 
-    <div id="editPanel">
-      <div class="empty-panel" id="emptyState">
+    <div id="slideCanvas">
+      <div class="wysiwyg-empty">
         <div class="ep-icon">📋</div>
         <p>Select a slide to edit it,<br>or click <strong>+ Add Slide</strong>.</p>
-      </div>
-      <div id="editForm" style="display:none">
-        <div class="edit-row">
-          <label class="edit-label">Slide Type</label>
-          <div class="type-grid" id="typeGrid"></div>
-        </div>
-        <div class="edit-row">
-          <label class="edit-label">Title</label>
-          <input type="text" class="edit-input title-input" id="editTitle" placeholder="Slide title…" oninput="updateField('title',this.value)">
-        </div>
-        <div class="edit-row" id="bodyContentRow">
-          <label class="edit-label">Body Content</label>
-          <div class="body-tabs">
-            <button class="body-tab active" id="tabAdv" onclick="setBodyTab('advanced')">Advanced</button>
-            <button class="body-tab" id="tabSimple" onclick="setBodyTab('simple')">Child-Friendly</button>
-          </div>
-          <div id="bodyTabHint" class="body-tab-label advanced" style="margin-top:0.45rem"></div>
-          <textarea class="edit-textarea" id="editBody" placeholder="Type content here…&#10;&#10;- bullet point&#10;★ gold highlight&#10;&gt; quote block" oninput="onBodyInput(this.value)"></textarea>
-          <div class="edit-help" id="editBodyHelp">
-            <code>- </code> bullet &nbsp;·&nbsp; <code>★ </code> gold highlight &nbsp;·&nbsp; <code>&gt; </code> quote block
-          </div>
-        </div>
-
-        <!-- Media fields — shown only when type = media -->
-        <div id="mediaFields" style="display:none">
-          <div class="edit-row">
-            <label class="edit-label">Media Type</label>
-            <div class="media-type-grid">
-              <div id="mtYoutube" class="type-opt selected" onclick="updateField('mediaType','youtube')">
-                <span class="type-icon">▶</span>YouTube Video
-              </div>
-              <div id="mtImage" class="type-opt" onclick="updateField('mediaType','image')">
-                <span class="type-icon">🖼</span>Image
-              </div>
-            </div>
-          </div>
-          <div class="edit-row">
-            <label class="edit-label">URL</label>
-            <input type="text" class="edit-input edit-url-input" id="editMediaUrl" placeholder="https://youtube.com/watch?v=…" oninput="updateField('mediaUrl',this.value)">
-            <div class="edit-help" id="mediaUrlHint">Paste a YouTube URL — youtube.com/watch?v=… or youtu.be/…</div>
-          </div>
-          <div class="edit-row">
-            <label class="edit-label">Caption <span style="font-weight:400;opacity:.6">(optional)</span></label>
-            <input type="text" class="edit-input" id="editMediaCaption" placeholder="Optional caption shown below the media…" oninput="updateField('mediaCaption',this.value)">
-          </div>
-        </div>
-
-        <hr class="edit-divider">
-        <div class="edit-row">
-          <label class="edit-label">Presenter Notes <span style="font-weight:400;opacity:.6">(private)</span></label>
-          <textarea class="edit-textarea notes" id="editNote" placeholder="Shown only to you during presentation…" oninput="updateField('note',this.value)"></textarea>
-        </div>
       </div>
     </div>
 
@@ -932,12 +974,14 @@ function setTheme(theme) {
 }
 
 function syncThemeUI() {
-  ['crux','bright','chalk'].forEach(t => {
-    const el = document.getElementById('swatch' + t.charAt(0).toUpperCase() + t.slice(1));
+  ['crux','bright','chalk'].forEach(function(t) {
+    var el = document.getElementById('swatch' + t.charAt(0).toUpperCase() + t.slice(1));
     if (el) el.classList.toggle('active', slideTheme === t);
   });
-  const overlay = document.getElementById('presentOverlay');
+  var overlay = document.getElementById('presentOverlay');
   if (overlay) overlay.dataset.theme = slideTheme === 'crux' ? '' : slideTheme;
+  var wrapper = document.querySelector('.wysiwyg-wrapper');
+  if (wrapper) wrapper.dataset.theme = slideTheme === 'crux' ? '' : slideTheme;
 }
 
 /* ─── VOCAB MODE ────────────────────────────────────────────────── */
@@ -960,22 +1004,19 @@ function syncVocabUI() {
   document.getElementById('pVtogSimple').classList.toggle('active', vocabMode === 'simple');
 }
 
-/* ─── BODY TAB ──────────────────────────────────────────────────── */
-function setBodyTab(tab) {
+/* ─── BODY TAB (vocab mode for editing) ─────────────────────────── */
+function setBodyTabWys(tab) {
   bodyTab = tab;
   const slide = slides[selectedIndex];
-  const isAdv = tab === 'advanced';
-  document.getElementById('tabAdv').className = 'body-tab' + (isAdv ? ' active' : '');
-  document.getElementById('tabSimple').className = 'body-tab' + (!isAdv ? ' active-simple' : '');
-  const hint = document.getElementById('bodyTabHint');
-  hint.className = 'body-tab-label ' + tab;
-  hint.textContent = isAdv ? 'Editing advanced content' : 'Editing child-friendly content';
-  document.getElementById('editBody').value = isAdv ? (slide ? slide.body || '' : '') : (slide ? slide.bodySimple || '' : '');
-}
-
-function onBodyInput(val) {
-  const field = bodyTab === 'simple' ? 'bodySimple' : 'body';
-  updateField(field, val);
+  if (!slide) return;
+  document.querySelectorAll('.wvt').forEach(function(b) {
+    b.classList.toggle('active', (tab === 'advanced' && b.textContent.includes('Advanced')) || (tab === 'simple' && b.textContent.includes('Child')));
+  });
+  const editableSlide = document.getElementById('editableSlide');
+  if (editableSlide) {
+    editableSlide.innerHTML = buildEditableSlideHTML(slide);
+    attachEditListeners(slide);
+  }
 }
 
 /* ─── RENDER SLIDE LIST ─────────────────────────────────────────── */
@@ -1034,64 +1075,401 @@ function renderSlideList() {
 function selectSlide(i) {
   selectedIndex = i;
   renderSlideList();
-  renderEditForm();
+  renderCanvasSlide();
   document.getElementById('deleteBtn').style.display = slides.length > 1 ? '' : 'none';
-}
-
-function renderEditForm() {
-  const slide = slides[selectedIndex];
-  if (!slide) {
-    document.getElementById('emptyState').style.display = '';
-    document.getElementById('editForm').style.display = 'none';
-    return;
-  }
-  document.getElementById('emptyState').style.display = 'none';
-  document.getElementById('editForm').style.display = '';
-  document.getElementById('typeGrid').innerHTML = TYPES.map(function(t) {
-    return '<div class="type-opt' + (slide.type === t.id ? ' selected' : '') +
-      '" onclick="updateField(\'type\',\'' + t.id + '\')">' +
-      '<span class="type-icon">' + t.icon + '</span>' + t.label + '</div>';
-  }).join('');
-  document.getElementById('editTitle').value = slide.title || '';
-  document.getElementById('editNote').value  = slide.note  || '';
-  const isMedia = slide.type === 'media';
-  document.getElementById('bodyContentRow').style.display = isMedia ? 'none' : '';
-  document.getElementById('mediaFields').style.display    = isMedia ? '' : 'none';
-  if (isMedia) {
-    document.getElementById('editMediaUrl').value     = slide.mediaUrl     || '';
-    document.getElementById('editMediaCaption').value = slide.mediaCaption || '';
-    var mt = slide.mediaType || 'youtube';
-    document.getElementById('mtYoutube').className = 'type-opt' + (mt === 'youtube' ? ' selected' : '');
-    document.getElementById('mtImage').className   = 'type-opt' + (mt === 'image'   ? ' selected' : '');
-    document.getElementById('mediaUrlHint').textContent = mt === 'image'
-      ? 'Paste a direct image URL (https://…)'
-      : 'Paste a YouTube URL — youtube.com/watch?v=… or youtu.be/…';
-  } else {
-    setBodyTab(bodyTab); // re-populate body field with current tab
-  }
-  updateBodyHelp(slide.type);
 }
 
 function updateField(field, value) {
   if (selectedIndex < 0 || selectedIndex >= slides.length) return;
   slides[selectedIndex][field] = value;
   save();
-  if (field === 'title' || field === 'type') renderSlideList();
-  if (field === 'type') renderEditForm();
-  if (field === 'mediaType') {
-    document.getElementById('mtYoutube').className = 'type-opt' + (value === 'youtube' ? ' selected' : '');
-    document.getElementById('mtImage').className   = 'type-opt' + (value === 'image'   ? ' selected' : '');
-    document.getElementById('mediaUrlHint').textContent = value === 'image'
-      ? 'Paste a direct image URL (https://…)'
-      : 'Paste a YouTube URL — youtube.com/watch?v=… or youtu.be/…';
+  if (field === 'title') renderSlideList();
+}
+
+/* ─── WYSIWYG CANVAS ─────────────────────────────────────────────── */
+var focusedLineEl = null;
+
+function renderCanvasSlide() {
+  var canvas = document.getElementById('slideCanvas');
+  var slide = slides[selectedIndex];
+  if (!slide) {
+    canvas.innerHTML = '<div class="wysiwyg-empty"><div class="ep-icon">📋</div><p>Select a slide to edit,<br>or click <strong>+ Add Slide</strong>.</p></div>';
+    return;
   }
+  var themeAttr = slideTheme !== 'crux' ? ' data-theme="' + slideTheme + '"' : '';
+  canvas.innerHTML =
+    '<div class="wysiwyg-wrapper"' + themeAttr + '>' +
+      '<div id="editableSlide" class="type-' + slide.type + '"><div class="slide-bg-glow"></div></div>' +
+      '<div class="fmt-toolbar" id="fmtToolbar">' +
+        '<span class="fmt-lbl">Line:</span>' +
+        '<button class="fmt-btn" id="fbtPara"   onclick="setLineType(\'para\')">¶ Para</button>' +
+        '<button class="fmt-btn" id="fbtBullet" onclick="setLineType(\'bullet\')">— Bullet</button>' +
+        '<button class="fmt-btn" id="fbtHl"     onclick="setLineType(\'highlight\')">★ Gold</button>' +
+        '<button class="fmt-btn" id="fbtQuote"  onclick="setLineType(\'quote\')">❝ Quote</button>' +
+        '<div class="fmt-sep"></div>' +
+        '<button class="fmt-btn" onclick="addBodyLine()" title="Add line below">+ Line</button>' +
+        '<button class="fmt-btn" onclick="removeBodyLine()" title="Delete line" style="color:rgba(220,80,80,0.75)">✕</button>' +
+      '</div>' +
+    '</div>' +
+    buildControlsStrip(slide);
+
+  document.getElementById('editableSlide').innerHTML += buildEditableSlideHTML(slide);
+  attachEditListeners(slide);
+  updateFmtToolbar(null);
+}
+
+function buildControlsStrip(slide) {
+  var isMedia = slide.type === 'media';
+  var mt = slide.mediaType || 'youtube';
+  var typeGrid = TYPES.map(function(t) {
+    return '<div class="wys-type-opt' + (slide.type === t.id ? ' selected' : '') +
+      '" onclick="changeType(\'' + t.id + '\')" title="' + t.label + '">' +
+      '<span class="wys-type-icon">' + t.icon + '</span>' + t.label + '</div>';
+  }).join('');
+  var mediaHtml = isMedia ?
+    '<div class="wys-media-grid">' +
+      '<div class="wys-media-opt' + (mt === 'youtube' ? ' selected' : '') + '" onclick="changeMediaType(\'youtube\')">▶ YouTube</div>' +
+      '<div class="wys-media-opt' + (mt === 'image'   ? ' selected' : '') + '" onclick="changeMediaType(\'image\')">🖼 Image</div>' +
+    '</div>' +
+    '<input class="wys-input" type="text" placeholder="Paste URL…" value="' + escHtml(slide.mediaUrl || '') + '" oninput="changeMediaUrl(this.value)">' +
+    '<input class="wys-input" type="text" placeholder="Caption (optional)…" value="' + escHtml(slide.mediaCaption || '') + '" oninput="updateField(\'mediaCaption\',this.value)">'
+    : '';
+  return '<div class="wysiwyg-controls">' +
+    '<div class="wys-col wys-col-type">' +
+      '<span class="wys-label">Slide Type</span>' +
+      '<div class="wys-type-grid">' + typeGrid + '</div>' +
+    '</div>' +
+    '<div class="wys-col wys-col-notes">' +
+      '<div class="wys-notes-row">' +
+        '<span class="wys-label">Presenter Notes</span>' +
+        '<div class="wys-vocab">' +
+          '<button class="wvt' + (bodyTab === 'advanced' ? ' active' : '') + '" onclick="setBodyTabWys(\'advanced\')">Advanced</button>' +
+          '<button class="wvt' + (bodyTab === 'simple'   ? ' active' : '') + '" onclick="setBodyTabWys(\'simple\')">Child-Friendly</button>' +
+        '</div>' +
+      '</div>' +
+      mediaHtml +
+      '<textarea class="wys-notes-input" placeholder="Private notes shown only during presentation…" oninput="updateField(\'note\',this.value)">' + escHtml(slide.note || '') + '</textarea>' +
+    '</div>' +
+  '</div>';
+}
+
+function buildEditableSlideHTML(slide) {
+  var type = slide.type;
+  var bf = bodyTab === 'simple' ? 'bodySimple' : 'body';
+  var raw = slide[bf] || slide.body || '';
+  var lines = raw.split('\n');
+
+  if (type === 'title') {
+    var sub = lines.filter(function(l){return l.trim();})[0] || '';
+    return '<div class="slide-content sc-title">' +
+      '<div class="slide-eyebrow">Pillar I &nbsp;·&nbsp; What We Believe</div>' +
+      '<h1 class="editable-field" contenteditable="true" data-field="title" data-placeholder="Title…">' + escHtml(slide.title || '') + '</h1>' +
+      '<div class="slide-subtitle editable-field" contenteditable="true" data-field="body-solo" data-placeholder="Subtitle…">' + escHtml(sub) + '</div>' +
+    '</div>';
+  }
+
+  if (type === 'question-opening') {
+    return '<div class="slide-content sc-question-opening">' +
+      '<div class="qo-label">Opening Question</div>' +
+      '<div class="qo-text editable-field" contenteditable="true" data-field="body-solo" data-placeholder="Type the question…">' + escHtml(raw) + '</div>' +
+    '</div>';
+  }
+
+  if (type === 'scripture') {
+    var nonEmpty = lines.filter(function(l){return l.trim();});
+    var quote = nonEmpty[0] || '';
+    var noteLines = nonEmpty.slice(1);
+    return '<div class="slide-content sc-scripture">' +
+      '<div class="scripture-ref editable-field" contenteditable="true" data-field="title" data-placeholder="Reference…">' + escHtml(slide.title || '') + '</div>' +
+      '<div class="scripture-quote editable-field" contenteditable="true" data-field="body-q0" data-placeholder="Scripture quote…">' + escHtml(quote) + '</div>' +
+      '<div class="scripture-notes"><div class="editable-body" id="editableBody">' + buildBodyLines(noteLines) + '</div></div>' +
+    '</div>';
+  }
+
+  if (type === 'callout') {
+    return '<div class="slide-content sc-callout">' +
+      '<h2 class="editable-field" contenteditable="true" data-field="title" data-placeholder="Heading…">' + escHtml(slide.title || '') + '</h2>' +
+      '<div class="callout-body"><div class="editable-body" id="editableBody">' + buildBodyLines(lines.filter(function(l){return l.trim();})) + '</div></div>' +
+    '</div>';
+  }
+
+  if (type === 'discussion') {
+    return '<div class="slide-content sc-discussion">' +
+      '<div class="disc-label">Discussion</div>' +
+      '<h2 class="editable-field" contenteditable="true" data-field="title" data-placeholder="Heading…">' + escHtml(slide.title || '') + '</h2>' +
+      '<div class="editable-body" id="editableBody">' + buildBodyLines(lines.filter(function(l){return l.trim();})) + '</div>' +
+    '</div>';
+  }
+
+  if (type === 'takehome') {
+    return '<div class="slide-content sc-takehome">' +
+      '<div class="th-icon">🕯</div>' +
+      '<div class="th-label">Take-Home</div>' +
+      '<h2 class="editable-field" contenteditable="true" data-field="title" data-placeholder="Heading…">' + escHtml(slide.title || '') + '</h2>' +
+      '<div class="th-body"><div class="editable-body" id="editableBody">' + buildBodyLines(lines.filter(function(l){return l.trim();})) + '</div></div>' +
+    '</div>';
+  }
+
+  if (type === 'split') {
+    return '<div class="slide-content sc-split">' +
+      '<div class="split-left">' +
+        '<div class="split-eyebrow">Pillar I · What We Believe</div>' +
+        '<h2 class="split-heading editable-field" contenteditable="true" data-field="title" data-placeholder="Left heading…">' + escHtml(slide.title || '') + '</h2>' +
+      '</div>' +
+      '<div class="split-divider"></div>' +
+      '<div class="split-right"><div class="split-body"><div class="editable-body" id="editableBody">' + buildBodyLines(lines.filter(function(l){return l.trim();})) + '</div></div></div>' +
+    '</div>';
+  }
+
+  if (type === 'definition') {
+    return '<div class="slide-content sc-definition">' +
+      '<div class="def-eyebrow">Key Term</div>' +
+      '<div class="def-term editable-field" contenteditable="true" data-field="title" data-placeholder="Term…">' + escHtml(slide.title || '') + '</div>' +
+      '<div class="def-rule"></div>' +
+      '<div class="def-body"><div class="editable-body" id="editableBody">' + buildBodyLines(lines.filter(function(l){return l.trim();})) + '</div></div>' +
+    '</div>';
+  }
+
+  if (type === 'comparison') {
+    var halves = raw.split(/\n-{3,}\n/);
+    var lLines = (halves[0] || '').trim().split('\n').filter(function(l){return l.trim();});
+    var rLines = (halves[1] || '').trim().split('\n').filter(function(l){return l.trim();});
+    var lHead = lLines[0] || '', rHead = rLines[0] || '';
+    return '<div class="slide-content sc-comparison">' +
+      '<div class="comp-header editable-field" contenteditable="true" data-field="title" data-placeholder="Header…">' + escHtml(slide.title || '') + '</div>' +
+      '<div class="comp-grid">' +
+        '<div class="comp-col">' +
+          '<div class="comp-col-heading editable-field" contenteditable="true" data-field="comp-lh" data-placeholder="Left heading…">' + escHtml(lHead) + '</div>' +
+          '<div class="comp-col-body"><div class="editable-body" id="editableBodyLeft">' + buildBodyLines(lLines.slice(1)) + '</div></div>' +
+        '</div>' +
+        '<div class="comp-divider"><div class="comp-vs">vs.</div></div>' +
+        '<div class="comp-col">' +
+          '<div class="comp-col-heading editable-field" contenteditable="true" data-field="comp-rh" data-placeholder="Right heading…">' + escHtml(rHead) + '</div>' +
+          '<div class="comp-col-body"><div class="editable-body" id="editableBodyRight">' + buildBodyLines(rLines.slice(1)) + '</div></div>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+
+  if (type === 'media') {
+    var mt2 = slide.mediaType || 'youtube';
+    var url = slide.mediaUrl || '';
+    var mediaHtml2;
+    if (mt2 === 'youtube') {
+      var vid = extractYoutubeId(url);
+      mediaHtml2 = vid
+        ? '<div class="media-frame-wrap"><iframe class="media-iframe" src="https://www.youtube-nocookie.com/embed/' + vid + '?rel=0&modestbranding=1" allowfullscreen></iframe></div>'
+        : '<div class="media-placeholder">Paste a YouTube URL in the panel below.</div>';
+    } else {
+      mediaHtml2 = url
+        ? '<img class="media-img" src="' + escHtml(url) + '" alt="">'
+        : '<div class="media-placeholder">Paste an image URL in the panel below.</div>';
+    }
+    return '<div class="slide-content sc-media">' +
+      '<div class="media-title editable-field" contenteditable="true" data-field="title" data-placeholder="Title…">' + escHtml(slide.title || '') + '</div>' +
+      mediaHtml2 +
+      (slide.mediaCaption ? '<div class="media-caption">' + escHtml(slide.mediaCaption) + '</div>' : '') +
+    '</div>';
+  }
+
+  // Default: content
+  return '<div class="slide-content sc-content">' +
+    '<div class="slide-label">Pillar I · What We Believe</div>' +
+    '<h2 class="editable-field" contenteditable="true" data-field="title" data-placeholder="Heading…">' + escHtml(slide.title || '') + '</h2>' +
+    '<div class="slide-body"><div class="editable-body" id="editableBody">' + buildBodyLines(lines.filter(function(l){return l.trim();})) + '</div></div>' +
+  '</div>';
+}
+
+function buildBodyLines(lines) {
+  if (!lines.length) return '<div class="body-line" data-type="para" contenteditable="true" data-placeholder="Type here…"></div>';
+  return lines.map(function(line) {
+    var type = 'para', text = line;
+    if (line.startsWith('- '))  { type = 'bullet';    text = line.slice(2); }
+    else if (line.startsWith('★ ')) { type = 'highlight'; text = line.slice(2); }
+    else if (line.startsWith('> ')) { type = 'quote';     text = line.slice(2); }
+    return '<div class="body-line" data-type="' + type + '" contenteditable="true">' + escHtml(text) + '</div>';
+  }).join('');
+}
+
+function attachEditListeners(slide) {
+  var es = document.getElementById('editableSlide');
+  if (!es) return;
+  es.addEventListener('focusin', function(e) {
+    var line = e.target.closest('[data-type]');
+    focusedLineEl = line || null;
+    updateFmtToolbar(line ? line.dataset.type : null);
+  });
+  es.addEventListener('paste', function(e) {
+    e.preventDefault();
+    var text = e.clipboardData.getData('text/plain');
+    document.execCommand('insertText', false, text);
+  });
+  es.addEventListener('keydown', function(e) {
+    var line = document.activeElement.closest('[data-type]');
+    if (e.key === 'Enter' && line) {
+      e.preventDefault();
+      var newLine = document.createElement('div');
+      newLine.className = 'body-line';
+      newLine.dataset.type = line.dataset.type;
+      newLine.contentEditable = 'true';
+      newLine.innerHTML = '<br>';
+      line.after(newLine);
+      var range = document.createRange();
+      range.setStart(newLine, 0); range.collapse(true);
+      var sel = window.getSelection(); sel.removeAllRanges(); sel.addRange(range);
+      focusedLineEl = newLine;
+      updateFmtToolbar(newLine.dataset.type);
+    }
+    if (e.key === 'Backspace' && line) {
+      if (line.textContent.trim() === '' || line.innerHTML === '<br>') {
+        var body = line.parentElement;
+        if (body && body.querySelectorAll('[data-type]').length > 1) {
+          e.preventDefault();
+          var prev = line.previousElementSibling;
+          line.remove();
+          if (prev && prev.dataset.type) {
+            prev.focus();
+            var r = document.createRange();
+            r.selectNodeContents(prev); r.collapse(false);
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+          }
+        }
+      }
+    }
+  });
+  es.addEventListener('input', function() { serializeFromCanvas(); });
+}
+
+function serializeFromCanvas() {
+  var slide = slides[selectedIndex];
+  if (!slide) return;
+  var es = document.getElementById('editableSlide');
+  if (!es) return;
+  var bf = bodyTab === 'simple' ? 'bodySimple' : 'body';
+
+  var titleEl = es.querySelector('[data-field="title"]');
+  if (titleEl) slide.title = titleEl.textContent.trim();
+
+  var soloEl = es.querySelector('[data-field="body-solo"]');
+  if (soloEl) {
+    slide[bf] = soloEl.textContent;
+    if (bf === 'body' && !slide.bodySimple) slide.bodySimple = slide.body;
+    if (bf === 'bodySimple' && !slide.body) slide.body = slide.bodySimple;
+  }
+
+  var q0El = es.querySelector('[data-field="body-q0"]');
+  var bodyEl = es.querySelector('#editableBody');
+  if (bodyEl) {
+    var bodyText = serializeBodyEl(bodyEl);
+    if (q0El) {
+      slide[bf] = q0El.textContent.trim() + (bodyText ? '\n' + bodyText : '');
+    } else {
+      slide[bf] = bodyText;
+    }
+    if (bf === 'body' && !slide.bodySimple) slide.bodySimple = slide.body;
+    if (bf === 'bodySimple' && !slide.body) slide.body = slide.bodySimple;
+  }
+
+  var lhEl = es.querySelector('[data-field="comp-lh"]');
+  var rhEl = es.querySelector('[data-field="comp-rh"]');
+  var lbEl = es.querySelector('#editableBodyLeft');
+  var rbEl = es.querySelector('#editableBodyRight');
+  if (lhEl && rhEl && lbEl && rbEl) {
+    slide[bf] = lhEl.textContent.trim() + '\n' + serializeBodyEl(lbEl) +
+      '\n---\n' + rhEl.textContent.trim() + '\n' + serializeBodyEl(rbEl);
+    if (bf === 'body' && !slide.bodySimple) slide.bodySimple = slide.body;
+    if (bf === 'bodySimple' && !slide.body) slide.body = slide.bodySimple;
+  }
+
+  save();
+  renderSlideList();
+}
+
+function serializeBodyEl(bodyEl) {
+  return Array.from(bodyEl.querySelectorAll('[data-type]')).map(function(el) {
+    var type = el.dataset.type;
+    var text = el.textContent.trim();
+    if (!text) return null;
+    if (type === 'bullet')    return '- ' + text;
+    if (type === 'highlight') return '★ ' + text;
+    if (type === 'quote')     return '> ' + text;
+    return text;
+  }).filter(function(l){return l !== null;}).join('\n');
+}
+
+function updateFmtToolbar(type) {
+  var map = { para:'Para', bullet:'Bullet', highlight:'Hl', quote:'Quote' };
+  ['Para','Bullet','Hl','Quote'].forEach(function(n) {
+    var btn = document.getElementById('fbt' + n);
+    if (btn) btn.classList.remove('fmt-active');
+  });
+  if (type && map[type]) {
+    var btn = document.getElementById('fbt' + map[type]);
+    if (btn) btn.classList.add('fmt-active');
+  }
+}
+
+function setLineType(type) {
+  if (!focusedLineEl || !focusedLineEl.dataset) return;
+  focusedLineEl.dataset.type = type;
+  updateFmtToolbar(type);
+  serializeFromCanvas();
+}
+
+function addBodyLine() {
+  var bodyEl = document.querySelector('.editable-body');
+  if (!bodyEl) return;
+  var newLine = document.createElement('div');
+  newLine.className = 'body-line';
+  newLine.dataset.type = focusedLineEl && focusedLineEl.dataset ? focusedLineEl.dataset.type : 'bullet';
+  newLine.contentEditable = 'true';
+  newLine.innerHTML = '<br>';
+  if (focusedLineEl && focusedLineEl.parentElement === bodyEl) {
+    focusedLineEl.after(newLine);
+  } else {
+    bodyEl.appendChild(newLine);
+  }
+  newLine.focus();
+  focusedLineEl = newLine;
+  updateFmtToolbar(newLine.dataset.type);
+}
+
+function removeBodyLine() {
+  if (!focusedLineEl) return;
+  var body = focusedLineEl.parentElement;
+  if (!body || body.querySelectorAll('[data-type]').length <= 1) return;
+  var prev = focusedLineEl.previousElementSibling || focusedLineEl.nextElementSibling;
+  focusedLineEl.remove();
+  focusedLineEl = prev;
+  if (prev) { prev.focus(); updateFmtToolbar(prev.dataset.type); }
+  serializeFromCanvas();
+}
+
+function changeType(type) {
+  if (selectedIndex < 0) return;
+  slides[selectedIndex].type = type;
+  save(); renderSlideList(); renderCanvasSlide();
+}
+
+function changeMediaType(mt) {
+  if (selectedIndex < 0) return;
+  slides[selectedIndex].mediaType = mt;
+  save(); renderCanvasSlide();
+}
+
+function changeMediaUrl(val) {
+  if (selectedIndex < 0) return;
+  slides[selectedIndex].mediaUrl = val;
+  save();
+  var es = document.getElementById('editableSlide');
+  if (es) { es.innerHTML = '<div class="slide-bg-glow"></div>' + buildEditableSlideHTML(slides[selectedIndex]); attachEditListeners(slides[selectedIndex]); }
 }
 
 /* ─── ADD / MOVE / DELETE ───────────────────────────────────────── */
 function addSlide() {
   slides.push({ id: nextId++, type:'content', title:'New Slide', body:'- Point one\n- Point two\n- Point three', bodySimple:'- Point one\n- Point two\n- Point three', note:'', mediaType:'youtube', mediaUrl:'', mediaCaption:'' });
   save(); renderSlideList(); selectSlide(slides.length - 1);
-  document.getElementById('slideList').scrollTop = 9999;
+  document.getElementById('slideList').scrollTop = 99999;
 }
 
 function moveSlideToIndex(from, to) {
@@ -1105,7 +1483,7 @@ function moveSlideToIndex(from, to) {
   } else {
     if (selectedIndex >= to && selectedIndex < from) selectedIndex++;
   }
-  save(); renderSlideList(); renderEditForm();
+  save(); renderSlideList(); renderCanvasSlide();
 }
 
 function moveSlide(i, dir) {
@@ -1117,14 +1495,14 @@ function confirmDelete() {
   if (!confirm('Delete this slide?')) return;
   slides.splice(selectedIndex, 1);
   selectedIndex = Math.min(selectedIndex, slides.length - 1);
-  save(); renderSlideList(); renderEditForm();
+  save(); renderSlideList(); renderCanvasSlide();
   document.getElementById('deleteBtn').style.display = slides.length > 1 ? '' : 'none';
 }
 
 function resetDefaults() {
   if (!confirm('Reset all slides to defaults? Your edits will be lost.')) return;
   slides = defaultCopy(); nextId = 100; selectedIndex = 0;
-  save(); renderSlideList(); renderEditForm();
+  save(); renderSlideList(); renderCanvasSlide();
   showToast('Reset to defaults');
 }
 
@@ -1329,19 +1707,6 @@ function parseLines(lines) {
 }
 
 /* ─── HELPERS ───────────────────────────────────────────────────── */
-function updateBodyHelp(type) {
-  var el = document.getElementById('editBodyHelp');
-  if (!el) return;
-  if (type === 'split') {
-    el.innerHTML = 'Right column content. The Title field becomes the large left heading. Use <code>- </code> bullets, <code>★ </code> highlights, <code>&gt; </code> quotes.';
-  } else if (type === 'definition') {
-    el.innerHTML = 'Definition text shown below the term. Paragraphs for the main definition, <code>- </code> bullets for extra context.';
-  } else if (type === 'comparison') {
-    el.innerHTML = 'Left column above <code>---</code> · Right column below. First line of each section is the column heading.';
-  } else {
-    el.innerHTML = '<code>- </code> bullet &nbsp;·&nbsp; <code>★ </code> gold highlight &nbsp;·&nbsp; <code>&gt; </code> quote block';
-  }
-}
 
 function extractYoutubeId(url) {
   if (!url) return '';
