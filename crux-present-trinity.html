@@ -666,7 +666,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
       <div class="theme-picker" title="Slide theme">
         <span class="theme-picker-label">Theme</span>
         <div class="theme-swatch crux active" id="swatchCrux" title="CRUX Classic" onclick="setTheme('crux')"></div>
-        <div class="theme-swatch bright" id="swatchBright" title="Bright &amp; Playful" onclick="setTheme('bright')"></div>
+        <div class="theme-swatch bright" id="swatchBright" title="Colorful" onclick="setTheme('bright')"></div>
         <div class="theme-swatch chalk" id="swatchChalk" title="Chalkboard" onclick="setTheme('chalk')"></div>
       </div>
       <button class="hdr-btn ghost" onclick="resetDefaults()">Reset</button>
@@ -927,7 +927,7 @@ function setTheme(theme) {
   syncThemeUI();
   const overlay = document.getElementById('presentOverlay');
   overlay.dataset.theme = theme === 'crux' ? '' : theme;
-  showToast(theme === 'bright' ? '🎨 Bright & Playful' : theme === 'chalk' ? '🖍 Chalkboard' : '✦ CRUX Classic');
+  showToast(theme === 'bright' ? '🎨 Colorful' : theme === 'chalk' ? '🖍 Chalkboard' : '✦ CRUX Classic');
 }
 
 function syncThemeUI() {
