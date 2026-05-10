@@ -353,6 +353,7 @@ header {
         <div class="mock-btns">
           <span class="mock-btn">Vocab</span>
           <span class="mock-btn">Theme</span>
+          <span class="mock-btn">? Help</span>
           <span class="mock-btn">Reset</span>
           <span class="mock-btn gold">▶ Present</span>
         </div>
@@ -364,18 +365,33 @@ header {
           <div class="mock-thumb"><div class="mock-thumb-title">What is the Trinity?</div><div class="mock-thumb-type">Content</div></div>
           <div class="mock-thumb"><div class="mock-thumb-title">John 3:16</div><div class="mock-thumb-type">Scripture</div></div>
         </div>
-        <div class="mock-slide">
-          <div style="font-size:0.5rem;color:rgba(212,165,116,0.5);letter-spacing:2px;text-transform:uppercase;">The Holy Trinity</div>
-          <div style="font-family:'Playfair Display',serif;font-size:1rem;font-weight:900;color:#fff;">Holy Trinity</div>
-          <div style="font-size:0.48rem;font-style:italic;color:rgba(255,255,255,0.35);">A CRUX Faith Formation Lesson</div>
-        </div>
-        <div class="mock-edit">
-          <div class="mock-field-label">Slide Title</div>
-          <div class="mock-field">Holy Trinity</div>
-          <div class="mock-field-label">Subtitle</div>
-          <div class="mock-field">A CRUX Faith Formation Lesson</div>
-          <div class="mock-field-label">Notes</div>
-          <div class="mock-field tall"></div>
+        <div class="mock-slide" style="flex-direction:column;background:#0d0f1a;padding:0.75rem;gap:0.5rem;align-items:stretch;">
+          <div style="flex:1;background:linear-gradient(150deg,#0a0d1c,#1a1f36);border-radius:4px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.3rem;position:relative;">
+            <div style="font-size:0.42rem;color:rgba(212,165,116,0.5);letter-spacing:2px;text-transform:uppercase;">Pillar I · What We Believe</div>
+            <div style="font-family:'Playfair Display',serif;font-size:0.9rem;font-weight:900;color:#fff;box-shadow:0 0 0 1px rgba(212,165,116,0.4);border-radius:2px;padding:0 3px;cursor:text;">Holy Trinity</div>
+            <div style="font-size:0.42rem;font-style:italic;color:rgba(255,255,255,0.35);font-family:'Playfair Display',serif;">A CRUX Faith Formation Lesson</div>
+            <div style="position:absolute;top:4px;right:4px;background:rgba(8,10,22,0.9);border:1px solid rgba(212,165,116,0.2);border-radius:3px;padding:2px 5px;display:flex;gap:3px;align-items:center;">
+              <span style="font-size:0.38rem;color:rgba(255,255,255,0.25);">Line:</span>
+              <span style="font-size:0.4rem;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);padding:1px 4px;border-radius:2px;">¶</span>
+              <span style="font-size:0.4rem;background:#d4a574;color:#0f1222;padding:1px 4px;border-radius:2px;">—</span>
+              <span style="font-size:0.4rem;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);padding:1px 4px;border-radius:2px;">★</span>
+              <span style="font-size:0.4rem;background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.5);padding:1px 4px;border-radius:2px;">❝</span>
+            </div>
+          </div>
+          <div style="background:#f8f7f4;border-radius:4px;padding:0.4rem 0.5rem;display:flex;gap:0.5rem;">
+            <div style="flex:1;">
+              <div style="font-size:0.42rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8890b0;margin-bottom:3px;">Slide Type</div>
+              <div style="display:flex;gap:2px;flex-wrap:wrap;">
+                <span style="font-size:0.38rem;padding:1px 4px;border:1px solid #d4a574;background:#fdf8f2;border-radius:2px;color:#1a1f36;">✟ Title</span>
+                <span style="font-size:0.38rem;padding:1px 4px;border:1px solid rgba(26,31,54,0.1);border-radius:2px;color:#8890b0;">☰ Content</span>
+                <span style="font-size:0.38rem;padding:1px 4px;border:1px solid rgba(26,31,54,0.1);border-radius:2px;color:#8890b0;">✦ Scripture</span>
+              </div>
+            </div>
+            <div style="flex:1.2;">
+              <div style="font-size:0.42rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#8890b0;margin-bottom:3px;">Presenter Notes</div>
+              <div style="background:#fefef8;border:1px solid rgba(26,31,54,0.1);border-radius:3px;height:22px;padding:2px 4px;font-size:0.4rem;color:#8890b0;">Private reminder for yourself…</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -385,21 +401,21 @@ header {
         <div class="step-num">A</div>
         <div class="step-body">
           <div class="step-title">Slide list (left panel)</div>
-          <div class="step-desc">Every slide in your presentation appears here as a thumbnail. Click any slide to select it and edit it. Drag slides up or down to reorder them, or use the small arrow buttons that appear on hover.</div>
+          <div class="step-desc">Every slide appears here as a thumbnail. Click any slide to select it. Drag thumbnails to reorder, or use the ▲ ▼ arrows that appear on hover.</div>
         </div>
       </div>
       <div class="step">
         <div class="step-num">B</div>
         <div class="step-body">
-          <div class="step-title">Live preview (center)</div>
-          <div class="step-desc">This shows exactly how your selected slide will look when you present it. It updates in real time as you type in the edit panel.</div>
+          <div class="step-title">Live slide canvas (center)</div>
+          <div class="step-desc">The selected slide fills this area exactly as it will look when projected. Click any title, bullet, or text region and start typing — you're editing directly on the slide surface. A formatting toolbar in the top-right corner switches the focused line between bullet, highlight, quote, and paragraph styles.</div>
         </div>
       </div>
       <div class="step">
         <div class="step-num">C</div>
         <div class="step-body">
-          <div class="step-title">Edit panel (right)</div>
-          <div class="step-desc">This is where you write your content — title, body text, scripture references, notes, and more. The fields change depending on what slide type you've selected.</div>
+          <div class="step-title">Controls strip (below the slide)</div>
+          <div class="step-desc">A compact strip below the canvas holds the slide type grid, the Advanced / Child-Friendly vocab toggle, and the presenter notes field. Change the slide type by clicking any type in the grid — the canvas updates immediately.</div>
         </div>
       </div>
     </div>
@@ -426,7 +442,7 @@ header {
         <div class="step-num">2</div>
         <div class="step-body">
           <div class="step-title">Change the slide type</div>
-          <div class="step-desc">In the edit panel, the top row shows a grid of slide types. Click any type to switch the selected slide. The preview and edit fields update immediately.</div>
+          <div class="step-desc">In the controls strip below the slide, click any type in the type grid. The slide canvas updates immediately to show the new layout.</div>
         </div>
       </div>
       <div class="step">
@@ -441,7 +457,7 @@ header {
         <div class="step-num">4</div>
         <div class="step-body">
           <div class="step-title">Delete a slide</div>
-          <div class="step-desc">Select the slide, then click the <code>Delete Slide</code> button at the bottom of the edit panel. You'll be asked to confirm before it's removed.</div>
+          <div class="step-desc">Select the slide, then click the <code>Delete</code> button in the top header bar. It appears automatically when a slide is selected and more than one slide exists. You'll be asked to confirm before it's removed.</div>
         </div>
       </div>
     </div>
@@ -636,35 +652,49 @@ header {
     <span class="section-anchor" id="formatting"></span>
     <div class="section-eyebrow">Section 4</div>
     <h2 class="section-title">Formatting your content</h2>
-    <p class="section-intro">The body field uses simple plain-text formatting. No HTML or special software needed.</p>
+    <p class="section-intro">You edit directly on the slide. Click any text region and type. A small toolbar in the top-right corner of the slide lets you style individual lines.</p>
 
     <div class="format-tips">
       <div class="format-tip">
         <div class="format-icon">—</div>
         <div>
-          <div class="format-title">Bullet points</div>
-          <div class="format-desc">Start a line with <code>- </code> (dash space) to make it a bullet point. Lines without a dash appear as regular paragraphs.</div>
+          <div class="format-title">Bullet (— Bullet)</div>
+          <div class="format-desc">Click a line in the body area, then click <strong>— Bullet</strong> in the toolbar. A gold dash (—) appears before the line. Use for lists of key points.</div>
         </div>
       </div>
       <div class="format-tip">
         <div class="format-icon">★</div>
         <div>
-          <div class="format-title">Highlighted bullet</div>
-          <div class="format-desc">Start a line with <code>* </code> (asterisk space) to highlight it in gold with a star. Use this for the single most important point on a slide.</div>
+          <div class="format-title">Gold highlight (★ Gold)</div>
+          <div class="format-desc">Click a line, then click <strong>★ Gold</strong> in the toolbar. The line turns gold with a star prefix — the visual emphasis of the slide. Use for the single most important point.</div>
         </div>
       </div>
       <div class="format-tip">
-        <div class="format-icon">---</div>
+        <div class="format-icon">❝</div>
         <div>
-          <div class="format-title">Comparison separator</div>
-          <div class="format-desc">On a Comparison slide, type <code>---</code> on its own line to separate the left and right columns. Everything before the <code>---</code> is the left side; everything after is the right.</div>
+          <div class="format-title">Quote block (❝ Quote)</div>
+          <div class="format-desc">Click a line, then click <strong>❝ Quote</strong>. The line becomes an italicized quote with a gold left border — good for short scripture excerpts or memorable statements inside a content slide.</div>
+        </div>
+      </div>
+      <div class="format-tip">
+        <div class="format-icon">¶</div>
+        <div>
+          <div class="format-title">Paragraph (¶ Para)</div>
+          <div class="format-desc">Plain body text. No bullet, no prefix. Good for continuous prose rather than a list. The default style for new lines.</div>
+        </div>
+      </div>
+      <div class="format-tip">
+        <div class="format-icon">↵</div>
+        <div>
+          <div class="format-title">Adding and removing lines</div>
+          <div class="format-desc">Press <strong>Enter</strong> to create a new line of the same type below the current one. Press <strong>Backspace</strong> on an empty line to delete it. You can also use the <strong>+ Line</strong> and <strong>✕</strong> buttons in the toolbar.</div>
         </div>
       </div>
       <div class="format-tip">
         <div class="format-icon">📝</div>
         <div>
           <div class="format-title">Speaker notes</div>
-          <div class="format-desc">Every slide has a Notes field at the bottom of the edit panel. Notes never appear on the projected slide — only in the presenter view. Use them for reminders, talking points, or timing cues.</div>
+          <div class="format-desc">The Presenter Notes field lives in the controls strip below the slide. Notes never appear on the projected slide — only when you press <strong>N</strong> during presentation. Use them for reminders, timing cues, or discussion prompts.</div>
         </div>
       </div>
       <div class="format-tip">
@@ -699,7 +729,7 @@ header {
         <div class="step-body">
           <div class="step-title">Child-Friendly mode</div>
           <div class="step-desc">Switches to simpler language written for elementary-age children. The content is the same truth, just in words a 7-year-old can understand.</div>
-          <div class="tip"><strong>How to write both versions:</strong> In the edit panel, the body field has two tabs — <strong>Advanced</strong> and <strong>Child-Friendly</strong>. Write the full version in one tab and the simplified version in the other. If you only write in one tab, both modes show the same content.</div>
+          <div class="tip"><strong>How to write both versions:</strong> The <strong>Advanced / Child-Friendly</strong> toggle in the controls strip below the slide switches which version you're currently editing. Switch to Child-Friendly, then edit the slide text to write the simpler version. If you only write one version, both modes show the same content.</div>
         </div>
       </div>
       <div class="step">
