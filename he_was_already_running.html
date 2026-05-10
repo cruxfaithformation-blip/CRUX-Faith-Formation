@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — He Was Already Running</title>
+<meta name="description" content="He Was Already Running: What the Prodigal Son Got Wrong About Coming Home. By Andrew Cross.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --navy-deep: #0f1222;
+  --navy-light: #252b47;
+  --gold: #d4a574;
+  --gold-light: #e8c99a;
+  --gold-pale: #f5ead8;
+  --gold-dim: rgba(212,165,116,0.15);
+  --cream: #faf8f4;
+  --off-white: #f4f2ee;
+  --white: #ffffff;
+  --text-primary: #1a1f36;
+  --text-secondary: #5a6080;
+  --text-muted-dark: rgba(255,255,255,0.45);
+  --text-soft: rgba(255,255,255,0.7);
+  --border: rgba(26,31,54,0.1);
+  --border-gold: rgba(212,165,116,0.3);
+  --purple: #4a2c6b;
+  --purple-light: #f0eaf8;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: var(--navy-deep);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.6;
+}
+
+/* NAV */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 1rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(15,18,34,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: 5px;
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.nav-back {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--text-muted-dark);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--gold); }
+
+/* HERO */
+.hero {
+  padding: 7rem 2rem 5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  background: var(--navy-deep);
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 800px; height: 700px;
+  background: radial-gradient(ellipse, rgba(212,165,116,0.07) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.hero-track {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  animation: fadeUp 0.7s ease both;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 8vw, 5.5rem);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.05;
+  margin-bottom: 0.75rem;
+  animation: fadeUp 0.7s ease 0.1s both;
+}
+
+.hero-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 2.5vw, 1.35rem);
+  color: var(--gold);
+  margin-bottom: 1.75rem;
+  animation: fadeUp 0.7s ease 0.2s both;
+}
+
+.hero-author {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted-dark);
+  margin-bottom: 2.5rem;
+  animation: fadeUp 0.7s ease 0.3s both;
+}
+
+.hero-description {
+  max-width: 580px;
+  margin: 0 auto 3rem;
+  animation: fadeUp 0.7s ease 0.4s both;
+}
+
+.hero-description p {
+  font-size: 1.2rem;
+  color: var(--text-soft);
+  line-height: 1.85;
+}
+
+/* TOC */
+.toc-section {
+  background: rgba(255,255,255,0.02);
+  border-top: 1px solid rgba(212,165,116,0.1);
+  border-bottom: 1px solid rgba(212,165,116,0.1);
+  padding: 3rem 2rem;
+}
+
+.toc-inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.toc-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2rem;
+}
+
+.toc-part-header {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--text-muted-dark);
+  margin: 1.5rem 0 0.5rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(212,165,116,0.1);
+}
+
+.toc-list { list-style: none; }
+
+.toc-item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.75rem;
+  padding: 0.45rem 0;
+}
+
+.toc-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  color: var(--gold);
+  min-width: 18px;
+  text-align: right;
+}
+
+.toc-link {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.1rem;
+  color: rgba(255,255,255,0.65);
+  text-decoration: none;
+  transition: color 0.2s;
+  cursor: pointer;
+}
+.toc-link:hover { color: var(--gold); }
+
+/* READING AREA */
+.reading-area {
+  background: var(--cream);
+  color: var(--text-primary);
+}
+
+.reading-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 5rem 2rem 6rem;
+}
+
+/* PART DIVIDER */
+.part-divider {
+  text-align: center;
+  padding: 4rem 0 2rem;
+  margin-bottom: 1rem;
+}
+
+.part-divider:not(:first-child) {
+  border-top: 1px solid var(--border);
+  margin-top: 4rem;
+}
+
+.part-number {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.part-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+}
+
+/* CHAPTER */
+.chapter {
+  padding: 3.5rem 0 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter:first-of-type { border-top: none; }
+
+.chapter-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.5rem;
+}
+
+.chapter-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.2;
+  margin-bottom: 2.5rem;
+}
+
+.chapter p {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.2rem;
+  line-height: 1.9;
+  color: var(--text-primary);
+  margin-bottom: 1.4rem;
+}
+
+.chapter p:last-child { margin-bottom: 0; }
+
+/* SCRIPTURE BLOCK */
+.scripture {
+  margin: 2rem 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--off-white);
+  border-left: 3px solid var(--gold);
+  border-radius: 0 8px 8px 0;
+}
+
+.scripture p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.05rem !important;
+  line-height: 1.7 !important;
+  color: var(--text-secondary) !important;
+  margin-bottom: 0 !important;
+}
+
+.scripture cite {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  color: var(--gold);
+  margin-top: 0.6rem;
+}
+
+/* CHAPTER CLOSING LINE */
+.chapter-close {
+  font-family: 'Playfair Display', serif !important;
+  font-size: 1.35rem !important;
+  font-style: italic;
+  text-align: center;
+  padding: 1.5rem 0 0;
+  color: var(--text-primary) !important;
+}
+
+/* PAUSE PROMPT */
+.pause-prompt {
+  margin: 2.5rem 0;
+  padding: 1.25rem 1.5rem;
+  background: var(--purple-light);
+  border-left: 3px solid var(--purple);
+  border-radius: 0 8px 8px 0;
+}
+
+.pause-prompt p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1rem !important;
+  color: var(--purple) !important;
+  line-height: 1.65 !important;
+  margin-bottom: 0 !important;
+}
+
+/* CLOSING CTA */
+.closing-cta {
+  margin-top: 5rem;
+  padding: 3rem;
+  background: var(--navy);
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid rgba(212,165,116,0.2);
+}
+
+.closing-cta h3 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--white);
+  margin-bottom: 0.75rem;
+}
+
+.closing-cta p {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.6);
+  line-height: 1.7;
+  max-width: 460px;
+  margin: 0 auto 2rem;
+}
+
+.btn-gold {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1rem 2.5rem;
+  background: var(--gold);
+  color: var(--navy-deep);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 4px;
+  transition: all 0.25s ease;
+  border: 2px solid var(--gold);
+  cursor: pointer;
+}
+
+.btn-gold:hover {
+  background: var(--gold-light);
+  border-color: var(--gold-light);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(212,165,116,0.25);
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (max-width: 700px) {
+  .site-nav { padding: 1rem 1.25rem; }
+  .reading-inner { padding: 3rem 1.25rem 5rem; }
+  .closing-cta { padding: 2rem 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">CRUX</a>
+  <a href="index.html" class="nav-back">← Back to CRUX</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <p class="hero-track">About the Creator · Andrew Cross</p>
+  <h1 class="hero-title">He Was Already Running</h1>
+  <p class="hero-subtitle">What the Prodigal Son Got Wrong About Coming Home</p>
+  <p class="hero-author">by Andrew Cross</p>
+  <div class="hero-description">
+    <p>A book about returning. About what you expect to find when you turn around, and what is actually waiting there instead.</p>
+  </div>
+</section>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc-section">
+  <div class="toc-inner">
+    <p class="toc-label">Contents</p>
+    <ul class="toc-list">
+      <li class="toc-item">
+        <span class="toc-num">—</span>
+        <span class="toc-link" onclick="document.getElementById('intro').scrollIntoView({behavior:'smooth'})">Introduction — Midnight With God</span>
+      </li>
+      <li><p class="toc-part-header">Part One — Before You Left</p></li>
+      <li class="toc-item"><span class="toc-num">1</span><span class="toc-link" onclick="document.getElementById('ch1').scrollIntoView({behavior:'smooth'})">The Cross Under the Jersey</span></li>
+      <li class="toc-item"><span class="toc-num">2</span><span class="toc-link" onclick="document.getElementById('ch2').scrollIntoView({behavior:'smooth'})">Give Me My Share</span></li>
+      <li><p class="toc-part-header">Part Two — Coming to Yourself</p></li>
+      <li class="toc-item"><span class="toc-num">3</span><span class="toc-link" onclick="document.getElementById('ch3').scrollIntoView({behavior:'smooth'})">Coming soon</span></li>
+      <li class="toc-item"><span class="toc-num">4</span><span class="toc-link" onclick="document.getElementById('ch4').scrollIntoView({behavior:'smooth'})">Coming soon</span></li>
+      <li><p class="toc-part-header">Part Three — He Saw Him From a Distance</p></li>
+      <li class="toc-item"><span class="toc-num">5</span><span class="toc-link" onclick="document.getElementById('ch5').scrollIntoView({behavior:'smooth'})">Coming soon</span></li>
+      <li class="toc-item"><span class="toc-num">6</span><span class="toc-link" onclick="document.getElementById('ch6').scrollIntoView({behavior:'smooth'})">Coming soon</span></li>
+      <li class="toc-item"><span class="toc-num">7</span><span class="toc-link" onclick="document.getElementById('ch7').scrollIntoView({behavior:'smooth'})">Coming soon</span></li>
+      <li><p class="toc-part-header">Part Four — The Brother at the Door</p></li>
+      <li class="toc-item"><span class="toc-num">8</span><span class="toc-link" onclick="document.getElementById('ch8').scrollIntoView({behavior:'smooth'})">Coming soon</span></li>
+      <li><p class="toc-part-header">Part Five — What Was Always True</p></li>
+      <li class="toc-item"><span class="toc-num">9</span><span class="toc-link" onclick="document.getElementById('ch9').scrollIntoView({behavior:'smooth'})">Coming soon</span></li>
+      <li class="toc-item"><span class="toc-num">10</span><span class="toc-link" onclick="document.getElementById('ch10').scrollIntoView({behavior:'smooth'})">Coming soon</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- READING AREA -->
+<div class="reading-area">
+  <div class="reading-inner">
+
+    <!-- INTRODUCTION -->
+    <div class="chapter" id="intro">
+      <p class="chapter-label">Introduction</p>
+      <h2 class="chapter-title">Midnight With God</h2>
+      <p>I grew up with football being my passion. I was always the smallest kid on the field — 5'4 and 170 pounds soaking wet, but I had a nose for the football and enough athleticism to make it work. Our team never lost a game in high school. Back-to-back state championships and a 26-0 record over my junior and senior seasons. I even scored a touchdown at Gillette Stadium, where I'd grown up watching the Patriots play, to seal off my career before getting recruited to play college ball at Endicott College. Division III football, but still. At the time I thought that was the pinnacle of success. Win every game, go on to play college ball. What could be better.</p>
+      <p>I found out quickly that football stops being fun when it becomes a full-time job. Pre-class film sessions, post-class study hall, practice from eight to ten at night. My life revolved around it, and even though I was one of only three freshmen to play varsity, I didn't feel the love for the game I once did. So I studied hard, aced my classes, and transferred to Northeastern University, which had been my dream school since my cousin Joe attended. I walked onto that campus thinking this was the greatest thing in the world. My dream school, right in the heart of Boston.</p>
+      <p>Then I was alone.</p>
+      <p>No longer did I have 100 teammates to run into around campus. I was just another face on a campus of 20,000 students, and for the first time in my life I didn't have a community. I gave the Catholic men's group a shot, and I loved those guys, but it was a long way from the brotherhood of a football team. So when a buddy invited me to a dodgeball tournament for a spring fraternity rush event, I went. At the time I thought fraternities were the dumbest thing in existence. I went to play dodgeball. My team won the whole tournament, and a kid named Rob on my team became one of my best friends in the world. We were in each other's weddings exactly a year apart, both on September 13th. It wasn't what I'd planned for myself. But it was where I found my people.</p>
+      <p>So I did what any good fraternity guy does. I went to the parties and the socials, and my faith took the back seat. Sunday mornings were a lot harder to wake up for after a Saturday night out. As much as I made an effort to get to Mass every week, some weeks slipped by and other things took priority. For the first time in my life I wasn't Christian plus football. I was in a fraternity, and church came second.</p>
+      <p>Then a guy from the Catholic men's group asked me to lunch. He had something to tell me, he said. Here we go, I thought. Am I about to get scolded for skipping Mass? But before he even took a bite of food he said there was a retreat coming up and for some reason he felt called to invite me. He had to bring me, he said. Before he could finish the sentence I said of course, I'll be there. Did I want to go? Not really. But I knew if I said no I'd kick myself for it, so I went.</p>
+      <p>That weekend I said my first confession since confirmation. I hadn't done an examination of conscience or prepared anything. I just walked in and eight years of sins came out of me like a flood. The priest looked at me afterward and said it was one of the most honest confessions he'd heard that day. Then he gave me a handful of Our Fathers and Hail Marys, and before he sent me off he said one thing I have never forgotten.</p>
+      <p>"Never stop starting over. Try, try, and try again. If you fail, brush yourself off, get back up, and start anew."</p>
+      <p>That night I sat in a gymnasium at midnight for adoration. Just me and the Eucharist in the middle of the night, while the rest of the world slept. There was nothing else. No fraternity, no football, no campus, no noise. Just Him. I walked out of that gym knowing I needed to get back to being a man of God, not just another follower.</p>
+      <p>That was the moment I understood something about the parable I'd heard my whole life but never really read. God wasn't waiting for me to find my way back to him. He was already on his feet, already running, already most of the way down the road before I'd even turned around. The boy in the parable thought he was the one making the move. He was wrong. So was I.</p>
+      <p>That's what this is about.</p>
+    </div>
+
+    <!-- PART 1 -->
+    <div class="part-divider">
+      <span class="part-number">Part One</span>
+      <h2 class="part-title">Before You Left</h2>
+    </div>
+
+    <div class="chapter" id="ch1">
+      <p class="chapter-label">Chapter 1</p>
+      <h2 class="chapter-title">The Cross Under the Jersey</h2>
+      <p>The foundation was laid before I had any say in the matter.</p>
+      <p>My mother played organ at our parish for thirty years. My father is a deacon. Church wasn't somewhere we went on Sundays; it was the shape of our house, the grammar of our family before I was old enough to have an opinion about it. I didn't choose Catholicism any more than I chose my last name. It was what we were, and I had a priest named Father Mike who made me glad it was.</p>
+      <p>By the time I was old enough to question it, I had already decided I believed. My parents and Father Mike had done the work so quietly and so well that I never had a good reason to push back. I had seen faith lived in front of me before I knew what to call it, and whatever they had, I wanted it.</p>
+      <p>What I didn't know was that I had inherited something real and kept it entirely to myself.</p>
+      <p>I started lifting weights in third grade, which is probably what stunted my growth. I walked into high school at around five one and a hundred and thirty pounds, and every person around me had already decided I was too small to play. I didn't particularly care. I made a decision early that I was going to out-prepare everyone who doubted me.</p>
+      <p>I studied film the way some kids studied textbooks. By the time the snap count came, I had already run the play in my head four different ways. If the defense was blitzing the edge, I already knew I had the outside. If we were one on one in the open field, I knew I was winning that battle before we ever lined up. Through pure determination I eventually bulked up to a hundred and seventy pounds, which still wasn't a lot, but I wasn't trying to be the biggest guy on the field. I was trying to be the most prepared. Against someone relentless in the open field, size has a way of mattering less than you'd think.</p>
+      <p>Our team didn't lose a game my junior or senior year. Back-to-back state championships, 26-0. I scored at Gillette Stadium and got recruited to play college ball. The chip never really left my shoulder, and I think it rewired how I approach every challenge since. Out-prepare. Out-work. Know more than they expect you to know.</p>
+      <p>It was a good way to play football. It was also a good way to work alone.</p>
+      <p>My faith took the same shape.</p>
+      <p>I wore a cross under my jersey every game. On my arm, a cross with a crown of thorns. I prayed in church and at home before bed, and outside of that I kept it to myself. My faith was mine, and I didn't think what anyone else believed was my business. Every man has to find his own way. My job was to work out my own salvation and let God handle the rest.</p>
+      <p>That felt, honestly, like the responsible thing. Don't push it on people. Keep the cross close. Let your life speak for itself. I studied scripture to firm up my own understanding, not to teach anyone anything. I read Paul the way I watched film: to get a better grip on the territory, to know what I was working with. Just for me.</p>
+      <p>There was a cleanliness to that arrangement. A kind of freedom. I could hold my faith as something private and personal and no one could challenge what they couldn't see.</p>
+      <p>The word for what I had is not faith. It's religion. Religion can be inherited and held quietly for years. Faith tends to spill. I had been given something real and kept it contained, like a lamp under a bowl, and called that faithfulness.</p>
+      <p>There's a line in Luke 15 I used to read right past. The son in the parable has his whole speech prepared. He has written himself an argument for why he deserves at least a servant's portion, and he walks toward home certain that the door is mostly closed to him. He is approaching God as a negotiation. He has already decided what he is owed, which is nothing, and he is ready to start there.</p>
+      <p>He doesn't know the father has been standing in the road.</p>
+      <p>I read that story for years and thought it was about repentance. About coming back when you've gone astray. And it is. But it's also about what you think the door looks like, and what is actually waiting on the other side of it.</p>
+      <p>I spent years thinking my job was to follow. To stay out of trouble, hold my faith privately, keep the cross under the jersey, and let God sort out everyone else. I thought that was enough. I thought that was, in fact, exactly what was being asked of me.</p>
+      <p class="chapter-close">He was calling me to lead. That was the thing I hadn't figured out yet.</p>
+    </div>
+
+    <div class="chapter" id="ch2">
+      <p class="chapter-label">Chapter 2</p>
+      <h2 class="chapter-title">Give Me My Share</h2>
+      <p>The son's request in Luke 15 is eleven words: <em>Father, give me the share of the estate that falls to me.</em></p>
+      <p>Eleven words, and most of us read right past them. We hear the request as impatience, maybe arrogance, the kind of thing a foolish young man says when he thinks he knows better than his father. And that's true as far as it goes. But in first-century Jewish culture, the request means something more specific and more brutal than impatience. To ask for your inheritance before your father has died is to say, plainly, that you wish he were dead. You are not asking for an advance. You are telling your father that what he represents — the home, the family, the table, the inheritance of everything he is — is less valuable to you than the cash equivalent. You want the money without the man.</p>
+      <p>The father gives it to him.</p>
+      <p>That response has always struck people as either weakness or madness, but it is neither. A man who has nothing to prove does not need to win every argument. A man secure enough in who he is and what he has built does not need his son's approval to know the table is worth sitting at. He gives the inheritance because he is not afraid of the ask. He knows what his son doesn't know yet: that the money won't hold, the far country won't satisfy, and the road home is still open whenever the boy decides to take it. So he gives it. Not because he is weak, but because he is confident enough to let his son find out the hard way.</p>
+      <p>The son then gathers everything and goes. The text is precise about that word: <em>distant.</em> He does not drift to the next town. He puts as much space as possible between himself and home. That is not accidental wandering. That is a decision.</p>
+      <p>I know that feeling. It wasn't dramatic for me, and it wasn't reckless in the way the parable describes. I didn't blow an inheritance on wild living. But I made the same move the son made, just with different currency.</p>
+      <p>I had been teaching CCD from the day I was confirmed. It was never a burden. It was what I was made for, or at least what I thought I was made for. When I got to Boston, I had a city full of kids who needed exactly what I had been given: someone to show them what faith looked like up close, the way Father Mike had shown me. Instead I coached baseball and football, because I loved sports and that was what I wanted. Sharing my faith wasn't part of the curriculum. Just how to hit a curveball and throw a chop block.</p>
+      <p>I told myself I'd come back to it after college. I told myself there was time.</p>
+      <p>What the son took when he left was his father's money. What I took was something the people around me had spent years pouring into me — the capacity to lead, to teach, to bring people toward something. I carried all of it to Boston and pointed it somewhere else. Not toward loose living in a far country. Just toward a baseball diamond, while the thing I was actually built for waited.</p>
+      <p>The son gathered everything and went. So did I. We both thought the adventure was out there. We both thought what we had at home could wait.</p>
+      <p class="chapter-close">It can't. It never could. The father knew that the whole time, and he gave the inheritance anyway, because some things can only be learned in the far country.</p>
+    </div>
+
+    <!-- PART 2 -->
+    <div class="part-divider">
+      <span class="part-number">Part Two</span>
+      <h2 class="part-title">Coming to Yourself</h2>
+    </div>
+
+    <div class="chapter" id="ch3">
+      <p class="chapter-label">Chapter 3</p>
+      <h2 class="chapter-title">Coming soon</h2>
+      <p>This chapter is in progress.</p>
+    </div>
+
+    <div class="chapter" id="ch4">
+      <p class="chapter-label">Chapter 4</p>
+      <h2 class="chapter-title">Coming soon</h2>
+      <p>This chapter is in progress.</p>
+    </div>
+
+    <!-- PART 3 -->
+    <div class="part-divider">
+      <span class="part-number">Part Three</span>
+      <h2 class="part-title">He Saw Him From a Distance</h2>
+    </div>
+
+    <div class="chapter" id="ch5">
+      <p class="chapter-label">Chapter 5</p>
+      <h2 class="chapter-title">Coming soon</h2>
+      <p>This chapter is in progress.</p>
+    </div>
+
+    <div class="chapter" id="ch6">
+      <p class="chapter-label">Chapter 6</p>
+      <h2 class="chapter-title">Coming soon</h2>
+      <p>This chapter is in progress.</p>
+    </div>
+
+    <div class="chapter" id="ch7">
+      <p class="chapter-label">Chapter 7</p>
+      <h2 class="chapter-title">Coming soon</h2>
+      <p>This chapter is in progress.</p>
+    </div>
+
+    <!-- PART 4 -->
+    <div class="part-divider">
+      <span class="part-number">Part Four</span>
+      <h2 class="part-title">The Brother at the Door</h2>
+    </div>
+
+    <div class="chapter" id="ch8">
+      <p class="chapter-label">Chapter 8</p>
+      <h2 class="chapter-title">Coming soon</h2>
+      <p>This chapter is in progress.</p>
+    </div>
+
+    <!-- PART 5 -->
+    <div class="part-divider">
+      <span class="part-number">Part Five</span>
+      <h2 class="part-title">What Was Always True</h2>
+    </div>
+
+    <div class="chapter" id="ch9">
+      <p class="chapter-label">Chapter 9</p>
+      <h2 class="chapter-title">Coming soon</h2>
+      <p>This chapter is in progress.</p>
+    </div>
+
+    <div class="chapter" id="ch10">
+      <p class="chapter-label">Chapter 10</p>
+      <h2 class="chapter-title">Coming soon</h2>
+      <p>This chapter is in progress.</p>
+    </div>
+
+    <!-- CLOSING CTA -->
+    <div class="closing-cta">
+      <h3>This is why CRUX exists.</h3>
+      <p>Andrew built CRUX to give young believers the intellectual scaffolding to go with their faith. The ammunition to say "okay yeah, this is worth believing in" when the world pushes back.</p>
+      <a href="index.html" class="btn-gold">Explore CRUX →</a>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
