@@ -1046,6 +1046,154 @@
             .preview-pane { position: static; }
             #emailPreviewFrame { height: 420px; }
         }
+
+        /* ─── TABS ────────────────────────────────────────── */
+        .dash-tabs {
+            display: flex; gap: 0;
+            border-bottom: 2px solid var(--border);
+            margin-bottom: 2rem;
+        }
+        .dash-tab {
+            padding: 0.75rem 1.5rem;
+            font-size: 0.8rem; font-weight: 700; letter-spacing: 0.5px;
+            color: var(--text-muted); background: none; border: none;
+            border-bottom: 2px solid transparent; margin-bottom: -2px;
+            cursor: pointer; font-family: 'Inter', sans-serif;
+            transition: color 0.15s, border-color 0.15s;
+            white-space: nowrap;
+        }
+        .dash-tab:hover { color: var(--navy); }
+        .dash-tab.active { color: var(--navy); border-bottom-color: var(--navy); }
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        /* ─── LESSON PLANS ────────────────────────────────── */
+        .plans-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;
+        }
+        .plans-header h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem; color: var(--navy); font-weight: 700;
+        }
+        .btn-new-plan {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.6rem 1.25rem; background: var(--navy); color: var(--white);
+            border: none; border-radius: 7px; font-size: 0.82rem; font-weight: 700;
+            cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.2s;
+        }
+        .btn-new-plan:hover { background: var(--navy-light); }
+
+        .plans-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.25rem;
+        }
+        .plan-card {
+            background: var(--white); border: 1px solid var(--border);
+            border-radius: 12px; padding: 1.5rem;
+            box-shadow: var(--shadow-sm); display: flex; flex-direction: column; gap: 0.6rem;
+            transition: box-shadow 0.2s, border-color 0.2s;
+        }
+        .plan-card:hover { box-shadow: var(--shadow-md); border-color: var(--border-gold); }
+        .plan-card-eyebrow {
+            font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px;
+            text-transform: uppercase; color: var(--gold-dark);
+        }
+        .plan-card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem; font-weight: 700; color: var(--navy); line-height: 1.25;
+        }
+        .plan-card-meta {
+            font-size: 0.8rem; color: var(--text-muted);
+            display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: center;
+        }
+        .plan-card-meta span { display: flex; align-items: center; gap: 0.25rem; }
+        .plan-ws-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.25rem; }
+        .plan-ws-tag {
+            font-size: 0.65rem; font-weight: 600; padding: 0.15rem 0.5rem;
+            background: rgba(26,31,54,0.06); border-radius: 20px; color: var(--text-secondary);
+        }
+        .plan-card-notes {
+            font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .plan-card-actions {
+            display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.5rem;
+            padding-top: 0.75rem; border-top: 1px solid var(--border);
+        }
+        .btn-plan-action {
+            flex: 1; min-width: 0;
+            padding: 0.5rem 0.75rem; font-size: 0.75rem; font-weight: 700;
+            font-family: 'Inter', sans-serif; border-radius: 6px; cursor: pointer;
+            border: 1.5px solid var(--border); background: transparent;
+            color: var(--text-secondary); transition: all 0.2s; white-space: nowrap;
+            text-align: center;
+        }
+        .btn-plan-action:hover { border-color: var(--navy); color: var(--navy); }
+        .btn-plan-action.primary { background: var(--navy); color: var(--white); border-color: var(--navy); }
+        .btn-plan-action.primary:hover { background: var(--navy-light); }
+        .btn-plan-action.danger:hover { border-color: var(--red); color: var(--red); }
+
+        .no-plans {
+            text-align: center; padding: 4rem 1rem;
+            color: var(--text-muted); font-size: 0.9rem;
+            background: var(--white); border-radius: 12px; border: 1px solid var(--border);
+        }
+        .no-plans .icon { font-size: 2.5rem; margin-bottom: 0.75rem; opacity: 0.4; display: block; }
+        .no-plans p { margin-bottom: 1.25rem; }
+
+        /* ─── PLAN MODAL ──────────────────────────────────── */
+        .plan-modal-body { display: flex; flex-direction: column; gap: 1.1rem; }
+        .plan-field-group { display: flex; flex-direction: column; }
+        .plan-label {
+            font-size: 0.75rem; font-weight: 700; text-transform: uppercase;
+            letter-spacing: 0.3px; color: var(--text-primary); margin-bottom: 0.4rem;
+        }
+        .plan-sublabel {
+            font-size: 0.73rem; color: var(--text-muted); margin-bottom: 0.5rem;
+            font-weight: 400; text-transform: none; letter-spacing: 0;
+        }
+        .plan-input, .plan-select, .plan-textarea {
+            width: 100%; padding: 0.75rem 1rem;
+            border: 1.5px solid var(--border); border-radius: 8px;
+            font-size: 0.92rem; font-family: 'Inter', sans-serif;
+            color: var(--text-primary); background: var(--white);
+            transition: border-color 0.2s;
+        }
+        .plan-input:focus, .plan-select:focus, .plan-textarea:focus {
+            outline: none; border-color: var(--navy);
+        }
+        .plan-select {
+            appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238890b0' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: right 1rem center;
+        }
+        .plan-textarea { resize: vertical; min-height: 80px; }
+        .plan-two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+        @media (max-width: 480px) { .plan-two-col { grid-template-columns: 1fr; } }
+
+        .ws-checkbox-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem;
+        }
+        @media (max-width: 480px) { .ws-checkbox-grid { grid-template-columns: 1fr; } }
+        .ws-check-label {
+            display: flex; align-items: flex-start; gap: 0.6rem;
+            padding: 0.6rem 0.75rem; border: 1.5px solid var(--border); border-radius: 7px;
+            cursor: pointer; font-size: 0.82rem; color: var(--text-secondary);
+            font-weight: 500; transition: all 0.15s; line-height: 1.35;
+        }
+        .ws-check-label input { margin-top: 2px; accent-color: var(--navy); flex-shrink: 0; }
+        .ws-check-label:hover { border-color: var(--border-gold); color: var(--navy); }
+        .ws-check-label:has(input:checked) {
+            border-color: var(--navy); background: rgba(26,31,54,0.04); color: var(--navy);
+        }
+        .ws-age-header {
+            font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px;
+            text-transform: uppercase; color: var(--gold-dark);
+            margin-bottom: 0.4rem; margin-top: 0.5rem;
+        }
+
+        .plan-modal .modal { max-width: 640px; max-height: 90vh; overflow-y: auto; }
     </style>
 </head>
 <body>
@@ -1140,6 +1288,16 @@
         </div>
     </div>
 
+    <!-- Tab Bar -->
+    <div class="dash-tabs">
+        <button class="dash-tab active" onclick="switchTab('overview')">📊 Overview</button>
+        <button class="dash-tab" onclick="switchTab('plans')">📋 Lesson Plans</button>
+        <button class="dash-tab" onclick="switchTab('email')">📧 Email</button>
+    </div>
+
+    <!-- ── OVERVIEW TAB ── -->
+    <div class="tab-panel active" id="tab-overview">
+
     <!-- Class Code -->
     <div class="class-code-card">
         <div class="code-left">
@@ -1187,6 +1345,25 @@
         </div>
     </div>
 
+    </div><!-- /tab-overview -->
+
+    <!-- ── LESSON PLANS TAB ── -->
+    <div class="tab-panel" id="tab-plans">
+        <div class="plans-header">
+            <h3>Lesson Plans</h3>
+            <button class="btn-new-plan" onclick="openPlanModal()">+ New Lesson Plan</button>
+        </div>
+        <div id="plansGrid" class="plans-grid">
+            <div class="no-plans">
+                <span class="icon">📋</span>
+                <p>No lesson plans yet.</p>
+                <button class="btn-new-plan" onclick="openPlanModal()">+ Create your first plan</button>
+            </div>
+        </div>
+    </div><!-- /tab-plans -->
+
+    <!-- ── EMAIL TAB ── -->
+    <div class="tab-panel" id="tab-email">
     <!-- Send Lesson Email -->
     <div class="section-block">
         <h3>📧 Send Lesson Email</h3>
@@ -1260,7 +1437,71 @@
 
         </div>
     </div>
+    </div><!-- /tab-email -->
 
+</div><!-- /dashboard -->
+
+<!-- Lesson Plan Modal -->
+<div class="modal-overlay plan-modal" id="planModal">
+    <div class="modal">
+        <h3 id="planModalTitle">New Lesson Plan</h3>
+        <p style="color:var(--text-muted);font-size:0.85rem;margin-bottom:1.5rem;" id="planModalSub">Build and save a lesson plan for your class.</p>
+
+        <div class="plan-modal-body">
+
+            <div class="plan-field-group">
+                <label class="plan-label">Plan Title</label>
+                <input type="text" class="plan-input" id="planTitle" placeholder="e.g. Holy Trinity — Week 1">
+            </div>
+
+            <div class="plan-two-col">
+                <div class="plan-field-group">
+                    <label class="plan-label">Module</label>
+                    <select class="plan-select" id="planModule">
+                        <option value="trinity">The Holy Trinity</option>
+                        <option value="jesus">Jesus Christ</option>
+                        <option value="mary">Mary &amp; the Saints</option>
+                        <option value="prodigal">The Prodigal Son</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <div class="plan-field-group">
+                    <label class="plan-label">Lesson Date</label>
+                    <input type="date" class="plan-input" id="planDate">
+                </div>
+            </div>
+
+            <div class="plan-field-group">
+                <label class="plan-label">Age Group</label>
+                <select class="plan-select" id="planAgeGroup" onchange="updateWsOptions()">
+                    <option value="young">Young Children (K–3rd Grade)</option>
+                    <option value="middle">Middle &amp; High School</option>
+                    <option value="adult">Adults</option>
+                </select>
+            </div>
+
+            <div class="plan-field-group" id="wsPickerWrap">
+                <label class="plan-label">Worksheets</label>
+                <span class="plan-sublabel">Select which worksheets to include with this lesson.</span>
+                <div id="wsCheckboxGrid" class="ws-checkbox-grid"></div>
+            </div>
+
+            <div class="plan-field-group">
+                <label class="plan-label">Lesson Notes &amp; Objectives</label>
+                <span class="plan-sublabel">What do you want students to take away? Any prep notes for yourself.</span>
+                <textarea class="plan-textarea" id="planNotes" rows="4"
+                    placeholder="By the end of this lesson, students will understand the three Persons of the Trinity and be able to explain the Nicene Creed..."></textarea>
+            </div>
+
+        </div>
+
+        <div id="planError" class="msg-error" style="margin-top:1rem;"></div>
+
+        <div class="modal-actions" style="margin-top:1.5rem;">
+            <button class="btn-modal-cancel" onclick="closePlanModal()">Cancel</button>
+            <button class="btn-modal-submit" id="savePlanBtn" onclick="savePlan()">Save Plan →</button>
+        </div>
+    </div>
 </div>
 
 <!-- Award XP Modal -->
@@ -1802,6 +2043,223 @@
         currentTeacher = null;
         currentTeacherUid = null;
     });
+
+    // ── TAB SWITCHING ──────────────────────────────────────
+    window.switchTab = function(name) {
+        document.querySelectorAll('.dash-tab').forEach((t, i) => {
+            const names = ['overview', 'plans', 'email'];
+            t.classList.toggle('active', names[i] === name);
+        });
+        document.querySelectorAll('.tab-panel').forEach(p => {
+            p.classList.toggle('active', p.id === 'tab-' + name);
+        });
+        if (name === 'plans') loadPlans();
+    };
+
+    // ── LESSON PLAN CONSTANTS ──────────────────────────────
+    const WS_OPTIONS = {
+        young: [
+            { id: 'crux-ws-trinity-shamrock', label: 'Shamrock Craft (St. Patrick)' },
+            { id: 'crux-ws-trinity-drawwrite', label: 'Draw & Write' },
+            { id: 'crux-ws-trinity-tracing',   label: 'Vocabulary Tracing' },
+            { id: 'crux-ws-trinity-signcross', label: 'Sign of the Cross Steps' },
+            { id: 'crux-ws-trinity-baptism',   label: 'Baptism Scene' },
+        ],
+        middle: [
+            { id: 'crux-ws-trinity-wordsearch', label: 'Word Search' },
+            { id: 'crux-ws-trinity-crossword',  label: 'Crossword' },
+            { id: 'crux-ws-trinity-heresy',     label: 'Heresy Matching' },
+            { id: 'crux-ws-trinity-defend',     label: 'Defend the Faith' },
+        ],
+        adult: []
+    };
+
+    const MODULE_LABELS = {
+        trinity: 'Holy Trinity', jesus: 'Jesus Christ',
+        mary: 'Mary & the Saints', prodigal: 'The Prodigal Son', other: 'Other'
+    };
+
+    const PRESENTATION_LINKS = {
+        trinity: 'crux-present-trinity.html'
+    };
+
+    let editingPlanId = null;
+
+    // ── WORKSHEET PICKER ───────────────────────────────────
+    window.updateWsOptions = function() {
+        const ageGroup = document.getElementById('planAgeGroup').value;
+        const options  = WS_OPTIONS[ageGroup] || [];
+        const grid     = document.getElementById('wsCheckboxGrid');
+        const wrap     = document.getElementById('wsPickerWrap');
+
+        if (!options.length) { wrap.style.display = 'none'; return; }
+        wrap.style.display = 'block';
+
+        grid.innerHTML = options.map(ws => `
+            <label class="ws-check-label">
+                <input type="checkbox" name="ws" value="${ws.id}">
+                ${ws.label}
+            </label>
+        `).join('');
+    };
+
+    // ── OPEN PLAN MODAL ────────────────────────────────────
+    window.openPlanModal = function(planId = null, planData = null) {
+        editingPlanId = planId;
+        const isEdit  = !!planId;
+
+        document.getElementById('planModalTitle').textContent = isEdit ? 'Edit Lesson Plan' : 'New Lesson Plan';
+        document.getElementById('planModalSub').textContent   = isEdit ? 'Update your lesson plan.' : 'Build and save a lesson plan for your class.';
+        document.getElementById('planError').style.display    = 'none';
+        document.getElementById('savePlanBtn').textContent    = isEdit ? 'Update Plan →' : 'Save Plan →';
+
+        if (isEdit && planData) {
+            document.getElementById('planTitle').value    = planData.title || '';
+            document.getElementById('planModule').value   = planData.module || 'trinity';
+            document.getElementById('planDate').value     = planData.date || '';
+            document.getElementById('planAgeGroup').value = planData.ageGroup || 'young';
+            document.getElementById('planNotes').value    = planData.notes || '';
+            updateWsOptions();
+            // Re-check saved worksheets
+            const saved = planData.worksheets || [];
+            document.querySelectorAll('#wsCheckboxGrid input[name="ws"]').forEach(cb => {
+                cb.checked = saved.includes(cb.value);
+            });
+        } else {
+            document.getElementById('planTitle').value  = '';
+            document.getElementById('planModule').value = 'trinity';
+            document.getElementById('planDate').value   = new Date().toISOString().split('T')[0];
+            document.getElementById('planAgeGroup').value = 'young';
+            document.getElementById('planNotes').value  = '';
+            updateWsOptions();
+        }
+
+        document.getElementById('planModal').classList.add('open');
+    };
+
+    window.closePlanModal = function() {
+        document.getElementById('planModal').classList.remove('open');
+        editingPlanId = null;
+    };
+
+    // ── SAVE PLAN ──────────────────────────────────────────
+    window.savePlan = async function() {
+        const errEl = document.getElementById('planError');
+        const btn   = document.getElementById('savePlanBtn');
+        errEl.style.display = 'none';
+
+        const title    = document.getElementById('planTitle').value.trim();
+        const module_  = document.getElementById('planModule').value;
+        const date     = document.getElementById('planDate').value;
+        const ageGroup = document.getElementById('planAgeGroup').value;
+        const notes    = document.getElementById('planNotes').value.trim();
+        const wsCbs    = document.querySelectorAll('#wsCheckboxGrid input[name="ws"]:checked');
+        const worksheets = Array.from(wsCbs).map(cb => cb.value);
+
+        if (!title) { errEl.textContent = 'Please enter a plan title.'; errEl.style.display = 'block'; return; }
+        if (!date)  { errEl.textContent = 'Please select a lesson date.'; errEl.style.display = 'block'; return; }
+
+        btn.disabled = true;
+        btn.textContent = 'Saving…';
+
+        const planData = { title, module: module_, date, ageGroup, notes, worksheets, updatedAt: serverTimestamp() };
+
+        try {
+            const plansRef = collection(db, 'teachers', currentTeacherUid, 'lessonPlans');
+            if (editingPlanId) {
+                await updateDoc(doc(plansRef, editingPlanId), planData);
+                showToast('✓ Lesson plan updated', 'gold');
+            } else {
+                planData.createdAt = serverTimestamp();
+                await addDoc(plansRef, planData);
+                showToast('✓ Lesson plan saved', 'gold');
+            }
+            closePlanModal();
+            await loadPlans();
+        } catch (err) {
+            console.error('savePlan error:', err);
+            errEl.textContent = 'Could not save plan. Please try again.';
+            errEl.style.display = 'block';
+        }
+
+        btn.disabled = false;
+        btn.textContent = editingPlanId ? 'Update Plan →' : 'Save Plan →';
+    };
+
+    // ── LOAD PLANS ─────────────────────────────────────────
+    async function loadPlans() {
+        const grid = document.getElementById('plansGrid');
+        grid.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-muted)"><div class="spinner" style="margin:0 auto;"></div></div>';
+
+        try {
+            const q    = query(collection(db, 'teachers', currentTeacherUid, 'lessonPlans'), orderBy('date', 'desc'));
+            const snap = await getDocs(q);
+
+            if (snap.empty) {
+                grid.innerHTML = `<div class="no-plans" style="grid-column:1/-1;">
+                    <span class="icon">📋</span>
+                    <p>No lesson plans yet.</p>
+                    <button class="btn-new-plan" onclick="openPlanModal()">+ Create your first plan</button>
+                </div>`;
+                return;
+            }
+
+            const plans = [];
+            snap.forEach(d => plans.push({ id: d.id, ...d.data() }));
+
+            grid.innerHTML = plans.map(p => {
+                const moduleLabel = MODULE_LABELS[p.module] || p.module || 'Module';
+                const ageLabel    = p.ageGroup === 'young' ? 'K–3rd' : p.ageGroup === 'middle' ? 'Middle/HS' : 'Adult';
+                const dateStr     = p.date ? new Date(p.date + 'T12:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : '';
+                const wsTags      = (p.worksheets || []).map(wsId => {
+                    const allWs   = [...(WS_OPTIONS.young || []), ...(WS_OPTIONS.middle || [])];
+                    const found   = allWs.find(w => w.id === wsId);
+                    return found ? `<span class="plan-ws-tag">${found.label}</span>` : '';
+                }).join('');
+                const presLink = PRESENTATION_LINKS[p.module];
+
+                return `
+                <div class="plan-card">
+                    <div class="plan-card-eyebrow">${moduleLabel} · ${ageLabel}</div>
+                    <div class="plan-card-title">${p.title}</div>
+                    <div class="plan-card-meta">
+                        <span>📅 ${dateStr}</span>
+                    </div>
+                    ${wsTags ? `<div class="plan-ws-tags">${wsTags}</div>` : ''}
+                    ${p.notes ? `<div class="plan-card-notes">${p.notes}</div>` : ''}
+                    <div class="plan-card-actions">
+                        ${presLink ? `<button class="btn-plan-action primary" onclick="window.open('${presLink}','_blank')">▶ Present</button>` : ''}
+                        ${(p.worksheets||[]).length ? `<button class="btn-plan-action" onclick="printWorksheets(${JSON.stringify(p.worksheets)})">🖨 Print</button>` : ''}
+                        <button class="btn-plan-action" onclick="openPlanModal('${p.id}', ${JSON.stringify(p).replace(/'/g,'&#39;')})">Edit</button>
+                        <button class="btn-plan-action danger" onclick="deletePlan('${p.id}', '${p.title.replace(/'/g,"\\'")}')">✕</button>
+                    </div>
+                </div>`;
+            }).join('');
+
+        } catch (err) {
+            console.error('loadPlans error:', err);
+            grid.innerHTML = '<div class="no-plans" style="grid-column:1/-1;"><p>Could not load plans. Please refresh.</p></div>';
+        }
+    }
+
+    // ── PRINT WORKSHEETS ───────────────────────────────────
+    window.printWorksheets = function(worksheets) {
+        worksheets.forEach(wsId => window.open(wsId + '.html', '_blank'));
+    };
+
+    // ── DELETE PLAN ────────────────────────────────────────
+    window.deletePlan = async function(planId, title) {
+        if (!confirm('Delete "' + title + '"? This cannot be undone.')) return;
+        try {
+            const { deleteDoc } = await import('https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js');
+            await deleteDoc(doc(db, 'teachers', currentTeacherUid, 'lessonPlans', planId));
+            showToast('Plan deleted');
+            await loadPlans();
+        } catch (err) {
+            console.error('deletePlan error:', err);
+            showToast('Could not delete plan.');
+        }
+    };
 
     // ── AUTH FORM TOGGLE ───────────────────────────────────
     window.showLogin = function() {
