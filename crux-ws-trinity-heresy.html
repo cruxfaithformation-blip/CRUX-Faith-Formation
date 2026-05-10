@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Name That Heresy — CRUX</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: #1a1f36;
+    }
+
+    .page {
+      max-width: 8.5in;
+      min-height: 11in;
+      margin: 0 auto;
+      padding: 0.6in;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.5in;
+      border-bottom: 2px solid #1a1f36;
+      padding-bottom: 0.2in;
+    }
+
+    .branding .logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.6rem;
+      letter-spacing: 4px;
+      color: #1a1f36;
+      line-height: 1;
+    }
+
+    .branding .module-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #6b7280;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .student-info {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-end;
+      font-size: 0.78rem;
+      color: #374151;
+    }
+
+    .student-info .field {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .student-info .field label {
+      font-weight: 600;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #6b7280;
+    }
+
+    .student-info .field .line {
+      width: 120px;
+      border-bottom: 1.5px solid #1a1f36;
+      height: 18px;
+    }
+
+    .student-info .field.date .line { width: 80px; }
+
+    /* Title block */
+    .title-block {
+      margin-bottom: 0.25in;
+    }
+
+    .title-block h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.5rem;
+      color: #1a1f36;
+      margin-bottom: 4px;
+    }
+
+    .title-block .subtitle {
+      font-size: 0.88rem;
+      color: #4b5563;
+    }
+
+    /* Callout */
+    .callout {
+      border-left: 3px solid #d4a574;
+      background: #fdf8f2;
+      padding: 0.6rem 1rem;
+      margin-bottom: 0.3in;
+      font-size: 0.82rem;
+      color: #374151;
+      line-height: 1.5;
+    }
+
+    /* Section headers */
+    .section-header {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.05rem;
+      color: #1a1f36;
+      margin-bottom: 0.1in;
+      padding-bottom: 4px;
+      border-bottom: 1.5px solid #1a1f36;
+    }
+
+    .section-number {
+      font-size: 0.7rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #d4a574;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* ==================
+       SECTION 1: Matching
+       ================== */
+    .section-1 {
+      margin-bottom: 0.35in;
+    }
+
+    .matching-layout {
+      display: flex;
+      gap: 0.5in;
+      align-items: flex-start;
+      margin-top: 0.15in;
+    }
+
+    .matching-col {
+      flex: 1;
+    }
+
+    .matching-col h3 {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #6b7280;
+      margin-bottom: 0.1in;
+    }
+
+    .claim-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      margin-bottom: 0.18in;
+      padding: 8px 10px;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 4px;
+      background: #fafafa;
+    }
+
+    .claim-letter {
+      font-weight: 900;
+      font-size: 0.9rem;
+      color: #1a1f36;
+      min-width: 18px;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .claim-text {
+      font-size: 0.8rem;
+      color: #374151;
+      line-height: 1.45;
+      font-style: italic;
+    }
+
+    .heresy-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 0.18in;
+      padding: 8px 10px;
+      border: 1.5px solid #1a1f36;
+      border-radius: 4px;
+    }
+
+    .match-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1.5px solid #1a1f36;
+      flex-shrink: 0;
+    }
+
+    .heresy-name {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #1a1f36;
+    }
+
+    .heresy-alt {
+      font-size: 0.72rem;
+      font-weight: 400;
+      color: #6b7280;
+    }
+
+    /* Match connector instruction */
+    .match-instruction {
+      font-size: 0.78rem;
+      color: #6b7280;
+      margin-top: 0.08in;
+      margin-bottom: 0.12in;
+      font-style: italic;
+    }
+
+    /* ==================
+       SECTION 2: Rebuttal
+       ================== */
+    .section-2 {
+      margin-bottom: 0.35in;
+    }
+
+    .helpful-box {
+      border-left: 3px solid #d4a574;
+      background: #fdf8f2;
+      padding: 0.5rem 1rem;
+      margin: 0.12in 0 0.18in;
+      font-size: 0.78rem;
+      color: #374151;
+      line-height: 1.6;
+    }
+
+    .helpful-box .helpful-title {
+      font-weight: 700;
+      color: #1a1f36;
+      font-size: 0.8rem;
+      margin-bottom: 4px;
+    }
+
+    .helpful-box ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .helpful-box ul li {
+      padding-left: 12px;
+      position: relative;
+      margin-bottom: 3px;
+    }
+
+    .helpful-box ul li::before {
+      content: '"';
+      position: absolute;
+      left: 0;
+      color: #d4a574;
+      font-weight: 700;
+    }
+
+    .rebuttal-block {
+      margin-bottom: 0.18in;
+    }
+
+    .rebuttal-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #1a1f36;
+      margin-bottom: 6px;
+    }
+
+    .rebuttal-label .heresy-tag {
+      font-weight: 400;
+      color: #6b7280;
+      font-style: italic;
+    }
+
+    .ruled-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .ruled-line {
+      border-bottom: 1px solid #d1d5db;
+      height: 18px;
+      width: 100%;
+    }
+
+    /* ==================
+       SECTION 3: True/False
+       ================== */
+    .section-3 {
+      margin-bottom: 0.2in;
+    }
+
+    .tf-list {
+      list-style: none;
+      margin-top: 0.12in;
+    }
+
+    .tf-item {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 0.16in;
+      font-size: 0.85rem;
+      color: #374151;
+      line-height: 1.4;
+    }
+
+    .tf-num {
+      font-weight: 700;
+      color: #1a1f36;
+      min-width: 18px;
+    }
+
+    .tf-statement {
+      flex: 1;
+    }
+
+    .tf-circle {
+      font-weight: 700;
+      font-size: 0.88rem;
+      color: #1a1f36;
+      white-space: nowrap;
+      border: 1.5px solid #d1d5db;
+      border-radius: 20px;
+      padding: 1px 10px;
+      letter-spacing: 2px;
+    }
+
+    /* Answer key */
+    .answer-key {
+      margin-top: 0.3in;
+      padding: 0.6rem 1rem;
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+    }
+
+    .answer-key h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1rem;
+      color: #1a1f36;
+      margin-bottom: 0.12in;
+    }
+
+    .key-subsection {
+      margin-bottom: 0.12in;
+    }
+
+    .key-subsection h3 {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+
+    .key-row {
+      font-size: 0.78rem;
+      color: #374151;
+      margin-bottom: 3px;
+    }
+
+    .key-row strong {
+      color: #1a1f36;
+    }
+
+    .key-note {
+      font-style: italic;
+      color: #6b7280;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { padding: 0.6in; }
+      .no-print { display: none !important; }
+      @page { size: letter; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="branding">
+      <div class="logo">CRUX</div>
+      <div class="module-label">Pillar I &middot; The Holy Trinity</div>
+    </div>
+    <div class="student-info">
+      <div class="field">
+        <label>Name</label>
+        <div class="line"></div>
+      </div>
+      <div class="field">
+        <label>Class</label>
+        <div class="line"></div>
+      </div>
+      <div class="field date">
+        <label>Date</label>
+        <div class="line"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Title -->
+  <div class="title-block">
+    <h1>Name That Heresy</h1>
+    <div class="subtitle">Match each false teaching to its name, then write a rebuttal</div>
+  </div>
+
+  <!-- Instructions callout -->
+  <div class="callout">
+    The early Church spent centuries defending the truth about who God is. Below are four real theological errors that were condemned. Your job: identify each one, then respond to it using Scripture or the Nicene Creed.
+  </div>
+
+  <!-- =====================
+       SECTION 1 — Matching
+       ===================== -->
+  <div class="section-1">
+    <div class="section-header">
+      <span class="section-number">Section 1</span>
+      Matching: Draw a line from each claim to the correct heresy name
+    </div>
+    <div class="match-instruction">Draw a line connecting the false claim (left) to its heresy name (right).</div>
+
+    <div class="matching-layout">
+      <!-- Left: False Claims -->
+      <div class="matching-col">
+        <h3>False Claim</h3>
+
+        <div class="claim-item">
+          <div class="claim-letter">A.</div>
+          <div class="claim-text">"Jesus was created by God. There was a time when he did not exist."</div>
+        </div>
+
+        <div class="claim-item">
+          <div class="claim-letter">B.</div>
+          <div class="claim-text">"God is one Person who appears sometimes as Father, sometimes as Son, sometimes as Spirit."</div>
+        </div>
+
+        <div class="claim-item">
+          <div class="claim-letter">C.</div>
+          <div class="claim-text">"The Father, Son, and Holy Spirit are three separate and distinct gods."</div>
+        </div>
+
+        <div class="claim-item">
+          <div class="claim-letter">D.</div>
+          <div class="claim-text">"The Holy Spirit is not fully God — he is a divine force, not a Person."</div>
+        </div>
+      </div>
+
+      <!-- Right: Heresy Names -->
+      <div class="matching-col">
+        <h3>Heresy Name</h3>
+
+        <div class="heresy-item">
+          <div class="match-dot"></div>
+          <div>
+            <div class="heresy-name">Modalism</div>
+            <div class="heresy-alt">also called Sabellianism</div>
+          </div>
+        </div>
+
+        <div class="heresy-item">
+          <div class="match-dot"></div>
+          <div>
+            <div class="heresy-name">Arianism</div>
+          </div>
+        </div>
+
+        <div class="heresy-item">
+          <div class="match-dot"></div>
+          <div>
+            <div class="heresy-name">Macedonianism</div>
+            <div class="heresy-alt">also called Pneumatomachianism</div>
+          </div>
+        </div>
+
+        <div class="heresy-item">
+          <div class="match-dot"></div>
+          <div>
+            <div class="heresy-name">Tritheism</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =======================
+       SECTION 2 — Rebuttal
+       ======================= -->
+  <div class="section-2">
+    <div class="section-header">
+      <span class="section-number">Section 2</span>
+      Write a Rebuttal
+    </div>
+
+    <div class="helpful-box">
+      <div class="helpful-title">Helpful Phrases</div>
+      <ul>
+        <li>The Nicene Creed says Jesus is "consubstantial with the Father"...</li>
+        <li>John 1:1 states "In the beginning was the Word, and the Word was with God, and the Word was God."</li>
+        <li>Matthew 28:19 uses a singular "name" for three Persons...</li>
+        <li>The Church teaches one God in three co-equal Persons...</li>
+      </ul>
+    </div>
+
+    <div class="rebuttal-block">
+      <div class="rebuttal-label">1. Respond to <span class="heresy-tag">Arianism (Claim A)</span></div>
+      <div class="ruled-lines">
+        <div class="ruled-line"></div>
+        <div class="ruled-line"></div>
+        <div class="ruled-line"></div>
+        <div class="ruled-line"></div>
+      </div>
+    </div>
+
+    <div class="rebuttal-block">
+      <div class="rebuttal-label">2. Respond to <span class="heresy-tag">Modalism (Claim B)</span></div>
+      <div class="ruled-lines">
+        <div class="ruled-line"></div>
+        <div class="ruled-line"></div>
+        <div class="ruled-line"></div>
+        <div class="ruled-line"></div>
+      </div>
+    </div>
+
+    <div class="rebuttal-block">
+      <div class="rebuttal-label">3. Respond to <span class="heresy-tag">Tritheism (Claim C)</span></div>
+      <div class="ruled-lines">
+        <div class="ruled-line"></div>
+        <div class="ruled-line"></div>
+        <div class="ruled-line"></div>
+        <div class="ruled-line"></div>
+      </div>
+    </div>
+
+    <div class="rebuttal-block">
+      <div class="rebuttal-label">4. Respond to <span class="heresy-tag">Macedonianism (Claim D)</span></div>
+      <div class="ruled-lines">
+        <div class="ruled-line"></div>
+        <div class="ruled-line"></div>
+        <div class="ruled-line"></div>
+        <div class="ruled-line"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ==========================
+       SECTION 3 — True or False
+       ========================== -->
+  <div class="section-3">
+    <div class="section-header">
+      <span class="section-number">Section 3</span>
+      True or False &mdash; Circle your answer
+    </div>
+
+    <ul class="tf-list">
+      <li class="tf-item">
+        <span class="tf-num">1.</span>
+        <span class="tf-statement">Arius believed Jesus was fully God.</span>
+        <span class="tf-circle">T &nbsp; F</span>
+      </li>
+      <li class="tf-item">
+        <span class="tf-num">2.</span>
+        <span class="tf-statement">The Council of Nicaea was held in 325 AD.</span>
+        <span class="tf-circle">T &nbsp; F</span>
+      </li>
+      <li class="tf-item">
+        <span class="tf-num">3.</span>
+        <span class="tf-statement">"Homoousios" means "similar substance."</span>
+        <span class="tf-circle">T &nbsp; F</span>
+      </li>
+      <li class="tf-item">
+        <span class="tf-num">4.</span>
+        <span class="tf-statement">Athanasius was exiled five times for defending Trinitarian doctrine.</span>
+        <span class="tf-circle">T &nbsp; F</span>
+      </li>
+      <li class="tf-item">
+        <span class="tf-num">5.</span>
+        <span class="tf-statement">The Trinity means there are three separate gods.</span>
+        <span class="tf-circle">T &nbsp; F</span>
+      </li>
+    </ul>
+  </div>
+
+  <!-- Teacher Answer Key (no-print) -->
+  <div class="answer-key no-print">
+    <h2>Teacher Answer Key</h2>
+
+    <div class="key-subsection">
+      <h3>Section 1 &mdash; Matching</h3>
+      <div class="key-row"><strong>A</strong> &rarr; Arianism</div>
+      <div class="key-row"><strong>B</strong> &rarr; Modalism (Sabellianism)</div>
+      <div class="key-row"><strong>C</strong> &rarr; Tritheism</div>
+      <div class="key-row"><strong>D</strong> &rarr; Macedonianism (Pneumatomachianism)</div>
+    </div>
+
+    <div class="key-subsection">
+      <h3>Section 3 &mdash; True or False</h3>
+      <div class="key-row"><strong>1.</strong> F &mdash; Arius denied the full divinity of Christ.</div>
+      <div class="key-row"><strong>2.</strong> T &mdash; The Council of Nicaea convened in 325 AD.</div>
+      <div class="key-row"><strong>3.</strong> F &mdash; "Homoousios" means <em>same</em> substance, not similar. "Homoiousios" (with an iota) means similar substance &mdash; that was the Arian compromise position.</div>
+      <div class="key-row"><strong>4.</strong> T &mdash; Athanasius was exiled five times under different emperors.</div>
+      <div class="key-row"><strong>5.</strong> F &mdash; The Trinity is one God in three co-equal Persons, not three gods.</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

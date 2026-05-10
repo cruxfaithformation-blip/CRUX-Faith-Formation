@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUX — Baptism Day</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: #1a1f36;
+    }
+
+    .page {
+      max-width: 8.5in;
+      min-height: 11in;
+      margin: 0 auto;
+      padding: 0.6in;
+      background: #fff;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.3in;
+      border-bottom: 2px solid #1a1f36;
+      padding-bottom: 0.18in;
+    }
+
+    .brand-logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.6rem;
+      letter-spacing: 4px;
+      color: #1a1f36;
+      line-height: 1;
+    }
+
+    .brand-module {
+      font-family: 'Inter', sans-serif;
+      font-variant: small-caps;
+      font-size: 0.72rem;
+      color: #5a6080;
+      letter-spacing: 1.5px;
+      margin-top: 0.12rem;
+    }
+
+    .worksheet-title-block { text-align: right; }
+
+    .worksheet-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.25rem;
+      color: #1a1f36;
+      line-height: 1.2;
+    }
+
+    .worksheet-subtitle {
+      font-size: 0.8rem;
+      color: #5a6080;
+      margin-top: 0.15rem;
+      font-style: italic;
+    }
+
+    /* Student info */
+    .student-info {
+      display: flex;
+      gap: 0.4in;
+      margin-bottom: 0.26in;
+    }
+
+    .info-field {
+      flex: 1;
+      font-size: 0.8rem;
+      color: #1a1f36;
+    }
+
+    .info-field span { font-weight: 600; }
+
+    .info-line {
+      display: block;
+      border-bottom: 1.5px solid #1a1f36;
+      margin-top: 0.18rem;
+      height: 0.22in;
+    }
+
+    /* Callout */
+    .callout {
+      border-left: 3px solid #d4a574;
+      background: #fdf8f2;
+      padding: 0.6rem 1rem;
+      font-size: 0.82rem;
+      margin-bottom: 0.26in;
+      color: #3a3f56;
+    }
+
+    .callout strong {
+      font-weight: 600;
+      color: #1a1f36;
+    }
+
+    /* Illustration area */
+    .illustration-section {
+      margin-bottom: 0.28in;
+    }
+
+    .section-heading {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.0rem;
+      color: #1a1f36;
+      margin-bottom: 0.14in;
+    }
+
+    .scene-wrapper {
+      border: 1.5px solid #ccc;
+      border-radius: 8px;
+      padding: 0.15in 0.1in 0.1in;
+      background: #fafafa;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* The baptism scene SVG is inline below */
+
+    /* Labels for the scene */
+    .label-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.14in 0.3in;
+      margin-top: 0.16in;
+      margin-bottom: 0.26in;
+    }
+
+    .label-item {
+      display: flex;
+      align-items: center;
+      gap: 0.1in;
+      font-size: 0.8rem;
+      color: #1a1f36;
+    }
+
+    .label-arrow {
+      display: inline-block;
+      width: 22px;
+      min-width: 22px;
+      text-align: center;
+      font-size: 1rem;
+      color: #d4a574;
+    }
+
+    .label-text {
+      flex: 1;
+    }
+
+    .label-text strong {
+      font-weight: 600;
+      display: block;
+      font-size: 0.78rem;
+    }
+
+    .label-write-line {
+      display: block;
+      border-bottom: 1.5px solid #1a1f36;
+      margin-top: 0.12rem;
+      width: 100%;
+      height: 0.2in;
+    }
+
+    /* Connect-the-labels exercise */
+    .connect-section {
+      border: 1.5px solid #1a1f36;
+      border-radius: 8px;
+      padding: 0.18in 0.2in;
+      margin-bottom: 0.24in;
+    }
+
+    .connect-heading {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.0rem;
+      color: #1a1f36;
+      margin-bottom: 0.06in;
+    }
+
+    .connect-instruction {
+      font-size: 0.78rem;
+      color: #5a6080;
+      margin-bottom: 0.16in;
+      font-style: italic;
+    }
+
+    .connect-columns {
+      display: flex;
+      justify-content: space-between;
+      align-items: stretch;
+      gap: 0.2in;
+    }
+
+    .connect-col {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 0.18in;
+    }
+
+    .connect-middle {
+      width: 1.2in;
+      flex-shrink: 0;
+      border-left: 1.5px dashed #ccc;
+      border-right: 1.5px dashed #ccc;
+      background: #f9f9f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .connect-middle-label {
+      font-size: 0.68rem;
+      color: #aaa;
+      transform: rotate(90deg);
+      white-space: nowrap;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .connect-item {
+      border: 1.5px solid #ccc;
+      border-radius: 6px;
+      padding: 0.1rem 0.5rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #1a1f36;
+      text-align: center;
+      min-height: 0.38in;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .connect-item.person {
+      background: #f0f4ff;
+      border-color: #b8c6f0;
+      font-weight: 600;
+    }
+
+    .connect-item.description {
+      background: #fdf8f2;
+      border-color: #d4a574;
+      font-style: italic;
+    }
+
+    /* Reflection */
+    .reflection-section {
+      border: 1.5px solid #1a1f36;
+      border-radius: 8px;
+      padding: 0.16in 0.2in;
+      margin-bottom: 0.2in;
+    }
+
+    .reflection-prompt {
+      font-size: 0.9rem;
+      font-weight: 600;
+      font-family: 'Playfair Display', serif;
+      color: #1a1f36;
+      margin-bottom: 0.14in;
+      line-height: 1.4;
+    }
+
+    .ruled-lines {
+      display: flex;
+      flex-direction: column;
+      gap: 0.22in;
+    }
+
+    .ruled-line {
+      display: block;
+      border-bottom: 1.5px solid #ccc;
+      height: 0.22in;
+      width: 100%;
+    }
+
+    /* Fun fact */
+    .fun-fact {
+      border-left: 3px solid #d4a574;
+      background: #fdf8f2;
+      padding: 0.6rem 1rem;
+      font-size: 0.82rem;
+      color: #3a3f56;
+      border-radius: 0 6px 6px 0;
+    }
+
+    .fun-fact strong {
+      font-weight: 600;
+      color: #d4a574;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      font-size: 0.72rem;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page {
+        max-width: 8.5in;
+        padding: 0.6in;
+        margin: 0;
+      }
+      .no-print { display: none !important; }
+      @page {
+        size: letter;
+        margin: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+
+    <!-- Header -->
+    <div class="header">
+      <div class="brand-block">
+        <div class="brand-logo">CRUX</div>
+        <div class="brand-module">Pillar I &middot; The Holy Trinity</div>
+      </div>
+      <div class="worksheet-title-block">
+        <div class="worksheet-title">Baptism Day</div>
+        <div class="worksheet-subtitle">The day we first met the Father, the Son, and the Holy Spirit</div>
+      </div>
+    </div>
+
+    <!-- Student info -->
+    <div class="student-info">
+      <div class="info-field">
+        <span>Name</span>
+        <i class="info-line"></i>
+      </div>
+      <div class="info-field">
+        <span>Class</span>
+        <i class="info-line"></i>
+      </div>
+      <div class="info-field">
+        <span>Date</span>
+        <i class="info-line"></i>
+      </div>
+    </div>
+
+    <!-- Callout -->
+    <div class="callout">
+      <strong>Directions:</strong> Study the baptism scene below. Use the labels to name each part. Then draw lines to connect each Person of the Trinity to the right description. Finally, answer the reflection question at the bottom.
+    </div>
+
+    <!-- Illustration section -->
+    <div class="illustration-section">
+      <div class="section-heading">A Baptism Scene</div>
+
+      <div class="scene-wrapper">
+        <!-- Baptism scene SVG — clean line art, stroke only, no fill -->
+        <svg width="560" height="240" viewBox="0 0 560 240" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="Baptism scene illustration">
+
+          <!-- Background subtle arch -->
+          <path d="M80 220 Q280 10 480 220" stroke="#e8e8e8" stroke-width="1" stroke-dasharray="6 4"/>
+
+          <!-- CROSS at top center -->
+          <line x1="280" y1="18" x2="280" y2="80" stroke="#1a1f36" stroke-width="2.5"/>
+          <line x1="258" y1="36" x2="302" y2="36" stroke="#1a1f36" stroke-width="2.5"/>
+
+          <!-- DOVE descending (Holy Spirit) — line art -->
+          <!-- Body -->
+          <ellipse cx="280" cy="98" rx="14" ry="8" stroke="#1a1f36" stroke-width="2" transform="rotate(-15 280 98)"/>
+          <!-- Head -->
+          <circle cx="292" cy="93" r="5" stroke="#1a1f36" stroke-width="2"/>
+          <!-- Beak -->
+          <path d="M296 92 L302 91 L295 95Z" stroke="#1a1f36" stroke-width="1.5"/>
+          <!-- Left wing -->
+          <path d="M276 95 C264 86 252 90 250 98 C260 94 270 98 278 100Z" stroke="#1a1f36" stroke-width="2"/>
+          <!-- Right wing (folded) -->
+          <path d="M280 102 C284 110 278 116 274 114" stroke="#1a1f36" stroke-width="1.5"/>
+          <!-- Tail -->
+          <path d="M266 99 C258 104 256 112 260 115" stroke="#1a1f36" stroke-width="1.5"/>
+          <!-- Rays from dove -->
+          <line x1="280" y1="108" x2="280" y2="118" stroke="#d4a574" stroke-width="1" stroke-dasharray="3 2"/>
+          <line x1="272" y1="106" x2="268" y2="116" stroke="#d4a574" stroke-width="1" stroke-dasharray="3 2"/>
+          <line x1="288" y1="106" x2="292" y2="116" stroke="#d4a574" stroke-width="1" stroke-dasharray="3 2"/>
+
+          <!-- BAPTISMAL FONT / BOWL -->
+          <!-- Basin -->
+          <path d="M230 185 Q255 205 280 205 Q305 205 330 185" stroke="#1a1f36" stroke-width="2"/>
+          <line x1="230" y1="185" x2="238" y2="155" stroke="#1a1f36" stroke-width="2"/>
+          <line x1="330" y1="185" x2="322" y2="155" stroke="#1a1f36" stroke-width="2"/>
+          <!-- Rim of font -->
+          <path d="M235 155 Q280 148 325 155" stroke="#1a1f36" stroke-width="2"/>
+          <!-- Water surface (wavy lines) -->
+          <path d="M244 168 C250 164 258 172 264 168 C270 164 278 172 284 168 C290 164 298 172 304 168 C310 164 316 172 320 168" stroke="#1a1f36" stroke-width="1.5" stroke-linecap="round"/>
+          <!-- Water droplets -->
+          <path d="M270 145 C270 141 267 138 270 135 C273 138 270 141 270 145Z" stroke="#1a1f36" stroke-width="1.5"/>
+          <path d="M282 140 C282 136 279 133 282 130 C285 133 282 136 282 140Z" stroke="#1a1f36" stroke-width="1.5"/>
+          <path d="M293 145 C293 141 290 138 293 135 C296 138 293 141 293 145Z" stroke="#1a1f36" stroke-width="1.5"/>
+          <!-- Font pedestal -->
+          <line x1="265" y1="205" x2="260" y2="225" stroke="#1a1f36" stroke-width="2"/>
+          <line x1="295" y1="205" x2="300" y2="225" stroke="#1a1f36" stroke-width="2"/>
+          <line x1="256" y1="225" x2="304" y2="225" stroke="#1a1f36" stroke-width="2"/>
+
+          <!-- PERSON BEING BAPTIZED — to the left of font -->
+          <!-- Head -->
+          <circle cx="180" cy="135" r="10" stroke="#1a1f36" stroke-width="2"/>
+          <!-- Body (slight lean forward toward font) -->
+          <path d="M180 145 C182 165 185 178 188 185" stroke="#1a1f36" stroke-width="2" stroke-linecap="round"/>
+          <!-- Left arm down -->
+          <line x1="180" y1="158" x2="165" y2="175" stroke="#1a1f36" stroke-width="2"/>
+          <!-- Right arm extended toward font -->
+          <path d="M180 155 C195 155 210 160 225 168" stroke="#1a1f36" stroke-width="2"/>
+          <!-- Legs -->
+          <line x1="188" y1="185" x2="178" y2="210" stroke="#1a1f36" stroke-width="2"/>
+          <line x1="188" y1="185" x2="198" y2="210" stroke="#1a1f36" stroke-width="2"/>
+
+          <!-- PRIEST / MINISTER — to the right of font -->
+          <!-- Head -->
+          <circle cx="390" cy="128" r="10" stroke="#1a1f36" stroke-width="2"/>
+          <!-- Vestment / body (wider robe shape) -->
+          <path d="M382 138 L374 195 L406 195 L398 138Z" stroke="#1a1f36" stroke-width="2"/>
+          <!-- Stole cross marks -->
+          <line x1="388" y1="148" x2="388" y2="162" stroke="#1a1f36" stroke-width="1.5"/>
+          <line x1="383" y1="155" x2="393" y2="155" stroke="#1a1f36" stroke-width="1.5"/>
+          <!-- Left arm extended to font/water -->
+          <path d="M382 152 C368 158 345 162 328 165" stroke="#1a1f36" stroke-width="2"/>
+          <!-- Right arm down -->
+          <line x1="398" y1="152" x2="412" y2="172" stroke="#1a1f36" stroke-width="2"/>
+          <!-- Hand/fingers at water -->
+          <circle cx="326" cy="165" r="3" stroke="#1a1f36" stroke-width="1.5"/>
+
+          <!-- LABEL ARROWS -->
+          <!-- Arrow: Dove (top left) -->
+          <line x1="250" y1="96" x2="130" y2="70" stroke="#d4a574" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <polygon points="130,70 138,76 136,66" fill="#d4a574"/>
+
+          <!-- Arrow: Cross (top right) -->
+          <line x1="302" y1="36" x2="420" y2="42" stroke="#d4a574" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <polygon points="420,42 412,36 412,48" fill="#d4a574"/>
+
+          <!-- Arrow: Person being baptized (bottom left) -->
+          <line x1="170" y1="185" x2="90" y2="200" stroke="#d4a574" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <polygon points="90,200 100,194 98,206" fill="#d4a574"/>
+
+          <!-- Arrow: Water (bottom center) -->
+          <line x1="280" y1="205" x2="280" y2="232" stroke="#d4a574" stroke-width="1.5" stroke-dasharray="4 3"/>
+          <polygon points="280,232 274,222 286,222" fill="#d4a574"/>
+
+          <!-- Label text areas (just small markers, labels are in HTML below) -->
+          <rect x="60" y="56" width="8" height="8" rx="2" fill="#d4a574" opacity="0.6"/>
+          <rect x="420" y="30" width="8" height="8" rx="2" fill="#d4a574" opacity="0.6"/>
+          <rect x="60" y="192" width="8" height="8" rx="2" fill="#d4a574" opacity="0.6"/>
+          <rect x="265" y="232" width="8" height="8" rx="2" fill="#d4a574" opacity="0.6"/>
+        </svg>
+      </div>
+
+      <!-- Scene labels -->
+      <div class="label-grid">
+        <div class="label-item">
+          <span class="label-arrow">&#9670;</span>
+          <div class="label-text">
+            <strong>The Holy Spirit</strong>
+            <i class="label-write-line"></i>
+          </div>
+        </div>
+        <div class="label-item">
+          <span class="label-arrow">&#9670;</span>
+          <div class="label-text">
+            <strong>God the Son &mdash; Jesus</strong>
+            <i class="label-write-line"></i>
+          </div>
+        </div>
+        <div class="label-item">
+          <span class="label-arrow">&#9670;</span>
+          <div class="label-text">
+            <strong>Baptized in the name of...</strong>
+            <i class="label-write-line"></i>
+          </div>
+        </div>
+        <div class="label-item">
+          <span class="label-arrow">&#9670;</span>
+          <div class="label-text">
+            <strong>Water &mdash; the sign of new life</strong>
+            <i class="label-write-line"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Connect the labels -->
+    <div class="connect-section">
+      <div class="connect-heading">Connect the Labels</div>
+      <div class="connect-instruction">Draw a line from each Person of the Trinity to the right description.</div>
+      <div class="connect-columns">
+        <!-- Left: Person names -->
+        <div class="connect-col">
+          <div class="connect-item person">God the Father</div>
+          <div class="connect-item person">God the Son</div>
+          <div class="connect-item person">God the Holy Spirit</div>
+        </div>
+        <!-- Middle: draw-lines space -->
+        <div class="connect-middle">
+          <span class="connect-middle-label">draw your lines here</span>
+        </div>
+        <!-- Right: descriptions (scrambled) -->
+        <div class="connect-col">
+          <div class="connect-item description">&ldquo;Became human for us&rdquo;</div>
+          <div class="connect-item description">&ldquo;The Creator of all things&rdquo;</div>
+          <div class="connect-item description">&ldquo;Lives in our hearts&rdquo;</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reflection -->
+    <div class="reflection-section">
+      <div class="reflection-prompt">At my Baptism, I became part of God&rsquo;s family. This means&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+      <div class="ruled-lines">
+        <i class="ruled-line"></i>
+        <i class="ruled-line"></i>
+        <i class="ruled-line"></i>
+      </div>
+    </div>
+
+    <!-- Fun fact -->
+    <div class="fun-fact">
+      <strong>Fun Fact</strong>
+      The priest says &ldquo;I baptize you in the name of the Father, and of the Son, and of the Holy Spirit&rdquo; &mdash; the Trinity is present at every Baptism!
+    </div>
+
+  </div>
+</body>
+</html>

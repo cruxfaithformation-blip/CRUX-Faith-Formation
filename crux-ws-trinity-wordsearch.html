@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trinity Word Search — CRUX</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: #1a1f36;
+    }
+
+    .page {
+      max-width: 8.5in;
+      min-height: 11in;
+      margin: 0 auto;
+      padding: 0.6in;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.5in;
+      border-bottom: 2px solid #1a1f36;
+      padding-bottom: 0.2in;
+    }
+
+    .branding .logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.6rem;
+      letter-spacing: 4px;
+      color: #1a1f36;
+      line-height: 1;
+    }
+
+    .branding .module-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #6b7280;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .student-info {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-end;
+      font-size: 0.78rem;
+      color: #374151;
+    }
+
+    .student-info .field {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .student-info .field label {
+      font-weight: 600;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #6b7280;
+    }
+
+    .student-info .field .line {
+      width: 120px;
+      border-bottom: 1.5px solid #1a1f36;
+      height: 18px;
+    }
+
+    .student-info .field.date .line { width: 80px; }
+
+    /* Title block */
+    .title-block {
+      margin-bottom: 0.25in;
+    }
+
+    .title-block h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.5rem;
+      color: #1a1f36;
+      margin-bottom: 4px;
+    }
+
+    .title-block .subtitle {
+      font-size: 0.88rem;
+      color: #4b5563;
+    }
+
+    /* Callout / instructions */
+    .callout {
+      border-left: 3px solid #d4a574;
+      background: #fdf8f2;
+      padding: 0.6rem 1rem;
+      margin-bottom: 0.3in;
+      font-size: 0.82rem;
+      color: #374151;
+      line-height: 1.5;
+    }
+
+    /* Grid container */
+    .grid-wrap {
+      margin-bottom: 0.3in;
+      overflow-x: auto;
+    }
+
+    .word-grid {
+      border-collapse: collapse;
+      font-family: monospace;
+      font-weight: 700;
+      font-size: 0.82rem;
+    }
+
+    .word-grid td {
+      width: 26px;
+      height: 26px;
+      text-align: center;
+      vertical-align: middle;
+      border: 1px solid #e5e7eb;
+      line-height: 1;
+    }
+
+    /* Word list */
+    .word-list-section {
+      margin-bottom: 0.3in;
+    }
+
+    .word-list-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1rem;
+      color: #1a1f36;
+      margin-bottom: 0.12in;
+    }
+
+    .word-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem 1.2rem;
+      list-style: none;
+    }
+
+    .word-list li {
+      font-size: 0.82rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      color: #1a1f36;
+      padding: 3px 8px;
+      border: 1.5px solid #d1d5db;
+      border-radius: 3px;
+    }
+
+    /* Matching section */
+    .matching-section {
+      margin-top: 0.25in;
+      padding-top: 0.2in;
+      border-top: 1px solid #e5e7eb;
+    }
+
+    .matching-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1rem;
+      color: #1a1f36;
+      margin-bottom: 4px;
+    }
+
+    .matching-section .prompt {
+      font-size: 0.8rem;
+      color: #4b5563;
+      margin-bottom: 0.15in;
+    }
+
+    .match-line {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 0.15in;
+    }
+
+    .match-line .match-word {
+      font-weight: 700;
+      font-size: 0.82rem;
+      min-width: 110px;
+    }
+
+    .match-line .fill-line {
+      flex: 1;
+      border-bottom: 1.5px solid #1a1f36;
+      height: 18px;
+    }
+
+    /* Teacher key */
+    .answer-key {
+      margin-top: 0.35in;
+      padding: 0.6rem 1rem;
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+    }
+
+    .answer-key h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1rem;
+      color: #1a1f36;
+      margin-bottom: 0.12in;
+    }
+
+    .answer-key table {
+      border-collapse: collapse;
+      width: 100%;
+      font-size: 0.78rem;
+    }
+
+    .answer-key table th {
+      text-align: left;
+      font-weight: 700;
+      padding: 3px 8px 3px 0;
+      border-bottom: 1px solid #d1d5db;
+      color: #374151;
+    }
+
+    .answer-key table td {
+      padding: 3px 8px 3px 0;
+      color: #4b5563;
+      border-bottom: 1px solid #e5e7eb;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { padding: 0.6in; }
+      .no-print { display: none !important; }
+      @page { size: letter; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="branding">
+      <div class="logo">CRUX</div>
+      <div class="module-label">Pillar I &middot; The Holy Trinity</div>
+    </div>
+    <div class="student-info">
+      <div class="field">
+        <label>Name</label>
+        <div class="line"></div>
+      </div>
+      <div class="field">
+        <label>Class</label>
+        <div class="line"></div>
+      </div>
+      <div class="field date">
+        <label>Date</label>
+        <div class="line"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Title -->
+  <div class="title-block">
+    <h1>Trinity Word Search</h1>
+    <div class="subtitle">Find the 12 hidden words. Words may go across or down.</div>
+  </div>
+
+  <!-- Instructions callout -->
+  <div class="callout">
+    Circle each word when you find it. Words run left to right or top to bottom. When you have found all 12 words, choose any 4 and write your own definition in the section below.
+  </div>
+
+  <!-- Grid -->
+  <div class="grid-wrap">
+    <table class="word-grid">
+      <tbody>
+        <tr><td>B</td><td>E</td><td>G</td><td>O</td><td>T</td><td>T</td><td>E</td><td>N</td><td>K</td><td>L</td><td>M</td><td>P</td><td>Q</td><td>R</td><td>W</td></tr>
+        <tr><td>S</td><td>O</td><td>N</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>F</td><td>G</td><td>H</td><td>J</td><td>K</td></tr>
+        <tr><td>L</td><td>M</td><td>P</td><td>Q</td><td>S</td><td>R</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td></tr>
+        <tr><td>C</td><td>D</td><td>F</td><td>G</td><td>P</td><td>H</td><td>J</td><td>K</td><td>N</td><td>I</td><td>C</td><td>A</td><td>E</td><td>A</td><td>C</td></tr>
+        <tr><td>M</td><td>N</td><td>P</td><td>Q</td><td>I</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>R</td></tr>
+        <tr><td>A</td><td>B</td><td>C</td><td>D</td><td>R</td><td>E</td><td>F</td><td>G</td><td>H</td><td>J</td><td>K</td><td>L</td><td>M</td><td>N</td><td>E</td></tr>
+        <tr><td>R</td><td>P</td><td>Q</td><td>S</td><td>I</td><td>T</td><td>U</td><td>V</td><td>W</td><td>X</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>E</td></tr>
+        <tr><td>I</td><td>C</td><td>D</td><td>F</td><td>T</td><td>R</td><td>I</td><td>N</td><td>I</td><td>T</td><td>Y</td><td>G</td><td>H</td><td>J</td><td>D</td></tr>
+        <tr><td>U</td><td>K</td><td>B</td><td>L</td><td>M</td><td>N</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>F</td><td>P</td><td>V</td></tr>
+        <tr><td>S</td><td>W</td><td>A</td><td>X</td><td>Y</td><td>L</td><td>O</td><td>V</td><td>E</td><td>Z</td><td>A</td><td>B</td><td>A</td><td>E</td><td>C</td></tr>
+        <tr><td>D</td><td>E</td><td>P</td><td>F</td><td>C</td><td>O</td><td>U</td><td>N</td><td>C</td><td>I</td><td>L</td><td>G</td><td>T</td><td>R</td><td>H</td></tr>
+        <tr><td>J</td><td>K</td><td>T</td><td>L</td><td>M</td><td>N</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>H</td><td>S</td><td>V</td></tr>
+        <tr><td>W</td><td>X</td><td>I</td><td>Y</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>E</td><td>O</td><td>J</td></tr>
+        <tr><td>K</td><td>L</td><td>S</td><td>M</td><td>N</td><td>P</td><td>Q</td><td>R</td><td>S</td><td>T</td><td>U</td><td>V</td><td>R</td><td>N</td><td>W</td></tr>
+        <tr><td>X</td><td>Y</td><td>M</td><td>Z</td><td>A</td><td>B</td><td>C</td><td>D</td><td>E</td><td>F</td><td>G</td><td>H</td><td>J</td><td>S</td><td>K</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Word list -->
+  <div class="word-list-section">
+    <h2>Words to Find</h2>
+    <ul class="word-list">
+      <li>BEGOTTEN</li>
+      <li>BAPTISM</li>
+      <li>TRINITY</li>
+      <li>SPIRIT</li>
+      <li>NICAEA</li>
+      <li>CREED</li>
+      <li>ARIUS</li>
+      <li>LOVE</li>
+      <li>COUNCIL</li>
+      <li>FATHER</li>
+      <li>PERSONS</li>
+      <li>SON</li>
+    </ul>
+  </div>
+
+  <!-- Matching / Definitions -->
+  <div class="matching-section">
+    <h2>What do these words mean?</h2>
+    <div class="prompt">Choose any 4 words from the list above and write your own definition for each one.</div>
+
+    <div class="match-line">
+      <div class="match-word">1. __________</div>
+      <div class="fill-line"></div>
+    </div>
+    <div class="match-line">
+      <div class="match-word">2. __________</div>
+      <div class="fill-line"></div>
+    </div>
+    <div class="match-line">
+      <div class="match-word">3. __________</div>
+      <div class="fill-line"></div>
+    </div>
+    <div class="match-line">
+      <div class="match-word">4. __________</div>
+      <div class="fill-line"></div>
+    </div>
+  </div>
+
+  <!-- Teacher Answer Key (no-print) -->
+  <div class="answer-key no-print">
+    <h2>Teacher Answer Key</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Word</th>
+          <th>Direction</th>
+          <th>Location</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>BEGOTTEN</td><td>Across &rarr;</td><td>Row 0, cols 0&ndash;7</td></tr>
+        <tr><td>SON</td><td>Across &rarr;</td><td>Row 1, cols 0&ndash;2</td></tr>
+        <tr><td>SPIRIT</td><td>Down &darr;</td><td>Col 4, rows 0&ndash;5</td></tr>
+        <tr><td>NICAEA</td><td>Across &rarr;</td><td>Row 3, cols 8&ndash;13</td></tr>
+        <tr><td>CREED</td><td>Down &darr;</td><td>Col 14, rows 3&ndash;7</td></tr>
+        <tr><td>ARIUS</td><td>Down &darr;</td><td>Col 0, rows 5&ndash;9</td></tr>
+        <tr><td>TRINITY</td><td>Across &rarr;</td><td>Row 7, cols 4&ndash;10</td></tr>
+        <tr><td>BAPTISM</td><td>Down &darr;</td><td>Col 2, rows 8&ndash;14</td></tr>
+        <tr><td>FATHER</td><td>Down &darr;</td><td>Col 12, rows 8&ndash;13</td></tr>
+        <tr><td>LOVE</td><td>Across &rarr;</td><td>Row 9, cols 5&ndash;8</td></tr>
+        <tr><td>COUNCIL</td><td>Across &rarr;</td><td>Row 10, cols 4&ndash;10</td></tr>
+        <tr><td>PERSONS</td><td>Down &darr;</td><td>Col 13, rows 8&ndash;14</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</div>
+</body>
+</html>

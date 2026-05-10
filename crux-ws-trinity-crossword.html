@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Council of Nicaea Crossword — CRUX</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #fff;
+      color: #1a1f36;
+    }
+
+    .page {
+      max-width: 8.5in;
+      min-height: 11in;
+      margin: 0 auto;
+      padding: 0.6in;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.5in;
+      border-bottom: 2px solid #1a1f36;
+      padding-bottom: 0.2in;
+    }
+
+    .branding .logo {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.6rem;
+      letter-spacing: 4px;
+      color: #1a1f36;
+      line-height: 1;
+    }
+
+    .branding .module-label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #6b7280;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .student-info {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-end;
+      font-size: 0.78rem;
+      color: #374151;
+    }
+
+    .student-info .field {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .student-info .field label {
+      font-weight: 600;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #6b7280;
+    }
+
+    .student-info .field .line {
+      width: 120px;
+      border-bottom: 1.5px solid #1a1f36;
+      height: 18px;
+    }
+
+    .student-info .field.date .line { width: 80px; }
+
+    /* Title block */
+    .title-block {
+      margin-bottom: 0.25in;
+    }
+
+    .title-block h1 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1.5rem;
+      color: #1a1f36;
+      margin-bottom: 4px;
+    }
+
+    .title-block .subtitle {
+      font-size: 0.88rem;
+      color: #4b5563;
+    }
+
+    /* Callout */
+    .callout {
+      border-left: 3px solid #d4a574;
+      background: #fdf8f2;
+      padding: 0.6rem 1rem;
+      margin-bottom: 0.3in;
+      font-size: 0.82rem;
+      color: #374151;
+      line-height: 1.5;
+    }
+
+    /* Layout: grid left, clues right */
+    .puzzle-layout {
+      display: flex;
+      gap: 0.4in;
+      align-items: flex-start;
+      margin-bottom: 0.3in;
+    }
+
+    .grid-wrap {
+      flex-shrink: 0;
+    }
+
+    /* Crossword table */
+    .crossword {
+      border-collapse: collapse;
+    }
+
+    .crossword td {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      position: relative;
+      font-size: 0;
+    }
+
+    .crossword td.black {
+      background: #1a1f36;
+    }
+
+    .crossword td.white {
+      border: 1.5px solid #333;
+      background: #fff;
+    }
+
+    .crossword td.white .clue-num {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      font-size: 0.55rem;
+      font-family: 'Inter', sans-serif;
+      font-weight: 700;
+      color: #1a1f36;
+      line-height: 1;
+    }
+
+    /* Clues panel */
+    .clues-panel {
+      flex: 1;
+      min-width: 0;
+    }
+
+    .clues-panel h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1rem;
+      color: #1a1f36;
+      margin-bottom: 0.1in;
+      margin-top: 0.15in;
+    }
+
+    .clues-panel h2:first-child {
+      margin-top: 0;
+    }
+
+    .clue-list {
+      list-style: none;
+      margin-bottom: 0.1in;
+    }
+
+    .clue-list li {
+      font-size: 0.8rem;
+      color: #374151;
+      line-height: 1.5;
+      margin-bottom: 6px;
+      padding-left: 0;
+    }
+
+    .clue-list li .clue-n {
+      font-weight: 700;
+      color: #1a1f36;
+      margin-right: 4px;
+    }
+
+    .clue-list li .letter-count {
+      color: #6b7280;
+      font-style: italic;
+    }
+
+    /* Answer key */
+    .answer-key {
+      margin-top: 0.3in;
+      padding: 0.6rem 1rem;
+      background: #f3f4f6;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+    }
+
+    .answer-key h2 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 1rem;
+      color: #1a1f36;
+      margin-bottom: 0.1in;
+    }
+
+    .key-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.1in;
+    }
+
+    .key-item {
+      font-size: 0.78rem;
+      color: #374151;
+    }
+
+    .key-item strong {
+      color: #1a1f36;
+    }
+
+    @media print {
+      body { background: #fff; }
+      .page { padding: 0.6in; }
+      .no-print { display: none !important; }
+      @page { size: letter; margin: 0; }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div class="branding">
+      <div class="logo">CRUX</div>
+      <div class="module-label">Pillar I &middot; The Holy Trinity</div>
+    </div>
+    <div class="student-info">
+      <div class="field">
+        <label>Name</label>
+        <div class="line"></div>
+      </div>
+      <div class="field">
+        <label>Class</label>
+        <div class="line"></div>
+      </div>
+      <div class="field date">
+        <label>Date</label>
+        <div class="line"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Title -->
+  <div class="title-block">
+    <h1>Council of Nicaea Crossword</h1>
+    <div class="subtitle">Use the clues to complete the puzzle</div>
+  </div>
+
+  <!-- Instructions callout -->
+  <div class="callout">
+    Fill in each white square using the across and down clues. Each clue number in the grid marks the start of a word. Answers relate to the Holy Trinity and the Council of Nicaea (325 AD).
+  </div>
+
+  <!-- Puzzle layout -->
+  <div class="puzzle-layout">
+
+    <!-- Grid -->
+    <!--
+      Grid (8 rows x 9 cols):
+      Row 0: # # T H R E E # N
+      Row 1: # # R # # # # # I
+      Row 2: A R I U S # # # C
+      Row 3: # # N # C # # # A
+      Row 4: # # I # R L O V E
+      Row 5: F A T H E R # # A
+      Row 6: # # Y # E # # # #
+      Row 7: # # # # D # # # #
+
+      Clue starts:
+      (0,2)=1, (0,8)=2, (2,0)=3, (3,4)=4, (4,5)=5, (5,0)=6
+    -->
+    <div class="grid-wrap">
+      <table class="crossword">
+        <tbody>
+          <!-- Row 0: # # T H R E E # N -->
+          <tr>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="white"><span class="clue-num">1</span></td>
+            <td class="white"></td>
+            <td class="white"></td>
+            <td class="white"></td>
+            <td class="white"></td>
+            <td class="black"></td>
+            <td class="white"><span class="clue-num">2</span></td>
+          </tr>
+          <!-- Row 1: # # R # # # # # I -->
+          <tr>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="white"></td>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="white"></td>
+          </tr>
+          <!-- Row 2: A R I U S # # # C -->
+          <tr>
+            <td class="white"><span class="clue-num">3</span></td>
+            <td class="white"></td>
+            <td class="white"></td>
+            <td class="white"></td>
+            <td class="white"></td>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="white"></td>
+          </tr>
+          <!-- Row 3: # # N # C # # # A -->
+          <tr>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="white"></td>
+            <td class="black"></td>
+            <td class="white"><span class="clue-num">4</span></td>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="white"></td>
+          </tr>
+          <!-- Row 4: # # I # R L O V E -->
+          <tr>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="white"></td>
+            <td class="black"></td>
+            <td class="white"></td>
+            <td class="white"><span class="clue-num">5</span></td>
+            <td class="white"></td>
+            <td class="white"></td>
+            <td class="white"></td>
+          </tr>
+          <!-- Row 5: F A T H E R # # A -->
+          <tr>
+            <td class="white"><span class="clue-num">6</span></td>
+            <td class="white"></td>
+            <td class="white"></td>
+            <td class="white"></td>
+            <td class="white"></td>
+            <td class="white"></td>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="white"></td>
+          </tr>
+          <!-- Row 6: # # Y # E # # # # -->
+          <tr>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="white"></td>
+            <td class="black"></td>
+            <td class="white"></td>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="black"></td>
+          </tr>
+          <!-- Row 7: # # # # D # # # # -->
+          <tr>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="white"></td>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="black"></td>
+            <td class="black"></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Clues -->
+    <div class="clues-panel">
+      <h2>Across</h2>
+      <ul class="clue-list">
+        <li><span class="clue-n">1.</span> The number of divine Persons in the Trinity <span class="letter-count">(5 letters)</span></li>
+        <li><span class="clue-n">3.</span> The theologian who claimed Jesus was only a creature, not fully God <span class="letter-count">(5 letters)</span></li>
+        <li><span class="clue-n">5.</span> "God is ___" — not just that God loves, but that love is his very nature <span class="letter-count">(4 letters)</span></li>
+        <li><span class="clue-n">6.</span> "The ___ sent the Son" — the First Person of the Trinity <span class="letter-count">(6 letters)</span></li>
+      </ul>
+
+      <h2>Down</h2>
+      <ul class="clue-list">
+        <li><span class="clue-n">1.</span> One God in three Persons; the central mystery of Christian faith <span class="letter-count">(7 letters)</span></li>
+        <li><span class="clue-n">2.</span> The city in Asia Minor where the famous council was held in 325 AD <span class="letter-count">(6 letters)</span></li>
+        <li><span class="clue-n">4.</span> Statement of faith proclaimed at every Sunday Mass <span class="letter-count">(5 letters)</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- Teacher Answer Key (no-print) -->
+  <div class="answer-key no-print">
+    <h2>Teacher Answer Key</h2>
+    <div class="key-grid">
+      <div class="key-item"><strong>1 Across</strong> — THREE (Row 0, cols 2&ndash;6)</div>
+      <div class="key-item"><strong>1 Down</strong> — TRINITY (Col 2, rows 0&ndash;6)</div>
+      <div class="key-item"><strong>2 Down</strong> — NICAEA (Col 8, rows 0&ndash;5)</div>
+      <div class="key-item"><strong>3 Across</strong> — ARIUS (Row 2, cols 0&ndash;4)</div>
+      <div class="key-item"><strong>4 Down</strong> — CREED (Col 4, rows 3&ndash;7)</div>
+      <div class="key-item"><strong>5 Across</strong> — LOVE (Row 4, cols 5&ndash;8)</div>
+      <div class="key-item"><strong>6 Across</strong> — FATHER (Row 5, cols 0&ndash;5)</div>
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

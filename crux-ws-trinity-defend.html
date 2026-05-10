@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CRUX — Defend the Faith (Holy Trinity)</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f5f5f5;
+      color: #1a1f36;
+      font-size: 11pt;
+      line-height: 1.6;
+    }
+
+    .page {
+      max-width: 8.5in;
+      min-height: 11in;
+      margin: 0 auto;
+      padding: 0.6in;
+      background: #ffffff;
+    }
+
+    /* Header */
+    .header {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      border-bottom: 2px solid #1a1f36;
+      padding-bottom: 0.4rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .brand {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 22pt;
+      letter-spacing: 4px;
+      color: #1a1f36;
+      line-height: 1;
+    }
+
+    .module-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 8.5pt;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #555;
+      margin-top: 3px;
+    }
+
+    .worksheet-id {
+      font-family: 'Inter', sans-serif;
+      font-size: 8pt;
+      color: #999;
+      text-align: right;
+      line-height: 1.4;
+    }
+
+    /* Title block */
+    .title-block {
+      margin-bottom: 1rem;
+    }
+
+    .ws-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 900;
+      font-size: 20pt;
+      color: #1a1f36;
+      line-height: 1.2;
+      margin-bottom: 0.2rem;
+    }
+
+    .ws-subtitle {
+      font-family: 'Inter', sans-serif;
+      font-size: 11pt;
+      font-weight: 400;
+      color: #555;
+      font-style: italic;
+    }
+
+    /* Student info */
+    .student-info {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 1.2rem;
+      margin-top: 0.6rem;
+    }
+
+    .info-field {
+      flex: 1;
+      display: flex;
+      align-items: baseline;
+      gap: 0.4rem;
+    }
+
+    .info-field label {
+      font-size: 9pt;
+      font-weight: 600;
+      color: #555;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .info-field .underline {
+      flex: 1;
+      border-bottom: 1px solid #333;
+      height: 1.1em;
+    }
+
+    /* Callout box */
+    .callout {
+      border-left: 3px solid #d4a574;
+      background: #fdf8f2;
+      padding: 0.6rem 1rem;
+      margin-bottom: 1.2rem;
+      font-size: 10pt;
+      color: #333;
+    }
+
+    /* Reference box */
+    .reference-box {
+      border: 1.5px solid #c0c0c0;
+      border-radius: 4px;
+      padding: 0.7rem 1rem;
+      margin-bottom: 1.4rem;
+      background: #fafafa;
+    }
+
+    .reference-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 11pt;
+      color: #1a1f36;
+      margin-bottom: 0.5rem;
+      letter-spacing: 0.3px;
+    }
+
+    .reference-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .reference-list li {
+      font-size: 9.5pt;
+      color: #333;
+      padding: 0.25rem 0;
+      border-bottom: 1px dotted #ddd;
+      line-height: 1.5;
+    }
+
+    .reference-list li:last-child {
+      border-bottom: none;
+    }
+
+    .ref-source {
+      font-weight: 600;
+      color: #1a1f36;
+    }
+
+    /* Challenge section */
+    .section-label {
+      font-family: 'Inter', sans-serif;
+      font-size: 8pt;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 0.6rem;
+    }
+
+    .challenge-block {
+      margin-bottom: 1.4rem;
+    }
+
+    .challenge-number {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 11pt;
+      color: #1a1f36;
+      margin-bottom: 0.4rem;
+    }
+
+    .challenge-quote {
+      background: #f4f4f4;
+      border: 1px solid #d0d0d0;
+      border-left: 3px solid #999;
+      border-radius: 2px;
+      padding: 0.55rem 0.9rem;
+      font-size: 10.5pt;
+      font-style: italic;
+      color: #333;
+      margin-bottom: 0.6rem;
+      line-height: 1.5;
+    }
+
+    .response-label {
+      font-size: 9.5pt;
+      font-weight: 600;
+      color: #1a1f36;
+      margin-bottom: 0.3rem;
+    }
+
+    .ruled-lines {
+      margin-bottom: 0.3rem;
+    }
+
+    .ruled-line {
+      border-bottom: 1px solid #bbb;
+      height: 1.65em;
+      width: 100%;
+    }
+
+    .hint {
+      font-size: 8.5pt;
+      color: #777;
+      font-style: italic;
+      margin-top: 0.3rem;
+    }
+
+    .hint strong {
+      font-weight: 600;
+      color: #555;
+    }
+
+    /* Reflection */
+    .reflection-block {
+      border-top: 1.5px solid #1a1f36;
+      padding-top: 0.8rem;
+      margin-top: 0.4rem;
+    }
+
+    .reflection-title {
+      font-family: 'Playfair Display', serif;
+      font-weight: 700;
+      font-size: 12pt;
+      color: #1a1f36;
+      margin-bottom: 0.2rem;
+    }
+
+    .reflection-prompt {
+      font-size: 10pt;
+      color: #444;
+      margin-bottom: 0.5rem;
+      font-style: italic;
+    }
+
+    /* Print styles */
+    @media print {
+      body {
+        background: #ffffff;
+      }
+
+      .page {
+        max-width: 8.5in;
+        padding: 0.6in;
+        margin: 0;
+        box-shadow: none;
+      }
+
+      .no-print {
+        display: none !important;
+      }
+
+      @page {
+        size: letter;
+        margin: 0;
+      }
+
+      .challenge-block {
+        page-break-inside: avoid;
+      }
+
+      .reflection-block {
+        page-break-inside: avoid;
+      }
+    }
+
+    /* Screen shadow for preview */
+    @media screen {
+      .page {
+        box-shadow: 0 2px 20px rgba(0,0,0,0.12);
+        margin: 1.5rem auto;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Header -->
+  <div class="header">
+    <div>
+      <div class="brand">CRUX</div>
+      <div class="module-label">Pillar I &middot; The Holy Trinity</div>
+    </div>
+    <div class="worksheet-id">
+      Worksheet 9<br>
+      Defend the Faith
+    </div>
+  </div>
+
+  <!-- Title -->
+  <div class="title-block">
+    <div class="ws-title">Defend the Faith</div>
+    <div class="ws-subtitle">Use scripture and the Creed to respond to three challenges</div>
+  </div>
+
+  <!-- Student Info -->
+  <div class="student-info">
+    <div class="info-field">
+      <label>Name</label>
+      <div class="underline"></div>
+    </div>
+    <div class="info-field">
+      <label>Class</label>
+      <div class="underline"></div>
+    </div>
+    <div class="info-field">
+      <label>Date</label>
+      <div class="underline"></div>
+    </div>
+  </div>
+
+  <!-- Intro callout -->
+  <div class="callout">
+    A friend, a classmate, or someone online might challenge your faith. These exercises help you think through a real response — not just "because the Church says so," but with reasons.
+  </div>
+
+  <!-- Reference Box -->
+  <div class="reference-box">
+    <h3>Tools for Your Response</h3>
+    <ul class="reference-list">
+      <li>
+        <span class="ref-source">Nicene Creed</span> &mdash; "I believe in one Lord Jesus Christ, the Only Begotten Son of God, born of the Father before all ages. God from God, Light from Light, true God from true God, begotten, not made, consubstantial with the Father."
+      </li>
+      <li>
+        <span class="ref-source">Matthew 28:19</span> &mdash; "Go and baptize them in the name of the Father, and of the Son, and of the Holy Spirit."
+      </li>
+      <li>
+        <span class="ref-source">1 John 4:8</span> &mdash; "God is love."
+      </li>
+      <li>
+        <span class="ref-source">John 1:1</span> &mdash; "In the beginning was the Word, and the Word was with God, and the Word was God."
+      </li>
+      <li>
+        <span class="ref-source">CCC 253</span> &mdash; "The Trinity is One. We do not confess three Gods, but one God in three persons."
+      </li>
+    </ul>
+  </div>
+
+  <!-- Challenges -->
+  <div class="section-label">Challenges</div>
+
+  <!-- Challenge 1 -->
+  <div class="challenge-block">
+    <div class="challenge-number">Challenge 1</div>
+    <div class="challenge-quote">
+      "Christians say they believe in one God, but then they pray to the Father, Son, and Holy Spirit. That's three gods — not one."
+    </div>
+    <div class="response-label">My response:</div>
+    <div class="ruled-lines">
+      <div class="ruled-line"></div>
+      <div class="ruled-line"></div>
+      <div class="ruled-line"></div>
+      <div class="ruled-line"></div>
+      <div class="ruled-line"></div>
+    </div>
+    <div class="hint">
+      <strong>Helpful hint:</strong> See CCC 253 ("one God in three persons") and Matthew 28:19 (note that Jesus says "name" &mdash; singular &mdash; not "names").
+    </div>
+  </div>
+
+  <!-- Challenge 2 -->
+  <div class="challenge-block">
+    <div class="challenge-number">Challenge 2</div>
+    <div class="challenge-quote">
+      "Jesus was a great teacher and prophet, but calling him God is going too far. Even he prayed to God — so he can't BE God."
+    </div>
+    <div class="response-label">My response:</div>
+    <div class="ruled-lines">
+      <div class="ruled-line"></div>
+      <div class="ruled-line"></div>
+      <div class="ruled-line"></div>
+      <div class="ruled-line"></div>
+      <div class="ruled-line"></div>
+    </div>
+    <div class="hint">
+      <strong>Helpful hint:</strong> See the Nicene Creed ("true God from true God, begotten, not made") and John 1:1 ("the Word was God").
+    </div>
+  </div>
+
+  <!-- Challenge 3 -->
+  <div class="challenge-block">
+    <div class="challenge-number">Challenge 3</div>
+    <div class="challenge-quote">
+      "The word 'Trinity' doesn't appear anywhere in the Bible, so it's just something the Church made up centuries later."
+    </div>
+    <div class="response-label">My response:</div>
+    <div class="ruled-lines">
+      <div class="ruled-line"></div>
+      <div class="ruled-line"></div>
+      <div class="ruled-line"></div>
+      <div class="ruled-line"></div>
+      <div class="ruled-line"></div>
+    </div>
+    <div class="hint">
+      <strong>Helpful hint:</strong> See Matthew 28:19 (Father, Son, and Spirit named together), 1 John 4:8 (if God is love, he must have someone to love eternally &mdash; that requires inner relationship), and note: the concept being biblical is what matters, not whether the exact word appears.
+    </div>
+  </div>
+
+  <!-- Reflection -->
+  <div class="reflection-block">
+    <div class="reflection-title">Reflection</div>
+    <div class="reflection-prompt">Which challenge was hardest to answer? Why?</div>
+    <div class="ruled-lines">
+      <div class="ruled-line"></div>
+      <div class="ruled-line"></div>
+      <div class="ruled-line"></div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
