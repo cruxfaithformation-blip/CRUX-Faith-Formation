@@ -251,6 +251,27 @@ body::before {
   transform: translateX(4px);
 }
 
+/* AUTHOR LABEL */
+.author-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-muted-dark);
+  margin-bottom: 1rem;
+}
+
+/* STATIC CARD (recommended reading — no hover lift) */
+.book-card.static {
+  cursor: default;
+}
+.book-card.static:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: var(--border-gold);
+}
+
 /* COMING SOON CARD */
 .book-card.coming-soon {
   opacity: 0.45;
@@ -315,6 +336,96 @@ body::before {
         <p class="book-card-description">For anyone who wants to believe but needs more than inherited faith. A case for Christianity built from scripture, history, and one man's honest search for the truth.</p>
         <span class="book-card-cta">Read Now</span>
       </a>
+
+    </div>
+  </div>
+
+  <!-- RECOMMENDED READING -->
+  <div class="shelf">
+    <div class="shelf-header">
+      <span class="shelf-label">Recommended</span>
+      <h2 class="shelf-title">Reading List</h2>
+      <span class="shelf-subtitle">Books Andrew keeps coming back to</span>
+    </div>
+
+    <!-- Matthew Kelly -->
+    <p class="author-label">Matthew Kelly</p>
+    <div class="book-grid" style="margin-bottom: 2.5rem;">
+
+      <div class="book-card static">
+        <p class="book-card-eyebrow">Matthew Kelly</p>
+        <h3 class="book-card-title">Rediscover Jesus</h3>
+        <p class="book-card-subtitle">An Invitation</p>
+        <p class="book-card-description">A direct, accessible walk through who Jesus actually is — not the watered-down version culture offers, but the radical, demanding, liberating one the Gospels present.</p>
+      </div>
+
+      <div class="book-card static">
+        <p class="book-card-eyebrow">Matthew Kelly</p>
+        <h3 class="book-card-title">The Rhythm of Life</h3>
+        <p class="book-card-subtitle">Living Every Day with Passion and Purpose</p>
+        <p class="book-card-description">On becoming the best version of yourself — and the spiritual framework underneath that pursuit. Kelly at his most practical and motivating.</p>
+      </div>
+
+      <div class="book-card static">
+        <p class="book-card-eyebrow">Matthew Kelly</p>
+        <h3 class="book-card-title">Resisting Happiness</h3>
+        <p class="book-card-subtitle">A True Story About Why We Sabotage Ourselves</p>
+        <p class="book-card-description">An honest look at the invisible resistance that keeps us from the life God designed for us — and how to stop letting it win.</p>
+      </div>
+
+    </div>
+
+    <!-- C.S. Lewis -->
+    <p class="author-label">C.S. Lewis</p>
+    <div class="book-grid" style="margin-bottom: 2.5rem;">
+
+      <div class="book-card static">
+        <p class="book-card-eyebrow">C.S. Lewis</p>
+        <h3 class="book-card-title">Mere Christianity</h3>
+        <p class="book-card-subtitle">The Intellectual Case for the Faith</p>
+        <p class="book-card-description">The book that has brought more skeptics to faith than almost any other. Lewis builds the case for Christianity from first principles, with no assumption that you're already a believer.</p>
+      </div>
+
+      <div class="book-card static">
+        <p class="book-card-eyebrow">C.S. Lewis</p>
+        <h3 class="book-card-title">The Screwtape Letters</h3>
+        <p class="book-card-subtitle">Letters from a Senior Tempter</p>
+        <p class="book-card-description">A senior demon writes to his nephew on the art of corrupting a human soul. Funny, unsettling, and one of the sharpest portraits of spiritual warfare ever written.</p>
+      </div>
+
+      <div class="book-card static">
+        <p class="book-card-eyebrow">C.S. Lewis</p>
+        <h3 class="book-card-title">The Problem of Pain</h3>
+        <p class="book-card-subtitle">Why a Good God Allows Suffering</p>
+        <p class="book-card-description">The hardest question in Christianity, answered with intellectual honesty and no easy comfort. If you've ever asked why God lets it hurt, start here.</p>
+      </div>
+
+    </div>
+
+    <!-- Max Lucado -->
+    <p class="author-label">Max Lucado</p>
+    <div class="book-grid">
+
+      <div class="book-card static">
+        <p class="book-card-eyebrow">Max Lucado</p>
+        <h3 class="book-card-title">Unshakable Hope</h3>
+        <p class="book-card-subtitle">Building Our Lives on the Promises of God</p>
+        <p class="book-card-description">Twelve promises from scripture that hold when everything else gives way. Lucado at his warmest — written for anyone who needs something solid to stand on.</p>
+      </div>
+
+      <div class="book-card static">
+        <p class="book-card-eyebrow">Max Lucado</p>
+        <h3 class="book-card-title">Anxious for Nothing</h3>
+        <p class="book-card-subtitle">Finding Calm in a Chaotic World</p>
+        <p class="book-card-description">Built on Philippians 4, this book walks through what it actually means to hand your anxiety to God — and what to do when you've handed it over and it comes back.</p>
+      </div>
+
+      <div class="book-card static">
+        <p class="book-card-eyebrow">Max Lucado</p>
+        <h3 class="book-card-title">You Are Never Alone</h3>
+        <p class="book-card-subtitle">Trust in the Miracle of God's Presence and Power</p>
+        <p class="book-card-description">A reminder that the miracles of the Gospels weren't just history — they were a portrait of a God who still shows up for his people in the middle of real life.</p>
+      </div>
 
     </div>
   </div>
