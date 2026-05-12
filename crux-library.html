@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX Library</title>
+<meta name="description" content="Books and written works from the CRUX faith formation platform.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --navy-deep: #0f1222;
+  --navy-light: #252b47;
+  --gold: #d4a574;
+  --gold-light: #e8c99a;
+  --cream: #faf8f4;
+  --white: #ffffff;
+  --text-primary: #1a1f36;
+  --text-secondary: #5a6080;
+  --text-muted-dark: rgba(255,255,255,0.45);
+  --text-soft: rgba(255,255,255,0.7);
+  --border-gold: rgba(212,165,116,0.2);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: var(--navy-deep);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.6;
+}
+
+/* NAV */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 1rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(15,18,34,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: 5px;
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.nav-back {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--text-muted-dark);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-back:hover { color: var(--gold); }
+
+/* HERO */
+.hero {
+  padding: 7rem 2rem 4rem;
+  text-align: center;
+  position: relative;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 700px; height: 500px;
+  background: radial-gradient(ellipse, rgba(212,165,116,0.07) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.8rem, 7vw, 5rem);
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.05;
+  margin-bottom: 1rem;
+}
+
+.hero-description {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.2rem;
+  color: var(--text-soft);
+  line-height: 1.8;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+/* LIBRARY BODY */
+.library-body {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 4rem 2rem 8rem;
+}
+
+/* SHELF */
+.shelf {
+  margin-bottom: 5rem;
+}
+
+.shelf-header {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid var(--border-gold);
+}
+
+.shelf-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.shelf-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.shelf-subtitle {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--text-muted-dark);
+  margin-left: auto;
+}
+
+/* BOOK GRID */
+.book-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.5rem;
+}
+
+/* BOOK CARD */
+.book-card {
+  background: var(--navy-light);
+  border: 1px solid var(--border-gold);
+  border-radius: 10px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  text-decoration: none;
+}
+
+.book-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.3);
+  border-color: rgba(212,165,116,0.45);
+}
+
+.book-card-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+.book-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.15;
+}
+
+.book-card-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.95rem;
+  color: var(--gold);
+  line-height: 1.45;
+}
+
+.book-card-description {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.05rem;
+  color: var(--text-soft);
+  line-height: 1.7;
+  flex: 1;
+}
+
+.book-card-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-top: 0.5rem;
+}
+
+.book-card-cta::after {
+  content: '→';
+  transition: transform 0.2s;
+}
+
+.book-card:hover .book-card-cta::after {
+  transform: translateX(4px);
+}
+
+/* COMING SOON CARD */
+.book-card.coming-soon {
+  opacity: 0.45;
+  pointer-events: none;
+}
+
+.book-card.coming-soon .book-card-cta { display: none; }
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.hero { animation: fadeUp 0.6s ease both; }
+.shelf { animation: fadeUp 0.6s ease 0.15s both; }
+
+@media (max-width: 640px) {
+  .site-nav { padding: 1rem 1.25rem; }
+  .library-body { padding: 3rem 1.25rem 6rem; }
+  .shelf-header { flex-wrap: wrap; }
+  .shelf-subtitle { margin-left: 0; }
+  .book-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">CRUX</a>
+  <a href="index.html" class="nav-back">← Back to CRUX</a>
+</nav>
+
+<section class="hero">
+  <p class="hero-eyebrow">Reading · Formation · Faith</p>
+  <h1 class="hero-title">The Library</h1>
+  <p class="hero-description">Books written to help you think more clearly about the faith, the doubts, and the God who is already running toward you.</p>
+</section>
+
+<div class="library-body">
+
+  <!-- ANDREW'S SHELF -->
+  <div class="shelf">
+    <div class="shelf-header">
+      <span class="shelf-label">Written by</span>
+      <h2 class="shelf-title">Andrew Cross</h2>
+      <span class="shelf-subtitle">Founder of CRUX</span>
+    </div>
+    <div class="book-grid">
+
+      <a href="he_was_already_running.html" class="book-card">
+        <p class="book-card-eyebrow">Book &middot; Scripture &middot; Memoir</p>
+        <h3 class="book-card-title">He Was Already Running</h3>
+        <p class="book-card-subtitle">What the Prodigal Son Got Wrong About Coming Home</p>
+        <p class="book-card-description">A walk through Luke 15 and the story of one man's return to faith. About what you expect to find when you turn around, and what is actually waiting there instead.</p>
+        <span class="book-card-cta">Read Now</span>
+      </a>
+
+      <a href="he_knows_your_name.html" class="book-card">
+        <p class="book-card-eyebrow">Book &middot; Apologetics &middot; Memoir</p>
+        <h3 class="book-card-title">He Knows Your Name</h3>
+        <p class="book-card-subtitle">What I Know About God, Doubt, and Why It's Worth Fighting For</p>
+        <p class="book-card-description">For anyone who wants to believe but needs more than inherited faith. A case for Christianity built from scripture, history, and one man's honest search for the truth.</p>
+        <span class="book-card-cta">Read Now</span>
+      </a>
+
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
