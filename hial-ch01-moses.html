@@ -288,6 +288,49 @@ body {
 .story-body p { margin-bottom: 1.1em; }
 .story-body p:last-child { margin-bottom: 0; }
 
+/* MID-STORY ILLUSTRATION */
+.story-illustration {
+  margin: 1.75rem -2.5rem;
+  width: calc(100% + 5rem);
+  aspect-ratio: 16 / 7;
+  background: linear-gradient(135deg, #f0e0c0 0%, #ddc8a0 50%, #c8b080 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+.story-illustration img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* HERE I AM ILLUSTRATION */
+.hiam-illustration {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  background: linear-gradient(135deg, #b8d8b0 0%, #98c088 50%, #78a868 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.hiam-illustration img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
 /* ================================================
    FULL-BLEED SECTIONS
    ================================================ */
@@ -555,6 +598,7 @@ body {
   .reading-body { padding: 2rem 1.25rem 0; gap: 1.25rem; }
   .reading-body-bottom { padding: 2rem 1.25rem 2rem; gap: 1.25rem; }
   .content-section { padding: 1.75rem 1.5rem; }
+  .story-illustration { margin: 1.5rem -1.5rem; width: calc(100% + 3rem); }
   .bleed-section { padding: 3rem 1.25rem; }
   .section-verse { padding: 2rem 1.5rem; }
   .chapter-nav { padding: 2rem 1.25rem 3rem; }
@@ -609,6 +653,15 @@ body {
       "I can't speak well." God answered: I'll give you words.<br>
       "Please, just send someone else." God answered: I'm sending you.</p>
       <p>Then Moses ran out of excuses. He went.</p>
+
+      <div class="story-illustration">
+        <!-- When ready: <img src="images/hial/ch01-moses-pharaoh.jpg" alt="Moses before Pharaoh"> -->
+        <div class="illus-placeholder">
+          <span>&#9651;</span>
+          Illustration &middot; Moses Before Pharaoh
+        </div>
+      </div>
+
       <p>What followed was one of the most dramatic showdowns in history. Moses stood before Pharaoh again and again and said, "Let my people go." Pharaoh said no. Then God sent ten plagues on Egypt, one after another, each one more severe than the last, until Pharaoh finally agreed. When he changed his mind and sent his army after the Israelites, Moses stretched his staff over the Red Sea. The water split. Two million people walked through on dry ground. And when the Egyptian army followed, the water came back.</p>
       <p>Moses led his people through the desert for forty years. At one point, he got so frustrated that he disobeyed a direct instruction from God, and because of that, God told him he would never enter the Promised Land himself. Moses led a nation to the edge of everything they had hoped for, then handed the work to someone else. He never walked through the door he helped build.</p>
     </div>
@@ -651,6 +704,15 @@ body {
   <div class="bleed-inner">
     <div class="section-label">Here I Am Moment</div>
     <p class="here-i-am-lead">God doesn't call the equipped.<br>He calls the willing.</p>
+
+    <div class="hiam-illustration">
+      <!-- When ready: <img src="images/hial/ch01-moses-hiam.jpg" alt="..."> -->
+      <div class="illus-placeholder">
+        <span>&#9651;</span>
+        Illustration &middot; Here I Am Moment
+      </div>
+    </div>
+
     <div class="here-i-am-body">
       <p>Moses' excuses were real. His fear was real. His feeling of not being enough was completely real. But God's answer to every single one of those feelings was the same thing: "I will be with you."</p>
       <p>Whatever you feel like you can't do, that is not the last word. Moses felt exactly the same way, standing in front of a burning bush with no idea what came next. And then he went anyway. And the world was never the same.</p>
