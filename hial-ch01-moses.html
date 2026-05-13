@@ -241,7 +241,7 @@ body {
   height: 1px;
 }
 
-/* CONTAINED SECTIONS — Hook, Story */
+/* CONTAINED SECTIONS */
 .content-section {
   border-radius: 10px;
   padding: 2.25rem 2.5rem;
@@ -259,14 +259,22 @@ body {
 
 .hook-body {
   font-family: 'Crimson Pro', serif;
-  font-size: 1.25rem;
+  font-size: 1.2rem;
   line-height: 1.85;
   color: var(--text-dark);
 }
 
 .hook-body p { margin-bottom: 1.1em; }
 .hook-body p:last-child { margin-bottom: 0; }
-.hook-body p:first-child { font-size: 1.55rem; font-weight: 600; line-height: 1.5; }
+
+.hook-opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1.3;
+  margin-bottom: 1.1em;
+}
 
 /* THE STORY */
 .section-story {
@@ -309,26 +317,55 @@ body {
   display: block;
 }
 
-/* HERE I AM ILLUSTRATION */
-.hiam-illustration {
-  width: 100%;
-  aspect-ratio: 16 / 7;
-  background: linear-gradient(135deg, #b8d8b0 0%, #98c088 50%, #78a868 100%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column;
-  gap: 0.5rem;
-  border-radius: 8px;
-  overflow: hidden;
-  margin-bottom: 2rem;
+/* PLAGUES */
+.story-subhead {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin: 2rem 0 1.1rem;
 }
 
-.hiam-illustration img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
+.plagues-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.plagues-list li {
+  display: flex;
+  gap: 0.9rem;
+  align-items: baseline;
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  color: var(--text-dark);
+}
+
+.plague-num {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1rem;
+  color: var(--gold);
+  flex-shrink: 0;
+  min-width: 1.4rem;
+}
+
+.plague-divider {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-soft);
+  margin: 0.75rem 0;
+  padding-top: 0.75rem;
+  border-top: 1px dashed var(--border-warm);
 }
 
 /* ================================================
@@ -345,9 +382,7 @@ body {
   margin: 0 auto;
 }
 
-/* Bleed section labels inherit .section-label with color overrides */
-
-/* THE TURNING POINT — warm amber band */
+/* THE TURNING POINT — warm amber */
 .section-turning {
   background: #f0d890;
   border-top: 1px solid rgba(180, 120, 42, 0.18);
@@ -365,6 +400,9 @@ body {
   color: var(--text-dark);
   margin-bottom: 2.5rem;
 }
+
+.turning-prose p { margin-bottom: 1.1em; }
+.turning-prose p:last-child { margin-bottom: 0; }
 
 .turning-climax {
   text-align: center;
@@ -399,7 +437,7 @@ body {
   letter-spacing: -0.5px;
 }
 
-/* WHAT HAPPENED NEXT — warm parchment band */
+/* WHAT HAPPENED NEXT — warm parchment */
 .section-next {
   background: var(--parchment);
   border-top: 1px solid rgba(160, 120, 60, 0.15);
@@ -410,31 +448,15 @@ body {
 .section-next .section-label::before,
 .section-next .section-label::after { background: rgba(138, 106, 80, 0.2); }
 
-.outcome-list {
-  border-left: 3px solid rgba(150, 110, 50, 0.3);
-  padding-left: 1.5rem;
-  margin-bottom: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.45rem;
-}
-
-.outcome-item {
+.next-body {
   font-family: 'Crimson Pro', serif;
   font-style: italic;
   font-size: 1.2rem;
+  line-height: 1.85;
   color: var(--text-medium);
-  line-height: 1.5;
 }
 
-.outcome-close {
-  font-family: 'Crimson Pro', serif;
-  font-size: 1.15rem;
-  line-height: 1.8;
-  color: var(--text-dark);
-}
-
-/* HERE I AM MOMENT — sage green band */
+/* HERE I AM MOMENT — sage green */
 .section-here-i-am {
   background: var(--sage-mid);
   border-top: 1px solid rgba(90, 138, 82, 0.18);
@@ -455,6 +477,28 @@ body {
   margin-bottom: 2rem;
   padding-bottom: 1.75rem;
   border-bottom: 1px solid rgba(74, 122, 66, 0.22);
+}
+
+/* HERE I AM ILLUSTRATION */
+.hiam-illustration {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  background: linear-gradient(135deg, #b8d8b0 0%, #98c088 50%, #78a868 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.hiam-illustration img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 .here-i-am-body {
@@ -622,37 +666,54 @@ body {
   <span class="chapter-trait">Reluctant Courage</span>
 </div>
 
-<!-- ILLUSTRATION -->
+<!-- HEADER ILLUSTRATION -->
 <div class="chapter-illustration">
-  <!-- When ready: <img src="images/hial/ch01-moses.jpg" alt="Moses at the burning bush"> -->
+  <!-- When ready: <img src="images/hial/ch01-moses-bush.jpg" alt="Moses at the burning bush"> -->
   <div class="illus-placeholder">
     <span>&#9651;</span>
     Illustration &middot; Moses at the Burning Bush
   </div>
 </div>
 
-<!-- HOOK + STORY — contained reading column -->
+<!-- HOOK + STORY -->
 <div class="reading-body">
 
+  <!-- THE HOOK -->
   <div class="content-section section-hook">
     <div class="section-label">The Hook</div>
     <div class="hook-body">
-      <p>The bush was on fire, but it wasn't burning up.</p>
-      <p>Moses had been a shepherd for forty years. He knew what fire looked like, what it did to dry brush in the middle of a desert summer. But this fire was different. The branches still had their leaves. The flames were alive and they weren't eating anything.</p>
-      <p>He walked closer. That was probably his first mistake. Or maybe his best one.</p>
+      <p class="hook-opener">"Fire!! Fire! Somebody get a bucket!"</p>
+      <p>Moses was no dummy. He had been a shepherd for forty years. He knew what a brush fire looked like, especially dry brush in the middle of the desert. If you have ever had to start a bonfire, you know that dry brush is typically used to get the bigger fire started. Trust me on this one, I have plucked enough branches from the bushes in my yard to start fires. Brush works great.</p>
+      <p>The problem here was, the bush was on fire but the fire wasn't burning it up. In fact, the bush still had leaves shimmering with that glow of flames.</p>
+      <p>Moses decided to walk up and check this out for himself. That was probably his first mistake, or the best mistake he ever made.</p>
     </div>
   </div>
 
+  <!-- THE STORY -->
   <div class="content-section section-story">
     <div class="section-label">The Story</div>
     <div class="story-body">
-      <p>Moses' story starts before he was born. The king of Egypt had issued an order: kill every Hebrew baby boy. His mother didn't obey. She built a small basket, waterproofed it with tar and pitch, and placed her son in the Nile River, trusting God to take it from there. Pharaoh's own daughter found the baby floating in the reeds. She named him Moses and raised him as a prince of Egypt.</p>
-      <p>Decades later, Moses was hiding from his past in the wilderness when God showed up in that burning bush. God gave Moses the most important mission in Israelite history: go back to Egypt, face the most powerful ruler in the world, and set the Hebrew people free. Moses had five answers ready. None of them were yes.</p>
-      <p>"I'm nobody." God answered: I will be with you.<br>
-      "They won't believe me." God answered: I'll give you signs.<br>
-      "I can't speak well." God answered: I'll give you words.<br>
-      "Please, just send someone else." God answered: I'm sending you.</p>
-      <p>Then Moses ran out of excuses. He went.</p>
+
+      <p>We've all heard the name Moses before but do you really know his story?</p>
+
+      <p>Moses' story starts before he was even born. Around the time of his birth, the king of Egypt (called a Pharaoh) issued an order: every Hebrew baby boy must be put to death. Why? Because he feared the Hebrews and believed that if enough of them grew up to become strong men like their fathers, they'd fight the Egyptians and demand their freedom. Keep in mind, all of the Israelites were still slaves to the Egyptians at this point.</p>
+
+      <p>Moses' mother did the only thing she could think of to save her son. She built a small basket, waterproofed it with tar and pitch, and placed her son in the Nile River, trusting that God would help him find a new home. A safer one. Think of it kind of like leaving a baby outside a fire station, except there was no such fire station available in ancient Egypt, so his mother did what she could.</p>
+
+      <p>Who found this baby floating along in the river, you ask? None other than the daughter of the Pharaoh who had ordered the killings in the first place. Uh oh. Not good.</p>
+
+      <p>But instead of handing him over to be killed, she took him in as her own. She saw a helpless baby and thought of nothing other than giving him a home, so she raised him as a prince of Egypt (not a bad step-up from almost being murdered).</p>
+
+      <p>Decades later, we find Moses hiding away in the wilderness after standing up for a Hebrew slave. This time, Pharaoh really was going to have him killed, so he fled. And out in the wilderness is where he came face to face with that burning bush. God spoke to him through it and gave him the most important mission of his life: return to Egypt, face Pharaoh, and set the Hebrews free. Moses already had a pocketful of excuses ready. God didn't care.</p>
+
+      <p>
+        "I'm nobody, just a runaway slave myself." &nbsp; God answered: I will be with you.<br>
+        "Who will believe anything I have to say?" &nbsp; God answered: I'll give them signs.<br>
+        "I'm really not a very good public speaker." &nbsp; God answered: I'll write the script for you.<br>
+        "Please, there has to be someone better for this." &nbsp; God answered: I chose YOU.
+      </p>
+
+      <p>So, out of excuses and with a burning bush talking to him, he went.</p>
 
       <div class="story-illustration">
         <!-- When ready: <img src="images/hial/ch01-moses-pharaoh.jpg" alt="Moses before Pharaoh"> -->
@@ -662,8 +723,40 @@ body {
         </div>
       </div>
 
-      <p>What followed was one of the most dramatic showdowns in history. Moses stood before Pharaoh again and again and said, "Let my people go." Pharaoh said no. Then God sent ten plagues on Egypt, one after another, each one more severe than the last, until Pharaoh finally agreed. When he changed his mind and sent his army after the Israelites, Moses stretched his staff over the Red Sea. The water split. Two million people walked through on dry ground. And when the Egyptian army followed, the water came back.</p>
-      <p>Moses led his people through the desert for forty years. At one point, he got so frustrated that he disobeyed a direct instruction from God, and because of that, God told him he would never enter the Promised Land himself. Moses led a nation to the edge of everything they had hoped for, then handed the work to someone else. He never walked through the door he helped build.</p>
+      <p>What followed was a showdown for the ages. Moses returned to the same Pharaoh who had just earlier ordered him to be killed and said, "Let my people go." Pharaoh said, "I don't think I will. Scram." Moses promised it wasn't the last he'd hear from him.</p>
+
+      <p>Then came the signs that God had promised, and these weren't as simple as burning bushes.</p>
+
+      <p class="story-subhead">The Ten Plagues</p>
+
+      <ol class="plagues-list">
+        <li><span class="plague-num">1.</span><span><strong>Blood water.</strong> First, the entire Nile River (the one baby Moses floated along many years before) turned to blood. No one could drink from it!</span></li>
+        <li><span class="plague-num">2.</span><span><strong>Frogs.</strong> Yes, frogs. So many that they overran the land, invading homes, beds, and kitchens. Ribbit!</span></li>
+        <li><span class="plague-num">3.</span><span><strong>Tiny bugs.</strong> If you thought frogs were bad, the dust itself turned into swarms of lice and gnats — the kind that get in your hair and itch for days.</span></li>
+        <li><span class="plague-num">4.</span><span><strong>Flies.</strong> More bugs infesting Egypt. Not only gross but bad for crops and livestock.</span></li>
+        <li><span class="plague-num">5.</span><span><strong>Sick animals.</strong> All the farm animals in Egypt became extremely sick. Some died.</span></li>
+      </ol>
+
+      <p class="plague-divider">That was the easy part. Now come the bad ones.</p>
+
+      <ol class="plagues-list" start="6">
+        <li><span class="plague-num">6.</span><span><strong>Boils.</strong> Now things go from bad to worse. Painful sores broke out all over people's skin, and there was no cure.</span></li>
+        <li><span class="plague-num">7.</span><span><strong>Devastating hail.</strong> A massive storm unlike anything the world had ever seen. Giant hailstones mixed with fire, destroying crops and anything left outside.</span></li>
+        <li><span class="plague-num">8.</span><span><strong>Locusts.</strong> More bugs! Sweet. This time in the millions, sweeping in like a living storm cloud to eat up every last crop that wasn't already demolished by the hail.</span></li>
+        <li><span class="plague-num">9.</span><span><strong>Three days of total darkness.</strong> A deep, unnatural darkness covered all of Egypt for three days straight. Meanwhile, the Hebrew villages still had light.</span></li>
+        <li><span class="plague-num">10.</span><span><strong>Death of the firstborn.</strong> The straw that broke the camel's back. The oldest child of Pharaoh dies overnight. It was this plague that finally convinced Pharaoh that this was more than coincidence. It was the Hebrew God sending him a message he could no longer ignore. Let my people go.</span></li>
+      </ol>
+
+      <p>So Pharaoh finally did what Moses asked. He let the Hebrew slaves go. Or at least, he did at first.</p>
+
+      <p>Soon after releasing the Hebrews as the plagues subsided, Pharaoh changed his mind. (loser!!) He sent his entire army after the fleeing Israelites to bring his slaves back. God had something else in mind.</p>
+
+      <p>As the Egyptian army chased after Moses and his people, God gave him one more miracle. With a wave of his staff, the Red Sea parted in two, and Moses and his people walked straight through. The Egyptian army, not understanding that God opened this door for the Hebrews and not for them, pursued them into the sea. Then God closed the door and swept them away.</p>
+
+      <p>Moses went on to lead these people he had saved from captivity for forty years. Along the way, he climbed a mountain and came back down with the Ten Commandments. You have probably heard of those. Unfortunately for Moses, that long journey ended in the desert. He never reached the Promised Land himself. Why? Because after so many years of obeying God, he finally chose to disobey, and for that he was punished. He would never see the land God had carved out for his people.</p>
+
+      <p>He never got to walk through the door he spent forty years building. Millions of people did though. Not a bad legacy for a shepherd who just wanted to be left alone.</p>
+
     </div>
   </div>
 
@@ -674,7 +767,9 @@ body {
   <div class="bleed-inner">
     <div class="section-label">The Turning Point</div>
     <div class="turning-prose">
-      <p>Moses reached the end of his excuses at the burning bush. He had made five of them, one right after another, and God had answered every single one with patience.</p>
+      <p>Moses tried everything he could to get out of the task God had set out for him. God didn't get mad. He didn't roll his eyes. He just patiently kept saying the same thing: no, Moses. It has to be you.</p>
+      <p>I know that feeling. Not the burning bush part, but the "somebody is asking me to do something I really don't want to do" part. My mom became the Director of Religious Education at a church about twenty minutes from my house. I had a church a five-minute walk away. She asked me to come teach CCD for her program. I went because she asked, and she needed someone she could trust.</p>
+      <p>Moses walked back toward Egypt terrified. He had every reason to be. The Pharaoh who already wanted him dead was still sitting on the throne. But fear doesn't disqualify you. It never has. God didn't ask Moses to stop being afraid. He asked Moses to go anyway. How we respond to that fear is what measures us in God's eyes.</p>
     </div>
     <div class="turning-climax">
       <p class="turning-quote">"Please, Lord. Just send someone else."</p>
@@ -688,14 +783,7 @@ body {
 <section class="bleed-section section-next">
   <div class="bleed-inner">
     <div class="section-label">What Happened Next</div>
-    <div class="outcome-list">
-      <p class="outcome-item">The ten plagues on Egypt.</p>
-      <p class="outcome-item">The parting of the Red Sea.</p>
-      <p class="outcome-item">Millions of people walking out of slavery for the first time in generations.</p>
-      <p class="outcome-item">Forty years leading a nation through the wilderness.</p>
-      <p class="outcome-item">The Ten Commandments, received on a mountain while thunder shook the ground.</p>
-    </div>
-    <p class="outcome-close">Moses became one of the most important figures in all of human history. He started that story by telling God he wasn't the right person for the job.</p>
+    <p class="next-body">Moses never entered the Promised Land. But the nation he helped build, the laws he carried down from that mountain, and the God he introduced to two million freed slaves are still shaping the world today.</p>
   </div>
 </section>
 
@@ -703,10 +791,10 @@ body {
 <section class="bleed-section section-here-i-am">
   <div class="bleed-inner">
     <div class="section-label">Here I Am Moment</div>
-    <p class="here-i-am-lead">God doesn't call the equipped.<br>He calls the willing.</p>
+    <p class="here-i-am-lead">God doesn't always call us when we're ready.<br>He calls when He needs us, and walks with us the rest of the way.</p>
 
     <div class="hiam-illustration">
-      <!-- When ready: <img src="images/hial/ch01-moses-hiam.jpg" alt="..."> -->
+      <!-- When ready: <img src="images/hial/ch01-moses-hiam.jpg" alt="A child choosing courage"> -->
       <div class="illus-placeholder">
         <span>&#9651;</span>
         Illustration &middot; Here I Am Moment
@@ -714,13 +802,14 @@ body {
     </div>
 
     <div class="here-i-am-body">
-      <p>Moses' excuses were real. His fear was real. His feeling of not being enough was completely real. But God's answer to every single one of those feelings was the same thing: "I will be with you."</p>
-      <p>Whatever you feel like you can't do, that is not the last word. Moses felt exactly the same way, standing in front of a burning bush with no idea what came next. And then he went anyway. And the world was never the same.</p>
+      <p>Moses felt every fear you have probably felt — fear of rejection, of failure, of standing in front of someone powerful and hearing them say no. The Pharaoh didn't just have the power to reject Moses. He had the power to have him killed. Moses said yes anyway. For man, that kind of courage can seem impossible. With God's help, nothing is.</p>
+      <p>If you are looking for bravery, look no farther than the Cross. That is where God showed us what it looks like to face the most terrifying thing imaginable and keep walking toward it. Moses had a burning bush to light his path. You have something greater.</p>
+      <p>The next time you feel like you don't have what it takes — whether it's trying out for something, standing up for someone, or facing something that genuinely scares you — pray. Tell God you're afraid. Ask Him to walk with you. That is all Moses did, standing in front of a bush that was on fire but not burning, with no idea what came next. God showed up for him. He will show up for you too. All you have to do is ask.</p>
     </div>
   </div>
 </section>
 
-<!-- DIG DEEPER + VERSE — contained reading column -->
+<!-- DIG DEEPER + VERSE -->
 <div class="reading-body-bottom">
 
   <div class="section-dig-deeper">
