@@ -17,13 +17,12 @@
   --cream-deep: #f5edd8;
   --parchment: #ede4cf;
   --navy: #1a1f36;
-  --navy-light: #2d3558;
   --gold: #b8782a;
   --gold-mid: #c89040;
   --gold-light: #deb870;
   --gold-pale: #f5e8c0;
-  --sage: #5a8a52;
-  --sage-pale: #ecf5e8;
+  --sage: #4a7a42;
+  --sage-mid: #d8eccc;
   --blue-pale: #e6eff8;
   --blue-mid: #5a7aaa;
   --text-dark: #2d1f0e;
@@ -162,13 +161,12 @@ body {
   color: var(--gold);
 }
 
-/* ILLUSTRATION AREA */
+/* ILLUSTRATION */
 .chapter-illustration {
   max-width: 800px;
-  margin: 0 auto 0;
+  margin: 0 auto;
   aspect-ratio: 16 / 6;
   background: linear-gradient(135deg, #f0e0c0 0%, #ddc8a0 50%, #c8b080 100%);
-  border-radius: 0;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -203,23 +201,27 @@ body {
   opacity: 0.4;
 }
 
-/* READING BODY */
+/* READING BODY — contained column for Hook and Story */
 .reading-body {
   max-width: 740px;
   margin: 0 auto;
-  padding: 3rem 2rem 6rem;
+  padding: 3rem 2rem 0;
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-/* SECTION BASE */
-.content-section {
-  border-radius: 10px;
-  padding: 2.25rem 2.5rem;
+/* Second reading body — for Dig Deeper and Verse */
+.reading-body-bottom {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 3rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
 }
 
-/* SECTION LABELS */
+/* SECTION LABELS — shared */
 .section-label {
   display: flex;
   align-items: center;
@@ -229,7 +231,7 @@ body {
   font-weight: 700;
   letter-spacing: 4px;
   text-transform: uppercase;
-  margin-bottom: 1.25rem;
+  margin-bottom: 1.5rem;
 }
 
 .section-label::before,
@@ -239,19 +241,21 @@ body {
   height: 1px;
 }
 
+/* CONTAINED SECTIONS — Hook, Story */
+.content-section {
+  border-radius: 10px;
+  padding: 2.25rem 2.5rem;
+}
+
 /* THE HOOK */
 .section-hook {
   background: #fef7e2;
   border-left: 4px solid var(--gold);
 }
 
-.section-hook .section-label {
-  color: var(--gold);
-}
+.section-hook .section-label { color: var(--gold); }
 .section-hook .section-label::before,
-.section-hook .section-label::after {
-  background: rgba(184, 120, 42, 0.2);
-}
+.section-hook .section-label::after { background: rgba(184, 120, 42, 0.2); }
 
 .hook-body {
   font-family: 'Crimson Pro', serif;
@@ -262,12 +266,7 @@ body {
 
 .hook-body p { margin-bottom: 1.1em; }
 .hook-body p:last-child { margin-bottom: 0; }
-
-.hook-body p:first-child {
-  font-size: 1.55rem;
-  font-weight: 600;
-  line-height: 1.5;
-}
+.hook-body p:first-child { font-size: 1.55rem; font-weight: 600; line-height: 1.5; }
 
 /* THE STORY */
 .section-story {
@@ -275,13 +274,9 @@ body {
   border: 1px solid var(--border-warm);
 }
 
-.section-story .section-label {
-  color: var(--gold);
-}
+.section-story .section-label { color: var(--gold); }
 .section-story .section-label::before,
-.section-story .section-label::after {
-  background: rgba(184, 120, 42, 0.15);
-}
+.section-story .section-label::after { background: rgba(184, 120, 42, 0.15); }
 
 .story-body {
   font-family: 'Crimson Pro', serif;
@@ -293,74 +288,137 @@ body {
 .story-body p { margin-bottom: 1.1em; }
 .story-body p:last-child { margin-bottom: 0; }
 
-/* THE TURNING POINT */
+/* ================================================
+   FULL-BLEED SECTIONS
+   ================================================ */
+
+.bleed-section {
+  width: 100%;
+  padding: 4rem 2rem;
+}
+
+.bleed-inner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Bleed section labels inherit .section-label with color overrides */
+
+/* THE TURNING POINT — warm amber band */
 .section-turning {
-  background: #fdecc8;
-  border-left: 4px solid var(--gold-mid);
+  background: #f0d890;
+  border-top: 1px solid rgba(180, 120, 42, 0.18);
+  border-bottom: 1px solid rgba(180, 120, 42, 0.18);
 }
 
-.section-turning .section-label {
-  color: #9a6020;
-}
+.section-turning .section-label { color: #7a5010; }
 .section-turning .section-label::before,
-.section-turning .section-label::after {
-  background: rgba(154, 96, 32, 0.2);
-}
+.section-turning .section-label::after { background: rgba(122, 80, 16, 0.2); }
 
-.turning-body {
+.turning-prose {
   font-family: 'Crimson Pro', serif;
   font-size: 1.15rem;
   line-height: 1.85;
   color: var(--text-dark);
+  margin-bottom: 2.5rem;
 }
 
-.turning-body p { margin-bottom: 1em; }
-.turning-body p:last-child { margin-bottom: 0; }
-
-/* WHAT HAPPENED NEXT */
-.section-next {
-  background: var(--cream-deep);
-  border: 1px solid rgba(180, 120, 42, 0.12);
+.turning-climax {
+  text-align: center;
+  padding: 2rem 1rem;
+  border-top: 1px solid rgba(160, 100, 20, 0.22);
+  border-bottom: 1px solid rgba(160, 100, 20, 0.22);
 }
 
-.section-next .section-label {
-  color: var(--text-soft);
-}
-.section-next .section-label::before,
-.section-next .section-label::after {
-  background: rgba(138, 106, 80, 0.2);
-}
-
-.next-body {
-  font-family: 'Crimson Pro', serif;
-  font-size: 1.1rem;
-  line-height: 1.8;
-  color: var(--text-medium);
+.turning-quote {
+  font-family: 'Playfair Display', serif;
   font-style: italic;
+  font-size: 1.5rem;
+  color: #7a5010;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
 }
 
-.next-body p { margin-bottom: 1em; }
-.next-body p:last-child { margin-bottom: 0; }
+.turning-response {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--text-medium);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
 
-/* HERE I AM MOMENT */
+.turning-final {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(2.2rem, 6vw, 3.2rem);
+  color: var(--navy);
+  letter-spacing: -0.5px;
+}
+
+/* WHAT HAPPENED NEXT — warm parchment band */
+.section-next {
+  background: var(--parchment);
+  border-top: 1px solid rgba(160, 120, 60, 0.15);
+  border-bottom: 1px solid rgba(160, 120, 60, 0.15);
+}
+
+.section-next .section-label { color: var(--text-soft); }
+.section-next .section-label::before,
+.section-next .section-label::after { background: rgba(138, 106, 80, 0.2); }
+
+.outcome-list {
+  border-left: 3px solid rgba(150, 110, 50, 0.3);
+  padding-left: 1.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.outcome-item {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--text-medium);
+  line-height: 1.5;
+}
+
+.outcome-close {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.15rem;
+  line-height: 1.8;
+  color: var(--text-dark);
+}
+
+/* HERE I AM MOMENT — sage green band */
 .section-here-i-am {
-  background: var(--sage-pale);
-  border-left: 4px solid var(--sage);
+  background: var(--sage-mid);
+  border-top: 1px solid rgba(90, 138, 82, 0.18);
+  border-bottom: 1px solid rgba(90, 138, 82, 0.18);
 }
 
-.section-here-i-am .section-label {
-  color: var(--sage);
-}
+.section-here-i-am .section-label { color: var(--sage); }
 .section-here-i-am .section-label::before,
-.section-here-i-am .section-label::after {
-  background: rgba(90, 138, 82, 0.2);
+.section-here-i-am .section-label::after { background: rgba(74, 122, 66, 0.22); }
+
+.here-i-am-lead {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: #2a5a22;
+  text-align: center;
+  line-height: 1.45;
+  margin-bottom: 2rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid rgba(74, 122, 66, 0.22);
 }
 
 .here-i-am-body {
   font-family: 'Crimson Pro', serif;
   font-size: 1.15rem;
   line-height: 1.85;
-  color: var(--text-dark);
+  color: #1c3a18;
 }
 
 .here-i-am-body p { margin-bottom: 1em; }
@@ -370,15 +428,13 @@ body {
 .section-dig-deeper {
   background: var(--blue-pale);
   border-left: 4px solid var(--blue-mid);
+  border-radius: 10px;
+  padding: 2.25rem 2.5rem;
 }
 
-.section-dig-deeper .section-label {
-  color: var(--blue-mid);
-}
+.section-dig-deeper .section-label { color: var(--blue-mid); }
 .section-dig-deeper .section-label::before,
-.section-dig-deeper .section-label::after {
-  background: rgba(90, 122, 170, 0.2);
-}
+.section-dig-deeper .section-label::after { background: rgba(90, 122, 170, 0.2); }
 
 .questions {
   display: flex;
@@ -403,7 +459,7 @@ body {
   color: var(--blue-mid);
   line-height: 1;
   flex-shrink: 0;
-  opacity: 0.5;
+  opacity: 0.45;
 }
 
 .question-text {
@@ -423,14 +479,9 @@ body {
   padding: 2.5rem 3rem;
 }
 
-.section-verse .section-label {
-  color: var(--gold);
-  justify-content: center;
-}
+.section-verse .section-label { color: var(--gold); justify-content: center; }
 .section-verse .section-label::before,
-.section-verse .section-label::after {
-  background: rgba(184, 120, 42, 0.2);
-}
+.section-verse .section-label::after { background: rgba(184, 120, 42, 0.2); }
 
 .verse-text {
   font-family: 'Playfair Display', serif;
@@ -458,11 +509,10 @@ body {
 .chapter-nav {
   max-width: 740px;
   margin: 0 auto;
-  padding: 0 2rem 4rem;
+  padding: 2rem 2rem 4rem;
   display: flex;
   justify-content: space-between;
   border-top: 1px solid var(--border-warm);
-  padding-top: 2rem;
 }
 
 .chapter-nav-link {
@@ -481,7 +531,7 @@ body {
 .chapter-nav-link.disabled {
   color: var(--text-soft);
   pointer-events: none;
-  opacity: 0.4;
+  opacity: 0.35;
 }
 
 .chapter-nav-next::after { content: ' →'; }
@@ -502,8 +552,10 @@ body {
   .nav-book { display: none; }
   .chapter-hero { padding: 3rem 1.25rem 2rem; }
   .chapter-ghost { font-size: 12rem; }
-  .reading-body { padding: 2rem 1.25rem 4rem; gap: 1.25rem; }
+  .reading-body { padding: 2rem 1.25rem 0; gap: 1.25rem; }
+  .reading-body-bottom { padding: 2rem 1.25rem 2rem; gap: 1.25rem; }
   .content-section { padding: 1.75rem 1.5rem; }
+  .bleed-section { padding: 3rem 1.25rem; }
   .section-verse { padding: 2rem 1.5rem; }
   .chapter-nav { padding: 2rem 1.25rem 3rem; }
 }
@@ -528,17 +580,16 @@ body {
 
 <!-- ILLUSTRATION -->
 <div class="chapter-illustration">
-  <!-- Replace contents with: <img src="images/hial/ch01-moses.jpg" alt="Moses at the burning bush"> -->
+  <!-- When ready: <img src="images/hial/ch01-moses.jpg" alt="Moses at the burning bush"> -->
   <div class="illus-placeholder">
     <span>&#9651;</span>
-    Illustration · Moses at the Burning Bush
+    Illustration &middot; Moses at the Burning Bush
   </div>
 </div>
 
-<!-- READING BODY -->
+<!-- HOOK + STORY — contained reading column -->
 <div class="reading-body">
 
-  <!-- THE HOOK -->
   <div class="content-section section-hook">
     <div class="section-label">The Hook</div>
     <div class="hook-body">
@@ -548,7 +599,6 @@ body {
     </div>
   </div>
 
-  <!-- THE STORY -->
   <div class="content-section section-story">
     <div class="section-label">The Story</div>
     <div class="story-body">
@@ -560,40 +610,58 @@ body {
       "Please, just send someone else." God answered: I'm sending you.</p>
       <p>Then Moses ran out of excuses. He went.</p>
       <p>What followed was one of the most dramatic showdowns in history. Moses stood before Pharaoh again and again and said, "Let my people go." Pharaoh said no. Then God sent ten plagues on Egypt, one after another, each one more severe than the last, until Pharaoh finally agreed. When he changed his mind and sent his army after the Israelites, Moses stretched his staff over the Red Sea. The water split. Two million people walked through on dry ground. And when the Egyptian army followed, the water came back.</p>
-      <p>Moses led his people through the desert for forty years. It wasn't easy. At one point, Moses got so frustrated that he disobeyed a direct instruction from God, and because of that, God told him he would never enter the Promised Land himself. Moses led a nation to the edge of everything they had hoped for, then handed the work to someone else. He never walked through the door he helped build.</p>
+      <p>Moses led his people through the desert for forty years. At one point, he got so frustrated that he disobeyed a direct instruction from God, and because of that, God told him he would never enter the Promised Land himself. Moses led a nation to the edge of everything they had hoped for, then handed the work to someone else. He never walked through the door he helped build.</p>
     </div>
   </div>
 
-  <!-- THE TURNING POINT -->
-  <div class="content-section section-turning">
+</div>
+
+<!-- THE TURNING POINT — full-bleed amber -->
+<section class="bleed-section section-turning">
+  <div class="bleed-inner">
     <div class="section-label">The Turning Point</div>
-    <div class="turning-body">
-      <p>Moses reached the end of his excuses at the burning bush. He had made five of them, one right after another, and God had answered every single one with patience. Then Moses said the most honest thing he could think of: "Please, Lord. Just send someone else."</p>
-      <p>God didn't argue. He didn't shame him. He just said: "I will be with you. That's the answer to every excuse you have."</p>
-      <p>Moses went.</p>
+    <div class="turning-prose">
+      <p>Moses reached the end of his excuses at the burning bush. He had made five of them, one right after another, and God had answered every single one with patience.</p>
+    </div>
+    <div class="turning-climax">
+      <p class="turning-quote">"Please, Lord. Just send someone else."</p>
+      <p class="turning-response">God didn't argue. He didn't shame him.<br>He just said: "I will be with you."</p>
+      <p class="turning-final">Moses went.</p>
     </div>
   </div>
+</section>
 
-  <!-- WHAT HAPPENED NEXT -->
-  <div class="content-section section-next">
+<!-- WHAT HAPPENED NEXT — full-bleed parchment -->
+<section class="bleed-section section-next">
+  <div class="bleed-inner">
     <div class="section-label">What Happened Next</div>
-    <div class="next-body">
-      <p>The ten plagues. The parting of the Red Sea. Millions of people walking out of slavery for the first time in generations. Forty years of leading a nation through the wilderness. The Ten Commandments, received on a mountain while thunder shook the ground. Moses became one of the most important figures in all of human history, and he began that story by telling God he wasn't the right person for the job.</p>
+    <div class="outcome-list">
+      <p class="outcome-item">The ten plagues on Egypt.</p>
+      <p class="outcome-item">The parting of the Red Sea.</p>
+      <p class="outcome-item">Millions of people walking out of slavery for the first time in generations.</p>
+      <p class="outcome-item">Forty years leading a nation through the wilderness.</p>
+      <p class="outcome-item">The Ten Commandments, received on a mountain while thunder shook the ground.</p>
     </div>
+    <p class="outcome-close">Moses became one of the most important figures in all of human history. He started that story by telling God he wasn't the right person for the job.</p>
   </div>
+</section>
 
-  <!-- HERE I AM MOMENT -->
-  <div class="content-section section-here-i-am">
+<!-- HERE I AM MOMENT — full-bleed sage -->
+<section class="bleed-section section-here-i-am">
+  <div class="bleed-inner">
     <div class="section-label">Here I Am Moment</div>
+    <p class="here-i-am-lead">God doesn't call the equipped.<br>He calls the willing.</p>
     <div class="here-i-am-body">
-      <p>God doesn't call the equipped. He calls the willing, and then equips them along the way.</p>
       <p>Moses' excuses were real. His fear was real. His feeling of not being enough was completely real. But God's answer to every single one of those feelings was the same thing: "I will be with you."</p>
       <p>Whatever you feel like you can't do, that is not the last word. Moses felt exactly the same way, standing in front of a burning bush with no idea what came next. And then he went anyway. And the world was never the same.</p>
     </div>
   </div>
+</section>
 
-  <!-- DIG DEEPER -->
-  <div class="content-section section-dig-deeper">
+<!-- DIG DEEPER + VERSE — contained reading column -->
+<div class="reading-body-bottom">
+
+  <div class="section-dig-deeper">
     <div class="section-label">Dig Deeper</div>
     <div class="questions">
       <div class="question-card">
@@ -611,8 +679,7 @@ body {
     </div>
   </div>
 
-  <!-- THE VERSE -->
-  <div class="content-section section-verse">
+  <div class="section-verse">
     <div class="section-label">The Verse</div>
     <p class="verse-text">"So now, go. I am sending you to Pharaoh to bring my people the Israelites out of Egypt." But Moses said to God, "Who am I that I should go?" And God said, "I will be with you."</p>
     <p class="verse-reference">Exodus 3:10&ndash;12</p>
@@ -623,7 +690,7 @@ body {
 <!-- CHAPTER NAVIGATION -->
 <div class="chapter-nav">
   <span class="chapter-nav-link chapter-nav-prev disabled">Introduction</span>
-  <a href="here-i-am-lord.html" class="chapter-nav-link" style="letter-spacing:1px; font-style:italic; text-transform:none; font-family:'Crimson Pro',serif; font-size:0.85rem;">All Heroes</a>
+  <a href="here-i-am-lord.html" class="chapter-nav-link" style="font-family:'Crimson Pro',serif; font-style:italic; font-size:0.9rem; text-transform:none; letter-spacing:0.5px;">All Heroes</a>
   <a href="hial-ch02-david.html" class="chapter-nav-link chapter-nav-next">David, Chapter 2</a>
 </div>
 
