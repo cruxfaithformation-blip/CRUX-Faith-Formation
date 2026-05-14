@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>David — Here I Am, Lord</title>
+<meta name="description" content="The shepherd who ran at a giant. Chapter 2 of Here I Am, Lord.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --cream: #fdf8f0;
+  --cream-deep: #f5edd8;
+  --parchment: #ede4cf;
+  --navy: #1a1f36;
+  --gold: #b8782a;
+  --gold-mid: #c89040;
+  --gold-light: #deb870;
+  --gold-pale: #f5e8c0;
+  --sage: #4a7a42;
+  --sage-mid: #d8eccc;
+  --blue-pale: #e6eff8;
+  --blue-mid: #5a7aaa;
+  --text-dark: #2d1f0e;
+  --text-medium: #5a4228;
+  --text-soft: #8a6a50;
+  --border-warm: rgba(180, 120, 42, 0.2);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: var(--cream);
+  color: var(--text-dark);
+  overflow-x: hidden;
+}
+
+/* NAV */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  padding: 0.9rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(253, 248, 240, 0.96);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border-warm);
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 900;
+  letter-spacing: 5px;
+  color: var(--navy);
+  text-decoration: none;
+}
+
+.nav-book {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--text-medium);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-book:hover { color: var(--gold); }
+
+.nav-lib {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--text-soft);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-lib:hover { color: var(--gold); }
+
+/* CHAPTER HERO */
+.chapter-hero {
+  position: relative;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 4rem 2rem 3rem;
+  overflow: hidden;
+}
+
+.chapter-ghost {
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 20rem;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(180, 120, 42, 0.1);
+  line-height: 1;
+  top: 50%;
+  right: -2rem;
+  transform: translateY(-50%);
+  pointer-events: none;
+  user-select: none;
+}
+
+.chapter-part {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 3.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.chapter-part::before {
+  content: '';
+  display: inline-block;
+  width: 2rem;
+  height: 1px;
+  background: var(--gold-light);
+}
+
+.chapter-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 10vw, 5rem);
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1.0;
+  margin-bottom: 0.5rem;
+}
+
+.chapter-subtitle {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  font-weight: 400;
+  color: var(--text-medium);
+  line-height: 1.4;
+  margin-bottom: 1.25rem;
+}
+
+.chapter-trait {
+  display: inline-block;
+  padding: 0.25rem 0.8rem;
+  border: 1px solid var(--border-warm);
+  border-radius: 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* ILLUSTRATION */
+.chapter-illustration {
+  max-width: 800px;
+  margin: 0 auto;
+  aspect-ratio: 16 / 6;
+  background: linear-gradient(135deg, #f0e0c0 0%, #ddc8a0 50%, #c8b080 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-top: 1px solid var(--border-warm);
+  border-bottom: 1px solid var(--border-warm);
+  overflow: hidden;
+}
+
+.chapter-illustration img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.illus-placeholder {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(90, 60, 20, 0.4);
+  text-align: center;
+}
+
+.illus-placeholder span {
+  display: block;
+  font-size: 1.5rem;
+  margin-bottom: 0.4rem;
+  opacity: 0.4;
+}
+
+/* READING BODY */
+.reading-body {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 3rem 2rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.reading-body-bottom {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 3rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* SECTION LABELS */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.57rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  margin-bottom: 1.5rem;
+}
+
+.section-label::before,
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+}
+
+/* CONTAINED SECTIONS */
+.content-section {
+  border-radius: 10px;
+  padding: 2.25rem 2.5rem;
+}
+
+/* THE HOOK */
+.section-hook {
+  background: #fef7e2;
+  border-left: 4px solid var(--gold);
+}
+
+.section-hook .section-label { color: var(--gold); }
+.section-hook .section-label::before,
+.section-hook .section-label::after { background: rgba(184, 120, 42, 0.2); }
+
+.hook-body {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.2rem;
+  line-height: 1.85;
+  color: var(--text-dark);
+}
+
+.hook-body p { margin-bottom: 1.1em; }
+.hook-body p:last-child { margin-bottom: 0; }
+
+.hook-opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1.3;
+  margin-bottom: 1.1em;
+}
+
+/* THE STORY */
+.section-story {
+  background: #fff;
+  border: 1px solid var(--border-warm);
+}
+
+.section-story .section-label { color: var(--gold); }
+.section-story .section-label::before,
+.section-story .section-label::after { background: rgba(184, 120, 42, 0.15); }
+
+.story-body {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.15rem;
+  line-height: 1.85;
+  color: var(--text-dark);
+}
+
+.story-body p { margin-bottom: 1.1em; }
+.story-body p:last-child { margin-bottom: 0; }
+
+/* MID-STORY ILLUSTRATION */
+.story-illustration {
+  margin: 1.75rem -2.5rem;
+  width: calc(100% + 5rem);
+  aspect-ratio: 16 / 7;
+  background: linear-gradient(135deg, #f0e0c0 0%, #ddc8a0 50%, #c8b080 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow: hidden;
+}
+
+.story-illustration img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* SCRIPTURE PULLQUOTE within story */
+.story-quote {
+  margin: 1.5rem 0;
+  padding: 1rem 1.5rem;
+  border-left: 3px solid var(--gold-light);
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  line-height: 1.7;
+  color: var(--text-medium);
+}
+
+/* FULL-BLEED SECTIONS */
+.bleed-section {
+  width: 100%;
+  padding: 4rem 2rem;
+}
+
+.bleed-inner {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* THE TURNING POINT */
+.section-turning {
+  background: #f0d890;
+  border-top: 1px solid rgba(180, 120, 42, 0.18);
+  border-bottom: 1px solid rgba(180, 120, 42, 0.18);
+}
+
+.section-turning .section-label { color: #7a5010; }
+.section-turning .section-label::before,
+.section-turning .section-label::after { background: rgba(122, 80, 16, 0.2); }
+
+.turning-prose {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.15rem;
+  line-height: 1.85;
+  color: var(--text-dark);
+  margin-bottom: 2.5rem;
+}
+
+.turning-prose p { margin-bottom: 1.1em; }
+.turning-prose p:last-child { margin-bottom: 0; }
+
+.turning-climax {
+  text-align: center;
+  padding: 2rem 1rem;
+  border-top: 1px solid rgba(160, 100, 20, 0.22);
+  border-bottom: 1px solid rgba(160, 100, 20, 0.22);
+}
+
+.turning-quote {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  color: #7a5010;
+  line-height: 1.5;
+  margin-bottom: 0.75rem;
+}
+
+.turning-response {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--text-medium);
+  line-height: 1.7;
+  margin-bottom: 1.5rem;
+}
+
+.turning-final {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(2.2rem, 6vw, 3.2rem);
+  color: var(--navy);
+  letter-spacing: -0.5px;
+}
+
+/* WHAT HAPPENED NEXT */
+.section-next {
+  background: var(--parchment);
+  border-top: 1px solid rgba(160, 120, 60, 0.15);
+  border-bottom: 1px solid rgba(160, 120, 60, 0.15);
+}
+
+.section-next .section-label { color: var(--text-soft); }
+.section-next .section-label::before,
+.section-next .section-label::after { background: rgba(138, 106, 80, 0.2); }
+
+.next-body {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  line-height: 1.85;
+  color: var(--text-medium);
+}
+
+/* HERE I AM MOMENT */
+.section-here-i-am {
+  background: var(--sage-mid);
+  border-top: 1px solid rgba(90, 138, 82, 0.18);
+  border-bottom: 1px solid rgba(90, 138, 82, 0.18);
+}
+
+.section-here-i-am .section-label { color: var(--sage); }
+.section-here-i-am .section-label::before,
+.section-here-i-am .section-label::after { background: rgba(74, 122, 66, 0.22); }
+
+.here-i-am-lead {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: clamp(1.5rem, 4vw, 2rem);
+  color: #2a5a22;
+  text-align: center;
+  line-height: 1.45;
+  margin-bottom: 2rem;
+  padding-bottom: 1.75rem;
+  border-bottom: 1px solid rgba(74, 122, 66, 0.22);
+}
+
+/* HERE I AM ILLUSTRATION */
+.hiam-illustration {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+  background: linear-gradient(135deg, #b8d8b0 0%, #98c088 50%, #78a868 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 0.5rem;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.hiam-illustration img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.here-i-am-body {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.15rem;
+  line-height: 1.85;
+  color: #1c3a18;
+}
+
+.here-i-am-body p { margin-bottom: 1em; }
+.here-i-am-body p:last-child { margin-bottom: 0; }
+
+.hiam-cta {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: clamp(1.6rem, 4vw, 2.2rem);
+  color: var(--sage);
+  text-align: center;
+  margin-top: 1.75rem;
+}
+
+/* DIG DEEPER */
+.section-dig-deeper {
+  background: var(--blue-pale);
+  border-left: 4px solid var(--blue-mid);
+  border-radius: 10px;
+  padding: 2.25rem 2.5rem;
+}
+
+.section-dig-deeper .section-label { color: var(--blue-mid); }
+.section-dig-deeper .section-label::before,
+.section-dig-deeper .section-label::after { background: rgba(90, 122, 170, 0.2); }
+
+.questions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.question-card {
+  background: #fff;
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  box-shadow: 0 2px 8px rgba(90, 122, 170, 0.08);
+}
+
+.question-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--blue-mid);
+  line-height: 1;
+  flex-shrink: 0;
+  opacity: 0.45;
+}
+
+.question-text {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.1rem;
+  color: var(--text-dark);
+  line-height: 1.7;
+  padding-top: 0.15rem;
+}
+
+/* THE VERSE */
+.section-verse {
+  background: #fdf0d2;
+  border: 2px solid var(--gold-light);
+  border-radius: 10px;
+  text-align: center;
+  padding: 2.5rem 3rem;
+}
+
+.section-verse .section-label { color: var(--gold); justify-content: center; }
+.section-verse .section-label::before,
+.section-verse .section-label::after { background: rgba(184, 120, 42, 0.2); }
+
+.verse-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  font-weight: 400;
+  color: var(--navy);
+  line-height: 1.7;
+  margin-bottom: 1rem;
+  max-width: 520px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.verse-reference {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* CHAPTER NAVIGATION */
+.chapter-nav {
+  max-width: 740px;
+  margin: 0 auto;
+  padding: 2rem 2rem 4rem;
+  display: flex;
+  justify-content: space-between;
+  border-top: 1px solid var(--border-warm);
+}
+
+.chapter-nav-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.chapter-nav-link:hover { opacity: 0.7; }
+
+.chapter-nav-link.disabled {
+  color: var(--text-soft);
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+.chapter-nav-next::after { content: ' →'; }
+.chapter-nav-prev::before { content: '← '; }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.chapter-hero { animation: fadeUp 0.5s ease both; }
+.reading-body { animation: fadeUp 0.5s ease 0.1s both; }
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .site-nav { padding: 0.9rem 1.25rem; }
+  .nav-book { display: none; }
+  .chapter-hero { padding: 3rem 1.25rem 2rem; }
+  .chapter-ghost { font-size: 12rem; }
+  .reading-body { padding: 2rem 1.25rem 0; gap: 1.25rem; }
+  .reading-body-bottom { padding: 2rem 1.25rem 2rem; gap: 1.25rem; }
+  .content-section { padding: 1.75rem 1.5rem; }
+  .story-illustration { margin: 1.5rem -1.5rem; width: calc(100% + 3rem); }
+  .bleed-section { padding: 3rem 1.25rem; }
+  .section-verse { padding: 2rem 1.5rem; }
+  .chapter-nav { padding: 2rem 1.25rem 3rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">CRUX</a>
+  <a href="here-i-am-lord.html" class="nav-book">Here I Am, Lord</a>
+  <a href="crux-library.html" class="nav-lib">Library</a>
+</nav>
+
+<!-- CHAPTER HERO -->
+<div class="chapter-hero">
+  <span class="chapter-ghost" aria-hidden="true">02</span>
+  <p class="chapter-part">Part One &middot; When God Calls &middot; Chapter 2</p>
+  <h1 class="chapter-name">David</h1>
+  <p class="chapter-subtitle">The Shepherd Who Ran at a Giant</p>
+  <span class="chapter-trait">Holy Boldness</span>
+</div>
+
+<!-- HEADER ILLUSTRATION -->
+<div class="chapter-illustration">
+  <img src="images/Here%20I%20Am%20Lord%20Storybook/CH02%20David/hial-ch02-david-samuel.jpg" alt="Samuel anointing young David in the field">
+</div>
+
+<!-- HOOK + STORY -->
+<div class="reading-body">
+
+  <!-- THE HOOK -->
+  <div class="content-section section-hook">
+    <div class="section-label">The Hook</div>
+    <div class="hook-body">
+      <p class="hook-opener">"In the blue corner we have David, son of Jesse, fighting out of Bethlehem. In the red corner we have Goliath, standing nine feet tall, weighing in at 500 pounds, fighting out of Gath. It's TIME!!"</p>
+      <p>Okay, maybe Bruce Buffer wasn't there to announce the walkups but the story of David vs. Goliath is one that's known by all. Even those who have never picked up a Bible. But his story starts long before he stood toe to toe with a giant to defend his God.</p>
+    </div>
+  </div>
+
+  <!-- THE STORY -->
+  <div class="content-section section-story">
+    <div class="section-label">The Story</div>
+    <div class="story-body">
+
+      <p>It started in a field with a man named Samuel, a prophet — someone God chose to speak through. He held one of the most powerful roles in all of Israel at that time. More powerful, some might say, than the king himself.</p>
+
+      <p>David on the other hand was a nobody. The youngest of eight brothers, the runt of the litter. When the prophet Samuel arrived at his father's home, Samuel told his father that God had sent him to anoint the next king of Israel, so Jesse lined up his sons. Seven of them. Every one of them impressive. The type of tall, strong men you probably picture when you envision a king.</p>
+
+      <p>David was still in the fields, tending to his sheep.</p>
+
+      <p>As the youngest of the family, he got the chores nobody else wanted. When Samuel looked over the seven sons of Jesse, he felt a wave of disappointment. God had told him to come here. He had said the next king of His people was waiting there, but for some reason none of these seven fit the bill.</p>
+
+      <p>God had told Samuel something important on his trip to Bethlehem. Don't look at how tall the man is or how handsome. Man looks at the outside appearance. God looks only at the heart.</p>
+
+      <p>So, Samuel asked Jesse: "Are these all of your sons?"</p>
+
+      <p>"Well, not exactly but you told me you were looking for a king. My son David is in the fields but he's just a boy. He tends to the sheep in the fields."</p>
+
+      <p>Samuel said: go get him.</p>
+
+      <p>In walks David, probably still stinking of sheep, and without hesitation Samuel anointed him king of Israel. No interview. No test of faith. God spoke to Samuel and Samuel listened. Oh how jealous his older brothers must have been, and how confused his father!</p>
+
+      <p>David didn't get a crown yet though. He remained a shepherd. There was still, after all, a king sitting on the throne named Saul who had no plans to hand over his crown. He had his own sons. They would take the throne after his death. Or so he thought.</p>
+
+      <p>Years later, David is still waiting in the fields, protecting his sheep. Three of his older brothers are serving in Saul's army, and Jesse asks David to bring them food and check in on them at the battlefield. The future king of Israel, anointed by the prophet, and his dad still sent him along like a DoorDash driver.</p>
+
+      <p>David did what his father told him. He went to the battlefield to see his brothers.</p>
+
+      <p>Then he hears the noise. Goliath, standing in a field, calling out that he will destroy God's army of Israelites. Every last one of them.</p>
+
+      <p>Now, Goliath was not a normal-sized problem. He was a literal giant, standing somewhere around nine feet tall. His armor alone weighed about 125 pounds. His spear was basically a telephone pole with a fifteen-pound iron tip. He had been coming out twice a day for forty days yelling out the same challenge: send your best man, we fight, winner takes the whole war and becomes the others' slaves.</p>
+
+      <p>Forty days. Israel's answer was silence.</p>
+
+      <div class="story-illustration">
+        <img src="images/Here%20I%20Am%20Lord%20Storybook/CH02%20David/hial-ch02-david-goliath.jpg" alt="David running toward Goliath on the battlefield">
+      </div>
+
+      <p>David's older brother Eliab saw him from a long way off and started giving him the typical grief of an older brother to his younger. What are you doing here? You came to watch, didn't you? David barely heard him. All he could hear was Goliath. He had one question for his brother: who was this man, screaming insults at David's people and insults at their God. More importantly, why has no one yet shut him up?</p>
+
+      <p>Shut him up? His brothers must have laughed. You want to fight that giant? We're all set.</p>
+
+      <p>David didn't hesitate. King Saul called for him — they knew each other because David was a musician who sang and played for the king on occasion. David went to the king.</p>
+
+      <p>David entered the king's tent, everyone inside probably thinking that he was there to play music. But no. He looked the king in the eyes and said: don't let anyone be afraid of this man. I'll fight him.</p>
+
+      <p>Saul, like David's brothers, tried to talk him out of it. You're just a boy. This man has been a soldier his entire life, and he's not just any ordinary soldier. He's a giant!</p>
+
+      <p>Now, David wasn't a fool. At that moment, he wasn't just saying he'd fight the man out of pride. He was a shepherd. A shepherd who often had to protect his sheep from wild animals in the desert of Israel. He tells Saul this isn't his first rodeo. He tells him of the times he's had to protect his sheep from lions and bears. He grabbed a lion by its beard and struck it down for trying to take one of his sheep. God had protected him then. God would protect him now.</p>
+
+      <p>It must have been a good argument because Saul agreed. He even gave David the king's own armor to wear into battle. Helmet. Coat of bronze. Sword. The whole outfit.</p>
+
+      <p>David took a few steps in the armor and gave it back. He couldn't even walk in it. Instead, he went to a nearby stream, picked up five smooth stones, put them in his shepherd's bag, and picked up his sling.</p>
+
+      <p>That was his plan.</p>
+
+      <p>You've probably heard this story before and thought "a boy with a rock, threw it at a giant, and knocked him dead? Yeah, okay buddy." But what you probably don't know is that the sling David had was a true weapon. Look up videos sometime of people using these very slings. David wasn't walking into the fight with a wing and a prayer. He was walking in with a loaded weapon. But he only had five shots. If he missed, he'd still be torn to pieces by the giant.</p>
+
+      <p>Goliath saw this boy walking out of the field and was genuinely insulted. After forty days of asking for a champion to fight, he gets an unarmored shepherd boy carrying a shepherd's stick. Am I a dog that you come at me with a stick? He started cursing David, threatening to feed him to the birds after he was done with him.</p>
+
+      <p>David answered him. And this is the line that matters.</p>
+
+      <div class="story-quote">"You come at me with sword and spear and javelin. I come at you with the name of the LORD Almighty, the God of the armies of Israel, whom you have defied."</div>
+
+      <p>"Whom you have defied." David had heard the insults Goliath had thrown at the God he loved. Goliath called his God fake, and said he'd prove it by destroying his army. Think of the person you love most in the world. Imagine someone insulting them right in front of you while your brave older brothers stood by silent. David wasn't just ready to fight. He was furious.</p>
+
+      <p>So he ran. Not walked. Ran.</p>
+
+      <p>He reached into his bag, loaded the sling, and let that smooth rock from the stream fly. The stone hit Goliath square in the forehead. The biggest man anyone had ever seen dropped like a sack of potatoes to the dirt. Dead. David walked the rest of the way to him, took Goliath's own sword, and finished the job.</p>
+
+      <p>The Philistine army saw this, turned, and ran.</p>
+
+      <p>What came after was one of the greatest friendships in the entire Bible. Jonathan, the son of King Saul, next in line for the throne of Israel, saw what David did and immediately loved him like a brother. He gave David his own robe, his sword, his bow. He was basically saying, what you just did makes you more worthy of this than me. I stood here for forty days. You were here for ten minutes and already had the courage to fight him. Everything I have is yours. That is how much the moment meant to him.</p>
+
+      <p>David went on to become the greatest king Israel ever had. He was also, at various points, a fugitive, a failure, and someone who made mistakes so bad that they followed him for the rest of his life. He was far from perfect. But what set David apart from those failures was what he did afterward. He kept coming back. Every single time. He wrote some of the most honest prayers ever recorded, the Psalms, including the one you have almost certainly heard:</p>
+
+      <div class="story-quote">"The LORD is my shepherd, I shall not want."</div>
+
+      <p>I know that prayer well. It's my absolute favorite and I said it before every football game I played in high school. I even have it tattooed above my heart.</p>
+
+      <p>A shepherd who became a king who never forgot what it felt like to be alone with just God and the sheep. That is the man who wrote that prayer. God called him a man after His own heart. Not because he never fell. But because he never stopped getting back up.</p>
+
+    </div>
+  </div>
+
+</div>
+
+<!-- THE TURNING POINT — full-bleed amber -->
+<section class="bleed-section section-turning">
+  <div class="bleed-inner">
+    <div class="section-label">The Turning Point</div>
+    <div class="turning-prose">
+      <p>Every soldier in that valley was asking the same question. How do we beat someone that big?</p>
+      <p>David asked a different one entirely. Who does this man think he is, talking to God's people that way?</p>
+      <p>Same situation. Completely different question. That is the whole thing.</p>
+      <p>It was not that David was not scared. It is that his confidence in God was bigger than his fear of the giant. He had seen God show up for him before, alone in the field with a lion coming for the sheep. He had the receipts. So when Goliath showed up, David already knew who was going to win.</p>
+    </div>
+    <div class="turning-climax">
+      <p class="turning-quote">"How do we beat someone that big?"</p>
+      <p class="turning-response">David didn't ask that.<br>He asked who Goliath thought he was talking to.</p>
+      <p class="turning-final">He just had to run toward it and find out.</p>
+    </div>
+  </div>
+</section>
+
+<!-- WHAT HAPPENED NEXT — full-bleed parchment -->
+<section class="bleed-section section-next">
+  <div class="bleed-inner">
+    <div class="section-label">What Happened Next</div>
+    <p class="next-body">David's story didn't end with his death. God had made him a promise: that one of his descendants would be king forever. Centuries passed. Kingdoms rose and fell. And then, in David's hometown of Bethlehem, a baby was born to a woman named Mary. That baby was the Son of God, and in his human lineage, a direct descendant of a shepherd boy who once ran at a giant with five smooth stones.</p>
+  </div>
+</section>
+
+<!-- HERE I AM MOMENT — full-bleed sage -->
+<section class="bleed-section section-here-i-am">
+  <div class="bleed-inner">
+    <div class="section-label">Here I Am Moment</div>
+    <p class="here-i-am-lead">Everybody saw the same giant.<br>David asked a different question.</p>
+
+    <div class="hiam-illustration">
+      <img src="images/Here%20I%20Am%20Lord%20Storybook/CH02%20David/hial-ch02-david-hiam.jpg" alt="A child speaking up for their faith">
+    </div>
+
+    <div class="here-i-am-body">
+      <p>You probably will not face a nine-foot Philistine in your lifetime. But you will hear someone say something about God. About your faith. About the thing you believe in. And you will have a choice in that moment.</p>
+      <p>You can go quiet, the way forty thousand soldiers went quiet for forty days. Or you can speak up.</p>
+      <p>Not to fight. Not to throw stones. To say: actually, I believe something different. To say: that's my God you're talking about.</p>
+      <p>You will probably not nail it perfectly. You might stumble over your words. You might say the wrong thing or think of the right thing ten minutes too late. That is fine. God watched a teenager with five rocks and a leather strap walk out to face a nine-foot giant, and he smiled. He will smile at you too.</p>
+      <p>He might not guide a stone to anyone's forehead. But he will give you the words, or the courage to try for them. And he will remember that when it mattered, you were a defender of his name.</p>
+    </div>
+
+    <p class="hiam-cta">Stand up for God.</p>
+
+  </div>
+</section>
+
+<!-- DIG DEEPER + VERSE -->
+<div class="reading-body-bottom">
+
+  <div class="section-dig-deeper">
+    <div class="section-label">Dig Deeper</div>
+    <div class="questions">
+      <div class="question-card">
+        <span class="question-num">1</span>
+        <p class="question-text">Everyone in Saul's army was asking "how do we beat someone that big?" What question did David ask instead, and why did that change everything?</p>
+      </div>
+      <div class="question-card">
+        <span class="question-num">2</span>
+        <p class="question-text">David had seen God show up for him before, alone in the field with lions and bears. He called those his "receipts." What are some receipts you have, moments where you have seen God show up for you?</p>
+      </div>
+      <div class="question-card">
+        <span class="question-num">3</span>
+        <p class="question-text">The Here I Am Moment this week is about speaking up for your faith. What is one thing you would say to someone who told you God wasn't real?</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-verse">
+    <div class="section-label">The Verse</div>
+    <p class="verse-text">"You come to me with sword and spear and javelin, but I come to you in the name of the LORD of hosts, the God of the armies of Israel, whom you have defied."</p>
+    <p class="verse-reference">1 Samuel 17:45</p>
+  </div>
+
+</div>
+
+<!-- CHAPTER NAVIGATION -->
+<div class="chapter-nav">
+  <a href="hial-ch01-moses.html" class="chapter-nav-link chapter-nav-prev">Moses, Chapter 1</a>
+  <a href="here-i-am-lord.html" class="chapter-nav-link" style="font-family:'Crimson Pro',serif; font-style:italic; font-size:0.9rem; text-transform:none; letter-spacing:0.5px;">All Heroes</a>
+  <span class="chapter-nav-link chapter-nav-next disabled">Chapter 3</span>
+</div>
+
+</body>
+</html>
