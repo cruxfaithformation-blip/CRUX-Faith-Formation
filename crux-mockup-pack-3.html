@@ -1,0 +1,822 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX Pack Mockup 3 — The Vigil</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cinzel:wght@400;600;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #06080f;
+  min-height: 100vh;
+  overflow: hidden;
+  font-family: 'DM Mono', monospace;
+  color: #fff;
+}
+
+/* ── CANDLE / AMBIENT LIGHT ── */
+.ambient-light {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 500px;
+  background: radial-gradient(ellipse at 50% 100%, rgba(212,130,40,0.1) 0%, rgba(212,100,20,0.04) 40%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+  animation: candle-flicker 4s ease-in-out infinite;
+}
+@keyframes candle-flicker {
+  0%,100% { opacity:0.7; transform: translateX(-50%) scaleX(1); }
+  25%      { opacity:0.9; transform: translateX(-50%) scaleX(1.05); }
+  75%      { opacity:0.6; transform: translateX(-50%) scaleX(0.95); }
+}
+
+/* ── STAGE ── */
+.stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ── SCREEN STATES ── */
+.screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+.screen.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* ── PACK SCREEN ── */
+#packScreen {
+  gap: 2.5rem;
+}
+
+.eyebrow {
+  font-size: 0.54rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.4);
+  text-align: center;
+}
+
+/* Dark altar pack */
+.altar-pack {
+  position: relative;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pack-silhouette {
+  width: 200px;
+  height: 278px;
+  border-radius: 14px;
+  background: linear-gradient(160deg, #141830 0%, #0e1225 60%, #141830 100%);
+  border: 1px solid rgba(212,165,116,0.15);
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(212,165,116,0.05),
+    0 30px 80px rgba(0,0,0,0.9),
+    inset 0 1px 0 rgba(255,255,255,0.03);
+  transition: transform 0.4s ease;
+}
+.altar-pack:hover .pack-silhouette {
+  transform: translateY(-6px);
+  border-color: rgba(212,165,116,0.3);
+}
+
+/* Candle light sheen on pack */
+.pack-sheen {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    transparent 0%,
+    rgba(212,130,50,0.04) 30%,
+    rgba(212,130,50,0.08) 50%,
+    rgba(212,130,50,0.04) 70%,
+    transparent 100%);
+  background-size: 200% 200%;
+  animation: sheen-move 5s ease-in-out infinite;
+}
+@keyframes sheen-move {
+  0%,100% { background-position: 0% 0%; }
+  50%      { background-position: 100% 100%; }
+}
+
+.pack-emblem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  gap: 0.7rem;
+  opacity: 0.5;
+}
+.pack-emblem-cross { font-size: 3rem; }
+.pack-emblem-wm {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.6rem;
+  letter-spacing: 8px;
+  background: linear-gradient(135deg, #d4a574, #f0c878, #d4a574);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.pack-emblem-rule {
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212,165,116,0.3), transparent);
+}
+.pack-emblem-sub {
+  font-size: 0.34rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.35);
+}
+
+/* Glow ring around pack */
+.pack-glow-ring {
+  position: absolute;
+  inset: -12px;
+  border-radius: 22px;
+  border: 1px solid rgba(212,165,116,0.08);
+  animation: ring-pulse 3s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes ring-pulse {
+  0%,100% { opacity:0.4; transform:scale(1); }
+  50%      { opacity:1;   transform:scale(1.02); }
+}
+.pack-glow-ring-2 {
+  position: absolute;
+  inset: -24px;
+  border-radius: 28px;
+  border: 1px solid rgba(212,165,116,0.04);
+  animation: ring-pulse 3s ease-in-out 1s infinite;
+  pointer-events: none;
+}
+
+.open-cta {
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.55);
+  animation: breath 2.5s ease-in-out infinite;
+  cursor: pointer;
+}
+@keyframes breath {
+  0%,100% { opacity:0.4; }
+  50%      { opacity:1; }
+}
+
+/* ── PACK OPEN ANIMATION ── */
+@keyframes pack-open {
+  0%   { transform: scale(1) rotate(0deg); }
+  15%  { transform: scale(1.1) rotate(-3deg); }
+  30%  { transform: scale(1.1) rotate(3deg); }
+  50%  { transform: scale(1.05) rotate(-1deg); }
+  70%  { transform: scale(1.15) rotate(0deg); filter: brightness(2); }
+  85%  { transform: scale(0.9); filter: brightness(0.5); opacity: 0.5; }
+  100% { transform: scale(0); opacity: 0; filter: brightness(0); }
+}
+
+/* ── WHITE FLASH ── */
+.white-flash {
+  position: fixed;
+  inset: 0;
+  background: white;
+  z-index: 300;
+  opacity: 0;
+  pointer-events: none;
+}
+@keyframes do-white-flash {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── COUNTDOWN / LOADING ── */
+#loadingScreen {
+  gap: 2rem;
+}
+.loading-cross {
+  font-size: 2.5rem;
+  opacity: 0;
+  animation: cross-appear 0.8s ease-out 0.3s forwards;
+}
+@keyframes cross-appear {
+  from { opacity:0; transform:scale(0.6); }
+  to   { opacity:0.15; transform:scale(1); }
+}
+.loading-bar-wrap {
+  width: 200px;
+  height: 2px;
+  background: rgba(212,165,116,0.1);
+  border-radius: 2px;
+  overflow: hidden;
+}
+.loading-bar {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, #d4a574, #f0c878);
+  border-radius: 2px;
+  transition: width 0.15s ease;
+}
+.loading-text {
+  font-size: 0.54rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.4);
+}
+
+/* ── SINGLE CARD CINEMATIC REVEAL ── */
+#revealScreen {
+  gap: 1.5rem;
+  background: radial-gradient(ellipse at 50% 40%, rgba(212,100,30,0.06) 0%, transparent 60%);
+}
+
+.reveal-counter {
+  font-size: 0.52rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.35);
+}
+
+/* The card */
+.cinematic-card {
+  width: 240px;
+  height: 336px;
+  position: relative;
+  transform-style: preserve-3d;
+  perspective: 1200px;
+}
+
+.cc-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.45, 0.05, 0.2, 1);
+}
+
+.cinematic-card.flipped .cc-inner {
+  transform: rotateY(180deg);
+}
+
+.cc-back, .cc-front {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.cc-back {
+  background: linear-gradient(160deg, #141830 0%, #1c2448 50%, #141830 100%);
+  border: 1.5px solid rgba(212,165,116,0.2);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  box-shadow: 0 0 80px rgba(212,165,116,0.08), 0 30px 80px rgba(0,0,0,0.9);
+}
+.cc-back-wm {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.8rem;
+  letter-spacing: 8px;
+  background: linear-gradient(135deg, #d4a574, #f0c878, #d4a574);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.cc-front {
+  transform: rotateY(180deg);
+  border: 2px solid rgba(212,165,116,0.4);
+  box-shadow: 0 0 80px rgba(212,165,116,0.3), 0 30px 80px rgba(0,0,0,0.9);
+  background: linear-gradient(145deg, #1a1208, #2a1e10);
+  display: flex;
+  align-items: flex-end;
+}
+
+.cc-saint-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  display: block;
+}
+
+.cc-front-overlay {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 1.2rem 1rem 1rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, rgba(0,0,0,0.5) 65%, transparent 100%);
+  text-align: center;
+}
+.cc-name {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1rem;
+  color: #fff;
+  margin-bottom: 0.3rem;
+  text-shadow: 0 2px 8px rgba(0,0,0,0.8);
+}
+.cc-rarity {
+  font-size: 0.46rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Tier styles for cc-front */
+.cc-front.uncommon { border-color: rgba(180,200,220,0.5); }
+.cc-front.uncommon .cc-rarity { color: #b4c8dc; }
+.cc-front.rare { border-color: rgba(196,60,60,0.7); box-shadow: 0 0 80px rgba(196,60,60,0.3), 0 30px 80px rgba(0,0,0,0.9); }
+.cc-front.rare .cc-rarity { color: #e87878; }
+.cc-front.legendary { border-color: rgba(212,165,116,0.85); box-shadow: 0 0 100px rgba(212,165,116,0.45), 0 0 200px rgba(212,165,116,0.1); }
+.cc-front.legendary .cc-rarity { color: #d4a574; }
+.cc-front.celestial { border-color: rgba(160,200,255,0.85); box-shadow: 0 0 100px rgba(120,180,255,0.45), 0 0 200px rgba(100,160,240,0.15); }
+.cc-front.celestial .cc-rarity { color: #a8c8f8; }
+
+/* ── GOLD RAIN for legendary ── */
+.gold-particle {
+  position: fixed;
+  pointer-events: none;
+  z-index: 150;
+  font-size: 0.6rem;
+  color: #d4a574;
+  opacity: 0;
+  animation: gold-fall linear forwards;
+}
+@keyframes gold-fall {
+  0%   { transform: translateY(-20px) rotate(0deg); opacity: 0.8; }
+  100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+}
+
+/* Halo behind legendary card */
+.card-halo {
+  position: absolute;
+  inset: -40px;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at center, rgba(212,165,116,0.2) 0%, transparent 65%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s ease, background 0.4s ease;
+  z-index: -1;
+}
+.card-halo.visible { opacity: 1; }
+.card-halo.celestial { background: radial-gradient(ellipse at center, rgba(140,190,255,0.25) 0%, transparent 65%); }
+
+/* Tap hint */
+.cc-hint {
+  font-size: 0.52rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.45);
+  animation: breath 1.8s ease-in-out infinite;
+  transition: opacity 0.3s ease;
+}
+
+/* Next / Finish button */
+.next-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 0.62rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid rgba(212,165,116,0.3);
+  color: rgba(212,165,116,0.7);
+  padding: 0.65rem 2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(8px);
+  transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.2s ease, color 0.2s ease;
+}
+.next-btn.visible {
+  opacity: 1;
+  pointer-events: all;
+  transform: translateY(0);
+}
+.next-btn:hover {
+  border-color: rgba(212,165,116,0.7);
+  color: rgba(212,165,116,1);
+  background: rgba(212,165,116,0.06);
+}
+
+/* Progress dots */
+.cc-dots {
+  display: flex;
+  gap: 0.55rem;
+}
+.cc-dot {
+  width: 5px; height: 5px;
+  border-radius: 50%;
+  background: rgba(212,165,116,0.15);
+  transition: background 0.4s, transform 0.4s;
+}
+.cc-dot.done { background: rgba(212,165,116,0.7); transform: scale(1.3); }
+.cc-dot.now  { background: rgba(212,165,116,0.4); animation: dot-now 1s ease-in-out infinite; }
+@keyframes dot-now { 0%,100%{transform:scale(1)} 50%{transform:scale(1.6)} }
+
+/* ── SUMMARY ── */
+#summaryScreen {
+  gap: 2rem;
+  background: #06080f;
+}
+.sum-eyebrow {
+  font-size: 0.52rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.4);
+}
+.sum-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.3rem;
+  color: #fff;
+  text-align: center;
+  margin-top: -1rem;
+}
+.sum-row {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+}
+.sum-card {
+  width: 88px;
+  height: 124px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1.5px solid rgba(212,165,116,0.2);
+  background: linear-gradient(145deg, #1a1f36, #252b47);
+  position: relative;
+  transform: scale(0.8) translateY(20px);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+.sum-card.in {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+}
+.sum-card-name {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 0.4rem 0.3rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  font-family: 'Playfair Display', serif;
+  font-size: 0.45rem;
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+}
+.sum-card.rare      { border-color: rgba(196,60,60,0.5); }
+.sum-card.legendary { border-color: rgba(212,165,116,0.6); }
+.sum-card.celestial { border-color: rgba(140,190,255,0.6); box-shadow: 0 0 16px rgba(120,180,255,0.2); }
+.sum-card.uncommon  { border-color: rgba(180,200,220,0.3); }
+
+.sum-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 0.68rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, #d4a574, #b8895a);
+  color: #080b16;
+  border: none;
+  padding: 0.75rem 2.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 0 4px 20px rgba(212,165,116,0.3);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+.sum-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(212,165,116,0.4); }
+
+.mockup-label {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.5rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.12);
+  z-index: 999;
+  white-space: nowrap;
+}
+
+/* Card entrance animation */
+@keyframes cc-enter {
+  0%   { transform: translateY(80px) scale(0.85); opacity: 0; }
+  55%  { transform: translateY(-8px) scale(1.02); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+.cinematic-card.entering {
+  animation: cc-enter 0.65s cubic-bezier(0.2, 0.85, 0.3, 1) forwards;
+}
+
+/* Rarity flash overlay */
+.rarity-flash {
+  position: fixed; inset: 0; pointer-events: none; z-index: 200; opacity: 0;
+}
+.rarity-flash.flash-gold     { background: radial-gradient(ellipse at center, rgba(212,165,116,0.45) 0%, transparent 60%); animation: do-flash 1s ease-out forwards; }
+.rarity-flash.flash-crimson  { background: radial-gradient(ellipse at center, rgba(196,60,60,0.35) 0%, transparent 60%); animation: do-flash 0.7s ease-out forwards; }
+.rarity-flash.flash-celestial{ background: radial-gradient(ellipse at center, rgba(140,190,255,0.5) 0%, transparent 60%); animation: do-flash 1.2s ease-out forwards; }
+@keyframes do-flash { 0%{opacity:1} 100%{opacity:0} }
+</style>
+</head>
+<body>
+
+<div class="ambient-light"></div>
+<div class="white-flash" id="whiteFlash"></div>
+<div class="rarity-flash" id="rarityFlash"></div>
+<div class="mockup-label">Mockup 3 — The Vigil · Tap pack to open · Tap card to reveal · Auto-advance after reveal</div>
+
+<!-- ── PACK SCREEN ── -->
+<div class="screen active" id="packScreen">
+  <p class="eyebrow">CRUX Faith Formation</p>
+  <div class="altar-pack" onclick="openPack()">
+    <div class="pack-glow-ring"></div>
+    <div class="pack-glow-ring-2"></div>
+    <div class="pack-silhouette">
+      <div class="pack-sheen"></div>
+      <div class="pack-emblem">
+        <span class="pack-emblem-cross">✟</span>
+        <span class="pack-emblem-wm">CRUX</span>
+        <div class="pack-emblem-rule"></div>
+        <span class="pack-emblem-sub">Alpha Pack · 5 Saints</span>
+      </div>
+    </div>
+  </div>
+  <p class="open-cta" onclick="openPack()">Open your pack</p>
+</div>
+
+<!-- ── LOADING SCREEN ── -->
+<div class="screen" id="loadingScreen">
+  <span class="loading-cross">✟</span>
+  <p class="loading-text" id="loadingText">Preparing your saints</p>
+  <div class="loading-bar-wrap">
+    <div class="loading-bar" id="loadingBar"></div>
+  </div>
+</div>
+
+<!-- ── CARD REVEAL SCREEN ── -->
+<div class="screen" id="revealScreen">
+  <p class="reveal-counter" id="revealCounter">Card 1 of 5</p>
+
+  <div style="position:relative; display:flex; align-items:center; justify-content:center;">
+    <div class="card-halo" id="cardHalo"></div>
+    <div class="cinematic-card" id="cinematicCard" onclick="flipCinematicCard()">
+      <div class="cc-inner" id="ccInner">
+        <div class="cc-back">
+          <span style="font-size:2.2rem;opacity:0.15;">✟</span>
+          <span class="cc-back-wm">CRUX</span>
+          <span style="font-size:0.34rem;letter-spacing:3px;text-transform:uppercase;color:rgba(212,165,116,0.25);">Faith Formation</span>
+        </div>
+        <div class="cc-front" id="ccFront">
+          <img class="cc-saint-img" id="ccImg" src="" alt="">
+          <div class="cc-front-overlay">
+            <div class="cc-name" id="ccName"></div>
+            <div class="cc-rarity" id="ccRarity"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="cc-hint" id="ccHint">Tap to reveal</p>
+
+  <button class="next-btn" id="nextBtn" onclick="nextCard()">Next Saint →</button>
+
+  <div class="cc-dots" id="ccDots">
+    <div class="cc-dot now" id="ccd0"></div>
+    <div class="cc-dot" id="ccd1"></div>
+    <div class="cc-dot" id="ccd2"></div>
+    <div class="cc-dot" id="ccd3"></div>
+    <div class="cc-dot" id="ccd4"></div>
+  </div>
+</div>
+
+<!-- ── SUMMARY SCREEN ── -->
+<div class="screen" id="summaryScreen">
+  <p class="sum-eyebrow">Pack opened</p>
+  <h2 class="sum-title">Your Saints</h2>
+  <div class="sum-row" id="sumRow"></div>
+  <button class="sum-btn" onclick="reset()">Collect &amp; Continue</button>
+</div>
+
+<script>
+const CARDS = [
+  { name: 'St. Thérèse of Lisieux', rarity: 'uncommon',  stars: '✦ Uncommon',      img: 'images/saints/therese.jpg' },
+  { name: 'St. Padre Pio',          rarity: 'rare',      stars: '✦✦ Rare',         img: 'images/saints/padre-pio.jpg' },
+  { name: 'St. Joan of Arc',        rarity: 'rare',      stars: '✦✦ Rare',         img: 'images/saints/joan-arc.jpg' },
+  { name: 'St. Peter',              rarity: 'legendary', stars: '✦✦✦ Legendary',   img: 'images/saints/peter.jpg' },
+  { name: 'Blessed Virgin Mary',    rarity: 'celestial', stars: '✦✦✦✦ Legendary',  img: 'images/saints/bvm.jpg' },
+];
+
+let currentIdx = 0;
+let cardFlipped = false;
+
+function openPack() {
+  const packScreen = document.getElementById('packScreen');
+  const loadingScreen = document.getElementById('loadingScreen');
+
+  // White flash
+  const wf = document.getElementById('whiteFlash');
+  wf.style.animation = 'none';
+  void wf.offsetWidth;
+  wf.style.animation = 'do-white-flash 0.6s ease-out forwards';
+
+  packScreen.classList.remove('active');
+
+  setTimeout(() => {
+    loadingScreen.classList.add('active');
+    runLoadingBar();
+  }, 350);
+}
+
+function runLoadingBar() {
+  const bar = document.getElementById('loadingBar');
+  const texts = ['Invoking the saints', 'Preparing your pack', 'Almost ready'];
+  let pct = 0;
+  let t = 0;
+  const labels = document.getElementById('loadingText');
+
+  const tick = setInterval(() => {
+    pct += 2 + Math.random() * 4;
+    if (pct > 100) pct = 100;
+    bar.style.width = pct + '%';
+    if (pct >= 33 && t === 0) { labels.textContent = texts[1]; t++; }
+    if (pct >= 70 && t === 1) { labels.textContent = texts[2]; t++; }
+    if (pct >= 100) {
+      clearInterval(tick);
+      setTimeout(() => {
+        document.getElementById('loadingScreen').classList.remove('active');
+        showCinematicCard(0);
+      }, 400);
+    }
+  }, 60);
+}
+
+function showCinematicCard(idx) {
+  currentIdx = idx;
+  cardFlipped = false;
+
+  const card = CARDS[idx];
+  const revealScreen = document.getElementById('revealScreen');
+  const cinematicCard = document.getElementById('cinematicCard');
+  const ccFront = document.getElementById('ccFront');
+  const ccHint = document.getElementById('ccHint');
+  const nextBtn = document.getElementById('nextBtn');
+  const halo = document.getElementById('cardHalo');
+
+  // Reset state
+  document.getElementById('ccInner').style.transform = '';
+  cinematicCard.classList.remove('flipped', 'entering');
+  ccFront.className = 'cc-front';
+  document.getElementById('ccImg').src = card.img;
+  document.getElementById('ccImg').alt = card.name;
+  document.getElementById('ccName').textContent = card.name;
+  document.getElementById('ccRarity').textContent = card.stars;
+  ccHint.style.opacity = '';
+  nextBtn.classList.remove('visible');
+  halo.classList.remove('visible', 'celestial');
+  nextBtn.textContent = idx + 1 < CARDS.length ? 'Next Saint →' : 'See All Your Saints';
+
+  // Dots
+  for (let i = 0; i < CARDS.length; i++) {
+    const d = document.getElementById('ccd' + i);
+    d.className = 'cc-dot';
+    if (i < idx)        d.classList.add('done');
+    else if (i === idx) d.classList.add('now');
+  }
+
+  document.getElementById('revealCounter').textContent = `Card ${idx + 1} of ${CARDS.length}`;
+
+  revealScreen.classList.add('active');
+  void cinematicCard.offsetWidth;
+  cinematicCard.classList.add('entering');
+}
+
+function flipCinematicCard() {
+  if (cardFlipped) return;
+  cardFlipped = true;
+
+  const card = CARDS[currentIdx];
+  const cinematicCard = document.getElementById('cinematicCard');
+  const ccFront = document.getElementById('ccFront');
+  const ccHint = document.getElementById('ccHint');
+  const nextBtn = document.getElementById('nextBtn');
+  const halo = document.getElementById('cardHalo');
+
+  cinematicCard.classList.add('flipped');
+  ccFront.classList.add(card.rarity);
+  ccHint.style.opacity = '0';
+
+  // Flash
+  const flash = document.getElementById('rarityFlash');
+  flash.className = 'rarity-flash';
+  void flash.offsetWidth;
+  if (card.rarity === 'celestial')     flash.classList.add('flash-celestial');
+  else if (card.rarity === 'legendary') flash.classList.add('flash-gold');
+  else if (card.rarity === 'rare')      flash.classList.add('flash-crimson');
+
+  // Legendary / celestial: gold rain + halo
+  if (card.rarity === 'legendary' || card.rarity === 'celestial') {
+    if (card.rarity === 'celestial') halo.classList.add('celestial');
+    halo.classList.add('visible');
+    goldRain(card.rarity === 'celestial');
+  }
+
+  setTimeout(() => nextBtn.classList.add('visible'), 900);
+}
+
+function goldRain(isCelestial = false) {
+  const symbols = isCelestial ? ['✦', '✦', '·', '☽', '✦'] : ['✦', '✟', '✦', '·'];
+  const color   = isCelestial ? '#a8c8f8' : '#d4a574';
+  for (let i = 0; i < 30; i++) {
+    setTimeout(() => {
+      const p = document.createElement('div');
+      p.className = 'gold-particle';
+      p.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      p.style.color = color;
+      p.style.left = (10 + Math.random() * 80) + '%';
+      p.style.top = '-20px';
+      p.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+      p.style.animationDelay = (Math.random() * 0.5) + 's';
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 4000);
+    }, i * 55);
+  }
+}
+
+function nextCard() {
+  const revealScreen = document.getElementById('revealScreen');
+  revealScreen.style.opacity = '0';
+  setTimeout(() => {
+    revealScreen.style.opacity = '';
+    revealScreen.classList.remove('active');
+    if (currentIdx + 1 < CARDS.length) {
+      showCinematicCard(currentIdx + 1);
+    } else {
+      showSummary();
+    }
+  }, 400);
+}
+
+function showSummary() {
+  const sumRow = document.getElementById('sumRow');
+  sumRow.innerHTML = '';
+  CARDS.forEach((card, i) => {
+    const d = document.createElement('div');
+    d.className = 'sum-card ' + card.rarity;
+    d.style.transitionDelay = (i * 0.1) + 's';
+    d.innerHTML = `
+      <img src="${card.img}" alt="${card.name}" style="width:100%;height:100%;object-fit:cover;object-position:center top;display:block;">
+      <div class="sum-card-name">${card.name.replace('St. ','').replace('Blessed ','')}</div>
+    `;
+    sumRow.appendChild(d);
+    setTimeout(() => d.classList.add('in'), 100 + i * 110);
+  });
+  document.getElementById('summaryScreen').classList.add('active');
+}
+
+function reset() {
+  currentIdx = 0;
+  cardFlipped = false;
+  document.getElementById('summaryScreen').classList.remove('active');
+  document.getElementById('revealScreen').classList.remove('active');
+  document.getElementById('loadingScreen').classList.remove('active');
+  document.getElementById('loadingBar').style.width = '0%';
+  document.getElementById('loadingText').textContent = 'Preparing your saints';
+  document.getElementById('packScreen').classList.add('active');
+}
+</script>
+</body>
+</html>

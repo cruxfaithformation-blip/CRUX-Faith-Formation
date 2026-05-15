@@ -1,0 +1,761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX Pack Mockup 1 — Sequential Reveal</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Cinzel:wght@400;600;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+
+body {
+  background: #0a0d1a;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'DM Mono', monospace;
+  overflow: hidden;
+}
+
+/* ── STAGE ── */
+.stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+/* ── AMBIENT LIGHT ── */
+.ambient {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background: radial-gradient(ellipse 60% 50% at 50% 60%, rgba(212,165,116,0.06) 0%, transparent 70%);
+  transition: opacity 1s ease;
+}
+
+/* ── PACK SCREEN ── */
+.pack-screen {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.5rem;
+}
+
+.pack-eyebrow {
+  font-size: 0.58rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.5);
+  text-align: center;
+}
+
+.pack-wrap {
+  position: relative;
+  cursor: pointer;
+  width: 200px;
+}
+
+.pack-img {
+  width: 200px;
+  height: 280px;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #1a1f36 0%, #252b47 40%, #1a1f36 100%);
+  border: 1.5px solid rgba(212,165,116,0.3);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  position: relative;
+  overflow: hidden;
+  box-shadow:
+    0 0 0 1px rgba(212,165,116,0.08),
+    0 20px 60px rgba(0,0,0,0.7),
+    0 0 80px rgba(212,165,116,0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.pack-img:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow:
+    0 0 0 1px rgba(212,165,116,0.2),
+    0 28px 80px rgba(0,0,0,0.8),
+    0 0 100px rgba(212,165,116,0.15);
+}
+
+.pack-shimmer {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg,
+    transparent 0%, transparent 40%,
+    rgba(212,165,116,0.08) 50%,
+    transparent 60%, transparent 100%);
+  background-size: 200% 200%;
+  animation: pack-shine 3s ease-in-out infinite;
+}
+@keyframes pack-shine {
+  0%   { background-position: 200% 200%; }
+  50%  { background-position: 0% 0%; }
+  100% { background-position: 200% 200%; }
+}
+
+.pack-cross {
+  font-size: 2.5rem;
+  opacity: 0.25;
+}
+.pack-wordmark {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.8rem;
+  letter-spacing: 8px;
+  background: linear-gradient(135deg, #d4a574, #f0c878, #d4a574);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.pack-sub {
+  font-family: 'Cinzel', serif;
+  font-size: 0.38rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.45);
+}
+
+.pack-glow {
+  position: absolute;
+  inset: -20px;
+  background: radial-gradient(ellipse at center, rgba(212,165,116,0.15) 0%, transparent 70%);
+  animation: pulse-glow 2s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes pulse-glow {
+  0%, 100% { opacity: 0.6; transform: scale(0.95); }
+  50%       { opacity: 1;   transform: scale(1.05); }
+}
+
+.open-cta {
+  font-family: 'Cinzel', serif;
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.75);
+  text-align: center;
+  animation: cta-pulse 2s ease-in-out infinite;
+}
+@keyframes cta-pulse {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 1; }
+}
+
+/* ── PACK TEAR ANIMATION ── */
+@keyframes pack-tear {
+  0%   { transform: scale(1) rotate(0deg); opacity: 1; }
+  20%  { transform: scale(1.08) rotate(-2deg); }
+  40%  { transform: scale(1.12) rotate(2deg); }
+  60%  { transform: scale(0.95) rotate(-1deg); }
+  80%  { transform: scale(1.2) rotate(0deg); opacity: 0.6; }
+  100% { transform: scale(2) rotate(0deg); opacity: 0; }
+}
+.pack-img.tearing {
+  animation: pack-tear 0.7s ease-in-out forwards;
+}
+
+/* ── PARTICLE BURST ── */
+.particle {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* ── CARD REVEAL SCREEN ── */
+.reveal-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+.reveal-screen.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+/* Spotlight beam */
+.spotlight {
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 320px;
+  height: 100vh;
+  background: linear-gradient(to bottom,
+    rgba(212,165,116,0.12) 0%,
+    rgba(212,165,116,0.04) 40%,
+    transparent 75%);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+.spotlight.active { opacity: 1; }
+
+.card-counter {
+  font-size: 0.55rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.45);
+  position: relative;
+  z-index: 2;
+}
+
+/* ── THE CARD STAGE ── */
+.card-stage {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 260px;
+  height: 365px;
+}
+
+/* Card in reveal: starts face-down, user taps to flip */
+.reveal-card-wrap {
+  width: 260px;
+  height: 365px;
+  position: relative;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  perspective: 1000px;
+}
+
+.reveal-card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.7s cubic-bezier(0.45, 0.05, 0.2, 1.0);
+}
+
+.reveal-card-wrap.flipped .reveal-card-inner {
+  transform: rotateY(180deg);
+}
+
+.rc-back, .rc-front {
+  position: absolute;
+  inset: 0;
+  border-radius: 18px;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  overflow: hidden;
+}
+
+.rc-back {
+  background: linear-gradient(145deg, #1a1f36 0%, #252b47 50%, #1a1f36 100%);
+  border: 1.5px solid rgba(212,165,116,0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  box-shadow: 0 0 40px rgba(212,165,116,0.1), 0 20px 60px rgba(0,0,0,0.8);
+  animation: back-pulse 2s ease-in-out infinite;
+}
+@keyframes back-pulse {
+  0%, 100% { border-color: rgba(212,165,116,0.2); box-shadow: 0 0 30px rgba(212,165,116,0.08); }
+  50%       { border-color: rgba(212,165,116,0.5); box-shadow: 0 0 50px rgba(212,165,116,0.18); }
+}
+
+.rc-back-wordmark {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 2rem;
+  letter-spacing: 8px;
+  background: linear-gradient(135deg, #d4a574, #f0c878, #d4a574);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.rc-front {
+  transform: rotateY(180deg);
+  border: 2px solid rgba(212,165,116,0.4);
+  box-shadow: 0 0 60px rgba(212,165,116,0.25), 0 20px 80px rgba(0,0,0,0.9);
+  background: linear-gradient(145deg, #1a1208 0%, #2a1e10 50%, #161008 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  position: relative;
+}
+
+.rc-saint-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+}
+
+.rc-front-overlay {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  padding: 1.2rem 1.1rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.92) 0%, rgba(0,0,0,0.5) 60%, transparent 100%);
+  text-align: center;
+}
+.rc-saint-name {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.1rem;
+  color: #fff;
+  text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+  margin-bottom: 0.35rem;
+}
+.rc-rarity {
+  font-size: 0.5rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+/* Rarity tiers */
+.rc-front.uncommon { border-color: rgba(180,200,220,0.5); }
+.rc-front.uncommon .rc-rarity { color: #b4c8dc; }
+.rc-front.rare { border-color: rgba(196,60,60,0.7); box-shadow: 0 0 60px rgba(196,60,60,0.25), 0 20px 80px rgba(0,0,0,0.9); }
+.rc-front.rare .rc-rarity { color: #e87878; }
+.rc-front.legendary { border-color: rgba(212,165,116,0.8); box-shadow: 0 0 80px rgba(212,165,116,0.4), 0 0 120px rgba(212,165,116,0.15); }
+.rc-front.legendary .rc-rarity { color: #d4a574; }
+
+/* ── TAP TO REVEAL HINT ── */
+.tap-hint {
+  font-size: 0.52rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.5);
+  animation: cta-pulse 1.5s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
+}
+.tap-hint.hidden { opacity: 0; pointer-events: none; }
+
+/* ── PROGRESS DOTS ── */
+.progress-dots {
+  display: flex;
+  gap: 0.6rem;
+  position: relative;
+  z-index: 2;
+}
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(212,165,116,0.2);
+  transition: background 0.4s ease, transform 0.4s ease;
+}
+.dot.done {
+  background: rgba(212,165,116,0.8);
+  transform: scale(1.3);
+}
+.dot.current {
+  background: rgba(212,165,116,0.5);
+  animation: dot-pulse 1s ease-in-out infinite;
+}
+@keyframes dot-pulse {
+  0%, 100% { transform: scale(1); }
+  50%       { transform: scale(1.5); }
+}
+
+/* ── RARITY FLASH ── */
+.rarity-flash {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 200;
+  opacity: 0;
+}
+.rarity-flash.flash-gold {
+  background: radial-gradient(ellipse at center, rgba(212,165,116,0.4) 0%, transparent 60%);
+  animation: do-flash 0.8s ease-out forwards;
+}
+.rarity-flash.flash-crimson {
+  background: radial-gradient(ellipse at center, rgba(196,60,60,0.35) 0%, transparent 60%);
+  animation: do-flash 0.6s ease-out forwards;
+}
+@keyframes do-flash {
+  0%   { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+/* ── CARD ENTER ANIMATION ── */
+@keyframes card-enter {
+  0%   { transform: translateY(120px) scale(0.8); opacity: 0; }
+  60%  { transform: translateY(-10px) scale(1.03); opacity: 1; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+.reveal-card-wrap.entering {
+  animation: card-enter 0.6s cubic-bezier(0.2, 0.8, 0.3, 1) forwards;
+}
+
+/* ── SUMMARY SCREEN ── */
+.summary-screen {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: linear-gradient(160deg, #0a0d1a 0%, #0f1222 60%, #0a0d1a 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  padding: 2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+.summary-screen.active {
+  opacity: 1;
+  pointer-events: all;
+}
+.summary-title {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.4rem;
+  color: #fff;
+  text-align: center;
+}
+.summary-eyebrow {
+  font-size: 0.52rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.5);
+  text-align: center;
+  margin-bottom: -1rem;
+}
+.summary-cards {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  max-width: 600px;
+}
+.summary-card {
+  width: 95px;
+  height: 133px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1.5px solid rgba(212,165,116,0.3);
+  position: relative;
+  transform: translateY(30px);
+  opacity: 0;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+.summary-card.visible {
+  transform: translateY(0);
+  opacity: 1;
+}
+.summary-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  background: linear-gradient(145deg, #1a1f36, #252b47);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Playfair Display', serif;
+  font-size: 0.6rem;
+  color: rgba(212,165,116,0.5);
+  text-align: center;
+  padding: 0.5rem;
+}
+.summary-card-label {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 0.35rem;
+  background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+  font-size: 0.5rem;
+  color: #fff;
+  text-align: center;
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;
+}
+
+.reset-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.7);
+  background: transparent;
+  border: 1px solid rgba(212,165,116,0.25);
+  padding: 0.75rem 2rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.reset-btn:hover {
+  color: rgba(212,165,116,1);
+  border-color: rgba(212,165,116,0.6);
+  background: rgba(212,165,116,0.06);
+}
+
+/* ── LABEL ── */
+.mockup-label {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.5rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.15);
+  z-index: 999;
+  white-space: nowrap;
+}
+</style>
+</head>
+<body>
+
+<div class="ambient" id="ambient"></div>
+<div class="spotlight" id="spotlight"></div>
+<div class="rarity-flash" id="rarityFlash"></div>
+
+<div class="mockup-label">Mockup 1 — Sequential Reveal · Click card to flip · Click pack to open</div>
+
+<!-- ── PACK SCREEN ── -->
+<div class="stage" id="packScreen">
+  <div class="pack-screen">
+    <p class="pack-eyebrow">CRUX Faith Formation · Alpha Pack</p>
+    <div class="pack-wrap" onclick="openPack()">
+      <div class="pack-glow"></div>
+      <div class="pack-img" id="packImg">
+        <div class="pack-shimmer"></div>
+        <span class="pack-cross">✟</span>
+        <span class="pack-wordmark">CRUX</span>
+        <span class="pack-sub">Alpha Pack · 5 Cards</span>
+      </div>
+    </div>
+    <p class="open-cta">Tap to open your pack</p>
+  </div>
+</div>
+
+<!-- ── CARD REVEAL SCREEN ── -->
+<div class="reveal-screen" id="revealScreen">
+  <p class="card-counter" id="cardCounter">Card 1 of 5</p>
+
+  <div class="card-stage">
+    <div class="reveal-card-wrap" id="revealCard" onclick="flipCard()">
+      <div class="reveal-card-inner" id="revealCardInner">
+        <div class="rc-back">
+          <span style="font-size:1.8rem;opacity:0.2;">✟</span>
+          <span class="rc-back-wordmark">CRUX</span>
+          <span style="font-size:0.38rem;letter-spacing:3px;text-transform:uppercase;color:rgba(212,165,116,0.3);">Faith Formation</span>
+        </div>
+        <div class="rc-front" id="rcFront">
+          <div class="rc-front-overlay">
+            <div class="rc-saint-name" id="rcName">St. Thomas Aquinas</div>
+            <div class="rc-rarity" id="rcRarity">✦✦ Rare</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p class="tap-hint" id="tapHint">Tap card to reveal</p>
+
+  <div class="progress-dots" id="progressDots">
+    <div class="dot current" id="dot0"></div>
+    <div class="dot" id="dot1"></div>
+    <div class="dot" id="dot2"></div>
+    <div class="dot" id="dot3"></div>
+    <div class="dot" id="dot4"></div>
+  </div>
+</div>
+
+<!-- ── SUMMARY SCREEN ── -->
+<div class="summary-screen" id="summaryScreen">
+  <p class="summary-eyebrow">Pack opened</p>
+  <h2 class="summary-title">Your Saints</h2>
+  <div class="summary-cards" id="summaryCards"></div>
+  <button class="reset-btn" onclick="reset()">Open Another Pack</button>
+</div>
+
+<script>
+const CARDS = [
+  { name: 'St. Thomas Aquinas',      rarity: 'rare',      stars: '✦✦ Rare',       bg: '#140909' },
+  { name: 'St. Cecilia',             rarity: 'uncommon',  stars: '✦ Uncommon',    bg: '#0d1016' },
+  { name: 'Blessed Virgin Mary',     rarity: 'legendary', stars: '✦✦✦✦ Legendary', bg: '#0a1228' },
+  { name: 'St. Francis of Assisi',   rarity: 'uncommon',  stars: '✦ Uncommon',    bg: '#0d1016' },
+  { name: 'St. Peter',               rarity: 'legendary', stars: '✦✦✦ Legendary', bg: '#120e05' },
+];
+
+let currentCard = 0;
+let flipped = false;
+const revealed = [];
+
+function openPack() {
+  const packImg = document.getElementById('packImg');
+  packImg.classList.add('tearing');
+  burstParticles();
+  setTimeout(() => {
+    document.getElementById('packScreen').style.display = 'none';
+    document.getElementById('spotlight').classList.add('active');
+    showCard(0);
+  }, 650);
+}
+
+function burstParticles() {
+  const colors = ['#d4a574','#f0c878','#ffffff','#b8895a'];
+  for (let i = 0; i < 28; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.background = colors[Math.floor(Math.random() * colors.length)];
+    p.style.left = '50%';
+    p.style.top = '45%';
+    const angle = (Math.random() * 360) * (Math.PI / 180);
+    const dist  = 60 + Math.random() * 160;
+    const tx    = Math.cos(angle) * dist;
+    const ty    = Math.sin(angle) * dist;
+    const dur   = 0.5 + Math.random() * 0.7;
+    p.style.transition = `transform ${dur}s ease-out, opacity ${dur}s ease-out`;
+    document.body.appendChild(p);
+    requestAnimationFrame(() => {
+      p.style.transform = `translate(calc(-50% + ${tx}px), calc(-50% + ${ty}px)) scale(0)`;
+      p.style.opacity = '0';
+    });
+    setTimeout(() => p.remove(), dur * 1000 + 100);
+  }
+}
+
+function showCard(idx) {
+  currentCard = idx;
+  flipped = false;
+
+  const card = CARDS[idx];
+  const revealScreen = document.getElementById('revealScreen');
+  const revealCard   = document.getElementById('revealCard');
+  const rcFront      = document.getElementById('rcFront');
+  const rcName       = document.getElementById('rcName');
+  const rcRarity     = document.getElementById('rcRarity');
+  const tapHint      = document.getElementById('tapHint');
+  const counter      = document.getElementById('cardCounter');
+
+  // Reset flip
+  document.getElementById('revealCardInner').style.transform = '';
+  revealCard.classList.remove('flipped', 'entering');
+  rcFront.className = 'rc-front ' + card.rarity;
+  rcFront.style.background = `linear-gradient(145deg, ${card.bg} 0%, ${lighten(card.bg)} 50%, ${card.bg} 100%)`;
+  rcName.textContent  = card.name;
+  rcRarity.textContent = card.stars;
+  tapHint.classList.remove('hidden');
+  counter.textContent = `Card ${idx + 1} of ${CARDS.length}`;
+
+  // Update dots
+  for (let i = 0; i < CARDS.length; i++) {
+    const dot = document.getElementById('dot' + i);
+    dot.className = 'dot';
+    if (i < idx)       dot.classList.add('done');
+    else if (i === idx) dot.classList.add('current');
+  }
+
+  revealScreen.classList.add('active');
+  void revealCard.offsetWidth;
+  revealCard.classList.add('entering');
+}
+
+function lighten(hex) {
+  const r = parseInt(hex.slice(1,3), 16);
+  const g = parseInt(hex.slice(3,5), 16);
+  const b = parseInt(hex.slice(5,7), 16);
+  return `#${Math.min(255,r+30).toString(16).padStart(2,'0')}${Math.min(255,g+25).toString(16).padStart(2,'0')}${Math.min(255,b+20).toString(16).padStart(2,'0')}`;
+}
+
+function flipCard() {
+  if (flipped) return;
+  flipped = true;
+
+  document.getElementById('revealCard').classList.add('flipped');
+  document.getElementById('tapHint').classList.add('hidden');
+
+  // Flash
+  const card = CARDS[currentCard];
+  const flash = document.getElementById('rarityFlash');
+  flash.className = 'rarity-flash';
+  void flash.offsetWidth;
+  if (card.rarity === 'legendary') flash.classList.add('flash-gold');
+  else if (card.rarity === 'rare') flash.classList.add('flash-crimson');
+
+  revealed.push(card);
+
+  // Wait, then advance
+  setTimeout(() => {
+    if (currentCard + 1 < CARDS.length) {
+      const revealCard = document.getElementById('revealCard');
+      revealCard.style.transition = 'opacity 0.3s ease';
+      revealCard.style.opacity = '0';
+      setTimeout(() => {
+        revealCard.style.opacity = '';
+        revealCard.style.transition = '';
+        showCard(currentCard + 1);
+      }, 320);
+    } else {
+      showSummary();
+    }
+  }, 1600);
+}
+
+function showSummary() {
+  const revealScreen  = document.getElementById('revealScreen');
+  const summaryScreen = document.getElementById('summaryScreen');
+  const summaryCards  = document.getElementById('summaryCards');
+
+  revealScreen.classList.remove('active');
+  document.getElementById('spotlight').classList.remove('active');
+  summaryCards.innerHTML = '';
+
+  CARDS.forEach((card, i) => {
+    const div = document.createElement('div');
+    div.className = 'summary-card';
+    div.style.borderColor = card.rarity === 'legendary' ? 'rgba(212,165,116,0.6)' : card.rarity === 'rare' ? 'rgba(196,60,60,0.5)' : 'rgba(180,200,220,0.3)';
+    div.style.transitionDelay = (i * 0.12) + 's';
+    div.innerHTML = `
+      <div class="summary-card-img" style="background:linear-gradient(145deg,${card.bg},${lighten(card.bg)})">
+        <span style="font-size:0.45rem;letter-spacing:1px;text-transform:uppercase;color:rgba(212,165,116,0.4);">✟</span>
+      </div>
+      <div class="summary-card-label">${card.name.replace('St. ','').replace('Blessed ','')}</div>
+    `;
+    summaryCards.appendChild(div);
+    setTimeout(() => div.classList.add('visible'), 50 + i * 120);
+  });
+
+  setTimeout(() => summaryScreen.classList.add('active'), 100);
+}
+
+function reset() {
+  currentCard = 0;
+  flipped = false;
+  revealed.length = 0;
+  document.getElementById('summaryScreen').classList.remove('active');
+  document.getElementById('revealScreen').classList.remove('active');
+  document.getElementById('packImg').classList.remove('tearing');
+  document.getElementById('packImg').style.animation = '';
+  document.getElementById('packScreen').style.display = '';
+  void document.getElementById('packImg').offsetWidth;
+}
+</script>
+</body>
+</html>

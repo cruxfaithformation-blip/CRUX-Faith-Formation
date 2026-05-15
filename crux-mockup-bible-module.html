@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — Mockup: Bible Study Module</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a1f36;
+    --navy-light: #252b47;
+    --navy-mid: #2e3555;
+    --gold: #d4a574;
+    --gold-light: #e8c9a0;
+    --gold-pale: #f5ead8;
+    --cream: #faf7f2;
+    --white: #ffffff;
+    --off-white: #f4f3ef;
+    --border: rgba(26,31,54,0.1);
+    --border-gold: rgba(212,165,116,0.3);
+    --text-primary: #1a1f36;
+    --text-secondary: #5a6080;
+    --text-muted: #8a90aa;
+    --green: #2d6a4f;
+    --green-light: #e8f5ee;
+    --purple: #4a2c6b;
+    --purple-light: #f0eaf8;
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--text-primary); line-height:1.7; font-size:15px; }
+
+  /* MOCKUP BANNER */
+  .mockup-banner {
+    background: #7c3aed;
+    color: white;
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  /* HEADER */
+  .site-header {
+    background: var(--navy);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 28px;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  }
+  .site-logo { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; color:var(--gold); text-decoration:none; letter-spacing:4px; }
+  .site-nav { list-style:none; display:flex; gap:1.5rem; }
+  .site-nav a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:0.82rem; font-weight:500; }
+  .site-nav a:hover { color:var(--gold); }
+
+  /* HERO */
+  .module-hero {
+    background: var(--navy);
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .module-hero::before {
+    content:'';
+    position:absolute;
+    inset:0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(212,165,116,0.1) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .module-track { font-size:0.68rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:0.5rem; }
+  .module-title { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,5vw,2.8rem); font-weight:700; color:var(--white); margin-bottom:0.4rem; line-height:1.2; }
+  .module-subtitle { font-family:'Playfair Display',serif; font-style:italic; font-size:1.05rem; color:rgba(255,255,255,0.5); margin-bottom:1.25rem; }
+  .module-meta { display:flex; align-items:center; justify-content:center; gap:1rem; flex-wrap:wrap; font-size:0.78rem; color:rgba(255,255,255,0.4); }
+
+  /* NEW: BOOK CONTEXT BAR */
+  .book-context-bar {
+    background: var(--navy-light);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 0;
+  }
+  .book-context-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.75rem 2rem;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    user-select: none;
+  }
+  .book-context-toggle:hover { background: rgba(255,255,255,0.03); }
+  .context-chevron { transition: transform 0.2s; font-size: 0.65rem; }
+  .context-chevron.open { transform: rotate(180deg); }
+  .book-context-content {
+    display: none;
+    padding: 1.25rem 2rem 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.06);
+  }
+  .book-context-content.open { display: block; }
+  .context-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1rem;
+    max-width: 900px;
+  }
+  .context-item { }
+  .context-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.2rem; }
+  .context-value { font-size: 0.88rem; color: rgba(255,255,255,0.75); line-height: 1.5; }
+  .context-note {
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    background: rgba(212,165,116,0.08);
+    border-left: 2px solid var(--gold);
+    border-radius: 0 6px 6px 0;
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.65);
+    line-height: 1.6;
+  }
+
+  /* PROGRESS BAR */
+  .progress-bar {
+    background: var(--navy-light);
+    padding: 0.7rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+    position: sticky;
+    top: 85px;
+    z-index: 90;
+  }
+  .progress-label { font-size:0.72rem; font-weight:600; color:var(--gold); letter-spacing:1px; text-transform:uppercase; white-space:nowrap; }
+  .progress-track { flex:1; height:3px; background:var(--navy-mid); border-radius:2px; overflow:hidden; }
+  .progress-fill { height:100%; width:25%; background:var(--gold); border-radius:2px; }
+  .progress-count { font-size:0.72rem; color:var(--text-muted); white-space:nowrap; }
+
+  /* LAYOUT */
+  .module-layout {
+    display: grid;
+    grid-template-columns: 1fr 260px;
+    gap: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2.5rem 2rem;
+    align-items: start;
+  }
+
+  /* SIDEBAR */
+  .module-sidebar {
+    position: sticky;
+    top: 145px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .sidebar-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .sidebar-card-head {
+    padding: 0.75rem 1rem;
+    background: var(--navy);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .sidebar-toc { list-style: none; padding: 0.5rem 0; }
+  .sidebar-toc li { }
+  .sidebar-toc a {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 1rem;
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .sidebar-toc a:hover { color: var(--navy); background: var(--off-white); }
+  .sidebar-toc a.active { color: var(--navy); font-weight: 600; }
+  .sidebar-toc .toc-num {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--gold);
+    font-size: 0.65rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .sidebar-toc .toc-num.done { background: var(--gold); color: var(--navy); }
+  .sidebar-resource-list { list-style: none; padding: 0.75rem 1rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .sidebar-resource-list li { font-size: 0.78rem; color: var(--text-secondary); padding: 0.35rem 0; border-bottom: 1px solid var(--border); }
+  .sidebar-resource-list li:last-child { border: none; }
+  .sidebar-resource-list li strong { display: block; color: var(--text-primary); font-size: 0.75rem; }
+
+  /* NEW: LECTIONARY WIDGET */
+  .lectionary-widget {
+    background: linear-gradient(135deg, var(--navy), var(--navy-mid));
+    border-radius: 10px;
+    padding: 1rem;
+    border: 1px solid rgba(212,165,116,0.2);
+  }
+  .lect-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.5rem; }
+  .lect-date { font-size: 0.75rem; color: rgba(255,255,255,0.4); margin-bottom: 0.5rem; }
+  .lect-passage { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.9rem; color: rgba(255,255,255,0.85); line-height: 1.5; margin-bottom: 0.6rem; }
+  .lect-ref { font-size: 0.72rem; font-weight: 600; color: var(--gold); letter-spacing: 1px; }
+  .lect-link { display: inline-block; margin-top: 0.6rem; font-size: 0.72rem; color: var(--gold); text-decoration: none; font-weight: 600; }
+  .lect-link:hover { text-decoration: underline; }
+  .lect-api-note { font-size: 0.65rem; color: rgba(255,255,255,0.25); margin-top: 0.6rem; }
+
+  /* SECTIONS */
+  .module-section { position: relative; border-radius: 10px; overflow: hidden; margin-bottom: 0.5rem; }
+  .module-section.locked .section-inner { filter: blur(3px); pointer-events: none; user-select: none; }
+  .lock-overlay {
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 0.85rem 1.25rem;
+    background: rgba(250,247,242,0.92);
+    border: 0.5px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+  }
+  .module-section.locked .lock-overlay { display: flex; }
+  .section-sep { height: 1px; background: var(--border); margin: 2rem 0; }
+  .section-inner { padding: 2rem 0; }
+  .section-eyebrow { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.25rem; }
+  .section-number { width:28px; height:28px; border-radius:50%; background:var(--navy); color:var(--gold); font-size:0.78rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .section-label { font-size:0.72rem; font-weight:700; letter-spacing:2.5px; text-transform:uppercase; color:var(--text-muted); }
+  .section-divider { flex:1; height:0.5px; background:var(--border); }
+  .section-body p { font-size:1rem; color:var(--text-secondary); line-height:1.8; margin-bottom:1.1rem; }
+  .section-body p:last-child { margin-bottom: 0; }
+
+  /* SCRIPTURE COMPONENTS */
+  .scripture-opening {
+    margin-bottom: 2rem;
+    padding: 1.75rem 2rem;
+    background: var(--navy);
+    border-radius: 8px;
+    border-left: 3px solid var(--gold);
+  }
+  .scripture-mark { font-family:'Playfair Display',serif; font-size:2rem; color:var(--gold); line-height:0; vertical-align:-0.4em; margin-right:0.1em; }
+  .scripture-text { font-family:'Playfair Display',serif; font-style:italic; font-size:1.15rem; color:rgba(255,255,255,0.85); line-height:1.6; display:inline; }
+  .scripture-ref { display:block; font-size:0.78rem; font-weight:600; color:var(--gold); letter-spacing:1.5px; text-transform:uppercase; margin-top:0.75rem; }
+
+  .scripture-callout {
+    margin: 1.5rem 0;
+    padding: 1.25rem 1.5rem;
+    background: var(--off-white);
+    border-left: 3px solid var(--gold);
+    border-radius: 0 8px 8px 0;
+  }
+  .sc-ref { font-size: 0.72rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 0.5rem; }
+  .scripture-callout p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: var(--text-primary); line-height: 1.6; margin: 0; }
+
+  /* NEW: WORD STUDY BOX */
+  .word-study {
+    margin: 1.5rem 0;
+    border: 1px solid var(--border-gold);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  .word-study-head {
+    background: var(--gold-pale);
+    padding: 0.6rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .ws-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+  .ws-term { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; color: var(--navy); }
+  .ws-transliteration { font-size: 0.82rem; color: var(--text-muted); font-style: italic; }
+  .ws-strongs { margin-left: auto; font-size: 0.68rem; font-weight: 600; color: var(--text-muted); background: white; border: 1px solid var(--border-gold); padding: 0.15rem 0.5rem; border-radius: 4px; }
+  .word-study-body { padding: 1rem 1.25rem; }
+  .ws-definitions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.75rem; }
+  .ws-def-chip {
+    padding: 0.2rem 0.6rem;
+    background: var(--navy);
+    color: var(--gold-light);
+    border-radius: 20px;
+    font-size: 0.73rem;
+    font-weight: 500;
+  }
+  .ws-def-chip.primary { background: var(--gold); color: var(--navy); font-weight: 700; }
+  .ws-note { font-size: 0.85rem; color: var(--text-secondary); line-height: 1.6; }
+  .ws-note strong { color: var(--text-primary); }
+
+  /* NEW: CHURCH FATHERS QUOTE */
+  .patristic-quote {
+    margin: 1.75rem 0;
+    padding: 1.25rem 1.5rem 1.25rem 1.75rem;
+    background: var(--navy);
+    border-radius: 8px;
+    position: relative;
+  }
+  .patristic-quote::before {
+    content: '\201C';
+    position: absolute;
+    top: -0.5rem;
+    left: 1rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 3rem;
+    color: var(--gold);
+    line-height: 1;
+    opacity: 0.6;
+  }
+  .patristic-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; }
+  .patristic-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.95rem; color: rgba(255,255,255,0.8); line-height: 1.7; margin-bottom: 0.75rem; }
+  .patristic-attribution { font-size: 0.75rem; color: rgba(255,255,255,0.4); }
+
+  /* NEW: COMMENTARY TOGGLE */
+  .commentary-toggle-wrap { margin: 1.25rem 0; }
+  .commentary-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.45rem 1rem;
+    border: 1px solid var(--border-gold);
+    border-radius: 20px;
+    background: var(--gold-pale);
+    color: var(--navy);
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+  .commentary-toggle:hover { background: var(--gold-light); }
+  .commentary-toggle .ct-icon { font-size: 0.85rem; }
+  .commentary-panel {
+    display: none;
+    margin-top: 0.75rem;
+    padding: 1.25rem;
+    background: var(--white);
+    border: 1px solid var(--border-gold);
+    border-radius: 8px;
+  }
+  .commentary-panel.open { display: block; }
+  .commentary-panel-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+  .commentary-panel p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.7; margin-bottom: 0.75rem; }
+  .commentary-panel p:last-child { margin-bottom: 0; }
+  .commentary-ccc {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.25rem 0.65rem;
+    background: var(--navy);
+    color: var(--gold);
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 600;
+  }
+
+  /* NEW: LECTIONARY TIE-IN */
+  .lectionary-tie {
+    margin: 1.5rem 0;
+    padding: 0.75rem 1rem;
+    background: var(--green-light);
+    border-left: 3px solid var(--green);
+    border-radius: 0 6px 6px 0;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  .lect-tie-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 0.1rem; }
+  .lect-tie-body { }
+  .lect-tie-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--green); margin-bottom: 0.2rem; }
+  .lect-tie-text { font-size: 0.82rem; color: #2d5a45; line-height: 1.5; }
+
+  /* KEY WORD BOX */
+  .key-word-box {
+    margin: 1.5rem 0;
+    padding: 1.25rem 1.5rem;
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+  }
+  .key-word-box h4 { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 600; color: var(--navy); margin-bottom: 0.5rem; }
+  .key-word-box p { font-size: 0.88rem; color: var(--text-secondary); line-height: 1.65; margin: 0; }
+
+  /* REFLECTION */
+  .reflection-block {
+    margin: 1.75rem 0;
+    padding: 1.5rem;
+    background: var(--purple-light);
+    border-radius: 8px;
+    border-left: 3px solid var(--purple);
+  }
+  .reflection-block h4 { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--purple); margin-bottom: 0.5rem; }
+  .reflection-prompt { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.95rem; color: var(--text-primary); line-height: 1.65; margin-bottom: 0.85rem; }
+  .reflection-textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 0.75rem 1rem;
+    border: 1px solid rgba(74,44,107,0.2);
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    color: var(--text-primary);
+    background: white;
+    resize: vertical;
+    line-height: 1.6;
+  }
+  .reflection-textarea:focus { outline: none; border-color: var(--purple); }
+  .reflection-save {
+    margin-top: 0.5rem;
+    padding: 0.4rem 1rem;
+    background: var(--purple);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+  }
+
+  /* CONTINUE BTN */
+  .continue-btn-wrap { padding: 1rem 0 0; }
+  .continue-btn {
+    padding: 0.65rem 1.5rem;
+    background: var(--navy);
+    color: var(--gold);
+    border: none;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+  }
+  .continue-btn:hover { background: var(--gold); color: var(--navy); }
+
+  /* BOTTOM NAV */
+  .module-bottom-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    position: sticky;
+    bottom: 0;
+  }
+  .nav-btn { padding: 0.6rem 1.25rem; border-radius: 6px; font-size: 0.82rem; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; }
+  .nav-btn:not(.primary) { background: var(--off-white); color: var(--text-secondary); }
+  .nav-btn.primary { background: var(--gold); color: var(--navy); }
+
+  /* ADD TO PLAN BUTTON */
+  .add-to-plan-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    border: 1.5px solid var(--border-gold);
+    border-radius: 20px;
+    background: transparent;
+    color: var(--gold);
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.2s;
+  }
+  .add-to-plan-btn:hover { background: rgba(212,165,116,0.1); }
+</style>
+</head>
+<body>
+
+<div class="mockup-banner">MOCKUP — Bible Study Module (New Format) — Not Production</div>
+
+<header class="site-header">
+  <a href="#" class="site-logo">CRUX</a>
+  <nav><ul class="site-nav">
+    <li><a href="#">My Account</a></li>
+    <li><a href="#">Bible Study</a></li>
+    <li><a href="#">Home</a></li>
+  </ul></nav>
+</header>
+
+<div class="module-hero">
+  <div class="module-track">Bible Study — Letter to the Romans</div>
+  <h1 class="module-title">Romans</h1>
+  <p class="module-subtitle">Paul's most complete account of the Gospel</p>
+  <div class="module-meta">
+    <span>&#9679; 10 sections</span>
+    <span>&#9679; 6 word studies</span>
+    <span>&#9679; 4 Church Fathers</span>
+    <span>&#9679; 5 reflection prompts</span>
+  </div>
+</div>
+
+<!-- NEW: COLLAPSIBLE BOOK CONTEXT BAR -->
+<div class="book-context-bar">
+  <div class="book-context-toggle" onclick="toggleContext()">
+    <span>Book Overview: Author, Date &amp; Context</span>
+    <span class="context-chevron" id="ctxChevron">&#9660;</span>
+  </div>
+  <div class="book-context-content" id="ctxContent">
+    <div class="context-grid">
+      <div class="context-item">
+        <div class="context-label">Author</div>
+        <div class="context-value">Paul of Tarsus, with Tertius as secretary (16:22)</div>
+      </div>
+      <div class="context-item">
+        <div class="context-label">Written</div>
+        <div class="context-value">c. AD 56–58, from Corinth</div>
+      </div>
+      <div class="context-item">
+        <div class="context-label">Audience</div>
+        <div class="context-value">Mixed Jewish and Gentile Christian community in Rome, whom Paul had not yet visited</div>
+      </div>
+      <div class="context-item">
+        <div class="context-label">Original language</div>
+        <div class="context-value">Koine Greek — the common trade language of the Roman Empire</div>
+      </div>
+      <div class="context-item">
+        <div class="context-label">Genre</div>
+        <div class="context-value">Epistle (formal letter), likely intended for public reading in the community</div>
+      </div>
+      <div class="context-item">
+        <div class="context-label">Key themes</div>
+        <div class="context-value">Justification, faith, the law, Jew &amp; Gentile, the Spirit, eschatology</div>
+      </div>
+    </div>
+    <div class="context-note">
+      Romans is almost universally considered Paul's most theologically comprehensive letter. Martin Luther's rediscovery of Romans 1:17 sparked the Reformation. Augustine read it in a garden and was converted. John Wesley heard it read aloud and felt his heart "strangely warmed." Karl Barth's commentary on Romans (1919) is said to have "fallen like a bomb on the playground of the theologians." It is not a simple letter.
+    </div>
+  </div>
+</div>
+
+<div class="progress-bar">
+  <span class="progress-label">Progress</span>
+  <div class="progress-track"><div class="progress-fill"></div></div>
+  <span class="progress-count">2 of 10 sections complete</span>
+</div>
+
+<div class="module-layout">
+<main class="module-content">
+
+  <div class="scripture-opening">
+    <span class="scripture-mark">&ldquo;</span>
+    <p class="scripture-text">For I am not ashamed of the gospel, for it is the power of God for salvation to everyone who believes, to the Jew first and also to the Greek. For in it the righteousness of God is revealed from faith for faith, as it is written, "The righteous shall live by faith."</p>
+    <span class="scripture-ref">Romans 1:16–17 (RSV-CE)</span>
+  </div>
+
+  <!-- SECTION 1 — COMPLETE -->
+  <div class="module-section" id="s1">
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number" style="background:var(--gold);color:var(--navy);">&#10003;</div>
+        <span class="section-label">Why Romans?</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Paul had never been to Rome when he wrote this letter. He was planning to visit. He wanted to use the city as a launching point for a mission to Spain, and before he arrived, he wanted them to know exactly what he believed. So he wrote them a letter. What came out is the most systematic account of his theology in the entire New Testament.</p>
+        <p>Romans is not primarily a letter about moral behavior. It is a letter about one question: How can a human being be right with God? Paul's answer is not what most people expect.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- SECTION 2 — ACTIVE with all new components -->
+  <div class="module-section" id="s2">
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">2</div>
+        <span class="section-label">The Righteousness of God (1:16–17)</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Romans 1:17 is the hinge on which the entire letter turns. Paul quotes the prophet Habakkuk: "The righteous shall live by faith." But the phrase that matters most is what comes right before it: "the righteousness of God is revealed."</p>
+
+        <div class="scripture-callout">
+          <span class="sc-ref">Romans 1:17</span>
+          <p>"For in it the righteousness of God is revealed from faith for faith, as it is written, 'The righteous shall live by faith.'"</p>
+        </div>
+
+        <!-- NEW: WORD STUDY -->
+        <div class="word-study">
+          <div class="word-study-head">
+            <span class="ws-label">Word Study</span>
+            <span class="ws-term">δικαιοσύνη</span>
+            <span class="ws-transliteration">dikaiosynē</span>
+            <span class="ws-strongs">G1343</span>
+          </div>
+          <div class="word-study-body">
+            <div class="ws-definitions">
+              <span class="ws-def-chip primary">righteousness</span>
+              <span class="ws-def-chip">justice</span>
+              <span class="ws-def-chip">right standing</span>
+              <span class="ws-def-chip">covenant faithfulness</span>
+            </div>
+            <p class="ws-note">Most English translations say "righteousness," but the Greek means something more specific: the condition of being in right standing, of having your status declared correct. Think of it less as a personality trait and more as a legal verdict. <strong>In a Jewish context, it is also tied to covenant faithfulness</strong>, both God's faithfulness to his promises and the human response that God accepts. The Catholic tradition insists this righteousness is not merely declared but actually given, communicated through grace. That distinction, imputed vs. infused, was the fault line of the Reformation.</p>
+          </div>
+        </div>
+
+        <p>When Paul says "the righteousness of God is revealed," he is saying that in the Gospel, God's covenant faithfulness becomes visible. God is shown to be the kind of God who keeps his promises, even when his people have failed to keep theirs. That is not first a moral claim. It is a claim about what kind of God exists.</p>
+
+        <!-- NEW: COMMENTARY TOGGLE -->
+        <div class="commentary-toggle-wrap">
+          <button class="commentary-toggle" onclick="toggleCommentary('c2a')">
+            <span class="ct-icon">📖</span> Catholic Commentary on 1:17
+          </button>
+          <div class="commentary-panel" id="c2a">
+            <div class="commentary-panel-label">Commentary</div>
+            <p>The Catholic tradition reads Romans 1:17 as a declaration that God's saving justice, his dikaiosynē, is both given and transformative. The Council of Trent (Session VI) engaged Paul's language directly, insisting that justification involves an interior renewal, not merely a legal declaration. That is where Catholic interpretation parts ways with much of Protestant exegesis, which tends to read "righteousness" as forensic acquittal alone.</p>
+            <p>Scott Hahn notes that the phrase "from faith for faith" (ek pisteōs eis pistin) echoes the structure of the covenant: God's faithfulness calls forth human faithfulness in response. The righteousness revealed in the Gospel is not the standard God holds us to. It is the gift God gives to those who cannot meet that standard.</p>
+            <span class="commentary-ccc">CCC 1987–1995</span>
+          </div>
+        </div>
+
+        <!-- NEW: CHURCH FATHERS -->
+        <div class="patristic-quote">
+          <div class="patristic-label">Church Fathers</div>
+          <p class="patristic-text">For he did not say, "the righteousness of God is revealed," but "is being revealed," showing that the revelation is still in progress, and that this means not a single past event but a continuing disclosure of God's fidelity to his people.</p>
+          <div class="patristic-attribution">St. John Chrysostom — <em>Homilies on Romans</em>, Homily II (c. AD 390)</div>
+        </div>
+
+        <!-- NEW: LECTIONARY TIE-IN -->
+        <div class="lectionary-tie">
+          <div class="lect-tie-icon">🕯️</div>
+          <div class="lect-tie-body">
+            <div class="lect-tie-label">Lectionary Connection</div>
+            <div class="lect-tie-text">Romans 1:16–17 appears in the Roman Rite on the <strong>10th Sunday in Ordinary Time (Year B)</strong>. The next time this passage is proclaimed at Mass, you will have already studied it. That changes how you hear it.</div>
+          </div>
+        </div>
+
+        <div class="key-word-box">
+          <h4>Habakkuk 2:4 — Why Quote the Old Testament Here?</h4>
+          <p>Paul quotes "The righteous shall live by faith" from the prophet Habakkuk, who wrote during the Babylonian exile, when Israel had been handed over to a pagan empire and God's faithfulness seemed in serious doubt. Paul quotes this deliberately. He is saying the Gospel is the answer to the question Habakkuk was asking. The same God who was faithful then is faithful now, and the proof is the resurrection.</p>
+        </div>
+
+        <!-- REFLECTION -->
+        <div class="reflection-block">
+          <h4>Reflect</h4>
+          <p class="reflection-prompt">Augustine said that when he read Romans, he felt "a light of certainty flood his heart." Have you ever read something that changed how you understood everything else? A book, a passage, a single sentence? What was it, and what shifted?</p>
+          <textarea class="reflection-textarea" placeholder="Your thoughts are saved to your account..."></textarea>
+          <button class="reflection-save">Save to Journal</button>
+        </div>
+      </div>
+    </div>
+    <div class="continue-btn-wrap"><button class="continue-btn">Continue &#8594;</button></div>
+  </div>
+
+  <div class="section-sep"></div>
+
+  <!-- SECTION 3 — LOCKED -->
+  <div class="module-section locked" id="s3">
+    <div class="lock-overlay"><div>&#128274;</div><span>Complete the previous section to unlock.</span></div>
+    <div class="section-inner">
+      <div class="section-eyebrow">
+        <div class="section-number">3</div>
+        <span class="section-label">All Have Sinned (3:9–20)</span>
+        <div class="section-divider"></div>
+      </div>
+      <div class="section-body">
+        <p>Romans 3:9–20 is the darkest passage in Paul's letters. He closes every exit: no one is righteous, no one understands, no one seeks God. The law itself is not the solution. It is, says Paul, the indictment.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<!-- SIDEBAR -->
+<aside class="module-sidebar">
+
+  <!-- LECTIONARY WIDGET — free API -->
+  <div class="lectionary-widget">
+    <div class="lect-label">Today's Mass Reading</div>
+    <div class="lect-date">Tuesday, April 22</div>
+    <p class="lect-passage">"Come to me, all you who labor and are burdened, and I will give you rest."</p>
+    <div class="lect-ref">Matthew 11:28–30</div>
+    <a href="#" class="lect-link">Read full readings →</a>
+    <div class="lect-api-note">Via catholicapi.org (free, public)</div>
+  </div>
+
+  <!-- TABLE OF CONTENTS -->
+  <div class="sidebar-card">
+    <div class="sidebar-card-head">Sections</div>
+    <ul class="sidebar-toc">
+      <li><a href="#s1" class="active"><div class="toc-num done">&#10003;</div> Why Romans?</a></li>
+      <li><a href="#s2"><div class="toc-num">2</div> The Righteousness of God</a></li>
+      <li><a href="#s3" style="opacity:0.4;pointer-events:none;"><div class="toc-num">3</div> All Have Sinned</a></li>
+      <li><a href="#s3" style="opacity:0.4;pointer-events:none;"><div class="toc-num">4</div> Justified by Faith</a></li>
+      <li><a href="#s3" style="opacity:0.4;pointer-events:none;"><div class="toc-num">5</div> Abraham as Model</a></li>
+      <li><a href="#s3" style="opacity:0.4;pointer-events:none;"><div class="toc-num">6</div> Life in the Spirit</a></li>
+    </ul>
+  </div>
+
+  <!-- RESOURCES -->
+  <div class="sidebar-card">
+    <div class="sidebar-card-head">Further Study</div>
+    <ul class="sidebar-resource-list">
+      <li><strong>Navarre Bible: Romans</strong> Scholarly Catholic commentary with Fathers and magisterium</li>
+      <li><strong>Scott Hahn — Romans</strong> Catholic Bible Dictionary entries on justification</li>
+      <li><strong>CCC 1987–2011</strong> Grace and Justification — the official teaching</li>
+      <li><strong>Council of Trent, Sess. VI</strong> The Church's definitive response on justification</li>
+    </ul>
+  </div>
+
+  <!-- ADD TO PLAN -->
+  <button class="add-to-plan-btn">&#43; Add to Study Plan</button>
+
+</aside>
+</div>
+
+<div class="module-bottom-nav">
+  <a href="#" class="nav-btn">&#8592; All Modules</a>
+  <button class="add-to-plan-btn" style="border-color:var(--border);color:var(--text-secondary);">&#43; Add to Plan</button>
+  <button class="nav-btn primary">Next Section &#8594;</button>
+</div>
+
+<script>
+function toggleContext() {
+  const content = document.getElementById('ctxContent');
+  const chevron = document.getElementById('ctxChevron');
+  content.classList.toggle('open');
+  chevron.classList.toggle('open');
+}
+
+function toggleCommentary(id) {
+  const panel = document.getElementById(id);
+  panel.classList.toggle('open');
+}
+
+// Open context on load for demo
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('ctxContent').classList.add('open');
+  document.getElementById('ctxChevron').classList.add('open');
+});
+</script>
+</body>
+</html>

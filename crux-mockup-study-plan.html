@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — Mockup: Study Plan Builder</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a1f36;
+    --navy-light: #252b47;
+    --navy-mid: #2e3555;
+    --gold: #d4a574;
+    --gold-light: #e8c9a0;
+    --gold-pale: #f5ead8;
+    --cream: #faf7f2;
+    --white: #ffffff;
+    --off-white: #f4f3ef;
+    --border: rgba(26,31,54,0.1);
+    --border-gold: rgba(212,165,116,0.3);
+    --text-primary: #1a1f36;
+    --text-secondary: #5a6080;
+    --text-muted: #8a90aa;
+    --green: #2d6a4f;
+    --green-light: #e8f5ee;
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--text-primary); line-height:1.7; font-size:15px; }
+
+  .mockup-banner {
+    background: #7c3aed;
+    color: white;
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .site-header {
+    background: var(--navy);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 28px;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  }
+  .site-logo { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; color:var(--gold); text-decoration:none; letter-spacing:4px; }
+  .site-nav { list-style:none; display:flex; gap:1.5rem; }
+  .site-nav a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:0.82rem; font-weight:500; }
+
+  .page-hero {
+    background: var(--navy);
+    padding: 3rem 2rem 2.5rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .page-hero::before {
+    content:'';
+    position:absolute;
+    inset:0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(212,165,116,0.1) 0%, transparent 70%);
+    pointer-events:none;
+  }
+  .page-track { font-size:0.68rem; font-weight:700; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:0.5rem; }
+  .page-title { font-family:'Playfair Display',serif; font-size:clamp(1.8rem,4vw,2.5rem); font-weight:700; color:var(--white); margin-bottom:0.4rem; }
+  .page-subtitle { font-family:'Playfair Display',serif; font-style:italic; font-size:1rem; color:rgba(255,255,255,0.5); }
+
+  /* STEP INDICATOR */
+  .step-indicator {
+    background: var(--navy-light);
+    border-bottom: 1px solid rgba(255,255,255,0.06);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0 1rem;
+  }
+  .step-dot {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .step-dot.done { background: var(--gold); color: var(--navy); }
+  .step-dot.active { background: var(--white); color: var(--navy); }
+  .step-dot.pending { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.3); }
+  .step-name { font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.5); }
+  .step-name.active { color: var(--gold); }
+  .step-connector { width: 40px; height: 1px; background: rgba(255,255,255,0.1); }
+  .step-connector.done { background: var(--gold); }
+
+  .builder-wrapper {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* ====== VIEW A: MODULE SELECTION ====== */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  .view-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  .view-header h2 { font-family: 'Playfair Display', serif; font-size: 1.5rem; font-weight: 700; color: var(--navy); }
+  .view-header p { font-size: 0.85rem; color: var(--text-muted); margin-top: 0.25rem; }
+  .selected-count {
+    background: var(--navy);
+    color: var(--gold);
+    padding: 0.3rem 0.85rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  /* FILTER TABS */
+  .filter-tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .filter-tab {
+    padding: 0.35rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    background: var(--white);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .filter-tab.active { background: var(--navy); color: var(--gold); border-color: var(--navy); }
+  .filter-tab:hover:not(.active) { border-color: var(--navy); color: var(--navy); }
+
+  /* MODULE GRID */
+  .module-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .plan-card {
+    background: var(--white);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    padding: 1.25rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+    user-select: none;
+  }
+  .plan-card:hover { border-color: var(--gold-light); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+  .plan-card.selected { border-color: var(--gold); background: var(--gold-pale); }
+  .plan-card.selected .plan-check { opacity: 1; }
+
+  .plan-check {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    width: 22px;
+    height: 22px;
+    background: var(--gold);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    color: var(--navy);
+    font-weight: 700;
+    opacity: 0;
+    transition: opacity 0.15s;
+  }
+
+  .plan-card-icon { font-size: 1.5rem; margin-bottom: 0.5rem; }
+  .plan-card-book { font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.25rem; }
+  .plan-card-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; line-height: 1.3; }
+  .plan-card-meta { font-size: 0.75rem; color: var(--text-muted); display: flex; gap: 0.5rem; flex-wrap: wrap; }
+  .plan-card-tag {
+    padding: 0.15rem 0.5rem;
+    background: var(--off-white);
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+  }
+  .plan-card.selected .plan-card-tag { background: rgba(212,165,116,0.2); }
+  .plan-card-badge {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.65rem;
+    font-weight: 700;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+  }
+  .badge-live { background: var(--green-light); color: var(--green); }
+  .badge-soon { background: var(--off-white); color: var(--text-muted); }
+
+  /* STICKY BOTTOM */
+  .sticky-bottom {
+    position: sticky;
+    bottom: 0;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  .sticky-bottom-left { font-size: 0.85rem; color: var(--text-secondary); }
+  .sticky-bottom-left strong { color: var(--navy); }
+  .btn { padding: 0.65rem 1.5rem; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; border: none; transition: all 0.2s; }
+  .btn-primary { background: var(--gold); color: var(--navy); }
+  .btn-primary:hover { background: var(--gold-light); }
+  .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+  .btn-ghost { background: var(--off-white); color: var(--text-secondary); }
+
+  /* ====== VIEW B: CONFIGURE ====== */
+  .configure-layout {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    align-items: start;
+  }
+
+  .form-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 1.5rem;
+  }
+  .form-card h3 { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--navy); margin-bottom: 1.25rem; }
+  .form-group { margin-bottom: 1.25rem; }
+  .form-label { display: block; font-size: 0.75rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.4rem; }
+  .form-input {
+    width: 100%;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    background: var(--off-white);
+    transition: border-color 0.15s;
+  }
+  .form-input:focus { outline: none; border-color: var(--gold); background: var(--white); }
+
+  .pace-options { display: flex; flex-direction: column; gap: 0.5rem; }
+  .pace-option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: 0.85rem 1rem;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .pace-option:hover { border-color: var(--gold-light); }
+  .pace-option.selected { border-color: var(--gold); background: var(--gold-pale); }
+  .pace-radio {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid var(--border);
+    flex-shrink: 0;
+    margin-top: 0.15rem;
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .pace-option.selected .pace-radio { border-color: var(--gold); background: var(--gold); }
+  .pace-option.selected .pace-radio::after { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--navy); }
+  .pace-title { font-weight: 600; font-size: 0.88rem; color: var(--navy); }
+  .pace-desc { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.15rem; }
+  .pace-estimate { font-size: 0.72rem; font-weight: 600; color: var(--gold); margin-top: 0.2rem; }
+
+  /* SELECTED MODULES PREVIEW */
+  .selected-list { display: flex; flex-direction: column; gap: 0.5rem; }
+  .selected-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.6rem 0.85rem;
+    background: var(--off-white);
+    border-radius: 8px;
+    font-size: 0.85rem;
+  }
+  .selected-item-left { display: flex; align-items: center; gap: 0.6rem; }
+  .selected-item-icon { font-size: 1rem; }
+  .selected-item-name { font-weight: 600; color: var(--navy); }
+  .selected-item-sections { font-size: 0.72rem; color: var(--text-muted); }
+  .remove-btn { width: 20px; height: 20px; border-radius: 50%; background: transparent; border: 1px solid var(--border); color: var(--text-muted); font-size: 0.7rem; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.15s; }
+  .remove-btn:hover { background: #fee2e2; border-color: #fca5a5; color: #dc2626; }
+
+  /* ====== VIEW C: PLAN DETAIL ====== */
+  .plan-detail-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 2rem;
+    margin-bottom: 2rem;
+    flex-wrap: wrap;
+  }
+  .plan-name-display { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: var(--navy); }
+  .plan-stats { display: flex; gap: 1.5rem; margin-top: 0.5rem; flex-wrap: wrap; }
+  .plan-stat { }
+  .plan-stat-value { font-size: 1.5rem; font-weight: 700; color: var(--navy); font-family: 'Playfair Display', serif; }
+  .plan-stat-label { font-size: 0.68rem; font-weight: 600; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-muted); }
+
+  .plan-share-box {
+    background: var(--navy);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    min-width: 220px;
+  }
+  .share-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.35rem; }
+  .share-code { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--white); letter-spacing: 4px; }
+  .share-note { font-size: 0.72rem; color: rgba(255,255,255,0.4); margin-top: 0.3rem; }
+  .copy-btn {
+    margin-top: 0.6rem;
+    padding: 0.35rem 0.85rem;
+    background: var(--gold);
+    color: var(--navy);
+    border: none;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .plan-schedule {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .week-block {
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 1rem;
+  }
+  .week-header {
+    background: var(--navy);
+    padding: 0.65rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .week-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+  .week-dates { font-size: 0.72rem; color: rgba(255,255,255,0.4); }
+  .week-sessions { }
+  .session-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    background: var(--white);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .session-row:last-child { border-bottom: none; }
+  .session-row:hover { background: var(--off-white); }
+  .session-day { width: 70px; font-size: 0.72rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; flex-shrink: 0; }
+  .session-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+  .session-dot.done { background: var(--gold); }
+  .session-dot.today { background: var(--green); box-shadow: 0 0 0 3px rgba(45,106,79,0.2); }
+  .session-content { flex: 1; }
+  .session-module { font-weight: 600; font-size: 0.88rem; color: var(--navy); }
+  .session-section { font-size: 0.78rem; color: var(--text-muted); }
+  .session-duration { font-size: 0.72rem; color: var(--text-muted); white-space: nowrap; }
+  .session-status {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.2rem 0.55rem;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+  .status-done { background: var(--green-light); color: var(--green); }
+  .status-today { background: rgba(45,106,79,0.15); color: var(--green); }
+  .status-upcoming { background: var(--off-white); color: var(--text-muted); }
+</style>
+</head>
+<body>
+
+<div class="mockup-banner">MOCKUP — Bible Study Plan Builder — Not Production</div>
+
+<header class="site-header">
+  <a href="#" class="site-logo">CRUX</a>
+  <nav><ul class="site-nav">
+    <li><a href="#">My Account</a></li>
+    <li><a href="#">Bible Study</a></li>
+    <li><a href="#">Home</a></li>
+  </ul></nav>
+</header>
+
+<div class="page-hero">
+  <div class="page-track">Bible Study</div>
+  <h1 class="page-title">Build Your Study Plan</h1>
+  <p class="page-subtitle">Choose your books, set your pace, and commit to a schedule</p>
+</div>
+
+<!-- STEP INDICATOR (outside hero so it's sticky-able) -->
+<div style="background:var(--navy-light);border-bottom:1px solid rgba(255,255,255,0.06);padding:1rem 0;">
+  <div class="step-indicator">
+    <div class="step">
+      <div class="step-dot done">&#10003;</div>
+      <span class="step-name">Select Modules</span>
+    </div>
+    <div class="step-connector done"></div>
+    <div class="step">
+      <div class="step-dot active">2</div>
+      <span class="step-name active">Set Pace</span>
+    </div>
+    <div class="step-connector"></div>
+    <div class="step">
+      <div class="step-dot pending">3</div>
+      <span class="step-name">Your Plan</span>
+    </div>
+  </div>
+</div>
+
+<div class="builder-wrapper">
+
+  <!-- ====== VIEW A: SELECT ====== -->
+  <div class="view" id="viewA">
+    <div class="view-header">
+      <div>
+        <h2>Choose Your Books</h2>
+        <p>Select as many as you like. You can change them later.</p>
+      </div>
+      <div class="selected-count" id="selCount">0 selected</div>
+    </div>
+
+    <div class="filter-tabs">
+      <button class="filter-tab active">All</button>
+      <button class="filter-tab">Gospels</button>
+      <button class="filter-tab">Letters</button>
+      <button class="filter-tab">Old Testament</button>
+      <button class="filter-tab">Wisdom &amp; Psalms</button>
+      <button class="filter-tab">Prophecy</button>
+    </div>
+
+    <div class="module-grid">
+      <div class="plan-card selected" onclick="toggleCard(this)">
+        <div class="plan-check">&#10003;</div>
+        <div class="plan-card-icon">&#9997;&#65039;</div>
+        <div class="plan-card-book">Letter</div>
+        <div class="plan-card-title">Romans</div>
+        <div class="plan-card-meta">
+          <span class="plan-card-tag">10 sections</span>
+          <span class="plan-card-tag">~6 hrs</span>
+        </div>
+        <div class="plan-card-badge badge-live">Available Now</div>
+      </div>
+
+      <div class="plan-card selected" onclick="toggleCard(this)">
+        <div class="plan-check">&#10003;</div>
+        <div class="plan-card-icon">&#128336;</div>
+        <div class="plan-card-book">Gospel</div>
+        <div class="plan-card-title">Gospel of John</div>
+        <div class="plan-card-meta">
+          <span class="plan-card-tag">12 sections</span>
+          <span class="plan-card-tag">~7 hrs</span>
+        </div>
+        <div class="plan-card-badge badge-live">Available Now</div>
+      </div>
+
+      <div class="plan-card" onclick="toggleCard(this)">
+        <div class="plan-check">&#10003;</div>
+        <div class="plan-card-icon">&#128214;</div>
+        <div class="plan-card-book">History</div>
+        <div class="plan-card-title">Acts of the Apostles</div>
+        <div class="plan-card-meta">
+          <span class="plan-card-tag">8 sections</span>
+          <span class="plan-card-tag">~5 hrs</span>
+        </div>
+        <div class="plan-card-badge badge-live">Available Now</div>
+      </div>
+
+      <div class="plan-card" onclick="toggleCard(this)">
+        <div class="plan-check">&#10003;</div>
+        <div class="plan-card-icon">&#127960;&#65039;</div>
+        <div class="plan-card-book">Old Testament</div>
+        <div class="plan-card-title">Genesis 1–11</div>
+        <div class="plan-card-meta">
+          <span class="plan-card-tag">9 sections</span>
+          <span class="plan-card-tag">~5 hrs</span>
+        </div>
+        <div class="plan-card-badge badge-live">Available Now</div>
+      </div>
+
+      <div class="plan-card" onclick="toggleCard(this)">
+        <div class="plan-check">&#10003;</div>
+        <div class="plan-card-icon">&#127925;</div>
+        <div class="plan-card-book">Wisdom</div>
+        <div class="plan-card-title">Psalms: Selected</div>
+        <div class="plan-card-meta">
+          <span class="plan-card-tag">8 sections</span>
+          <span class="plan-card-tag">~4 hrs</span>
+        </div>
+        <div class="plan-card-badge badge-live">Available Now</div>
+      </div>
+
+      <div class="plan-card" onclick="toggleCard(this)">
+        <div class="plan-check">&#10003;</div>
+        <div class="plan-card-icon">&#9812;&#65039;</div>
+        <div class="plan-card-book">Gospel</div>
+        <div class="plan-card-title">Gospel of Mark</div>
+        <div class="plan-card-meta">
+          <span class="plan-card-tag">10 sections</span>
+          <span class="plan-card-tag">~5 hrs</span>
+        </div>
+        <div class="plan-card-badge badge-live">Available Now</div>
+      </div>
+
+      <div class="plan-card" style="opacity:0.6;cursor:default;" onclick="return;">
+        <div class="plan-card-icon">&#128680;</div>
+        <div class="plan-card-book">Prophecy</div>
+        <div class="plan-card-title">Revelation</div>
+        <div class="plan-card-meta">
+          <span class="plan-card-tag">12 sections</span>
+        </div>
+        <div class="plan-card-badge badge-soon">Coming Soon</div>
+      </div>
+
+      <div class="plan-card" style="opacity:0.6;cursor:default;" onclick="return;">
+        <div class="plan-card-icon">&#128578;</div>
+        <div class="plan-card-book">Old Testament</div>
+        <div class="plan-card-title">Proverbs &amp; Wisdom</div>
+        <div class="plan-card-meta">
+          <span class="plan-card-tag">8 sections</span>
+        </div>
+        <div class="plan-card-badge badge-soon">Coming Soon</div>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:0.5rem;">
+      <button class="btn btn-primary" onclick="showView('B')">Next: Set Your Pace &#8594;</button>
+    </div>
+  </div>
+
+  <!-- ====== VIEW B: CONFIGURE ====== -->
+  <div class="view active" id="viewB">
+    <div class="view-header">
+      <div>
+        <h2>Set Your Pace</h2>
+        <p>Be realistic. A slow plan you finish beats a fast one you abandon.</p>
+      </div>
+    </div>
+
+    <div class="configure-layout">
+      <div>
+        <div class="form-card" style="margin-bottom:1.5rem;">
+          <h3>Name Your Plan</h3>
+          <div class="form-group">
+            <label class="form-label">Plan Name</label>
+            <input type="text" class="form-input" value="Lent 2026 — Paul &amp; John" />
+          </div>
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label">Start Date</label>
+            <input type="date" class="form-input" value="2026-04-22" />
+          </div>
+        </div>
+
+        <div class="form-card">
+          <h3>Choose Your Pace</h3>
+          <div class="pace-options">
+            <div class="pace-option" onclick="selectPace(this)">
+              <div class="pace-radio"></div>
+              <div>
+                <div class="pace-title">Daily</div>
+                <div class="pace-desc">One section per day, seven days a week</div>
+                <div class="pace-estimate">2 selected books &#8594; ~22 days</div>
+              </div>
+            </div>
+            <div class="pace-option selected" onclick="selectPace(this)">
+              <div class="pace-radio"><span style="width:6px;height:6px;border-radius:50%;background:var(--navy);display:block;"></span></div>
+              <div>
+                <div class="pace-title">Twice a week</div>
+                <div class="pace-desc">Two sessions per week, your choice of days</div>
+                <div class="pace-estimate">2 selected books &#8594; ~11 weeks</div>
+              </div>
+            </div>
+            <div class="pace-option" onclick="selectPace(this)">
+              <div class="pace-radio"></div>
+              <div>
+                <div class="pace-title">Weekly</div>
+                <div class="pace-desc">One section per week — good for group study</div>
+                <div class="pace-estimate">2 selected books &#8594; ~22 weeks</div>
+              </div>
+            </div>
+            <div class="pace-option" onclick="selectPace(this)">
+              <div class="pace-radio"></div>
+              <div>
+                <div class="pace-title">Custom</div>
+                <div class="pace-desc">Set a target completion date and we'll work backwards</div>
+                <div class="pace-estimate">Set your own end date</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h3>Your Selection</h3>
+        <div class="selected-list">
+          <div class="selected-item">
+            <div class="selected-item-left">
+              <span class="selected-item-icon">&#9997;&#65039;</span>
+              <div>
+                <div class="selected-item-name">Romans</div>
+                <div class="selected-item-sections">10 sections</div>
+              </div>
+            </div>
+            <button class="remove-btn">&#10005;</button>
+          </div>
+          <div class="selected-item">
+            <div class="selected-item-left">
+              <span class="selected-item-icon">&#128336;</span>
+              <div>
+                <div class="selected-item-name">Gospel of John</div>
+                <div class="selected-item-sections">12 sections</div>
+              </div>
+            </div>
+            <button class="remove-btn">&#10005;</button>
+          </div>
+          <button class="btn btn-ghost" style="width:100%;margin-top:0.5rem;font-size:0.8rem;" onclick="showView('A')">&#43; Add more modules</button>
+        </div>
+
+        <div style="margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--border);">
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:var(--text-muted);margin-bottom:0.4rem;">
+            <span>Total sections</span><strong style="color:var(--navy);">22</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:var(--text-muted);margin-bottom:0.4rem;">
+            <span>Est. time per session</span><strong style="color:var(--navy);">~25 min</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:var(--text-muted);margin-bottom:0.4rem;">
+            <span>Pace</span><strong style="color:var(--navy);">Twice a week</strong>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:0.82rem;color:var(--text-muted);margin-bottom:0;">
+            <span>Est. completion</span><strong style="color:var(--navy);">July 15, 2026</strong>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;margin-top:1.25rem;" onclick="showView('C')">Generate My Plan &#8594;</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== VIEW C: GENERATED PLAN ====== -->
+  <div class="view" id="viewC">
+    <div class="plan-detail-header">
+      <div>
+        <div style="font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:0.4rem;">Your Study Plan</div>
+        <div class="plan-name-display">Lent 2026 — Paul &amp; John</div>
+        <div class="plan-stats">
+          <div class="plan-stat">
+            <div class="plan-stat-value">22</div>
+            <div class="plan-stat-label">Sessions</div>
+          </div>
+          <div class="plan-stat">
+            <div class="plan-stat-value">11</div>
+            <div class="plan-stat-label">Weeks</div>
+          </div>
+          <div class="plan-stat">
+            <div class="plan-stat-value">2</div>
+            <div class="plan-stat-label">Books</div>
+          </div>
+          <div class="plan-stat">
+            <div class="plan-stat-value">36%</div>
+            <div class="plan-stat-label">Complete</div>
+          </div>
+        </div>
+      </div>
+      <div class="plan-share-box">
+        <div class="share-label">Share this plan</div>
+        <div class="share-code">CRUX-7XM4</div>
+        <div class="share-note">Friends can join your plan with this code</div>
+        <button class="copy-btn">Copy Code</button>
+      </div>
+    </div>
+
+    <div class="plan-schedule">
+
+      <div class="week-block">
+        <div class="week-header">
+          <span class="week-label">Week 1</span>
+          <span class="week-dates">April 22 – April 28</span>
+        </div>
+        <div class="week-sessions">
+          <div class="session-row">
+            <div class="session-day">Tuesday</div>
+            <div class="session-dot done"></div>
+            <div class="session-content">
+              <div class="session-module">Romans</div>
+              <div class="session-section">§1 — Why Romans?</div>
+            </div>
+            <div class="session-duration">~20 min</div>
+            <div class="session-status status-done">Done</div>
+          </div>
+          <div class="session-row">
+            <div class="session-day">Thursday</div>
+            <div class="session-dot done"></div>
+            <div class="session-content">
+              <div class="session-module">Romans</div>
+              <div class="session-section">§2 — The Righteousness of God</div>
+            </div>
+            <div class="session-duration">~30 min</div>
+            <div class="session-status status-done">Done</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-block">
+        <div class="week-header">
+          <span class="week-label">Week 2</span>
+          <span class="week-dates">April 29 – May 5</span>
+        </div>
+        <div class="week-sessions">
+          <div class="session-row" style="background:var(--green-light);">
+            <div class="session-day">Tuesday</div>
+            <div class="session-dot today"></div>
+            <div class="session-content">
+              <div class="session-module">Romans</div>
+              <div class="session-section">§3 — All Have Sinned</div>
+            </div>
+            <div class="session-duration">~25 min</div>
+            <div class="session-status status-today">Today</div>
+          </div>
+          <div class="session-row">
+            <div class="session-day">Thursday</div>
+            <div class="session-dot"></div>
+            <div class="session-content">
+              <div class="session-module">Romans</div>
+              <div class="session-section">§4 — Justified by Faith</div>
+            </div>
+            <div class="session-duration">~30 min</div>
+            <div class="session-status status-upcoming">Upcoming</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-block">
+        <div class="week-header">
+          <span class="week-label">Week 3 – 5</span>
+          <span class="week-dates">May 6 – May 26</span>
+        </div>
+        <div class="week-sessions">
+          <div class="session-row">
+            <div class="session-day">Various</div>
+            <div class="session-dot"></div>
+            <div class="session-content">
+              <div class="session-module">Romans</div>
+              <div class="session-section">§5–10 — Abraham, the Spirit, Israel &amp; the Gentiles, Doxology</div>
+            </div>
+            <div class="session-duration">6 sessions</div>
+            <div class="session-status status-upcoming">Upcoming</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="week-block">
+        <div class="week-header">
+          <span class="week-label">Weeks 6 – 11</span>
+          <span class="week-dates">May 27 – July 15</span>
+        </div>
+        <div class="week-sessions">
+          <div class="session-row">
+            <div class="session-day">Various</div>
+            <div class="session-dot"></div>
+            <div class="session-content">
+              <div class="session-module">Gospel of John</div>
+              <div class="session-section">§1–12 — The Word, Signs, the Bread of Life, the Farewell Discourse, the Passion &amp; Resurrection</div>
+            </div>
+            <div class="session-duration">12 sessions</div>
+            <div class="session-status status-upcoming">Upcoming</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div style="display:flex;gap:1rem;margin-top:1.5rem;flex-wrap:wrap;">
+      <button class="btn btn-primary">Start Today's Session &#8594;</button>
+      <button class="btn btn-ghost" onclick="showView('B')">&#9998; Edit Plan</button>
+      <button class="btn btn-ghost">&#128101; Share with a Group</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+function showView(id) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById('view' + id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function toggleCard(el) {
+  el.classList.toggle('selected');
+  const count = document.querySelectorAll('.plan-card.selected').length;
+  const el2 = document.getElementById('selCount');
+  if (el2) el2.textContent = count + ' selected';
+}
+
+function selectPace(el) {
+  document.querySelectorAll('.pace-option').forEach(p => p.classList.remove('selected'));
+  el.classList.add('selected');
+}
+</script>
+</body>
+</html>

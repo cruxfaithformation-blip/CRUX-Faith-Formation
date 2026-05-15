@@ -1,0 +1,639 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pack Reveal Test</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --navy:     #1a1f36;
+            --navy-mid: #242a45;
+            --gold:     #d4a574;
+            --gold-lt:  #e8c9a0;
+            --white:    #ffffff;
+            --border-g: rgba(212,165,116,0.25);
+        }
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--navy);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .launcher {
+            text-align: center;
+        }
+        .launch-label {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.35);
+            margin-bottom: 1.5rem;
+        }
+        .launch-btn {
+            background: var(--gold);
+            color: var(--navy);
+            border: none;
+            padding: 13px 28px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.7rem;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            font-weight: 700;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 0.4rem;
+            transition: opacity 0.2s;
+        }
+        .launch-btn:hover { opacity: 0.85; }
+        .launch-btn.secondary {
+            background: transparent;
+            color: rgba(255,255,255,0.55);
+            border: 1px solid rgba(255,255,255,0.15);
+        }
+
+        /* ── Reveal overlay (copied from crux-pack-store.html) ── */
+        .reveal-overlay {
+            position: fixed;
+            inset: 0;
+            background: linear-gradient(160deg, #0f1222 0%, #1a1f36 60%, #0d1528 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 400;
+            padding: 2rem 1rem;
+        }
+        .reveal-eyebrow {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 0.75rem;
+        }
+        .reveal-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--white);
+            margin-bottom: 0.4rem;
+        }
+        .reveal-hint {
+            font-size: 0.78rem;
+            color: rgba(255,255,255,0.35);
+            margin-bottom: 2.5rem;
+        }
+        .reveal-cards {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 2.5rem;
+            max-width: 700px;
+        }
+        .card-slot {
+            width: 110px;
+            height: 155px;
+            border-radius: 10px;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.15s;
+        }
+        .card-slot:hover:not(.revealed) { transform: translateY(-4px); }
+        .card-back-face, .card-front-face {
+            position: absolute;
+            inset: 0;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .card-back-face {
+            background: var(--navy-mid);
+            border: 1px solid var(--border-g);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.3rem;
+        }
+        .card-back-wordmark {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 1.1rem;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, var(--gold) 0%, var(--gold-lt) 50%, var(--gold) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .card-back-cross { font-size: 1.4rem; opacity: 0.3; }
+        .card-back-face.pulsing { animation: pulse-border 1.5s ease-in-out infinite; }
+        @keyframes pulse-border {
+            0%, 100% { border-color: rgba(212,165,116,0.25); }
+            50%       { border-color: rgba(212,165,116,0.65); }
+        }
+        .card-front-face {
+            display: none;
+            position: absolute;
+            inset: 0;
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid;
+        }
+        .card-slot.revealed .card-back-face { display: none; }
+        .card-slot.revealed .card-front-face { display: block; }
+        .card-slot.revealed { cursor: default; animation: reveal-pop 0.3s ease-out; }
+        @keyframes reveal-pop {
+            0%   { transform: scale(0.85); opacity: 0; }
+            60%  { transform: scale(1.05); }
+            100% { transform: scale(1);    opacity: 1; }
+        }
+        .card-slot.legendary .card-front-face {
+            background: linear-gradient(145deg, #2a1a05 0%, #3d2510 50%, #1e1204 100%);
+            border-color: var(--gold);
+            box-shadow: 0 0 24px rgba(212,165,116,0.45);
+        }
+        .card-slot.rare .card-front-face {
+            background: linear-gradient(145deg, #0d1e3a 0%, #152d56 50%, #0a1628 100%);
+            border-color: #6495ed;
+            box-shadow: 0 0 18px rgba(100,149,237,0.35);
+        }
+        .card-slot.uncommon .card-front-face {
+            background: linear-gradient(145deg, #1a1f36 0%, #242a45 100%);
+            border-color: rgba(255,255,255,0.18);
+        }
+
+        /* Saint portrait */
+        .cf-saint-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+        }
+        .cf-overlay {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            padding: 0.55rem 0.4rem 0.38rem;
+            background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.55) 55%, transparent 100%);
+        }
+        .cf-name {
+            display: block;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: #fff;
+            line-height: 1.2;
+            margin-bottom: 0.22rem;
+        }
+        .cf-bottom-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.25rem;
+        }
+        .cf-rarity-badge {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.43rem;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            padding: 1px 5px;
+            border-radius: 2px;
+            font-weight: 700;
+        }
+        .cf-view-link {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.42rem;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.65);
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .cf-view-link:hover { color: #fff; }
+        .cf-rarity-icon {
+            position: absolute;
+            top: 6px; right: 7px;
+            font-size: 0.9rem;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.95);
+            z-index: 2;
+        }
+        .cf-dupe-badge {
+            position: absolute;
+            top: 6px; left: 6px;
+            font-family: 'DM Mono', monospace;
+            font-size: 0.38rem;
+            letter-spacing: 0.7px;
+            text-transform: uppercase;
+            background: rgba(0,0,0,0.78);
+            color: var(--gold);
+            padding: 2px 5px;
+            border-radius: 3px;
+            z-index: 3;
+        }
+        .cf-text-fallback {
+            width: 100%; height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.35rem;
+            padding: 0.75rem;
+            text-align: center;
+        }
+        .cf-wordmark {
+            font-family: 'Playfair Display', serif;
+            font-weight: 900;
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            opacity: 0.5;
+        }
+        .cf-text-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.76rem;
+            font-weight: 700;
+            color: var(--white);
+            line-height: 1.25;
+        }
+        .legendary .cf-rarity-badge { background: rgba(212,165,116,0.22); color: var(--gold); border: 1px solid rgba(212,165,116,0.4); }
+        .rare .cf-rarity-badge { background: rgba(100,149,237,0.15); color: #8ab4f8; border: 1px solid rgba(100,149,237,0.3); }
+        .uncommon .cf-rarity-badge { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.45); border: 1px solid rgba(255,255,255,0.14); }
+        .legendary .cf-wordmark { color: var(--gold); }
+        .rare .cf-wordmark { color: #8ab4f8; }
+        .uncommon .cf-wordmark { color: rgba(255,255,255,0.35); }
+
+        /* Flash overlay */
+        .reveal-flash {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            z-index: 500;
+            opacity: 0;
+        }
+        @keyframes flash-gold {
+            0%   { opacity: 0; }
+            12%  { opacity: 0.65; }
+            100% { opacity: 0; }
+        }
+        @keyframes flash-blue {
+            0%   { opacity: 0; }
+            12%  { opacity: 0.5; }
+            100% { opacity: 0; }
+        }
+        .reveal-flash.flash-legendary {
+            background: radial-gradient(ellipse at center, rgba(212,175,80,0.72) 0%, transparent 60%);
+            animation: flash-gold 0.9s ease-out forwards;
+        }
+        .reveal-flash.flash-rare {
+            background: radial-gradient(ellipse at center, rgba(80,120,220,0.65) 0%, transparent 60%);
+            animation: flash-blue 0.7s ease-out forwards;
+        }
+
+        .reveal-actions { display: flex; gap: 0.75rem; flex-wrap: wrap; justify-content: center; }
+        .reveal-again-btn {
+            background: var(--gold); color: var(--navy); border: none;
+            padding: 11px 22px;
+            font-family: 'DM Mono', monospace; font-size: 0.68rem;
+            letter-spacing: 1.5px; text-transform: uppercase; font-weight: 700;
+            border-radius: 5px; cursor: pointer; transition: opacity 0.2s;
+        }
+        .reveal-again-btn:hover { opacity: 0.88; }
+        .reveal-done-btn {
+            background: transparent; border: 1px solid var(--border-g);
+            color: rgba(255,255,255,0.6);
+            padding: 11px 22px;
+            font-family: 'DM Mono', monospace; font-size: 0.68rem;
+            letter-spacing: 1.5px; text-transform: uppercase;
+            border-radius: 5px; cursor: pointer; transition: all 0.2s;
+        }
+        .reveal-done-btn:hover { color: var(--white); border-color: rgba(255,255,255,0.3); }
+        .reveal-tap-all {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.65rem; letter-spacing: 1px;
+            color: var(--gold); cursor: pointer;
+            background: none; border: none;
+            text-decoration: underline; text-underline-offset: 3px;
+            padding: 6px 0; transition: opacity 0.2s;
+        }
+        .reveal-tap-all:hover { opacity: 0.7; }
+
+        /* ── Pack opening state ── */
+        .pack-open-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.4rem;
+            text-align: center;
+        }
+        .po-eyebrow {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--gold);
+        }
+        .po-art {
+            position: relative;
+            cursor: pointer;
+            border-radius: 14px;
+            animation: pack-float 2.8s ease-in-out infinite;
+        }
+        .po-art.no-img {
+            width: 180px;
+            height: 240px;
+        }
+        @keyframes pack-float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            40%       { transform: translateY(-10px) rotate(0.6deg); }
+            70%       { transform: translateY(-5px) rotate(-0.4deg); }
+        }
+        .po-img {
+            width: 190px;
+            height: auto;
+            border-radius: 14px;
+            display: block;
+            box-shadow: 0 0 50px rgba(212,165,116,0.28), 0 24px 60px rgba(0,0,0,0.7);
+            transition: box-shadow 0.3s;
+        }
+        .po-art:hover .po-img {
+            box-shadow: 0 0 75px rgba(212,165,116,0.5), 0 24px 60px rgba(0,0,0,0.7);
+        }
+        .po-tap {
+            font-family: 'DM Mono', monospace;
+            font-size: 0.6rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.38);
+            animation: tap-blink 1.8s ease-in-out infinite;
+            transition: opacity 0.25s;
+        }
+        @keyframes tap-blink {
+            0%, 100% { opacity: 0.38; }
+            50%       { opacity: 0.85; }
+        }
+        .po-art.is-opening {
+            animation: pack-rip 0.55s ease-in forwards !important;
+            cursor: default;
+        }
+        @keyframes pack-rip {
+            0%   { transform: scale(1) rotate(0deg); }
+            15%  { transform: scale(1.04) rotate(-3deg); }
+            30%  { transform: scale(1.05) rotate(3deg); }
+            48%  { transform: scale(1.07) rotate(-2deg); }
+            65%  { transform: scale(1.18) rotate(1deg); }
+            82%  { transform: scale(1.55) rotate(0deg); opacity: 0.6; }
+            100% { transform: scale(2.4) rotate(0deg); opacity: 0; }
+        }
+        @keyframes flash-pack {
+            0%   { opacity: 0; }
+            8%   { opacity: 0.88; }
+            100% { opacity: 0; }
+        }
+        .reveal-flash.flash-pack {
+            background: radial-gradient(ellipse at center,
+                rgba(255,245,200,0.95) 0%,
+                rgba(212,165,116,0.55) 30%,
+                transparent 65%);
+            animation: flash-pack 0.65s ease-out forwards;
+        }
+        .card-reveal-wrap {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
+        @media (max-width: 560px) {
+            .card-slot { width: 88px; height: 124px; }
+            .reveal-cards { gap: 0.65rem; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="launcher">
+    <div class="launch-label">Pack Reveal Preview</div>
+    <button class="launch-btn" onclick="openPack('standard')">Standard Pack (4 cards)</button>
+    <button class="launch-btn" onclick="openPack('premium')">Premium Pack (5 cards)</button>
+    <br>
+    <button class="launch-btn secondary" onclick="openPack('dupe')">With Duplicates</button>
+</div>
+
+<!-- Reveal overlay -->
+<div class="reveal-overlay" id="revealOverlay" style="display:none">
+    <div id="revealFlash" class="reveal-flash"></div>
+
+    <!-- State 1: Pack opening -->
+    <div id="packOpenWrap" class="pack-open-wrap">
+        <div class="po-eyebrow" id="poEyebrow"></div>
+        <div class="po-art" id="poArt">
+            <img id="poImg" src="" alt="" class="po-img"
+                 onerror="this.style.display='none'">
+        </div>
+        <div class="po-tap" id="poTap">Tap to open</div>
+    </div>
+
+    <!-- State 2: Card reveal -->
+    <div id="cardRevealWrap" class="card-reveal-wrap" style="display:none">
+        <div class="reveal-eyebrow" id="revealEyebrow"></div>
+        <div class="reveal-title">Your Cards</div>
+        <div class="reveal-hint" id="revealHint">Tap each card to reveal</div>
+        <div class="reveal-cards" id="revealCards"></div>
+        <div class="reveal-actions" id="revealActions" style="display:none">
+            <button class="reveal-again-btn" onclick="closeReveal()">Try Again →</button>
+            <button class="reveal-done-btn" onclick="closeReveal()">Done</button>
+        </div>
+        <button class="reveal-tap-all" id="tapAllBtn" onclick="revealAll()">Reveal All</button>
+    </div>
+</div>
+
+<script>
+    var PACK_META = {
+        standard: { name: 'Standard Pack', image: 'images/packs/pack-standard.jpg',
+                    gradient: 'linear-gradient(145deg, #1a2a4a 0%, #243555 100%)' },
+        premium:  { name: 'Premium Pack',  image: 'images/packs/pack-premium.jpg',
+                    gradient: 'linear-gradient(145deg, #1a2a4a 0%, #243555 100%)' },
+        dupe:     { name: 'Standard Pack', image: 'images/packs/pack-standard.jpg',
+                    gradient: 'linear-gradient(145deg, #1a2a4a 0%, #243555 100%)' }
+    };
+
+    var SAMPLE_CARDS = {
+        standard: [
+            { id: 'aquinas',       name: 'St. Thomas Aquinas',       rarity: 'rare' },
+            { id: 'therese',       name: 'St. Thérèse of Lisieux',   rarity: 'uncommon' },
+            { id: 'francis-assisi',name: 'St. Francis of Assisi',    rarity: 'uncommon' },
+            { id: 'peter',         name: 'St. Peter',                rarity: 'legendary' }
+        ],
+        premium: [
+            { id: 'john-paul-ii',  name: 'St. John Paul II',         rarity: 'rare' },
+            { id: 'ignatius',      name: 'St. Ignatius of Loyola',   rarity: 'rare' },
+            { id: 'lucy',          name: 'St. Lucy',                 rarity: 'uncommon' },
+            { id: 'kateri',        name: 'St. Kateri Tekakwitha',    rarity: 'uncommon' },
+            { id: 'joseph',        name: 'St. Joseph',               rarity: 'legendary' }
+        ],
+        dupe: [
+            { id: 'therese',       name: 'St. Thérèse of Lisieux',   rarity: 'uncommon', dupe: true },
+            { id: 'padre-pio',     name: 'St. Padre Pio',            rarity: 'rare' },
+            { id: 'francis-assisi',name: 'St. Francis of Assisi',    rarity: 'uncommon', dupe: true },
+            { id: 'paul',          name: 'St. Paul',                 rarity: 'legendary' }
+        ]
+    };
+
+    var drawnCards = [];
+    var revealedCount = 0;
+
+    function rarityIcon(r) {
+        if (r === 'legendary') return '✦';
+        if (r === 'rare')      return '★';
+        return '·';
+    }
+    function rarityLabel(r) {
+        if (r === 'legendary') return 'Legendary';
+        if (r === 'rare')      return 'Rare';
+        return 'Uncommon';
+    }
+
+    function openPack(type) {
+        drawnCards = SAMPLE_CARDS[type];
+        revealedCount = 0;
+        var meta = PACK_META[type];
+
+        // Set up pack open state
+        document.getElementById('revealFlash').className = 'reveal-flash';
+        document.getElementById('poEyebrow').textContent = meta.name + ' · ' + drawnCards.length + ' Cards';
+        var poImg = document.getElementById('poImg');
+        poImg.style.display = 'block';
+        poImg.src = meta.image;
+        var poArt = document.getElementById('poArt');
+        poArt.className = 'po-art';
+        poArt.onclick = function() { triggerPackOpen(type); };
+
+        // Pre-build card grid
+        document.getElementById('revealEyebrow').textContent = meta.name + ' · ' + drawnCards.length + ' Cards';
+        document.getElementById('revealHint').textContent = 'Tap each card to reveal';
+        document.getElementById('revealActions').style.display = 'none';
+        document.getElementById('tapAllBtn').style.display = 'inline-block';
+
+        var container = document.getElementById('revealCards');
+        container.innerHTML = drawnCards.map(function(card, i) {
+            var imgSrc = 'images/saints/' + card.id + '.jpg';
+            var flipPage = 'crux-' + card.id + '-flip.html';
+            var isDupe = card.dupe ? '' : 'display:none';
+            return '<div class="card-slot ' + card.rarity + '" id="slot-' + i + '" onclick="revealCard(' + i + ')">' +
+                '<div class="card-back-face pulsing">' +
+                    '<span class="card-back-cross">✝</span>' +
+                    '<span class="card-back-wordmark">CRUX</span>' +
+                '</div>' +
+                '<div class="card-front-face">' +
+                    '<img class="cf-saint-img" src="' + imgSrc + '" alt="' + card.name + '" ' +
+                        'onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">' +
+                    '<div class="cf-text-fallback" style="display:none">' +
+                        '<span class="cf-wordmark">CRUX</span>' +
+                        '<span class="cf-text-name">' + card.name + '</span>' +
+                        '<span class="cf-rarity-badge">' + card.rarity + '</span>' +
+                    '</div>' +
+                    '<div class="cf-overlay">' +
+                        '<span class="cf-name">' + card.name + '</span>' +
+                        '<div class="cf-bottom-row">' +
+                            '<span class="cf-rarity-badge">' + rarityLabel(card.rarity) + '</span>' +
+                            '<a href="' + flipPage + '" class="cf-view-link" style="display:none" onclick="event.stopPropagation()">View →</a>' +
+                        '</div>' +
+                    '</div>' +
+                    '<span class="cf-rarity-icon">' + rarityIcon(card.rarity) + '</span>' +
+                    '<span class="cf-dupe-badge" style="' + isDupe + '">Dupe +50 XP</span>' +
+                '</div>' +
+            '</div>';
+        }).join('');
+
+        document.getElementById('packOpenWrap').style.display = 'flex';
+        document.getElementById('cardRevealWrap').style.display = 'none';
+        document.getElementById('poTap').style.opacity = '1';
+        document.getElementById('revealOverlay').style.display = 'flex';
+    }
+
+    function triggerPackOpen() {
+        var art = document.getElementById('poArt');
+        art.onclick = null;
+        art.classList.add('is-opening');
+        document.getElementById('poTap').style.opacity = '0';
+
+        setTimeout(function() {
+            var flash = document.getElementById('revealFlash');
+            flash.className = 'reveal-flash';
+            void flash.offsetWidth;
+            flash.className = 'reveal-flash flash-pack';
+
+            document.getElementById('packOpenWrap').style.display = 'none';
+            document.getElementById('cardRevealWrap').style.display = 'flex';
+
+            drawnCards.forEach(function(_, i) {
+                var slot = document.getElementById('slot-' + i);
+                if (!slot) return;
+                slot.style.opacity = '0';
+                slot.style.transform = 'translateY(55px) scale(0.75)';
+                slot.style.transition = 'none';
+                setTimeout(function() {
+                    slot.style.transition =
+                        'opacity 0.38s ease, transform 0.45s cubic-bezier(0.175, 0.885, 0.32, 1.275)';
+                    slot.style.opacity = '1';
+                    slot.style.transform = 'translateY(0) scale(1)';
+                }, i * 85 + 60);
+            });
+        }, 520);
+    }
+
+    window.revealCard = function(i) {
+        var slot = document.getElementById('slot-' + i);
+        if (!slot || slot.classList.contains('revealed')) return;
+        slot.style.transition = '';
+        slot.style.opacity = '';
+        slot.style.transform = '';
+        slot.classList.add('revealed');
+        revealedCount++;
+
+        var card = drawnCards[i];
+        if (card && (card.rarity === 'legendary' || card.rarity === 'rare')) {
+            var flash = document.getElementById('revealFlash');
+            flash.className = 'reveal-flash';
+            void flash.offsetWidth;
+            flash.className = 'reveal-flash flash-' + card.rarity;
+        }
+
+        if (revealedCount === drawnCards.length) {
+            document.getElementById('tapAllBtn').style.display = 'none';
+            var newCount = drawnCards.filter(function(c) { return !c.dupe; }).length;
+            var dupeCount = drawnCards.length - newCount;
+            var msg = newCount + ' new card' + (newCount !== 1 ? 's' : '') + ' added to your collection';
+            if (dupeCount > 0) msg += ' · ' + dupeCount + ' duplicate' + (dupeCount !== 1 ? 's' : '') + ' converted to XP';
+            document.getElementById('revealHint').textContent = msg;
+
+            drawnCards.forEach(function(_, j) {
+                var link = document.querySelector('#slot-' + j + ' .cf-view-link');
+                if (link) link.style.display = '';
+            });
+            document.getElementById('revealActions').style.display = 'flex';
+        }
+    };
+
+    window.revealAll = function() {
+        drawnCards.forEach(function(_, i) {
+            var slot = document.getElementById('slot-' + i);
+            if (slot && !slot.classList.contains('revealed')) {
+                setTimeout(function() { revealCard(i); }, i * 120);
+            }
+        });
+    };
+
+    window.closeReveal = function() {
+        document.getElementById('revealOverlay').style.display = 'none';
+        document.getElementById('packOpenWrap').style.display = 'flex';
+        document.getElementById('cardRevealWrap').style.display = 'none';
+        document.getElementById('poArt').classList.remove('is-opening');
+    };
+</script>
+</body>
+</html>

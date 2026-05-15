@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — Faith Formation (Mockup)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --navy-deep: #0f1222;
+  --navy-light: #252b47;
+  --gold: #d4a574;
+  --gold-light: #e8c99a;
+  --gold-dim: rgba(212,165,116,0.12);
+  --white: #ffffff;
+  --text-muted: rgba(255,255,255,0.4);
+  --text-soft: rgba(255,255,255,0.68);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: var(--navy-deep);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── GRAIN ── */
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 1000; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  opacity: 0.6;
+}
+
+/* ── NAV ── */
+.site-nav {
+  position: fixed; top:0; left:0; right:0; z-index:200;
+  padding: 1.25rem 2.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(15,18,34,0.85);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem; font-weight: 900; letter-spacing: 5px;
+  color: var(--gold); text-decoration: none;
+}
+.nav-links { display:flex; gap:2rem; list-style:none; }
+.nav-links a {
+  font-family: 'Inter', sans-serif; font-size: 0.78rem;
+  font-weight: 500; letter-spacing: 1px;
+  color: var(--text-muted); text-decoration: none; transition: color 0.2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--gold); }
+.nav-cta {
+  font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--navy-deep); background: var(--gold);
+  border: none; border-radius: 5px; padding: 9px 20px; cursor: pointer;
+  text-decoration: none; transition: opacity 0.2s;
+}
+.nav-cta:hover { opacity: 0.85; }
+
+/* ── HERO ── */
+.hero {
+  min-height: 72vh;
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: 10rem 2rem 5rem;
+  position: relative; overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute; width: 860px; height: 860px;
+  background: radial-gradient(ellipse, rgba(212,165,116,0.1) 0%, transparent 70%);
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '✟';
+  position: absolute; font-size: 36rem; line-height:1;
+  color: rgba(212,165,116,0.025);
+  top: 50%; left: 50%; transform: translate(-50%,-50%);
+  pointer-events: none;
+  animation: crossPulse 8s ease-in-out infinite;
+}
+@keyframes crossPulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.75rem;
+  font-family: 'Inter', sans-serif; font-size: 0.7rem;
+  font-weight: 600; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 2rem;
+  animation: fadeUp 0.8s ease both;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: ''; display: block; width: 32px; height: 1px; background: var(--gold); opacity: 0.5;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 9vw, 5.5rem); font-weight: 900;
+  color: var(--white); line-height: 1.05; letter-spacing: -1px;
+  margin-bottom: 1.25rem;
+  animation: fadeUp 0.9s ease 0.1s both;
+}
+.hero-title span {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, #b8895a 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero-tagline {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: clamp(1.1rem, 2.5vw, 1.45rem);
+  color: var(--text-soft); max-width: 520px; line-height: 1.65;
+  margin-bottom: 1.5rem;
+  animation: fadeUp 0.9s ease 0.2s both;
+}
+.hero-meta {
+  font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 500;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(212,165,116,0.55);
+  animation: fadeUp 0.8s ease 0.35s both;
+}
+
+/* ── PROGRESS STRIP ── */
+.progress-strip {
+  background: rgba(255,255,255,0.02);
+  border-top: 1px solid rgba(212,165,116,0.07);
+  border-bottom: 1px solid rgba(212,165,116,0.07);
+  padding: 1.5rem 2.5rem;
+  display: flex; align-items: center; gap: 1.5rem;
+  max-width: 900px; margin: 0 auto;
+}
+.progress-label {
+  font-family: 'Inter', sans-serif; font-size: 0.68rem;
+  font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--text-muted); white-space: nowrap;
+}
+.progress-bar {
+  flex: 1; height: 3px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden;
+}
+.progress-fill { height: 100%; width: 22%; background: linear-gradient(90deg, var(--gold), var(--gold-light)); border-radius: 2px; }
+.progress-stat {
+  font-family: 'Inter', sans-serif; font-size: 0.72rem;
+  font-weight: 600; color: var(--gold); white-space: nowrap;
+}
+
+/* ── MAIN CONTENT ── */
+.modules-wrap {
+  max-width: 1040px; margin: 0 auto; padding: 3rem 2rem 6rem;
+}
+
+/* ── PILLAR GROUP ── */
+.pillar-group {
+  margin-bottom: 5rem;
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.pillar-group.revealed { opacity: 1; transform: translateY(0); }
+
+.pillar-header {
+  display: flex; align-items: flex-start; gap: 1.5rem;
+  margin-bottom: 2rem; padding-bottom: 1.5rem;
+  border-bottom: 1px solid rgba(212,165,116,0.1);
+}
+.pillar-icon {
+  width: 48px; height: 48px; flex-shrink: 0;
+  border: 1px solid rgba(212,165,116,0.25); border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem; background: rgba(212,165,116,0.06);
+  color: var(--gold);
+}
+.pillar-num {
+  font-family: 'Inter', sans-serif; font-size: 0.62rem;
+  font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(212,165,116,0.6); margin-bottom: 0.3rem;
+}
+.pillar-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.4rem, 3vw, 1.9rem); font-weight: 700;
+  color: var(--white); line-height: 1.2; margin-bottom: 0.3rem;
+}
+.pillar-subtitle {
+  font-family: 'Crimson Pro', serif; font-size: 1rem;
+  font-style: italic; color: var(--text-muted); line-height: 1.5;
+}
+
+/* ── MODULE CARDS GRID ── */
+.module-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 1.25rem;
+}
+
+.module-card {
+  background: rgba(255,255,255,0.04);
+  border: 1.5px solid rgba(212,165,116,0.28);
+  border-radius: 12px; padding: 1.6rem 1.5rem;
+  text-decoration: none; color: inherit;
+  display: flex; flex-direction: column; gap: 0.6rem;
+  cursor: pointer; position: relative;
+  box-shadow: 0 0 18px rgba(212,165,116,0.06), 0 4px 20px rgba(0,0,0,0.25);
+  transition: background 0.25s, border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+}
+.module-card:hover {
+  background: rgba(212,165,116,0.07);
+  border-color: rgba(212,165,116,0.55);
+  transform: translateY(-3px);
+  box-shadow: 0 0 28px rgba(212,165,116,0.14), 0 12px 40px rgba(0,0,0,0.35);
+}
+.module-card.coming-soon {
+  opacity: 0.45; pointer-events: none;
+}
+
+.module-card-track {
+  font-family: 'Inter', sans-serif; font-size: 0.6rem;
+  font-weight: 600; letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(212,165,116,0.55);
+}
+.module-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem; font-weight: 700; color: var(--white);
+  line-height: 1.25;
+}
+.module-card-desc {
+  font-family: 'Crimson Pro', serif; font-size: 0.98rem;
+  color: var(--text-soft); line-height: 1.6; flex: 1;
+}
+.module-card-footer {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-top: 0.5rem; padding-top: 0.85rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+  gap: 0.75rem;
+}
+.module-card-badges { display: flex; gap: 0.4rem; align-items: center; }
+.module-card-actions { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; }
+.badge {
+  font-family: 'Inter', sans-serif; font-size: 0.58rem;
+  font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+  padding: 3px 8px; border-radius: 4px;
+}
+.badge-grade {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.45);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.badge-xp {
+  background: rgba(212,165,116,0.1);
+  color: var(--gold);
+  border: 1px solid rgba(212,165,116,0.2);
+}
+.btn-games {
+  font-family: 'Inter', sans-serif; font-size: 0.62rem;
+  font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+  padding: 5px 11px; border-radius: 5px;
+  background: rgba(110,90,240,0.18);
+  color: rgba(195,180,255,0.92);
+  border: 1px solid rgba(140,120,255,0.4);
+  cursor: pointer; white-space: nowrap;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+.btn-games:hover { background: rgba(110,90,240,0.32); border-color: rgba(170,150,255,0.65); color: #fff; }
+.module-card-arrow {
+  font-family: 'Inter', sans-serif; font-size: 0.72rem;
+  font-weight: 600; color: rgba(212,165,116,0.5);
+  transition: color 0.2s, transform 0.2s;
+  letter-spacing: 0.5px;
+  white-space: nowrap; flex-shrink: 0;
+}
+.module-card:hover .module-card-arrow {
+  color: var(--gold); transform: translateX(4px);
+}
+
+/* ── COMING SOON LABEL ── */
+.soon-label {
+  position: absolute; top: 1rem; right: 1rem;
+  font-family: 'Inter', sans-serif; font-size: 0.52rem;
+  font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; padding: 2px 6px;
+}
+
+/* ── QUOTE STRIP ── */
+.quote-strip {
+  border-top: 1px solid rgba(212,165,116,0.08);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+  padding: 4rem 2rem; text-align: center;
+  background: rgba(212,165,116,0.02);
+  margin-bottom: 4rem;
+}
+.quote-text {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: clamp(1.2rem, 3vw, 1.7rem); font-weight: 400;
+  color: rgba(255,255,255,0.7); max-width: 680px; margin: 0 auto 1rem;
+  line-height: 1.7;
+}
+.quote-ref {
+  font-family: 'Inter', sans-serif; font-size: 0.68rem;
+  font-weight: 600; letter-spacing: 3px; text-transform: uppercase;
+  color: rgba(212,165,116,0.5);
+}
+
+/* ── MOCKUP BANNER ── */
+.mockup-banner {
+  position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%);
+  background: rgba(212,165,116,0.12); border: 1px solid rgba(212,165,116,0.3);
+  backdrop-filter: blur(12px); border-radius: 8px;
+  padding: 0.6rem 1.4rem; z-index: 500;
+  font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 2px; text-transform: uppercase; color: var(--gold);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── MOBILE ── */
+@media (max-width: 680px) {
+  .site-nav { padding: 1rem 1.25rem; }
+  .nav-links { display: none; }
+  .hero { padding: 8rem 1.5rem 4rem; }
+  .modules-wrap { padding: 2rem 1.25rem 5rem; }
+  .progress-strip { padding: 1.25rem; }
+  .module-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">CRUX</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="crux-modules.html" class="active">Faith Formation</a></li>
+    <li><a href="crux-bible-study.html">Bible Study</a></li>
+    <li><a href="crux-pack-store.html">Card Packs</a></li>
+  </ul>
+  <a href="crux-account.html" class="nav-cta">My Account</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-eyebrow">Faith Formation</div>
+  <h1 class="hero-title">Learn the <span>Faith</span></h1>
+  <p class="hero-tagline">Eighteen modules across five pillars — what we believe, how we worship, how we live, how we pray, and who we are.</p>
+  <div class="hero-meta">18 Modules &nbsp;·&nbsp; Greek Word Studies &nbsp;·&nbsp; Earn XP</div>
+</section>
+
+<!-- PROGRESS STRIP -->
+<div class="progress-strip">
+  <span class="progress-label">Your Progress</span>
+  <div class="progress-bar"><div class="progress-fill"></div></div>
+  <span class="progress-stat">4 / 18 Modules</span>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="modules-wrap">
+
+  <!-- ── PILLAR I ── -->
+  <div class="pillar-group reveal">
+    <div class="pillar-header">
+      <div class="pillar-icon">✟</div>
+      <div>
+        <div class="pillar-num">Pillar I</div>
+        <div class="pillar-title">What We Believe</div>
+        <div class="pillar-subtitle">The Creed — who God is, who Jesus is, and what the Church professes</div>
+      </div>
+    </div>
+    <div class="module-grid">
+
+      <a href="crux-modules.html?module=trinity" class="module-card">
+        <div class="module-card-track">Pillar I · What We Believe</div>
+        <div class="module-card-title">The Holy Trinity</div>
+        <div class="module-card-desc">One God in three Persons. The central mystery of the Christian faith — and why it matters for everything else.</div>
+        <div class="module-card-footer">
+          <div class="module-card-badges">
+            <span class="badge badge-xp">50 XP</span>
+            </div>
+          <div class="module-card-actions">
+            <span class="btn-games" onclick="event.stopPropagation(); event.preventDefault(); location.href='crux-games.html?module=trinity'">▶ Games</span>
+            <span class="module-card-arrow">Begin →</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="crux-modules.html?module=jesus" class="module-card">
+        <div class="module-card-track">Pillar I · What We Believe</div>
+        <div class="module-card-title">Who Is Jesus Christ?</div>
+        <div class="module-card-desc">Fully God and fully human. What that means, how the Church defined it, and why it matters for everything else in the faith.</div>
+        <div class="module-card-footer">
+          <div class="module-card-badges">
+            <span class="badge badge-xp">50 XP</span>
+            </div>
+          <div class="module-card-actions">
+            <span class="btn-games" onclick="event.stopPropagation(); event.preventDefault(); location.href='crux-games.html?module=jesus'">▶ Games</span>
+            <span class="module-card-arrow">Begin →</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="crux-modules.html?module=mary" class="module-card">
+        <div class="module-card-track">Pillar I · What We Believe</div>
+        <div class="module-card-title">Mary &amp; the Saints</div>
+        <div class="module-card-desc">The Communion of Saints — why the Church honors Mary, what it means to have a patron saint, and how the saints intercede for us.</div>
+        <div class="module-card-footer">
+          <div class="module-card-badges">
+            <span class="badge badge-xp">50 XP</span>
+            </div>
+          <div class="module-card-actions">
+            <span class="btn-games" onclick="event.stopPropagation(); event.preventDefault(); location.href='crux-games.html?module=mary'">▶ Games</span>
+            <span class="module-card-arrow">Begin →</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="crux-modules.html?module=prodigal_son" class="module-card">
+        <div class="module-card-track">Pillar I · What We Believe</div>
+        <div class="module-card-title">The Prodigal Son</div>
+        <div class="module-card-desc">Jesus told this parable to people who thought they were the good ones. That changes everything about how you read it.</div>
+        <div class="module-card-footer">
+          <div class="module-card-badges">
+            <span class="badge badge-xp">50 XP</span>
+          </div>
+          <span class="module-card-arrow">Begin →</span>
+        </div>
+      </a>
+
+      <a href="crux-modules.html?module=bible_geography" class="module-card">
+        <div class="module-card-track">Pillar I · What We Believe</div>
+        <div class="module-card-title">The Geography of the Bible</div>
+        <div class="module-card-desc">These events didn't happen in a story. They happened in real places you can visit today.</div>
+        <div class="module-card-footer">
+          <div class="module-card-badges">
+            <span class="badge badge-xp">50 XP</span>
+          </div>
+          <span class="module-card-arrow">Begin →</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ── PILLAR II ── -->
+  <div class="pillar-group reveal">
+    <div class="pillar-header">
+      <div class="pillar-icon">✦</div>
+      <div>
+        <div class="pillar-num">Pillar II</div>
+        <div class="pillar-title">What We Celebrate</div>
+        <div class="pillar-subtitle">The Sacraments — how God meets us through the liturgy and sacramental life of the Church</div>
+      </div>
+    </div>
+    <div class="module-grid">
+
+      <a href="crux-modules.html?module=sacraments" class="module-card">
+        <div class="module-card-track">Pillar II · What We Celebrate</div>
+        <div class="module-card-title">The Seven Sacraments</div>
+        <div class="module-card-desc">Seven sacred signs instituted by Christ — what they are, what they do, and why the Church calls them encounters with God.</div>
+        <div class="module-card-footer">
+          <div class="module-card-badges">
+            <span class="badge badge-xp">50 XP</span>
+            </div>
+          <div class="module-card-actions">
+            <span class="btn-games" onclick="event.stopPropagation(); event.preventDefault(); location.href='crux-games.html?module=sacraments'">▶ Games</span>
+            <span class="module-card-arrow">Begin →</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="crux-modules.html?module=mass_real_presence" class="module-card">
+        <div class="module-card-track">Pillar II · What We Celebrate</div>
+        <div class="module-card-title">The Mass &amp; the Real Presence</div>
+        <div class="module-card-desc">What actually happens at Mass — and why the Eucharist is the source and summit of the Catholic faith.</div>
+        <div class="module-card-footer">
+          <div class="module-card-badges">
+            <span class="badge badge-xp">50 XP</span>
+            </div>
+          <div class="module-card-actions">
+            <span class="btn-games" onclick="event.stopPropagation(); event.preventDefault(); location.href='crux-games.html?module=mass_real_presence'">▶ Games</span>
+            <span class="module-card-arrow">Begin →</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="crux-modules.html?module=reconciliation" class="module-card">
+        <div class="module-card-track">Pillar II · What We Celebrate</div>
+        <div class="module-card-title">Reconciliation &amp; Confession</div>
+        <div class="module-card-desc">What happens in the confessional, why we need it, and what the Church means by God's mercy being inexhaustible.</div>
+        <div class="module-card-footer">
+          <div class="module-card-badges">
+            <span class="badge badge-xp">50 XP</span>
+            </div>
+          <div class="module-card-actions">
+            <span class="btn-games" onclick="event.stopPropagation(); event.preventDefault(); location.href='crux-games.html?module=reconciliation'">▶ Games</span>
+            <span class="module-card-arrow">Begin →</span>
+          </div>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ── QUOTE STRIP ── -->
+  <div class="quote-strip reveal">
+    <div class="quote-text">"The glory of God is man fully alive; and the life of man is the vision of God."</div>
+    <div class="quote-ref">St. Irenaeus of Lyon &nbsp;·&nbsp; Against Heresies</div>
+  </div>
+
+  <!-- ── PILLAR III ── -->
+  <div class="pillar-group reveal">
+    <div class="pillar-header">
+      <div class="pillar-icon">⚖</div>
+      <div>
+        <div class="pillar-num">Pillar III</div>
+        <div class="pillar-title">How We Live</div>
+        <div class="pillar-subtitle">The Commandments — the moral life, conscience, and what it looks like to follow Christ in daily decisions</div>
+      </div>
+    </div>
+    <div class="module-grid">
+
+      <a href="crux-modules.html?module=conscience" class="module-card">
+        <div class="module-card-track">Pillar III · How We Live</div>
+        <div class="module-card-title">Conscience &amp; Moral Decision-Making</div>
+        <div class="module-card-desc">What the Church teaches about conscience — and why it is not a permission slip to do whatever you want.</div>
+        <div class="module-card-footer">
+          <div class="module-card-badges">
+            <span class="badge badge-xp">50 XP</span>
+            </div>
+          <div class="module-card-actions">
+            <span class="btn-games" onclick="event.stopPropagation(); event.preventDefault(); location.href='crux-games.html?module=conscience'">▶ Games</span>
+            <span class="module-card-arrow">Begin →</span>
+          </div>
+        </div>
+      </a>
+
+      <a href="crux-modules.html?module=fruits_holy_spirit" class="module-card">
+        <div class="module-card-track">Pillar III · How We Live</div>
+        <div class="module-card-title">The Fruits of the Holy Spirit</div>
+        <div class="module-card-desc">Not a checklist. A portrait of what a life looks like when the Holy Spirit is actually at work.</div>
+        <div class="module-card-footer">
+          <div class="module-card-badges">
+            <span class="badge badge-xp">50 XP</span>
+          </div>
+          <span class="module-card-arrow">Begin →</span>
+        </div>
+      </a>
+
+      <a href="crux-modules.html?module=ten_commandments" class="module-card">
+        <div class="module-card-track">Pillar III · How We Live</div>
+        <div class="module-card-title">The Ten Commandments</div>
+        <div class="module-card-desc">Not a list of rules — a covenant framework for a life ordered toward God and neighbor.</div>
+        <div class="module-card-footer">
+          <div class="module-card-badges">
+            <span class="badge badge-xp">50 XP</span>
+          </div>
+          <span class="module-card-arrow">Begin →</span>
+        </div>
+      </a>
+
+      <a href="crux-modules.html?module=beatitudes" class="module-card">
+        <div class="module-card-track">Pillar III · How We Live</div>
+        <div class="module-card-title">The Beatitudes</div>
+        <div class="module-card-desc">Eight descriptions of what a flourishing Christian life looks like. Every person on the list looks like a loser by the world's standards.</div>
+        <div class="module-card-footer">
+          <div class="module-card-badges">
+            <span class="badge badge-xp">50 XP</span>
+          </div>
+          <span class="module-card-arrow">Begin →</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ── PILLAR IV ── -->
+  <div class="pillar-group reveal">
+    <div class="pillar-header">
+      <div class="pillar-icon">◎</div>
+      <div>
+        <div class="pillar-num">Pillar IV</div>
+        <div class="pillar-title">How We Pray</div>
+        <div class="pillar-subtitle">The Lord's Prayer — the nature of prayer and how the Church teaches us to speak with God</div>
+      </div>
+    </div>
+    <div class="module-grid">
+
+      <a href="crux-modules.html?module=lords_prayer" class="module-card">
+        <div class="module-card-track">Pillar IV · How We Pray</div>
+        <div class="module-card-title">The Lord's Prayer</div>
+        <div class="module-card-desc">The prayer Jesus gave us — seven petitions that teach us everything about how to speak to God.</div>
+        <div class="module-card-footer">
+          <div class="module-card-badges">
+            <span class="badge badge-xp">50 XP</span>
+          </div>
+          <span class="module-card-arrow">Begin →</span>
+        </div>
+      </a>
+
+    </div>
+  </div>
+
+  <!-- ── PILLAR V ── -->
+  <div class="pillar-group reveal">
+    <div class="pillar-header">
+      <div class="pillar-icon">⛪</div>
+      <div>
+        <div class="pillar-num">Pillar V</div>
+        <div class="pillar-title">Who We Are</div>
+        <div class="pillar-subtitle">Church &amp; Identity — the nature of the Church, the human person, and our call to discipleship</div>
+      </div>
+    </div>
+    <div class="module-grid">
+
+      <div class="module-card coming-soon">
+        <span class="soon-label">Coming Soon</span>
+        <div class="module-card-track">Pillar V · Who We Are</div>
+        <div class="module-card-title">Creation &amp; the Human Person</div>
+        <div class="module-card-desc">God made everything good. Humans are made in his image. Original sin explains why the world is broken.</div>
+        <div class="module-card-footer">
+          <div class="module-card-badges">
+            <span class="badge badge-xp">50 XP</span>
+          </div>
+          <span class="module-card-arrow">Begin →</span>
+        </div>
+      </div>
+
+      <div class="module-card coming-soon">
+        <span class="soon-label">Coming Soon</span>
+        <div class="module-card-track">Pillar V · Who We Are</div>
+        <div class="module-card-title">The Nicene Creed</div>
+        <div class="module-card-desc">The Church's own summary of everything she believes — article by article, phrase by phrase.</div>
+        <div class="module-card-footer">
+          <div class="module-card-badges">
+            <span class="badge badge-xp">50 XP</span>
+          </div>
+          <span class="module-card-arrow">Begin →</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div><!-- end modules-wrap -->
+
+<!-- MOCKUP BANNER -->
+<div class="mockup-banner">Design Mockup — Not Live</div>
+
+<script>
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('revealed'); observer.unobserve(e.target); } });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — Mockup: Bible Study Groups</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --navy: #1a1f36;
+    --navy-light: #252b47;
+    --navy-mid: #2e3555;
+    --gold: #d4a574;
+    --gold-light: #e8c9a0;
+    --gold-pale: #f5ead8;
+    --cream: #faf7f2;
+    --white: #ffffff;
+    --off-white: #f4f3ef;
+    --border: rgba(26,31,54,0.1);
+    --border-gold: rgba(212,165,116,0.3);
+    --text-primary: #1a1f36;
+    --text-secondary: #5a6080;
+    --text-muted: #8a90aa;
+    --green: #2d6a4f;
+    --green-light: #e8f5ee;
+    --purple: #4a2c6b;
+    --red-light: #fee2e2;
+    --red: #dc2626;
+  }
+  *, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:var(--cream); color:var(--text-primary); line-height:1.7; font-size:15px; }
+
+  .mockup-banner {
+    background: #7c3aed;
+    color: white;
+    text-align: center;
+    padding: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+
+  .site-header {
+    background: var(--navy);
+    padding: 1rem 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky;
+    top: 28px;
+    z-index: 100;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.2);
+  }
+  .site-logo { font-family:'Playfair Display',serif; font-size:1.5rem; font-weight:700; color:var(--gold); text-decoration:none; letter-spacing:4px; }
+  .site-nav { list-style:none; display:flex; gap:1.5rem; }
+  .site-nav a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:0.82rem; font-weight:500; }
+
+  /* GROUPS LAYOUT — 3 columns */
+  .groups-layout {
+    display: grid;
+    grid-template-columns: 260px 1fr 260px;
+    height: calc(100vh - 85px);
+    overflow: hidden;
+  }
+
+  /* LEFT PANEL — group list */
+  .groups-sidebar {
+    background: var(--white);
+    border-right: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+  .groups-sidebar-head {
+    padding: 1.25rem 1rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .groups-sidebar-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); }
+  .new-group-btn {
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--gold);
+    border: none;
+    font-size: 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+  .group-list { overflow-y: auto; flex: 1; }
+  .group-item {
+    padding: 0.85rem 1rem;
+    border-bottom: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+    position: relative;
+  }
+  .group-item:hover { background: var(--off-white); }
+  .group-item.active { background: var(--gold-pale); border-left: 3px solid var(--gold); }
+  .group-item-name { font-weight: 600; font-size: 0.9rem; color: var(--navy); }
+  .group-item-meta { font-size: 0.72rem; color: var(--text-muted); margin-top: 0.15rem; }
+  .group-item-preview { font-size: 0.78rem; color: var(--text-secondary); margin-top: 0.25rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 200px; }
+  .unread-dot {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+
+  /* JOIN GROUP BUTTON */
+  .join-group-area {
+    padding: 1rem;
+    border-top: 1px solid var(--border);
+  }
+  .join-input-row { display: flex; gap: 0.5rem; }
+  .join-input {
+    flex: 1;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    color: var(--text-primary);
+    background: var(--off-white);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+  }
+  .join-input::placeholder { text-transform: none; letter-spacing: 0; }
+  .join-input:focus { outline: none; border-color: var(--gold); }
+  .join-btn {
+    padding: 0.5rem 0.75rem;
+    background: var(--navy);
+    color: var(--gold);
+    border: none;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+  }
+  .join-label { font-size: 0.65rem; color: var(--text-muted); margin-bottom: 0.35rem; font-weight: 600; letter-spacing: 1px; text-transform: uppercase; }
+
+  /* MAIN — thread view */
+  .thread-main {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--cream);
+  }
+  .thread-header {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-shrink: 0;
+  }
+  .thread-header-left { }
+  .thread-group-name { font-family: 'Playfair Display', serif; font-size: 1.15rem; font-weight: 700; color: var(--navy); }
+  .thread-passage {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-top: 0.2rem;
+    padding: 0.2rem 0.65rem;
+    background: var(--gold-pale);
+    border: 1px solid var(--border-gold);
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--navy);
+  }
+  .thread-header-right { display: flex; align-items: center; gap: 0.75rem; }
+  .member-avatars { display: flex; }
+  .avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--gold);
+    font-size: 0.65rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid var(--white);
+    margin-left: -6px;
+    flex-shrink: 0;
+  }
+  .avatar:first-child { margin-left: 0; }
+  .avatar.teacher { background: var(--gold); color: var(--navy); }
+  .avatar-overflow { background: var(--off-white); color: var(--text-muted); }
+  .member-count { font-size: 0.75rem; color: var(--text-muted); }
+
+  /* PASSAGE CONTEXT BAR */
+  .passage-context {
+    background: var(--navy);
+    padding: 0.85rem 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1.25rem;
+    flex-shrink: 0;
+  }
+  .passage-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.2rem; }
+  .passage-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.88rem; color: rgba(255,255,255,0.8); line-height: 1.5; }
+  .passage-ref { font-size: 0.72rem; color: rgba(255,255,255,0.35); margin-top: 0.2rem; }
+  .passage-divider { width: 1px; background: rgba(255,255,255,0.1); align-self: stretch; flex-shrink: 0; }
+  .passage-open-btn {
+    flex-shrink: 0;
+    padding: 0.4rem 0.85rem;
+    background: rgba(212,165,116,0.15);
+    border: 1px solid var(--border-gold);
+    color: var(--gold);
+    border-radius: 6px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    white-space: nowrap;
+    align-self: center;
+  }
+
+  /* THREAD SELECTOR TABS */
+  .thread-tabs {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 1.5rem;
+    display: flex;
+    gap: 0;
+    flex-shrink: 0;
+  }
+  .thread-tab {
+    padding: 0.65rem 1rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--text-muted);
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.15s;
+  }
+  .thread-tab.active { color: var(--navy); border-bottom-color: var(--gold); }
+  .thread-tab:hover:not(.active) { color: var(--text-secondary); }
+
+  /* COMMENTS AREA */
+  .comments-area {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .comment-day-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    color: var(--text-muted);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+  .comment-day-divider::before, .comment-day-divider::after { content:''; flex:1; height:1px; background:var(--border); }
+
+  .comment {
+    display: flex;
+    gap: 0.85rem;
+    align-items: flex-start;
+  }
+  .comment-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--gold);
+    font-size: 0.72rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.1rem;
+  }
+  .comment-avatar.teacher-av { background: var(--gold); color: var(--navy); }
+  .comment-body { flex: 1; }
+  .comment-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.3rem;
+  }
+  .comment-author { font-weight: 600; font-size: 0.85rem; color: var(--navy); }
+  .teacher-badge {
+    padding: 0.1rem 0.45rem;
+    background: var(--gold);
+    color: var(--navy);
+    border-radius: 4px;
+    font-size: 0.62rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+  .comment-time { font-size: 0.68rem; color: var(--text-muted); }
+  .comment-text {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 0 10px 10px 10px;
+    padding: 0.75rem 1rem;
+    font-size: 0.88rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+  }
+  .comment-text.teacher-text { border-color: var(--border-gold); background: var(--gold-pale); }
+  .comment-text blockquote {
+    border-left: 2px solid var(--gold);
+    padding-left: 0.75rem;
+    font-style: italic;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    margin-bottom: 0.5rem;
+  }
+  .comment-actions {
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 0.4rem;
+  }
+  .comment-action {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.15s;
+    background: none;
+    border: none;
+    font-family: 'Inter', sans-serif;
+    padding: 0;
+  }
+  .comment-action:hover { color: var(--navy); }
+  .comment-action.liked { color: var(--gold); font-weight: 600; }
+
+  /* REPLY thread */
+  .reply-thread {
+    margin-left: 3rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    padding-left: 0.75rem;
+    border-left: 1.5px solid var(--border);
+  }
+
+  /* POST AREA */
+  .post-area {
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    padding: 1rem 1.5rem;
+    flex-shrink: 0;
+  }
+  .post-context {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .post-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-end;
+  }
+  .post-input-wrap { flex: 1; }
+  .post-input {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.88rem;
+    color: var(--text-primary);
+    background: var(--off-white);
+    resize: none;
+    line-height: 1.5;
+    min-height: 44px;
+    transition: border-color 0.15s;
+  }
+  .post-input:focus { outline: none; border-color: var(--gold); background: var(--white); }
+  .post-tools { display: flex; align-items: center; gap: 0.5rem; margin-top: 0.4rem; }
+  .post-tool-btn {
+    padding: 0.3rem 0.6rem;
+    background: var(--off-white);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.15s;
+  }
+  .post-tool-btn:hover { border-color: var(--navy); color: var(--navy); }
+  .send-btn {
+    padding: 0.65rem 1.25rem;
+    background: var(--navy);
+    color: var(--gold);
+    border: none;
+    border-radius: 10px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    flex-shrink: 0;
+    transition: all 0.2s;
+  }
+  .send-btn:hover { background: var(--gold); color: var(--navy); }
+
+  /* RIGHT PANEL — group info */
+  .info-sidebar {
+    background: var(--white);
+    border-left: 1px solid var(--border);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+  }
+  .info-section {
+    padding: 1.25rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .info-section:last-child { border-bottom: none; }
+  .info-label { font-size: 0.65rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 0.75rem; }
+
+  .member-list { display: flex; flex-direction: column; gap: 0.5rem; }
+  .member-row { display: flex; align-items: center; gap: 0.65rem; }
+  .member-av-sm {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    background: var(--navy);
+    color: var(--gold);
+    font-size: 0.65rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .member-av-sm.t { background: var(--gold); color: var(--navy); }
+  .member-info { flex: 1; }
+  .member-name { font-size: 0.82rem; font-weight: 600; color: var(--navy); }
+  .member-role { font-size: 0.68rem; color: var(--text-muted); }
+  .member-status-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--border); flex-shrink: 0; }
+  .member-status-dot.online { background: var(--green); }
+
+  .plan-progress-bar { height: 5px; background: var(--off-white); border-radius: 3px; overflow: hidden; margin-top: 0.35rem; }
+  .plan-progress-fill { height: 100%; background: var(--gold); border-radius: 3px; }
+  .member-progress-text { font-size: 0.7rem; color: var(--text-muted); margin-top: 0.2rem; }
+
+  /* TEACHER CONTROLS */
+  .teacher-controls {
+    background: var(--gold-pale);
+    border: 1px solid var(--border-gold);
+    border-radius: 8px;
+    padding: 0.85rem;
+    margin-top: 0.75rem;
+  }
+  .tc-label { font-size: 0.62rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.4rem; }
+  .tc-btn {
+    display: block;
+    width: 100%;
+    padding: 0.45rem 0.75rem;
+    margin-bottom: 0.4rem;
+    border: 1px solid var(--border-gold);
+    border-radius: 6px;
+    background: white;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--navy);
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    text-align: left;
+    transition: all 0.15s;
+  }
+  .tc-btn:last-child { margin-bottom: 0; }
+  .tc-btn:hover { background: var(--gold-pale); border-color: var(--gold); }
+  .tc-btn.danger { color: var(--red); border-color: rgba(220,38,38,0.2); }
+  .tc-btn.danger:hover { background: var(--red-light); border-color: var(--red); }
+
+  .group-code-display {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: var(--navy);
+    border-radius: 8px;
+    padding: 0.65rem 0.85rem;
+  }
+  .gcd-code { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--white); letter-spacing: 3px; }
+  .gcd-copy { font-size: 0.7rem; font-weight: 600; color: var(--gold); cursor: pointer; }
+
+  /* REPORTED TAG */
+  .reported-banner {
+    background: var(--red-light);
+    border: 1px solid rgba(220,38,38,0.2);
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.75rem;
+    color: var(--red);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.5rem;
+  }
+</style>
+</head>
+<body>
+
+<div class="mockup-banner">MOCKUP — Bible Study Groups (Teacher View) — Not Production</div>
+
+<header class="site-header">
+  <a href="#" class="site-logo">CRUX</a>
+  <nav><ul class="site-nav">
+    <li><a href="#">My Account</a></li>
+    <li><a href="#">Bible Study</a></li>
+    <li><a href="#">Home</a></li>
+  </ul></nav>
+</header>
+
+<div class="groups-layout">
+
+  <!-- LEFT: GROUP LIST -->
+  <div class="groups-sidebar">
+    <div class="groups-sidebar-head">
+      <span class="groups-sidebar-title">My Groups</span>
+      <button class="new-group-btn" title="Create new group">&#43;</button>
+    </div>
+
+    <div class="group-list">
+      <div class="group-item active">
+        <div class="unread-dot"></div>
+        <div class="group-item-name">St. Thomas Youth Group</div>
+        <div class="group-item-meta">Romans · 11 members</div>
+        <div class="group-item-preview">Sofia: "The word 'righteous' means so much..."</div>
+      </div>
+
+      <div class="group-item">
+        <div class="group-item-name">RCIA 2026 Cohort</div>
+        <div class="group-item-meta">Gospel of John · 8 members</div>
+        <div class="group-item-preview">David: "I keep coming back to 'I AM'..."</div>
+      </div>
+
+      <div class="group-item">
+        <div class="group-item-name">Adult Formation — Tuesday</div>
+        <div class="group-item-meta">Acts of the Apostles · 14 members</div>
+        <div class="group-item-preview">No new messages</div>
+      </div>
+    </div>
+
+    <div class="join-group-area">
+      <div class="join-label">Join with a code</div>
+      <div class="join-input-row">
+        <input type="text" class="join-input" placeholder="e.g. CRUX-7XM4" />
+        <button class="join-btn">Join</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- CENTER: THREAD -->
+  <div class="thread-main">
+
+    <div class="thread-header">
+      <div class="thread-header-left">
+        <div class="thread-group-name">St. Thomas Youth Group</div>
+        <div style="margin-top:0.3rem;">
+          <span class="thread-passage">📖 Romans 1:16–17 — The Righteousness of God</span>
+        </div>
+      </div>
+      <div class="thread-header-right">
+        <div class="member-avatars">
+          <div class="avatar teacher" title="Mrs. Carroll (Teacher)">MC</div>
+          <div class="avatar" title="Sofia">SL</div>
+          <div class="avatar" title="Marcus">MR</div>
+          <div class="avatar" title="Priya">PK</div>
+          <div class="avatar avatar-overflow">+7</div>
+        </div>
+        <div class="member-count">11 members</div>
+      </div>
+    </div>
+
+    <!-- PASSAGE CONTEXT -->
+    <div class="passage-context">
+      <div>
+        <div class="passage-label">This Week's Passage</div>
+        <div class="passage-text">"For in it the righteousness of God is revealed from faith for faith, as it is written, 'The righteous shall live by faith.'"</div>
+        <div class="passage-ref">Romans 1:17 — RSV-CE</div>
+      </div>
+      <div class="passage-divider"></div>
+      <button class="passage-open-btn">Open Study Module →</button>
+    </div>
+
+    <!-- THREAD TABS -->
+    <div class="thread-tabs">
+      <div class="thread-tab active">Discussion</div>
+      <div class="thread-tab">Reflections (5)</div>
+      <div class="thread-tab">Prayer Requests</div>
+      <div class="thread-tab">Resources</div>
+    </div>
+
+    <!-- COMMENTS -->
+    <div class="comments-area">
+      <div class="comment-day-divider">Tuesday, April 22</div>
+
+      <!-- Teacher post -->
+      <div class="comment">
+        <div class="comment-avatar teacher-av">MC</div>
+        <div class="comment-body">
+          <div class="comment-meta">
+            <span class="comment-author">Mrs. Carroll</span>
+            <span class="teacher-badge">Teacher</span>
+            <span class="comment-time">9:14 AM</span>
+          </div>
+          <div class="comment-text teacher-text">
+            This week we're in Romans 1:16–17, which is really the thesis statement for the whole letter. Before we get into the word study, I want to start with a simple question: when you hear the word "righteous," what does it make you think of? Don't look anything up — just first instinct.
+          </div>
+          <div class="comment-actions">
+            <button class="comment-action liked">&#10003; 8 agree</button>
+            <button class="comment-action">Reply</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Student reply -->
+      <div class="reply-thread">
+        <div class="comment">
+          <div class="comment-avatar" style="background:#3b4f8a;">SL</div>
+          <div class="comment-body">
+            <div class="comment-meta">
+              <span class="comment-author">Sofia</span>
+              <span class="comment-time">9:31 AM</span>
+            </div>
+            <div class="comment-text">
+              Honestly my first thought was "holier than thou" — like someone who thinks they're better than everyone else? But I know that's probably not what Paul means.
+            </div>
+            <div class="comment-actions">
+              <button class="comment-action liked">&#10003; 4 agree</button>
+              <button class="comment-action">Reply</button>
+              <button class="comment-action">&#128681; Report</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="comment">
+          <div class="comment-avatar" style="background:#5a3a6e;">MR</div>
+          <div class="comment-body">
+            <div class="comment-meta">
+              <span class="comment-author">Marcus</span>
+              <span class="comment-time">9:45 AM</span>
+            </div>
+            <div class="comment-text">
+              <blockquote>Honestly my first thought was "holier than thou"</blockquote>
+              Same. I think "righteous" has been kind of ruined as a word. It sounds like someone who never does anything wrong and is smug about it. But in the module it talked about "dikaiosyne" meaning more like "being in right standing" which is completely different.
+            </div>
+            <div class="comment-actions">
+              <button class="comment-action">&#10003; 6 agree</button>
+              <button class="comment-action">Reply</button>
+              <button class="comment-action">&#128681; Report</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="comment">
+          <div class="comment-avatar teacher-av">MC</div>
+          <div class="comment-body">
+            <div class="comment-meta">
+              <span class="comment-author">Mrs. Carroll</span>
+              <span class="teacher-badge">Teacher</span>
+              <span class="comment-time">10:02 AM</span>
+            </div>
+            <div class="comment-text teacher-text">
+              Marcus exactly right — the word "righteous" in English carries a lot of baggage that the Greek doesn't. Dikaiosynē is a legal and relational term. Think of it less as "morally perfect" and more as "acquitted" or "restored to right relationship." A defendant who is declared innocent is dikaiōtheis — justified, put back in right standing. That framing changes everything about what Paul is saying.
+            </div>
+            <div class="comment-actions">
+              <button class="comment-action liked">&#10003; 9 agree</button>
+              <button class="comment-action">Reply</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- New thread -->
+      <div class="comment">
+        <div class="comment-avatar" style="background:#2d6a4f;">PK</div>
+        <div class="comment-body">
+          <div class="comment-meta">
+            <span class="comment-author">Priya</span>
+            <span class="comment-time">11:15 AM</span>
+          </div>
+          <div class="comment-text">
+            Question — why does Paul quote Habakkuk here? Like, what does an Old Testament prophet have to do with the Gospel? It feels like Paul just randomly pulls in a verse.
+          </div>
+          <div class="comment-actions">
+            <button class="comment-action">&#10003; 3 agree</button>
+            <button class="comment-action">Reply</button>
+            <button class="comment-action">&#128681; Report</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Example of flagged content (teacher view) -->
+      <div class="comment" style="opacity:0.7;">
+        <div class="comment-avatar" style="background:#888;">JD</div>
+        <div class="comment-body">
+          <div class="reported-banner">&#128681; Flagged by 2 members — awaiting review</div>
+          <div class="comment-meta">
+            <span class="comment-author">Jake D.</span>
+            <span class="comment-time">2:40 PM</span>
+          </div>
+          <div class="comment-text" style="filter:blur(4px);pointer-events:none;user-select:none;">
+            [Comment content hidden pending review]
+          </div>
+          <div class="comment-actions">
+            <button class="comment-action" style="color:var(--green);font-weight:600;">&#10003; Approve</button>
+            <button class="comment-action" style="color:var(--red);font-weight:600;">&#10005; Remove</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- POST INPUT -->
+    <div class="post-area">
+      <div class="post-context">
+        &#128276; Posting to <strong>St. Thomas Youth Group</strong> · Romans 1:16–17
+      </div>
+      <div class="post-row">
+        <div class="post-input-wrap">
+          <textarea class="post-input" rows="1" placeholder="Share a thought, ask a question, or respond to someone..."></textarea>
+          <div class="post-tools">
+            <button class="post-tool-btn">&#128278; Reference verse</button>
+            <button class="post-tool-btn">&#10067; Ask a question</button>
+            <button class="post-tool-btn">&#128591; Prayer request</button>
+          </div>
+        </div>
+        <button class="send-btn">Post</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- RIGHT: GROUP INFO -->
+  <div class="info-sidebar">
+
+    <div class="info-section">
+      <div class="info-label">Group Code</div>
+      <div class="group-code-display">
+        <div class="gcd-code">STY-8B2K</div>
+        <div class="gcd-copy">Copy</div>
+      </div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:0.4rem;">Share this code to invite members</div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">Study Plan</div>
+      <div style="font-size:0.85rem;font-weight:600;color:var(--navy);margin-bottom:0.35rem;">Romans — Parish Study 2026</div>
+      <div style="display:flex;justify-content:space-between;font-size:0.75rem;color:var(--text-muted);margin-bottom:0.35rem;">
+        <span>Section 2 of 10</span>
+        <span>20% complete</span>
+      </div>
+      <div class="plan-progress-bar"><div class="plan-progress-fill" style="width:20%;"></div></div>
+      <div style="font-size:0.72rem;color:var(--text-muted);margin-top:0.35rem;">Next session: Thursday, April 24</div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">Members (11)</div>
+      <div class="member-list">
+        <div class="member-row">
+          <div class="member-av-sm t">MC</div>
+          <div class="member-info">
+            <div class="member-name">Mrs. Carroll</div>
+            <div class="member-role">Teacher · 100% complete</div>
+          </div>
+          <div class="member-status-dot online" title="Online"></div>
+        </div>
+        <div class="member-row">
+          <div class="member-av-sm" style="background:#3b4f8a;">SL</div>
+          <div class="member-info">
+            <div class="member-name">Sofia L.</div>
+            <div class="member-role">60% complete</div>
+          </div>
+          <div class="member-status-dot online"></div>
+        </div>
+        <div class="member-row">
+          <div class="member-av-sm" style="background:#5a3a6e;">MR</div>
+          <div class="member-info">
+            <div class="member-name">Marcus R.</div>
+            <div class="member-role">40% complete</div>
+          </div>
+          <div class="member-status-dot"></div>
+        </div>
+        <div class="member-row">
+          <div class="member-av-sm" style="background:#2d6a4f;">PK</div>
+          <div class="member-info">
+            <div class="member-name">Priya K.</div>
+            <div class="member-role">20% complete</div>
+          </div>
+          <div class="member-status-dot online"></div>
+        </div>
+        <div style="font-size:0.75rem;color:var(--text-muted);margin-top:0.25rem;cursor:pointer;">+ 7 more members</div>
+      </div>
+    </div>
+
+    <!-- TEACHER CONTROLS -->
+    <div class="info-section">
+      <div class="info-label">Teacher Controls</div>
+      <div class="teacher-controls">
+        <div class="tc-label">&#9881;&#65039; Manage Group</div>
+        <button class="tc-btn">&#128276; Post announcement</button>
+        <button class="tc-btn">&#128336; Change current passage</button>
+        <button class="tc-btn">&#128101; Manage members</button>
+        <button class="tc-btn">&#128681; Review flagged (1)</button>
+        <button class="tc-btn danger">&#128683; Close group</button>
+      </div>
+    </div>
+
+    <div class="info-section">
+      <div class="info-label">About This Group</div>
+      <div style="font-size:0.82rem;color:var(--text-secondary);line-height:1.6;">
+        High school faith formation class at St. Thomas Parish. Created by Mrs. Carroll. Meets Thursdays, 6:30 PM.
+      </div>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
