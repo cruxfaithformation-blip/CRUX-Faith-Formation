@@ -262,6 +262,38 @@ body::before {
   margin-bottom: 1rem;
 }
 
+/* DRAFT / IN PROGRESS BADGE */
+.draft-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  border: 1px solid rgba(212,165,116,0.3);
+  border-radius: 20px;
+  padding: 0.2rem 0.7rem;
+  width: fit-content;
+}
+
+.draft-badge::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  background: var(--gold);
+  border-radius: 50%;
+  flex-shrink: 0;
+  animation: pulse-dot 2s ease infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.25; }
+}
+
 /* STATIC CARD (recommended reading — no hover lift) */
 .book-card.static {
   cursor: default;
@@ -343,6 +375,24 @@ body::before {
         <p class="book-card-subtitle">What I Know About God, Doubt, and Why It's Worth Fighting For</p>
         <p class="book-card-description">For anyone who wants to believe but needs more than inherited faith. A case for Christianity built from scripture, history, and one man's honest search for the truth.</p>
         <span class="book-card-cta">Read Now</span>
+      </a>
+
+      <a href="wih-ch01-address.html" class="book-card">
+        <span class="draft-badge">Writing Now</span>
+        <p class="book-card-eyebrow">Book &middot; Apologetics &middot; Seekers</p>
+        <h3 class="book-card-title">Who Is He?</h3>
+        <p class="book-card-subtitle">The Case for Christ Hidden in Plain Sight</p>
+        <p class="book-card-description">Three hundred specific predictions written across fifteen books by authors who never met. One man who fulfilled every one. This is the math, the evidence, and the person behind it.</p>
+        <span class="book-card-cta">Read Along</span>
+      </a>
+
+      <a href="here-i-am-lord.html" class="book-card">
+        <span class="draft-badge">Writing Now</span>
+        <p class="book-card-eyebrow">Book &middot; Children &middot; Ages 7&ndash;12</p>
+        <h3 class="book-card-title">Here I Am, Lord</h3>
+        <p class="book-card-subtitle">Send Me &mdash; 12 Old Testament Heroes Who Took Life by the Horns</p>
+        <p class="book-card-description">God doesn't use spectators. He calls people who show up. Twelve heroes from the Old Testament who said yes when it was hard, ran when everyone else froze, and changed the world anyway.</p>
+        <span class="book-card-cta">Read Along</span>
       </a>
 
     </div>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Price — Who Is He?</title>
+<meta name="description" content="Chapter 2: The Price. Zechariah named the amount five hundred years before anyone paid it. Who Is He? by Andrew Cross.">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --navy-deep: #0f1222;
+  --navy-light: #252b47;
+  --navy-mid: #1e2440;
+  --gold: #d4a574;
+  --gold-light: #e8c99a;
+  --gold-dim: rgba(212,165,116,0.15);
+  --gold-border: rgba(212,165,116,0.25);
+  --cream: #faf8f4;
+  --parchment: #f5edd8;
+  --text-soft: rgba(255,255,255,0.7);
+  --text-muted: rgba(255,255,255,0.45);
+  --text-dark: #2d1f0e;
+  --text-medium: #5a4228;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: var(--navy-deep);
+  color: var(--cream);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.6;
+}
+
+/* NAV */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 1rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(15,18,34,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: 5px;
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.nav-book {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-book:hover { color: var(--gold); }
+
+.nav-lib {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-lib:hover { color: var(--gold); }
+
+/* CHAPTER HERO */
+.chapter-hero {
+  position: relative;
+  padding: 8rem 2rem 5rem;
+  text-align: center;
+  overflow: hidden;
+  background: var(--navy-deep);
+}
+
+.chapter-hero::before {
+  content: '';
+  position: absolute;
+  width: 700px; height: 600px;
+  background: radial-gradient(ellipse, rgba(212,165,116,0.07) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.chapter-ghost {
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 22rem;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(212,165,116,0.06);
+  line-height: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  user-select: none;
+}
+
+.chapter-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.chapter-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 10vw, 5.5rem);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.0;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.chapter-subtitle {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--text-soft);
+  margin-bottom: 1.75rem;
+  position: relative;
+}
+
+.chapter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border: 1px solid var(--gold-border);
+  border-radius: 20px;
+  padding: 0.3rem 0.9rem;
+  position: relative;
+}
+
+.chapter-tag::before {
+  content: '';
+  width: 4px; height: 4px;
+  background: var(--gold);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* READING BODY */
+.reading-body {
+  background: var(--cream);
+  color: var(--text-dark);
+  position: relative;
+}
+
+.reading-body::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.4;
+}
+
+.reading-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+}
+
+/* PROSE */
+.prose {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.2rem;
+  line-height: 1.9;
+  color: var(--text-dark);
+}
+
+.prose p {
+  margin-bottom: 1.4em;
+}
+
+.prose p:last-child { margin-bottom: 0; }
+
+.prose-opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.4;
+  margin-bottom: 1.4em;
+}
+
+/* PROPHECY / FULFILLMENT BLOCK */
+.prophecy-block {
+  margin: 3rem 0;
+  border: 1px solid rgba(180, 120, 42, 0.25);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.prophecy-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid rgba(180, 120, 42, 0.2);
+}
+
+.prophecy-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 0.6rem 1.25rem;
+  background: #f5edd8;
+  color: #8a6a50;
+}
+
+.prophecy-label.right {
+  border-left: 1px solid rgba(180, 120, 42, 0.2);
+  background: #eef5e8;
+  color: #4a7a42;
+}
+
+.prophecy-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.prophecy-col {
+  padding: 1.5rem 1.25rem;
+  background: #fdf8f0;
+}
+
+.prophecy-col.right {
+  border-left: 1px solid rgba(180, 120, 42, 0.15);
+  background: #f4faf0;
+}
+
+.prophecy-ref {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #b8782a;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.prophecy-col.right .prophecy-ref {
+  color: #4a7a42;
+}
+
+.prophecy-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: #2d1f0e;
+  line-height: 1.65;
+}
+
+/* SCRIPTURE PULL */
+.scripture-pull {
+  margin: 2.5rem 0;
+  padding: 1.5rem 2rem;
+  border-left: 3px solid #b8782a;
+  background: #fdf0d2;
+  border-radius: 0 8px 8px 0;
+}
+
+.scripture-pull p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--navy);
+  line-height: 1.7;
+  margin-bottom: 0.6rem;
+}
+
+.scripture-pull cite {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #b8782a;
+  font-style: normal;
+}
+
+/* SECTION DIVIDER */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.5rem 0;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(180, 120, 42, 0.2);
+}
+
+.section-divider span {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #b8782a;
+  white-space: nowrap;
+}
+
+/* CLOSING CALLOUT */
+.closing-line {
+  margin: 2.5rem 0;
+  padding: 1.75rem 2rem;
+  background: var(--navy);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.closing-line p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--gold-light);
+  line-height: 1.6;
+}
+
+/* CHAPTER NAV */
+.chapter-nav {
+  background: var(--navy-deep);
+  border-top: 1px solid rgba(212,165,116,0.1);
+  padding: 2.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.chapter-nav-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.chapter-nav-link:hover { opacity: 0.7; }
+
+.chapter-nav-link.disabled {
+  color: rgba(255,255,255,0.2);
+  pointer-events: none;
+}
+
+.chapter-nav-next::after { content: ' →'; }
+.chapter-nav-prev::before { content: '← '; }
+
+.chapter-nav-center {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.chapter-nav-center:hover { color: var(--gold); }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.chapter-hero { animation: fadeUp 0.6s ease both; }
+.reading-body { animation: fadeUp 0.6s ease 0.15s both; }
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .site-nav { padding: 1rem 1.25rem; }
+  .nav-book { display: none; }
+  .chapter-hero { padding: 6rem 1.25rem 4rem; }
+  .chapter-ghost { font-size: 14rem; }
+  .reading-inner { padding: 3rem 1.25rem 5rem; }
+  .prose { font-size: 1.1rem; }
+  .prophecy-header,
+  .prophecy-body { grid-template-columns: 1fr; }
+  .prophecy-label.right { border-left: none; border-top: 1px solid rgba(180,120,42,0.2); }
+  .prophecy-col.right { border-left: none; border-top: 1px solid rgba(180,120,42,0.15); }
+  .chapter-nav { padding: 2rem 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">CRUX</a>
+  <a href="who-is-he.html" class="nav-book">Who Is He?</a>
+  <a href="crux-library.html" class="nav-lib">Library</a>
+</nav>
+
+<!-- CHAPTER HERO -->
+<div class="chapter-hero">
+  <span class="chapter-ghost" aria-hidden="true">02</span>
+  <p class="chapter-eyebrow">Part One &middot; The Clues &middot; Chapter 2</p>
+  <h1 class="chapter-title">The Price</h1>
+  <p class="chapter-subtitle">He named the amount five hundred years before anyone paid it.</p>
+  <span class="chapter-tag">Zechariah 11:12&ndash;13 &middot; Written ~500 BCE</span>
+</div>
+
+<!-- READING BODY -->
+<div class="reading-body">
+<div class="reading-inner">
+
+  <div class="prose">
+
+    <p class="prose-opener">Let me be precise about what Zechariah wrote.</p>
+
+    <p>Not "he will be betrayed for some money." Not "his enemies will pay someone to hand him over." Zechariah named the amount. He named what would happen to the money afterward. And he named what that money would buy.</p>
+
+    <p>Thirty pieces of silver. Thrown into the temple. Used to purchase a potter's field.</p>
+
+    <p>Three details. Written around 500 BCE.</p>
+
+  </div>
+
+  <div class="section-divider"><span>The Prophecy</span></div>
+
+  <div class="prophecy-block">
+    <div class="prophecy-header">
+      <div class="prophecy-label">Written &middot; Zechariah 11:12&ndash;13 &middot; ~500 BCE</div>
+      <div class="prophecy-label right">Fulfilled &middot; Matthew 27:3&ndash;10 &middot; ~30 CE</div>
+    </div>
+    <div class="prophecy-body">
+      <div class="prophecy-col">
+        <span class="prophecy-ref">The Prediction</span>
+        <p class="prophecy-text">"I told them, 'If you think it best, give me my pay; but if not, keep it.' So they paid me thirty pieces of silver. And the Lord said to me, 'Throw it to the potter' — the handsome price at which they valued me! So I took the thirty pieces of silver and threw them to the potter at the house of the Lord."</p>
+      </div>
+      <div class="prophecy-col right">
+        <span class="prophecy-ref">The Fulfillment</span>
+        <p class="prophecy-text">"When Judas, who had betrayed him, saw that Jesus was condemned, he was seized with remorse and returned the thirty pieces of silver to the chief priests... So Judas threw the money into the temple and left... The chief priests picked up the coins and said, 'It is against the law to put this into the treasury, since it is blood money.' So they decided to use the money to buy the potter's field."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="prose">
+
+    <p>Read that. Then read it again. No, seriously. Read it twice.</p>
+
+    <p>I know what the skeptics will say. I said it myself. "The disciples obviously changed the story to fit the prophecy." That's a fair question. It was the first one I asked. But stay with me for a second.</p>
+
+    <p>If the Gospel writers were making this up in a vacuum, writing for people two thousand years in the future who had no way to check the facts — sure, they could say whatever they wanted. But that's not what happened. The people who wrote this were writing it while the men who counted out those thirty pieces of silver were still alive. While the priests who decided the coins were blood money were still walking around Jerusalem. While the potter's field was still there for anyone to go look at.</p>
+
+    <p>Did the disciples call ahead and ask the Pharisees to please make sure they paid exactly thirty pieces of silver to kill their Rabbi? No. I don't buy that. And neither should you.</p>
+
+  </div>
+
+  <div class="section-divider"><span>The Witnesses</span></div>
+
+  <div class="prose">
+
+    <p>Here's what I keep coming back to. The same Pharisees who handed Judas that money were the same people whose descendants watched this Gospel story spread across the known world. If my father told me some man claimed to be the Messiah and I didn't believe it, I would go to the ends of the earth to prove it false. These men had every opportunity to do exactly that. They had the resources, the authority, and the motivation. They could have produced witnesses. They could have located the body. They could have shown the receipts that proved the amount was different, or that the field was bought for something else entirely.</p>
+
+    <p>They didn't. Because they couldn't.</p>
+
+  </div>
+
+  <div class="closing-line">
+    <p>My proof is in the Bible. Where is yours?</p>
+  </div>
+
+  <div class="prose">
+
+    <p>Now — I can hear what you're thinking. <em>Okay, there's something to this. There's more here than I expected. But people lie all the time. What's to tell me these men were telling the truth?</em></p>
+
+    <p>Good question. Keep reading.</p>
+
+  </div>
+
+</div>
+</div>
+
+<!-- CHAPTER NAVIGATION -->
+<div class="chapter-nav">
+  <a href="wih-ch01-address.html" class="chapter-nav-link chapter-nav-prev">The Address</a>
+  <a href="who-is-he.html" class="chapter-nav-center">All Chapters</a>
+  <a href="wih-ch03-entrance.html" class="chapter-nav-link chapter-nav-next">The Entrance</a>
+</div>
+
+</body>
+</html>
