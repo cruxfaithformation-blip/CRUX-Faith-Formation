@@ -330,6 +330,134 @@ body::before {
   font-style: normal;
 }
 
+/* PREAMBLE SECTION LABEL */
+.section-label-major {
+  text-align: center;
+  margin: 3rem 0 2.5rem;
+}
+
+.section-label-major .label-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #b8782a;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.section-label-major .label-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--navy);
+}
+
+/* ISAIAH LIST */
+.isaiah-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.isaiah-list li {
+  display: flex;
+  gap: 0.9rem;
+  align-items: baseline;
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: #2d1f0e;
+}
+
+.isaiah-list li::before {
+  content: '—';
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  color: #b8782a;
+  flex-shrink: 0;
+}
+
+/* PROBABILITY CALLOUT */
+.probability-block {
+  margin: 2.5rem 0;
+  background: var(--navy);
+  border-radius: 12px;
+  padding: 2rem 2.25rem;
+}
+
+.probability-block .prob-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.probability-block .prob-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 1rem;
+}
+
+.probability-block .prob-body {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.75);
+}
+
+.probability-block .prob-body p { margin-bottom: 0.9em; }
+.probability-block .prob-body p:last-child { margin-bottom: 0; }
+
+/* CHAPTER START MARKER */
+.chapter-start {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin: 3.5rem 0 2.5rem;
+}
+
+.chapter-start::before,
+.chapter-start::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(180, 120, 42, 0.25);
+}
+
+.chapter-start-inner {
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.chapter-start-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #b8782a;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.chapter-start-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--navy);
+}
+
 /* STAT CALLOUT */
 .stat-callout {
   margin: 2.5rem 0;
@@ -472,6 +600,74 @@ body::before {
 <!-- READING BODY -->
 <div class="reading-body">
 <div class="reading-inner">
+
+  <!-- PREAMBLE -->
+  <div class="section-label-major">
+    <span class="label-eyebrow">Before We Begin</span>
+    <span class="label-title">The Book That Stopped Me Cold</span>
+  </div>
+
+  <div class="prose">
+
+    <p>Long after I graduated college, before I really understood what I was following, I started listening to the <em>Bible in a Year</em> podcast by Fr. Mike Schmitz. I had read the Bible before — every single page. But I read it like most people do. I read it expecting the meaning would just appear without trying. I read it because I thought that's what a good Christian does.</p>
+
+    <p>The Old Testament left me shaking my head. <em>What did I just read?</em> I kept thinking. Then Fr. Mike explained it in words I could actually understand. I quickly realized I didn't know nearly as much as I thought I did — and I had been sitting through thousands of Masses.</p>
+
+    <p>Then came the day we read Isaiah 53. It stopped me in my tracks. A book written 700 years before Jesus was born.</p>
+
+  </div>
+
+  <div class="scripture-pull">
+    <p>Isaiah 53 talks about:</p>
+  </div>
+
+  <ul class="isaiah-list">
+    <li>A figure despised and rejected by men, familiar with suffering, held in low esteem</li>
+    <li>He bore our griefs and carried our sorrows</li>
+    <li>He was pierced for our transgressions, crushed for our iniquities</li>
+    <li>The punishment that brought us peace was on him</li>
+    <li>He was led like a lamb to the slaughter and did not open his mouth</li>
+    <li>He was assigned a grave with the wicked, but with the rich in his death</li>
+    <li>After his suffering he will see the light of life and be satisfied</li>
+  </ul>
+
+  <div class="prose">
+
+    <p>If you don't quite buy that this is enough to prove Isaiah was writing about Jesus, I don't blame you. It confused me too. But what if I told you this is just one of three hundred specific predictions written across fifteen different books of the Bible, written by authors who never met each other, never had the chance to coordinate about the man who would come centuries later. That none of his bones would be broken. That his side would be pierced. That he'd be buried in a rich man's tomb after being executed with criminals.</p>
+
+    <p>These weren't written by followers of Jesus after his death. The Dead Sea Scrolls prove that. They were written centuries before Jesus ever existed. Some of the prophecies, thousands of years before his birth.</p>
+
+    <p>Here's the thing that got me. Anyone can make a vague prediction. "He was a poor man who became great." But that's not what the Old Testament said. It was written by multiple people, over the course of generations, who never met each other, who all wrote things that pointed toward what actually happened in the New Testament.</p>
+
+    <p>That's when it stopped being a faith question for me and started being a math equation.</p>
+
+    <p>I'm a data guy. Excel is my happy place. Give me a data set of a million data points and I can rearrange it to tell you how, what, where, when, and why. I'm not an expert in theology, but I know data analysis like the back of my hand.</p>
+
+    <p>Luckily, I didn't have to do the math myself. Peter Stoner did it for me. He took just eight out of three hundred prophecies — not the most dramatic ones, just eight — and calculated the probability that a single person could fulfill all eight by chance.</p>
+
+  </div>
+
+  <div class="probability-block">
+    <div class="prob-number">1 in 10<sup style="font-size:1.2rem;">17</sup></div>
+    <div class="prob-label">Probability of fulfilling 8 prophecies by chance &middot; Peter Stoner</div>
+    <div class="prob-body">
+      <p>That is one in 100 quadrillion. There are roughly 7.5 quintillion grains of sand on every beach on earth. The equivalent is someone telling you there is one specific grain of sand in the world for you to find — and you just happened to reach down on a beach in your hometown and pick it up on the first try.</p>
+      <p>That was eight prophecies. Stoner also calculated the odds for 48. The probability becomes so large there isn't enough sand on earth to represent it. The way I heard it explained: of every atom in the observable universe, you reached out blindfolded and picked the one specific atom I was thinking of. On your first try. Exactly where you were standing.</p>
+      <p>To say it's impossible is to do Jesus an injustice. He fulfilled the prophecies. That's not a faith claim. That's arithmetic.</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>Do I have your attention yet? Good. Because that was the opening act. What follows are the prophecies themselves — one by one — so you can see exactly what was written, exactly when it was written, and exactly what happened when a man from Nazareth walked into history and matched every single one.</p>
+  </div>
+
+  <!-- CHAPTER 1 START MARKER -->
+  <div class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 1 &middot; Part One: The Clues</span>
+      <span class="chapter-start-title">The Address</span>
+    </div>
+  </div>
 
   <div class="prose">
 
