@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Address — Who Is He?</title>
+<meta name="description" content="Chapter 1: The Address. Micah named Bethlehem 700 years before Jesus was born there. Who Is He? by Andrew Cross.">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --navy-deep: #0f1222;
+  --navy-light: #252b47;
+  --navy-mid: #1e2440;
+  --gold: #d4a574;
+  --gold-light: #e8c99a;
+  --gold-dim: rgba(212,165,116,0.15);
+  --gold-border: rgba(212,165,116,0.25);
+  --cream: #faf8f4;
+  --parchment: #f5edd8;
+  --text-soft: rgba(255,255,255,0.7);
+  --text-muted: rgba(255,255,255,0.45);
+  --text-dark: #2d1f0e;
+  --text-medium: #5a4228;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: var(--navy-deep);
+  color: var(--cream);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.6;
+}
+
+/* NAV */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 1rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(15,18,34,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: 5px;
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.nav-book {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-book:hover { color: var(--gold); }
+
+.nav-lib {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-lib:hover { color: var(--gold); }
+
+/* CHAPTER HERO */
+.chapter-hero {
+  position: relative;
+  padding: 8rem 2rem 5rem;
+  text-align: center;
+  overflow: hidden;
+  background: var(--navy-deep);
+}
+
+.chapter-hero::before {
+  content: '';
+  position: absolute;
+  width: 700px; height: 600px;
+  background: radial-gradient(ellipse, rgba(212,165,116,0.07) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.chapter-ghost {
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 22rem;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(212,165,116,0.06);
+  line-height: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  user-select: none;
+}
+
+.chapter-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.chapter-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 10vw, 5.5rem);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.0;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.chapter-subtitle {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--text-soft);
+  margin-bottom: 1.75rem;
+  position: relative;
+}
+
+.chapter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border: 1px solid var(--gold-border);
+  border-radius: 20px;
+  padding: 0.3rem 0.9rem;
+  position: relative;
+}
+
+.chapter-tag::before {
+  content: '';
+  width: 4px; height: 4px;
+  background: var(--gold);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* READING BODY */
+.reading-body {
+  background: var(--cream);
+  color: var(--text-dark);
+  position: relative;
+}
+
+.reading-body::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.4;
+}
+
+.reading-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+}
+
+/* PROSE */
+.prose {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.2rem;
+  line-height: 1.9;
+  color: var(--text-dark);
+}
+
+.prose p {
+  margin-bottom: 1.4em;
+}
+
+.prose p:last-child { margin-bottom: 0; }
+
+.prose-opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.4;
+  margin-bottom: 1.4em;
+}
+
+/* PROPHECY / FULFILLMENT BLOCK */
+.prophecy-block {
+  margin: 3rem 0;
+  border: 1px solid rgba(180, 120, 42, 0.25);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.prophecy-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid rgba(180, 120, 42, 0.2);
+}
+
+.prophecy-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 0.6rem 1.25rem;
+  background: #f5edd8;
+  color: #8a6a50;
+}
+
+.prophecy-label.right {
+  border-left: 1px solid rgba(180, 120, 42, 0.2);
+  background: #eef5e8;
+  color: #4a7a42;
+}
+
+.prophecy-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.prophecy-col {
+  padding: 1.5rem 1.25rem;
+  background: #fdf8f0;
+}
+
+.prophecy-col.right {
+  border-left: 1px solid rgba(180, 120, 42, 0.15);
+  background: #f4faf0;
+}
+
+.prophecy-ref {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #b8782a;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.prophecy-col.right .prophecy-ref {
+  color: #4a7a42;
+}
+
+.prophecy-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: #2d1f0e;
+  line-height: 1.65;
+}
+
+/* SCRIPTURE PULL */
+.scripture-pull {
+  margin: 2.5rem 0;
+  padding: 1.5rem 2rem;
+  border-left: 3px solid #b8782a;
+  background: #fdf0d2;
+  border-radius: 0 8px 8px 0;
+}
+
+.scripture-pull p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--navy);
+  line-height: 1.7;
+  margin-bottom: 0.6rem;
+}
+
+.scripture-pull cite {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #b8782a;
+  font-style: normal;
+}
+
+/* STAT CALLOUT */
+.stat-callout {
+  margin: 2.5rem 0;
+  background: var(--navy);
+  border-radius: 12px;
+  padding: 2rem 2.25rem;
+  text-align: center;
+}
+
+.stat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.stat-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+
+/* SECTION DIVIDER */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.5rem 0;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(180, 120, 42, 0.2);
+}
+
+.section-divider span {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #b8782a;
+  white-space: nowrap;
+}
+
+/* CHAPTER NAV */
+.chapter-nav {
+  background: var(--navy-deep);
+  border-top: 1px solid rgba(212,165,116,0.1);
+  padding: 2.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.chapter-nav-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.chapter-nav-link:hover { opacity: 0.7; }
+
+.chapter-nav-link.disabled {
+  color: rgba(255,255,255,0.2);
+  pointer-events: none;
+}
+
+.chapter-nav-next::after { content: ' →'; }
+.chapter-nav-prev::before { content: '← '; }
+
+.chapter-nav-center {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.chapter-nav-center:hover { color: var(--gold); }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.chapter-hero { animation: fadeUp 0.6s ease both; }
+.reading-body { animation: fadeUp 0.6s ease 0.15s both; }
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .site-nav { padding: 1rem 1.25rem; }
+  .nav-book { display: none; }
+  .chapter-hero { padding: 6rem 1.25rem 4rem; }
+  .chapter-ghost { font-size: 14rem; }
+  .reading-inner { padding: 3rem 1.25rem 5rem; }
+  .prose { font-size: 1.1rem; }
+  .prophecy-header,
+  .prophecy-body { grid-template-columns: 1fr; }
+  .prophecy-label.right { border-left: none; border-top: 1px solid rgba(180,120,42,0.2); }
+  .prophecy-col.right { border-left: none; border-top: 1px solid rgba(180,120,42,0.15); }
+  .chapter-nav { padding: 2rem 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">CRUX</a>
+  <a href="who-is-he.html" class="nav-book">Who Is He?</a>
+  <a href="crux-library.html" class="nav-lib">Library</a>
+</nav>
+
+<!-- CHAPTER HERO -->
+<div class="chapter-hero">
+  <span class="chapter-ghost" aria-hidden="true">01</span>
+  <p class="chapter-eyebrow">Part One &middot; The Clues &middot; Chapter 1</p>
+  <h1 class="chapter-title">The Address</h1>
+  <p class="chapter-subtitle">Someone named the town 700 years before anyone was born in it.</p>
+  <span class="chapter-tag">Micah 5:2 &middot; Written ~700 BCE</span>
+</div>
+
+<!-- READING BODY -->
+<div class="reading-body">
+<div class="reading-inner">
+
+  <div class="prose">
+
+    <p class="prose-opener">You know what the difference is between a prediction and a guess? Specificity.</p>
+
+    <p>"Someone important will be born in America someday" is a guess. "He will be born in Leominster, Massachusetts" is a prediction — and if I told you that in 1324, you'd either think I was insane or you'd start paying very close attention to everything else I had to say.</p>
+
+    <p>That is what Micah did.</p>
+
+  </div>
+
+  <div class="section-divider"><span>The Prophecy</span></div>
+
+  <div class="prophecy-block">
+    <div class="prophecy-header">
+      <div class="prophecy-label">Written &middot; Micah 5:2 &middot; ~700 BCE</div>
+      <div class="prophecy-label right">Fulfilled &middot; Luke 2:4&ndash;7 &middot; ~4 BCE</div>
+    </div>
+    <div class="prophecy-body">
+      <div class="prophecy-col">
+        <span class="prophecy-ref">The Prediction</span>
+        <p class="prophecy-text">"But you, Bethlehem Ephrathah, though you are small among the clans of Judah, out of you will come for me one who will be ruler over Israel, whose origins are from of old, from ancient times."</p>
+      </div>
+      <div class="prophecy-col right">
+        <span class="prophecy-ref">The Fulfillment</span>
+        <p class="prophecy-text">"So Joseph also went up from the town of Nazareth in Galilee to Judea, to Bethlehem the town of David, because he belonged to the house and line of David... While they were there, the time came for the baby to be born."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="prose">
+
+    <p>Around 700 BCE, a prophet named Micah wrote something that should stop you cold if you're paying attention. He didn't say the promised Messiah would come from Israel. He didn't say Judea, or even Judah. He named a town. A specific, small, largely forgettable town — and the verse itself acknowledges it: <em>"though you are small among the clans of Judah."</em></p>
+
+    <p>Bethlehem. Not Jerusalem. Not Nazareth. Bethlehem.</p>
+
+    <p>Now before we get to Jesus, let me back up to someone you've heard of. King David — the shepherd boy who ran at a giant, the greatest king Israel ever had. David was from Bethlehem. He was from the tribe of Judah, which is where the title "Lion of Judah" comes from — a symbol of strength and royalty tied specifically to that bloodline. The Old Testament had already said the Messiah would come from the line of David, from the tribe of Judah. Micah didn't just confirm that. He went further. He named the town.</p>
+
+    <p>Seven hundred years before Jesus was born.</p>
+
+  </div>
+
+  <div class="section-divider"><span>The Census</span></div>
+
+  <div class="prose">
+
+    <p>Now here's where it gets interesting. Jesus wasn't born in Bethlehem because his parents were from there. Mary and Joseph were from Nazareth — about ninety miles away. In a world without cars, ninety miles is not nothing. Ninety miles while nine months pregnant is a lot to ask of anyone.</p>
+
+    <p>But they didn't make that trip because of a prophecy. Mary wasn't sitting at home reading Micah and thinking she'd better get herself to Bethlehem. She went because a Roman emperor named Caesar Augustus — a pagan, a man who had nothing to do with Hebrew scripture — ordered a census requiring every Jewish family to return to their ancestral hometown to be registered for tax purposes.</p>
+
+    <p>Bureaucrat's paperwork. A government mandate. A census.</p>
+
+    <p>That is what put Mary in Bethlehem on the night Jesus was born.</p>
+
+  </div>
+
+  <div class="scripture-pull">
+    <p>"And everyone went to their own town to register. So Joseph also went up from the town of Nazareth in Galilee to Judea, to Bethlehem the town of David, because he belonged to the house and line of David."</p>
+    <cite>Luke 2:3&ndash;4</cite>
+  </div>
+
+  <div class="prose">
+
+    <p>Think about what that means. God didn't need Mary to know the plan. He just needed Caesar to do what Caesar was going to do anyway. The most powerful man in the Western world issued an order that moved a teenage girl ninety miles to fulfill a line written seven centuries earlier — and neither of them knew it.</p>
+
+    <p>And that brings me to the thing I keep coming back to whenever someone tells me this could all be coincidence. Mary was a kid. She wasn't a theologian. She wasn't a strategist. She had no incentive to try to make her son look like the fulfillment of prophecy — and if you think about what was ahead of him, she probably would've rathered that he wasn't.</p>
+
+    <p>This isn't chance. Someone gave us the address seven hundred years early. The right town. The right tribe. The right family.</p>
+
+    <p>And they were just getting started.</p>
+
+  </div>
+
+  <div class="stat-callout">
+    <div class="stat-number">300</div>
+    <div class="stat-label">Specific Predictions &middot; 15 Books &middot; Written Before His Birth</div>
+  </div>
+
+</div>
+</div>
+
+<!-- CHAPTER NAVIGATION -->
+<div class="chapter-nav">
+  <span class="chapter-nav-link chapter-nav-prev disabled">Preamble</span>
+  <a href="who-is-he.html" class="chapter-nav-center">All Chapters</a>
+  <a href="wih-ch02-price.html" class="chapter-nav-link chapter-nav-next">The Price</a>
+</div>
+
+</body>
+</html>
