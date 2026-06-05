@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Who Is He? — Draft Review</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --navy-deep: #0f1222;
+  --navy-light: #252b47;
+  --navy-mid: #1e2440;
+  --gold: #d4a574;
+  --gold-light: #e8c99a;
+  --gold-dim: rgba(212,165,116,0.15);
+  --gold-border: rgba(212,165,116,0.25);
+  --cream: #faf8f4;
+  --parchment: #f5edd8;
+  --text-soft: rgba(255,255,255,0.7);
+  --text-muted: rgba(255,255,255,0.45);
+  --text-dark: #2d1f0e;
+  --text-medium: #5a4228;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: var(--navy-deep);
+  color: var(--cream);
+  overflow-x: hidden;
+}
+
+/* DRAFT BANNER */
+.draft-banner {
+  background: #7a3a00;
+  color: #fde4b0;
+  text-align: center;
+  padding: 0.6rem 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  position: sticky;
+  top: 0;
+  z-index: 300;
+}
+
+/* BOOK HERO */
+.book-hero {
+  padding: 6rem 2rem 4.5rem;
+  text-align: center;
+  background: var(--navy-deep);
+  position: relative;
+  overflow: hidden;
+}
+
+.book-hero::before {
+  content: '';
+  position: absolute;
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(212,165,116,0.07) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.book-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.book-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3.5rem, 12vw, 7rem);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.0;
+  margin-bottom: 1rem;
+  position: relative;
+}
+
+.book-subtitle {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--text-soft);
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.book-author {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  position: relative;
+}
+
+/* TOC */
+.toc-section {
+  background: var(--navy-mid);
+  border-top: 1px solid rgba(212,165,116,0.1);
+  border-bottom: 1px solid rgba(212,165,116,0.1);
+  padding: 3rem 2rem;
+}
+
+.toc-inner {
+  max-width: 680px;
+  margin: 0 auto;
+}
+
+.toc-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 2rem;
+  display: block;
+}
+
+.toc-part {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 1.75rem 0 0.75rem;
+}
+
+.toc-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.toc-list li a {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  text-decoration: none;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgba(212,165,116,0.07);
+  transition: opacity 0.2s;
+}
+
+.toc-list li a:hover { opacity: 0.7; }
+
+.toc-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  color: var(--gold);
+  flex-shrink: 0;
+  width: 1.8rem;
+}
+
+.toc-title {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.05rem;
+  color: var(--cream);
+  flex: 1;
+}
+
+.toc-ref {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.toc-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.52rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.4);
+  border: 1px solid rgba(212,165,116,0.2);
+  border-radius: 10px;
+  padding: 0.15rem 0.5rem;
+  flex-shrink: 0;
+}
+
+/* READING BODY */
+.reading-body {
+  background: var(--cream);
+  color: var(--text-dark);
+  position: relative;
+}
+
+.reading-body::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.4;
+}
+
+.reading-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+}
+
+/* PROSE */
+.prose {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.2rem;
+  line-height: 1.9;
+  color: var(--text-dark);
+}
+
+.prose p { margin-bottom: 1.4em; }
+.prose p:last-child { margin-bottom: 0; }
+
+.prose-opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.4;
+  margin-bottom: 1.4em;
+}
+
+/* SECTION LABEL */
+.section-label-major {
+  text-align: center;
+  margin: 3rem 0 2.5rem;
+}
+
+.section-label-major .label-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #b8782a;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.section-label-major .label-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--navy);
+}
+
+/* ISAIAH LIST */
+.isaiah-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.isaiah-list li {
+  display: flex;
+  gap: 0.9rem;
+  align-items: baseline;
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.15rem;
+  line-height: 1.6;
+  color: #2d1f0e;
+}
+
+.isaiah-list li::before {
+  content: '—';
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  color: #b8782a;
+  flex-shrink: 0;
+}
+
+/* PROBABILITY CALLOUT */
+.probability-block {
+  margin: 2.5rem 0;
+  background: var(--navy);
+  border-radius: 12px;
+  padding: 2rem 2.25rem;
+}
+
+.probability-block .prob-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.2rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.probability-block .prob-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.45);
+  margin-bottom: 1rem;
+}
+
+.probability-block .prob-body {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.1rem;
+  line-height: 1.8;
+  color: rgba(255,255,255,0.75);
+}
+
+.probability-block .prob-body p { margin-bottom: 0.9em; }
+.probability-block .prob-body p:last-child { margin-bottom: 0; }
+
+/* STAT CALLOUT */
+.stat-callout {
+  margin: 2.5rem 0;
+  background: var(--navy);
+  border-radius: 12px;
+  padding: 2rem 2.25rem;
+  text-align: center;
+}
+
+.stat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: var(--gold);
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+
+.stat-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 600;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.5);
+}
+
+/* PROPHECY BLOCK */
+.prophecy-block {
+  margin: 3rem 0;
+  border: 1px solid rgba(180, 120, 42, 0.25);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.prophecy-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-bottom: 1px solid rgba(180, 120, 42, 0.2);
+}
+
+.prophecy-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  padding: 0.6rem 1.25rem;
+  background: #f5edd8;
+  color: #8a6a50;
+}
+
+.prophecy-label.right {
+  border-left: 1px solid rgba(180, 120, 42, 0.2);
+  background: #eef5e8;
+  color: #4a7a42;
+}
+
+.prophecy-body {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.prophecy-col {
+  padding: 1.5rem 1.25rem;
+  background: #fdf8f0;
+}
+
+.prophecy-col.right {
+  border-left: 1px solid rgba(180, 120, 42, 0.15);
+  background: #f4faf0;
+}
+
+.prophecy-ref {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #b8782a;
+  margin-bottom: 0.75rem;
+  display: block;
+}
+
+.prophecy-col.right .prophecy-ref { color: #4a7a42; }
+
+.prophecy-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: #2d1f0e;
+  line-height: 1.65;
+}
+
+/* SCRIPTURE PULL */
+.scripture-pull {
+  margin: 2.5rem 0;
+  padding: 1.5rem 2rem;
+  border-left: 3px solid #b8782a;
+  background: #fdf0d2;
+  border-radius: 0 8px 8px 0;
+}
+
+.scripture-pull p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--navy);
+  line-height: 1.7;
+  margin-bottom: 0.6rem;
+}
+
+.scripture-pull cite {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #b8782a;
+  font-style: normal;
+}
+
+/* CLOSING LINE */
+.closing-line {
+  margin: 2.5rem 0;
+  padding: 1.75rem 2rem;
+  background: var(--navy);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.closing-line p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--gold-light);
+  line-height: 1.6;
+}
+
+/* SECTION DIVIDER */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.5rem 0;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(180, 120, 42, 0.2);
+}
+
+.section-divider span {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #b8782a;
+  white-space: nowrap;
+}
+
+/* CHAPTER START MARKER */
+.chapter-start {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin: 4rem 0 2.5rem;
+}
+
+.chapter-start::before,
+.chapter-start::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(180, 120, 42, 0.25);
+}
+
+.chapter-start-inner {
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.chapter-start-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #b8782a;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.chapter-start-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--navy);
+}
+
+/* PART HEADER */
+.part-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  margin: 5rem 0 1rem;
+  padding: 2rem 0;
+  border-top: 1px solid rgba(180,120,42,0.2);
+  border-bottom: 1px solid rgba(180,120,42,0.2);
+}
+
+.part-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #b8782a;
+}
+
+.part-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--navy);
+}
+
+/* COMING SOON CHAPTERS */
+.coming-chapter {
+  margin: 2.5rem 0;
+  padding: 1.75rem 2rem;
+  border: 1px dashed rgba(180,120,42,0.25);
+  border-radius: 12px;
+  background: #fdf8f0;
+}
+
+.coming-chapter-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #b8782a;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.coming-chapter-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 900;
+  color: var(--navy);
+  margin-bottom: 0.75rem;
+}
+
+.coming-chapter-verse {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.0rem;
+  color: #5a4228;
+  line-height: 1.65;
+  border-left: 2px solid rgba(180,120,42,0.3);
+  padding-left: 1rem;
+  margin-bottom: 0.75rem;
+}
+
+.coming-chapter-ref {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #b8782a;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.coming-chapter-brief {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: #5a4228;
+}
+
+.coming-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(180,120,42,0.6);
+  border: 1px solid rgba(180,120,42,0.25);
+  border-radius: 10px;
+  padding: 0.2rem 0.6rem;
+  margin-top: 1rem;
+}
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .reading-inner { padding: 3rem 1.25rem 5rem; }
+  .prose { font-size: 1.1rem; }
+  .prophecy-header,
+  .prophecy-body { grid-template-columns: 1fr; }
+  .prophecy-label.right { border-left: none; border-top: 1px solid rgba(180,120,42,0.2); }
+  .prophecy-col.right { border-left: none; border-top: 1px solid rgba(180,120,42,0.15); }
+  .toc-ref { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="draft-banner">Draft Review Only &mdash; Not Published</div>
+
+<!-- BOOK HERO -->
+<div class="book-hero">
+  <p class="book-eyebrow">Draft Review &middot; Who Is He?</p>
+  <h1 class="book-title">Who Is He?</h1>
+  <p class="book-subtitle">The prophecies that named him before he was born.</p>
+  <p class="book-author">Andrew Cross</p>
+</div>
+
+<!-- TABLE OF CONTENTS -->
+<div class="toc-section">
+  <div class="toc-inner">
+    <span class="toc-eyebrow">Contents</span>
+
+    <p class="toc-part">Part One &mdash; The Blueprint</p>
+    <ul class="toc-list">
+      <li><a href="#preamble"><span class="toc-num">—</span><span class="toc-title">Before We Begin</span><span class="toc-ref">The Book That Stopped Me Cold</span></a></li>
+      <li><a href="#ch01"><span class="toc-num">01</span><span class="toc-title">The Address</span><span class="toc-ref">Micah 5:2</span></a></li>
+      <li><a href="#ch02"><span class="toc-num">02</span><span class="toc-title">The Price</span><span class="toc-ref">Zechariah 11:12&ndash;13</span></a></li>
+      <li><a href="#ch03"><span class="toc-num">03</span><span class="toc-title">The Entrance</span><span class="toc-ref">Zechariah 9:9</span></a></li>
+      <li><a href="#ch04"><span class="toc-num">04</span><span class="toc-title">The Lineage</span><span class="toc-ref">Jeremiah 23:5</span></a></li>
+      <li><a href="#ch05"><span class="toc-num">05</span><span class="toc-title">The Herald</span><span class="toc-ref">Isaiah 40:3</span></a></li>
+    </ul>
+
+    <p class="toc-part">Part Two &mdash; The Passion</p>
+    <ul class="toc-list">
+      <li><a href="#ch06"><span class="toc-num">06</span><span class="toc-title">The Friend</span><span class="toc-ref">Psalm 41:9</span></a></li>
+      <li><a href="#ch07"><span class="toc-num">07</span><span class="toc-title">The Servant</span><span class="toc-ref">Isaiah 53</span></a></li>
+      <li><a href="#ch08"><span class="toc-num">08</span><span class="toc-title">The Psalm</span><span class="toc-ref">Psalm 22</span></a></li>
+      <li><a href="#ch09"><span class="toc-num">09</span><span class="toc-title">The Bones</span><span class="toc-ref">Psalm 34:20 &middot; Zechariah 12:10</span></a></li>
+    </ul>
+
+    <p class="toc-part">Part Three &mdash; The Answer</p>
+    <ul class="toc-list">
+      <li><a href="#ch10"><span class="toc-num">10</span><span class="toc-title">The Tomb</span><span class="toc-ref">Psalm 16:10</span></a></li>
+      <li><a href="#ch11"><span class="toc-num">11</span><span class="toc-title">The Name</span><span class="toc-ref">Isaiah 9:6</span></a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- READING BODY -->
+<div class="reading-body">
+<div class="reading-inner">
+
+  <!-- PREAMBLE -->
+  <div id="preamble" class="section-label-major">
+    <span class="label-eyebrow">Before We Begin</span>
+    <span class="label-title">The Book That Stopped Me Cold</span>
+  </div>
+
+  <div class="prose">
+    <p>Long after I graduated college, before I really understood what I was following, I started listening to the <em>Bible in a Year</em> podcast by Fr. Mike Schmitz. I had read the Bible before — every single page. But I read it like most people do. I read it expecting the meaning would just appear without trying. I read it because I thought that's what a good Christian does.</p>
+    <p>The Old Testament left me shaking my head. <em>What did I just read?</em> I kept thinking. Then Fr. Mike explained it in words I could actually understand. I quickly realized I didn't know nearly as much as I thought I did — and I had been sitting through thousands of Masses.</p>
+    <p>Then came the day we read Isaiah 53. It stopped me in my tracks. A book written 700 years before Jesus was born.</p>
+  </div>
+
+  <div class="scripture-pull">
+    <p>Isaiah 53 talks about:</p>
+  </div>
+
+  <ul class="isaiah-list">
+    <li>A figure despised and rejected by men, familiar with suffering, held in low esteem</li>
+    <li>He bore our griefs and carried our sorrows</li>
+    <li>He was pierced for our transgressions, crushed for our iniquities</li>
+    <li>The punishment that brought us peace was on him</li>
+    <li>He was led like a lamb to the slaughter and did not open his mouth</li>
+    <li>He was assigned a grave with the wicked, but with the rich in his death</li>
+    <li>After his suffering he will see the light of life and be satisfied</li>
+  </ul>
+
+  <div class="prose">
+    <p>If you don't quite buy that this is enough to prove Isaiah was writing about Jesus, I don't blame you. It confused me too. But what if I told you this is just one of three hundred specific predictions written across fifteen different books of the Bible, written by authors who never met each other, never had the chance to coordinate about the man who would come centuries later. That none of his bones would be broken. That his side would be pierced. That he'd be buried in a rich man's tomb after being executed with criminals.</p>
+    <p>These weren't written by followers of Jesus after his death. The Dead Sea Scrolls prove that. They were written centuries before Jesus ever existed. Some of the prophecies, thousands of years before his birth.</p>
+    <p>Here's the thing that got me. Anyone can make a vague prediction. "He was a poor man who became great." But that's not what the Old Testament said. It was written by multiple people, over the course of generations, who never met each other, who all wrote things that pointed toward what actually happened in the New Testament.</p>
+    <p>That's when it stopped being a faith question for me and started being a math equation.</p>
+    <p>I'm a data guy. Excel is my happy place. Give me a data set of a million data points and I can rearrange it to tell you how, what, where, when, and why. I'm not an expert in theology, but I know data analysis like the back of my hand.</p>
+    <p>Luckily, I didn't have to do the math myself. Peter Stoner did it for me. He took just eight out of three hundred prophecies — not the most dramatic ones, just eight — and calculated the probability that a single person could fulfill all eight by chance.</p>
+  </div>
+
+  <div class="probability-block">
+    <div class="prob-number">1 in 10<sup style="font-size:1.2rem;">17</sup></div>
+    <div class="prob-label">Probability of fulfilling 8 prophecies by chance &middot; Peter Stoner</div>
+    <div class="prob-body">
+      <p>That is one in 100 quadrillion. There are roughly 7.5 quintillion grains of sand on every beach on earth. The equivalent is someone telling you there is one specific grain of sand in the world for you to find — and you just happened to reach down on a beach in your hometown and pick it up on the first try.</p>
+      <p>That was eight prophecies. Stoner also calculated the odds for 48. The probability becomes so large there isn't enough sand on earth to represent it. The way I heard it explained: of every atom in the observable universe, you reached out blindfolded and picked the one specific atom I was thinking of. On your first try. Exactly where you were standing.</p>
+      <p>To say it's impossible is to do Jesus an injustice. He fulfilled the prophecies. That's not a faith claim. That's arithmetic.</p>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>Do I have your attention yet? Good. Because that was the opening act. What follows are the prophecies themselves — one by one — so you can see exactly what was written, exactly when it was written, and exactly what happened when a man from Nazareth walked into history and matched every single one.</p>
+  </div>
+
+  <!-- PART ONE -->
+  <div class="part-header">
+    <span class="part-eyebrow">Part One</span>
+    <span class="part-title">The Blueprint</span>
+  </div>
+
+  <!-- CHAPTER 1 -->
+  <div id="ch01" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 1 &middot; Part One: The Blueprint</span>
+      <span class="chapter-start-title">The Address</span>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="prose-opener">You know what the difference is between a prediction and a guess? Specificity.</p>
+    <p>"Someone important will be born in America someday" is a guess. "He will be born in Leominster, Massachusetts" is a prediction — and if I told you that in 1324, you'd either think I was insane or you'd start paying very close attention to everything else I had to say.</p>
+    <p>That is what Micah did.</p>
+  </div>
+
+  <div class="section-divider"><span>The Prophecy</span></div>
+
+  <div class="prophecy-block">
+    <div class="prophecy-header">
+      <div class="prophecy-label">Written &middot; Micah 5:2 &middot; ~700 BCE</div>
+      <div class="prophecy-label right">Fulfilled &middot; Luke 2:4&ndash;7 &middot; ~4 BCE</div>
+    </div>
+    <div class="prophecy-body">
+      <div class="prophecy-col">
+        <span class="prophecy-ref">The Prediction</span>
+        <p class="prophecy-text">"But you, Bethlehem Ephrathah, though you are small among the clans of Judah, out of you will come for me one who will be ruler over Israel, whose origins are from of old, from ancient times."</p>
+      </div>
+      <div class="prophecy-col right">
+        <span class="prophecy-ref">The Fulfillment</span>
+        <p class="prophecy-text">"So Joseph also went up from the town of Nazareth in Galilee to Judea, to Bethlehem the town of David, because he belonged to the house and line of David... While they were there, the time came for the baby to be born."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>Around 700 BCE, a prophet named Micah wrote something that should stop you cold if you're paying attention. He didn't say the promised Messiah would come from Israel. He didn't say Judea, or even Judah. He named a town. A specific, small, largely forgettable town — and the verse itself acknowledges it: <em>"though you are small among the clans of Judah."</em></p>
+    <p>Bethlehem. Not Jerusalem. Not Nazareth. Bethlehem.</p>
+    <p>Now before we get to Jesus, let me back up to someone you've heard of. King David — the shepherd boy who ran at a giant, the greatest king Israel ever had. David was from Bethlehem. He was from the tribe of Judah, which is where the title "Lion of Judah" comes from — a symbol of strength and royalty tied specifically to that bloodline. The Old Testament had already said the Messiah would come from the line of David, from the tribe of Judah. Micah didn't just confirm that. He went further. He named the town.</p>
+    <p>Seven hundred years before Jesus was born.</p>
+  </div>
+
+  <div class="section-divider"><span>The Census</span></div>
+
+  <div class="prose">
+    <p>Now here's where it gets interesting. Jesus wasn't born in Bethlehem because his parents were from there. Mary and Joseph were from Nazareth — about ninety miles away. In a world without cars, ninety miles is not nothing. Ninety miles while nine months pregnant is a lot to ask of anyone.</p>
+    <p>But they didn't make that trip because of a prophecy. Mary wasn't sitting at home reading Micah and thinking she'd better get herself to Bethlehem. She went because a Roman emperor named Caesar Augustus — a pagan, a man who had nothing to do with Hebrew scripture — ordered a census requiring every Jewish family to return to their ancestral hometown to be registered for tax purposes.</p>
+    <p>Bureaucrat's paperwork. A government mandate. A census.</p>
+    <p>That is what put Mary in Bethlehem on the night Jesus was born.</p>
+  </div>
+
+  <div class="scripture-pull">
+    <p>"And everyone went to their own town to register. So Joseph also went up from the town of Nazareth in Galilee to Judea, to Bethlehem the town of David, because he belonged to the house and line of David."</p>
+    <cite>Luke 2:3&ndash;4</cite>
+  </div>
+
+  <div class="prose">
+    <p>Think about what that means. God didn't need Mary to know the plan. He just needed Caesar to do what Caesar was going to do anyway. The most powerful man in the Western world issued an order that moved a teenage girl ninety miles to fulfill a line written seven centuries earlier — and neither of them knew it.</p>
+    <p>And that brings me to the thing I keep coming back to whenever someone tells me this could all be coincidence. Mary was a kid. She wasn't a theologian. She wasn't a strategist. She had no incentive to try to make her son look like the fulfillment of prophecy — and if you think about what was ahead of him, she probably would've rathered that he wasn't.</p>
+    <p>This isn't chance. Someone gave us the address seven hundred years early. The right town. The right tribe. The right family.</p>
+    <p>And they were just getting started.</p>
+  </div>
+
+  <div class="stat-callout">
+    <div class="stat-number">300</div>
+    <div class="stat-label">Specific Predictions &middot; 15 Books &middot; Written Before His Birth</div>
+  </div>
+
+  <!-- CHAPTER 2 -->
+  <div id="ch02" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 2 &middot; Part One: The Blueprint</span>
+      <span class="chapter-start-title">The Price</span>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="prose-opener">Let me be precise about what Zechariah wrote.</p>
+    <p>Not "he will be betrayed for some money." Not "his enemies will pay someone to hand him over." Zechariah named the amount. He named what would happen to the money afterward. And he named what that money would buy.</p>
+    <p>Thirty pieces of silver. Thrown into the temple. Used to purchase a potter's field.</p>
+    <p>Three details. Written around 500 BCE.</p>
+  </div>
+
+  <div class="section-divider"><span>The Prophecy</span></div>
+
+  <div class="prophecy-block">
+    <div class="prophecy-header">
+      <div class="prophecy-label">Written &middot; Zechariah 11:12&ndash;13 &middot; ~500 BCE</div>
+      <div class="prophecy-label right">Fulfilled &middot; Matthew 27:3&ndash;10 &middot; ~30 CE</div>
+    </div>
+    <div class="prophecy-body">
+      <div class="prophecy-col">
+        <span class="prophecy-ref">The Prediction</span>
+        <p class="prophecy-text">"I told them, 'If you think it best, give me my pay; but if not, keep it.' So they paid me thirty pieces of silver. And the Lord said to me, 'Throw it to the potter' — the handsome price at which they valued me! So I took the thirty pieces of silver and threw them to the potter at the house of the Lord."</p>
+      </div>
+      <div class="prophecy-col right">
+        <span class="prophecy-ref">The Fulfillment</span>
+        <p class="prophecy-text">"When Judas, who had betrayed him, saw that Jesus was condemned, he was seized with remorse and returned the thirty pieces of silver to the chief priests... So Judas threw the money into the temple and left... The chief priests picked up the coins and said, 'It is against the law to put this into the treasury, since it is blood money.' So they decided to use the money to buy the potter's field."</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p>Read that. Then read it again. No, seriously. Read it twice.</p>
+    <p>I know what the skeptics will say. I said it myself. "The disciples obviously changed the story to fit the prophecy." That's a fair question. It was the first one I asked. But stay with me for a second.</p>
+    <p>If the Gospel writers were making this up in a vacuum, writing for people two thousand years in the future who had no way to check the facts — sure, they could say whatever they wanted. But that's not what happened. The people who wrote this were writing it while the men who counted out those thirty pieces of silver were still alive. While the priests who decided the coins were blood money were still walking around Jerusalem. While the potter's field was still there for anyone to go look at.</p>
+    <p>Did the disciples call ahead and ask the Pharisees to please make sure they paid exactly thirty pieces of silver to kill their Rabbi? No. I don't buy that. And neither should you.</p>
+  </div>
+
+  <div class="section-divider"><span>The Witnesses</span></div>
+
+  <div class="prose">
+    <p>Here's what I keep coming back to. The same Pharisees who handed Judas that money were the same people whose descendants watched this Gospel story spread across the known world. If my father told me some man claimed to be the Messiah and I didn't believe it, I would go to the ends of the earth to prove it false. These men had every opportunity to do exactly that. They had the resources, the authority, and the motivation. They could have produced witnesses. They could have located the body. They could have shown the receipts that proved the amount was different, or that the field was bought for something else entirely.</p>
+    <p>They didn't. Because they couldn't.</p>
+  </div>
+
+  <div class="closing-line">
+    <p>My proof is in the Bible. Where is yours?</p>
+  </div>
+
+  <div class="prose">
+    <p>Now — I can hear what you're thinking. <em>Okay, there's something to this. There's more here than I expected. But people lie all the time. What's to tell me these men were telling the truth?</em></p>
+    <p>Good question. Keep reading.</p>
+  </div>
+
+  <!-- CHAPTER 3 -->
+  <div id="ch03" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 3 &middot; Part One: The Blueprint</span>
+      <span class="chapter-start-title">The Entrance</span>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="prose-opener">Hosanna! What does that mean to you? Probably nothing.</p>
+    <p>To the Jewish people at the time, it meant everything. Jesus didn't come into town with a sword on a mighty horse, although that's what people thought the actual Messiah would do. He arrived on the back of a donkey.</p>
+    <p>I know donkeys. We have one at my best buddy's farm. His name is Dominic the Donkey and you can hear him from a mile away. Dumb animal, if we're being honest. But seriously, donkeys are weird. If I were the king of the universe come down to earth, I think I'd pick a better ride.</p>
+    <p>Brady, Drew, Trevor — if you're reading this. I know you've probably shoveled your fair share of Dominic's mess. Is he the ride you'd pick if you were riding into town? Probably not.</p>
+  </div>
+
+  <div class="section-divider"><span>The Prophecy</span></div>
+
+  <div class="prophecy-block">
+    <div class="prophecy-header">
+      <div class="prophecy-label">Written &middot; Zechariah 9:9 &middot; ~520 BCE</div>
+      <div class="prophecy-label right">Fulfilled &middot; Matthew 21:7&ndash;9 &middot; ~30 CE</div>
+    </div>
+    <div class="prophecy-body">
+      <div class="prophecy-col">
+        <span class="prophecy-ref">The Prediction</span>
+        <p class="prophecy-text">"Rejoice greatly, Daughter Zion! Shout, Daughter Jerusalem! See, your king comes to you, righteous and victorious, lowly and riding on a donkey, on a colt, the foal of a donkey."</p>
+      </div>
+      <div class="prophecy-col right">
+        <span class="prophecy-ref">The Fulfillment</span>
+        <p class="prophecy-text">"They brought the donkey and the colt and placed their cloaks on them for Jesus to sit on. A very large crowd spread their cloaks on the road, while others cut branches from the trees and spread them on the road. The crowds that went ahead of him and those that followed shouted, 'Hosanna to the Son of David!'"</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider"><span>The Crowd</span></div>
+
+  <div class="prose">
+    <p>The Roman Empire is something guys think about pretty much every day. Ladies, trust me on this one — Roman history gets the boys fired up.</p>
+    <p>Jewish history isn't far from that. They believed their Messiah would be a war hero, not a man like Jesus who preached nothing but love and died for that belief.</p>
+    <p>Don't believe me? Jesus's own disciples asked the same question. They all thought he was coming with a sword. They thought he was the next David vs. Goliath.</p>
+    <p>What did Jesus answer with? Love.</p>
+  </div>
+
+  <div class="section-divider"><span>The Arrangement</span></div>
+
+  <div class="prose">
+    <p>Here is what makes the donkey more than a detail. Jesus did not simply show up on one. He planned it.</p>
+    <p>Before entering Jerusalem, Jesus sent two of his disciples ahead with specific instructions. Go into the village, he told them. You will find a donkey tied there with her colt. Untie them and bring them to me. If anyone asks, tell them the Lord needs them.</p>
+    <p>That is Matthew 21. That is not a man who stumbled onto a donkey. That is a man who knew exactly what he was doing and why.</p>
+    <p>Some people will say: that proves nothing. He read Zechariah. He knew the prophecy. He staged the whole thing to look like a fulfillment.</p>
+    <p>Consider that. Really consider it.</p>
+    <p>A man who knows he is riding into the city where he will be arrested, beaten, and executed — who knows this because he has already told his disciples it will happen — chooses to enter that city on a borrowed donkey, on purpose, to announce himself as the Messiah to a crowd of thousands. That is not a man running a con. That is a man making a declaration.</p>
+    <p>And the crowd? Nobody handed them palm branches and said shout Hosanna. They did it on their own, because something in that moment moved them to. Zechariah wrote down the scene five centuries before it happened. The people played their part without knowing they were in it.</p>
+    <p>If Jesus staged the entrance, he staged it knowing it would get him killed. He staged it as a confession of exactly who he was, in front of a crowd that included people who would hand him over to Rome within the week. Nobody performs that kind of theater unless they are absolutely certain of who they are.</p>
+    <p>He rode in on a donkey because Zechariah said the king would. And because he was the king.</p>
+  </div>
+
+  <!-- CHAPTERS 4 & 5 — COMING -->
+  <div id="ch04" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 4 &middot; Part One: The Blueprint</span>
+      <span class="chapter-start-title">The Lineage</span>
+    </div>
+  </div>
+
+  <div class="coming-chapter">
+    <span class="coming-chapter-label">Chapter 4 &middot; Jeremiah 23:5 &middot; ~600 BCE</span>
+    <div class="coming-chapter-title">The Lineage</div>
+    <p class="coming-chapter-verse">"The days are coming," declares the Lord, "when I will raise up for David a righteous Branch, a King who will reign wisely and do what is just and right in the land."</p>
+    <span class="coming-chapter-ref">Jeremiah 23:5</span>
+    <p class="coming-chapter-brief">The Messiah had to come from the bloodline of King David — not a suggestion, a genealogical requirement. Matthew and Luke both trace Jesus's lineage directly to David. God narrowed the entire human race down to one family line, announced it six centuries early, and Jesus showed up in it.</p>
+    <span class="coming-badge">In Progress</span>
+  </div>
+
+  <div id="ch05" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 5 &middot; Part One: The Blueprint</span>
+      <span class="chapter-start-title">The Herald</span>
+    </div>
+  </div>
+
+  <div class="coming-chapter">
+    <span class="coming-chapter-label">Chapter 5 &middot; Isaiah 40:3 &middot; ~700 BCE</span>
+    <div class="coming-chapter-title">The Herald</div>
+    <p class="coming-chapter-verse">"A voice of one calling: In the wilderness prepare the way for the Lord; make straight in the desert a highway for our God."</p>
+    <span class="coming-chapter-ref">Isaiah 40:3</span>
+    <p class="coming-chapter-brief">Not just Jesus was prophesied — the one who would announce him was prophesied too. Seven centuries after Isaiah wrote this, a man named John appeared in the wilderness of Judea. When asked who he was, John quoted this verse directly. He said: I am the voice.</p>
+    <span class="coming-badge">In Progress</span>
+  </div>
+
+  <!-- PART TWO -->
+  <div class="part-header">
+    <span class="part-eyebrow">Part Two</span>
+    <span class="part-title">The Passion</span>
+  </div>
+
+  <div id="ch06" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 6 &middot; Part Two: The Passion</span>
+      <span class="chapter-start-title">The Friend</span>
+    </div>
+  </div>
+
+  <div class="coming-chapter">
+    <span class="coming-chapter-label">Chapter 6 &middot; Psalm 41:9 &middot; ~1000 BCE</span>
+    <div class="coming-chapter-title">The Friend</div>
+    <p class="coming-chapter-verse">"Even my close friend, someone I trusted, one who shared my bread, has turned against me."</p>
+    <span class="coming-chapter-ref">Psalm 41:9</span>
+    <p class="coming-chapter-brief">David wrote this a thousand years before the Last Supper. Jesus quoted it the night he was betrayed. At the table, surrounded by the twelve men closest to him, he dipped bread and handed it to Judas. The detail isn't just betrayal — it's betrayal by a friend at a shared meal. Zechariah named the price. David named the person.</p>
+    <span class="coming-badge">In Progress</span>
+  </div>
+
+  <div id="ch07" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 7 &middot; Part Two: The Passion</span>
+      <span class="chapter-start-title">The Servant</span>
+    </div>
+  </div>
+
+  <div class="coming-chapter">
+    <span class="coming-chapter-label">Chapter 7 &middot; Isaiah 53 &middot; ~700 BCE</span>
+    <div class="coming-chapter-title">The Servant</div>
+    <p class="coming-chapter-verse">"But he was pierced for our transgressions, he was crushed for our iniquities; the punishment that brought us peace was on him, and by his wounds we are healed... He was led like a lamb to the slaughter."</p>
+    <span class="coming-chapter-ref">Isaiah 53:5&ndash;7</span>
+    <p class="coming-chapter-brief">The heaviest chapter in the book. Isaiah 53 is a 12-verse portrait of the Passion written seven hundred years before it happened. Pierced. Crushed. Silent before his accusers. Led like a lamb to the slaughter. The Jewish establishment of Jesus's time largely ignored this chapter because it didn't fit the Messiah they expected. Every verse fits Jesus with surgical precision.</p>
+    <span class="coming-badge">In Progress</span>
+  </div>
+
+  <div id="ch08" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 8 &middot; Part Two: The Passion</span>
+      <span class="chapter-start-title">The Psalm</span>
+    </div>
+  </div>
+
+  <div class="coming-chapter">
+    <span class="coming-chapter-label">Chapter 8 &middot; Psalm 22 &middot; ~1000 BCE</span>
+    <div class="coming-chapter-title">The Psalm</div>
+    <p class="coming-chapter-verse">"My God, my God, why have you forsaken me?... they pierce my hands and my feet... They divide my clothes among them and cast lots for my garment."</p>
+    <span class="coming-chapter-ref">Psalm 22:1, 16, 18</span>
+    <p class="coming-chapter-brief">David wrote this roughly a thousand years before the crucifixion, at a time when crucifixion had not yet been invented as a method of execution. It describes hands and feet being pierced, mocking crowds using the exact words the Pharisees used at the cross, and soldiers casting lots for clothing. Jesus's last recorded words from the cross are the opening line of this psalm.</p>
+    <span class="coming-badge">In Progress</span>
+  </div>
+
+  <div id="ch09" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 9 &middot; Part Two: The Passion</span>
+      <span class="chapter-start-title">The Bones</span>
+    </div>
+  </div>
+
+  <div class="coming-chapter">
+    <span class="coming-chapter-label">Chapter 9 &middot; Psalm 34:20 &middot; Zechariah 12:10 &middot; ~1000&ndash;500 BCE</span>
+    <div class="coming-chapter-title">The Bones</div>
+    <p class="coming-chapter-verse">"He protects all his bones; not one of them will be broken."</p>
+    <span class="coming-chapter-ref">Psalm 34:20</span>
+    <p class="coming-chapter-brief">Roman crucifixion typically ended by breaking the legs of the victim to accelerate death. The soldiers came to Jesus and found he was already dead. They broke the legs of the two men beside him but not his. One soldier pierced his side instead, fulfilling a second prophecy from Zechariah 12:10: "They will look on me, the one they have pierced."</p>
+    <span class="coming-badge">In Progress</span>
+  </div>
+
+  <!-- PART THREE -->
+  <div class="part-header">
+    <span class="part-eyebrow">Part Three</span>
+    <span class="part-title">The Answer</span>
+  </div>
+
+  <div id="ch10" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 10 &middot; Part Three: The Answer</span>
+      <span class="chapter-start-title">The Tomb</span>
+    </div>
+  </div>
+
+  <div class="coming-chapter">
+    <span class="coming-chapter-label">Chapter 10 &middot; Psalm 16:10 &middot; ~1000 BCE</span>
+    <div class="coming-chapter-title">The Tomb</div>
+    <p class="coming-chapter-verse">"Because you will not abandon me to the realm of the dead, nor will you let your faithful one see decay."</p>
+    <span class="coming-chapter-ref">Psalm 16:10</span>
+    <p class="coming-chapter-brief">Peter quotes this psalm in Acts 2 and makes the argument directly: David wrote this, David died, David's tomb is still here — so he wasn't writing about himself. He was writing about someone who would die and not stay dead. Every chapter builds to this one. If the tomb stays sealed, the book ends as a tragedy.</p>
+    <span class="coming-badge">In Progress</span>
+  </div>
+
+  <div id="ch11" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 11 &middot; Part Three: The Answer</span>
+      <span class="chapter-start-title">The Name</span>
+    </div>
+  </div>
+
+  <div class="coming-chapter">
+    <span class="coming-chapter-label">Chapter 11 &middot; Isaiah 9:6 &middot; ~700 BCE</span>
+    <div class="coming-chapter-title">The Name</div>
+    <p class="coming-chapter-verse">"For to us a child is born, to us a son is given, and the government will be on his shoulders. And he will be called Wonderful Counselor, Mighty God, Everlasting Father, Prince of Peace."</p>
+    <span class="coming-chapter-ref">Isaiah 9:6</span>
+    <p class="coming-chapter-brief">The book ends here because this is the answer. Not an argument, not a prophecy to verify — a name. Isaiah gave him four titles seven centuries before his birth. Not a prophet. Not a teacher. Not a good man. Mighty God. Everlasting Father. That is the closing argument. That is the answer to the question on the cover.</p>
+    <span class="coming-badge">In Progress</span>
+  </div>
+
+</div>
+</div>
+
+</body>
+</html>
