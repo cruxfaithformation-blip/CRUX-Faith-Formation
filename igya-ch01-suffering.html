@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>If God Is Good, Why Does He Allow Suffering? — I'm Glad You Asked</title>
+<meta name="description" content="Chapter 1: If God is good, why does he allow suffering? I'm Glad You Asked by Andrew Cross.">
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --navy-deep: #0f1222;
+  --navy-light: #252b47;
+  --navy-mid: #1e2440;
+  --gold: #d4a574;
+  --gold-light: #e8c99a;
+  --gold-dim: rgba(212,165,116,0.15);
+  --gold-border: rgba(212,165,116,0.25);
+  --cream: #faf8f4;
+  --parchment: #f5edd8;
+  --text-soft: rgba(255,255,255,0.7);
+  --text-muted: rgba(255,255,255,0.45);
+  --text-dark: #2d1f0e;
+  --text-medium: #5a4228;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: var(--navy-deep);
+  color: var(--cream);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.6;
+}
+
+/* NAV */
+.site-nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 200;
+  padding: 1rem 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(15,18,34,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  font-weight: 900;
+  letter-spacing: 5px;
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.nav-book {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-book:hover { color: var(--gold); }
+
+.nav-lib {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 1px;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-lib:hover { color: var(--gold); }
+
+/* CHAPTER HERO */
+.chapter-hero {
+  position: relative;
+  padding: 8rem 2rem 5rem;
+  text-align: center;
+  overflow: hidden;
+  background: var(--navy-deep);
+}
+
+.chapter-hero::before {
+  content: '';
+  position: absolute;
+  width: 700px; height: 600px;
+  background: radial-gradient(ellipse, rgba(212,165,116,0.07) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.chapter-ghost {
+  position: absolute;
+  font-family: 'Playfair Display', serif;
+  font-size: 22rem;
+  font-weight: 900;
+  color: transparent;
+  -webkit-text-stroke: 2px rgba(212,165,116,0.06);
+  line-height: 1;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  user-select: none;
+}
+
+.chapter-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.chapter-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 7vw, 4.5rem);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.05;
+  margin-bottom: 1rem;
+  position: relative;
+  max-width: 760px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.chapter-subtitle {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 1.2rem;
+  color: var(--text-soft);
+  margin-bottom: 1.75rem;
+  position: relative;
+}
+
+.chapter-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border: 1px solid var(--gold-border);
+  border-radius: 20px;
+  padding: 0.3rem 0.9rem;
+  position: relative;
+}
+
+.chapter-tag::before {
+  content: '';
+  width: 4px; height: 4px;
+  background: var(--gold);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* READING BODY */
+.reading-body {
+  background: var(--cream);
+  color: var(--text-dark);
+  position: relative;
+}
+
+.reading-body::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.4;
+}
+
+.reading-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+}
+
+/* PROSE */
+.prose {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.2rem;
+  line-height: 1.9;
+  color: var(--text-dark);
+}
+
+.prose p { margin-bottom: 1.4em; }
+.prose p:last-child { margin-bottom: 0; }
+
+.prose-opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.4;
+  margin-bottom: 1.4em;
+}
+
+/* SECTION LABEL */
+.section-label-major {
+  text-align: center;
+  margin: 3rem 0 2.5rem;
+}
+
+.section-label-major .label-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #b8782a;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.section-label-major .label-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--navy);
+}
+
+/* SCRIPTURE PULL */
+.scripture-pull {
+  margin: 2.5rem 0;
+  padding: 1.5rem 2rem;
+  border-left: 3px solid #b8782a;
+  background: #fdf0d2;
+  border-radius: 0 8px 8px 0;
+}
+
+.scripture-pull p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--navy);
+  line-height: 1.7;
+  margin-bottom: 0.6rem;
+}
+
+.scripture-pull cite {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #b8782a;
+  font-style: normal;
+}
+
+/* CHAPTER START MARKER */
+.chapter-start {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin: 3.5rem 0 2.5rem;
+}
+
+.chapter-start::before,
+.chapter-start::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(180, 120, 42, 0.25);
+}
+
+.chapter-start-inner {
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.chapter-start-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #b8782a;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+.chapter-start-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  font-weight: 900;
+  color: var(--navy);
+}
+
+/* SECTION DIVIDER */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.5rem 0;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(180, 120, 42, 0.2);
+}
+
+.section-divider span {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #b8782a;
+  white-space: nowrap;
+}
+
+/* CLOSING CALLOUT */
+.closing-line {
+  margin: 2.5rem 0;
+  padding: 1.75rem 2rem;
+  background: var(--navy);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.closing-line p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--gold-light);
+  line-height: 1.6;
+}
+
+/* CHAPTER NAV */
+.chapter-nav {
+  background: var(--navy-deep);
+  border-top: 1px solid rgba(212,165,116,0.1);
+  padding: 2.5rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  max-width: 760px;
+  margin: 0 auto;
+}
+
+.chapter-nav-link {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold);
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.chapter-nav-link:hover { opacity: 0.7; }
+
+.chapter-nav-link.disabled {
+  color: rgba(255,255,255,0.2);
+  pointer-events: none;
+}
+
+.chapter-nav-next::after { content: ' →'; }
+.chapter-nav-prev::before { content: '← '; }
+
+.chapter-nav-center {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.chapter-nav-center:hover { color: var(--gold); }
+
+/* ANIMATIONS */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.chapter-hero { animation: fadeUp 0.6s ease both; }
+.reading-body { animation: fadeUp 0.6s ease 0.15s both; }
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .site-nav { padding: 1rem 1.25rem; }
+  .nav-book { display: none; }
+  .chapter-hero { padding: 6rem 1.25rem 4rem; }
+  .chapter-ghost { font-size: 12rem; }
+  .reading-inner { padding: 3rem 1.25rem 5rem; }
+  .prose { font-size: 1.1rem; }
+  .chapter-nav { padding: 2rem 1.25rem; }
+}
+</style>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">CRUX</a>
+  <a href="im-glad-you-asked.html" class="nav-book">I'm Glad You Asked</a>
+  <a href="crux-library.html" class="nav-lib">Library</a>
+</nav>
+
+<!-- CHAPTER HERO -->
+<div class="chapter-hero">
+  <span class="chapter-ghost" aria-hidden="true">01</span>
+  <p class="chapter-eyebrow">Part One &middot; The God Questions &middot; Chapter 1</p>
+  <h1 class="chapter-title">If God Is Good, Why Does He Allow Suffering?</h1>
+  <p class="chapter-subtitle">The oldest question. Everyone has a version of it.</p>
+  <span class="chapter-tag">Part One &middot; The God Questions</span>
+</div>
+
+<!-- READING BODY -->
+<div class="reading-body">
+<div class="reading-inner">
+
+  <!-- INTRODUCTION -->
+  <div class="section-label-major">
+    <span class="label-eyebrow">Introduction</span>
+    <span class="label-title">I'm Glad You Asked</span>
+  </div>
+
+  <div class="prose">
+
+    <p>It was a late night conversation my first weekend after transferring to Northeastern University. My randomly selected roommate. Great dude, really loved hanging out with him. Out of nowhere he asked me: "If you're Catholic and I'm Jewish, do you believe I'm going to hell?"</p>
+
+    <p>Whoa.</p>
+
+    <p>I wasn't going to pretend I had all the theological answers. I told him what I felt. No. I don't believe you're going to hell. I believe Hell is reserved for those who are separated from God. It wasn't a strong answer, and I'm still not sure it was the right one, given that he denied that Jesus was our savior. But I remember it being a moment where I questioned: how do you answer someone who has grown up in a different faith? How do you tell them yes, you're going to hell for not believing? Or no, the God I know wouldn't send a good person to hell?</p>
+
+    <p>I didn't have all the answers for Josh, and I probably wasn't educated enough to answer him honestly. So I told him what I honestly thought.</p>
+
+    <p>You're a good person, as far as I know, and the God I know doesn't abandon good people. You might die Jewish, I said, but if you live your entire life loving people, caring for others, rejecting the temptations of life, living the way Jesus said you should, I think you'll be saved. The road would be a lot easier if you accepted that Jesus died so you wouldn't have to. But I still believe that who you are as a person matters. Not just where you were born, or who you were born to.</p>
+
+    <p>Years later, I found out the Church actually agrees with me.</p>
+
+    <p>That's what this book is. Not doctrine handed down from above. The answers I wish I'd had in my back pocket when it mattered, when a good person was actually asking.</p>
+
+  </div>
+
+  <!-- CHAPTER 1 START -->
+  <div class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 1 &middot; Part One: The God Questions</span>
+      <span class="chapter-start-title">If God Is Good, Why Does He Allow Suffering?</span>
+    </div>
+  </div>
+
+  <div class="prose">
+
+    <p class="prose-opener">One of my best friend's little brothers killed himself. Chad.</p>
+
+    <p>His family were good people. Chad was good people. I didn't spend as much time with him as I should have, but I loved him unconditionally because he was family. You know the kind — not blood, but close enough that it doesn't matter.</p>
+
+    <p>I've been to funerals. Nothing prepared me for that one.</p>
+
+    <p>His sister stood up and read the texts he sent her before big softball games. Wishing her luck. Telling her she had this. His dad told us he could still remember the smell of his head as a baby. The pastor said it was the biggest showing for a burial service he'd ever seen.</p>
+
+    <p>I cried that day in a way I hadn't in years. Not for Chad exactly. For the people he left behind.</p>
+
+    <p>But something happened in that room that I wasn't expecting. I looked around at all those people and I felt something. The grief in that room was only possible because of how much that kid was loved. You don't cry like that for someone you don't care about. Pain only comes with real love. They go hand in hand. You cannot have one without the other.</p>
+
+    <p>I drove home that night holding my family a little tighter in my mind. I called my siblings. I meant it differently than I had before.</p>
+
+  </div>
+
+  <div class="section-divider"><span>The Answer</span></div>
+
+  <div class="prose">
+
+    <p>Whether you believe there was truly an Adam and Eve who chose to pluck an apple off a tree, the point still stands. We as human beings have always chosen things that separate us from God. I do too. This isn't a condemnation of anyone who's sinful. It's just a fact that we all are.</p>
+
+    <p>God gave us free will to choose him. Without that free will, we're just going through the motions until we make our way back to our creator. But free will means bad things do have to happen, even to good people.</p>
+
+    <p>Here's something that might be hard to hear. There are no truly good people in this world.</p>
+
+    <p>I know. I'm thinking of my own Mom right now. Anyone who knows her will say she's the closest thing to a saint they've ever met. But I stand by it. There isn't one person in this world who hasn't sinned. We're not very good at being good people, and that's why we got kicked out of Eden in the first place.</p>
+
+    <p>So God put us on an earth where we make decisions. Some of those decisions will be wrong ones. Some will break others' hearts. Some will break our own. But they're ours to make.</p>
+
+    <p>What God does, though, is remain. For those who are left behind, he offers comfort. For those who have suffered the ultimate loss and still come back to him, he will take your burden. I truly believe that Jesus is who he said he was. He is love. And love doesn't cause pain. It only looks to be with you in it.</p>
+
+    <p>There is nothing that erases the pain of loss. But without loss, we wouldn't understand the power of holding the people we love while we still have them.</p>
+
+  </div>
+
+  <div class="section-divider"><span>The Hardest Version</span></div>
+
+  <div class="prose">
+
+    <p>Some people don't choose suffering. They're given it. Just like Job.</p>
+
+    <p>Some people consider Job a teaching story rather than a real person. Whether he was or wasn't doesn't change what the story says. Job was a faithful man who gave everything to God and was still cursed with unimaginable pain. Why? Because God allowed it.</p>
+
+    <p>What kind of God does that to someone he loves?</p>
+
+    <p>One who loved him enough to trust him. God wanted to know whether Job's suffering would separate him from his faith, or whether he would come through it trusting God more, knowing the pain would end and something better was waiting.</p>
+
+    <p>I've heard the saying "God gives his hardest tests to his strongest soldiers." I don't buy it. If that were true, everyone with cancer would be some battle-hardened veteran who signed up for the fight. But kids get cancer. Kids who haven't lived enough life yet to have built that kind of strength. Why?</p>
+
+    <p>Because sometimes suffering reveals what life is actually about. It reveals that we love someone so much we can't imagine losing them. There isn't a parent alive who wouldn't trade places with their sick child in a heartbeat. That kind of love only shows itself under that kind of pressure.</p>
+
+    <p>God would love nothing more than for us to never experience that pain. But we live in a broken world. A world with suffering in it because of choices human beings have made since the beginning.</p>
+
+    <p>That's not to say a child gets cancer because their parents sinned. Sometimes it's the stray bullet of a sinful world that catches one of the sinless. Like G-Baby in Hardball. If you know, you know.</p>
+
+    <p>Pain is not a consequence of your actions. It's a consequence of the broken world we chose to live in.</p>
+
+  </div>
+
+</div>
+</div>
+
+<!-- CHAPTER NAVIGATION -->
+<div class="chapter-nav">
+  <span class="chapter-nav-link chapter-nav-prev disabled">Introduction</span>
+  <a href="im-glad-you-asked.html" class="chapter-nav-center">All Chapters</a>
+  <span class="chapter-nav-link chapter-nav-next disabled">Chapter 2</span>
+</div>
+
+</body>
+</html>

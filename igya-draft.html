@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>I'm Glad You Asked — Draft Review</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --navy-deep: #0f1222;
+  --gold: #d4a574;
+  --gold-light: #e8c99a;
+  --gold-border: rgba(212,165,116,0.25);
+  --cream: #faf8f4;
+  --text-soft: rgba(255,255,255,0.7);
+  --text-muted: rgba(255,255,255,0.45);
+  --text-dark: #2d1f0e;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: var(--navy-deep);
+  color: var(--cream);
+  overflow-x: hidden;
+}
+
+/* DRAFT BANNER */
+.draft-banner {
+  background: rgba(212,165,116,0.15);
+  border-bottom: 1px solid var(--gold-border);
+  padding: 0.6rem 2rem;
+  text-align: center;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+}
+
+/* BOOK HERO */
+.book-hero {
+  position: relative;
+  padding: 7rem 2rem 5rem;
+  text-align: center;
+  overflow: hidden;
+}
+
+.book-hero::before {
+  content: '';
+  position: absolute;
+  width: 800px; height: 600px;
+  background: radial-gradient(ellipse, rgba(212,165,116,0.08) 0%, transparent 70%);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.book-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 1.5rem;
+}
+
+.book-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(3rem, 10vw, 6rem);
+  font-weight: 900;
+  color: #fff;
+  line-height: 1.0;
+  margin-bottom: 1.25rem;
+  position: relative;
+}
+
+.book-subtitle {
+  font-family: 'Crimson Pro', serif;
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--text-soft);
+  margin-bottom: 1rem;
+}
+
+.book-author {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 500;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 3rem;
+}
+
+/* TOC */
+.toc {
+  max-width: 600px;
+  margin: 0 auto 2rem;
+  border: 1px solid var(--gold-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.toc-header {
+  background: rgba(212,165,116,0.1);
+  padding: 0.75rem 1.5rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--gold);
+  border-bottom: 1px solid var(--gold-border);
+}
+
+.toc-list {
+  list-style: none;
+  padding: 1rem 0;
+}
+
+.toc-list li a {
+  display: block;
+  padding: 0.4rem 1.5rem;
+  font-family: 'Crimson Pro', serif;
+  font-size: 1rem;
+  color: var(--text-soft);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.toc-list li a:hover { color: var(--gold); }
+
+.toc-list li .toc-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-right: 0.5rem;
+}
+
+.toc-divider {
+  height: 1px;
+  background: var(--gold-border);
+  margin: 0.5rem 1.5rem;
+  opacity: 0.5;
+}
+
+/* READING BODY */
+.reading-body {
+  background: var(--cream);
+  color: var(--text-dark);
+}
+
+.reading-body::before {
+  content: '';
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.4;
+}
+
+.reading-inner {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 4rem 2rem 6rem;
+}
+
+/* PROSE */
+.prose {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.2rem;
+  line-height: 1.9;
+  color: var(--text-dark);
+}
+
+.prose p { margin-bottom: 1.4em; }
+.prose p:last-child { margin-bottom: 0; }
+
+.prose-opener {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.55rem;
+  font-weight: 700;
+  color: var(--navy);
+  line-height: 1.4;
+  margin-bottom: 1.4em;
+}
+
+/* SECTION LABEL */
+.section-label-major {
+  text-align: center;
+  margin: 3rem 0 2.5rem;
+}
+
+.section-label-major .label-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #b8782a;
+  display: block;
+  margin-bottom: 0.4rem;
+}
+
+.section-label-major .label-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: var(--navy);
+}
+
+/* CHAPTER START */
+.chapter-start {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  margin: 4rem 0 2.5rem;
+}
+
+.chapter-start::before,
+.chapter-start::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(180,120,42,0.3);
+}
+
+.chapter-start-inner {
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.chapter-start-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #b8782a;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.chapter-start-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 900;
+  color: var(--navy);
+  max-width: 340px;
+  line-height: 1.3;
+}
+
+/* SECTION DIVIDER */
+.section-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2.5rem 0;
+}
+
+.section-divider::before,
+.section-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(180,120,42,0.2);
+}
+
+.section-divider span {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: #b8782a;
+  white-space: nowrap;
+}
+
+/* CLOSING CALLOUT */
+.closing-line {
+  margin: 2.5rem 0;
+  padding: 1.75rem 2rem;
+  background: var(--navy);
+  border-radius: 12px;
+  text-align: center;
+}
+
+.closing-line p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.25rem;
+  color: var(--gold-light);
+  line-height: 1.6;
+}
+
+/* SCRIPTURE PULL */
+.scripture-pull {
+  margin: 2.5rem 0;
+  padding: 1.5rem 2rem;
+  border-left: 3px solid #b8782a;
+  background: #fdf0d2;
+  border-radius: 0 8px 8px 0;
+}
+
+.scripture-pull p {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 1.15rem;
+  color: var(--navy);
+  line-height: 1.7;
+  margin-bottom: 0.5rem;
+}
+
+.scripture-pull cite {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: #b8782a;
+  font-style: normal;
+}
+
+/* PART HEADER */
+.part-header {
+  text-align: center;
+  margin: 4rem 0 1rem;
+  padding: 2rem;
+  background: rgba(180,120,42,0.06);
+  border-radius: 12px;
+  border: 1px solid rgba(180,120,42,0.15);
+}
+
+.part-eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: #b8782a;
+  display: block;
+  margin-bottom: 0.3rem;
+}
+
+.part-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.4rem;
+  font-weight: 900;
+  color: var(--navy);
+}
+
+/* RESPONSIVE */
+@media (max-width: 640px) {
+  .book-hero { padding: 5rem 1.25rem 4rem; }
+  .reading-inner { padding: 3rem 1.25rem 5rem; }
+  .prose { font-size: 1.1rem; }
+  .toc { margin: 0 1rem 2rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="draft-banner">Draft Review Only &mdash; Not Published</div>
+
+<!-- BOOK HERO -->
+<div class="book-hero">
+  <p class="book-eyebrow">Andrew Cross</p>
+  <h1 class="book-title">I'm Glad You Asked</h1>
+  <p class="book-subtitle">Answers for the Hard Questions You'll Face as a Christian</p>
+  <p class="book-author">by Andrew Cross</p>
+
+  <div class="toc">
+    <div class="toc-header">Contents</div>
+    <ul class="toc-list">
+      <li><a href="#intro"><span class="toc-num">—</span>Introduction</a></li>
+      <div class="toc-divider"></div>
+      <li><a href="#ch01"><span class="toc-num">01</span>If God is good, why does he allow suffering?</a></li>
+      <li><a href="#ch02"><span class="toc-num">02</span>Isn't the Bible just written by men?</a></li>
+      <li><a href="#ch03"><span class="toc-num">03</span>What about the people who never heard of Jesus?</a></li>
+      <li><a href="#ch04"><span class="toc-num">04</span>Didn't the Church cause more harm than good?</a></li>
+      <li><a href="#ch05"><span class="toc-num">05</span>How can you believe in something you can't prove?</a></li>
+      <li><a href="#ch06"><span class="toc-num">06</span>How can a loving God send people to hell?</a></li>
+      <li><a href="#ch07"><span class="toc-num">07</span>Aren't all religions basically the same?</a></li>
+      <li><a href="#ch08"><span class="toc-num">08</span>If God exists, why doesn't he just show himself?</a></li>
+      <div class="toc-divider"></div>
+      <li><a href="#ch09"><span class="toc-num">09</span>Why do Catholics worship Mary?</a></li>
+      <li><a href="#ch10"><span class="toc-num">10</span>Why do you confess to a priest?</a></li>
+      <li><a href="#ch11"><span class="toc-num">11</span>Don't Catholics think they can earn heaven?</a></li>
+      <li><a href="#ch12"><span class="toc-num">12</span>Where does all the Catholic stuff come from?</a></li>
+      <li><a href="#ch13"><span class="toc-num">13</span>If miracles happened then, why don't they happen today?</a></li>
+      <div class="toc-divider"></div>
+      <li><a href="#closing"><span class="toc-num">—</span>You Don't Have to Win</a></li>
+    </ul>
+  </div>
+</div>
+
+<!-- READING BODY -->
+<div class="reading-body">
+<div class="reading-inner">
+
+  <!-- INTRODUCTION -->
+  <div id="intro" class="section-label-major">
+    <span class="label-eyebrow">Introduction</span>
+    <span class="label-title">I'm Glad You Asked</span>
+  </div>
+
+  <div class="prose">
+    <p>It was a late night conversation my first weekend after transferring to Northeastern University. My randomly selected roommate. Great dude, really loved hanging out with him. Out of nowhere he asked me: "If you're Catholic and I'm Jewish, do you believe I'm going to hell?"</p>
+    <p>Whoa.</p>
+    <p>I wasn't going to pretend I had all the theological answers. I told him what I felt. No. I don't believe you're going to hell. I believe Hell is reserved for those who are separated from God. It wasn't a strong answer, and I'm still not sure it was the right one, given that he denied that Jesus was our savior. But I remember it being a moment where I questioned: how do you answer someone who has grown up in a different faith? How do you tell them yes, you're going to hell for not believing? Or no, the God I know wouldn't send a good person to hell?</p>
+    <p>I didn't have all the answers for Josh, and I probably wasn't educated enough to answer him honestly. So I told him what I honestly thought.</p>
+    <p>You're a good person, as far as I know, and the God I know doesn't abandon good people. You might die Jewish, I said, but if you live your entire life loving people, caring for others, rejecting the temptations of life, living the way Jesus said you should, I think you'll be saved. The road would be a lot easier if you accepted that Jesus died so you wouldn't have to. But I still believe that who you are as a person matters. Not just where you were born, or who you were born to.</p>
+    <p>Years later, I found out the Church actually agrees with me.</p>
+    <p>That's what this book is. Not doctrine handed down from above. The answers I wish I'd had in my back pocket when it mattered, when a good person was actually asking.</p>
+  </div>
+
+  <!-- PART ONE -->
+  <div class="part-header">
+    <span class="part-eyebrow">Part One</span>
+    <span class="part-title">The God Questions</span>
+  </div>
+
+  <!-- CHAPTER 1 -->
+  <div id="ch01" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 1</span>
+      <span class="chapter-start-title">If God Is Good, Why Does He Allow Suffering?</span>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="prose-opener">One of my best friend's little brothers killed himself. Chad.</p>
+    <p>His family were good people. Chad was good people. I didn't spend as much time with him as I should have, but I loved him unconditionally because he was family. You know the kind — not blood, but close enough that it doesn't matter.</p>
+    <p>I've been to funerals. Nothing prepared me for that one.</p>
+    <p>His sister stood up and read the texts he sent her before big softball games. Wishing her luck. Telling her she had this. His dad told us he could still remember the smell of his head as a baby. The pastor said it was the biggest showing for a burial service he'd ever seen.</p>
+    <p>I cried that day in a way I hadn't in years. Not for Chad exactly. For the people he left behind.</p>
+    <p>But something happened in that room that I wasn't expecting. I looked around at all those people and I felt something. The grief in that room was only possible because of how much that kid was loved. You don't cry like that for someone you don't care about. Pain only comes with real love. They go hand in hand. You cannot have one without the other.</p>
+    <p>I drove home that night holding my family a little tighter in my mind. I called my siblings. I meant it differently than I had before.</p>
+  </div>
+
+  <div class="section-divider"><span>The Answer</span></div>
+
+  <div class="prose">
+    <p>Whether you believe there was truly an Adam and Eve who chose to pluck an apple off a tree, the point still stands. We as human beings have always chosen things that separate us from God. I do too. This isn't a condemnation of anyone who's sinful. It's just a fact that we all are.</p>
+    <p>God gave us free will to choose him. Without that free will, we're just going through the motions until we make our way back to our creator. But free will means bad things do have to happen, even to good people.</p>
+    <p>Here's something that might be hard to hear. There are no truly good people in this world.</p>
+    <p>I know. I'm thinking of my own Mom right now. Anyone who knows her will say she's the closest thing to a saint they've ever met. But I stand by it. There isn't one person in this world who hasn't sinned. We're not very good at being good people, and that's why we got kicked out of Eden in the first place.</p>
+    <p>So God put us on an earth where we make decisions. Some of those decisions will be wrong ones. Some will break others' hearts. Some will break our own. But they're ours to make.</p>
+    <p>What God does, though, is remain. For those who are left behind, he offers comfort. For those who have suffered the ultimate loss and still come back to him, he will take your burden. I truly believe that Jesus is who he said he was. He is love. And love doesn't cause pain. It only looks to be with you in it.</p>
+    <p>There is nothing that erases the pain of loss. But without loss, we wouldn't understand the power of holding the people we love while we still have them.</p>
+  </div>
+
+  <div class="section-divider"><span>The Hardest Version</span></div>
+
+  <div class="prose">
+    <p>Some people don't choose suffering. They're given it. Just like Job.</p>
+    <p>Some people consider Job a teaching story rather than a real person. Whether he was or wasn't doesn't change what the story says. Job was a faithful man who gave everything to God and was still cursed with unimaginable pain. Why? Because God allowed it.</p>
+    <p>What kind of God does that to someone he loves?</p>
+    <p>One who loved him enough to trust him. God wanted to know whether Job's suffering would separate him from his faith, or whether he would come through it trusting God more, knowing the pain would end and something better was waiting.</p>
+    <p>I've heard the saying "God gives his hardest tests to his strongest soldiers." I don't buy it. If that were true, everyone with cancer would be some battle-hardened veteran who signed up for the fight. But kids get cancer. Kids who haven't lived enough life yet to have built that kind of strength. Why?</p>
+    <p>Because sometimes suffering reveals what life is actually about. It reveals that we love someone so much we can't imagine losing them. There isn't a parent alive who wouldn't trade places with their sick child in a heartbeat. That kind of love only shows itself under that kind of pressure.</p>
+    <p>God would love nothing more than for us to never experience that pain. But we live in a broken world. A world with suffering in it because of choices human beings have made since the beginning.</p>
+    <p>That's not to say a child gets cancer because their parents sinned. Sometimes it's the stray bullet of a sinful world that catches one of the sinless. Like G-Baby in Hardball. If you know, you know.</p>
+    <p>Pain is not a consequence of your actions. It's a consequence of the broken world we chose to live in.</p>
+  </div>
+
+  <!-- CHAPTER 2 -->
+  <div id="ch02" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 2</span>
+      <span class="chapter-start-title">Isn't the Bible Just Written by Men?</span>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="prose-opener">The Bible was written by men. Men are imperfect, so how can the Bible be perfect? That's a great question.</p>
+    <p>It's one that made me study who actually wrote it. Do it yourself sometime — it's an interesting story. Forty different authors across different continents, 1,500 years, and 5,800 manuscripts to show for it. These weren't just individual stories of individual people. They tell a coherent narrative, one that points toward a Messiah who would someday come to save. Jesus fulfilled 300 of those prophecies, and that's being conservative.</p>
+    <p>The convenient explanation is that the disciples wrote the prophecies after Jesus died to make him look like the fulfillment. Backward engineering. It's a fair argument. Until 1947, when a shepherd boy found clay jars in a cave in the Judean desert. Inside were manuscripts dated to 250 BCE — over two hundred years before Jesus was born. The prophecies were already there. You can't engineer a story backward when the ending was written before the beginning.</p>
+    <p>And if you think the translations have drifted from the original meaning over the centuries — the Dead Sea Scrolls match, word for word, what you're reading in your Bible today. If anything, new translations have gotten more accurate as scholars have worked from earlier documents to understand exactly what the original authors meant. The new translations aren't a corrupted version. They're a more carefully dissected version of the original words in language we can actually understand.</p>
+    <p>How did forty different men, writing across fifteen centuries, produce something like this? They didn't meet in a pub to discuss how they'd write the perfect story that we'd still be talking about two thousand years later. The best explanation, and really the only one, is that God had a hand in it.</p>
+    <p>I know that's hard to believe. People make mistakes. Who's to say they didn't mishear God when he was speaking to them? Well, if you can believe a God exists who not only controls matter and time but created it — is it so far-fetched to believe he can reach into our hearts and lead us to write for him? That's a much simpler miracle than curing the blind, and Jesus did that.</p>
+    <p>So if your biggest objection to the Bible is that it was written by men, you may need to accept that it wasn't. It was written by God himself, through men.</p>
+  </div>
+
+  <!-- CHAPTER 3 -->
+  <div id="ch03" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 3</span>
+      <span class="chapter-start-title">What About the People Who Never Heard of Jesus?</span>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="prose-opener">The biggest struggle I've always had with Christianity isn't whether Jesus was real or did what he said he did. I believe that. I always have.</p>
+    <p>Where I've struggled is what happens to my friends who don't go to church with me. Are they condemned to an eternity of Hell because of a choice they may not even have made? A choice that led their parents to bring them to Synagogue instead of Mass? What about my agnostic friends who are, frankly, better people than I am, but just don't buy the whole God thing?</p>
+    <p>I spent a lot of time praying on this. Asking God: what happens to them?</p>
+    <p>What follows isn't just my wishful opinion. It's the stance of the Catholic Church.</p>
+    <p>People who don't know Jesus but live by what he taught — love one another, take care of each other, put others before yourself — those people will make it to heaven. Some of them before me. Because going to church every Sunday, or at least trying to, doesn't make me better than the lady down the road working three jobs to feed her kids who never had the privilege of a Deacon for a father or a mother who plays organ at church. She's not going to hell because her parents didn't teach her who Jesus truly is.</p>
+    <p>There are plenty of people who would disagree with me on this. That's fair. Jesus died so that anyone who believes in him shall not perish but have eternal life. A thief on the cross next to Jesus was granted that promise just moments before his death — which tells you something about how God measures a life. He's not looking at your record. He's looking at your heart at the moment that matters.</p>
+    <p>But that doesn't disqualify everyone else from heaven. It only makes the gate a little harder to get through.</p>
+    <p>I'm not saying every other religion is equally right. I think they're wrong. If I didn't, I wouldn't have the Lion of Judah and a cross tattooed across my arm. I know what I know. I truly believe Jesus nailed my sins to the cross because he loves me, and I love him. He died for me, and he died for anyone who picks up their own cross and follows him.</p>
+    <p>But that doesn't mean everyone else can't be saved. Jesus is love. He looks not at where you go to church, or whether you go at all, even though that makes it much easier for him to recognize you. He looks at the heart. How do you treat people? Do you put others before yourself? Do you love unconditionally, the way he does?</p>
+    <p>These are the things Jesus looked for before Christianity existed. He chose a woman named Mary Magdalene to be one of his closest followers. Was she perfect? No. But he loved her because she proved she was worth saving.</p>
+    <p>God will always leave the 99 to find the 1. Those who are already saved, who worship him and love him — they're the 99, sitting and waiting for his return. But the 1 who is lost, he will pursue. Always.</p>
+  </div>
+
+  <!-- CHAPTER 4 -->
+  <div id="ch04" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 4</span>
+      <span class="chapter-start-title">Didn't the Church Cause More Harm Than Good?</span>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="prose-opener">I sat at a Board of Directors meeting for a charity I was part of years ago. My company funded it and I was in charge of organizing donation drives. A Senior Director at my company was also on the board. We sat down at an Italian restaurant one afternoon and I will never forget what followed.</p>
+    <p>He brought up the Catholic Church. The art it had taken over the centuries. The priests. The scandals. I sat there quietly. This guy was a Senior Director. I wasn't even a manager yet. Who was I to tell him to shut up? And honestly, who was I to tell him he was wrong?</p>
+    <p>The truth is, the Catholic Church has been involved in scandals. It is not a perfect institution full of perfect people.</p>
+    <p>I went to the Vatican recently and I'll be honest. I didn't know what to expect. Walking through the Vatican Museums, I found myself standing in front of Greek statues, the most impressive being a large bronze of Hercules. I love Greek mythology. I've seen the Hercules animated movie probably a dozen times. But I remember thinking: what is this doing here? I wasn't angry. I was confused. It took me a while to understand that the Church has spent two thousand years engaging with every culture it encountered. Preserving what was worth preserving, even when it wasn't explicitly Christian. That's not corruption. That's confidence.</p>
+    <p>Then we went to another basilica in Rome. One far outside the Vatican gates — the Basilica of Saint Paul Outside the Walls. If you ever go, don't make the mistake of calling your Uber to Saint Paul Inside the Walls. I did. It cost me about fifty dollars to correct that mistake.</p>
+    <p>But when I walked into that basilica, where Saint Paul's remains lie — the man who wrote half the New Testament — I had a spiritual experience unlike anything I've felt before. Saint Peter's Basilica is a spectacle. Being in the presence of a man who walked beside Jesus is powerful. But something about Saint Paul's, with maybe twenty people present, changed me.</p>
+    <p>That's when I understood. The Catholic Church is so large that no institution can fully control how everyone within it will behave. There will be scandals. There will be overspending. There will be priests who hide in sheep's clothing because they can. But in the quiet of that basilica on the outskirts of Rome, I realized that's not what God wants from his Church. He allows it, because free will allows it. But those who come to him with an open heart in a quiet room will find him. Every time.</p>
+    <p>Rejecting the Catholic Church because of its worst members is the worst mistake you can make. Jesus will have his word with those priests when they meet him. I trust him to make the right call there. It's not mine to make.</p>
+    <p>What kept me standing in Saint Paul's with tears in my eyes was a mural along the walls — every single Pope who has ever served, from Peter to Pope Leo. The apostolic succession is real. You can trace every Pope back to Peter himself. No matter what the Church gets wrong, there is an unbroken line back to Jesus that exists nowhere else in the world.</p>
+    <p>That's what keeps me coming back.</p>
+  </div>
+
+  <!-- CHAPTER 5 -->
+  <div id="ch05" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 5</span>
+      <span class="chapter-start-title">How Can You Believe in Something You Can't Prove?</span>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="prose-opener">When I left home for college, I knew life was about to change. Not just because I was leaving my parents for the first time, or because my closest friends were all going their separate ways, but because the world I was entering ran on freedom. Freedom to skip class. Freedom to stay out as late as I wanted. Freedom to have pizza for breakfast if I felt like it.</p>
+    <p>My parents weren't overly strict, so I wasn't some oversheltered kid diving into the deep end. I'd been on overnight recruiting visits for football and had a general sense of what I was walking into. What I wasn't prepared for was that faith isn't exactly at the top of the priority list at a liberal arts college.</p>
+    <p>I didn't have a car on campus. The only chapel nearby was nondenominational. I still wore the same cross around my neck, said my prayers before bed, and read theologians to keep my faith sharp. But in college, people came from everywhere. My circle of Christian friends now included people who thought religion was a joke, and some of them were vocal about it. Nature versus nurture started creeping into my mind. Did I believe because my parents told me God was real? Or did I believe because he actually was?</p>
+    <p>I could lie and say that nearly broke my faith. The truth is it did the opposite. It forced me to stop hiding behind what I'd been handed and decide whether faith was just part of my identity or the most important thing in the world, worth standing up for.</p>
+    <p>That's when the data guy and the believer stopped fighting each other. I started digging. And the deeper I looked, the more the evidence held.</p>
+    <p>My happy place is an Excel workbook. Crunching numbers, figuring out how it all fits together. I love puzzles. I love the feeling of seeing the whole picture and placing the pieces myself. My wife's family swears by White Mountain puzzles. If you haven't tried one, it's worth the investment.</p>
+    <p>I am always looking for patterns. Data doesn't always point directly toward the solution. If it did, I probably wouldn't have a job. It takes careful consideration of the variables, and an understanding of what makes up your metrics, to understand how to affect them.</p>
+    <p>When I look at my religion, I have a hard time just taking a leap of faith and trusting that people smarter than me know better. And there are a lot of smarter Christians than me. One of them is my older sister Lizzy. So I've read. I've studied the dots that connect Jesus to the Old Testament. I've spent most of my life trying to put the pieces together.</p>
+    <p>I haven't been disappointed.</p>
+    <p>The farther I look, the stronger my faith gets. I was originally scared to read the arguments of atheists. What if they're right? I'd rather turn a blind eye. I felt at peace with God and didn't need more than that. If you're in that boat, that's a good thing. But I want to give those who question the X's and O's like I do a little peace of mind.</p>
+    <p>Jesus Christ fulfilled what the prophets centuries before his birth predicted. He was born in Bethlehem, of the lineage of King David. My guy. He was pierced for his transgressions, literally. None of his bones were broken despite taking a beating for the ages. He was the sacrificial lamb who was slain, and he spent the time he had on this earth not just preaching but healing people. Miraculously. You can believe or not believe, but 5,800 manuscripts, more than we have of Plato, Aristotle, Homer, and Julius Caesar combined, show that this wasn't a fairy tale. The Bible is a historical document that has proven itself time and time again through archaeological excavations.</p>
+    <p>Just one such example was discovered in 1993. Archaeologists excavating the ancient city of Dan in northern Israel uncovered a stone inscription from around 840 BC. It was written by an Aramean king boasting about his military victories over Israel. In it, he mentions defeating the house of David. Not a Jewish source. Not a Christian one. An enemy. A man who had every reason to diminish the Israelites and zero reason to honor them. He still named the dynasty he was fighting. Critics who spent years calling King David a mythological figure went quiet after that. The stone is called the Tel Dan Inscription. It is sitting in a museum in Jerusalem right now. You can go see it.</p>
+    <p>Then there is the Pilate Stone. In 1961, archaeologists working at Caesarea Maritima, the ancient Roman capital of Judea, uncovered a limestone block carved with the words Pontius Pilate, Prefect of Judea. The same Pontius Pilate who stood before Jesus in the Praetorium. Who washed his hands in front of the crowd and handed him over to be crucified. Luke 23 names him. John 18 names him. Matthew 27 names him. For years, critics argued Pilate was a literary device, a fictional Roman administrator invented to give the story historical legitimacy. The stone ended that argument. It is now on display at the Israel Museum in Jerusalem.</p>
+    <p>The Bible itself is a miracle, but God also continues to work in our world today through miracles. Miracles that are well-documented and studied by skeptics. Saint Carlo Acutis devoted his life to documenting them. They're written beautifully here: miracolieucaristici.org</p>
+    <p>I know I'll never be able to prove to a nonbeliever that God exists. I can't call Jesus down to show you the wounds in his hands, feet, and side. But as a data guy, I've researched the consistencies the same way I would any data set. The evidence for God, the life of Jesus, the prophecies he fulfilled, the words he spoke, the miracles he performed, the miracles he still performs, has crushed every doubt I've ever had. I find it harder to believe that nothing created everything, and that we're all here by happenstance, than to believe that the God who created us came down to earth to prove his existence.</p>
+    <p>There will never be a way to know for certain. But I'll close my eyes on my dying day knowing what comes next. I'll fall on my knees and ask the man who was killed for my sins to be merciful on me. And knowing the Jesus I know, reading the words in red text, I believe he will pick me up and say I'm what he died for. Not some random selection of people who believed. Me personally.</p>
+    <p>That's the Jesus I know.</p>
+  </div>
+
+  <!-- CHAPTER 6 -->
+  <div id="ch06" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 6</span>
+      <span class="chapter-start-title">How Can a Loving God Send People to Hell?</span>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="prose-opener">People have a lot of things to say about the afterlife. Some say we'll become part of the universe and simply sink back into the earth. We'll become part of it, and others will remember our names until they don't.</p>
+    <p>I can't really blame anyone for believing that. But I personally think it's a load of garbage. Sorry.</p>
+    <p>This life is too precious to believe it's all for nothing. My wife is the most important thing to me in this entire world. I would die rather than see her feel pain. If you have someone like that in your own life, God has blessed you. I can't bring myself to believe that the love I have for her is just neurons firing in my brain or a result of evolution. If that were true, why would I be willing to give my own life for her? That doesn't preserve my lineage. The Cross name would end with me — thanks a lot, my sisters. I'm the last Cross left.</p>
+    <p>If God is love, then we are made to love. Jesus tells us the two greatest commandments are to love God and to love one another. We are literally made with the intention of spreading that love as far as we possibly can — love for family, love for friends, love for the poor, love for God. Humans cannot live a happy life without some form of it.</p>
+    <p>C.S. Lewis is one of my favorite theologians. He was an atheist who turned Christian because he couldn't stop asking the same questions being asked in this book, so he searched for answers. In Mere Christianity, he argued that love isn't just a feeling God has for us. It's what he is at his very core. A life-force cannot offer love. It only allows people to be part of it, moving like waves in the ocean. Love needs a partner. Look up the blue zones of the world — the places where people live past a hundred. The research consistently shows it's social connection, closeness to family, and love that keeps people alive. Is it so far-fetched to think we were created for exactly that purpose?</p>
+    <p>Lewis goes further. He says he rejects the idea that all of this is random. If it were, the moral code that exists in every individual — the instinct not to hurt others, to nurture children, to laugh during Adam Sandler movies, maybe that's just me — wouldn't exist. This life has an author. And he's not asking us to love sentimentally. He asks us to love because that's what brings us closer to him.</p>
+    <p>God doesn't smite people or send them to hell because he hates them. He allows what we do in this life to be our ultimate choice. If that choice is him, you will eventually be with him. If that choice is to hurt others, to dominate, to take whatever you want because you only live once — why would you expect your eternity to be any different?</p>
+    <p>God is love. He only wants those with love in their hearts to be with him for eternity. Without love, you don't have God in you. Without God, you can't become one with him after you die.</p>
+    <p>It's as simple as that.</p>
+  </div>
+
+  <!-- CHAPTER 7 -->
+  <div id="ch07" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 7</span>
+      <span class="chapter-start-title">Aren't All Religions Basically the Same?</span>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="prose-opener">Who gives you the right to say what 67% of the world believes isn't true?</p>
+    <p>I won't disparage other religions here or explain exactly why I don't believe in them. I took a World Religions class my freshman year of college to check off an elective. It turned out to be one of my favorite classes. As a Catholic, I learned things I'd never heard about other faiths. Religions that practiced peace and tranquility as the path to fulfillment. Religions that said your lineage determines whether you can be saved. Religions that say you must become one with the universe to exist in it after death. Part of me thought that class would harm my faith. It only strengthened it.</p>
+    <p>There is one religion with a God who loved the people he created so much that he came down to earth to live alongside them. Not just live — to die. A brutal death. A God who could have remained in Eden forever chose to come down and be spat on, mocked, scourged, abandoned by his closest friends, and killed as a withering man on a cross. Christians don't believe in a passive God who simply allows us to exist. We believe in a God who is actively present in our lives, who sent the Holy Spirit as a guide to walk with us through them.</p>
+    <p>The argument that salvation depends on where you were born is also weak. Christianity has spread throughout the entire developed world. The Bible is the most sold book in history. Anyone is welcome to read the teachings of Jesus and choose to believe in them. This isn't an exclusive club reserved for the elect. Jesus said it was open to everyone, and that is actually what got him killed. People didn't want to accept that the Gentiles could be saved. They believed only they could. Jesus thought differently.</p>
+    <p>Most religions share the same core principles. Abstain from the bad, be a good person, worship your deity, and you will be saved. The difference with Christianity is that we have a God who didn't just watch from a distance and shake his head at us. He came down and left lessons for us on how to live. Lessons not about dominating the world or forcing this faith on others, but lessons that said love is the only path to him.</p>
+    <p>Is Christianity the only right answer? I believe it is. Because my God loved me so much he died a horrible, painful death for me. Jesus is the way, the truth, and the life. Anyone who believes in him will find eternal life. No other God has been willing to do that for us. Mine has.</p>
+    <p>Our job as Christians is to show other people that truth. To be fearless when others push back. To tell our friends that God is real and came down to prove it. Convincing someone their religion isn't the right one will always be an uncomfortable conversation. But when you read the words of Jesus Christ, when you truly understand what he lived for and what he was willing to do for us, you start to understand what love actually is.</p>
+    <p>Love that, as it was being nailed to a cross, prayed for the people doing it. Love that used its final breath not to curse the ones killing him, but to say the debt is paid and those who believe are saved. Love that still lives within us today.</p>
+    <p>That's my God. I can't imagine trusting in any other.</p>
+  </div>
+
+  <!-- CHAPTER 8 -->
+  <div id="ch08" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 8</span>
+      <span class="chapter-start-title">If God Exists, Why Doesn't He Just Show Himself?</span>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="prose-opener">I was taking a nap on my final summer before college when I woke up to a dozen texts and headlines about a terrorist attack in Boston. A bomb had gone off near the finish line of the Marathon. Rumors spread about other threats. The city was on lockdown and the suspected bombers were still at large, as far as anyone knew, planning to strike again.</p>
+    <p>I wouldn't live in Boston myself for a few more years, but I had cousins and friends there. Thankfully none of them were hurt, and the attack ended up being a standalone act of violence. But it took its toll. What pained me most was an eight-year-old boy named Martin Richard, killed in the blast. I had gone to Boston countless times as a kid with my grandfather for Celtics games. I never felt unsafe there. Red Sox hats everywhere, passionate people who love their city down to the bone. To attack a child in Boston infuriated me in a way I hadn't felt before. They took one of our own. An innocent child.</p>
+    <p>How could this happen? Why him? Why couldn't God have stopped it?</p>
+    <p>It would be really great if the Patriots won the Super Bowl every year, the Celtics won the Finals, and the Sox won the World Series. Unfortunately for me, they don't. Honestly, I don't think I'd be as happy if they did. If everything just fell into my lap, would I ever really accomplish anything? Or would I just be a product of a God who played favorites?</p>
+    <p>The question of Martin Richard is the same question. If God steps in and stops every act of evil, every bomb, every senseless death of an innocent child — does he still have a world of free people or just a world of protected ones? Does he stop the bomber's hand, or does he stop the hatred that built the bomb in the first place? And if he reaches into that man's heart and removes the hatred, is that still free will? Or is it God overriding the choices of one person to protect another?</p>
+    <p>God doesn't want that world. He wants us to choose him, and through that choice, choose each other. Martin Richard didn't deserve what happened to him. Nothing about that day was just. But the response of that city — the way Boston came together, the way strangers carried strangers across finish lines, the way an entire country stopped and said not here, not us, not this — that was God showing himself. Not in the bomb. In everything that came after it.</p>
+    <p>If God stepped in and fixed every broken thing before we had the chance to respond to it, we'd never know what we're capable of. We'd never know how much we need each other. We'd never know the depth of love that only reveals itself when someone runs toward the smoke instead of away from it.</p>
+    <p>God doesn't show himself by preventing every tragedy. He shows himself in the people who show up after one.</p>
+    <p>So why doesn't God just show himself? He does. Every single day. Through the people he made in his image, doing what he put them here to do.</p>
+    <p>Love one another.</p>
+  </div>
+
+  <!-- PART TWO -->
+  <div class="part-header">
+    <span class="part-eyebrow">Part Two</span>
+    <span class="part-title">The Catholic Questions</span>
+  </div>
+
+  <!-- CHAPTER 9 -->
+  <div id="ch09" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 9</span>
+      <span class="chapter-start-title">Why Do Catholics Worship Mary?</span>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="prose-opener">I've always been a mama's boy. I couldn't care less if people laugh at that. I love my mom more than anything. She brought me into this world and has loved me unconditionally since. If there's one person on this earth who deserves my love back, it's her.</p>
+    <p>So imagine the love Jesus felt for his earthly mother. A young girl who didn't ask for a child, was met by an angel, and told she would carry the Messiah. She could have said no. Even after he was born, she could have hidden him from the world and said you won't take my son. She didn't. She allowed him to grow into the man he was supposed to be. Something tells me that raising the Messiah made her see the world differently than the rest of us.</p>
+    <p>How is my love for Mother Mary not idolatry? The simple answer is that I don't worship her. I love Mary like a mother. Like my own mother. I love her because she loved Jesus, cradled him, fed him, and kept him safe. I don't worship Mary any more than I worship my own mother. Do I love them unconditionally? Of course. But I wouldn't bow before them and pledge my loyalty. They are not the golden pagan idols God warned us against. If you actually worship Mary and place her above God, you're wrong. Full stop. That's not what saints are to Catholics.</p>
+    <p>Saints are who we pray to so they can pray for us. They are literally in heaven with God and Jesus. Who better to ask to pray for us than those already in the presence of the God we're praying to?</p>
+    <p>We say a prayer to Saint Michael at the end of every Mass at my church. It ends the same way every time. Saint Michael the Archangel, pray for us. Not save us. Pray for us. Catholics aren't worshiping saints. We're asking them to intercede. To tap God on the shoulder and say this one's heart is true. I think you should hear this prayer.</p>
+    <p>That's not to say God doesn't hear us on his own. But what's a little extra help going to hurt? We do the same thing with friends and family all the time. Someone we love is sick, so we pray for them and ask others to pray for them too. We light candles and say the prayers of the faithful so that one prayer becomes the prayer of many. Not because a single prayer isn't enough, but because there is an exponential value to prayer. One heart truly praying is enough. Multiply that and it becomes the prayer of a community, and a God who loves all people recognizes how that means more than the wish of a single person.</p>
+    <p>I have my favorite saints. People I read about and study because their lives show me what a life pointed toward God actually looks like. Saints aren't named because of good deeds alone. They're named because miracles have occurred after praying to them, proving they made it through the gates. We study saints because they're the pinnacle of what it means to be Christian, and we try to replicate what they did to be more like them.</p>
+    <p>It's okay if you never pray to a saint and trust that your prayers to God alone are enough. But why not ask for a little extra help every now and then? When Mary asked Jesus to turn water into wine and he told her it wasn't his time yet, he obeyed her anyway. Who's to say that asking Mary to pray to Jesus on our behalf won't move him to listen again?</p>
+    <p>The real question isn't whether it's okay to ask saints to intercede. It's whether you're placing them above God, or asking them to walk before God as a champion for you.</p>
+  </div>
+
+  <!-- CHAPTER 10 -->
+  <div id="ch10" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 10</span>
+      <span class="chapter-start-title">Why Do You Confess to a Priest?</span>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="prose-opener">Confession is uncomfortable. Even devout Catholics can admit that. Airing out your dirty laundry to another person can feel like an unjust way to repent. If I'm truly sorry in my own heart, what difference does it make whether I say it in prayer at home or to the priest I then have to see every Sunday? I've heard that question before. I've asked it myself.</p>
+    <p>The problem with confessing sins to yourself is that humans have a remarkable ability to explain away guilt. I only missed Mass because I was on vacation. Sure, I yelled at that guy in traffic, but he had it coming for cutting me off. Confessing to a priest doesn't force you to confess everything, but when you do — when you actually start admitting your sins out loud to another person — a more honest conversation has to take place.</p>
+    <p>I don't go to confession as often as I should. But what I can tell you from my own experience is that I've rarely left the confessional having confessed only what I originally intended. When you take a hard look at everything you've done wrong and get past the big ones, the ones you're embarrassed to say out loud, the smaller ones start to trickle out. What started as confessing your major sins can turn like a faucet until everything weighing on your conscience spills out. Silent reflection in our own hearts rarely produces that kind of honesty. If it did, we'd confess every sin as we committed it and move on. That's not honesty. That's using confession as an excuse to never really address the root of the issue.</p>
+    <p>One more thing. When we confess to a priest, the Catholic Church teaches that something else happens in that confessional booth.</p>
+    <p>When a priest steps into confession, he steps in as the physical presence of God. That's why we can't pick a random stranger off the street to hear our confession. They don't have the authority because they weren't ordained. Ordination isn't just a ceremony. It's a spiritual transformation. Similar to what happens at baptism when we receive the Holy Spirit, ordination imprints something permanent on the priest's soul called a character. In confession, this allows the priest to act not just on God's behalf but in the person of Christ — in persona Christi in Latin. That's why, when confession is complete, the priest doesn't say God absolves you of your sins. He says I absolve you. This may seem like we're giving priests too much power, but Jesus gave his power to his disciples while he was still alive. It wasn't the disciple doing the healing. It was Jesus working through them. Confession works the same way.</p>
+    <p>The concern about being judged is a fair one. Telling the man you see every Sunday the worst parts about yourself is uncomfortable. But any priest who judges you for honestly confessing your sins is breaking his own promise to God. A priest is bound by a sacred oath never to share what you've confessed with anyone. He also understands that those sins were confessed while he stood in persona Christi — in for God. It's not his place to judge. Once you're absolved, those sins are wiped clean. To still look at you differently would be to doubt the power of God, which is a sin in itself.</p>
+    <p>Nothing requires you to confess to the priest of your home parish. Any ordained priest stands in for Jesus. Who he is, where he comes from, or what his past is — none of it affects whether you are absolved. If going to your own priest is the only thing holding you back, find a church nearby, look up their confession times, and just go. It still gets the job done.</p>
+    <p>That said, a priest once gave me a piece of advice on this. Going to the same priest for confession is like going to the same primary care physician every year. He knows your history, your community, and what has caused you to sin in the past. He won't hold it against you, but that knowledge helps him give solid advice on what needs to change to free you from it.</p>
+    <p>Regardless of what you choose, there is nothing quite like walking out of confession with a soul wiped clean. Even if you accidentally forgot something, you are forgiven and absolved the moment the priest standing in for Jesus says so.</p>
+    <p>Stop carrying the baggage of your past mistakes. Give confession a try. You might find it's exactly what you needed to shed your old self and start moving back toward God.</p>
+  </div>
+
+  <!-- CHAPTER 11 -->
+  <div id="ch11" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 11</span>
+      <span class="chapter-start-title">Don't Catholics Think They Can Earn Heaven?</span>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="prose-opener">I've always tried to be a good Catholic. I go to church, read my Bible, pray regularly, donate to charity, teach religious education. That's not me bragging about my good works. Ask me honestly if I think I'm doing enough and I'll give you a hundred reasons why I'm not worthy to step foot in heaven. At least not on my own.</p>
+    <p>The good thing is I won't be walking in alone. I'll have the ultimate guide meet me there, wounds in his hands, to show he already paid the price for my entry ticket.</p>
+    <p>Many Protestants would agree with that, and they'd argue the chapter should end there. Faith versus works is not a new argument. Theologians have debated it for centuries. Did Jesus pay the price so we don't have to earn it, or do our actions matter? My argument, and the argument of the Catholic Church, is that it's both.</p>
+    <p>If Jesus already paid the price and none of us are worthy through our own actions, does it matter how many good works we've done before we die?</p>
+    <p>As a husband, I've learned that loving on the inside doesn't count for much when you don't show it in your daily life. Marriage isn't just emotional support when the need arises or making sure the bills are paid. It's something you show up for every day, making choices that factor another person into them. My dad says in his wedding homilies that marriage makes the "me" become "we." My actions are no longer my own. They affect my wife and our combined future. If I blow all our money gambling, it doesn't just make me a loser. It means we can no longer buy a house, travel, or enjoy the Friday dinners out that we love so much. Every impact on me impacts both of us.</p>
+    <p>Paul argues something similar in Romans. He says the Jewish law is no longer necessary. Circumcision, dietary rules, ritual observances — these aren't required to prove faith. That seems to point toward our actions not mattering anymore, since faith alone saves. But he turns it around quickly. Faith working through love is what counts. That's a critical line too many people choose to ignore.</p>
+    <p>Jesus taught that he will know those who believe in him because they will choose to live the way he lived. I don't have healing powers and I haven't sold everything I own to walk the streets preaching. I can't check every box on a list of what Jesus did. It's more nuanced than that.</p>
+    <p>But just as I show my wife I love her through daily choices, there are works that show Jesus I'm not just banking on his sacrifice. Loving others, caring for the poor, spreading the Gospel — these show I'm not sitting on my high horse saying I'm saved because Christ is King, good luck to the rest of you. I'm aiming to live so that when I meet my maker he says well done my good and faithful servant, not depart from me, I do not know you.</p>
+    <p>The works aren't payment. God isn't Santa Claus checking his list twice, counting good deeds to decide who makes the nice list. He is love incarnate and knows better than we possibly can what truly makes up a person's heart.</p>
+    <p>Take it to the extreme. Imagine a person who locks themselves in a church and prays alone their entire life, never helping others, only praying for their own salvation. Do you believe God would look at them and say they listened to Jesus? I don't. On the contrary, the sinner who stumbles through life, rarely finding the right words but trying anyway, who gives a few dollars out of a shrinking bank account to charity not because it buys his way in but because it's the right thing to do — that man is who I believe God looks at and says that's one of my people, bring him to the feast. Not because he did more, but because he's living proof that even broken humans are worth saving.</p>
+    <p>It's a mistake to believe what we do is enough to save us. Jesus is the final answer. The question is whether we practice what we preach or just say we believe.</p>
+  </div>
+
+  <!-- CHAPTER 12 -->
+  <div id="ch12" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 12</span>
+      <span class="chapter-start-title">Where Does All the Catholic Stuff Come From?</span>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="prose-opener">Where in the Bible does Jesus give explicit permission to pray to saints? When James and John asked to sit at his side in heaven, Jesus told them no one should put themselves above others — so how can the Catholic Church be led by a Pope?</p>
+    <p>If we take only Jesus' own words as the final authority for all time, we're also disregarding that the Bible itself, written by forty authors over centuries, was written by God. If we draw the line at only his direct disciples having authority to interpret his meaning, what do we do with the prophets who spoke for God before Jesus was even born? It's a slippery slope to say the Church is created and led by men and stop there.</p>
+    <p>The Catholic Church began when Jesus changed Simon's name to Peter and told him he would be the rock his church was built on. In that moment, Jesus made the decision that humans could lead his church. Peter wasn't perfect when he received that charge. He was already the rock when he denied Jesus three times. One thing turned him from a coward into the first Pope — the introduction of the Holy Spirit. That same Holy Spirit is present in the world today. The apostolic succession from Peter to Pope Leo XIV is well documented. If the expectation was that Peter would live forever as the rock, the Church would have fallen with his death. It didn't. The same church still stands with close to two billion members. Peter was the rock it was built on, but that rock has since become a mountain. I think that's exactly what Jesus intended when he gave Peter his charge.</p>
+    <p>That doesn't mean the Church has been winging it on faith alone ever since. There have been numerous meetings of Church leaders throughout history to carefully debate scripture before deciding on doctrine. The Nicene Creed, for example, was written after careful deliberation by Biblical scholars in 325 AD to document exactly what Catholics believe. The fact that those beliefs remain unchanged 1,700 years later is remarkable on its own. Yes, men crafted it. But these aren't radical ideas popularized centuries after Jesus' death. They tie directly back to scripture and exist so that followers two millennia later can continue the church Jesus himself started. Every other religion was started by man and is still led by men. Catholicism was started by Jesus, and while it is run by men today, that leadership is still inspired by the Holy Spirit, just as it was for Peter at Pentecost.</p>
+    <p>An entire book could be written about the history of the Catholic Church and how we arrived at the doctrine in the Catechism. The point isn't to outline it all here. The point is to understand that the Church is a living thing. Instituted by Jesus, built upon Peter, but not dead with either of them. Jesus lives today in the Holy Spirit and remains an active participant in his Church.</p>
+    <p>Pope Leo XIV recently wrote Magnifica Humanitas, warning about the potential impact of artificial intelligence on human life. Did he quote Jesus' own opinions on AI? No, because AI didn't exist when Jesus walked the earth. So the Church does what it has always done. It looks at Jesus' teachings, prays for the guidance of the Holy Spirit, and continues to lead his people through a world Jesus never physically saw.</p>
+    <p>Is the Church perfect, beyond reproach, with a sinless population? No. But show me one institution that size that is. Until then, I'll keep following the church started by the one man with the authority to say I am the way, the truth, and the life.</p>
+  </div>
+
+  <!-- CHAPTER 13 -->
+  <div id="ch13" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Chapter 13</span>
+      <span class="chapter-start-title">If Miracles Happened Then, Why Don't They Happen Today?</span>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="prose-opener">My Uncle Kelly was a dead man walking. Lung cancer for the second time, despite never having smoked. His son, who would eventually be my best man at my wedding, came to live with us. Not to get him out of the way. So he didn't have to watch his father die.</p>
+    <p>I remember those days clearly. I remember going to a hockey game where Kelly Jr. caught a puck and then won a random raffle for an autographed set of 2007 New England Patriots cards. The undefeated team. I remember thinking that was a miracle. A nice gesture from God to a kid with a dying dad. God is a lot bigger than a pack of autographed cards, though.</p>
+    <p>I don't have a peer-reviewed medical journal to provide the details of what happened next, but I have my own memory. Big Kelly was destined to die. Surgery was attempted but the prognosis wasn't good. It was the first time I really hit my knees in prayer. I was in elementary school and I still remember exactly what I said. I won't share that here. That's between me and the man upstairs. What I do know is that God heard those prayers. Not just mine, but what I'm sure were some of the strongest prayers my cousin, his family, and mine have ever said. When you're staring death in the face, those prayers become more urgent.</p>
+    <p>Fifteen years later, Uncle Kelly is still here. The doctors could only call it a miracle. Am I claiming I saved him? No. But his recovery was the first time I witnessed something I couldn't explain any other way, and it changed how I've understood prayer ever since.</p>
+    <p>So when people ask why the miracles of Jesus ended with Jesus, I can't help but laugh. My uncle is one miracle among thousands that are far better documented than the memory of a kid who prayed fifteen years ago.</p>
+    <p>Take Lourdes, France.</p>
+    <p>In 1858, a fourteen-year-old peasant girl named Bernadette Soubirous reported seeing a woman in white appearing in a rocky grotto called Massabielle. Not once. Eighteen times between February and July of that year alone. The apparition identified herself simply as the Immaculate Conception and told Bernadette to dig in the ground at the grotto. When she did, a spring emerged that has flowed ever since, producing roughly 32,000 gallons of water each day.</p>
+    <p>So many miraculous healings have been reported at Lourdes that a special Lourdes Medical Bureau was established to review them — not to celebrate every claim as proof, but to scientifically investigate them, with both faithful and skeptical scientists, and reject any that could be explained naturally. Of thousands of claims, only seventy have been formally deemed miraculous. The Journal of the History of Medicine has noted that the Bureau's verification process is rigorous, not the wishful thinking of doctors who want something to believe in.</p>
+    <p>Miracles still happen today. More than ever, they are analyzed by the best minds with the best tools science has to offer and still cannot be explained.</p>
+    <p>Jesus started the miracle movement. He didn't end it. If you haven't seen one with your own eyes, read the peer-reviewed articles. Talk to the people who have. That still may not be enough for some. But for others it's proof of a God who is living and present in this world right now.</p>
+    <p>For those who haven't seen and still believe, Jesus has a word for you. Blessed.</p>
+    <p>Miracles aren't necessary for faith. But I'm grateful for them. And I know my Uncle Kelly is too.</p>
+  </div>
+
+  <!-- CLOSING -->
+  <div id="closing" class="chapter-start">
+    <div class="chapter-start-inner">
+      <span class="chapter-start-label">Closing</span>
+      <span class="chapter-start-title">You Don't Have to Win</span>
+    </div>
+  </div>
+
+  <div class="prose">
+    <p class="prose-opener">If convincing others of my faith were as simple as writing a short book about it, that would be incredible. I'm not a biblical scholar with all the answers, and faith isn't as simple as reading and believing. There will be people who read this and leave no more convinced than they came in. I'm okay with that.</p>
+    <p>Sharing our faith isn't always about proving who's right and who's wrong. I've tried to explain why I'm Catholic more times than I can count and I can't take credit for any conversions. What I can say is that I've tried. I've spoken up when it was uncomfortable and done my best to show others why my faith is the most important thing in my life.</p>
+    <p>The goal of evangelization isn't to force people to come to Jesus. That's not a choice, it's taking prisoners. The goal is to plant a seed. Even a mustard seed can grow into a great tree. Sometimes speaking up when others stay silent is enough to show someone who held their tongue that it's possible, and nothing to be ashamed of.</p>
+    <p>My God is real and present in my life. I take great pleasure knowing he's watching me defend my faith. If that makes you laugh, I couldn't care any less, because the only judge I aim to please is the one who gave his one and only Son so that believing in him would save me.</p>
+    <p>The facts are there for you to find. The Bible is a historical document that cites events that have been proven right time and time again. Jesus' bones are nowhere to be found. You can visit the graves of Buddha, Muhammad, Confucius, and Joseph Smith. I've visited the grave sites of Peter and Paul. If Christians could visit his remains, they would. They can't, because he rose from the dead. He then appeared to his disciples after his death and sent them out to spread his word to the point of brutal execution. Still they did not falter. Miracles continue in his name today, including dreams across the Middle East where Jesus continues to reveal himself to people who never sought him out.</p>
+    <p>The evidence is there. The question is whether you choose to believe it. And if you do, whether you have the courage to say so and call others to do the same.</p>
+    <p>I'm convinced. There is nothing that can take that faith from me. Not even death. I pray that whoever reads this will feel the same. Maybe not today. But the mustard seed is there. It's up to you to let it grow.</p>
+  </div>
+
+  <div class="scripture-pull">
+    <p>"Be on your guard; stand firm in the faith; be men of courage; be strong."</p>
+    <cite>1 Corinthians 16:13</cite>
+  </div>
+
+</div>
+</div>
+
+</body>
+</html>
