@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — Formation</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-LQ35DLTVKY');</script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy: #1a1f36;
+  --navy-light: #252b47;
+  --navy-mid: #2e3555;
+  --gold: #d4a574;
+  --gold-light: #e8c9a0;
+  --gold-pale: #f5ead8;
+  --cream: #faf7f2;
+  --text-primary: #1a1f36;
+  --text-secondary: #5a6080;
+  --text-muted: #8a90aa;
+  --border: rgba(26,31,54,0.1);
+  --white: #ffffff;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--cream);
+  color: var(--text-primary);
+  line-height: 1.7;
+  font-size: 16px;
+}
+
+/* Banner */
+.site-banner {
+  background: var(--navy);
+  padding: 1rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+.banner-logo {
+  font-family: 'Playfair Display', serif;
+  font-weight: 900;
+  font-size: 1.4rem;
+  color: var(--gold);
+  letter-spacing: 0.05em;
+  text-decoration: none;
+}
+.banner-nav {
+  display: flex;
+  gap: 1.75rem;
+  align-items: center;
+}
+.banner-nav a {
+  color: #8a90aa;
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  transition: color 0.2s;
+}
+.banner-nav a:hover { color: var(--gold-light); }
+.banner-nav a.active { color: var(--gold); }
+@media (max-width: 600px) {
+  .banner-nav { gap: 1rem; }
+  .banner-nav a { font-size: 12px; }
+}
+
+/* Page */
+.page-wrap {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 3.5rem 1.5rem 6rem;
+}
+
+/* Hero */
+.hero {
+  margin-bottom: 3.5rem;
+  padding-bottom: 3rem;
+  border-bottom: 0.5px solid var(--border);
+}
+.hero-eyebrow {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.85rem;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: 3rem;
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1.1;
+  margin-bottom: 1rem;
+}
+.hero-sub {
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  line-height: 1.75;
+  max-width: 580px;
+}
+
+/* Section label */
+.section-label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 0.5px;
+  background: var(--border);
+}
+
+/* Path cards — main two tracks */
+.path-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 4rem;
+}
+@media (max-width: 620px) {
+  .path-grid { grid-template-columns: 1fr; }
+}
+
+.path-card {
+  background: var(--white);
+  border: 0.5px solid var(--border);
+  border-radius: 10px;
+  padding: 2rem 2rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+}
+.path-card.primary {
+  background: var(--navy);
+  border-color: var(--navy);
+}
+
+.path-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.65rem;
+}
+.path-card:not(.primary) .path-eyebrow { color: var(--text-muted); }
+
+.path-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1.2;
+  margin-bottom: 0.5rem;
+}
+.path-card.primary .path-title { color: #ffffff; }
+
+.path-for {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--gold-light);
+  margin-bottom: 1rem;
+  line-height: 1.5;
+}
+.path-card:not(.primary) .path-for { color: var(--text-muted); }
+
+.path-divider {
+  height: 0.5px;
+  background: rgba(255,255,255,0.1);
+  margin-bottom: 1.25rem;
+}
+.path-card:not(.primary) .path-divider { background: var(--border); }
+
+.path-desc {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #9aa0c0;
+  flex: 1;
+  margin-bottom: 1.75rem;
+}
+.path-card:not(.primary) .path-desc { color: var(--text-secondary); }
+
+.path-modules {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.75rem;
+}
+.path-module-item {
+  font-size: 12px;
+  color: #6b7299;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.6rem;
+  line-height: 1.5;
+}
+.path-card.primary .path-module-item { color: #7a82a8; }
+.path-module-num {
+  font-weight: 600;
+  color: var(--gold);
+  flex-shrink: 0;
+  width: 18px;
+}
+
+.path-depth {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+  flex-wrap: wrap;
+}
+.depth-pill {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.75rem;
+  border-radius: 20px;
+  border: 0.5px solid rgba(255,255,255,0.15);
+  color: #9aa0c0;
+}
+.path-card:not(.primary) .depth-pill {
+  border-color: var(--border);
+  color: var(--text-muted);
+}
+.depth-pill.active {
+  background: rgba(212,165,116,0.15);
+  border-color: rgba(212,165,116,0.4);
+  color: var(--gold);
+}
+
+.path-btn {
+  display: inline-block;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.7rem 1.5rem;
+  border-radius: 4px;
+  align-self: flex-start;
+  transition: background 0.2s, color 0.2s;
+}
+.path-card.primary .path-btn {
+  background: var(--gold);
+  color: var(--navy);
+}
+.path-card.primary .path-btn:hover { background: var(--gold-light); }
+.path-card:not(.primary) .path-btn {
+  background: var(--navy);
+  color: var(--gold);
+}
+.path-card:not(.primary) .path-btn:hover { background: var(--navy-light); }
+
+/* Teacher/youth callout */
+.teacher-block {
+  background: var(--white);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 1.75rem 2rem;
+  display: flex;
+  gap: 1.5rem;
+  align-items: flex-start;
+  margin-bottom: 4rem;
+}
+.teacher-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.teacher-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.4rem;
+}
+.teacher-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.5rem;
+}
+.teacher-desc {
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  margin-bottom: 0.85rem;
+}
+.teacher-link {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--navy);
+  text-decoration: none;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1px;
+  transition: border-color 0.2s, color 0.2s;
+}
+.teacher-link:hover { color: var(--gold); border-color: var(--gold); }
+
+/* Pillar preview */
+.pillar-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-bottom: 4rem;
+}
+.pillar-row {
+  background: var(--white);
+  border: 0.5px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+.pillar-icon {
+  font-size: 1.1rem;
+  color: var(--gold);
+  flex-shrink: 0;
+  width: 28px;
+  text-align: center;
+}
+.pillar-info { flex: 1; }
+.pillar-label {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.2rem;
+}
+.pillar-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.2rem;
+}
+.pillar-sub {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.pillar-count {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* Depth note */
+.depth-note {
+  background: var(--navy-light);
+  border-radius: 8px;
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  margin-bottom: 1.5rem;
+}
+.depth-note-icon {
+  color: var(--gold);
+  font-size: 1rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.depth-note p {
+  font-size: 14px;
+  line-height: 1.75;
+  color: #9aa0c0;
+}
+.depth-note strong { color: var(--gold-light); font-weight: 600; }
+</style>
+</head>
+<body>
+
+<div class="site-banner">
+  <a href="index.html" class="banner-logo">CRUX</a>
+  <nav class="banner-nav">
+    <a href="crux-start-here.html">Start Here</a>
+    <a href="crux-formation.html" class="active">Formation</a>
+    <a href="crux-bible-study.html">Bible Study</a>
+    <a href="crux-account.html">Account</a>
+  </nav>
+</div>
+
+<div class="page-wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-eyebrow">Faith Formation</div>
+    <h1>Formation.</h1>
+    <p class="hero-sub">Everyone starts somewhere. Where you begin determines what you need. Two tracks — one for those building a foundation, one for those who have one and want to go deeper.</p>
+  </div>
+
+  <!-- TWO MAIN PATHS -->
+  <div class="section-label">Choose your track</div>
+
+  <div class="path-grid">
+
+    <!-- THE FOUNDATION -->
+    <div class="path-card primary">
+      <div class="path-eyebrow">&#9670; Track One</div>
+      <div class="path-title">The Foundation</div>
+      <div class="path-for">For seekers, OCIA candidates, and returning Catholics</div>
+      <div class="path-divider"></div>
+      <p class="path-desc">Start here if you are new to the faith, came back to it after time away, or simply want to understand what Catholicism actually claims and why. Built from the ground up — no prior knowledge required.</p>
+      <div class="path-modules">
+        <div class="path-module-item"><span class="path-module-num">01</span> Who Is This Man?</div>
+        <div class="path-module-item"><span class="path-module-num">02</span> Why Is There Suffering?</div>
+        <div class="path-module-item"><span class="path-module-num">03</span> What Is the Church?</div>
+        <div class="path-module-item"><span class="path-module-num">04</span> The Sacraments</div>
+        <div class="path-module-item"><span class="path-module-num">05</span> How Do I Pray?</div>
+        <div class="path-module-item"><span class="path-module-num">06</span> Mary &amp; the Saints</div>
+        <div class="path-module-item"><span class="path-module-num">07</span> Now What? — Next Steps</div>
+      </div>
+      <a href="crux-adult-formation.html" class="path-btn">Begin the Foundation &#8594;</a>
+    </div>
+
+    <!-- THE FIVE PILLARS -->
+    <div class="path-card">
+      <div class="path-eyebrow">&#9670; Track Two</div>
+      <div class="path-title">The Five Pillars</div>
+      <div class="path-for">For those who believe and want to go deeper</div>
+      <div class="path-divider"></div>
+      <p class="path-desc">Eighteen modules organized around the four pillars of the Catechism plus a fifth on Catholic identity. Each module has two depth levels — Beginner and Theologian. Start anywhere. Go as deep as you want.</p>
+      <div class="path-depth">
+        <span class="depth-pill active">Beginner</span>
+        <span class="depth-pill active">Theologian</span>
+        <span class="depth-pill">18 Modules</span>
+        <span class="depth-pill">5 Pillars</span>
+      </div>
+      <a href="crux-modules.html" class="path-btn">Open the Five Pillars &#8594;</a>
+    </div>
+
+  </div>
+
+  <!-- FIVE PILLARS PREVIEW -->
+  <div class="section-label">What the Five Pillars cover</div>
+
+  <div class="depth-note">
+    <div class="depth-note-icon">&#9670;</div>
+    <p>Every module in the Five Pillars has a <strong>Theologian level</strong> built for adults who want doctrinal depth — the filioque controversy, the theology of the Mass, the moral framework behind Church teaching. If you already have a foundation and want something that requires more from you, start there.</p>
+  </div>
+
+  <div class="pillar-preview">
+    <div class="pillar-row">
+      <div class="pillar-icon">&#10013;</div>
+      <div class="pillar-info">
+        <div class="pillar-label">Pillar I</div>
+        <div class="pillar-name">What We Believe</div>
+        <div class="pillar-sub">The Creed — the Holy Trinity, who Jesus is, Mary and the Saints, the geography of the Bible</div>
+      </div>
+      <div class="pillar-count">5 modules</div>
+    </div>
+    <div class="pillar-row">
+      <div class="pillar-icon">&#10022;</div>
+      <div class="pillar-info">
+        <div class="pillar-label">Pillar II</div>
+        <div class="pillar-name">What We Celebrate</div>
+        <div class="pillar-sub">The Sacraments — how God meets us through the liturgy and sacramental life of the Church</div>
+      </div>
+      <div class="pillar-count">3 modules</div>
+    </div>
+    <div class="pillar-row">
+      <div class="pillar-icon">&#9878;</div>
+      <div class="pillar-info">
+        <div class="pillar-label">Pillar III</div>
+        <div class="pillar-name">How We Live</div>
+        <div class="pillar-sub">The Commandments — the moral life, conscience, and what following Christ looks like in daily decisions</div>
+      </div>
+      <div class="pillar-count">4 modules</div>
+    </div>
+    <div class="pillar-row">
+      <div class="pillar-icon">&#9775;</div>
+      <div class="pillar-info">
+        <div class="pillar-label">Pillar IV</div>
+        <div class="pillar-name">How We Pray</div>
+        <div class="pillar-sub">The Our Father and Catholic prayer — what prayer is, how to do it, and the tradition the Church has built around it</div>
+      </div>
+      <div class="pillar-count">3 modules</div>
+    </div>
+    <div class="pillar-row">
+      <div class="pillar-icon">&#9904;</div>
+      <div class="pillar-info">
+        <div class="pillar-label">Pillar V</div>
+        <div class="pillar-name">Who We Are</div>
+        <div class="pillar-sub">Catholic identity — the history of the Church, what it means to be Catholic today, and where we are headed</div>
+      </div>
+      <div class="pillar-count">3 modules</div>
+    </div>
+  </div>
+
+  <!-- TEACHERS -->
+  <div class="section-label">For teachers &amp; sponsors</div>
+
+  <div class="teacher-block">
+    <div class="teacher-icon">&#9998;</div>
+    <div>
+      <div class="teacher-label">Classroom &amp; OCIA use</div>
+      <div class="teacher-title">Teaching grades 3–8 or leading an OCIA group?</div>
+      <p class="teacher-desc">The Five Pillars Beginner level is built for classroom instruction — it covers the same doctrinal content in a format designed for younger students and group settings. The Foundation track works well for OCIA candidates moving through the process at their own pace. Group tools for teachers and sponsors are in development.</p>
+      <a href="crux-modules.html" class="teacher-link">Open the Five Pillars &#8594;</a>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>
