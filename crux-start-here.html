@@ -3,420 +3,544 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="color-scheme" content="dark">
 <title>CRUX — Start Here</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,900;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-LQ35DLTVKY');</script>
+
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 <style>
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
+  --navy-deep: #0f1222;
   --navy: #1a1f36;
   --navy-light: #252b47;
   --navy-mid: #2e3555;
   --gold: #d4a574;
-  --gold-light: #e8c9a0;
-  --gold-pale: #f5ead8;
-  --cream: #faf7f2;
-  --text-primary: #1a1f36;
-  --text-secondary: #5a6080;
-  --text-muted: #8a90aa;
-  --border: rgba(26,31,54,0.1);
+  --gold-light: #e8c99a;
+  --gold-dark: #b8895a;
+  --gold-dim: rgba(212,165,116,0.1);
+  --gold-border: rgba(212,165,116,0.22);
   --white: #ffffff;
+  --text-soft: rgba(255,255,255,0.68);
+  --text-muted: rgba(255,255,255,0.38);
 }
 
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Inter', sans-serif;
-  background: var(--cream);
-  color: var(--text-primary);
-  line-height: 1.7;
-  font-size: 16px;
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: var(--navy-deep);
+  color: var(--white);
+  min-height: 100vh;
+  overflow-x: hidden;
 }
 
-/* Banner */
-.site-banner {
-  background: var(--navy);
-  padding: 1rem 2rem;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-}
-.banner-logo {
-  font-family: 'Playfair Display', serif;
-  font-weight: 900;
-  font-size: 1.4rem;
-  color: var(--gold);
-  letter-spacing: 0.05em;
-  text-decoration: none;
-}
-.banner-nav {
-  display: flex;
-  gap: 1.75rem;
-  align-items: center;
-}
-.banner-nav a {
-  color: #8a90aa;
-  text-decoration: none;
-  font-size: 13px;
-  font-weight: 500;
-  letter-spacing: 0.05em;
-  transition: color 0.2s;
-}
-.banner-nav a:hover { color: var(--gold-light); }
-.banner-nav a.active { color: var(--gold); }
-@media (max-width: 600px) {
-  .banner-nav { gap: 1rem; }
-  .banner-nav a { font-size: 12px; }
+body::before {
+  content: '';
+  position: fixed; inset: 0; z-index: 1000; pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  opacity: 0.6;
 }
 
-/* Page */
-.page-wrap {
-  max-width: 760px;
-  margin: 0 auto;
-  padding: 3.5rem 1.5rem 6rem;
+/* ── NAV ── */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 1.25rem 2.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(15,18,34,0.88); backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900;
+  letter-spacing: 5px; color: var(--gold); text-decoration: none;
+}
+.nav-links { display: flex; gap: 2rem; list-style: none; align-items: center; }
+.nav-links a {
+  font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 500;
+  letter-spacing: 1px; color: var(--text-muted); text-decoration: none; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--gold); }
+.nav-links a.active { color: var(--gold); }
+.nav-dropdown { position: relative; }
+.nav-dropdown > a::after { content: ' ▾'; font-size: 0.6rem; opacity: 0.55; }
+.nav-dropdown-menu {
+  position: absolute; top: 100%; left: -0.75rem;
+  min-width: 190px; background: rgba(15,18,34,0.97);
+  border: 1px solid rgba(212,165,116,0.18); border-radius: 6px;
+  padding: 0.75rem 0 0.4rem; display: none; flex-direction: column;
+  backdrop-filter: blur(14px); z-index: 300; box-shadow: 0 8px 24px rgba(0,0,0,0.35);
+}
+.nav-dropdown:hover .nav-dropdown-menu { display: flex; }
+.nav-dropdown-menu a {
+  padding: 0.55rem 1.1rem; font-family: 'Inter', sans-serif; font-size: 0.72rem;
+  font-weight: 500; color: rgba(255,255,255,0.45); text-decoration: none; white-space: nowrap;
+  transition: color 0.15s, background 0.15s; letter-spacing: 0;
+}
+.nav-dropdown-menu a:hover { color: var(--gold); background: rgba(255,255,255,0.04); }
+.nav-dropdown-menu a::after { display: none; }
+.nav-drop-divider { height: 1px; background: rgba(255,255,255,0.07); margin: 0.3rem 0; }
+.nav-cta {
+  font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--navy-deep); background: var(--gold);
+  padding: 0.55rem 1.35rem; border-radius: 5px; text-decoration: none; transition: opacity 0.2s;
+}
+.nav-cta:hover { opacity: 0.85; }
+.nav-hamburger {
+  display: none; background: none; border: none; cursor: pointer;
+  padding: 4px; flex-direction: column; gap: 5px; align-items: center; justify-content: center;
+}
+.nav-hamburger span { display: block; width: 22px; height: 2px; background: rgba(255,255,255,0.7); border-radius: 2px; transition: all 0.2s; }
+.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.nav-hamburger.open span:nth-child(2) { opacity: 0; }
+.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.nav-mobile-menu {
+  display: none; position: fixed; left: 0; right: 0; z-index: 199;
+  background: rgba(15,18,34,0.97); backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(212,165,116,0.15);
+  flex-direction: column; padding: 0.5rem 0 1rem;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.nav-mobile-menu.open { display: flex; }
+.nav-mobile-menu a {
+  padding: 0.85rem 1.5rem; font-family: 'Inter', sans-serif;
+  font-size: 0.88rem; font-weight: 500; letter-spacing: 0.5px;
+  color: rgba(255,255,255,0.65); text-decoration: none;
+  border-bottom: 1px solid rgba(255,255,255,0.04); transition: color 0.15s;
+}
+.nav-mobile-menu a:hover { color: var(--gold); }
+.nav-mobile-cta {
+  margin: 0.75rem 1.5rem 0 !important; padding: 0.65rem 1rem !important;
+  background: var(--gold); color: var(--navy-deep) !important; border-radius: 4px;
+  text-align: center; font-weight: 600 !important; font-size: 0.75rem;
+  letter-spacing: 1.5px; text-transform: uppercase; border-bottom: none !important;
+}
+@media (max-width: 640px) {
+  .nav-hamburger { display: flex; }
+  .nav-links { display: none !important; }
+  .nav-cta { display: none !important; }
 }
 
-/* Hero */
+/* ── HERO ── */
 .hero {
-  margin-bottom: 3rem;
-  padding-bottom: 3rem;
-  border-bottom: 0.5px solid var(--border);
+  padding: 9rem 2rem 5rem;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
 }
-.hero-eyebrow {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 0.85rem;
+.hero::before {
+  content: '';
+  position: absolute; width: 700px; height: 700px;
+  background: radial-gradient(ellipse, rgba(212,165,116,0.09) 0%, transparent 70%);
+  left: 50%; top: 50%; transform: translate(-50%,-50%);
+  pointer-events: none;
+}
+.hero::after {
+  content: '✟';
+  position: absolute; font-size: 30rem; line-height: 1;
+  color: rgba(212,165,116,0.025);
+  left: 50%; top: 50%; transform: translate(-50%,-50%);
+  pointer-events: none;
+  animation: crossPulse 8s ease-in-out infinite;
+}
+@keyframes crossPulse { 0%,100%{opacity:0.5} 50%{opacity:1} }
+
+.hero .eyebrow {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 1.25rem;
+  display: inline-flex; align-items: center; gap: 0.75rem; position: relative;
+}
+.hero .eyebrow::before, .hero .eyebrow::after {
+  content: ''; display: block; width: 28px; height: 1px; background: var(--gold); opacity: 0.45;
 }
 .hero h1 {
   font-family: 'Playfair Display', serif;
-  font-size: 3rem;
-  font-weight: 900;
-  color: var(--navy);
-  line-height: 1.1;
-  margin-bottom: 1rem;
+  font-size: clamp(2.8rem, 8vw, 5rem); font-weight: 900;
+  line-height: 1.05; margin-bottom: 1.25rem; position: relative;
 }
-.hero-sub {
-  font-size: 1.1rem;
-  color: var(--text-secondary);
-  line-height: 1.7;
-  max-width: 540px;
+.hero h1 span {
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 50%, var(--gold-dark) 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+.hero p {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  color: var(--text-soft); font-size: clamp(1rem, 2vw, 1.25rem);
+  line-height: 1.7; max-width: 500px; margin: 0 auto; position: relative;
 }
 
-/* Welcome block */
+/* ── PAGE WRAP ── */
+.page-wrap {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 3rem 2rem 6rem;
+}
+
+/* ── WELCOME BLOCK ── */
 .welcome-block {
-  background: var(--navy);
-  border-radius: 8px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--gold-border);
+  border-radius: 12px;
   padding: 2.5rem 2.75rem;
   margin-bottom: 4rem;
+  box-shadow: 0 0 28px rgba(212,165,116,0.06);
+}
+.welcome-lead {
+  font-family: 'Playfair Display', serif; font-style: italic;
+  font-size: 1.3rem; color: var(--white); line-height: 1.6;
+  margin-bottom: 1.25rem;
 }
 .welcome-block p {
-  font-size: 16px;
-  line-height: 1.95;
-  color: #d0d4e8;
-  margin-bottom: 1.35rem;
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.05rem; line-height: 1.9; color: var(--text-soft);
+  margin-bottom: 1.1rem;
 }
 .welcome-block p:last-child { margin-bottom: 0; }
-.welcome-lead {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.25rem;
-  color: #ffffff !important;
-  font-style: italic;
-  line-height: 1.6;
-}
-@media (max-width: 600px) {
-  .welcome-block { padding: 1.75rem 1.5rem; }
-}
+@media (max-width: 600px) { .welcome-block { padding: 1.75rem 1.5rem; } }
 
-/* Section label */
+/* ── SECTION LABEL ── */
 .section-label {
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-muted);
-  margin-bottom: 1.5rem;
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 3.5px; text-transform: uppercase;
+  color: rgba(212,165,116,0.5);
+  margin-bottom: 2rem;
+  display: flex; align-items: center; gap: 12px;
 }
 .section-label::after {
+  content: ''; flex: 1; height: 1px; background: rgba(212,165,116,0.1);
+}
+
+/* ── JOURNEY PATH ── */
+.journey-path {
+  display: flex; flex-direction: column; gap: 0;
+  margin-bottom: 4rem;
+  position: relative;
+}
+.journey-path::before {
   content: '';
-  flex: 1;
-  height: 0.5px;
-  background: var(--border);
+  position: absolute; left: 21px; top: 44px; bottom: 44px; width: 1px;
+  background: linear-gradient(to bottom, rgba(212,165,116,0.2), rgba(212,165,116,0.06));
+  z-index: 0;
 }
 
-/* Path cards */
-.path-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1.25rem;
-  margin-bottom: 4rem;
+.journey-step {
+  position: relative; padding-left: 72px; padding-bottom: 3rem;
 }
-@media (max-width: 560px) {
-  .path-grid { grid-template-columns: 1fr; }
+.journey-step:last-child { padding-bottom: 0; }
+
+.journey-num {
+  position: absolute; left: 0; top: 0;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--navy-light);
+  border: 1.5px solid var(--gold-border);
+  color: var(--gold); font-family: 'Inter', sans-serif;
+  font-size: 14px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  z-index: 1; flex-shrink: 0;
+  box-shadow: 0 0 16px rgba(212,165,116,0.12);
 }
-.path-card {
-  background: var(--white);
-  border: 0.5px solid var(--border);
-  border-radius: 8px;
-  padding: 2rem;
-  display: flex;
-  flex-direction: column;
+
+.journey-badge {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+  color: var(--gold); opacity: 0.75; margin-bottom: 0.5rem;
 }
-.path-card.featured {
-  border-color: rgba(212,165,116,0.5);
-  background: var(--gold-pale);
-}
-.path-badge {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 0.75rem;
-}
-.path-title {
+
+.journey-title {
   font-family: 'Playfair Display', serif;
-  font-size: 1.3rem;
-  font-weight: 700;
-  color: var(--navy);
-  margin-bottom: 0.75rem;
-  line-height: 1.3;
-}
-.path-tracks {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 0.85rem;
-  flex-wrap: wrap;
-}
-.track-pill {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  background: var(--navy);
-  color: var(--gold-light);
-  padding: 0.25rem 0.65rem;
-  border-radius: 20px;
-}
-.path-card.featured .track-pill {
-  background: rgba(26,31,54,0.12);
-  color: var(--navy);
-}
-.path-desc {
-  font-size: 14px;
-  line-height: 1.75;
-  color: var(--text-secondary);
-  flex: 1;
-  margin-bottom: 1.5rem;
-}
-.path-card.featured .path-desc { color: #5a5030; }
-.path-btn {
-  display: inline-block;
-  background: var(--navy);
-  color: var(--gold);
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  text-decoration: none;
-  padding: 0.65rem 1.25rem;
-  border-radius: 4px;
-  align-self: flex-start;
-  transition: background 0.2s;
-}
-.path-btn:hover { background: var(--navy-light); }
-.path-card.featured .path-btn {
-  background: var(--navy);
-  color: var(--gold);
+  font-size: 1.55rem; font-weight: 700;
+  color: var(--white); line-height: 1.25; margin-bottom: 0.85rem;
 }
 
-/* Step list */
-.step-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 4rem;
+.journey-desc {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.05rem; line-height: 1.85; color: var(--text-soft);
+  margin-bottom: 1.75rem; max-width: 600px;
 }
-.step {
-  display: flex;
-  gap: 1.5rem;
-  align-items: flex-start;
-  background: var(--white);
-  border: 0.5px solid var(--border);
-  border-radius: 8px;
+
+.journey-btn {
+  display: inline-block;
+  background: transparent;
+  border: 1.5px solid var(--gold-border);
+  color: var(--gold);
+  font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 700;
+  letter-spacing: 1.5px; text-transform: uppercase; text-decoration: none;
+  padding: 0.65rem 1.35rem; border-radius: 5px;
+  transition: all 0.2s; margin-top: 1.5rem;
+}
+.journey-btn:hover {
+  background: var(--gold-dim);
+  border-color: rgba(212,165,116,0.5);
+  transform: translateY(-1px);
+}
+
+/* ── MODULE LIST ── */
+.module-list {
+  border: 1px solid var(--gold-border);
+  border-radius: 10px; overflow: hidden;
+}
+.mod-link { text-decoration: none; display: block; }
+.module-item {
+  display: flex; gap: 1.25rem; align-items: flex-start;
+  padding: 1rem 1.35rem;
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+  transition: background 0.15s;
+}
+.mod-link:last-child .module-item { border-bottom: none; }
+.mod-link:hover .module-item { background: rgba(212,165,116,0.04); }
+.mod-link:hover .mod-title { color: var(--gold); }
+.mod-num {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem; font-weight: 700; color: rgba(212,165,116,0.4);
+  width: 22px; flex-shrink: 0; padding-top: 3px; letter-spacing: 0.05em;
+}
+.mod-title {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem; font-weight: 600; color: var(--white);
+  margin-bottom: 0.2rem; transition: color 0.15s;
+}
+.mod-desc {
+  font-family: 'Crimson Pro', serif;
+  font-size: 0.95rem; line-height: 1.6; color: var(--text-muted);
+}
+
+/* ── TOGGLE DEMO ── */
+.toggle-demo {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--gold-border);
+  border-radius: 10px;
   padding: 1.5rem 1.75rem;
 }
-.step-num {
-  width: 34px;
-  height: 34px;
-  border-radius: 50%;
-  background: var(--navy);
-  color: var(--gold);
-  font-size: 13px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-top: 2px;
+.toggle-demo-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+  color: rgba(212,165,116,0.5); margin-bottom: 1rem;
 }
-.step-body h4 {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--navy);
-  margin-bottom: 0.4rem;
-  line-height: 1.35;
+.toggle-buttons {
+  display: inline-flex;
+  background: rgba(255,255,255,0.04);
+  border-radius: 6px; padding: 3px; gap: 2px;
+  margin-bottom: 1rem;
+  border: 1px solid rgba(255,255,255,0.07);
 }
-.step-body p {
-  font-size: 14px;
-  line-height: 1.75;
-  color: var(--text-secondary);
+.toggle-btn {
+  padding: 0.35rem 1.1rem; border-radius: 4px;
+  font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600; letter-spacing: 0.5px;
 }
-.step-body a {
-  color: var(--navy);
-  font-weight: 600;
-  text-decoration: none;
-  border-bottom: 1px solid var(--border);
+.toggle-btn.is-active { background: var(--gold); color: var(--navy-deep); }
+.toggle-btn.is-inactive { color: var(--text-muted); }
+.toggle-demo-desc {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1rem; line-height: 1.8; color: var(--text-soft);
 }
-.step-body a:hover { border-color: var(--gold); color: var(--gold); }
+.toggle-demo-desc strong { color: var(--white); font-weight: 600; }
 
-/* Tools intro */
-.tools-intro {
-  margin-bottom: 1.75rem;
+/* ── BIBLE BLOCK ── */
+.bible-block {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--gold-border);
+  border-radius: 10px;
+  padding: 1.5rem 1.75rem;
 }
+.bible-block p {
+  font-family: 'Crimson Pro', serif;
+  font-size: 1rem; line-height: 1.8; color: var(--text-soft);
+  margin-bottom: 1rem;
+}
+.bible-block p:last-child { margin-bottom: 0; }
+.bible-available {
+  display: flex; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.85rem;
+}
+.bible-pill {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  background: rgba(212,165,116,0.12); color: var(--gold);
+  border: 1px solid rgba(212,165,116,0.2);
+  padding: 0.3rem 0.85rem; border-radius: 20px;
+}
+.bible-pill.coming {
+  background: rgba(255,255,255,0.04); color: var(--text-muted);
+  border: 1px solid rgba(255,255,255,0.08);
+}
+
+/* ── LIBRARY ── */
+.library-inner { display: flex; flex-direction: column; gap: 1.75rem; }
+
+.library-sub-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase;
+  color: rgba(212,165,116,0.5); margin-bottom: 1rem;
+}
+
+.crux-books-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem;
+}
+@media (max-width: 520px) { .crux-books-grid { grid-template-columns: 1fr; } }
+
+.crux-book {
+  background: rgba(212,165,116,0.04);
+  border: 1px solid var(--gold-border);
+  border-radius: 10px; padding: 1.25rem 1.5rem;
+  transition: border-color 0.2s;
+}
+.crux-book:hover { border-color: rgba(212,165,116,0.45); }
+.crux-book-tags {
+  display: flex; gap: 0; flex-wrap: wrap; margin-bottom: 0.55rem;
+}
+.crux-book-tag {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  color: var(--gold); opacity: 0.6;
+}
+.crux-book-tag::after { content: ' ·\00a0'; }
+.crux-book-tag:last-child::after { content: ''; }
+.crux-book-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.05rem; font-weight: 700; color: var(--white);
+  line-height: 1.3; margin-bottom: 0.25rem;
+}
+.crux-book-sub {
+  font-family: 'Crimson Pro', serif; font-style: italic;
+  font-size: 0.88rem; color: var(--gold-light); opacity: 0.75;
+  margin-bottom: 0.65rem; line-height: 1.4;
+}
+.crux-book-desc {
+  font-family: 'Crimson Pro', serif;
+  font-size: 0.9rem; line-height: 1.65; color: var(--text-muted);
+}
+.crux-book-writing {
+  display: inline-block; margin-top: 0.75rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.58rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase;
+  color: var(--gold); opacity: 0.5;
+  border: 1px solid rgba(212,165,116,0.2);
+  padding: 0.2rem 0.6rem; border-radius: 3px;
+}
+
+.read-buckets { display: flex; flex-direction: column; gap: 0.85rem; }
+.read-bucket {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(212,165,116,0.12);
+  border-radius: 10px; padding: 1.25rem 1.5rem;
+}
+.read-bucket-label {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--gold); opacity: 0.7; margin-bottom: 1rem;
+}
+.read-list { display: flex; flex-direction: column; gap: 0.65rem; }
+.read-item { display: flex; gap: 0.85rem; align-items: flex-start; }
+.read-dot {
+  width: 4px; height: 4px; border-radius: 50%;
+  background: rgba(212,165,116,0.3); flex-shrink: 0; margin-top: 0.6rem;
+}
+.read-item-body {
+  font-family: 'Crimson Pro', serif;
+  font-size: 0.98rem; line-height: 1.6; color: var(--text-soft);
+}
+.read-item-body strong { color: var(--white); font-weight: 600; }
+
+/* ── TOOLS ── */
+.tools-intro { margin-bottom: 1.75rem; }
 .tools-intro p {
-  font-size: 16px;
-  line-height: 1.9;
-  color: var(--text-primary);
-  margin-bottom: 1.25rem;
+  font-family: 'Crimson Pro', serif;
+  font-size: 1.05rem; line-height: 1.9; color: var(--text-soft);
+  margin-bottom: 1.1rem;
 }
 .tools-intro p:last-child { margin-bottom: 0; }
 
-/* Tool cards */
-.tool-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  margin-bottom: 4rem;
-}
+.tool-list { display: flex; flex-direction: column; gap: 1rem; }
 .tool-card {
-  background: var(--white);
-  border: 0.5px solid var(--border);
-  border-radius: 8px;
-  padding: 1.75rem 2rem;
-  display: flex;
-  gap: 1.5rem;
-  align-items: flex-start;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(212,165,116,0.12);
+  border-radius: 10px; padding: 1.5rem 1.75rem;
+  display: flex; gap: 1.5rem; align-items: flex-start;
+  transition: border-color 0.2s;
 }
+.tool-card:hover { border-color: var(--gold-border); }
 .tool-num {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  background: var(--gold-pale);
-  color: var(--navy);
-  font-size: 12px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  margin-top: 3px;
+  width: 32px; height: 32px; border-radius: 50%;
+  background: rgba(212,165,116,0.1);
+  border: 1px solid rgba(212,165,116,0.2);
+  color: var(--gold); font-family: 'Inter', sans-serif;
+  font-size: 0.75rem; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
 }
 .tool-body h4 {
   font-family: 'Playfair Display', serif;
-  font-size: 1.05rem;
-  font-weight: 700;
-  color: var(--navy);
-  margin-bottom: 0.2rem;
+  font-size: 1.05rem; font-weight: 700; color: var(--white); margin-bottom: 0.2rem;
 }
 .tool-byline {
-  font-size: 11px;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  color: var(--gold);
-  text-transform: uppercase;
-  margin-bottom: 0.6rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.65rem; font-weight: 600; letter-spacing: 1px;
+  color: var(--gold); opacity: 0.65; text-transform: uppercase; margin-bottom: 0.6rem;
 }
 .tool-body p {
-  font-size: 14px;
-  line-height: 1.75;
-  color: var(--text-secondary);
+  font-family: 'Crimson Pro', serif;
+  font-size: 0.98rem; line-height: 1.75; color: var(--text-soft);
 }
 
-/* Coming block */
-.coming-block {
-  background: var(--navy-light);
-  border-radius: 8px;
-  padding: 2.25rem 2.5rem;
-  margin-bottom: 1rem;
-}
-.coming-eyebrow {
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 0.75rem;
-}
-.coming-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.15rem;
-  color: #ffffff;
-  margin-bottom: 1.25rem;
-  line-height: 1.4;
-}
-.coming-items {
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-}
-.coming-item {
-  font-size: 14px;
-  color: var(--text-muted);
-  display: flex;
-  align-items: center;
-  gap: 0.85rem;
-}
-.coming-dot {
-  width: 5px;
-  height: 5px;
-  border-radius: 50%;
-  background: var(--navy-mid);
-  flex-shrink: 0;
+@media (max-width: 640px) {
+  .journey-path::before { display: none; }
+  .journey-step { padding-left: 0; }
+  .journey-num { position: static; margin-bottom: 1rem; }
+  .journey-title { font-size: 1.3rem; }
+  .page-wrap { padding: 2rem 1.25rem 4rem; }
 }
 </style>
 </head>
 <body>
 
-<div class="site-banner">
-  <a href="index.html" class="banner-logo">CRUX</a>
-  <nav class="banner-nav">
-    <a href="crux-start-here.html" class="active">Start Here</a>
-    <a href="crux-adult-formation.html">Formation</a>
-    <a href="crux-bible-study.html">Bible Study</a>
-    <a href="crux-account.html">Account</a>
-  </nav>
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">CRUX</a>
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li class="nav-dropdown">
+      <a href="crux-formation.html">Formation</a>
+      <div class="nav-dropdown-menu">
+        <a href="crux-adult-formation.html">The Foundation</a>
+        <a href="crux-modules.html">Five Pillars</a>
+        <div class="nav-drop-divider"></div>
+        <a href="crux-start-here.html" class="active">Start Here</a>
+      </div>
+    </li>
+    <li><a href="crux-bible-study.html">Bible Study</a></li>
+    <li><a href="crux-pack-store.html">Saint Cards</a></li>
+    <li><a href="cruxgames.html">Games</a></li>
+    <li><a href="crux-videos.html">Videos</a></li>
+    <li><a href="crux-music.html">Music</a></li>
+  </ul>
+  <a href="crux-account.html" class="nav-cta">My Account</a>
+  <button class="nav-hamburger" id="navHamburger" aria-label="Open menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+<div class="nav-mobile-menu" id="navMobileMenu">
+  <a href="index.html">Home</a>
+  <a href="crux-formation.html">Formation</a>
+  <a href="crux-adult-formation.html">The Foundation</a>
+  <a href="crux-modules.html">Five Pillars</a>
+  <a href="crux-bible-study.html">Bible Study</a>
+  <a href="crux-pack-store.html">Saint Cards</a>
+  <a href="cruxgames.html">Games</a>
+  <a href="crux-videos.html">Videos</a>
+  <a href="crux-music.html">Music</a>
+  <a href="crux-account.html" class="nav-mobile-cta">My Account</a>
+</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="eyebrow">Welcome to CRUX</div>
+  <h1><span>Start Here.</span></h1>
+  <p>What is on this site, where to find it, and the only place worth beginning.</p>
 </div>
 
 <div class="page-wrap">
-
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-eyebrow">Welcome to CRUX</div>
-    <h1>Start Here.</h1>
-    <p class="hero-sub">What's on this site, where to find it, and the only place worth beginning.</p>
-  </div>
 
   <!-- WELCOME -->
   <div class="welcome-block">
@@ -426,64 +550,236 @@ body {
     <p>Start where you are. Bring whatever you have. That is the only requirement.</p>
   </div>
 
-  <!-- WHAT'S HERE -->
-  <div class="section-label">What's on the site</div>
+  <!-- YOUR PATH -->
+  <div class="section-label">Your path through CRUX</div>
 
-  <div class="path-grid">
-    <div class="path-card featured">
-      <div class="path-badge">&#9670; Start here</div>
-      <div class="path-title">Formation</div>
-      <div class="path-tracks">
-        <span class="track-pill">Youth · Grades 3–8</span>
-        <span class="track-pill">Adult</span>
-      </div>
-      <p class="path-desc">Structured faith formation for all ages. Two tracks — a Foundation track for seekers and returning Catholics, and the Five Pillars for those who want doctrinal depth. The Five Pillars also serves grades 3 through 8 at Beginner level.</p>
-      <a href="crux-formation.html" class="path-btn">Open Formation &#8594;</a>
-    </div>
-    <div class="path-card">
-      <div class="path-badge">&#9670; Scripture study</div>
-      <div class="path-title">Bible Study</div>
-      <div class="path-tracks">
-        <span class="track-pill">Romans</span>
-        <span class="track-pill">More coming</span>
-      </div>
-      <p class="path-desc">Verse-by-verse study of Scripture built for both beginners and those with a foundation in the Word. Best used alongside the Formation track. Requires a Bible — not just this site.</p>
-      <a href="crux-bible-study.html" class="path-btn">Open Bible Study &#8594;</a>
-    </div>
-  </div>
+  <div class="journey-path">
 
-  <!-- WHERE TO START -->
-  <div class="section-label">Where to begin</div>
+    <!-- STEP 1: THE FOUNDATION -->
+    <div class="journey-step">
+      <div class="journey-num">1</div>
+      <div class="journey-badge">The Foundation</div>
+      <h2 class="journey-title">Seven modules. The full case for the Catholic faith.</h2>
+      <p class="journey-desc">Whether you are approaching this for the first time or are a cradle Catholic who wants to understand what you actually believe, The Foundation is where to begin. Each module is split into two parts. Work through them in order — they build on each other.</p>
 
-  <div class="step-list">
-    <div class="step">
-      <div class="step-num">1</div>
-      <div class="step-body">
-        <h4>Get your tools together</h4>
-        <p>CRUX is a guide, not a replacement for a Bible in your hand. Before your first module, have a study Bible, a pen that won't bleed through thin pages, and somewhere to write your notes. Recommendations in the section below.</p>
+      <div class="module-list">
+        <a href="crux-adult-module1a.html" class="mod-link">
+          <div class="module-item">
+            <div class="mod-num">01</div>
+            <div>
+              <div class="mod-title">Who Is Jesus?</div>
+              <div class="mod-desc">The historical case for Jesus. Who he was, what he claimed, and why the claim demands a response.</div>
+            </div>
+          </div>
+        </a>
+        <a href="crux-adult-module2a.html" class="mod-link">
+          <div class="module-item">
+            <div class="mod-num">02</div>
+            <div>
+              <div class="mod-title">Why Does Suffering Exist?</div>
+              <div class="mod-desc">How the Catholic tradition answers the hardest question: if God is good, why does pain exist?</div>
+            </div>
+          </div>
+        </a>
+        <a href="crux-adult-module3a.html" class="mod-link">
+          <div class="module-item">
+            <div class="mod-num">03</div>
+            <div>
+              <div class="mod-title">What Is the Church?</div>
+              <div class="mod-desc">Where the Church came from, how it developed over two thousand years, and why it claims what it claims.</div>
+            </div>
+          </div>
+        </a>
+        <a href="crux-adult-module4a.html" class="mod-link">
+          <div class="module-item">
+            <div class="mod-num">04</div>
+            <div>
+              <div class="mod-title">The Sacraments</div>
+              <div class="mod-desc">What the seven sacraments are, what they do, and why the physical matters in a spiritual faith.</div>
+            </div>
+          </div>
+        </a>
+        <a href="crux-adult-module5a.html" class="mod-link">
+          <div class="module-item">
+            <div class="mod-num">05</div>
+            <div>
+              <div class="mod-title">How Do I Pray?</div>
+              <div class="mod-desc">Moving from reciting prayers to actually talking to God. What prayer looks like as a real relationship.</div>
+            </div>
+          </div>
+        </a>
+        <a href="crux-adult-module6a.html" class="mod-link">
+          <div class="module-item">
+            <div class="mod-num">06</div>
+            <div>
+              <div class="mod-title">Mary &amp; the Saints</div>
+              <div class="mod-desc">Why Catholics venerate Mary and ask the saints to intercede — and what that actually means theologically.</div>
+            </div>
+          </div>
+        </a>
+        <a href="crux-adult-module7a.html" class="mod-link">
+          <div class="module-item">
+            <div class="mod-num">07</div>
+            <div>
+              <div class="mod-title">Now What?</div>
+              <div class="mod-desc">The full case laid out. Whether you are a seeker or already Catholic, what comes next and what it actually costs.</div>
+            </div>
+          </div>
+        </a>
       </div>
+
+      <a href="crux-adult-formation.html" class="journey-btn">Open The Foundation &#8594;</a>
     </div>
-    <div class="step">
-      <div class="step-num">2</div>
-      <div class="step-body">
-        <h4>Start with Formation Module 1: Who Is Jesus?</h4>
-        <p>Whether you are brand new to the faith or have been Catholic your whole life, <a href="crux-adult-module1a.html">Module 1</a> is the right starting point. It covers the historical life of Jesus in Part A and the claim he made about himself in Part B. Complete both before moving on.</p>
+
+    <!-- STEP 2: THE FIVE PILLARS -->
+    <div class="journey-step">
+      <div class="journey-num">2</div>
+      <div class="journey-badge">The Five Pillars</div>
+      <h2 class="journey-title">Go deeper into Catholic doctrine.</h2>
+      <p class="journey-desc">The Five Pillars is 18 modules across five areas of Catholic teaching. It serves grades 3 through 8 at Beginner level and goes well beyond what most adults covered in CCD at Theologian level. Use the toggle inside each module to choose your depth.</p>
+
+      <div class="toggle-demo">
+        <div class="toggle-demo-label">How the depth toggle works</div>
+        <div class="toggle-buttons">
+          <div class="toggle-btn is-active">Beginner</div>
+          <div class="toggle-btn is-inactive">Theologian</div>
+        </div>
+        <p class="toggle-demo-desc">Every module has two depth levels. <strong>Beginner</strong> gives you the essentials — the doctrine, the why behind it, and what it means for your life. Switch to <strong>Theologian</strong> for the fuller version: deeper Scripture, more historical context, harder questions taken seriously. Most adults who completed The Foundation are ready for Theologian level.</p>
       </div>
+
+      <a href="crux-modules.html" class="journey-btn">Open The Five Pillars &#8594;</a>
     </div>
-    <div class="step">
-      <div class="step-num">3</div>
-      <div class="step-body">
-        <h4>Work through the Formation track in order</h4>
-        <p>The modules are designed to build on each other. Work through them in sequence rather than skipping around. Each module is split into two parts — complete both before moving to the next.</p>
+
+    <!-- STEP 3: BIBLE STUDY -->
+    <div class="journey-step">
+      <div class="journey-num">3</div>
+      <div class="journey-badge">Bible Study</div>
+      <h2 class="journey-title">Make a practice out of what you have learned.</h2>
+      <p class="journey-desc">The Foundation gives you the framework. Bible Study puts Scripture directly in your hands. Once you have worked through the first few Foundation modules, add a Bible Study track alongside your formation work. The two are designed to complement each other.</p>
+
+      <div class="bible-block">
+        <p>Each study works verse by verse through a book of Scripture. There are reflection questions, word studies, and prompts built for both people new to the Bible and those who already have a foundation in it. A physical Bible is required — not just this site.</p>
+        <p>Available now:</p>
+        <div class="bible-available">
+          <span class="bible-pill">Romans</span>
+          <span class="bible-pill coming">Mark · Coming</span>
+          <span class="bible-pill coming">Acts · Coming</span>
+        </div>
       </div>
+
+      <a href="crux-bible-study.html" class="journey-btn">Open Bible Study &#8594;</a>
     </div>
-    <div class="step">
-      <div class="step-num">4</div>
-      <div class="step-body">
-        <h4>Add Bible Study once you are a few modules in</h4>
-        <p>Once you have completed Modules 1 and 2, add the <a href="crux-bible-study.html">Bible Study track</a> alongside your formation work. The two are designed to complement each other — modules give you context, Bible Study puts Scripture directly in your hands.</p>
+
+    <!-- STEP 4: THE LIBRARY -->
+    <div class="journey-step">
+      <div class="journey-num">4</div>
+      <div class="journey-badge">The Library</div>
+      <h2 class="journey-title">Still want more? Keep going.</h2>
+      <p class="journey-desc">The Library is for people who have worked through the modules and studies and want to go further on their own. It includes books written by the creator of CRUX and a curated reading list from theologians and authors who have done the hard work of making the faith accessible at every level.</p>
+
+      <div class="library-inner">
+
+        <div>
+          <div class="library-sub-label">Books from CRUX</div>
+          <div class="crux-books-grid">
+            <div class="crux-book">
+              <div class="crux-book-tags">
+                <span class="crux-book-tag">Scripture</span>
+                <span class="crux-book-tag">Memoir</span>
+              </div>
+              <div class="crux-book-title">He Was Already Running</div>
+              <div class="crux-book-sub">What the Prodigal Son Got Wrong About Coming Home</div>
+              <div class="crux-book-desc">A walk through Luke 15 and one man's return to faith. About what you expect to find when you turn around, and what is actually waiting there instead.</div>
+            </div>
+            <div class="crux-book">
+              <div class="crux-book-tags">
+                <span class="crux-book-tag">Apologetics</span>
+                <span class="crux-book-tag">Memoir</span>
+              </div>
+              <div class="crux-book-title">He Knows Your Name</div>
+              <div class="crux-book-sub">What I Know About God, Doubt, and Why It's Worth Fighting For</div>
+              <div class="crux-book-desc">For anyone who wants to believe but needs more than inherited faith. A case for Christianity built from scripture, history, and one man's honest search for the truth.</div>
+            </div>
+            <div class="crux-book">
+              <div class="crux-book-tags">
+                <span class="crux-book-tag">Apologetics</span>
+                <span class="crux-book-tag">Seekers</span>
+              </div>
+              <div class="crux-book-title">Who Is He?</div>
+              <div class="crux-book-sub">The Case for Christ Hidden in Plain Sight</div>
+              <div class="crux-book-desc">Three hundred specific predictions written across fifteen books by authors who never met. One man who fulfilled every one. This is the math, the evidence, and the person behind it.</div>
+              <span class="crux-book-writing">Writing Now</span>
+            </div>
+            <div class="crux-book">
+              <div class="crux-book-tags">
+                <span class="crux-book-tag">Children</span>
+                <span class="crux-book-tag">Ages 7–12</span>
+              </div>
+              <div class="crux-book-title">Here I Am, Lord</div>
+              <div class="crux-book-sub">Send Me — 12 Old Testament Heroes Who Took Life by the Horns</div>
+              <div class="crux-book-desc">Twelve heroes from the Old Testament who said yes when it was hard, ran when everyone else froze, and changed the world anyway.</div>
+              <span class="crux-book-writing">Writing Now</span>
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="library-sub-label">Recommended Reading</div>
+          <div class="read-buckets">
+            <div class="read-bucket">
+              <div class="read-bucket-label">Start here — accessible for any reader</div>
+              <div class="read-list">
+                <div class="read-item">
+                  <div class="read-dot"></div>
+                  <div class="read-item-body"><strong>Rediscover Jesus</strong> — Matthew Kelly. A direct, accessible walk through who Jesus actually is. A good first book for anyone new to the faith.</div>
+                </div>
+                <div class="read-item">
+                  <div class="read-dot"></div>
+                  <div class="read-item-body"><strong>Resisting Happiness</strong> — Matthew Kelly. Why we sabotage ourselves, and what choosing the better thing actually looks like in a real life.</div>
+                </div>
+                <div class="read-item">
+                  <div class="read-dot"></div>
+                  <div class="read-item-body"><strong>Unshakable Hope</strong> — Max Lucado. Building a life on the promises of God. Accessible, warm, and grounded in Scripture.</div>
+                </div>
+                <div class="read-item">
+                  <div class="read-dot"></div>
+                  <div class="read-item-body"><strong>Anxious for Nothing</strong> — Max Lucado. Finding calm in a chaotic world. For anyone whose faith runs up against anxiety.</div>
+                </div>
+                <div class="read-item">
+                  <div class="read-dot"></div>
+                  <div class="read-item-body"><strong>You Are Never Alone</strong> — Max Lucado. On the presence and power of God in the middle of ordinary life.</div>
+                </div>
+              </div>
+            </div>
+            <div class="read-bucket">
+              <div class="read-bucket-label">Ready to go deeper</div>
+              <div class="read-list">
+                <div class="read-item">
+                  <div class="read-dot"></div>
+                  <div class="read-item-body"><strong>The Rhythm of Life</strong> — Matthew Kelly. Living every day with passion and purpose. Best read after you have a foundation in place.</div>
+                </div>
+                <div class="read-item">
+                  <div class="read-dot"></div>
+                  <div class="read-item-body"><strong>The Screwtape Letters</strong> — C.S. Lewis. A senior demon advising a junior one on how to corrupt a human soul. One of the most useful books on the spiritual life ever written.</div>
+                </div>
+                <div class="read-item">
+                  <div class="read-dot"></div>
+                  <div class="read-item-body"><strong>The Problem of Pain</strong> — C.S. Lewis. Why a good God allows suffering. Pairs directly with Module 2. Harder than Lewis's other work — worth the effort.</div>
+                </div>
+                <div class="read-item">
+                  <div class="read-dot"></div>
+                  <div class="read-item-body"><strong>Mere Christianity</strong> — C.S. Lewis. The intellectual case for the faith. Not a beginner book — read it after The Foundation, not before.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
+
+      <a href="crux-library.html" class="journey-btn">Open The Library &#8594;</a>
     </div>
+
   </div>
 
   <!-- TOOLS -->
@@ -520,23 +816,39 @@ body {
     </div>
   </div>
 
-  <!-- COMING SOON -->
-  <div class="section-label">What's in development</div>
-
-  <div class="coming-block">
-    <div class="coming-eyebrow">Coming to CRUX</div>
-    <div class="coming-title">The site is growing. Here is what is on the way.</div>
-    <div class="coming-items">
-      <div class="coming-item"><span class="coming-dot"></span>More Formation modules — the Adult track is expanding through Module 7</div>
-      <div class="coming-item"><span class="coming-dot"></span>Youth Formation track — structured CCD-style content for grades 3 through 8</div>
-      <div class="coming-item"><span class="coming-dot"></span>Saint card packs — new packs, new saints, expanding the collection</div>
-      <div class="coming-item"><span class="coming-dot"></span>Group and classroom tools for teachers and OCIA sponsors</div>
-      <div class="coming-item"><span class="coming-dot"></span>Extended Bible Study track beyond Romans</div>
-      <div class="coming-item"><span class="coming-dot"></span>Long-form guided book studies for deeper formation</div>
-    </div>
-  </div>
-
 </div>
+
+<script>
+(function() {
+  var btn  = document.getElementById('navHamburger');
+  var menu = document.getElementById('navMobileMenu');
+  if (!btn || !menu) return;
+  function positionMenu() {
+    var nav = document.querySelector('.site-nav');
+    if (nav) menu.style.top = nav.offsetHeight + 'px';
+  }
+  btn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    btn.classList.toggle('open');
+    menu.classList.toggle('open');
+    positionMenu();
+  });
+  document.addEventListener('click', function(e) {
+    if (!e.target.closest('#navMobileMenu') && !e.target.closest('#navHamburger')) {
+      btn.classList.remove('open');
+      menu.classList.remove('open');
+    }
+  });
+  menu.querySelectorAll('a').forEach(function(a) {
+    a.addEventListener('click', function() {
+      btn.classList.remove('open');
+      menu.classList.remove('open');
+    });
+  });
+  positionMenu();
+  window.addEventListener('resize', positionMenu);
+})();
+</script>
 
 </body>
 </html>
