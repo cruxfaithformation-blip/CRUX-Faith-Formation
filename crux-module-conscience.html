@@ -1229,38 +1229,72 @@ const MODULE_DATA = {
             `
         },
 
-        quiz: [
+        quiz: {
+            beginner: [
             {
-                q: "According to Catholic teaching, conscience is best described as:",
-                options: ["Whatever feels right to me", "A social construct shaped by culture", "The inner voice where God's law is perceived", "The rules the Church gives us"],
+                q: "What is conscience?",
+                options: ["A feeling of guilt that fades over time","The inner voice God gave us to judge right from wrong","The rules the Church gives us to follow","Our emotions about what we want to do"],
+                correct: 1,
+                explanation: "Conscience is the voice of God speaking in our hearts — our ability to judge whether an action is good or evil. It is a gift from God built into every human being."
+            },
+            {
+                q: "True or false: conscience means \"whatever I feel like doing.\"",
+                options: ["True — my conscience is personal, so I decide what's right for me","False — a conscience can be wrong, dulled, or manipulated","True — God made us free, so our feelings guide us","False — only priests can tell us what our conscience should say"],
+                correct: 1,
+                explanation: "Conscience is NOT just 'whatever I feel like.' A conscience can be wrong if you were taught badly, dulled if you keep ignoring it, or manipulated by peer pressure or culture."
+            },
+            {
+                q: "What happens to your conscience if you keep ignoring it?",
+                options: ["It gets stronger and louder over time","It becomes more accurate and reliable","It gets quieter — it becomes dulled by being repeatedly ignored","Nothing — conscience stays exactly the same no matter what"],
                 correct: 2,
-                explanation: "Gaudium et Spes §16 describes conscience as the inner sanctuary where one is 'alone with God, whose voice echoes in one's depths.' It is where God's law is perceived, not invented."
+                explanation: "If you keep ignoring your conscience, it gets quieter over time. This is why the Church teaches us to form our conscience well and listen to it."
             },
             {
-                q: "The term 'synderesis' refers to:",
-                options: ["The emotional feeling of guilt", "The innate habit of knowing basic moral principles", "The act of going to Confession", "Church teaching on sexuality"],
+                q: "Which of the following is a sign that your conscience is working?",
+                options: ["You feel confused about everything that is right and wrong","You feel guilty after doing something you knew was wrong","You feel the same way whether you do good or evil","You stop caring about other people's feelings"],
                 correct: 1,
-                explanation: "Synderesis is the innate, habitual knowledge of the most basic moral principle: 'do good and avoid evil.' It is the foundation from which conscience reasons about specific situations."
+                explanation: "Feeling guilty after doing something wrong — or at peace after doing something good — are signs that your conscience is working as God designed it."
             },
             {
-                q: "John Paul II's Veritatis Splendor (1993) teaches that certain acts are intrinsically evil, meaning:",
-                options: ["They are evil only if you intend harm", "They can be justified by sufficiently good intentions", "They are evil because of their object, regardless of intention", "They are evil only in most circumstances"],
-                correct: 2,
-                explanation: "Intrinsece malum — intrinsically evil acts — are evil because of what they are, not because of circumstances or intentions. No intention can render them good."
-            },
-            {
-                q: "A person acting with an 'invincibly ignorant' conscience:",
-                options: ["Is always morally culpable", "Is not morally culpable for the error", "Should be punished by the Church", "Has no real conscience"],
+                q: "According to the Church, what should we do to have a well-formed conscience?",
+                options: ["Follow our feelings, since God made us emotional beings","Learn what the Church teaches and measure our judgments against it","Do whatever seems right to the majority of people around us","Only listen to our conscience when it agrees with what we want"],
                 correct: 1,
-                explanation: "Invincible ignorance means one cannot know the truth through no fault of their own. Such a person acting sincerely on their (incorrect) conscience is not morally culpable for the error."
-            },
-            {
-                q: "The principle 'agere contra conscientiam semper est malum' means:",
-                options: ["Conscience is always correct", "To act against conscience is always evil", "The Church's law overrides conscience", "Good intentions excuse all actions"],
-                correct: 1,
-                explanation: "'To act against conscience is always evil.' One must always follow their certain conscience — but this is why forming it correctly according to truth is so important."
+                explanation: "A well-formed conscience is shaped by learning what is truly good and true — including what God has revealed through Scripture and the Church's teaching."
             }
-        ]
+            ],
+            theologian: [
+            {
+                            q: "According to Catholic teaching, conscience is best described as:",
+                            options: ["Whatever feels right to me", "A social construct shaped by culture", "The inner voice where God's law is perceived", "The rules the Church gives us"],
+                            correct: 2,
+                            explanation: "Gaudium et Spes §16 describes conscience as the inner sanctuary where one is 'alone with God, whose voice echoes in one's depths.' It is where God's law is perceived, not invented."
+                        },
+                        {
+                            q: "The term 'synderesis' refers to:",
+                            options: ["The emotional feeling of guilt", "The innate habit of knowing basic moral principles", "The act of going to Confession", "Church teaching on sexuality"],
+                            correct: 1,
+                            explanation: "Synderesis is the innate, habitual knowledge of the most basic moral principle: 'do good and avoid evil.' It is the foundation from which conscience reasons about specific situations."
+                        },
+                        {
+                            q: "John Paul II's Veritatis Splendor (1993) teaches that certain acts are intrinsically evil, meaning:",
+                            options: ["They are evil only if you intend harm", "They can be justified by sufficiently good intentions", "They are evil because of their object, regardless of intention", "They are evil only in most circumstances"],
+                            correct: 2,
+                            explanation: "Intrinsece malum — intrinsically evil acts — are evil because of what they are, not because of circumstances or intentions. No intention can render them good."
+                        },
+                        {
+                            q: "A person acting with an 'invincibly ignorant' conscience:",
+                            options: ["Is always morally culpable", "Is not morally culpable for the error", "Should be punished by the Church", "Has no real conscience"],
+                            correct: 1,
+                            explanation: "Invincible ignorance means one cannot know the truth through no fault of their own. Such a person acting sincerely on their (incorrect) conscience is not morally culpable for the error."
+                        },
+                        {
+                            q: "The principle 'agere contra conscientiam semper est malum' means:",
+                            options: ["Conscience is always correct", "To act against conscience is always evil", "The Church's law overrides conscience", "Good intentions excuse all actions"],
+                            correct: 1,
+                            explanation: "'To act against conscience is always evil.' One must always follow their certain conscience — but this is why forming it correctly according to truth is so important."
+                        }
+            ]
+        }
 };
 
 window.addEventListener('DOMContentLoaded', () => {

@@ -1220,38 +1220,72 @@ const MODULE_DATA = {
             `
         },
 
-        quiz: [
+        quiz: {
+            beginner: [
             {
                 q: "How many Persons are there in the Holy Trinity?",
-                options: ["One", "Two", "Three", "Seven"],
+                options: ["One","Two","Three","Four"],
                 correct: 2,
-                explanation: "The Trinity is one God in three Persons: Father, Son, and Holy Spirit. Each Person is fully God."
+                explanation: "There is one God, but He exists as three Persons: the Father, the Son (Jesus), and the Holy Spirit."
             },
             {
-                q: "Which council in 325 AD defined that Jesus is 'of the same substance' as the Father?",
-                options: ["Council of Jerusalem", "Council of Nicaea", "Council of Trent", "Council of Ephesus"],
+                q: "Which Person of the Trinity came to earth as a human being to save us?",
+                options: ["God the Father","God the Son (Jesus)","The Holy Spirit","An angel"],
                 correct: 1,
-                explanation: "The Council of Nicaea (325 AD) defined that the Son is homoousios — of the same substance as the Father — refuting Arianism."
+                explanation: "God the Son — Jesus — became human and lived among us. This is what we mean when we say God became man."
             },
             {
-                q: "What does it mean that 'God is love' (1 John 4:8) in light of the Trinity?",
-                options: ["God has feelings like humans", "God became love after creating the world", "The Father, Son, and Holy Spirit have loved each other eternally", "Love is more important than God"],
+                q: "What does the Holy Spirit do in our lives?",
+                options: ["He created the universe","He came to earth as Jesus","He lives in our hearts and helps us follow Jesus","He wrote the Bible by himself"],
                 correct: 2,
-                explanation: "Because God is eternally three Persons, love is not something God does — it's what God IS. The Persons have been in a communion of love from all eternity."
+                explanation: "The Holy Spirit lives in our hearts and helps us follow Jesus. He was given to us at Pentecost and comes to us through Baptism and Confirmation."
             },
             {
-                q: "When we are baptized, we are baptized in the name of:",
-                options: ["Jesus only", "The Father alone", "The Father, Son, and Holy Spirit", "The Church and the Pope"],
+                q: "Complete the verse: \"Baptizing them in the name of the Father and of the Son and of the _____.\" — Matthew 28:19",
+                options: ["Church","Pope","Holy Spirit","Apostles"],
                 correct: 2,
-                explanation: "Matthew 28:19 — 'Go and baptize in the name of the Father and of the Son and of the Holy Spirit.' Baptism initiates us into the Trinitarian family of God."
+                explanation: "Jesus commands baptism in the name of all three Persons of the Trinity — showing us that God is Father, Son, and Holy Spirit."
             },
             {
-                q: "The word 'homoousios' used at Nicaea means:",
-                options: ["Of similar substance", "Of the same substance", "Created by God", "Equal in power only"],
+                q: "Who created everything and loves us like a perfect parent?",
+                options: ["God the Son","God the Father","The Holy Spirit","The angels"],
                 correct: 1,
-                explanation: "Homoousios means 'of the same substance' — not merely similar. This single word was the crux of the Nicene definition: Jesus is fully and truly God."
+                explanation: "God the Father created everything and loves us with a perfect parental love. Jesus taught us to call God 'Our Father.'"
             }
-        ]
+            ],
+            theologian: [
+            {
+                            q: "How many Persons are there in the Holy Trinity?",
+                            options: ["One", "Two", "Three", "Seven"],
+                            correct: 2,
+                            explanation: "The Trinity is one God in three Persons: Father, Son, and Holy Spirit. Each Person is fully God."
+                        },
+                        {
+                            q: "Which council in 325 AD defined that Jesus is 'of the same substance' as the Father?",
+                            options: ["Council of Jerusalem", "Council of Nicaea", "Council of Trent", "Council of Ephesus"],
+                            correct: 1,
+                            explanation: "The Council of Nicaea (325 AD) defined that the Son is homoousios — of the same substance as the Father — refuting Arianism."
+                        },
+                        {
+                            q: "What does it mean that 'God is love' (1 John 4:8) in light of the Trinity?",
+                            options: ["God has feelings like humans", "God became love after creating the world", "The Father, Son, and Holy Spirit have loved each other eternally", "Love is more important than God"],
+                            correct: 2,
+                            explanation: "Because God is eternally three Persons, love is not something God does — it's what God IS. The Persons have been in a communion of love from all eternity."
+                        },
+                        {
+                            q: "When we are baptized, we are baptized in the name of:",
+                            options: ["Jesus only", "The Father alone", "The Father, Son, and Holy Spirit", "The Church and the Pope"],
+                            correct: 2,
+                            explanation: "Matthew 28:19 — 'Go and baptize in the name of the Father and of the Son and of the Holy Spirit.' Baptism initiates us into the Trinitarian family of God."
+                        },
+                        {
+                            q: "The word 'homoousios' used at Nicaea means:",
+                            options: ["Of similar substance", "Of the same substance", "Created by God", "Equal in power only"],
+                            correct: 1,
+                            explanation: "Homoousios means 'of the same substance' — not merely similar. This single word was the crux of the Nicene definition: Jesus is fully and truly God."
+                        }
+            ]
+        }
 };
 
 window.addEventListener('DOMContentLoaded', () => {

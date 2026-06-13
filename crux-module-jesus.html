@@ -1222,38 +1222,72 @@ const MODULE_DATA = {
             `
         },
 
-        quiz: [
+        quiz: {
+            beginner: [
             {
-                q: "The Catholic Church teaches that Jesus is:",
-                options: ["A great prophet but not God", "Only divine, not truly human", "Fully God and fully human", "Half God and half human"],
+                q: "What does the Catholic Church teach about who Jesus is?",
+                options: ["A great teacher who became God","An angel sent from heaven","True God and true man — fully divine and fully human","A prophet who spoke for God"],
                 correct: 2,
-                explanation: "The Hypostatic Union — defined at Chalcedon (451 AD) — teaches that Jesus is one Person with two complete natures: fully divine and fully human."
+                explanation: "The Church teaches that Jesus is both fully God and fully human at the same time — not half of each, but completely both."
             },
             {
-                q: "Which council in 451 AD defined the doctrine of Christ's two natures?",
-                options: ["Council of Nicaea", "Council of Trent", "Council of Chalcedon", "Council of Jerusalem"],
-                correct: 2,
-                explanation: "The Council of Chalcedon (451 AD) defined that Christ exists in two natures 'without confusion, without change, without division, without separation.'"
-            },
-            {
-                q: "What heresy taught that Christ had only one nature — a divine nature that absorbed the human?",
-                options: ["Arianism", "Nestorianism", "Monophysitism", "Gnosticism"],
-                correct: 2,
-                explanation: "Monophysitism (from Greek: 'one nature') taught that Christ's human nature was absorbed into His divine nature. The Church rejected this at Chalcedon."
-            },
-            {
-                q: "St. Paul says 'if Christ has not been raised, your faith is ___.'",
-                options: ["Incomplete", "Futile", "Still valid", "Symbolic"],
+                q: "Which Person of the Holy Trinity is Jesus?",
+                options: ["God the Father","God the Son","The Holy Spirit","All three at once"],
                 correct: 1,
-                explanation: "1 Corinthians 15:17 — 'If Christ has not been raised, your faith is futile.' Paul makes the Resurrection the non-negotiable foundation of Christian faith."
+                explanation: "Jesus is the Second Person of the Trinity — God the Son — who has existed forever and entered human history by becoming man."
             },
             {
-                q: "Gregory of Nazianzus said: 'What has not been assumed has not been ___.'",
-                options: ["Forgiven", "Revealed", "Healed", "Sanctified"],
+                q: "In what town did Jesus grow up?",
+                options: ["Jerusalem","Bethlehem","Jericho","Nazareth"],
+                correct: 3,
+                explanation: "Jesus grew up in Nazareth, which is why he is often called 'Jesus of Nazareth.' He was born in Bethlehem but raised in Nazareth."
+            },
+            {
+                q: "Jesus is like us in every way except one. What is that exception?",
+                options: ["He never got tired","He never felt sad","He never sinned","He never got hungry"],
                 correct: 2,
-                explanation: "'What has not been assumed has not been healed.' Jesus had to take on complete human nature — body, soul, will, intellect — for our complete redemption."
+                explanation: "Jesus experienced everything we experience — tiredness, hunger, sadness — but he never sinned. He is fully human and fully without sin."
+            },
+            {
+                q: "\"And the Word became _____ and lived among us.\" — John 1:14",
+                options: ["Spirit","Light","Flesh","Bread"],
+                correct: 2,
+                explanation: "\"The Word became flesh\" means that God himself became a human being in Jesus Christ. This is the heart of what Christians believe."
             }
-        ]
+            ],
+            theologian: [
+            {
+                            q: "The Catholic Church teaches that Jesus is:",
+                            options: ["A great prophet but not God", "Only divine, not truly human", "Fully God and fully human", "Half God and half human"],
+                            correct: 2,
+                            explanation: "The Hypostatic Union — defined at Chalcedon (451 AD) — teaches that Jesus is one Person with two complete natures: fully divine and fully human."
+                        },
+                        {
+                            q: "Which council in 451 AD defined the doctrine of Christ's two natures?",
+                            options: ["Council of Nicaea", "Council of Trent", "Council of Chalcedon", "Council of Jerusalem"],
+                            correct: 2,
+                            explanation: "The Council of Chalcedon (451 AD) defined that Christ exists in two natures 'without confusion, without change, without division, without separation.'"
+                        },
+                        {
+                            q: "What heresy taught that Christ had only one nature — a divine nature that absorbed the human?",
+                            options: ["Arianism", "Nestorianism", "Monophysitism", "Gnosticism"],
+                            correct: 2,
+                            explanation: "Monophysitism (from Greek: 'one nature') taught that Christ's human nature was absorbed into His divine nature. The Church rejected this at Chalcedon."
+                        },
+                        {
+                            q: "St. Paul says 'if Christ has not been raised, your faith is ___.'",
+                            options: ["Incomplete", "Futile", "Still valid", "Symbolic"],
+                            correct: 1,
+                            explanation: "1 Corinthians 15:17 — 'If Christ has not been raised, your faith is futile.' Paul makes the Resurrection the non-negotiable foundation of Christian faith."
+                        },
+                        {
+                            q: "Gregory of Nazianzus said: 'What has not been assumed has not been ___.'",
+                            options: ["Forgiven", "Revealed", "Healed", "Sanctified"],
+                            correct: 2,
+                            explanation: "'What has not been assumed has not been healed.' Jesus had to take on complete human nature — body, soul, will, intellect — for our complete redemption."
+                        }
+            ]
+        }
 };
 
 window.addEventListener('DOMContentLoaded', () => {

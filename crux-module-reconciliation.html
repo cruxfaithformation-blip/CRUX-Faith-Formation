@@ -1273,63 +1273,97 @@ const MODULE_DATA = {
         `
     },
 
-    quiz: [
-        {
-            q: "In John 20:22–23, Jesus gives the Apostles authority to forgive and retain sins. Why does the Catholic Church read this as establishing sacramental confession rather than just private prayer?",
-            options: [
-                "Because the verse mentions the Holy Spirit, which is only given through the sacraments",
-                "Because the authority to forgive and retain sins requires hearing them — a discriminating judgment about specific sins presupposes that those sins have been confessed",
-                "Because John 20 was written specifically to establish the papacy and the sacramental system",
-                "Because the Apostles immediately began requiring confession from all early Christians after this event"
+    quiz: {
+            beginner: [
+            {
+                q: "In Luke 15, when the father sees his son still far away, what does he do?",
+                options: ["He waits at home for the son to arrive","He sends a servant to meet him","He is filled with compassion and runs to embrace him","He asks the son to explain himself first"],
+                correct: 2,
+                explanation: "The father runs — before a word is spoken, before any explanation is made. This is the image Jesus gives us of how God responds when a sinner turns and comes home."
+            },
+            {
+                q: "Reconciliation is another name for which sacrament?",
+                options: ["Baptism","Confirmation","Confession","Anointing of the Sick"],
+                correct: 2,
+                explanation: "Reconciliation, Confession, and Penance are all names for the same sacrament — the one where God forgives our sins through the priest."
+            },
+            {
+                q: "Who actually forgives our sins in Confession?",
+                options: ["The priest, acting on his own authority","God, working through the priest","The bishop who ordained the priest","The Pope"],
+                correct: 1,
+                explanation: "God forgives our sins — the priest acts in God's name. Jesus gave this authority to the apostles: 'Whose sins you forgive are forgiven.' (John 20:23)"
+            },
+            {
+                q: "What must we bring to Confession for it to be valid?",
+                options: ["A written list of every sin we can remember","Genuine sorrow for our sins and a desire to change","A donation to the parish","A note from our parents or teacher"],
+                correct: 1,
+                explanation: "We need genuine sorrow — called contrition — and a firm intention to try not to sin again. Without true sorrow, the sacrament cannot work."
+            },
+            {
+                q: "The Parable of the Prodigal Son teaches us that God's mercy is:",
+                options: ["Available only to people who have never sinned seriously","Given only after we have fully made up for what we did wrong","Always waiting for us — God moves toward us the moment we turn back to him","Earned by completing our penance first"],
+                correct: 2,
+                explanation: "The father runs before the son even speaks. God's mercy doesn't wait for us to earn it — it comes toward us the moment we turn back to him."
+            }
             ],
-            correct: 1,
-            explanation: "The text gives the power both to forgive and to retain sins. To make a discriminating judgment — to forgive this sin but retain that one — the priest must hear the sins. A general declaration that everyone is forgiven does not use the authority Jesus gave, because it makes no distinction. The structure of the authority Jesus grants requires auricular confession as its ordinary exercise."
-        },
-        {
-            q: "What does the Catholic Church mean when it says the priest acts 'in persona Christi' in the confessional?",
-            options: [
-                "The priest acts as a representative of the Christian community, conveying the community's forgiveness",
-                "The priest acts in the person of Christ himself, whose authority he exercises through holy orders — meaning the priest's personal holiness does not affect the validity of the absolution",
-                "The priest temporarily becomes Christ during the sacrament through a mystical transformation",
-                "The priest forgives sins on behalf of Christ, who delegates this authority to worthy ministers"
-            ],
-            correct: 1,
-            explanation: "In persona Christi means the priest acts not as himself or as a community representative, but as Christ. The practical consequence is that the grace of absolution flows through the office, not the man. A sinful priest absolves validly. This is the same principle behind valid baptism administered by an unbeliever: the sacrament operates by Christ's power, not the minister's personal virtue."
-        },
-        {
-            q: "The Council of Trent acknowledged that perfect contrition can restore grace even before sacramental confession. Why does the Church still require sacramental confession for mortal sins?",
-            options: [
-                "Because the Council of Trent overruled the possibility of perfect contrition restoring grace",
-                "Because perfect contrition is impossible for anyone who has committed a mortal sin",
-                "Because sacramental confession is the ordinary means God established for forgiveness of mortal sin, and perfect contrition is the extraordinary provision for when confession is genuinely impossible — not a general alternative to the sacrament",
-                "Because the Church does not recognize the validity of interior acts of contrition without external expression"
-            ],
-            correct: 2,
-            explanation: "Trent acknowledged that perfect contrition (sorrow arising from love of God) restores grace, provided the penitent intends to confess. But Trent defined this as the extraordinary provision for cases where confession is impossible, not as a general alternative. The sacrament is the ordinary path God established. You do not bypass a gift's normal form simply because an emergency alternative exists."
-        },
-        {
-            q: "What is the sacramental seal of confession, and what are its limits?",
-            options: [
-                "A general expectation of confidentiality that can be broken in cases of serious public harm",
-                "An absolute prohibition on revealing anything heard in confession, with no exceptions under any circumstances, including civil law, court orders, or episcopal instruction",
-                "A promise of confidentiality that applies to sins confessed but not to other things discussed with the priest",
-                "A Church policy that can be suspended by the bishop in cases involving criminal activity"
-            ],
-            correct: 1,
-            explanation: "Canon 983 makes the sacramental seal absolute. There are no exceptions: not civil courts, not bishops, not emergencies. A priest who breaks the seal faces automatic excommunication reserved to the Holy See. The historical record includes priests who were executed rather than violate it. The absolute character of the seal is what makes the confessional genuinely safe and therefore makes confession practically possible."
-        },
-        {
-            q: "What are the five parts of the sacrament of Reconciliation, in order?",
-            options: [
-                "Prayer, confession, contrition, absolution, communion",
-                "Examination of conscience, contrition, confession of sins, absolution, penance",
-                "Contrition, examination of conscience, confession, penance, absolution",
-                "Confession, absolution, penance, contrition, thanksgiving"
-            ],
-            correct: 1,
-            explanation: "The five parts are: (1) Examination of conscience — honestly reviewing sins since the last confession; (2) Contrition — genuine sorrow for sin; (3) Confession — naming sins aloud to the priest; (4) Absolution — the priest pronouncing forgiveness in the person of Christ; (5) Penance — the assigned act that expresses the intention to repair what was broken and reorient toward God."
+            theologian: [
+            {
+                        q: "In John 20:22–23, Jesus gives the Apostles authority to forgive and retain sins. Why does the Catholic Church read this as establishing sacramental confession rather than just private prayer?",
+                        options: [
+                            "Because the verse mentions the Holy Spirit, which is only given through the sacraments",
+                            "Because the authority to forgive and retain sins requires hearing them — a discriminating judgment about specific sins presupposes that those sins have been confessed",
+                            "Because John 20 was written specifically to establish the papacy and the sacramental system",
+                            "Because the Apostles immediately began requiring confession from all early Christians after this event"
+                        ],
+                        correct: 1,
+                        explanation: "The text gives the power both to forgive and to retain sins. To make a discriminating judgment — to forgive this sin but retain that one — the priest must hear the sins. A general declaration that everyone is forgiven does not use the authority Jesus gave, because it makes no distinction. The structure of the authority Jesus grants requires auricular confession as its ordinary exercise."
+                    },
+                    {
+                        q: "What does the Catholic Church mean when it says the priest acts 'in persona Christi' in the confessional?",
+                        options: [
+                            "The priest acts as a representative of the Christian community, conveying the community's forgiveness",
+                            "The priest acts in the person of Christ himself, whose authority he exercises through holy orders — meaning the priest's personal holiness does not affect the validity of the absolution",
+                            "The priest temporarily becomes Christ during the sacrament through a mystical transformation",
+                            "The priest forgives sins on behalf of Christ, who delegates this authority to worthy ministers"
+                        ],
+                        correct: 1,
+                        explanation: "In persona Christi means the priest acts not as himself or as a community representative, but as Christ. The practical consequence is that the grace of absolution flows through the office, not the man. A sinful priest absolves validly. This is the same principle behind valid baptism administered by an unbeliever: the sacrament operates by Christ's power, not the minister's personal virtue."
+                    },
+                    {
+                        q: "The Council of Trent acknowledged that perfect contrition can restore grace even before sacramental confession. Why does the Church still require sacramental confession for mortal sins?",
+                        options: [
+                            "Because the Council of Trent overruled the possibility of perfect contrition restoring grace",
+                            "Because perfect contrition is impossible for anyone who has committed a mortal sin",
+                            "Because sacramental confession is the ordinary means God established for forgiveness of mortal sin, and perfect contrition is the extraordinary provision for when confession is genuinely impossible — not a general alternative to the sacrament",
+                            "Because the Church does not recognize the validity of interior acts of contrition without external expression"
+                        ],
+                        correct: 2,
+                        explanation: "Trent acknowledged that perfect contrition (sorrow arising from love of God) restores grace, provided the penitent intends to confess. But Trent defined this as the extraordinary provision for cases where confession is impossible, not as a general alternative. The sacrament is the ordinary path God established. You do not bypass a gift's normal form simply because an emergency alternative exists."
+                    },
+                    {
+                        q: "What is the sacramental seal of confession, and what are its limits?",
+                        options: [
+                            "A general expectation of confidentiality that can be broken in cases of serious public harm",
+                            "An absolute prohibition on revealing anything heard in confession, with no exceptions under any circumstances, including civil law, court orders, or episcopal instruction",
+                            "A promise of confidentiality that applies to sins confessed but not to other things discussed with the priest",
+                            "A Church policy that can be suspended by the bishop in cases involving criminal activity"
+                        ],
+                        correct: 1,
+                        explanation: "Canon 983 makes the sacramental seal absolute. There are no exceptions: not civil courts, not bishops, not emergencies. A priest who breaks the seal faces automatic excommunication reserved to the Holy See. The historical record includes priests who were executed rather than violate it. The absolute character of the seal is what makes the confessional genuinely safe and therefore makes confession practically possible."
+                    },
+                    {
+                        q: "What are the five parts of the sacrament of Reconciliation, in order?",
+                        options: [
+                            "Prayer, confession, contrition, absolution, communion",
+                            "Examination of conscience, contrition, confession of sins, absolution, penance",
+                            "Contrition, examination of conscience, confession, penance, absolution",
+                            "Confession, absolution, penance, contrition, thanksgiving"
+                        ],
+                        correct: 1,
+                        explanation: "The five parts are: (1) Examination of conscience — honestly reviewing sins since the last confession; (2) Contrition — genuine sorrow for sin; (3) Confession — naming sins aloud to the priest; (4) Absolution — the priest pronouncing forgiveness in the person of Christ; (5) Penance — the assigned act that expresses the intention to repair what was broken and reorient toward God."
+                    }
+            ]
         }
-    ]
 };
 
 window.addEventListener('DOMContentLoaded', () => {

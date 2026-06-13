@@ -1241,38 +1241,72 @@ const MODULE_DATA = {
             `
         },
 
-        quiz: [
+        quiz: {
+            beginner: [
             {
-                q: "How many petitions are in the Lord's Prayer as found in Matthew 6?",
-                options: ["Five", "Six", "Seven", "Ten"],
-                correct: 2,
-                explanation: "Matthew 6:9–13 contains seven petitions. The first three concern God's glory; the last four concern human need."
-            },
-            {
-                q: "Which petition of the Lord's Prayer includes a condition — the only one in the prayer?",
-                options: ["Thy kingdom come", "Give us this day our daily bread", "Forgive us our trespasses, as we forgive those who trespass against us", "Deliver us from evil"],
-                correct: 2,
-                explanation: "The forgiveness petition is the only one with a built-in condition: we ask to be forgiven in the same measure as we forgive others. Matthew 6:14–15 underlines this immediately after the prayer."
-            },
-            {
-                q: "The Jewish prayer with the closest parallels to the Lord's Prayer — including 'may His name be hallowed' and 'may His kingdom come' — is called the:",
-                options: ["Shema", "Kaddish", "Hallel", "Amidah"],
+                q: "What prompted the disciples to ask Jesus to teach them to pray?",
+                options: ["They had never prayed before","They saw Jesus praying and wanted to learn how he did it","A Pharisee challenged them to pray better","Jesus told them they were doing it wrong"],
                 correct: 1,
-                explanation: "The Kaddish is an Aramaic synagogue doxology whose opening petitions are strikingly similar to the first half of the Our Father. Jesus drew on the deepest language of Jewish worship."
+                explanation: "The disciples saw Jesus praying and asked: 'Lord, teach us to pray.' Jesus didn't give a long lecture — he gave them a prayer."
             },
             {
-                q: "Augustine argued in his Letter to Proba that the Lord's Prayer:",
-                options: ["Should only be prayed in Latin", "Contains all legitimate objects of Christian prayer", "Was meant only for the Apostles", "Should be supplemented with longer personal prayers"],
-                correct: 1,
-                explanation: "Augustine argued that every legitimate Christian desire can be mapped onto one of the seven petitions. The Lord's Prayer is the form of all Christian prayer, not one prayer among many."
-            },
-            {
-                q: "The petition 'thy kingdom come' reflects what theological concept about God's kingdom?",
-                options: ["The kingdom exists only in heaven and not on earth", "The kingdom will only arrive after death", "The kingdom is already present in Christ but not yet fully consummated", "The kingdom refers only to the Catholic Church"],
+                q: "Another name for the Lord's Prayer is:",
+                options: ["The Hail Mary","The Glory Be","The Our Father","The Apostles' Creed"],
                 correct: 2,
-                explanation: "The 'already but not yet' structure: Jesus announces the kingdom has arrived in His person (Luke 17:21), but its fullness is still awaited. We pray for the completion of what has already begun. (CCC §2816)"
+                explanation: "The Lord's Prayer is also called the Our Father, because that is how it begins. Christians have prayed it every day for two thousand years."
+            },
+            {
+                q: "How many petitions (parts) does the Lord's Prayer have?",
+                options: ["Three","Five","Seven","Ten"],
+                correct: 2,
+                explanation: "The Lord's Prayer has seven petitions. The first three are about God — his name, his kingdom, his will. The last four are about our needs — bread, forgiveness, protection from evil."
+            },
+            {
+                q: "Jesus teaches us to begin the Lord's Prayer by calling God:",
+                options: ["Our Creator","Our Father","Our King","Our Judge"],
+                correct: 1,
+                explanation: "Jesus teaches us to call God 'Father' — not a distant ruler, but a loving parent. This is one of the most radical things Jesus ever revealed about who God is."
+            },
+            {
+                q: "In the Lord's Prayer, what is a 'trespass'?",
+                options: ["Walking on someone's private property","A sin or wrongdoing — something we've done that hurt God or others","A failure to pray every day","An act of charity we forgot to do"],
+                correct: 1,
+                explanation: "'Forgive us our trespasses' means forgive us our sins. And the prayer immediately reminds us: we also need to forgive those who have wronged us."
             }
-        ]
+            ],
+            theologian: [
+            {
+                            q: "How many petitions are in the Lord's Prayer as found in Matthew 6?",
+                            options: ["Five", "Six", "Seven", "Ten"],
+                            correct: 2,
+                            explanation: "Matthew 6:9–13 contains seven petitions. The first three concern God's glory; the last four concern human need."
+                        },
+                        {
+                            q: "Which petition of the Lord's Prayer includes a condition — the only one in the prayer?",
+                            options: ["Thy kingdom come", "Give us this day our daily bread", "Forgive us our trespasses, as we forgive those who trespass against us", "Deliver us from evil"],
+                            correct: 2,
+                            explanation: "The forgiveness petition is the only one with a built-in condition: we ask to be forgiven in the same measure as we forgive others. Matthew 6:14–15 underlines this immediately after the prayer."
+                        },
+                        {
+                            q: "The Jewish prayer with the closest parallels to the Lord's Prayer — including 'may His name be hallowed' and 'may His kingdom come' — is called the:",
+                            options: ["Shema", "Kaddish", "Hallel", "Amidah"],
+                            correct: 1,
+                            explanation: "The Kaddish is an Aramaic synagogue doxology whose opening petitions are strikingly similar to the first half of the Our Father. Jesus drew on the deepest language of Jewish worship."
+                        },
+                        {
+                            q: "Augustine argued in his Letter to Proba that the Lord's Prayer:",
+                            options: ["Should only be prayed in Latin", "Contains all legitimate objects of Christian prayer", "Was meant only for the Apostles", "Should be supplemented with longer personal prayers"],
+                            correct: 1,
+                            explanation: "Augustine argued that every legitimate Christian desire can be mapped onto one of the seven petitions. The Lord's Prayer is the form of all Christian prayer, not one prayer among many."
+                        },
+                        {
+                            q: "The petition 'thy kingdom come' reflects what theological concept about God's kingdom?",
+                            options: ["The kingdom exists only in heaven and not on earth", "The kingdom will only arrive after death", "The kingdom is already present in Christ but not yet fully consummated", "The kingdom refers only to the Catholic Church"],
+                            correct: 2,
+                            explanation: "The 'already but not yet' structure: Jesus announces the kingdom has arrived in His person (Luke 17:21), but its fullness is still awaited. We pray for the completion of what has already begun. (CCC §2816)"
+                        }
+            ]
+        }
 };
 
 window.addEventListener('DOMContentLoaded', () => {

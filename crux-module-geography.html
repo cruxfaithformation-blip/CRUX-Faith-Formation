@@ -1688,38 +1688,72 @@ const MODULE_DATA = {
             `
         },
 
-        quiz: [
+        quiz: {
+            beginner: [
             {
-                q: "Jesus grew up — working as a carpenter until about age 30 — in which city?",
-                options: ["Bethlehem", "Jerusalem", "Nazareth", "Capernaum"],
-                correct: 2,
-                explanation: "Jesus grew up in Nazareth — a tiny village of only 200–400 people in Galilee. It was so obscure that Nathanael asked, 'Can anything good come from Nazareth?' (John 1:46). Today Nazareth is a city of 77,000 in northern Israel."
+                q: "What is true about the places mentioned in the Bible?",
+                options: ["They are fictional locations made up by the authors","They are real places, most of which still exist today","They are based on Greek and Roman myths","They only existed in ancient times"],
+                correct: 1,
+                explanation: "Every story in the Bible happened in a real place — real cities, real rivers, real mountains — most of which still exist today and have people living in them right now."
             },
             {
-                q: "The Jordan River — where Jesus was baptized — forms the border between which two modern countries?",
-                options: ["Israel and Egypt", "Israel and Syria", "Israel and Jordan", "Lebanon and Jordan"],
+                q: "In the Exodus, God's people were slaves in which country?",
+                options: ["Babylon","Rome","Egypt","Persia"],
                 correct: 2,
-                explanation: "The Jordan River forms the border between Israel and Jordan. The traditional baptism site can be visited from both sides of the river. Joshua's crossing of this same river into the Promised Land makes it doubly significant."
+                explanation: "God's people — the Israelites — were enslaved in Egypt. Moses led them out through the desert toward the land God had promised them."
             },
             {
-                q: "Paul was converted on the road to Damascus. Damascus is the capital of which country today?",
-                options: ["Jordan", "Lebanon", "Iraq", "Syria"],
+                q: "Who led the Israelites out of Egypt in the Exodus?",
+                options: ["Abraham","David","Joshua","Moses"],
                 correct: 3,
-                explanation: "Damascus is the capital of Syria — and one of the oldest continuously inhabited cities in the world. The 'street called Straight' mentioned in Acts 9:11 has been archaeologically confirmed as the Roman decumanus of the ancient city."
+                explanation: "Moses led the Israelites out of Egypt. God worked miraculous signs through Moses — including parting the Red Sea — to free his people from slavery."
             },
             {
-                q: "The traditional site of Mount Sinai — where God gave Moses the Ten Commandments — is located in:",
-                options: ["Southern Israel, near Eilat", "The Sinai Peninsula, Egypt", "Northern Saudi Arabia", "The Jordan Valley"],
+                q: "Knowing the geography of the Bible helps us understand that the stories are:",
+                options: ["Myths and legends passed down from ancient times","Real historical events that happened in real places","Symbolic stories with no connection to history","Only relevant to people living in the Middle East"],
                 correct: 1,
-                explanation: "Jebel Musa ('Mountain of Moses') in the Sinai Peninsula of Egypt is the traditional site. St. Catherine's Monastery has stood at its base since 565 AD — one of the oldest continuously operating monasteries in the world. It houses the Codex Sinaiticus, one of the oldest complete New Testament manuscripts."
+                explanation: "When you know where a Bible story happened, it stops feeling like a fairy tale and starts feeling like history. Because it IS history."
             },
             {
-                q: "The 'scandal of particularity' refers to the theological claim that:",
-                options: ["The Bible contains difficult or offensive passages", "God entered history in one specific time and place, not universally", "Christians are too exclusive about salvation", "The four Gospels disagree on certain historical details"],
+                q: "The lesson organizes the Bible's geography into different time periods. What are these called?",
+                options: ["Chapters","Eras","Covenants","Testaments"],
                 correct: 1,
-                explanation: "The scandal of particularity is the philosophically striking claim that the eternal God was born in Bethlehem around 6 BC — a specific coordinate in history, not a universal principle. Rather than weakening Christian theology, this specificity is its central claim: the Incarnation means God truly entered the physical world."
+                explanation: "The lesson divides the geography of the Bible into 'eras' — different time periods, each with their own key locations, characters, and events."
             }
-        ]
+            ],
+            theologian: [
+            {
+                            q: "Jesus grew up — working as a carpenter until about age 30 — in which city?",
+                            options: ["Bethlehem", "Jerusalem", "Nazareth", "Capernaum"],
+                            correct: 2,
+                            explanation: "Jesus grew up in Nazareth — a tiny village of only 200–400 people in Galilee. It was so obscure that Nathanael asked, 'Can anything good come from Nazareth?' (John 1:46). Today Nazareth is a city of 77,000 in northern Israel."
+                        },
+                        {
+                            q: "The Jordan River — where Jesus was baptized — forms the border between which two modern countries?",
+                            options: ["Israel and Egypt", "Israel and Syria", "Israel and Jordan", "Lebanon and Jordan"],
+                            correct: 2,
+                            explanation: "The Jordan River forms the border between Israel and Jordan. The traditional baptism site can be visited from both sides of the river. Joshua's crossing of this same river into the Promised Land makes it doubly significant."
+                        },
+                        {
+                            q: "Paul was converted on the road to Damascus. Damascus is the capital of which country today?",
+                            options: ["Jordan", "Lebanon", "Iraq", "Syria"],
+                            correct: 3,
+                            explanation: "Damascus is the capital of Syria — and one of the oldest continuously inhabited cities in the world. The 'street called Straight' mentioned in Acts 9:11 has been archaeologically confirmed as the Roman decumanus of the ancient city."
+                        },
+                        {
+                            q: "The traditional site of Mount Sinai — where God gave Moses the Ten Commandments — is located in:",
+                            options: ["Southern Israel, near Eilat", "The Sinai Peninsula, Egypt", "Northern Saudi Arabia", "The Jordan Valley"],
+                            correct: 1,
+                            explanation: "Jebel Musa ('Mountain of Moses') in the Sinai Peninsula of Egypt is the traditional site. St. Catherine's Monastery has stood at its base since 565 AD — one of the oldest continuously operating monasteries in the world. It houses the Codex Sinaiticus, one of the oldest complete New Testament manuscripts."
+                        },
+                        {
+                            q: "The 'scandal of particularity' refers to the theological claim that:",
+                            options: ["The Bible contains difficult or offensive passages", "God entered history in one specific time and place, not universally", "Christians are too exclusive about salvation", "The four Gospels disagree on certain historical details"],
+                            correct: 1,
+                            explanation: "The scandal of particularity is the philosophically striking claim that the eternal God was born in Bethlehem around 6 BC — a specific coordinate in history, not a universal principle. Rather than weakening Christian theology, this specificity is its central claim: the Incarnation means God truly entered the physical world."
+                        }
+            ]
+        }
 };
 
 window.addEventListener('DOMContentLoaded', () => {

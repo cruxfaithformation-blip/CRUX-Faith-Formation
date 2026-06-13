@@ -1217,38 +1217,72 @@ const MODULE_DATA = {
             `
         },
 
-        quiz: [
+        quiz: {
+            beginner: [
             {
-                q: "The word 'Theotokos' means:",
-                options: ["Holy Woman", "Mother of God", "Queen of Heaven", "Immaculate One"],
+                q: "Who is Mary?",
+                options: ["A prophetess who lived before Jesus","The mother of Jesus","One of the twelve apostles","An angel who appeared to the shepherds"],
                 correct: 1,
-                explanation: "Theotokos (Greek) means 'God-bearer' or 'Mother of God.' It was defined at the Council of Ephesus (431 AD) — primarily to protect the doctrine that Jesus is one Person who is God."
+                explanation: "Mary is the mother of Jesus. Because Jesus is God, Mary is called the Mother of God — or Theotokos in Greek."
             },
             {
-                q: "The Immaculate Conception refers to:",
-                options: ["Jesus being conceived without a human father", "Mary being conceived without original sin", "Mary conceiving Jesus as a virgin", "The Church being founded without sin"],
-                correct: 1,
-                explanation: "The Immaculate Conception is the doctrine that Mary was preserved from original sin from the first instant of her conception — defined by Pope Pius IX in 1854."
-            },
-            {
-                q: "In Catholic theology, the worship due to God alone is called:",
-                options: ["Dulia", "Hyperdulia", "Latria", "Veneration"],
+                q: "Which angel appeared to Mary and asked her to be the mother of the Son of God?",
+                options: ["Michael","Raphael","Gabriel","Uriel"],
                 correct: 2,
-                explanation: "Latria is the adoration owed to God alone. Hyperdulia is the special veneration given to Mary. Dulia is the honor given to saints. Catholics give latria only to God."
+                explanation: "The Angel Gabriel appeared to Mary with the message: 'Hail, full of grace, the Lord is with you!' This moment is called the Annunciation."
             },
             {
-                q: "The Assumption (1950) teaches that Mary was taken into heaven:",
-                options: ["Only in spirit, not body", "After a period in purgatory", "Body and soul", "Symbolically, not literally"],
-                correct: 2,
-                explanation: "Defined by Pope Pius XII in Munificentissimus Deus (1950) — Mary was assumed body and soul into heavenly glory at the end of her earthly life."
-            },
-            {
-                q: "Duns Scotus's solution that made the Immaculate Conception theologically defensible was:",
-                options: ["Mary did not need redemption", "Prevention is a greater grace than cure", "Original sin does not apply to women", "The Pope has authority to exempt saints from sin"],
+                q: "When Catholics ask Mary to pray for them, what are they doing?",
+                options: ["Worshipping Mary as a god","Asking her to intercede for them, like asking a friend to pray","Replacing prayer to God with prayer to Mary","Saying she is more powerful than God"],
                 correct: 1,
-                explanation: "Scotus argued that to prevent someone from falling into sin is a greater act of redemption than rescuing them after. This resolved the concern that the doctrine exempted Mary from needing a Savior."
+                explanation: "Catholics don't worship Mary — they ask her to pray for them. It's the same as asking a friend to pray for you, except Mary is in heaven and closer to God than anyone."
+            },
+            {
+                q: "What does the title 'Theotokos' mean?",
+                options: ["Blessed Virgin","Queen of Heaven","Mother of God","Star of the Sea"],
+                correct: 2,
+                explanation: "Theotokos is a Greek word meaning 'God-bearer' or 'Mother of God.' Because Jesus is God, his mother Mary is rightly called the Mother of God."
+            },
+            {
+                q: "Catholics believe Mary was preserved from original sin from the very beginning of her life. This teaching is called the:",
+                options: ["Assumption","Annunciation","Immaculate Conception","Perpetual Virginity"],
+                correct: 2,
+                explanation: "The Immaculate Conception means Mary was kept free from original sin from the moment of her conception, so she would be a worthy mother for Jesus."
             }
-        ]
+            ],
+            theologian: [
+            {
+                            q: "The word 'Theotokos' means:",
+                            options: ["Holy Woman", "Mother of God", "Queen of Heaven", "Immaculate One"],
+                            correct: 1,
+                            explanation: "Theotokos (Greek) means 'God-bearer' or 'Mother of God.' It was defined at the Council of Ephesus (431 AD) — primarily to protect the doctrine that Jesus is one Person who is God."
+                        },
+                        {
+                            q: "The Immaculate Conception refers to:",
+                            options: ["Jesus being conceived without a human father", "Mary being conceived without original sin", "Mary conceiving Jesus as a virgin", "The Church being founded without sin"],
+                            correct: 1,
+                            explanation: "The Immaculate Conception is the doctrine that Mary was preserved from original sin from the first instant of her conception — defined by Pope Pius IX in 1854."
+                        },
+                        {
+                            q: "In Catholic theology, the worship due to God alone is called:",
+                            options: ["Dulia", "Hyperdulia", "Latria", "Veneration"],
+                            correct: 2,
+                            explanation: "Latria is the adoration owed to God alone. Hyperdulia is the special veneration given to Mary. Dulia is the honor given to saints. Catholics give latria only to God."
+                        },
+                        {
+                            q: "The Assumption (1950) teaches that Mary was taken into heaven:",
+                            options: ["Only in spirit, not body", "After a period in purgatory", "Body and soul", "Symbolically, not literally"],
+                            correct: 2,
+                            explanation: "Defined by Pope Pius XII in Munificentissimus Deus (1950) — Mary was assumed body and soul into heavenly glory at the end of her earthly life."
+                        },
+                        {
+                            q: "Duns Scotus's solution that made the Immaculate Conception theologically defensible was:",
+                            options: ["Mary did not need redemption", "Prevention is a greater grace than cure", "Original sin does not apply to women", "The Pope has authority to exempt saints from sin"],
+                            correct: 1,
+                            explanation: "Scotus argued that to prevent someone from falling into sin is a greater act of redemption than rescuing them after. This resolved the concern that the doctrine exempted Mary from needing a Savior."
+                        }
+            ]
+        }
 };
 
 window.addEventListener('DOMContentLoaded', () => {

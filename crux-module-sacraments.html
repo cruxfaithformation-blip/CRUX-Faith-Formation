@@ -1226,38 +1226,72 @@ const MODULE_DATA = {
             `
         },
 
-        quiz: [
+        quiz: {
+            beginner: [
             {
                 q: "How many sacraments did Jesus give the Church?",
-                options: ["Five", "Six", "Seven", "Ten"],
+                options: ["Three","Five","Seven","Twelve"],
                 correct: 2,
-                explanation: "Christ instituted exactly seven sacraments, definitively defined by the Council of Trent in 1547."
+                explanation: "Jesus gave the Church seven sacraments — one for each major moment of our spiritual life, from birth into God's family through death."
             },
             {
-                q: "Which three sacraments make up the 'Sacraments of Initiation'?",
-                options: ["Baptism, Matrimony, Holy Orders", "Baptism, Confirmation, Eucharist", "Confession, Anointing, Confirmation", "Eucharist, Holy Orders, Anointing"],
+                q: "Which sacrament washes away sin and makes us members of God's family?",
+                options: ["Confirmation","Baptism","Eucharist","Holy Orders"],
                 correct: 1,
-                explanation: "Baptism, Confirmation, and Eucharist are the Sacraments of Initiation — they make us full members of the Body of Christ."
+                explanation: "Baptism is the first sacrament. It washes away sin, makes us children of God, and brings us into the Church — God's family."
             },
             {
-                q: "The phrase 'ex opere operato' means the sacraments work because of:",
-                options: ["The faith of the recipient", "The holiness of the priest", "Christ's action, not human merit", "The bishop's approval"],
-                correct: 2,
-                explanation: "Ex opere operato means 'from the work worked' — the sacrament's validity comes from Christ's action, not the minister's or recipient's holiness."
+                q: "In which sacrament do we receive Jesus himself in Holy Communion?",
+                options: ["Reconciliation","Anointing of the Sick","Matrimony","Eucharist"],
+                correct: 3,
+                explanation: "In the Eucharist, we receive Jesus himself — his body and blood — in Holy Communion. It is the source and summit of the Christian life."
             },
             {
-                q: "Which three sacraments imprint an indelible mark on the soul and cannot be repeated?",
-                options: ["Eucharist, Reconciliation, Anointing", "Matrimony, Holy Orders, Confirmation", "Baptism, Confirmation, Holy Orders", "Baptism, Eucharist, Matrimony"],
-                correct: 2,
-                explanation: "Baptism, Confirmation, and Holy Orders each imprint a permanent sacramental character — configuring the recipient to Christ in an unrepeatable way."
-            },
-            {
-                q: "A sacrament uses physical elements (water, oil, bread) because:",
-                options: ["Traditions required it", "God meets physical people through physical things", "The words alone are not holy enough", "It makes the ceremony longer"],
+                q: "What is a sacrament?",
+                options: ["A prayer said in Latin","An outward sign that gives us God's grace on the inside","A rule the Church requires us to follow","A gift we give to God during Mass"],
                 correct: 1,
-                explanation: "We are embodied beings. God meets us where we are — through things we can see, touch, and taste — and through them works an interior transformation."
+                explanation: "A sacrament is an outward sign — something we can see, hear, or touch — that gives us God's grace on the inside. Jesus instituted all seven sacraments."
+            },
+            {
+                q: "In which sacrament are our sins forgiven by God through a priest?",
+                options: ["Baptism","Confirmation","Anointing of the Sick","Reconciliation"],
+                correct: 3,
+                explanation: "In Reconciliation (also called Confession), we confess our sins to a priest and God forgives us through him. Jesus gave this authority to the apostles in John 20:23."
             }
-        ]
+            ],
+            theologian: [
+            {
+                            q: "How many sacraments did Jesus give the Church?",
+                            options: ["Five", "Six", "Seven", "Ten"],
+                            correct: 2,
+                            explanation: "Christ instituted exactly seven sacraments, definitively defined by the Council of Trent in 1547."
+                        },
+                        {
+                            q: "Which three sacraments make up the 'Sacraments of Initiation'?",
+                            options: ["Baptism, Matrimony, Holy Orders", "Baptism, Confirmation, Eucharist", "Confession, Anointing, Confirmation", "Eucharist, Holy Orders, Anointing"],
+                            correct: 1,
+                            explanation: "Baptism, Confirmation, and Eucharist are the Sacraments of Initiation — they make us full members of the Body of Christ."
+                        },
+                        {
+                            q: "The phrase 'ex opere operato' means the sacraments work because of:",
+                            options: ["The faith of the recipient", "The holiness of the priest", "Christ's action, not human merit", "The bishop's approval"],
+                            correct: 2,
+                            explanation: "Ex opere operato means 'from the work worked' — the sacrament's validity comes from Christ's action, not the minister's or recipient's holiness."
+                        },
+                        {
+                            q: "Which three sacraments imprint an indelible mark on the soul and cannot be repeated?",
+                            options: ["Eucharist, Reconciliation, Anointing", "Matrimony, Holy Orders, Confirmation", "Baptism, Confirmation, Holy Orders", "Baptism, Eucharist, Matrimony"],
+                            correct: 2,
+                            explanation: "Baptism, Confirmation, and Holy Orders each imprint a permanent sacramental character — configuring the recipient to Christ in an unrepeatable way."
+                        },
+                        {
+                            q: "A sacrament uses physical elements (water, oil, bread) because:",
+                            options: ["Traditions required it", "God meets physical people through physical things", "The words alone are not holy enough", "It makes the ceremony longer"],
+                            correct: 1,
+                            explanation: "We are embodied beings. God meets us where we are — through things we can see, touch, and taste — and through them works an interior transformation."
+                        }
+            ]
+        }
 };
 
 window.addEventListener('DOMContentLoaded', () => {

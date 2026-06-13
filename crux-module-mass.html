@@ -1274,63 +1274,97 @@ const MODULE_DATA = {
         `
     },
 
-    quiz: [
-        {
-            q: "In John 6, many disciples leave Jesus after his teaching on the bread of life. What does Jesus do when they leave?",
-            options: [
-                "He calls them back and clarifies that he was speaking symbolically",
-                "He lets them go without correction and asks the Twelve if they want to leave too",
-                "He performs a miracle to convince them to return",
-                "He sends the Apostles to explain what he really meant"
+    quiz: {
+            beginner: [
+            {
+                q: "At the Last Supper, what did Jesus say when he held up the bread?",
+                options: ["\"This bread represents my body.\"","\"Think of this as a symbol of me.\"","\"This is my body, which will be given up for you.\"","\"Eat this bread in memory of what I taught you.\""],
+                correct: 2,
+                explanation: "Jesus said 'This is my body' — not 'this represents my body.' Catholics take him at his word: the bread truly becomes his body."
+            },
+            {
+                q: "The Last Supper took place during which Jewish meal?",
+                options: ["The Feast of Tabernacles","The Passover meal","The Feast of Weeks","The Sabbath dinner"],
+                correct: 1,
+                explanation: "Jesus shared a Passover meal with his disciples on the night before he died. He transformed that ancient Jewish meal into something entirely new."
+            },
+            {
+                q: "What did Jesus command his disciples to do at the Last Supper?",
+                options: ["\"Remember me when you pray.\"","\"Gather together every week.\"","\"Do this in memory of me.\"","\"Teach others what I have shown you.\""],
+                correct: 2,
+                explanation: "\"Do this in memory of me.\" Every time the priest celebrates Mass, the Church is obeying this direct command of Jesus."
+            },
+            {
+                q: "Catholics believe that at Mass, the bread and wine truly become the Body and Blood of Jesus. This is called:",
+                options: ["A symbolic meal","The Real Presence","A commemoration","A recreation"],
+                correct: 1,
+                explanation: "The Church teaches that Jesus is truly and really present in the Eucharist — not symbolically. The bread and wine truly become his body and blood."
+            },
+            {
+                q: "Jesus said: \"This is the cup of my blood, the blood of the new and _______ covenant.\"",
+                options: ["Ancient","Holy","Eternal","Perfect"],
+                correct: 2,
+                explanation: "Jesus called his blood 'the blood of the new and eternal covenant' — connecting the Eucharist to the sacrifice he was about to make on the cross."
+            }
             ],
-            correct: 1,
-            explanation: "Jesus watches the disciples leave and does not correct their literal understanding. He turns to the Twelve and asks if they want to leave too. Catholics read this silence as confirmation that he meant what he said. If 'my flesh is real food' were a metaphor, the moment when people were walking away over it would have been the time to say so."
-        },
-        {
-            q: "What does the term 'transubstantiation' mean?",
-            options: [
-                "The bread and wine are blessed and set apart as holy symbols of Christ",
-                "The substance of the bread and wine changes into the body and blood of Christ, while their outward appearance remains the same",
-                "The bread and wine are spiritually united with Christ during the prayer of consecration",
-                "The Mass re-sacrifices Christ on the altar in a physical sense"
-            ],
-            correct: 1,
-            explanation: "Transubstantiation uses Aristotelian categories to describe what happens at consecration: the substance (what something actually is) changes entirely into the body and blood of Christ, while the accidents (appearance, taste, smell) remain unchanged. The host still looks and tastes like bread. What it is has changed."
-        },
-        {
-            q: "Ignatius of Antioch, writing around 107 AD, describes those who reject the Eucharist as people who deny what?",
-            options: [
-                "The authority of the bishop of Rome",
-                "That the Eucharist is the flesh of our Savior Jesus Christ",
-                "That baptism is necessary for salvation",
-                "That Jesus rose physically from the dead"
-            ],
-            correct: 1,
-            explanation: "Ignatius writes that the Docetists 'do not confess that the Eucharist is the flesh of our Savior Jesus Christ, flesh which suffered for our sins.' Writing within living memory of the Apostles, he treats the Real Presence not as a disputed doctrine but as established common ground."
-        },
-        {
-            q: "The Eucharistic miracle of Buenos Aires (1996) was investigated by Dr. Frederick Zugibe, a cardiac pathologist at Columbia University. What did he find?",
-            options: [
-                "The sample was ordinary bread that had been contaminated with human blood",
-                "He could not identify the tissue and declined to draw conclusions",
-                "Inflamed cardiac muscle tissue, blood type AB, showing signs the heart had been under severe stress at death",
-                "The sample had decomposed and could not be analyzed"
-            ],
-            correct: 2,
-            explanation: "Zugibe identified the sample as inflamed cardiac muscle tissue with blood type AB, consistent with a heart under severe stress. He was not told the sample came from a consecrated host. The Church does not require belief in Eucharistic miracles, but the Buenos Aires case is notable because the scientific examination was conducted blind by a leading specialist with no knowledge of the sample's origin."
-        },
-        {
-            q: "What is the main Catholic argument against Ulrich Zwingli's 'memorial only' reading of the Last Supper?",
-            options: [
-                "Zwingli was not a trained theologian and his reading can be dismissed on those grounds",
-                "The memorial view was condemned by the Council of Nicaea in 325 AD",
-                "When disciples in John 6 objected to Jesus's teaching literally, he repeated and intensified the claim rather than clarifying it was a metaphor",
-                "The word 'remember' in Hebrew always implies real presence, not symbolic memory"
-            ],
-            correct: 2,
-            explanation: "The Catholic argument is not primarily about the word 'remember' or about Zwingli's credentials. It is about Jesus's behavior in John 6. When people misunderstood a metaphor elsewhere in his ministry, Jesus typically clarified. In John 6, as the objections escalated and disciples began to leave, he intensified the claim rather than softening it. Catholics read that pattern as evidence that he was not speaking metaphorically."
+            theologian: [
+            {
+                        q: "In John 6, many disciples leave Jesus after his teaching on the bread of life. What does Jesus do when they leave?",
+                        options: [
+                            "He calls them back and clarifies that he was speaking symbolically",
+                            "He lets them go without correction and asks the Twelve if they want to leave too",
+                            "He performs a miracle to convince them to return",
+                            "He sends the Apostles to explain what he really meant"
+                        ],
+                        correct: 1,
+                        explanation: "Jesus watches the disciples leave and does not correct their literal understanding. He turns to the Twelve and asks if they want to leave too. Catholics read this silence as confirmation that he meant what he said. If 'my flesh is real food' were a metaphor, the moment when people were walking away over it would have been the time to say so."
+                    },
+                    {
+                        q: "What does the term 'transubstantiation' mean?",
+                        options: [
+                            "The bread and wine are blessed and set apart as holy symbols of Christ",
+                            "The substance of the bread and wine changes into the body and blood of Christ, while their outward appearance remains the same",
+                            "The bread and wine are spiritually united with Christ during the prayer of consecration",
+                            "The Mass re-sacrifices Christ on the altar in a physical sense"
+                        ],
+                        correct: 1,
+                        explanation: "Transubstantiation uses Aristotelian categories to describe what happens at consecration: the substance (what something actually is) changes entirely into the body and blood of Christ, while the accidents (appearance, taste, smell) remain unchanged. The host still looks and tastes like bread. What it is has changed."
+                    },
+                    {
+                        q: "Ignatius of Antioch, writing around 107 AD, describes those who reject the Eucharist as people who deny what?",
+                        options: [
+                            "The authority of the bishop of Rome",
+                            "That the Eucharist is the flesh of our Savior Jesus Christ",
+                            "That baptism is necessary for salvation",
+                            "That Jesus rose physically from the dead"
+                        ],
+                        correct: 1,
+                        explanation: "Ignatius writes that the Docetists 'do not confess that the Eucharist is the flesh of our Savior Jesus Christ, flesh which suffered for our sins.' Writing within living memory of the Apostles, he treats the Real Presence not as a disputed doctrine but as established common ground."
+                    },
+                    {
+                        q: "The Eucharistic miracle of Buenos Aires (1996) was investigated by Dr. Frederick Zugibe, a cardiac pathologist at Columbia University. What did he find?",
+                        options: [
+                            "The sample was ordinary bread that had been contaminated with human blood",
+                            "He could not identify the tissue and declined to draw conclusions",
+                            "Inflamed cardiac muscle tissue, blood type AB, showing signs the heart had been under severe stress at death",
+                            "The sample had decomposed and could not be analyzed"
+                        ],
+                        correct: 2,
+                        explanation: "Zugibe identified the sample as inflamed cardiac muscle tissue with blood type AB, consistent with a heart under severe stress. He was not told the sample came from a consecrated host. The Church does not require belief in Eucharistic miracles, but the Buenos Aires case is notable because the scientific examination was conducted blind by a leading specialist with no knowledge of the sample's origin."
+                    },
+                    {
+                        q: "What is the main Catholic argument against Ulrich Zwingli's 'memorial only' reading of the Last Supper?",
+                        options: [
+                            "Zwingli was not a trained theologian and his reading can be dismissed on those grounds",
+                            "The memorial view was condemned by the Council of Nicaea in 325 AD",
+                            "When disciples in John 6 objected to Jesus's teaching literally, he repeated and intensified the claim rather than clarifying it was a metaphor",
+                            "The word 'remember' in Hebrew always implies real presence, not symbolic memory"
+                        ],
+                        correct: 2,
+                        explanation: "The Catholic argument is not primarily about the word 'remember' or about Zwingli's credentials. It is about Jesus's behavior in John 6. When people misunderstood a metaphor elsewhere in his ministry, Jesus typically clarified. In John 6, as the objections escalated and disciples began to leave, he intensified the claim rather than softening it. Catholics read that pattern as evidence that he was not speaking metaphorically."
+                    }
+            ]
         }
-    ]
 };
 
 window.addEventListener('DOMContentLoaded', () => {

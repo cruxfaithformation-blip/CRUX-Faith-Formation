@@ -1253,63 +1253,97 @@ const MODULE_DATA = {
         `
     },
 
-    quiz: [
-        {
-            q: "In Luke 15, who is Jesus telling the Parable of the Prodigal Son to?",
-            options: [
-                "His twelve disciples, in private",
-                "Pharisees and scribes who were grumbling that he welcomed sinners",
-                "The crowds following him into Jerusalem",
-                "A rich young ruler asking about eternal life"
+    quiz: {
+            beginner: [
+            {
+                q: "Who was Jesus talking to when he told the Parable of the Prodigal Son?",
+                options: ["His disciples alone","A crowd of poor people","The Pharisees and scribes, who were angry that Jesus welcomed sinners","Roman soldiers"],
+                correct: 2,
+                explanation: "Jesus told this parable to the Pharisees — the most religiously serious people of the day — who were furious that he kept welcoming tax collectors and sinners."
+            },
+            {
+                q: "When the younger son runs out of money and hits rock bottom, what does he decide to do?",
+                options: ["Ask his brother for help","Return home and ask his father to take him back as a servant","Stay where he is and work harder","Find a new family to live with"],
+                correct: 1,
+                explanation: "The son 'comes to himself,' realizes how bad things are, and decides to return home. He rehearses an apology and heads back, expecting nothing more than to work as a servant."
+            },
+            {
+                q: "When the father sees his son returning from far away, what does he do?",
+                options: ["He waits for the son to come and apologize first","He closes the door and refuses to see him","He runs to his son, embraces him, and kisses him","He sends a servant to bring the son back"],
+                correct: 2,
+                explanation: "The father doesn't wait. He sees his son from far away and RUNS — which was undignified for a wealthy man of that time. He embraces him before the son even finishes his apology."
+            },
+            {
+                q: "In the parable, who does the father represent?",
+                options: ["The Jewish religious leaders","God and his mercy toward sinners","A wealthy landowner in Galilee","Joseph, the father of Jesus"],
+                correct: 1,
+                explanation: "The father represents God. His running to embrace his son before any explanation shows us how God responds when a sinner turns and comes home."
+            },
+            {
+                q: "At the end of the parable, the older brother refuses to come inside and celebrate. What does his reaction represent?",
+                options: ["The joy of the angels when a sinner repents","The attitude of the disciples toward outsiders","The attitude of the Pharisees — those who follow the rules but resent God's mercy to others","Pride in keeping the commandments"],
+                correct: 2,
+                explanation: "The older brother stands for the Pharisees — people who followed the rules but couldn't understand why God would celebrate the return of someone who had failed so badly."
+            }
             ],
-            correct: 1,
-            explanation: "Luke 15:1–2 specifies the audience: Pharisees and scribes who were grumbling that Jesus 'receives sinners and eats with them.' This is the exegetical key — the parable is addressed to the self-righteous, not the wayward."
-        },
-        {
-            q: "When the father sees his returning son 'while he was still a long way off,' he runs to meet him. Why was this culturally shocking?",
-            options: [
-                "Running was forbidden on the Sabbath",
-                "A dignified older man running was considered undignified and self-abasing",
-                "It signaled that the son was being welcomed as a servant, not a son",
-                "The father was breaking Jewish purity laws by touching him"
-            ],
-            correct: 1,
-            explanation: "In the ancient Middle East, a dignified patriarch did not run — it required lifting the robe and was considered shameful. The father's running is a deliberate act of self-abasement to absorb his son's shame. It is an early portrait of the Incarnation's logic."
-        },
-        {
-            q: "The older son describes his years at home using the word 'served.' What does this reveal about his relationship with his father?",
-            options: [
-                "He was genuinely humble and servant-hearted",
-                "He had been living as a slave in his father's house rather than as a son who loved him",
-                "He had worked harder than his brother and deserved more reward",
-                "He understood the true meaning of the covenant better than his brother"
-            ],
-            correct: 1,
-            explanation: "The Greek word is douleuō — slave-service. The older son has been performing obedience out of duty and resentment, not love. He wanted his father's estate, his father's approval — but not his father. This is the elder-brother spirit Keller identifies."
-        },
-        {
-            q: "Timothy Keller argues that the parable presents two ways to be lost. What are they?",
-            options: [
-                "Poverty and wealth",
-                "Irreligion (the younger son) and religion used as a transaction system (the older son)",
-                "Youth and old age",
-                "Mortal sin and venial sin"
-            ],
-            correct: 1,
-            explanation: "Keller's central insight: the younger son is lost through irreligion — open rebellion. The older son is lost through religion — performing duty without love, treating obedience as currency. The second lostness is more dangerous because it is invisible to the one who has it."
-        },
-        {
-            q: "The parable ends without telling us whether the older brother enters the feast. Why is this significant?",
-            options: [
-                "Luke forgot to include the ending",
-                "It shows that the older son was eventually forgiven offscreen",
-                "Jesus deliberately leaves the ending open — the Pharisees in the crowd must decide whether they are the older brother and whether they will respond to the father's plea",
-                "It suggests that the older brother's fate was unimportant to Jesus"
-            ],
-            correct: 2,
-            explanation: "The open ending is the rhetorical trap. Jesus is not delivering a morality tale — he is placing his audience inside the narrative. The Pharisees are the older brother. The question of whether he walks through the door is the question Jesus is putting directly to them."
+            theologian: [
+            {
+                        q: "In Luke 15, who is Jesus telling the Parable of the Prodigal Son to?",
+                        options: [
+                            "His twelve disciples, in private",
+                            "Pharisees and scribes who were grumbling that he welcomed sinners",
+                            "The crowds following him into Jerusalem",
+                            "A rich young ruler asking about eternal life"
+                        ],
+                        correct: 1,
+                        explanation: "Luke 15:1–2 specifies the audience: Pharisees and scribes who were grumbling that Jesus 'receives sinners and eats with them.' This is the exegetical key — the parable is addressed to the self-righteous, not the wayward."
+                    },
+                    {
+                        q: "When the father sees his returning son 'while he was still a long way off,' he runs to meet him. Why was this culturally shocking?",
+                        options: [
+                            "Running was forbidden on the Sabbath",
+                            "A dignified older man running was considered undignified and self-abasing",
+                            "It signaled that the son was being welcomed as a servant, not a son",
+                            "The father was breaking Jewish purity laws by touching him"
+                        ],
+                        correct: 1,
+                        explanation: "In the ancient Middle East, a dignified patriarch did not run — it required lifting the robe and was considered shameful. The father's running is a deliberate act of self-abasement to absorb his son's shame. It is an early portrait of the Incarnation's logic."
+                    },
+                    {
+                        q: "The older son describes his years at home using the word 'served.' What does this reveal about his relationship with his father?",
+                        options: [
+                            "He was genuinely humble and servant-hearted",
+                            "He had been living as a slave in his father's house rather than as a son who loved him",
+                            "He had worked harder than his brother and deserved more reward",
+                            "He understood the true meaning of the covenant better than his brother"
+                        ],
+                        correct: 1,
+                        explanation: "The Greek word is douleuō — slave-service. The older son has been performing obedience out of duty and resentment, not love. He wanted his father's estate, his father's approval — but not his father. This is the elder-brother spirit Keller identifies."
+                    },
+                    {
+                        q: "Timothy Keller argues that the parable presents two ways to be lost. What are they?",
+                        options: [
+                            "Poverty and wealth",
+                            "Irreligion (the younger son) and religion used as a transaction system (the older son)",
+                            "Youth and old age",
+                            "Mortal sin and venial sin"
+                        ],
+                        correct: 1,
+                        explanation: "Keller's central insight: the younger son is lost through irreligion — open rebellion. The older son is lost through religion — performing duty without love, treating obedience as currency. The second lostness is more dangerous because it is invisible to the one who has it."
+                    },
+                    {
+                        q: "The parable ends without telling us whether the older brother enters the feast. Why is this significant?",
+                        options: [
+                            "Luke forgot to include the ending",
+                            "It shows that the older son was eventually forgiven offscreen",
+                            "Jesus deliberately leaves the ending open — the Pharisees in the crowd must decide whether they are the older brother and whether they will respond to the father's plea",
+                            "It suggests that the older brother's fate was unimportant to Jesus"
+                        ],
+                        correct: 2,
+                        explanation: "The open ending is the rhetorical trap. Jesus is not delivering a morality tale — he is placing his audience inside the narrative. The Pharisees are the older brother. The question of whether he walks through the door is the question Jesus is putting directly to them."
+                    }
+            ]
         }
-    ]
 };
 
 window.addEventListener('DOMContentLoaded', () => {

@@ -93,15 +93,21 @@ function renderReading() {
         currentModule.reading[currentLevel];
 }
 
+function currentQuiz() {
+    const q = currentModule.quiz;
+    return (q && q[currentLevel]) ? q[currentLevel] : (Array.isArray(q) ? q : []);
+}
+
 function renderQuiz() {
     quizAnswers = {};
     quizSubmitted = false;
     const container = document.getElementById('quizQuestions');
     const letters = ['A', 'B', 'C', 'D'];
+    const quiz = currentQuiz();
 
-    container.innerHTML = currentModule.quiz.map((q, qi) => `
+    container.innerHTML = quiz.map((q, qi) => `
         <div class="question-block" id="qblock${qi}">
-            <div class="question-num">Question ${qi + 1} of ${currentModule.quiz.length}</div>
+            <div class="question-num">Question ${qi + 1} of ${quiz.length}</div>
             <div class="question-text">${q.q}</div>
             <div class="options-list">
                 ${q.options.map((opt, oi) => `
@@ -124,7 +130,7 @@ function selectAnswer(qi, oi) {
     if (quizSubmitted) return;
     quizAnswers[qi] = oi;
 
-    currentModule.quiz[qi].options.forEach((_, i) => {
+    currentQuiz()[qi].options.forEach((_, i) => {
         const btn = document.getElementById(`opt${qi}_${i}`);
         btn.classList.remove('selected');
     });
@@ -133,7 +139,7 @@ function selectAnswer(qi, oi) {
 }
 
 function updateSubmitBtn() {
-    const allAnswered = currentModule.quiz.every((_, i) => quizAnswers[i] !== undefined);
+    const allAnswered = currentQuiz().every((_, i) => quizAnswers[i] !== undefined);
     document.getElementById('submitQuizBtn').disabled = !allAnswered;
 }
 
@@ -141,7 +147,7 @@ function submitQuiz() {
     quizSubmitted = true;
     let correct = 0;
 
-    currentModule.quiz.forEach((q, qi) => {
+    currentQuiz().forEach((q, qi) => {
         const chosen = quizAnswers[qi];
         const isCorrect = chosen === q.correct;
         if (isCorrect) correct++;
@@ -221,7 +227,7 @@ function updateProgress() {
 
 // ── COMPLETION ─────────────────────────────────────────────
 async function showCompletion(correct) {
-    const total = currentModule.quiz.length;
+    const total = currentQuiz().length;
     const pct = Math.round((correct / total) * 100);
     const xp = currentModule.xpReward;
 

@@ -1275,63 +1275,97 @@ const MODULE_DATA = {
         `
     },
 
-    quiz: [
-        {
-            q: "The Ten Commandments begin with the sentence: 'I am the Lord your God, who brought you out of Egypt, out of the house of slavery.' Why does this opening matter?",
-            options: [
-                "It establishes God's authority to make laws for Israel",
-                "It shows that the Commandments are given to a people God has already rescued, as a gift within a relationship rather than as conditions for his help",
-                "It explains why the Commandments only apply to the Jewish people",
-                "It introduces the historical context for students of ancient history"
+    quiz: {
+            beginner: [
+            {
+                q: "Before God gave the Ten Commandments, what had he already done for his people?",
+                options: ["He gave them the Promised Land","He rescued them from slavery in Egypt","He sent them a king to rule over them","He destroyed their enemies in battle"],
+                correct: 1,
+                explanation: "God rescued his people from slavery in Egypt BEFORE giving them the Commandments. The rules came from a relationship — not the other way around."
+            },
+            {
+                q: "God begins the Ten Commandments: \"I am the Lord your God, who brought you out of Egypt, out of the _____.\"",
+                options: ["Wilderness","River","House of slavery","Land of sin"],
+                correct: 2,
+                explanation: "God introduces himself as a rescuer, not a lawgiver. 'The house of slavery' — the Commandments are a gift to a people God already saved, not a price tag for his help."
+            },
+            {
+                q: "When a lawyer asked Jesus which commandment was greatest, Jesus summed them all up in two. The first is to love God. The second is to love your:",
+                options: ["Family","Neighbor","Country","Church"],
+                correct: 1,
+                explanation: "Jesus said all the Law and the Prophets hang on two commandments: love God with all your heart, and love your neighbor as yourself. Every commandment flows from these two."
+            },
+            {
+                q: "The Ten Commandments are divided into two groups. The first group is about our relationship with God. The second group is about:",
+                options: ["Prayer and worship","Our relationship with other people","How to treat the poor","Keeping the Sabbath holy"],
+                correct: 1,
+                explanation: "The first group (commandments 1-3) is about loving God. The second group (commandments 4-10) is about loving our neighbor. Together they teach us how to love."
+            },
+            {
+                q: "God gave the Ten Commandments as a gift — after he rescued his people, not before. What does this tell us about God?",
+                options: ["He only helps people who follow his rules","He saved his people first, then gave them a way to live in that freedom","The Commandments are the most important thing in the Bible","God is a strict judge who punishes anyone who fails"],
+                correct: 1,
+                explanation: "The rescue came first. God saved his people from Egypt because he loved them — and THEN gave them the Commandments as a guide for living as a freed people."
+            }
             ],
-            correct: 1,
-            explanation: "The preamble establishes that God acts before he commands. The rescue precedes the law. This means the Commandments are not conditions Israel must meet to earn God's favor — they are God's gift to people he has already saved, showing them how to live in response to what he has done."
-        },
-        {
-            q: "Jesus summarizes all the Commandments in two. How do the Ten Commandments divide along those two lines?",
-            options: [
-                "The first five concern personal holiness; the second five concern social behavior",
-                "The first three concern love of God; the last seven concern love of neighbor",
-                "The first tablet concerns ritual obligations; the second concerns moral obligations",
-                "The Commandments do not divide cleanly — Jesus's summary replaces rather than organizes them"
-            ],
-            correct: 1,
-            explanation: "The Decalogue divides into two tablets: the first three commandments govern the relationship with God (no other gods, no vain use of his name, keeping the sabbath), and the last seven govern relationships with other people (parents, life, marriage, property, truth, and desire). Jesus's two great commandments reveal this structure without replacing the specific commandments."
-        },
-        {
-            q: "According to Aquinas, why do the moral precepts of the Ten Commandments still bind Christians, even though other Old Testament laws (like dietary restrictions) do not?",
-            options: [
-                "The Church chose to retain the Ten Commandments at the Council of Trent",
-                "The moral precepts bind because they express natural law, which is inscribed in human nature and binds every rational creature — unlike ceremonial precepts, which were always time-bound figures of realities fulfilled in Christ",
-                "Christians are still bound by all Mosaic law, but most Christians have forgotten this",
-                "Jesus explicitly stated which Old Testament laws still apply and which do not"
-            ],
-            correct: 1,
-            explanation: "Aquinas distinguishes moral, ceremonial, and judicial precepts. Ceremonial precepts (sacrifices, dietary laws, feasts) prefigured Christ and ceased when the reality arrived. Moral precepts bind because they express the natural law — what right reason knows about human flourishing. They do not bind because of the Mosaic covenant but because they are true."
-        },
-        {
-            q: "The Catholic Church's application of the 6th Commandment extends beyond the prohibition on adultery. What does the Church teach it requires?",
-            options: [
-                "Celibacy for all Christians as the ideal form of chastity",
-                "Chastity for every person according to their state in life, including respect for persons as ends in themselves and not objects — explicitly including the avoidance of pornography",
-                "Fidelity within marriage only; the commandment does not apply to the unmarried",
-                "A general disposition of modesty, without specific application to digital media or sexual content"
-            ],
-            correct: 1,
-            explanation: "The CCC reads the 6th Commandment as governing the entire domain of sexual ethics. The positive virtue it calls for is chastity — different in form for married, single, and consecrated persons, but required of all. Pornography is explicitly identified as a grave violation because it reduces persons to objects and corrupts both those who produce and those who consume it."
-        },
-        {
-            q: "Why does Catholic numbering of the Ten Commandments differ from most Protestant numbering?",
-            options: [
-                "The Catholic Church added a commandment at the Council of Trent",
-                "Catholics follow Augustine's tradition of combining the first two Protestant commandments into one and splitting the last commandment into two, covering covetousness of persons and covetousness of goods separately",
-                "The Protestant Reformers discovered an earlier manuscript that corrected the Catholic numbering",
-                "Catholic numbering follows the Hebrew text; Protestant numbering follows the Greek Septuagint"
-            ],
-            correct: 1,
-            explanation: "Following Augustine and the Council of Trent, Catholics combine what Protestants number as the 1st and 2nd commandments (no other gods; no graven images) into a single first commandment, and split what Protestants number as the 10th into the 9th (coveting a neighbor's wife) and 10th (coveting a neighbor's goods). The content is identical across both traditions. The difference reflects different catechetical traditions in reading Exodus 20, not a difference in the underlying text."
+            theologian: [
+            {
+                        q: "The Ten Commandments begin with the sentence: 'I am the Lord your God, who brought you out of Egypt, out of the house of slavery.' Why does this opening matter?",
+                        options: [
+                            "It establishes God's authority to make laws for Israel",
+                            "It shows that the Commandments are given to a people God has already rescued, as a gift within a relationship rather than as conditions for his help",
+                            "It explains why the Commandments only apply to the Jewish people",
+                            "It introduces the historical context for students of ancient history"
+                        ],
+                        correct: 1,
+                        explanation: "The preamble establishes that God acts before he commands. The rescue precedes the law. This means the Commandments are not conditions Israel must meet to earn God's favor — they are God's gift to people he has already saved, showing them how to live in response to what he has done."
+                    },
+                    {
+                        q: "Jesus summarizes all the Commandments in two. How do the Ten Commandments divide along those two lines?",
+                        options: [
+                            "The first five concern personal holiness; the second five concern social behavior",
+                            "The first three concern love of God; the last seven concern love of neighbor",
+                            "The first tablet concerns ritual obligations; the second concerns moral obligations",
+                            "The Commandments do not divide cleanly — Jesus's summary replaces rather than organizes them"
+                        ],
+                        correct: 1,
+                        explanation: "The Decalogue divides into two tablets: the first three commandments govern the relationship with God (no other gods, no vain use of his name, keeping the sabbath), and the last seven govern relationships with other people (parents, life, marriage, property, truth, and desire). Jesus's two great commandments reveal this structure without replacing the specific commandments."
+                    },
+                    {
+                        q: "According to Aquinas, why do the moral precepts of the Ten Commandments still bind Christians, even though other Old Testament laws (like dietary restrictions) do not?",
+                        options: [
+                            "The Church chose to retain the Ten Commandments at the Council of Trent",
+                            "The moral precepts bind because they express natural law, which is inscribed in human nature and binds every rational creature — unlike ceremonial precepts, which were always time-bound figures of realities fulfilled in Christ",
+                            "Christians are still bound by all Mosaic law, but most Christians have forgotten this",
+                            "Jesus explicitly stated which Old Testament laws still apply and which do not"
+                        ],
+                        correct: 1,
+                        explanation: "Aquinas distinguishes moral, ceremonial, and judicial precepts. Ceremonial precepts (sacrifices, dietary laws, feasts) prefigured Christ and ceased when the reality arrived. Moral precepts bind because they express the natural law — what right reason knows about human flourishing. They do not bind because of the Mosaic covenant but because they are true."
+                    },
+                    {
+                        q: "The Catholic Church's application of the 6th Commandment extends beyond the prohibition on adultery. What does the Church teach it requires?",
+                        options: [
+                            "Celibacy for all Christians as the ideal form of chastity",
+                            "Chastity for every person according to their state in life, including respect for persons as ends in themselves and not objects — explicitly including the avoidance of pornography",
+                            "Fidelity within marriage only; the commandment does not apply to the unmarried",
+                            "A general disposition of modesty, without specific application to digital media or sexual content"
+                        ],
+                        correct: 1,
+                        explanation: "The CCC reads the 6th Commandment as governing the entire domain of sexual ethics. The positive virtue it calls for is chastity — different in form for married, single, and consecrated persons, but required of all. Pornography is explicitly identified as a grave violation because it reduces persons to objects and corrupts both those who produce and those who consume it."
+                    },
+                    {
+                        q: "Why does Catholic numbering of the Ten Commandments differ from most Protestant numbering?",
+                        options: [
+                            "The Catholic Church added a commandment at the Council of Trent",
+                            "Catholics follow Augustine's tradition of combining the first two Protestant commandments into one and splitting the last commandment into two, covering covetousness of persons and covetousness of goods separately",
+                            "The Protestant Reformers discovered an earlier manuscript that corrected the Catholic numbering",
+                            "Catholic numbering follows the Hebrew text; Protestant numbering follows the Greek Septuagint"
+                        ],
+                        correct: 1,
+                        explanation: "Following Augustine and the Council of Trent, Catholics combine what Protestants number as the 1st and 2nd commandments (no other gods; no graven images) into a single first commandment, and split what Protestants number as the 10th into the 9th (coveting a neighbor's wife) and 10th (coveting a neighbor's goods). The content is identical across both traditions. The difference reflects different catechetical traditions in reading Exodus 20, not a difference in the underlying text."
+                    }
+            ]
         }
-    ]
 };
 
 window.addEventListener('DOMContentLoaded', () => {
