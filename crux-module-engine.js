@@ -20,17 +20,47 @@ const PILLAR_MODULES = {
     'pillar3': ['conscience', 'fruits_holy_spirit', 'ten_commandments', 'beatitudes'],
     'pillar4': ['lords_prayer'],
 };
-const PILLAR_CARD_NAMES = {
-    'pillar1': 'The Transfiguration',
-    'pillar2': 'The Last Supper',
-    'pillar3': 'The Sermon on the Mount',
-    'pillar4': 'The Garden of Gethsemane',
-};
-const PILLAR_CARD_URLS = {
-    'pillar1': 'crux-pillar1-flip.html',
-    'pillar2': 'crux-pillar2-flip.html',
-    'pillar3': 'crux-pillar3-flip.html',
-    'pillar4': 'crux-pillar4-flip.html',
+const PILLAR_CARD_DATA = {
+    'pillar1': {
+        name:   'The Transfiguration',
+        pillar: 'Pillar I  ·  What We Believe',
+        img:    'images/module-cards/pillar1.jpg',
+        quote:  '“This is my beloved Son, with whom I am well pleased; listen to him.” — Matthew 17:5',
+        set:    'P-001',
+        url:    'crux-pillar1-flip.html',
+    },
+    'pillar2': {
+        name:   'The Last Supper',
+        pillar: 'Pillar II  ·  What We Celebrate',
+        img:    'images/module-cards/pillar2.jpg',
+        quote:  '“Take, eat; this is my body.” — Matthew 26:26',
+        set:    'P-002',
+        url:    'crux-pillar2-flip.html',
+    },
+    'pillar3': {
+        name:   'The Sermon on the Mount',
+        pillar: 'Pillar III  ·  How We Live',
+        img:    'images/module-cards/pillar3.jpg',
+        quote:  '“Blessed are the pure in heart, for they shall see God.” — Matthew 5:8',
+        set:    'P-003',
+        url:    'crux-pillar3-flip.html',
+    },
+    'pillar4': {
+        name:   'The Garden of Gethsemane',
+        pillar: 'Pillar IV  ·  How We Pray',
+        img:    'images/module-cards/pillar4.jpg',
+        quote:  '“Not my will, but yours, be done.” — Luke 22:42',
+        set:    'P-004',
+        url:    'crux-pillar4-flip.html',
+    },
+    'pillar5': {
+        name:   'The Great Commission',
+        pillar: 'Pillar V  ·  Who We Are',
+        img:    'images/module-cards/pillar5.jpg',
+        quote:  '“Go therefore and make disciples of all nations.” — Matthew 28:19',
+        set:    'P-005',
+        url:    'crux-pillar5-flip.html',
+    },
 };
 
 // ── INIT ───────────────────────────────────────────────────
@@ -411,25 +441,90 @@ async function checkAndAwardPillarCard(completedModules, uid) {
 }
 
 function showPillarCardAward(cardId) {
-    const name = PILLAR_CARD_NAMES[cardId] || cardId;
-    const url  = PILLAR_CARD_URLS[cardId]  || 'crux-account.html';
+    const d = PILLAR_CARD_DATA[cardId];
+    if (!d) return;
 
-    const el = document.createElement('div');
-    el.id = 'pillarCardAward';
-    el.style.cssText = 'margin:1.2rem 0 0.5rem;padding:1rem 1.2rem;border:1px solid rgba(212,165,116,0.35);border-radius:10px;background:linear-gradient(135deg,rgba(212,165,116,0.06),rgba(212,165,116,0.02));text-align:center;opacity:0;transition:opacity 0.5s ease';
-    el.innerHTML =
-        '<div style="font-family:\'Cinzel\',serif;font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:rgba(212,165,116,0.6);margin-bottom:0.4rem">✦ Pillar Complete</div>' +
-        '<div style="font-family:\'Playfair Display\',serif;font-size:1rem;font-weight:700;color:rgba(212,165,116,0.9);margin-bottom:0.5rem">' + name + '</div>' +
-        '<div style="font-family:\'Inter\',sans-serif;font-size:0.75rem;color:rgba(255,245,225,0.45);margin-bottom:0.8rem;line-height:1.5">You\'ve completed all modules in this Pillar and earned a new card.</div>' +
-        '<a href="' + url + '" style="font-family:\'Cinzel\',serif;font-size:0.48rem;letter-spacing:2px;text-transform:uppercase;padding:0.5rem 1.1rem;border:1px solid rgba(212,165,116,0.35);color:rgba(212,165,116,0.8);border-radius:5px;text-decoration:none">View Card →</a>';
-
-    const xpEl = document.getElementById('xpAwardDisplay');
-    if (xpEl) xpEl.insertAdjacentElement('afterend', el);
-    else {
-        const screen = document.querySelector('.completion-screen');
-        if (screen) screen.appendChild(el);
+    // Inject Cinzel + EB Garamond if not already loaded (module pages only ship Playfair+Inter)
+    if (!document.getElementById('pca-fonts')) {
+        const lnk = document.createElement('link');
+        lnk.id = 'pca-fonts';
+        lnk.rel = 'stylesheet';
+        lnk.href = 'https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap';
+        document.head.appendChild(lnk);
     }
-    setTimeout(() => { el.style.opacity = '1'; }, 50);
+
+    // Inject keyframes + component styles once
+    if (!document.getElementById('pca-styles')) {
+        const s = document.createElement('style');
+        s.id = 'pca-styles';
+        s.textContent =
+            '@keyframes pca-fade-in{from{opacity:0}to{opacity:1}}' +
+            '@keyframes pca-card-drop{from{opacity:0;transform:scale(0.72) translateY(40px)}to{opacity:1;transform:scale(1) translateY(0)}}' +
+            '@keyframes pca-text-up{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}' +
+            '@keyframes pca-sweep{0%{background-position:0% 0}100%{background-position:200% 0}}' +
+            '@keyframes pca-glow-pulse{0%,100%{box-shadow:0 0 30px rgba(212,165,116,0.12),0 0 0 1.5px rgba(212,165,116,0.22),0 12px 60px rgba(0,0,0,0.9)}50%{box-shadow:0 0 70px rgba(212,165,116,0.38),0 0 0 1.5px rgba(212,165,116,0.55),0 12px 60px rgba(0,0,0,0.9)}}' +
+            '#pca-overlay{position:fixed;inset:0;z-index:9999;background:rgba(4,6,14,0.92);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.1rem;padding:2rem 1.5rem;animation:pca-fade-in 0.4s ease forwards}' +
+            '#pca-label{font-family:"Cinzel",serif;font-size:0.5rem;letter-spacing:5px;text-transform:uppercase;color:rgba(212,165,116,0.5);text-align:center;animation:pca-text-up 0.5s ease 0.05s both}' +
+            '#pca-card-wrap{animation:pca-card-drop 0.7s cubic-bezier(0.18,0.9,0.32,1.1) 0.2s both}' +
+            '.pca-card{width:256px;height:358px;border-radius:16px;position:relative;overflow:hidden;cursor:default;animation:pca-glow-pulse 2.8s ease-in-out 0.9s infinite}' +
+            '.pca-card-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top}' +
+            '.pca-card-darken{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(8,10,22,0) 0%,rgba(8,10,22,0) 36%,rgba(8,10,22,0.7) 56%,rgba(8,10,22,0.96) 70%,rgba(8,10,22,1) 100%)}' +
+            '.pca-gold-strip{position:absolute;top:0;left:0;right:0;height:4px;z-index:20;background:linear-gradient(90deg,rgba(140,100,40,0.9),rgba(180,130,60,1),rgba(232,201,160,1),rgba(212,165,116,1),rgba(232,201,160,1),rgba(180,130,60,1),rgba(140,100,40,0.9));background-size:200% 100%;animation:pca-sweep 3s linear infinite}' +
+            '.pca-card-border{position:absolute;inset:4px;border-radius:12px;border:1px solid rgba(212,165,116,0.25);z-index:19;pointer-events:none}' +
+            '.pca-card-content{position:absolute;bottom:0;left:0;right:0;z-index:15;padding:0 1rem 0.95rem;text-align:center}' +
+            '.pca-card-category{font-family:"Cinzel",serif;font-size:0.41rem;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:rgba(212,165,116,0.5);margin-bottom:0.75rem}' +
+            '.pca-orn{display:flex;align-items:center;gap:0.4rem;margin-bottom:0.75rem}.pca-orn-line{flex:1;height:1px;background:linear-gradient(90deg,transparent,rgba(212,165,116,0.28),transparent)}.pca-orn-dia{font-size:0.44rem;color:rgba(212,165,116,0.38)}' +
+            '.pca-card-name{font-family:"Cinzel",serif;font-size:0.88rem;font-weight:900;color:rgba(255,245,225,0.92);letter-spacing:0.5px;line-height:1.2;text-shadow:0 0 28px rgba(212,165,116,0.4),0 2px 8px rgba(0,0,0,0.8);margin-bottom:0.45rem}' +
+            '.pca-card-quote{font-family:"EB Garamond",serif;font-size:0.63rem;font-style:italic;color:rgba(230,210,175,0.48);line-height:1.5;border-left:2px solid rgba(212,165,116,0.22);padding-left:0.6rem;text-align:left;margin-bottom:0.45rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}' +
+            '.pca-card-footer{display:flex;align-items:center;justify-content:space-between;padding-top:0.55rem;border-top:1px solid rgba(212,165,116,0.13)}' +
+            '.pca-card-badge{font-family:"Cinzel",serif;font-size:0.38rem;letter-spacing:2px;text-transform:uppercase;color:rgba(212,165,116,0.7)}' +
+            '.pca-card-set{font-family:"Cinzel",serif;font-size:0.38rem;letter-spacing:1.5px;color:rgba(212,165,116,0.38)}' +
+            '#pca-headline{font-family:"Playfair Display",serif;font-size:1.3rem;font-weight:700;color:rgba(255,245,225,0.92);text-align:center;line-height:1.3;text-shadow:0 0 30px rgba(212,165,116,0.25);animation:pca-text-up 0.5s ease 0.75s both}' +
+            '#pca-sub{font-family:"EB Garamond",serif;font-size:0.9rem;font-style:italic;color:rgba(230,210,175,0.45);text-align:center;line-height:1.6;animation:pca-text-up 0.5s ease 0.9s both}' +
+            '#pca-btns{display:flex;gap:0.75rem;animation:pca-text-up 0.5s ease 1.05s both}' +
+            '.pca-btn-primary{font-family:"Cinzel",serif;font-size:0.48rem;letter-spacing:2px;text-transform:uppercase;padding:0.65rem 1.3rem;background:linear-gradient(135deg,rgba(212,165,116,0.14),rgba(212,165,116,0.07));border:1px solid rgba(212,165,116,0.4);color:rgba(212,165,116,0.9);border-radius:6px;text-decoration:none;cursor:pointer;transition:background 0.2s,border-color 0.2s}' +
+            '.pca-btn-primary:hover{background:linear-gradient(135deg,rgba(212,165,116,0.22),rgba(212,165,116,0.12));border-color:rgba(212,165,116,0.65)}' +
+            '.pca-btn-secondary{font-family:"Cinzel",serif;font-size:0.48rem;letter-spacing:2px;text-transform:uppercase;padding:0.65rem 1.3rem;background:transparent;border:1px solid rgba(255,245,225,0.1);color:rgba(255,245,225,0.32);border-radius:6px;cursor:pointer;transition:color 0.2s,border-color 0.2s}' +
+            '.pca-btn-secondary:hover{color:rgba(255,245,225,0.55);border-color:rgba(255,245,225,0.22)}';
+        document.head.appendChild(s);
+    }
+
+    const userName = (firebase.auth && firebase.auth().currentUser && firebase.auth().currentUser.displayName)
+        ? firebase.auth().currentUser.displayName.split(' ')[0]
+        : '';
+    const greeting = userName ? 'Congratulations, ' + userName + '.' : 'Congratulations.';
+
+    const overlay = document.createElement('div');
+    overlay.id = 'pca-overlay';
+    overlay.innerHTML =
+        '<div id="pca-label">✦ &nbsp; Pillar Complete &nbsp; ✦</div>' +
+        '<div id="pca-card-wrap">' +
+            '<div class="pca-card">' +
+                '<img class="pca-card-img" src="' + d.img + '" alt="' + d.name + '">' +
+                '<div class="pca-card-darken"></div>' +
+                '<div class="pca-gold-strip"></div>' +
+                '<div class="pca-card-border"></div>' +
+                '<div class="pca-card-content">' +
+                    '<div class="pca-card-category">' + d.pillar + '</div>' +
+                    '<div class="pca-orn"><div class="pca-orn-line"></div><span class="pca-orn-dia">✦</span><div class="pca-orn-line"></div></div>' +
+                    '<div class="pca-card-name">' + d.name + '</div>' +
+                    '<div class="pca-card-quote">' + d.quote + '</div>' +
+                    '<div class="pca-card-footer">' +
+                        '<span class="pca-card-badge">✦✦✦ Epic &nbsp;·&nbsp; Pillar</span>' +
+                        '<span class="pca-card-set">' + d.set + '</span>' +
+                    '</div>' +
+                '</div>' +
+            '</div>' +
+        '</div>' +
+        '<div id="pca-headline">' + greeting + '</div>' +
+        '<div id="pca-sub">You\'ve earned a new card for your collection.</div>' +
+        '<div id="pca-btns">' +
+            '<a class="pca-btn-primary" href="' + d.url + '">View Card →</a>' +
+            '<button class="pca-btn-secondary" onclick="document.getElementById(\'pca-overlay\').remove()">Continue</button>' +
+        '</div>';
+
+    document.body.appendChild(overlay);
+    overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove(); });
 }
 
 // ── PUBLIC INIT ────────────────────────────────────────────
