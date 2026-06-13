@@ -13,6 +13,26 @@ let quizAnswers = {};
 let quizSubmitted = false;
 let userProgressData = {};
 
+// ── PILLAR CARD REWARDS ────────────────────────────────────
+const PILLAR_MODULES = {
+    'pillar1': ['trinity', 'jesus', 'mary', 'prodigal_son', 'bible_geography'],
+    'pillar2': ['sacraments', 'mass_real_presence', 'reconciliation'],
+    'pillar3': ['conscience', 'fruits_holy_spirit', 'ten_commandments', 'beatitudes'],
+    'pillar4': ['lords_prayer'],
+};
+const PILLAR_CARD_NAMES = {
+    'pillar1': 'The Transfiguration',
+    'pillar2': 'The Last Supper',
+    'pillar3': 'The Sermon on the Mount',
+    'pillar4': 'The Garden of Gethsemane',
+};
+const PILLAR_CARD_URLS = {
+    'pillar1': 'crux-pillar1-flip.html',
+    'pillar2': 'crux-pillar2-flip.html',
+    'pillar3': 'crux-pillar3-flip.html',
+    'pillar4': 'crux-pillar4-flip.html',
+};
+
 // ── INIT ───────────────────────────────────────────────────
 function goToPracticeGames() {
     if (currentModule) {
@@ -302,18 +322,24 @@ async function saveProgress(correct, total) {
         if (snap.exists()) {
             const existing = snap.data().completedModules || [];
             if (!existing.includes(currentModule.id)) {
+                const newCompleted = [...existing, currentModule.id];
                 await updateDoc(ref, {
-                    completedModules: [...existing, currentModule.id],
+                    completedModules: newCompleted,
                     lastActivity: serverTimestamp()
                 });
+                const awarded = await checkAndAwardPillarCard(newCompleted, uid);
+                if (awarded) showPillarCardAward(awarded);
             }
         } else {
+            const newCompleted = [currentModule.id];
             await setDoc(ref, {
                 totalXP: 0,
-                completedModules: [currentModule.id],
+                completedModules: newCompleted,
                 lastActivity: serverTimestamp(),
                 userId: uid
             });
+            const awarded = await checkAndAwardPillarCard(newCompleted, uid);
+            if (awarded) showPillarCardAward(awarded);
         }
     } catch (e) {
         console.error('Error stamping completed module:', e);
@@ -355,6 +381,49 @@ function reviewAnswers() {
         backBtn.textContent = '← Back to Results';
         backBtn.onclick = () => setStep('complete');
     }
+}
+
+async function checkAndAwardPillarCard(completedModules, uid) {
+    if (!window.db) return null;
+    const { doc, getDoc, updateDoc } = window.fsModules;
+
+    for (const [cardId, required] of Object.entries(PILLAR_MODULES)) {
+        if (!required.every(id => completedModules.includes(id))) continue;
+        try {
+            const ref = doc(window.db, 'userProgress', uid);
+            const snap = await getDoc(ref);
+            if (!snap.exists()) continue;
+            const existing = snap.data().moduleCards || [];
+            if (existing.includes(cardId)) continue;
+            await updateDoc(ref, { moduleCards: [...existing, cardId] });
+            return cardId;
+        } catch (e) {
+            console.error('Error awarding pillar card:', e);
+        }
+    }
+    return null;
+}
+
+function showPillarCardAward(cardId) {
+    const name = PILLAR_CARD_NAMES[cardId] || cardId;
+    const url  = PILLAR_CARD_URLS[cardId]  || 'crux-account.html';
+
+    const el = document.createElement('div');
+    el.id = 'pillarCardAward';
+    el.style.cssText = 'margin:1.2rem 0 0.5rem;padding:1rem 1.2rem;border:1px solid rgba(212,165,116,0.35);border-radius:10px;background:linear-gradient(135deg,rgba(212,165,116,0.06),rgba(212,165,116,0.02));text-align:center;opacity:0;transition:opacity 0.5s ease';
+    el.innerHTML =
+        '<div style="font-family:\'Cinzel\',serif;font-size:0.5rem;letter-spacing:3px;text-transform:uppercase;color:rgba(212,165,116,0.6);margin-bottom:0.4rem">✦ Pillar Complete</div>' +
+        '<div style="font-family:\'Playfair Display\',serif;font-size:1rem;font-weight:700;color:rgba(212,165,116,0.9);margin-bottom:0.5rem">' + name + '</div>' +
+        '<div style="font-family:\'Inter\',sans-serif;font-size:0.75rem;color:rgba(255,245,225,0.45);margin-bottom:0.8rem;line-height:1.5">You\'ve completed all modules in this Pillar and earned a new card.</div>' +
+        '<a href="' + url + '" style="font-family:\'Cinzel\',serif;font-size:0.48rem;letter-spacing:2px;text-transform:uppercase;padding:0.5rem 1.1rem;border:1px solid rgba(212,165,116,0.35);color:rgba(212,165,116,0.8);border-radius:5px;text-decoration:none">View Card →</a>';
+
+    const xpEl = document.getElementById('xpAwardDisplay');
+    if (xpEl) xpEl.insertAdjacentElement('afterend', el);
+    else {
+        const screen = document.querySelector('.completion-screen');
+        if (screen) screen.appendChild(el);
+    }
+    setTimeout(() => { el.style.opacity = '1'; }, 50);
 }
 
 // ── PUBLIC INIT ────────────────────────────────────────────
