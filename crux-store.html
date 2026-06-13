@@ -1,0 +1,811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — Store</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Cinzel:wght@400;600;700;900&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy:     #080b18;
+  --navy-mid: #0d1225;
+  --navy-card:#111627;
+  --gold:     rgba(212,165,116,1);
+  --gold-dim: rgba(212,165,116,0.6);
+  --gold-faint:rgba(212,165,116,0.12);
+  --text:     rgba(255,245,225,0.88);
+  --text-dim: rgba(255,245,225,0.45);
+  --text-faint:rgba(255,245,225,0.22);
+}
+
+body {
+  background: var(--navy);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+}
+
+/* ── NAV ─────────────────────────────────────────────────── */
+.site-nav {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(8,11,24,0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212,165,116,0.1);
+  padding: 0 2rem;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.nav-wordmark {
+  font-family: 'Cinzel', serif;
+  font-size: 0.9rem;
+  font-weight: 900;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  background: linear-gradient(135deg, rgba(212,165,116,0.95), rgba(232,201,160,0.8), rgba(180,130,60,0.9));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-decoration: none;
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.nav-link {
+  font-family: 'Cinzel', serif;
+  font-size: 0.44rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.nav-link:hover { color: var(--gold-dim); }
+.nav-link.active { color: var(--gold); }
+
+.nav-cart {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.44rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+  text-decoration: none;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid rgba(212,165,116,0.18);
+  border-radius: 5px;
+  transition: all 0.2s;
+}
+.nav-cart:hover { color: var(--gold); border-color: rgba(212,165,116,0.35); }
+
+/* ── HERO ─────────────────────────────────────────────────── */
+.store-hero {
+  text-align: center;
+  padding: 5rem 2rem 4rem;
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+  position: relative;
+  overflow: hidden;
+}
+
+.store-hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 0%, rgba(212,165,116,0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.hero-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 0.48rem;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 1.2rem;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.4rem, 5vw, 3.6rem);
+  font-weight: 900;
+  line-height: 1.1;
+  background: linear-gradient(135deg, rgba(255,245,225,0.95) 0%, rgba(232,201,160,0.9) 40%, rgba(212,165,116,0.85) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1.2rem;
+}
+
+.hero-sub {
+  font-family: 'EB Garamond', serif;
+  font-size: 1.05rem;
+  font-style: italic;
+  color: var(--text-dim);
+  max-width: 480px;
+  margin: 0 auto 2.2rem;
+  line-height: 1.7;
+}
+
+.hero-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.42rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.45);
+  padding: 0.55rem 1rem;
+  border: 1px solid rgba(212,165,116,0.15);
+  border-radius: 20px;
+}
+
+/* ── FILTERS ─────────────────────────────────────────────── */
+.filters-wrap {
+  padding: 2rem 2rem 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.filter-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 0.46rem;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  padding: 0.55rem 1.2rem;
+  border-radius: 25px;
+  border: 1px solid rgba(212,165,116,0.18);
+  background: transparent;
+  color: var(--text-dim);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.filter-btn:hover {
+  color: var(--gold-dim);
+  border-color: rgba(212,165,116,0.35);
+  background: rgba(212,165,116,0.05);
+}
+.filter-btn.active {
+  background: rgba(212,165,116,0.12);
+  border-color: rgba(212,165,116,0.45);
+  color: var(--gold);
+}
+
+/* ── PRODUCT GRID ─────────────────────────────────────────── */
+.products-section {
+  padding: 2.5rem 2rem 5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.section-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.44rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.35);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.8rem;
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.5rem;
+  margin-bottom: 3rem;
+}
+
+.product-card {
+  background: var(--navy-card);
+  border: 1px solid rgba(212,165,116,0.1);
+  border-radius: 14px;
+  overflow: hidden;
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+  display: flex;
+  flex-direction: column;
+}
+.product-card:hover {
+  transform: translateY(-4px);
+  border-color: rgba(212,165,116,0.25);
+  box-shadow: 0 12px 40px rgba(0,0,0,0.4), 0 0 0 0 transparent;
+}
+
+.product-card[data-category="apparel"] { display: flex; }
+.product-card[data-category="devotional"] { display: flex; }
+.product-card[data-category="cards"] { display: flex; }
+
+.product-card.hidden { display: none; }
+
+.product-img-wrap {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+  background: #0a0e1e;
+}
+
+.product-img-wrap img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: transform 0.4s ease;
+}
+.product-card:hover .product-img-wrap img {
+  transform: scale(1.04);
+}
+
+.product-img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  background: linear-gradient(160deg, #0d1225 0%, #080b18 100%);
+}
+.placeholder-mark {
+  font-family: 'Cinzel', serif;
+  font-size: 1.8rem;
+  font-weight: 900;
+  letter-spacing: 6px;
+  background: linear-gradient(135deg, rgba(212,165,116,0.5), rgba(180,130,60,0.4));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.placeholder-sub {
+  font-family: 'Cinzel', serif;
+  font-size: 0.38rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: rgba(212,165,116,0.2);
+}
+
+.product-badge {
+  position: absolute;
+  top: 0.75rem;
+  left: 0.75rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.38rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.3rem 0.6rem;
+  border-radius: 4px;
+  background: rgba(8,11,24,0.85);
+  backdrop-filter: blur(6px);
+}
+.badge-apparel  { color: rgba(140,180,255,0.8); border: 1px solid rgba(140,180,255,0.2); }
+.badge-devotional { color: rgba(212,165,116,0.8); border: 1px solid rgba(212,165,116,0.2); }
+.badge-cards    { color: rgba(180,140,255,0.8); border: 1px solid rgba(180,140,255,0.2); }
+
+.soon-ribbon {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  font-family: 'Cinzel', serif;
+  font-size: 0.36rem;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 0.28rem 0.55rem;
+  border-radius: 4px;
+  background: rgba(212,165,116,0.1);
+  border: 1px solid rgba(212,165,116,0.2);
+  color: rgba(212,165,116,0.6);
+}
+
+.product-body {
+  padding: 1.1rem 1.2rem 1.3rem;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.product-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: rgba(255,245,225,0.9);
+  line-height: 1.25;
+}
+
+.product-desc {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  line-height: 1.6;
+  flex: 1;
+  margin-top: 0.1rem;
+}
+
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid rgba(212,165,116,0.1);
+}
+
+.product-price {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--gold);
+}
+
+.product-price.tbd {
+  font-size: 0.46rem;
+  letter-spacing: 1px;
+  color: var(--text-faint);
+  font-weight: 400;
+}
+
+.btn-shop {
+  font-family: 'Cinzel', serif;
+  font-size: 0.42rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.5rem 0.9rem;
+  border-radius: 5px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+.btn-shop.live {
+  background: linear-gradient(135deg, rgba(212,165,116,0.18), rgba(212,165,116,0.1));
+  border: 1px solid rgba(212,165,116,0.4);
+  color: var(--gold);
+}
+.btn-shop.live:hover {
+  background: linear-gradient(135deg, rgba(212,165,116,0.28), rgba(212,165,116,0.16));
+  border-color: rgba(212,165,116,0.65);
+}
+.btn-shop.soon {
+  background: transparent;
+  border: 1px solid rgba(255,245,225,0.1);
+  color: var(--text-faint);
+  cursor: default;
+}
+
+/* ── EMAIL CAPTURE ────────────────────────────────────────── */
+.notify-section {
+  background: var(--navy-mid);
+  border-top: 1px solid rgba(212,165,116,0.08);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+  padding: 4rem 2rem;
+  text-align: center;
+}
+
+.notify-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: 0.46rem;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--gold-dim);
+  margin-bottom: 1rem;
+}
+
+.notify-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: rgba(255,245,225,0.9);
+  margin-bottom: 0.8rem;
+}
+
+.notify-sub {
+  font-family: 'EB Garamond', serif;
+  font-size: 0.95rem;
+  font-style: italic;
+  color: var(--text-dim);
+  margin-bottom: 2rem;
+}
+
+.notify-form {
+  display: flex;
+  gap: 0.6rem;
+  max-width: 420px;
+  margin: 0 auto;
+}
+
+.notify-input {
+  flex: 1;
+  background: rgba(255,245,225,0.04);
+  border: 1px solid rgba(212,165,116,0.2);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.85rem;
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.notify-input::placeholder { color: var(--text-faint); }
+.notify-input:focus { border-color: rgba(212,165,116,0.4); }
+
+.notify-btn {
+  font-family: 'Cinzel', serif;
+  font-size: 0.44rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 0.75rem 1.2rem;
+  background: linear-gradient(135deg, rgba(212,165,116,0.18), rgba(212,165,116,0.1));
+  border: 1px solid rgba(212,165,116,0.4);
+  color: var(--gold);
+  border-radius: 6px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+}
+.notify-btn:hover {
+  background: linear-gradient(135deg, rgba(212,165,116,0.28), rgba(212,165,116,0.16));
+  border-color: rgba(212,165,116,0.65);
+}
+
+/* ── FOOTER ───────────────────────────────────────────────── */
+.store-footer {
+  padding: 2.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+  border-top: 1px solid rgba(212,165,116,0.06);
+}
+
+.footer-wordmark {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  font-weight: 900;
+  letter-spacing: 5px;
+  color: rgba(212,165,116,0.3);
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.footer-link {
+  font-family: 'Cinzel', serif;
+  font-size: 0.4rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  text-decoration: none;
+  transition: color 0.2s;
+}
+.footer-link:hover { color: var(--gold-dim); }
+
+@media (max-width: 600px) {
+  .notify-form { flex-direction: column; }
+  .store-footer { justify-content: center; text-align: center; }
+  .footer-links { justify-content: center; }
+  .nav-links { display: none; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── NAV ─────────────────────────────────────────────────── -->
+<nav class="site-nav">
+  <a href="index.html" class="nav-wordmark">CRUX</a>
+  <div class="nav-links">
+    <a href="index.html" class="nav-link">Faith Formation</a>
+    <a href="crux-account.html" class="nav-link">My Account</a>
+    <a href="crux-store.html" class="nav-link active">Store</a>
+  </div>
+  <a href="#notify" class="nav-cart">✦ &nbsp; Notify Me at Launch</a>
+</nav>
+
+<!-- ── HERO ─────────────────────────────────────────────────── -->
+<section class="store-hero">
+  <div class="hero-eyebrow">✦ &nbsp; The CRUX Store &nbsp; ✦</div>
+  <h1 class="hero-title">Wear the Faith.<br>Pray with Purpose.</h1>
+  <p class="hero-sub">Apparel, devotionals, and saint cards for the life you're already living.</p>
+  <div class="hero-note">✦ &nbsp; Store opening soon — sign up below to be first &nbsp; ✦</div>
+</section>
+
+<!-- ── FILTERS ─────────────────────────────────────────────── -->
+<div class="filters-wrap">
+  <button class="filter-btn active" data-filter="all">All</button>
+  <button class="filter-btn" data-filter="apparel">Apparel</button>
+  <button class="filter-btn" data-filter="devotional">Devotionals</button>
+  <button class="filter-btn" data-filter="cards">Saint Cards</button>
+</div>
+
+<!-- ── PRODUCTS ────────────────────────────────────────────── -->
+<div class="products-section">
+
+  <!-- APPAREL -->
+  <div class="section-label" id="label-apparel">Apparel</div>
+  <div class="product-grid">
+
+    <div class="product-card" data-category="apparel">
+      <div class="product-img-wrap">
+        <img src="images/Canva/premium.jpg" alt="CRUX Scripture Tee">
+        <div class="product-badge badge-apparel">Apparel</div>
+        <div class="soon-ribbon">Coming Soon</div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">Scripture Tee</div>
+        <div class="product-desc">Heavyweight cotton tee with a Bella+Canvas cut. Scripture-anchored typographic design in Cinzel and IM Fell English.</div>
+        <div class="product-footer">
+          <div class="product-price tbd">Price TBD</div>
+          <button class="btn-shop soon">Coming Soon</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="apparel">
+      <div class="product-img-wrap">
+        <img src="images/Canva/apostle.jpg" alt="CRUX Apostles Tee">
+        <div class="product-badge badge-apparel">Apparel</div>
+        <div class="soon-ribbon">Coming Soon</div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">Apostles Tee</div>
+        <div class="product-desc">Named after the twelve. Bold typographic design on premium Bella+Canvas cotton. Built to last, made to wear.</div>
+        <div class="product-footer">
+          <div class="product-price tbd">Price TBD</div>
+          <button class="btn-shop soon">Coming Soon</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="apparel">
+      <div class="product-img-wrap">
+        <div class="product-img-placeholder">
+          <div class="placeholder-mark">CRUX</div>
+          <div class="placeholder-sub">Hoodie — Coming Soon</div>
+        </div>
+        <div class="product-badge badge-apparel">Apparel</div>
+        <div class="soon-ribbon">Coming Soon</div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">CRUX Hoodie</div>
+        <div class="product-desc">Midweight fleece pullover. CRUX wordmark on chest, scripture reference on sleeve. Bella+Canvas 3719.</div>
+        <div class="product-footer">
+          <div class="product-price tbd">Price TBD</div>
+          <button class="btn-shop soon">Coming Soon</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- DEVOTIONALS -->
+  <div class="section-label" id="label-devotional">Devotionals</div>
+  <div class="product-grid">
+
+    <div class="product-card" data-category="devotional">
+      <div class="product-img-wrap">
+        <img src="images/Gifts/gift-3.jpg" alt="Roses of Tepeyac Rosary">
+        <div class="product-badge badge-devotional">Devotional</div>
+        <div class="soon-ribbon">Coming Soon</div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">Roses of Tepeyac Rosary</div>
+        <div class="product-desc">Handcrafted rosary honoring Our Lady of Guadalupe. Each bead individually knotted. A piece worth praying with for years.</div>
+        <div class="product-footer">
+          <div class="product-price tbd">Price TBD</div>
+          <button class="btn-shop soon">Coming Soon</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="devotional">
+      <div class="product-img-wrap">
+        <img src="images/Gifts/gift-6.jpg" alt="Porcelain Rosary Bracelet">
+        <div class="product-badge badge-devotional">Devotional</div>
+        <div class="soon-ribbon">Coming Soon</div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">Porcelain Rosary Bracelet</div>
+        <div class="product-desc">Delicate white porcelain ceramic beads on a decades bracelet. Wearable prayer for everyday life.</div>
+        <div class="product-footer">
+          <div class="product-price tbd">Price TBD</div>
+          <button class="btn-shop soon">Coming Soon</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="devotional">
+      <div class="product-img-wrap">
+        <img src="images/Gifts/gift-4.jpg" alt="Gold Crucifix Necklace">
+        <div class="product-badge badge-devotional">Devotional</div>
+        <div class="soon-ribbon">Coming Soon</div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">Crucifix Necklace</div>
+        <div class="product-desc">Gold plated crucifix on a fine chain. Handcrafted. The weight of it is the point — wear what you believe.</div>
+        <div class="product-footer">
+          <div class="product-price tbd">Price TBD</div>
+          <button class="btn-shop soon">Coming Soon</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="devotional">
+      <div class="product-img-wrap">
+        <img src="images/Gifts/gift-5.jpg" alt="Miraculous Medal">
+        <div class="product-badge badge-devotional">Devotional</div>
+        <div class="soon-ribbon">Coming Soon</div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">Miraculous Medal</div>
+        <div class="product-desc">The classic medal of Our Lady, available in silver and gold finishes. One of the most recognizable images in Catholic history.</div>
+        <div class="product-footer">
+          <div class="product-price tbd">Price TBD</div>
+          <button class="btn-shop soon">Coming Soon</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="devotional">
+      <div class="product-img-wrap">
+        <div class="product-img-placeholder">
+          <div class="placeholder-mark">CRUX</div>
+          <div class="placeholder-sub">Prayer Journal</div>
+        </div>
+        <div class="product-badge badge-devotional">Devotional</div>
+        <div class="soon-ribbon">Coming Soon</div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">CRUX Prayer Journal</div>
+        <div class="product-desc">Scripture-guided journaling with daily prompts, space for reflection, and the CRUX design language throughout. Linen cover, lay-flat binding.</div>
+        <div class="product-footer">
+          <div class="product-price tbd">Price TBD</div>
+          <button class="btn-shop soon">Coming Soon</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- SAINT CARDS -->
+  <div class="section-label" id="label-cards">Saint Cards</div>
+  <div class="product-grid">
+
+    <div class="product-card" data-category="cards">
+      <div class="product-img-wrap">
+        <img src="images/packs/pack-standard.jpg" alt="Standard Pack">
+        <div class="product-badge badge-cards">Saint Cards</div>
+        <div class="soon-ribbon">Coming Soon</div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">Standard Pack</div>
+        <div class="product-desc">5 cards per pack. Common and Rare pulls. Every saint has a story — your pack is a random draw from the full roster.</div>
+        <div class="product-footer">
+          <div class="product-price tbd">Price TBD</div>
+          <button class="btn-shop soon">Coming Soon</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="cards">
+      <div class="product-img-wrap">
+        <img src="images/packs/pack-premium.jpg" alt="Premium Pack">
+        <div class="product-badge badge-cards">Saint Cards</div>
+        <div class="soon-ribbon">Coming Soon</div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">Premium Pack</div>
+        <div class="product-desc">8 cards per pack with a guaranteed Rare or higher pull. Holographic foil finish. The pack you open slowly.</div>
+        <div class="product-footer">
+          <div class="product-price tbd">Price TBD</div>
+          <button class="btn-shop soon">Coming Soon</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="product-card" data-category="cards">
+      <div class="product-img-wrap">
+        <img src="images/packs/pack-apostles.jpg" alt="Apostles Pack">
+        <div class="product-badge badge-cards">Saint Cards</div>
+        <div class="soon-ribbon">Coming Soon</div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">Apostles Pack</div>
+        <div class="product-desc">A curated set of all twelve Apostles. Collector's edition — fixed contents, archival quality printing, box included.</div>
+        <div class="product-footer">
+          <div class="product-price tbd">Price TBD</div>
+          <button class="btn-shop soon">Coming Soon</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── NOTIFY ──────────────────────────────────────────────── -->
+<section class="notify-section" id="notify">
+  <div class="notify-eyebrow">✦ &nbsp; Be First &nbsp; ✦</div>
+  <h2 class="notify-title">Store Opening Soon</h2>
+  <p class="notify-sub">Sign up and you'll hear about it before anyone else.</p>
+  <form class="notify-form" onsubmit="handleNotify(event)">
+    <input class="notify-input" type="email" placeholder="your@email.com" required>
+    <button class="notify-btn" type="submit">Notify Me →</button>
+  </form>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────── -->
+<footer class="store-footer">
+  <div class="footer-wordmark">CRUX</div>
+  <div class="footer-links">
+    <a href="index.html" class="footer-link">Faith Formation</a>
+    <a href="crux-account.html" class="footer-link">Account</a>
+    <a href="crux-about.html" class="footer-link">About</a>
+  </div>
+</footer>
+
+<script>
+// ── CATEGORY FILTER ────────────────────────────────────────
+const filterBtns = document.querySelectorAll('.filter-btn');
+const productCards = document.querySelectorAll('.product-card');
+const sectionLabels = {
+  apparel:    document.getElementById('label-apparel'),
+  devotional: document.getElementById('label-devotional'),
+  cards:      document.getElementById('label-cards'),
+};
+
+filterBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    filterBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const filter = btn.dataset.filter;
+
+    productCards.forEach(card => {
+      if (filter === 'all' || card.dataset.category === filter) {
+        card.classList.remove('hidden');
+      } else {
+        card.classList.add('hidden');
+      }
+    });
+
+    // Show/hide section labels
+    Object.entries(sectionLabels).forEach(([cat, el]) => {
+      if (!el) return;
+      el.style.display = (filter === 'all' || filter === cat) ? '' : 'none';
+    });
+  });
+});
+
+// ── NOTIFY FORM ────────────────────────────────────────────
+// Wire this to Mailchimp, ConvertKit, or your Shopify customer list
+// once the store is live. For now it confirms submission locally.
+function handleNotify(e) {
+  e.preventDefault();
+  const input = e.target.querySelector('.notify-input');
+  const btn   = e.target.querySelector('.notify-btn');
+  // TODO: POST to your email list provider endpoint
+  btn.textContent = 'You\'re on the list ✦';
+  btn.disabled = true;
+  input.disabled = true;
+  input.value = '';
+}
+</script>
+</body>
+</html>
