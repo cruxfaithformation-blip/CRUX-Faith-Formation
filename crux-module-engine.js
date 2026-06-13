@@ -489,8 +489,8 @@ function showPillarCardAward(cardId) {
         document.head.appendChild(s);
     }
 
-    const userName = (firebase.auth && firebase.auth().currentUser && firebase.auth().currentUser.displayName)
-        ? firebase.auth().currentUser.displayName.split(' ')[0]
+    const userName = (window.auth && window.auth.currentUser && window.auth.currentUser.displayName)
+        ? window.auth.currentUser.displayName.split(' ')[0]
         : '';
     const greeting = userName ? 'Congratulations, ' + userName + '.' : 'Congratulations.';
 
