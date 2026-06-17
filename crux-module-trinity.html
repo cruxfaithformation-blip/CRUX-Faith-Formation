@@ -979,6 +979,80 @@
             color: var(--navy);
         }
 
+        /* ── Activity Block ── */
+        .activity-block {
+            background: #fdf8ef;
+            border: 1px solid #e8d9b5;
+            border-left: 4px solid var(--gold-dark, #b8900a);
+            border-radius: 10px;
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+        }
+        .activity-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold-dark, #b8900a);
+            margin-bottom: 0.3rem;
+        }
+        .activity-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy, #1a1f36);
+            margin-bottom: 0.6rem;
+        }
+        .activity-intro {
+            font-size: 0.92rem;
+            color: var(--text-secondary, #5a6282);
+            margin-bottom: 1.1rem;
+        }
+        .activity-item {
+            border-top: 1px solid #e8d9b5;
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+        .activity-item:first-of-type { border-top: none; padding-top: 0; margin-top: 0; }
+        .activity-q {
+            font-size: 0.93rem;
+            font-style: italic;
+            color: var(--text-primary, #1a1f36);
+            margin-bottom: 0.4rem;
+        }
+        .activity-prompt {
+            font-size: 0.88rem;
+            font-weight: 600;
+            color: var(--navy, #1a1f36);
+            margin-bottom: 0.5rem;
+        }
+        .activity-reveal summary {
+            cursor: pointer;
+            display: inline-block;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--gold-dark, #b8900a);
+            padding: 0.3rem 0.75rem;
+            border: 1px solid var(--gold-dark, #b8900a);
+            border-radius: 4px;
+            user-select: none;
+            list-style: none;
+        }
+        .activity-reveal summary::-webkit-details-marker { display: none; }
+        .activity-reveal[open] summary { background: var(--gold-dark, #b8900a); color: #fff; }
+        .activity-answer {
+            margin-top: 0.75rem;
+            padding: 0.75rem 1rem;
+            background: #fff;
+            border: 1px solid #e8d9b5;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            color: var(--text-primary, #1a1f36);
+            line-height: 1.6;
+        }
+
     </style>
 </head>
 <body>
@@ -1136,49 +1210,149 @@ const MODULE_DATA = {
         lesson: {
             beginner: `
                 <h2>The Holy Trinity — Lesson</h2>
-                <p>The <span class="key-term">Trinity</span> is one of the most important beliefs in Christianity. It means that there is <strong>one God</strong>, but God exists as <strong>three Persons</strong>: the Father, the Son (Jesus), and the Holy Spirit.</p>
+
+                <p>The <span class="key-term">Trinity</span> is one of the most important things Christians believe about God. It means there is <strong>one God</strong>, but God exists as <strong>three Persons</strong>: the Father, the Son (Jesus), and the Holy Spirit. It sounds confusing at first. That is okay. Even adults find it hard to explain. But it is also one of the most beautiful things about who God is.</p>
 
                 <h3>One God, Three Persons</h3>
-                <p>Think of it this way: a triangle has three corners, but it is still one triangle. God is one, but He has three distinct Persons. Each Person is fully God — not a piece of God, but completely God.</p>
-                <ul>
-                    <li><strong>God the Father</strong> created everything and loves us like a perfect parent.</li>
-                    <li><strong>God the Son</strong> (Jesus) came to earth as a human being to save us.</li>
-                    <li><strong>God the Holy Spirit</strong> lives in our hearts and helps us follow Jesus.</li>
-                </ul>
+
+                <p>People have come up with comparisons to help explain the Trinity. Water can be ice, liquid, or steam — but it is still water. A shamrock has three leaves but is still one plant. A triangle has three corners but is still one shape. These ideas are helpful, but they all break down eventually. God is bigger than any comparison we can make.</p>
+
+                <p>Here is what we know for sure: the Father is God. The Son is God. The Holy Spirit is God. But there are not three Gods. There is one God. Each Person is fully God — not just a piece of God. And each Person is really different from the others. The Father is not the Son. The Son is not the Spirit. They are three real Persons, but one God.</p>
 
                 <div class="highlight-box">
                     <p>"Go and make disciples of all nations, baptizing them in the name of the Father and of the Son and of the Holy Spirit."</p>
                     <cite>— Matthew 28:19</cite>
                 </div>
 
+                <h3>The Trinity in the Bible</h3>
+
+                <p>The clearest moment is when Jesus gets baptized. He steps into the Jordan River. A dove comes down from the sky — that is the Holy Spirit. And a voice speaks from heaven: "This is my beloved Son, with whom I am well pleased." That is the Father (Matthew 3:16-17). In that one moment, you can see all three Persons at the same time, doing three different things.</p>
+
+                <p>Before Jesus returned to heaven, He promised His followers that the Father would send them a Helper — the Holy Spirit — to be with them always and teach them everything they needed to know (John 14:26). The Father sends. The Son promises. The Spirit comes. Each one has a real part in God's plan.</p>
+
+                <p>At the end of Matthew's Gospel, Jesus tells His followers to baptize people "in the name of the Father and of the Son and of the Holy Spirit." One name. Three Persons. Every time we baptize someone, we name all three.</p>
+
+                <h3>What Does Each Person Do?</h3>
+
+                <ul>
+                    <li><strong>God the Father</strong> created everything — the universe, the earth, you. He loves us like a perfect dad. Jesus taught us to call Him "Our Father" when we pray. His love for us has no beginning, no end, and no conditions.</li>
+                    <li><strong>God the Son</strong> is Jesus. He is God, but He also became a real human being. He was born, grew up, taught, healed people, died on the cross, and came back to life. Jesus shows us exactly what God is like. He once said, "Whoever has seen me has seen the Father" (John 14:9).</li>
+                    <li><strong>God the Holy Spirit</strong> is God living in us right now. After Jesus went back to heaven, He sent the Holy Spirit to be with His followers. The Spirit came at <span class="key-term">Pentecost</span> — fifty days after Easter — and has been with the Church ever since. He comes to us in Baptism and Confirmation and helps us do what is right.</li>
+                </ul>
+
+                <div class="activity-block">
+                    <div class="activity-label">✦ Activity</div>
+                    <div class="activity-title">Match the Moment</div>
+                    <p class="activity-intro">Each passage below shows one Person of the Trinity at work. See if you can figure out who it is before you reveal the answer.</p>
+                    <div class="activity-item">
+                        <p class="activity-q">"And a voice came from heaven: 'You are my Son, whom I love; with you I am well pleased.' And the Holy Spirit descended on him in bodily form like a dove." — Luke 3:22</p>
+                        <p class="activity-prompt">Which Person is speaking from heaven?</p>
+                        <details class="activity-reveal">
+                            <summary>Reveal Answer</summary>
+                            <div class="activity-answer">God the Father. This moment at Jesus's baptism is one of the best examples of the Trinity in the whole Bible. All three Persons are there at once: Jesus is in the water, the Spirit comes down like a dove, and the Father speaks from heaven.</div>
+                        </details>
+                    </div>
+                    <div class="activity-item">
+                        <p class="activity-q">"But the Helper, the Holy Spirit, whom the Father will send in my name, will teach you all things and will remind you of everything I have said to you." — John 14:26</p>
+                        <p class="activity-prompt">Who is Jesus promising to send?</p>
+                        <details class="activity-reveal">
+                            <summary>Reveal Answer</summary>
+                            <div class="activity-answer">The Holy Spirit. Look at how all three Persons show up in just one sentence: the Father sends, Jesus is the one speaking, and the Holy Spirit is who is being sent. Each Person of the Trinity has a real role in God's plan for us.</div>
+                        </details>
+                    </div>
+                    <div class="activity-item">
+                        <p class="activity-q">"For God so loved the world that he gave his only Son, so that everyone who believes in him may not perish but may have eternal life." — John 3:16</p>
+                        <p class="activity-prompt">Who is giving whom?</p>
+                        <details class="activity-reveal">
+                            <summary>Reveal Answer</summary>
+                            <div class="activity-answer">God the Father is giving His Son — Jesus. This is the most famous verse in the Bible, and it shows us the heart of God: the Father loves us so much that He sent His Son to save us. The Trinity is not far away from us. This love is what came down to rescue us.</div>
+                        </details>
+                    </div>
+                </div>
+
+                <h3>The Sign of the Cross</h3>
+
+                <p>Every time you make the Sign of the Cross, you are saying something about the Trinity. "In the name of the Father, and of the Son, and of the Holy Spirit." It is not just a way to start praying. It is itself a prayer. It says who God is, and it says whose you are.</p>
+
+                <p>Every Mass starts this way. Every blessing ends this way. You were baptized in this name. The Trinity is not just a teaching we believe — it is woven into everything we do as Catholics.</p>
+
                 <h3>Why Does This Matter?</h3>
-                <p>The Trinity tells us something amazing: <strong>God is love by nature</strong>. Love requires someone to love. The Father, Son, and Holy Spirit have been loving each other forever — and they invite us into that love.</p>
-                <p>When we are baptized, we are baptized "in the name of the Father, and of the Son, and of the Holy Spirit." We are welcomed into the family of God — the Trinity.</p>
+
+                <p>Here is something worth stopping and thinking about. Most people think of God as alone — one being, by Himself, before anything was created. But the Trinity tells us God has never been alone. The Father, the Son, and the Holy Spirit have always been together, always loving each other. <strong>Love is not just something God does. It is who God is.</strong></p>
+
+                <p>And when we are baptized, we are invited into that. We become part of God's family — not as strangers, but as children.</p>
+
+                <p>That is why the Trinity matters. Not as a hard question to answer. As a home to belong to.</p>
             `,
             theologian: `
                 <h2>The Holy Trinity — Theologian Level</h2>
-                <p>The doctrine of the <span class="key-term">Trinity</span> is the central mystery of the Christian faith: <em>one God subsisting in three co-equal, co-eternal divine Persons</em> — Father, Son, and Holy Spirit. Each Person is distinct yet identical in nature, will, and being.</p>
 
-                <h3>The Development of Trinitarian Doctrine</h3>
-                <p>The Church did not invent the Trinity — She articulated what Scripture reveals. The Council of Nicaea (325 AD) defined that the Son is <span class="key-term">homoousios</span> (of the same substance) as the Father, refuting Arianism's claim that the Son was a created being. The Council of Constantinople (381 AD) extended this to affirm the full divinity of the Holy Spirit.</p>
+                <p>The doctrine of the <span class="key-term">Trinity</span> is the central mystery of the Christian faith: one God subsisting in three co-equal, co-eternal divine Persons — Father, Son, and Holy Spirit. Each Person is distinct in relation yet identical in nature, will, and being. This is not a contradiction. It is a superabundance of being that exceeds every category we have for thinking about existence.</p>
 
-                <h3>The Processions and Relations</h3>
-                <p>Catholic theology distinguishes the Persons by their <em>relations of origin</em>:</p>
+                <h3>The Three Heresies and the Councils That Answered Them</h3>
+
+                <p>The Church did not invent the Trinity. She articulated what Scripture reveals and defended it against three major distortions, each of which tidied up the mystery by eliminating something essential.</p>
+
                 <ul>
-                    <li>The <strong>Father</strong> is unbegotten — the first principle of the Godhead.</li>
-                    <li>The <strong>Son</strong> is eternally begotten of the Father (not made in time).</li>
-                    <li>The <strong>Holy Spirit</strong> proceeds from the Father and the Son (<em>filioque</em>).</li>
+                    <li><strong>Arianism</strong> taught that the Son was the greatest of all created beings, but a creature nonetheless. Arius's slogan: "There was a time when He was not." If true, then Jesus is not God, the Incarnation is not God entering history, and our salvation is not won by God himself.</li>
+                    <li><strong>Modalism (Sabellianism)</strong> taught that Father, Son, and Spirit are not distinct Persons but three modes of a single God who plays different roles at different times. This collapses the real distinctions Scripture preserves. At the Baptism of Jesus, the Father speaks from heaven while the Son stands in the river and the Spirit descends. They are simultaneously present. They are not the same actor wearing different masks.</li>
+                    <li><strong>Tritheism</strong> taught that Father, Son, and Spirit are three separate Gods working in cooperation. This destroys monotheism. The Persons share one divine nature, one will, one being. Their unity is not the unity of agreement between separate beings. It is a unity of substance.</li>
                 </ul>
+
+                <p>The Council of Nicaea (325 AD) was convened to resolve the Arian crisis. Over 300 bishops gathered and defined that the Son is <span class="key-term">homoousios</span> — of the same substance as the Father. Not similar (<em>homoiousios</em>). The same. One Greek letter carried the weight of everything: either Jesus is fully God, or salvation is impossible. The Council of Constantinople (381 AD) completed the work by affirming the full divinity of the Holy Spirit: "the Lord and giver of life, who together with the Father and Son is worshiped and glorified."</p>
 
                 <div class="highlight-box">
                     <p>"The Father and I are one."</p>
                     <cite>— John 10:30</cite>
                 </div>
 
-                <h3>Immanent vs. Economic Trinity</h3>
-                <p>Theologians distinguish the <span class="key-term">immanent Trinity</span> (God as He is in Himself — three Persons in eternal communion) from the <span class="key-term">economic Trinity</span> (God as He acts in salvation history). The principle of Rahner's Rule states: "The economic Trinity is the immanent Trinity, and vice versa." In other words, the God who acts in history is the same God who exists eternally.</p>
+                <div class="activity-block">
+                    <div class="activity-label">✦ Activity</div>
+                    <div class="activity-title">Identify the Heresy</div>
+                    <p class="activity-intro">Each statement below contains a theological error about the Trinity. Identify which heresy it represents before revealing the answer.</p>
+                    <div class="activity-item">
+                        <p class="activity-q">"Jesus is the greatest being God ever created. He existed before the universe, but there was a time before He existed."</p>
+                        <details class="activity-reveal">
+                            <summary>Identify the Error</summary>
+                            <div class="activity-answer"><strong>Arianism.</strong> This is Arius's position almost verbatim. The error is treating the Son as a creature, however exalted. Nicaea rejected this by defining the Son as <em>homoousios</em> — of the same substance as the Father, not a created being at all.</div>
+                        </details>
+                    </div>
+                    <div class="activity-item">
+                        <p class="activity-q">"God appeared as the Father in the Old Testament, then as the Son in the Gospels, and now as the Holy Spirit in the Church age. These are different names for the same Person in different modes."</p>
+                        <details class="activity-reveal">
+                            <summary>Identify the Error</summary>
+                            <div class="activity-answer"><strong>Modalism (Sabellianism).</strong> This collapses the genuine distinctions between the Persons into a single actor playing sequential roles. The Baptism of Jesus alone disproves it: the Father speaks from heaven while the Son stands in the water and the Spirit descends. Three Persons are simultaneously present and genuinely distinct.</div>
+                        </details>
+                    </div>
+                    <div class="activity-item">
+                        <p class="activity-q">"The Father, the Son, and the Holy Spirit are three separate divine beings who agree on everything and always work together in perfect unity."</p>
+                        <details class="activity-reveal">
+                            <summary>Identify the Error</summary>
+                            <div class="activity-answer"><strong>Tritheism.</strong> Christianity is monotheistic. There is one God, not three gods in cooperation. The Persons share one divine nature and one will. Their unity is not the unity of agreement between three separate beings — it is a unity of substance. Three wills in perfect agreement would still be three wills, which is not what the Church teaches.</div>
+                        </details>
+                    </div>
+                </div>
 
-                <p>This mystery is not a contradiction but a <em>superabundance</em> of being. God is not a solitary monad but an eternal communion of love — which is why John can simply say: <em>"God is love"</em> (1 John 4:8).</p>
+                <h3>The Processions and Relations</h3>
+
+                <p>The Persons are distinguished not by separate natures or wills but by their <em>relations of origin</em> within the one divine life:</p>
+                <ul>
+                    <li>The <strong>Father</strong> is unbegotten. He is the first principle of the Godhead — not prior in time, but prior in the logical order of the divine processions. There is no "before" the Father.</li>
+                    <li>The <strong>Son</strong> is eternally begotten of the Father. "Begotten, not made" from the Creed means the Son does not come into existence at a point in time. He is generated by the Father within the eternal now of the divine life. This generation is the same act eternally, not a past event.</li>
+                    <li>The <strong>Holy Spirit</strong> proceeds from the Father and the Son (<em>filioque</em>). The Western Church affirms this double procession; the Eastern Church holds that the Spirit proceeds from the Father alone. This disagreement was a contributing factor in the Great Schism of 1054 and remains unresolved between Catholic and Orthodox churches today.</li>
+                </ul>
+
+                <h3>Augustine's Psychological Analogy</h3>
+                <div class="card-callout" data-card="augustine"></div>
+                <p>Augustine of Hippo, in <em>De Trinitate</em>, proposed that the human mind bears a faint image (<em>vestigium</em>) of the Trinity. He identified three powers within the soul: <span class="key-term">memory</span>, <span class="key-term">intellect</span>, and <span class="key-term">will</span>. These are not three separate faculties but three dimensions of one unified mind. As an analogy it is imperfect — the soul is not God, and the three powers are not three Persons — but it illustrates how unity and real distinction within a single being are not necessarily in conflict.</p>
+
+                <p>Thomas Aquinas refined and defended this analogy in the <em>Summa Theologiae</em>. The point is not that the soul is a perfect model of the Trinity, but that within human experience we have some faint echo of what it means to be genuinely multiple within genuine unity.</p>
+
+                <h3>Immanent and Economic Trinity</h3>
+
+                <p>Theologians distinguish the <span class="key-term">immanent Trinity</span> (God as He is in Himself — three Persons in eternal communion) from the <span class="key-term">economic Trinity</span> (God as He acts in the history of salvation). Karl Rahner's Rule states: "The economic Trinity is the immanent Trinity, and vice versa." The God who acts in history — sending the Son, giving the Spirit — is the same God who exists eternally in those relations. God does not play a role. He shows us who He actually is.</p>
+
+                <p>This matters for prayer. When we pray to the Father, through the Son, in the Holy Spirit, we are not following a formula. By grace, we are entering the actual life of God — the same love the Father and Son have shared from before the foundation of the world.</p>
             `
         },
 
