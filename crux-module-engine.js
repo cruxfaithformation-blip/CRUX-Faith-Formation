@@ -63,6 +63,121 @@ const PILLAR_CARD_DATA = {
     },
 };
 
+// ── CARD CATALOG (for inline callouts) ────────────────────
+const CARD_CATALOG = {
+    thomas:           { name: 'St. Thomas',                 rarity: 'rare',      url: 'crux-thomas-flip.html' },
+    cecilia:          { name: 'St. Cecilia',                rarity: 'uncommon',  url: 'crux-cecilia-flip.html' },
+    david:            { name: 'St. David of Wales',         rarity: 'uncommon',  url: 'crux-david-flip.html' },
+    clare:            { name: 'St. Clare of Assisi',        rarity: 'uncommon',  url: 'crux-clare-flip.html' },
+    bernadette:       { name: 'St. Bernadette',             rarity: 'uncommon',  url: 'crux-bernadette-flip.html' },
+    bvm:              { name: 'Blessed Virgin Mary',        rarity: 'legendary', url: 'crux-bvm-flip.html' },
+    peter:            { name: 'St. Peter',                  rarity: 'legendary', url: 'crux-peter-flip.html' },
+    paul:             { name: 'St. Paul',                   rarity: 'legendary', url: 'crux-paul-flip.html' },
+    'john-apostle':   { name: 'St. John the Apostle',      rarity: 'legendary', url: 'crux-john-apostle-flip.html' },
+    'james-greater':  { name: 'St. James the Greater',     rarity: 'legendary', url: 'crux-james-greater-flip.html' },
+    andrew:           { name: 'St. Andrew',                 rarity: 'legendary', url: 'crux-andrew-flip.html' },
+    philip:           { name: 'St. Philip',                 rarity: 'legendary', url: 'crux-philip-flip.html' },
+    bartholomew:      { name: 'St. Bartholomew',            rarity: 'legendary', url: 'crux-bartholomew-flip.html' },
+    matthew:          { name: 'St. Matthew',                rarity: 'legendary', url: 'crux-matthew-flip.html' },
+    'james-less':     { name: 'St. James the Less',         rarity: 'legendary', url: 'crux-james-less-flip.html' },
+    'simon-zealot':   { name: 'St. Simon the Zealot',      rarity: 'legendary', url: 'crux-simon-zealot-flip.html' },
+    jude:             { name: 'St. Jude Thaddaeus',         rarity: 'legendary', url: 'crux-jude-flip.html' },
+    joseph:           { name: 'St. Joseph',                 rarity: 'legendary', url: 'crux-joseph-flip.html' },
+    augustine:        { name: 'St. Augustine of Hippo',    rarity: 'rare',      url: 'crux-augustine-flip.html' },
+    aquinas:          { name: 'St. Thomas Aquinas',         rarity: 'rare',      url: 'crux-aquinas-flip.html' },
+    'teresa-avila':   { name: 'St. Teresa of Ávila',       rarity: 'rare',      url: 'crux-teresa-avila-flip.html' },
+    'john-cross':     { name: 'St. John of the Cross',     rarity: 'rare',      url: 'crux-john-cross-flip.html' },
+    ignatius:         { name: 'St. Ignatius of Loyola',    rarity: 'rare',      url: 'crux-ignatius-flip.html' },
+    'francis-xavier': { name: 'St. Francis Xavier',        rarity: 'rare',      url: 'crux-francis-xavier-flip.html' },
+    dominic:          { name: 'St. Dominic',               rarity: 'rare',      url: 'crux-dominic-flip.html' },
+    bonaventure:      { name: 'St. Bonaventure',           rarity: 'rare',      url: 'crux-bonaventure-flip.html' },
+    'catherine-siena':{ name: 'St. Catherine of Siena',   rarity: 'rare',      url: 'crux-catherine-siena-flip.html' },
+    'joan-arc':       { name: 'St. Joan of Arc',           rarity: 'rare',      url: 'crux-joan-arc-flip.html' },
+    kolbe:            { name: 'St. Maximilian Kolbe',      rarity: 'rare',      url: 'crux-kolbe-flip.html' },
+    'edith-stein':    { name: 'St. Edith Stein',           rarity: 'rare',      url: 'crux-edith-stein-flip.html' },
+    'john-paul-ii':   { name: 'St. John Paul II',          rarity: 'rare',      url: 'crux-john-paul-ii-flip.html' },
+    'padre-pio':      { name: 'St. Padre Pio',             rarity: 'rare',      url: 'crux-padre-pio-flip.html' },
+    'pier-giorgio':   { name: 'St. Pier Giorgio Frassati', rarity: 'rare',      url: 'crux-pier-giorgio-flip.html' },
+    polycarp:         { name: 'St. Polycarp',              rarity: 'rare',      url: 'crux-polycarp-flip.html' },
+    perpetua:         { name: 'Sts. Perpetua & Felicity',  rarity: 'rare',      url: 'crux-perpetua-flip.html' },
+    lucy:             { name: 'St. Lucy',                  rarity: 'rare',      url: 'crux-lucy-flip.html' },
+    stephen:          { name: 'St. Stephen',               rarity: 'rare',      url: 'crux-stephen-flip.html' },
+    'carlo-acutis':   { name: 'St. Carlo Acutis',          rarity: 'rare',      url: 'crux-carlo-acutis-flip.html' },
+    'mother-teresa':  { name: 'Bl. Teresa of Calcutta',   rarity: 'rare',      url: 'crux-mother-teresa-flip.html' },
+    'thomas-more':    { name: 'St. Thomas More',           rarity: 'rare',      url: 'crux-thomas-more-flip.html' },
+    'francis-assisi': { name: 'St. Francis of Assisi',    rarity: 'uncommon',  url: 'crux-francis-assisi-flip.html' },
+    therese:          { name: 'St. Thérèse of Lisieux',   rarity: 'uncommon',  url: 'crux-therese-flip.html' },
+    benedict:         { name: 'St. Benedict',              rarity: 'uncommon',  url: 'crux-benedict-flip.html' },
+    scholastica:      { name: 'St. Scholastica',           rarity: 'uncommon',  url: 'crux-scholastica-flip.html' },
+    patrick:          { name: 'St. Patrick',               rarity: 'rare',      url: 'crux-patrick-flip.html' },
+    brigid:           { name: 'St. Brigid of Ireland',    rarity: 'uncommon',  url: 'crux-brigid-flip.html' },
+    nicolas:          { name: 'St. Nicholas of Myra',     rarity: 'uncommon',  url: 'crux-nicolas-flip.html' },
+    'rose-lima':      { name: 'St. Rose of Lima',         rarity: 'uncommon',  url: 'crux-rose-lima-flip.html' },
+    'martin-tours':   { name: 'St. Martin of Tours',      rarity: 'uncommon',  url: 'crux-martin-tours-flip.html' },
+    kateri:           { name: 'St. Kateri Tekakwitha',    rarity: 'uncommon',  url: 'crux-kateri-flip.html' },
+    'elizabeth-ann':  { name: 'St. Elizabeth Ann Seton',  rarity: 'uncommon',  url: 'crux-elizabeth-ann-flip.html' },
+    'charles-lwanga': { name: 'St. Charles Lwanga',       rarity: 'uncommon',  url: 'crux-charles-lwanga-flip.html' },
+    'maria-goretti':  { name: 'St. Maria Goretti',        rarity: 'uncommon',  url: 'crux-maria-goretti-flip.html' },
+    'dominic-savio':  { name: 'St. Dominic Savio',        rarity: 'uncommon',  url: 'crux-dominic-savio-flip.html' },
+    aloysius:         { name: 'St. Aloysius Gonzaga',     rarity: 'uncommon',  url: 'crux-aloysius-flip.html' },
+    gemma:            { name: 'St. Gemma Galgani',        rarity: 'uncommon',  url: 'crux-gemma-flip.html' },
+    'jose-sanchez':   { name: 'St. José Sánchez del Río', rarity: 'uncommon',  url: 'crux-jose-sanchez-flip.html' },
+    'oscar-romero':   { name: 'St. Oscar Romero',         rarity: 'uncommon',  url: 'crux-oscar-romero-flip.html' },
+    'miguel-pro':     { name: 'Bl. Miguel Pro',           rarity: 'uncommon',  url: 'crux-miguel-pro-flip.html' },
+    francisco:        { name: 'St. Francisco Marto',      rarity: 'uncommon',  url: 'crux-francisco-flip.html' },
+    jacinta:          { name: 'St. Jacinta Marto',        rarity: 'uncommon',  url: 'crux-jacinta-flip.html' },
+};
+
+function rarityLabel(r) {
+    const labels = { common: 'Common', uncommon: '✦ Uncommon', rare: '✦✦ Rare', epic: '✦✦✦ Epic', legendary: '✦✦✦✦ Legendary' };
+    return labels[r] || r;
+}
+
+function renderCardCallouts() {
+    if (!document.getElementById('cc-styles')) {
+        const s = document.createElement('style');
+        s.id = 'cc-styles';
+        s.textContent =
+            '.lesson-card{display:flow-root}' +
+            '.card-callout{float:right;clear:right;margin:0 0 1rem 1.25rem;width:110px;border-radius:8px;overflow:hidden;border:1px solid #e0ddd5;background:#fff;box-shadow:0 2px 8px rgba(0,0,0,0.08);font-size:0}' +
+            '.cc-img-wrap{position:relative;aspect-ratio:5/7;overflow:hidden}' +
+            '.cc-img-wrap img{width:100%;height:100%;object-fit:cover;object-position:center top;display:block}' +
+            '.card-callout.cc-locked .cc-img-wrap img{filter:grayscale(100%);opacity:0.4}' +
+            '.cc-lock-icon{display:none;position:absolute;inset:0;align-items:center;justify-content:center;font-size:1.4rem;color:rgba(255,255,255,0.65)}' +
+            '.card-callout.cc-locked .cc-lock-icon{display:flex}' +
+            '.cc-info{padding:0.35rem 0.45rem 0.3rem;border-top:1px solid #e8e5de}' +
+            '.cc-name{font-family:"Cinzel",serif;font-size:0.52rem;font-weight:700;color:#1a1f36;display:block;line-height:1.3}' +
+            '.cc-rarity{font-size:0.48rem;font-weight:600;display:block;margin-top:2px;letter-spacing:0.3px}' +
+            '.cc-common{color:#666}.cc-uncommon{color:#2a7a3e}.cc-rare{color:#1a5fa8}.cc-epic{color:#7b3fa8}.cc-legendary{color:#b8900a}' +
+            '.cc-link{display:block;text-align:center;font-family:"Cinzel",serif;font-size:0.5rem;letter-spacing:0.5px;color:#1a1f36;padding:0.28rem 0.25rem;background:#f5f2eb;border-top:1px solid #e0ddd5;text-decoration:none}' +
+            '.card-callout.cc-locked .cc-link{color:#aaa;pointer-events:none}' +
+            '@media(max-width:480px){.card-callout{width:88px}}';
+        document.head.appendChild(s);
+    }
+
+    const owned = userProgressData.cardsOwned || [];
+    const loggedIn = !!window.currentUser;
+
+    document.querySelectorAll('.card-callout[data-card]').forEach(el => {
+        const id = el.dataset.card;
+        const card = CARD_CATALOG[id];
+        if (!card) return;
+
+        const isOwned = !loggedIn || owned.includes(id);
+        el.className = 'card-callout' + (isOwned ? '' : ' cc-locked');
+        el.innerHTML =
+            '<div class="cc-img-wrap">' +
+                '<img src="images/saints/' + id + '.jpg" alt="' + card.name + '" loading="lazy">' +
+                '<div class="cc-lock-icon">🔒</div>' +
+            '</div>' +
+            '<div class="cc-info">' +
+                '<span class="cc-name">' + card.name + '</span>' +
+                '<span class="cc-rarity cc-' + card.rarity + '">' + rarityLabel(card.rarity) + '</span>' +
+            '</div>' +
+            '<a class="cc-link" href="' + card.url + '">' + (isOwned ? 'View Card →' : 'Not collected') + '</a>';
+    });
+}
+
 // ── INIT ───────────────────────────────────────────────────
 function goToPracticeGames() {
     if (currentModule) {
@@ -100,6 +215,7 @@ function loadModule(moduleId) {
     renderReading();
     renderQuiz();
     updateProgress();
+    renderCardCallouts();
 }
 
 // ── LEVEL TOGGLE ───────────────────────────────────────────
@@ -390,9 +506,12 @@ async function loadUserProgress() {
     try {
         const snap = await getDoc(doc(window.db, 'userProgress', uid));
         if (snap.exists()) {
-            const xp = snap.data().totalXP || 0;
+            const data = snap.data();
+            const xp = data.totalXP || 0;
             document.getElementById('xpDisplay').textContent = xp;
             document.getElementById('xpChip').style.display = 'inline-flex';
+            userProgressData.cardsOwned = data.cardsOwned || [];
+            renderCardCallouts();
         }
     } catch (e) {
         console.error('Error loading user progress:', e);
