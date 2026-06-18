@@ -1053,6 +1053,112 @@
             line-height: 1.6;
         }
 
+        /* ── Sorting Game ── */
+        .sort-game {
+            background: #f0f4ff;
+            border: 1px solid #c5d0f0;
+            border-left: 4px solid var(--navy, #1a1f36);
+            border-radius: 10px;
+            padding: 1.5rem 1.75rem;
+            margin: 1.75rem 0;
+        }
+        .sort-game-label {
+            font-family: 'Playfair Display', serif;
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--navy, #1a1f36);
+            margin-bottom: 0.3rem;
+        }
+        .sort-game-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--navy, #1a1f36);
+            margin-bottom: 0.4rem;
+        }
+        .sort-game-intro {
+            font-size: 0.92rem;
+            color: var(--text-secondary, #5a6282);
+            margin-bottom: 1.1rem;
+        }
+        .sort-item {
+            background: #fff;
+            border: 1px solid #dde3f5;
+            border-radius: 8px;
+            padding: 1rem 1.1rem;
+            margin-bottom: 0.75rem;
+        }
+        .sort-item-text {
+            font-size: 0.93rem;
+            color: var(--text-primary, #1a1f36);
+            margin-bottom: 0.75rem;
+            font-style: italic;
+            line-height: 1.55;
+        }
+        .sort-btns {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .sort-btn {
+            flex: 1;
+            min-width: 80px;
+            padding: 0.45rem 0.6rem;
+            border: 1.5px solid #c5d0f0;
+            border-radius: 6px;
+            background: #fff;
+            color: var(--navy, #1a1f36);
+            font-family: 'Playfair Display', serif;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.15s, border-color 0.15s, color 0.15s;
+        }
+        .sort-btn:hover:not(:disabled) {
+            background: #e8edfc;
+            border-color: var(--navy, #1a1f36);
+        }
+        .sort-btn:disabled { cursor: default; opacity: 0.6; }
+        .sort-btn.sg-correct { background: #d4edda; border-color: #28a745; color: #155724; opacity: 1; }
+        .sort-btn.sg-wrong   { background: #f8d7da; border-color: #dc3545; color: #721c24; opacity: 1; }
+        .sort-btn.sg-reveal  { background: #d4edda; border-color: #28a745; color: #155724; opacity: 1; }
+        .sort-item-feedback {
+            font-size: 0.82rem;
+            margin-top: 0.55rem;
+            color: var(--text-secondary, #5a6282);
+            line-height: 1.5;
+            display: none;
+        }
+        .sort-item-feedback.visible { display: block; }
+        .sort-score {
+            margin-top: 1rem;
+            padding: 0.85rem 1.1rem;
+            background: var(--navy, #1a1f36);
+            color: #fff;
+            border-radius: 8px;
+            font-family: 'Playfair Display', serif;
+            font-size: 0.95rem;
+            font-weight: 700;
+            text-align: center;
+            display: none;
+        }
+        .sort-reset {
+            display: block;
+            width: 100%;
+            margin-top: 0.6rem;
+            padding: 0.5rem;
+            background: transparent;
+            border: 1.5px solid rgba(255,255,255,0.4);
+            border-radius: 6px;
+            color: rgba(255,255,255,0.85);
+            font-size: 0.8rem;
+            font-family: 'Playfair Display', serif;
+            cursor: pointer;
+        }
+        .sort-reset:hover { background: rgba(255,255,255,0.1); }
+
     </style>
 </head>
 <body>
@@ -1239,6 +1345,77 @@ const MODULE_DATA = {
                     <li><strong>God the Son</strong> is Jesus. He is God, but He also became a real human being. He was born, grew up, taught, healed people, died on the cross, and came back to life. Jesus shows us exactly what God is like. He once said, "Whoever has seen me has seen the Father" (John 14:9).</li>
                     <li><strong>God the Holy Spirit</strong> is God living in us right now. After Jesus went back to heaven, He sent the Holy Spirit to be with His followers. The Spirit came at <span class="key-term">Pentecost</span> — fifty days after Easter — and has been with the Church ever since. He comes to us in Baptism and Confirmation and helps us do what is right.</li>
                 </ul>
+
+                <div class="sort-game" id="trinitySortGame">
+                    <div class="sort-game-label">✦ Sorting Game</div>
+                    <div class="sort-game-title">Who Is It?</div>
+                    <p class="sort-game-intro">Each description below fits one Person of the Trinity. Choose Father, Son, or Holy Spirit for each one.</p>
+
+                    <div class="sort-item" id="sg-1">
+                        <p class="sort-item-text">"This is my beloved Son, with whom I am well pleased." — The voice that spoke from heaven at Jesus's baptism.</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="Father"      onclick="sortAnswer(this,'trinitySortGame','sg-1','Father','Father')">Father</button>
+                            <button class="sort-btn" data-value="Son"         onclick="sortAnswer(this,'trinitySortGame','sg-1','Son','Father')">Son</button>
+                            <button class="sort-btn" data-value="Holy Spirit" onclick="sortAnswer(this,'trinitySortGame','sg-1','Holy Spirit','Father')">Holy Spirit</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-item" id="sg-2">
+                        <p class="sort-item-text">Was born in Bethlehem, grew up in Nazareth, died on the cross, and rose from the dead on the third day.</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="Father"      onclick="sortAnswer(this,'trinitySortGame','sg-2','Father','Son')">Father</button>
+                            <button class="sort-btn" data-value="Son"         onclick="sortAnswer(this,'trinitySortGame','sg-2','Son','Son')">Son</button>
+                            <button class="sort-btn" data-value="Holy Spirit" onclick="sortAnswer(this,'trinitySortGame','sg-2','Holy Spirit','Son')">Holy Spirit</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-item" id="sg-3">
+                        <p class="sort-item-text">Descended on Jesus like a dove when He was baptized in the Jordan River.</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="Father"      onclick="sortAnswer(this,'trinitySortGame','sg-3','Father','Holy Spirit')">Father</button>
+                            <button class="sort-btn" data-value="Son"         onclick="sortAnswer(this,'trinitySortGame','sg-3','Son','Holy Spirit')">Son</button>
+                            <button class="sort-btn" data-value="Holy Spirit" onclick="sortAnswer(this,'trinitySortGame','sg-3','Holy Spirit','Holy Spirit')">Holy Spirit</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-item" id="sg-4">
+                        <p class="sort-item-text">Created the universe and everything in it. Jesus taught us to call Him "Our Father" when we pray.</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="Father"      onclick="sortAnswer(this,'trinitySortGame','sg-4','Father','Father')">Father</button>
+                            <button class="sort-btn" data-value="Son"         onclick="sortAnswer(this,'trinitySortGame','sg-4','Son','Father')">Son</button>
+                            <button class="sort-btn" data-value="Holy Spirit" onclick="sortAnswer(this,'trinitySortGame','sg-4','Holy Spirit','Father')">Holy Spirit</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-item" id="sg-5">
+                        <p class="sort-item-text">"I am the way, the truth, and the life. No one comes to the Father except through me." — John 14:6</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="Father"      onclick="sortAnswer(this,'trinitySortGame','sg-5','Father','Son')">Father</button>
+                            <button class="sort-btn" data-value="Son"         onclick="sortAnswer(this,'trinitySortGame','sg-5','Son','Son')">Son</button>
+                            <button class="sort-btn" data-value="Holy Spirit" onclick="sortAnswer(this,'trinitySortGame','sg-5','Holy Spirit','Son')">Holy Spirit</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-item" id="sg-6">
+                        <p class="sort-item-text">Came to the Church at Pentecost and lives in us through Baptism and Confirmation, guiding us toward what is right.</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="Father"      onclick="sortAnswer(this,'trinitySortGame','sg-6','Father','Holy Spirit')">Father</button>
+                            <button class="sort-btn" data-value="Son"         onclick="sortAnswer(this,'trinitySortGame','sg-6','Son','Holy Spirit')">Son</button>
+                            <button class="sort-btn" data-value="Holy Spirit" onclick="sortAnswer(this,'trinitySortGame','sg-6','Holy Spirit','Holy Spirit')">Holy Spirit</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-score">
+                        <div class="sg-score-text"></div>
+                        <button class="sort-reset" onclick="resetSortGame('trinitySortGame')">Try Again</button>
+                    </div>
+                </div>
 
                 <div class="activity-block">
                     <div class="activity-label">✦ Activity</div>
@@ -1461,6 +1638,70 @@ const MODULE_DATA = {
             ]
         }
 };
+
+// ── Sorting Game ──────────────────────────────────────────
+const SORT_FEEDBACK = {
+    'sg-1-Father':      'Correct. At the Baptism of Jesus, the Father speaks from heaven while the Son stands in the water.',
+    'sg-1-Son':         'Not quite. The voice from heaven is the Father — the Son is the one being baptized.',
+    'sg-1-Holy Spirit': 'Not quite. The Holy Spirit descends as a dove. The voice belongs to the Father.',
+    'sg-2-Son':         'Correct. Jesus — God the Son — is the one who was born, lived among us, and died on the cross.',
+    'sg-2-Father':      'Not quite. The Father did not become human. It is the Son — Jesus — who was born in Bethlehem.',
+    'sg-2-Holy Spirit': 'Not quite. The Holy Spirit was not born in Bethlehem. That is Jesus, God the Son.',
+    'sg-3-Holy Spirit': 'Correct. The Spirit descended on Jesus like a dove at his baptism in the Jordan.',
+    'sg-3-Father':      'Not quite. The Father spoke from heaven. The Spirit is the one who descended as a dove.',
+    'sg-3-Son':         'Not quite. Jesus is the one being baptized. The dove is the Holy Spirit descending on him.',
+    'sg-4-Father':      'Correct. God the Father is the Creator of all things. Jesus taught us to call him "Our Father."',
+    'sg-4-Son':         'Not quite. Jesus — the Son — came to save us, but it is the Father who created everything.',
+    'sg-4-Holy Spirit': 'Not quite. The Holy Spirit lives in us and guides us, but the Father is the Creator of all things.',
+    'sg-5-Son':         'Correct. Jesus said "I am the way, the truth, and the life" — one of the most direct statements of who he is.',
+    'sg-5-Father':      'Not quite. These are the words of Jesus — God the Son. The Father speaks of Jesus but does not speak these words himself.',
+    'sg-5-Holy Spirit': 'Not quite. These words belong to Jesus. The Holy Spirit guides us toward Jesus, the truth.',
+    'sg-6-Holy Spirit': 'Correct. The Holy Spirit came to the Church at Pentecost and comes to us in Baptism and Confirmation.',
+    'sg-6-Father':      'Not quite. The Father sent the Spirit, but it is the Holy Spirit who came at Pentecost and lives in us.',
+    'sg-6-Son':         'Not quite. Jesus returned to heaven. He sent the Holy Spirit to be with the Church — the Spirit is the one who lives in us.',
+};
+
+function sortAnswer(btn, gameId, itemId, chosen, correct) {
+    const item = document.getElementById(itemId);
+    if (item.dataset.answered) return;
+    item.dataset.answered = '1';
+
+    item.querySelectorAll('.sort-btn').forEach(b => {
+        b.disabled = true;
+        if (b.dataset.value === correct && chosen !== correct) b.classList.add('sg-reveal');
+    });
+
+    btn.classList.add(chosen === correct ? 'sg-correct' : 'sg-wrong');
+
+    const fb = item.querySelector('.sort-item-feedback');
+    fb.textContent = SORT_FEEDBACK[itemId + '-' + chosen] || '';
+    fb.classList.add('visible');
+
+    const game = document.getElementById(gameId);
+    const total = game.querySelectorAll('.sort-item').length;
+    const done  = game.querySelectorAll('.sort-item[data-answered]').length;
+    if (done === total) {
+        const numCorrect = game.querySelectorAll('.sort-btn.sg-correct').length;
+        const scoreEl = game.querySelector('.sort-score');
+        const perfect = numCorrect === total;
+        scoreEl.querySelector('.sg-score-text').textContent =
+            numCorrect + ' out of ' + total + ' correct' + (perfect ? ' — Perfect!' : '. Review the ones in red and try again.');
+        scoreEl.style.display = 'block';
+    }
+}
+
+function resetSortGame(gameId) {
+    const game = document.getElementById(gameId);
+    game.querySelectorAll('.sort-item').forEach(item => {
+        delete item.dataset.answered;
+        item.querySelectorAll('.sort-btn').forEach(b => {
+            b.disabled = false;
+            b.classList.remove('sg-correct', 'sg-wrong', 'sg-reveal');
+        });
+        item.querySelector('.sort-item-feedback').classList.remove('visible');
+    });
+    game.querySelector('.sort-score').style.display = 'none';
+}
 
 window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
