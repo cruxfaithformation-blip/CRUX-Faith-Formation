@@ -979,6 +979,39 @@
             color: var(--navy);
         }
 
+        /* ── Activity Block ── */
+        .activity-block{background:#fdf8ef;border:1px solid #e8d9b5;border-left:4px solid #b8900a;border-radius:10px;padding:1.5rem 1.75rem;margin:1.75rem 0}
+        .activity-label{font-family:'Playfair Display',serif;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#b8900a;margin-bottom:.3rem}
+        .activity-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--navy,#1a1f36);margin-bottom:.6rem}
+        .activity-intro{font-size:.92rem;color:var(--text-secondary,#5a6282);margin-bottom:1.1rem}
+        .activity-item{border-top:1px solid #e8d9b5;padding-top:1rem;margin-top:1rem}
+        .activity-item:first-of-type{border-top:none;padding-top:0;margin-top:0}
+        .activity-q{font-size:.93rem;font-style:italic;color:var(--text-primary,#1a1f36);margin-bottom:.4rem}
+        .activity-prompt{font-size:.88rem;font-weight:600;color:var(--navy,#1a1f36);margin-bottom:.5rem}
+        .activity-reveal summary{cursor:pointer;display:inline-block;font-family:'Playfair Display',serif;font-size:.8rem;font-weight:700;color:#b8900a;padding:.3rem .75rem;border:1px solid #b8900a;border-radius:4px;user-select:none;list-style:none}
+        .activity-reveal summary::-webkit-details-marker{display:none}
+        .activity-reveal[open] summary{background:#b8900a;color:#fff}
+        .activity-answer{margin-top:.75rem;padding:.75rem 1rem;background:#fff;border:1px solid #e8d9b5;border-radius:6px;font-size:.9rem;color:var(--text-primary,#1a1f36);line-height:1.6}
+        /* ── Sorting Game ── */
+        .sort-game{background:#f0f4ff;border:1px solid #c5d0f0;border-left:4px solid var(--navy,#1a1f36);border-radius:10px;padding:1.5rem 1.75rem;margin:1.75rem 0}
+        .sort-game-label{font-family:'Playfair Display',serif;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--navy,#1a1f36);margin-bottom:.3rem}
+        .sort-game-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--navy,#1a1f36);margin-bottom:.4rem}
+        .sort-game-intro{font-size:.92rem;color:var(--text-secondary,#5a6282);margin-bottom:1.1rem}
+        .sort-item{background:#fff;border:1px solid #dde3f5;border-radius:8px;padding:1rem 1.1rem;margin-bottom:.75rem}
+        .sort-item-text{font-size:.93rem;color:var(--text-primary,#1a1f36);margin-bottom:.75rem;font-style:italic;line-height:1.55}
+        .sort-btns{display:flex;gap:.5rem;flex-wrap:wrap}
+        .sort-btn{flex:1;min-width:80px;padding:.45rem .6rem;border:1.5px solid #c5d0f0;border-radius:6px;background:#fff;color:var(--navy,#1a1f36);font-family:'Playfair Display',serif;font-size:.8rem;font-weight:700;cursor:pointer;transition:background .15s,border-color .15s}
+        .sort-btn:hover:not(:disabled){background:#e8edfc;border-color:var(--navy,#1a1f36)}
+        .sort-btn:disabled{cursor:default;opacity:.6}
+        .sort-btn.sg-correct{background:#d4edda;border-color:#28a745;color:#155724;opacity:1}
+        .sort-btn.sg-wrong{background:#f8d7da;border-color:#dc3545;color:#721c24;opacity:1}
+        .sort-btn.sg-reveal{background:#d4edda;border-color:#28a745;color:#155724;opacity:1}
+        .sort-item-feedback{font-size:.82rem;margin-top:.55rem;color:var(--text-secondary,#5a6282);line-height:1.5;display:none}
+        .sort-item-feedback.visible{display:block}
+        .sort-score{margin-top:1rem;padding:.85rem 1.1rem;background:var(--navy,#1a1f36);color:#fff;border-radius:8px;font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;text-align:center;display:none}
+        .sort-reset{display:block;width:100%;margin-top:.6rem;padding:.5rem;background:transparent;border:1.5px solid rgba(255,255,255,.4);border-radius:6px;color:rgba(255,255,255,.85);font-size:.8rem;font-family:'Playfair Display',serif;cursor:pointer}
+        .sort-reset:hover{background:rgba(255,255,255,.1)}
+
     </style>
 </head>
 <body>
@@ -1136,38 +1169,146 @@ const MODULE_DATA = {
         lesson: {
             beginner: `
                 <h2>Who is Jesus Christ? — Lesson</h2>
-                <p>Jesus asked His disciples: <em>"Who do you say that I am?"</em> (Matthew 16:15). It is still the most important question anyone can answer. The Catholic Church teaches that Jesus is <strong>true God and true man</strong> — fully divine and fully human at the same time.</p>
+
+                <p>At one point, Jesus turned to His disciples and asked them directly: <em>"Who do you say that I am?"</em> (Matthew 16:15). Peter answered: "You are the Messiah, the Son of the living God." That question has never stopped being important. Who Jesus is changes everything — about God, about us, and about what happens after we die.</p>
+
+                <p>The Catholic Church's answer is this: Jesus is <strong>true God and true man</strong>. Completely God. Completely human. Both at the same time.</p>
 
                 <h3>True God</h3>
-                <p>Jesus is the Second Person of the Trinity — God the Son who has existed forever. He is not a great teacher who became God, or an angel sent to help us. He is God Himself who entered human history.</p>
+
+                <p>Jesus is not a great man who got promoted to God, or an angel God sent to speak for Him. He is God the Son — the Second Person of the Trinity — who has existed forever. He was not created. He did not begin when Mary became pregnant. He entered time, but He is eternal.</p>
+
+                <p>You can see his divine nature all through the Gospels. He calmed a storm with his words. He walked on water. He healed people who had been blind or paralyzed their whole lives. He raised the dead. And he forgave sins — which the religious leaders immediately recognized as a claim only God could make. "Who can forgive sins but God alone?" they asked (Mark 2:7). They were right. Only God can. And Jesus did.</p>
 
                 <h3>True Man</h3>
-                <p>Jesus was also completely human. He had a real body. He got tired, hungry, and sad. He had a mother named Mary and grew up in Nazareth. He experienced everything we experience — except sin.</p>
+
+                <p>At the same time, Jesus was completely human — not God pretending to have a body, but God actually becoming one of us. He was born of a real woman. He grew up in a small town called Nazareth. He learned to walk and talk and work with his hands. Joseph taught him carpentry.</p>
+
+                <p>He got tired. After a long day of teaching, he fell asleep on a boat during a storm (Mark 4:38). He got hungry. After forty days of fasting in the desert, "he was famished" (Matthew 4:2). He felt grief. When his friend Lazarus died, Jesus wept — even though he was about to raise him from the dead (John 11:35). He experienced everything we experience, with one difference: he never sinned.</p>
 
                 <div class="highlight-box">
                     <p>"And the Word became flesh and lived among us, and we have seen his glory."</p>
                     <cite>— John 1:14</cite>
                 </div>
 
-                <h3>Why Did Jesus Come?</h3>
-                <ul>
-                    <li>To reveal who God really is — a Father who loves us</li>
-                    <li>To save us from sin and death through His death and resurrection</li>
-                    <li>To show us how to live and what it means to love</li>
-                    <li>To give us a share in His own divine life</li>
-                </ul>
+                <div class="sort-game" id="jesusSortGame">
+                    <div class="sort-game-label">✦ Sorting Game</div>
+                    <div class="sort-game-title">True God or True Man?</div>
+                    <p class="sort-game-intro">Jesus is both — but each description below reveals one of his two natures. Sort them correctly, then think about what it means that both columns describe the same person.</p>
 
-                <p>The Resurrection is the proof of everything. If Jesus rose from the dead, then He really is who He claimed to be. And if He is who He claimed to be, then everything He said matters eternally.</p>
+                    <div class="sort-item" id="js-1">
+                        <p class="sort-item-text">Was born of the Virgin Mary and laid in a manger in Bethlehem.</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="True God" onclick="sortAnswer(this,'jesusSortGame','js-1','True God','True Man')">True God</button>
+                            <button class="sort-btn" data-value="True Man" onclick="sortAnswer(this,'jesusSortGame','js-1','True Man','True Man')">True Man</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-item" id="js-2">
+                        <p class="sort-item-text">Has existed forever — "In the beginning was the Word, and the Word was with God, and the Word was God." (John 1:1)</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="True God" onclick="sortAnswer(this,'jesusSortGame','js-2','True God','True God')">True God</button>
+                            <button class="sort-btn" data-value="True Man" onclick="sortAnswer(this,'jesusSortGame','js-2','True Man','True God')">True Man</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-item" id="js-3">
+                        <p class="sort-item-text">Got so tired during a boat crossing that he fell asleep during a violent storm.</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="True God" onclick="sortAnswer(this,'jesusSortGame','js-3','True God','True Man')">True God</button>
+                            <button class="sort-btn" data-value="True Man" onclick="sortAnswer(this,'jesusSortGame','js-3','True Man','True Man')">True Man</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-item" id="js-4">
+                        <p class="sort-item-text">Calmed that same storm with two words: "Peace! Be still!" — and the wind and waves obeyed him.</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="True God" onclick="sortAnswer(this,'jesusSortGame','js-4','True God','True God')">True God</button>
+                            <button class="sort-btn" data-value="True Man" onclick="sortAnswer(this,'jesusSortGame','js-4','True Man','True God')">True Man</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-item" id="js-5">
+                        <p class="sort-item-text">Wept at the tomb of his friend Lazarus before raising him from the dead.</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="True God" onclick="sortAnswer(this,'jesusSortGame','js-5','True God','True Man')">True God</button>
+                            <button class="sort-btn" data-value="True Man" onclick="sortAnswer(this,'jesusSortGame','js-5','True Man','True Man')">True Man</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-item" id="js-6">
+                        <p class="sort-item-text">Said to a paralyzed man, "Your sins are forgiven" — making a claim the religious leaders knew only God could make.</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="True God" onclick="sortAnswer(this,'jesusSortGame','js-6','True God','True God')">True God</button>
+                            <button class="sort-btn" data-value="True Man" onclick="sortAnswer(this,'jesusSortGame','js-6','True Man','True God')">True Man</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-score">
+                        <div class="sg-score-text"></div>
+                        <button class="sort-reset" onclick="resetSortGame('jesusSortGame')">Try Again</button>
+                    </div>
+                </div>
+
+                <h3>Why Did Jesus Come?</h3>
+
+                <p>Jesus did not come to give us better advice about how to be good people. He came to do something we could not do for ourselves.</p>
+
+                <p><strong>To show us who God really is.</strong> Before Jesus, people had a lot of ideas about God — distant, demanding, unpredictable. Jesus shows us a Father who runs down the road to meet his returning son, who searches all night for one lost sheep, who heals people on the Sabbath because the rules were never supposed to be more important than the person. "Whoever has seen me has seen the Father," Jesus says (John 14:9).</p>
+
+                <p><strong>To save us from sin and death.</strong> Sin is not just breaking rules. It is a rupture — a broken relationship between us and God. Jesus came to heal that rupture from the inside, by becoming one of us and offering his life on the cross. His death was not an accident or a tragedy. It was the plan.</p>
+
+                <p><strong>To give us a share in his own life.</strong> The goal was not just forgiveness. The goal was to bring us into the life of God himself. He rose from the dead so that we could too.</p>
+
+                <h3>The Question He Still Asks</h3>
+
+                <div class="activity-block">
+                    <div class="activity-label">✦ Think It Through</div>
+                    <div class="activity-title">Lord, Liar, or Lunatic?</div>
+                    <p class="activity-intro">A famous writer named C.S. Lewis made a simple argument about Jesus. Think through each option before revealing what he said.</p>
+                    <div class="activity-item">
+                        <p class="activity-q">Jesus claimed to be God. He forgave sins. He said "Before Abraham was, I am" — using the name God gave himself to Moses. If those claims are false, what does that make him?</p>
+                        <p class="activity-prompt">Option 1: He was a Liar — he knew he wasn't God and made it up anyway.</p>
+                        <details class="activity-reveal">
+                            <summary>What's wrong with this?</summary>
+                            <div class="activity-answer">A liar who knew his claims were false would be one of the most dishonest people in history — not a great moral teacher. His entire life and teaching would be built on a deliberate deception. Most people who have met Jesus through the Gospels find this very hard to believe about him.</div>
+                        </details>
+                    </div>
+                    <div class="activity-item">
+                        <p class="activity-prompt">Option 2: He was a Lunatic — he genuinely believed he was God but was wrong.</p>
+                        <details class="activity-reveal">
+                            <summary>What's wrong with this?</summary>
+                            <div class="activity-answer">Someone who sincerely believed they were God while being an ordinary person would be deeply confused — not the kind of calm, wise, clear-thinking person we see in the Gospels. His teaching, his relationships, and his composure under pressure don't look like someone out of touch with reality.</div>
+                        </details>
+                    </div>
+                    <div class="activity-item">
+                        <p class="activity-prompt">Option 3: He is Lord — his claims are true.</p>
+                        <details class="activity-reveal">
+                            <summary>What follows from this?</summary>
+                            <div class="activity-answer">If Jesus really is who he claimed to be, then everything he said matters — not as good advice, but as the words of God. C.S. Lewis's point: calling Jesus "a great moral teacher but not God" is not really an option on the table. His claims were too specific and too absolute for that middle ground to hold.</div>
+                        </details>
+                    </div>
+                </div>
             `,
             theologian: `
                 <h2>Who is Jesus Christ? — Theologian Level</h2>
-                <p>The Church's answer to "Who is Jesus?" is expressed in the doctrine of the <span class="key-term">Hypostatic Union</span>: Jesus Christ is one divine Person (the eternal Son of God) subsisting in two complete natures — one divine, one human. This was defined at the Council of Chalcedon (451 AD).</p>
 
-                <h3>The Chalcedonian Definition</h3>
-                <p>Chalcedon declared that Christ's two natures exist "without confusion, without change, without division, without separation." The natures are distinct but united in one Person. This refuted two persistent heresies:</p>
+                <p>The Church's answer to "Who is Jesus?" took four centuries of controversy, three major heresies, and four ecumenical councils to fully articulate. The result is the doctrine of the <span class="key-term">Hypostatic Union</span>: Jesus Christ is one divine Person — the eternal Son of God — subsisting in two complete natures, one divine and one human. This was defined at the Council of Chalcedon in 451 AD.</p>
+
+                <h3>The Road to Chalcedon: Three Heresies</h3>
+
+                <p>Each heresy solved the puzzle of Christ's identity by eliminating something essential. Understanding them is the fastest way to understand what the Church actually teaches.</p>
+
                 <ul>
-                    <li><span class="key-term">Nestorianism</span> — claimed Jesus was two persons loosely joined (Mary is not Theotokos, "Mother of God")</li>
-                    <li><span class="key-term">Monophysitism</span> — claimed Christ had only one (divine) nature, absorbing the human</li>
+                    <li><strong>Arianism</strong> (condemned at Nicaea, 325) denied the full divinity of Christ — the Son was the greatest creature, not God. If true, the Incarnation is not God entering history, and our salvation is not accomplished by God himself.</li>
+                    <li><strong>Nestorianism</strong> (condemned at Ephesus, 431) so sharply separated Christ's two natures that it effectively made him two persons — a human person and a divine person loosely joined. This meant Mary was not <em>Theotokos</em> (Mother of God) but only the mother of the human Jesus. The Council of Ephesus rejected this: because Christ is one Person, Mary is truly the Mother of God.</li>
+                    <li><strong>Monophysitism / Eutychianism</strong> (condemned at Chalcedon, 451) merged the two natures into one — the human nature was absorbed into the divine "like a drop of honey in the ocean." This seemed to protect Christ's divinity but gutted his humanity. If he is not fully human, he cannot fully redeem our humanity.</li>
                 </ul>
 
                 <div class="highlight-box">
@@ -1175,11 +1316,48 @@ const MODULE_DATA = {
                     <cite>— Council of Chalcedon, 451 AD</cite>
                 </div>
 
-                <h3>The Communicatio Idiomatum</h3>
-                <p>Because Christ is one Person, attributes of either nature can be predicated of the whole Person. We can say "God suffered" (attributing a human experience to the divine Person) and "Mary is the Mother of God" (Theotokos). This <span class="key-term">communicatio idiomatum</span> (communication of idioms) is not loose language but a precise theological conclusion of the Hypostatic Union.</p>
+                <div class="activity-block">
+                    <div class="activity-label">✦ Activity</div>
+                    <div class="activity-title">Identify the Heresy</div>
+                    <p class="activity-intro">Each statement misrepresents the Church's teaching about Christ. Identify which heresy it represents.</p>
+                    <div class="activity-item">
+                        <p class="activity-q">"Jesus was the most perfect human being God ever created — but he was still a creature, not God himself."</p>
+                        <details class="activity-reveal">
+                            <summary>Identify the Error</summary>
+                            <div class="activity-answer"><strong>Arianism.</strong> This treats the Son as a creature, however exalted. Nicaea rejected this: the Son is <em>homoousios</em>, of the same substance as the Father — not a created being of any kind.</div>
+                        </details>
+                    </div>
+                    <div class="activity-item">
+                        <p class="activity-q">"Mary is the mother of Jesus the man, but she cannot be called the Mother of God — the divine Son existed before her and independently of her."</p>
+                        <details class="activity-reveal">
+                            <summary>Identify the Error</summary>
+                            <div class="activity-answer"><strong>Nestorianism.</strong> This implicitly divides Christ into two persons — a human person born of Mary, and a divine person who exists independently. The Council of Ephesus defined that because Christ is one Person, Mary is rightly called <em>Theotokos</em>, Mother of God.</div>
+                        </details>
+                    </div>
+                    <div class="activity-item">
+                        <p class="activity-q">"After the Incarnation, Christ had one unified nature — his humanity was taken up and transformed into something divine. He was no longer human in the ordinary sense."</p>
+                        <details class="activity-reveal">
+                            <summary>Identify the Error</summary>
+                            <div class="activity-answer"><strong>Monophysitism (Eutychianism).</strong> This merges the two natures. Chalcedon insists the natures remain distinct "without confusion, without change" — the human nature is not dissolved into the divine. A Christ without a real human nature cannot redeem real human nature.</div>
+                        </details>
+                    </div>
+                </div>
 
-                <h3>The Soteriological Stakes</h3>
-                <p>The doctrine is not abstract — it is salvific. Gregory of Nazianzus stated the principle: <em>"What has not been assumed has not been healed."</em> If Jesus did not take on a complete human nature — body, soul, will, intellect — then that aspect of our humanity remains unredeemed. The fullness of Christ's humanity is required for the fullness of our salvation.</p>
+                <h3>The Chalcedonian Four Adverbs</h3>
+
+                <p>Chalcedon's definition protects the mystery from two sides simultaneously. The natures are united "without confusion, without change" — ruling out Monophysitism, which blends them. They are united "without division, without separation" — ruling out Nestorianism, which splits them. These four adverbs are not decorative. Each one closes off a specific error.</p>
+
+                <h3>Communicatio Idiomatum</h3>
+
+                <p>Because Christ is one Person, attributes of either nature can be predicated of that Person as a whole. This is the <span class="key-term">communicatio idiomatum</span> — the communication of attributes. We can say "God was born," "God suffered," "God died" — assigning what belongs to the human nature to the one divine Person. We can equally say "the man Jesus forgave sins" and "the man Jesus created the world" — since the same Person who is man is also God.</p>
+
+                <p>This is why "Mary is the Mother of God" is not pious exaggeration but precise theology. She did not give birth to a human person who happened to be associated with a divine person. She gave birth to the one Person who is God the Son.</p>
+
+                <h3>The Soteriological Principle</h3>
+                <div class="card-callout" data-card="aquinas"></div>
+                <p>Gregory of Nazianzus gave the Church its defining soteriological principle: <em>"What has not been assumed has not been healed."</em> If Christ did not take on a complete human nature — body, soul, rational will, intellect — then that dimension of our humanity remains outside the reach of his redemption. The fullness of the Incarnation is required for the fullness of salvation.</p>
+
+                <p>Thomas Aquinas extended this: the Incarnation is fitting not only because it heals human nature from sin, but because it elevates human nature to participate in divine life. The goal was never merely to restore what was lost in the Fall. The goal was <em>divinization</em> — <span class="key-term">theosis</span> — the sharing of human persons in the divine nature itself (2 Peter 1:4). A Christ who is not fully divine cannot give us divine life. A Christ who is not fully human cannot bring our humanity with him into that life.</p>
             `
         },
 
@@ -1289,6 +1467,59 @@ const MODULE_DATA = {
             ]
         }
 };
+
+// ── Sorting Game ──────────────────────────────────────────
+const SORT_FEEDBACK = {
+    'js-1-True God':    'Not quite. Being born of Mary is part of his human nature — God the Son took on human flesh and entered history through a real birth.',
+    'js-1-True Man':    'Correct. Jesus was born of the Virgin Mary in Bethlehem. His birth is proof that he became a real human being, not just a spirit who appeared human.',
+    'js-2-True God':    'Correct. Jesus has existed forever as the Second Person of the Trinity. He did not begin to exist when he was born — he entered time, but he is eternal.',
+    'js-2-True Man':    'Not quite. No human being has existed forever. Jesus is eternal because he is God — the Son who "was in the beginning with God" (John 1:2).',
+    'js-3-True Man':    'Correct. Getting tired is something human bodies do. Jesus fell asleep on a boat during a storm — a real human moment showing his complete humanity.',
+    'js-3-True God':    'Not quite. Tiredness is a human experience. Jesus getting tired shows he was genuinely human, not God pretending to have a body.',
+    'js-4-True God':    'Correct. Calming a storm with his words is something only God can do. The disciples asked each other, "Who is this, that even the wind and sea obey him?" (Mark 4:41).',
+    'js-4-True Man':    'Not quite. Humans do not command storms. This miracle reveals his divine nature — the power of the Creator over creation.',
+    'js-5-True Man':    'Correct. "Jesus wept" (John 11:35) is the shortest verse in the Bible. He cried at the tomb of his friend Lazarus — a real human grief.',
+    'js-5-True God':    'Not quite. Weeping is a human experience. The fact that Jesus cried shows he felt real human emotions, including sadness and love for his friends.',
+    'js-6-True God':    'Correct. Forgiving sins is something only God can do. When Jesus said "Your sins are forgiven," the religious leaders understood exactly what he was claiming.',
+    'js-6-True Man':    'Not quite. No human being has the authority to forgive sins against God. When Jesus forgave sins, he was acting from his divine nature.',
+};
+
+function sortAnswer(btn, gameId, itemId, chosen, correct) {
+    const item = document.getElementById(itemId);
+    if (item.dataset.answered) return;
+    item.dataset.answered = '1';
+    item.querySelectorAll('.sort-btn').forEach(b => {
+        b.disabled = true;
+        if (b.dataset.value === correct && chosen !== correct) b.classList.add('sg-reveal');
+    });
+    btn.classList.add(chosen === correct ? 'sg-correct' : 'sg-wrong');
+    const fb = item.querySelector('.sort-item-feedback');
+    fb.textContent = SORT_FEEDBACK[itemId + '-' + chosen] || '';
+    fb.classList.add('visible');
+    const game = document.getElementById(gameId);
+    const total = game.querySelectorAll('.sort-item').length;
+    const done  = game.querySelectorAll('.sort-item[data-answered]').length;
+    if (done === total) {
+        const numCorrect = game.querySelectorAll('.sort-btn.sg-correct').length;
+        const scoreEl = game.querySelector('.sort-score');
+        scoreEl.querySelector('.sg-score-text').textContent =
+            numCorrect + ' out of ' + total + ' correct' + (numCorrect === total ? ' — Perfect!' : '. Review the ones in red and try again.');
+        scoreEl.style.display = 'block';
+    }
+}
+
+function resetSortGame(gameId) {
+    const game = document.getElementById(gameId);
+    game.querySelectorAll('.sort-item').forEach(item => {
+        delete item.dataset.answered;
+        item.querySelectorAll('.sort-btn').forEach(b => {
+            b.disabled = false;
+            b.classList.remove('sg-correct', 'sg-wrong', 'sg-reveal');
+        });
+        item.querySelector('.sort-item-feedback').classList.remove('visible');
+    });
+    game.querySelector('.sort-score').style.display = 'none';
+}
 
 window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
