@@ -979,6 +979,37 @@
             color: var(--navy);
         }
 
+        .activity-block{background:#fdf8ef;border:1px solid #e8d9b5;border-left:4px solid #b8900a;border-radius:10px;padding:1.5rem 1.75rem;margin:1.75rem 0}
+        .activity-label{font-family:'Playfair Display',serif;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#b8900a;margin-bottom:.3rem}
+        .activity-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--navy,#1a1f36);margin-bottom:.6rem}
+        .activity-intro{font-size:.92rem;color:var(--text-secondary,#5a6282);margin-bottom:1.1rem}
+        .activity-item{border-top:1px solid #e8d9b5;padding-top:1rem;margin-top:1rem}
+        .activity-item:first-of-type{border-top:none;padding-top:0;margin-top:0}
+        .activity-q{font-size:.93rem;font-style:italic;color:var(--text-primary,#1a1f36);margin-bottom:.4rem}
+        .activity-prompt{font-size:.88rem;font-weight:600;color:var(--navy,#1a1f36);margin-bottom:.5rem}
+        .activity-reveal summary{cursor:pointer;display:inline-block;font-family:'Playfair Display',serif;font-size:.8rem;font-weight:700;color:#b8900a;padding:.3rem .75rem;border:1px solid #b8900a;border-radius:4px;user-select:none;list-style:none}
+        .activity-reveal summary::-webkit-details-marker{display:none}
+        .activity-reveal[open] summary{background:#b8900a;color:#fff}
+        .activity-answer{margin-top:.75rem;padding:.75rem 1rem;background:#fff;border:1px solid #e8d9b5;border-radius:6px;font-size:.9rem;color:var(--text-primary,#1a1f36);line-height:1.6}
+        .sort-game{background:#f0f4ff;border:1px solid #c5d0f0;border-left:4px solid var(--navy,#1a1f36);border-radius:10px;padding:1.5rem 1.75rem;margin:1.75rem 0}
+        .sort-game-label{font-family:'Playfair Display',serif;font-size:.65rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--navy,#1a1f36);margin-bottom:.3rem}
+        .sort-game-title{font-family:'Playfair Display',serif;font-size:1.1rem;font-weight:700;color:var(--navy,#1a1f36);margin-bottom:.4rem}
+        .sort-game-intro{font-size:.92rem;color:var(--text-secondary,#5a6282);margin-bottom:1.1rem}
+        .sort-item{background:#fff;border:1px solid #dde3f5;border-radius:8px;padding:1rem 1.1rem;margin-bottom:.75rem}
+        .sort-item-text{font-size:.93rem;color:var(--text-primary,#1a1f36);margin-bottom:.75rem;line-height:1.55}
+        .sort-btns{display:flex;gap:.5rem;flex-wrap:wrap}
+        .sort-btn{flex:1;min-width:80px;padding:.45rem .6rem;border:1.5px solid #c5d0f0;border-radius:6px;background:#fff;color:var(--navy,#1a1f36);font-family:'Playfair Display',serif;font-size:.78rem;font-weight:700;cursor:pointer;transition:background .15s,border-color .15s}
+        .sort-btn:hover:not(:disabled){background:#e8edfc;border-color:var(--navy,#1a1f36)}
+        .sort-btn:disabled{cursor:default;opacity:.6}
+        .sort-btn.sg-correct{background:#d4edda;border-color:#28a745;color:#155724;opacity:1}
+        .sort-btn.sg-wrong{background:#f8d7da;border-color:#dc3545;color:#721c24;opacity:1}
+        .sort-btn.sg-reveal{background:#d4edda;border-color:#28a745;color:#155724;opacity:1}
+        .sort-item-feedback{font-size:.82rem;margin-top:.55rem;color:var(--text-secondary,#5a6282);line-height:1.5;display:none}
+        .sort-item-feedback.visible{display:block}
+        .sort-score{margin-top:1rem;padding:.85rem 1.1rem;background:var(--navy,#1a1f36);color:#fff;border-radius:8px;font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;text-align:center;display:none}
+        .sort-reset{display:block;width:100%;margin-top:.6rem;padding:.5rem;background:transparent;border:1.5px solid rgba(255,255,255,.4);border-radius:6px;color:rgba(255,255,255,.85);font-size:.8rem;font-family:'Playfair Display',serif;cursor:pointer}
+        .sort-reset:hover{background:rgba(255,255,255,.1)}
+
     </style>
 </head>
 <body>
@@ -1136,43 +1167,137 @@ const MODULE_DATA = {
         lesson: {
             beginner: `
                 <h2>The Seven Sacraments — Lesson</h2>
-                <p>A <span class="key-term">sacrament</span> is an outward sign — something we can see, hear, or touch — that gives us God's grace on the inside. Jesus gave the Church seven sacraments, one for each major moment of our spiritual life.</p>
+
+                <p>Think about the biggest moments in a person's life. Being born. Growing up. Making a lifelong promise to someone. Getting sick. Dying. The Catholic Church has a sacrament for every one of those moments, not just as a ceremony, but as a real encounter with Jesus.</p>
+
+                <p>A <span class="key-term">sacrament</span> is an outward sign, something you can see, hear, or touch, that gives you God's grace on the inside. Jesus gave the Church exactly seven of them. Each one does something real. Each one is a moment when Jesus shows up.</p>
 
                 <h3>The Seven Sacraments</h3>
-                <ul>
-                    <li><strong>Baptism</strong> — We are born into God's family and sin is washed away.</li>
-                    <li><strong>Confirmation</strong> — We receive the Holy Spirit to strengthen our faith.</li>
-                    <li><strong>Eucharist</strong> — We receive Jesus Himself in Holy Communion.</li>
-                    <li><strong>Reconciliation (Confession)</strong> — Our sins are forgiven by God through the priest.</li>
-                    <li><strong>Anointing of the Sick</strong> — God heals and comforts those who are ill or dying.</li>
-                    <li><strong>Holy Orders</strong> — Men are ordained as deacons, priests, or bishops.</li>
-                    <li><strong>Matrimony</strong> — A man and woman are united in a lifelong covenant of love.</li>
-                </ul>
+
+                <p><strong>Baptism</strong> is the first and most important. Water is poured over you (or you are immersed in it), and in that moment sin is washed away, you become a child of God, and you are born into the Church. You cannot receive any other sacrament without Baptism first. It is the door.</p>
+
+                <p><strong>Confirmation</strong> seals what Baptism began. The bishop anoints you with sacred oil called <em>chrism</em> and the Holy Spirit comes to you in a new and strengthening way, the same Spirit who came on the disciples at Pentecost. Confirmation makes you a full, mature member of the Church and gives you the courage to live your faith out loud.</p>
+
+                <p><strong>Eucharist</strong> is the greatest of all the sacraments. In Holy Communion, you do not receive a symbol of Jesus or a reminder of Jesus. You receive Jesus himself, his body and blood, soul and divinity, under the appearance of bread and wine. The Mass is not a reenactment of the Last Supper. It is the Last Supper, made present again.</p>
+
+                <p><strong>Reconciliation</strong> (also called Confession) is for what comes after Baptism. When we sin, we damage our friendship with God. In Reconciliation, we confess our sins to a priest, feel genuine sorrow, and hear the words of absolution. God forgives us through the priest. Jesus gave this power directly to the apostles: "Whose sins you forgive are forgiven them" (John 20:23). The sacrament does not just clear a ledger. It heals a relationship.</p>
+
+                <p><strong>Anointing of the Sick</strong> is for those who are seriously ill or close to death. A priest anoints the person with oil and prays over them. God brings comfort, sometimes physical healing, and always spiritual strength. It is not a sacrament only for the moment of death. It is for anyone who is seriously sick and needs God's presence in a particular way.</p>
+
+                <p><strong>Holy Orders</strong> is how the Church ordains men to serve as deacons, priests, or bishops. Through the laying on of hands by a bishop, a man is set apart and empowered to act in the person of Christ: to celebrate Mass, forgive sins, and shepherd God's people. The ordained ministry goes back directly to Jesus choosing and sending the twelve apostles.</p>
+
+                <p><strong>Matrimony</strong> is not just a wedding. It is a sacrament in which a man and a woman make a lifelong covenant before God, promising to love each other freely, totally, faithfully, and fruitfully. Their love becomes a sign of Christ's love for the Church. And it is the couple themselves who are the ministers of this sacrament to each other.</p>
 
                 <div class="highlight-box">
                     <p>"I came that they may have life, and have it abundantly."</p>
                     <cite>— John 10:10</cite>
                 </div>
 
-                <h3>Sacraments of Initiation, Healing, and Service</h3>
-                <p>The sacraments are grouped into three categories:</p>
-                <ul>
-                    <li><strong>Initiation</strong> (Baptism, Confirmation, Eucharist) — these make us full members of the Church</li>
-                    <li><strong>Healing</strong> (Reconciliation, Anointing of the Sick) — these restore and strengthen us</li>
-                    <li><strong>Service</strong> (Holy Orders, Matrimony) — these build up the Church and family</li>
-                </ul>
-                <p>The sacraments aren't rituals we perform — they are moments when Jesus meets us and gives us exactly what we need.</p>
+                <div class="sort-game" id="sacramentsSortGame">
+                    <div class="sort-game-label">✦ Sorting Game</div>
+                    <div class="sort-game-title">Which Category?</div>
+                    <p class="sort-game-intro">The seven sacraments fall into three groups: Initiation (entering the Church), Healing (restoring us when we fall), and Service (building up the Church and family). Sort each one.</p>
+
+                    <div class="sort-item" id="ss-1">
+                        <p class="sort-item-text">Baptism — washes away sin and makes us children of God and members of the Church.</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="Initiation" onclick="sortAnswer(this,'sacramentsSortGame','ss-1','Initiation','Initiation')">Initiation</button>
+                            <button class="sort-btn" data-value="Healing"    onclick="sortAnswer(this,'sacramentsSortGame','ss-1','Healing','Initiation')">Healing</button>
+                            <button class="sort-btn" data-value="Service"    onclick="sortAnswer(this,'sacramentsSortGame','ss-1','Service','Initiation')">Service</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-item" id="ss-2">
+                        <p class="sort-item-text">Confirmation — seals us with the Holy Spirit and completes our initiation into the Church.</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="Initiation" onclick="sortAnswer(this,'sacramentsSortGame','ss-2','Initiation','Initiation')">Initiation</button>
+                            <button class="sort-btn" data-value="Healing"    onclick="sortAnswer(this,'sacramentsSortGame','ss-2','Healing','Initiation')">Healing</button>
+                            <button class="sort-btn" data-value="Service"    onclick="sortAnswer(this,'sacramentsSortGame','ss-2','Service','Initiation')">Service</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-item" id="ss-3">
+                        <p class="sort-item-text">Eucharist — we receive Jesus himself in Holy Communion; the source and summit of Christian life.</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="Initiation" onclick="sortAnswer(this,'sacramentsSortGame','ss-3','Initiation','Initiation')">Initiation</button>
+                            <button class="sort-btn" data-value="Healing"    onclick="sortAnswer(this,'sacramentsSortGame','ss-3','Healing','Initiation')">Healing</button>
+                            <button class="sort-btn" data-value="Service"    onclick="sortAnswer(this,'sacramentsSortGame','ss-3','Service','Initiation')">Service</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-item" id="ss-4">
+                        <p class="sort-item-text">Reconciliation — God forgives our sins through a priest; our friendship with God is restored.</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="Initiation" onclick="sortAnswer(this,'sacramentsSortGame','ss-4','Initiation','Healing')">Initiation</button>
+                            <button class="sort-btn" data-value="Healing"    onclick="sortAnswer(this,'sacramentsSortGame','ss-4','Healing','Healing')">Healing</button>
+                            <button class="sort-btn" data-value="Service"    onclick="sortAnswer(this,'sacramentsSortGame','ss-4','Service','Healing')">Service</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-item" id="ss-5">
+                        <p class="sort-item-text">Anointing of the Sick — God brings comfort and strength to those who are seriously ill or near death.</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="Initiation" onclick="sortAnswer(this,'sacramentsSortGame','ss-5','Initiation','Healing')">Initiation</button>
+                            <button class="sort-btn" data-value="Healing"    onclick="sortAnswer(this,'sacramentsSortGame','ss-5','Healing','Healing')">Healing</button>
+                            <button class="sort-btn" data-value="Service"    onclick="sortAnswer(this,'sacramentsSortGame','ss-5','Service','Healing')">Service</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-item" id="ss-6">
+                        <p class="sort-item-text">Holy Orders — men are ordained as deacons, priests, or bishops to serve and shepherd God's people.</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="Initiation" onclick="sortAnswer(this,'sacramentsSortGame','ss-6','Initiation','Service')">Initiation</button>
+                            <button class="sort-btn" data-value="Healing"    onclick="sortAnswer(this,'sacramentsSortGame','ss-6','Healing','Service')">Healing</button>
+                            <button class="sort-btn" data-value="Service"    onclick="sortAnswer(this,'sacramentsSortGame','ss-6','Service','Service')">Service</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-item" id="ss-7">
+                        <p class="sort-item-text">Matrimony — a man and a woman make a lifelong covenant of love, becoming a sign of Christ's love for the Church.</p>
+                        <div class="sort-btns">
+                            <button class="sort-btn" data-value="Initiation" onclick="sortAnswer(this,'sacramentsSortGame','ss-7','Initiation','Service')">Initiation</button>
+                            <button class="sort-btn" data-value="Healing"    onclick="sortAnswer(this,'sacramentsSortGame','ss-7','Healing','Service')">Healing</button>
+                            <button class="sort-btn" data-value="Service"    onclick="sortAnswer(this,'sacramentsSortGame','ss-7','Service','Service')">Service</button>
+                        </div>
+                        <div class="sort-item-feedback"></div>
+                    </div>
+
+                    <div class="sort-score">
+                        <div class="sg-score-text"></div>
+                        <button class="sort-reset" onclick="resetSortGame('sacramentsSortGame')">Try Again</button>
+                    </div>
+                </div>
+
+                <h3>Why Physical Signs?</h3>
+
+                <p>God uses physical things. Water. Oil. Bread. Wine. The touch of hands. Because we are physical people. We are not just souls temporarily stuck in bodies. We are body and soul together, and God meets us as we actually are.</p>
+
+                <p>When water is poured at Baptism, something invisible and eternal really happens. When bread and wine are consecrated at Mass, something impossible by human power really takes place. The physical sign does not just point to grace. It delivers it.</p>
+
+                <h3>Sacraments Across a Whole Life</h3>
+
+                <p>Lay them out across a life and you see what the Church is doing. You are born into God's family (Baptism). You grow into mature faith (Confirmation). You are nourished week by week (Eucharist). You fall and are restored (Reconciliation). You find your vocation, whether in married life (Matrimony) or ordained service (Holy Orders). And when you are sick or dying, God is there too (Anointing of the Sick). No major moment of human life is left without a sacrament to meet it.</p>
+
+                <p>The sacraments are not things we do for God. They are things God does for us.</p>
             `,
             theologian: `
                 <h2>The Seven Sacraments — Theologian Level</h2>
-                <p>The Council of Trent (1547) definitively defined that Christ instituted exactly seven sacraments, each conferring the grace it signifies <em>ex opere operato</em> — by the very performance of the act, not by the merit of the minister or recipient. This distinguishes Catholic sacramentology from both Protestant ordinances and magic.</p>
+
+                <p>The Council of Trent (1547) definitively defined that Christ instituted exactly seven sacraments. No more, no fewer. This stood against Protestant reformers who accepted only two (Baptism and Eucharist) or none at all. Each sacrament confers the grace it signifies <em>ex opere operato</em>: by the very performance of the sacramental act, not by the merit of the minister or the subjective faith of the recipient. This principle is the cornerstone of Catholic sacramental theology and distinguishes it from both Protestant ordinance theology and any form of mechanical magic.</p>
 
                 <h3>Matter, Form, and Minister</h3>
-                <p>Scholastic theology, following Aristotle's hylomorphism, analyzes each sacrament according to:</p>
+
+                <p>Scholastic theology, following Aristotle's hylomorphism, analyzes each sacrament through three elements:</p>
                 <ul>
-                    <li><span class="key-term">Matter</span> — the physical element (water, oil, bread, wine, hands)</li>
-                    <li><span class="key-term">Form</span> — the words pronounced that give the action its meaning</li>
-                    <li><span class="key-term">Minister</span> — the person who performs the sacramental action with proper intention</li>
+                    <li><span class="key-term">Matter</span>: the physical element used. Water for Baptism, chrism oil for Confirmation, bread and wine for Eucharist, the penitent's acts for Reconciliation, oil of the sick for Anointing, the laying on of hands for Holy Orders, and the spouses' consent for Matrimony.</li>
+                    <li><span class="key-term">Form</span>: the words spoken that specify the meaning of the act and determine what grace is conferred. Changing the form substantially can invalidate the sacrament.</li>
+                    <li><span class="key-term">Minister</span>: the person who performs the sacramental action with the intention of doing what the Church does. For most sacraments this is an ordained minister; for Matrimony, the spouses are the ministers to each other; for Baptism in danger of death, any person with right intention may baptize.</li>
                 </ul>
 
                 <div class="highlight-box">
@@ -1180,11 +1305,48 @@ const MODULE_DATA = {
                     <cite>— Catechism of the Catholic Church, §1084</cite>
                 </div>
 
-                <h3>Character and Res et Sacramentum</h3>
-                <p>Three sacraments — Baptism, Confirmation, and Holy Orders — imprint an indelible <span class="key-term">sacramental character</span> on the soul, which is why they cannot be repeated. The character configures the recipient to Christ in a permanent way: as sharer in His priesthood (Baptism/Confirmation) or as ordained minister of His priesthood (Holy Orders).</p>
+                <div class="activity-block">
+                    <div class="activity-label">✦ Activity</div>
+                    <div class="activity-title">Name the Matter</div>
+                    <p class="activity-intro">Each description below points to one sacrament. Before revealing, identify both the sacrament and its matter, the physical element used.</p>
+                    <div class="activity-item">
+                        <p class="activity-q">A bishop places his hands on a man's head in silence, then prays the consecratory prayer. The man is permanently changed in his relationship to Christ and His Church.</p>
+                        <details class="activity-reveal">
+                            <summary>Reveal Answer</summary>
+                            <div class="activity-answer"><strong>Holy Orders.</strong> The matter is the laying on of hands; the form is the consecratory prayer. The silence during the imposition of hands is itself significant. It is the moment the sacrament is conferred. The minister must be a bishop in valid apostolic succession.</div>
+                        </details>
+                    </div>
+                    <div class="activity-item">
+                        <p class="activity-q">A priest traces a cross on the forehead, hands, and other senses of a person who has suffered a stroke and is in the hospital. He anoints with blessed oil and prays for healing and peace.</p>
+                        <details class="activity-reveal">
+                            <summary>Reveal Answer</summary>
+                            <div class="activity-answer"><strong>Anointing of the Sick.</strong> The matter is the oil of the sick (blessed by the bishop at the Chrism Mass); the form is the prayer "Through this holy anointing may the Lord in his love and mercy help you with the grace of the Holy Spirit." Previously called "Last Rites" or "Extreme Unction," the Church clarified at Vatican II that this sacrament is for any serious illness, not only imminent death.</div>
+                        </details>
+                    </div>
+                    <div class="activity-item">
+                        <p class="activity-q">At the altar, a priest speaks words over bread and wine. The appearance stays the same. Everything else changes.</p>
+                        <details class="activity-reveal">
+                            <summary>Reveal Answer</summary>
+                            <div class="activity-answer"><strong>Eucharist.</strong> The matter is wheat bread and grape wine; the form is the words of institution ("This is my body... this is my blood"). The Council of Trent defined <em>transubstantiation</em>: the entire substance of the bread and wine is converted into the body and blood of Christ, while the accidents (appearance, taste, texture) remain. What looks like bread is no longer bread in any meaningful sense. It is Christ.</div>
+                        </details>
+                    </div>
+                </div>
 
-                <h3>Sacraments and Salvation</h3>
-                <p>While the Church teaches that the sacraments are the ordinary means of salvation, Catholic theology also affirms <em>baptism of desire</em> — those who, through no fault of their own, do not receive the sacrament but sincerely seek God can be saved. Grace is not imprisoned in the sacraments; rather, the sacraments are the privileged channels through which grace normally flows.</p>
+                <h3>Ex Opere Operato: Validity vs. Fruitfulness</h3>
+
+                <p>The principle of <em>ex opere operato</em> has an important qualification. It governs the <em>validity</em> of the sacrament: whether the sacrament truly takes place. It does not guarantee its <em>fruitfulness</em>: how much grace actually takes root in the soul. A person who receives Communion in a state of mortal sin commits sacrilege and receives no sanctifying grace, though the sacrament is valid. A person who confesses without genuine contrition receives no absolution, though the words were spoken.</p>
+
+                <p>This distinction matters pastorally. The Church's sacramental ministry is grounded in the reliability of Christ's action, not the holiness of the minister. A priest in mortal sin still confects a valid Eucharist. An unworthy confessor still absolves validly. The people of God do not depend on the holiness of their ministers for access to grace. They depend on Christ, who acts through imperfect instruments.</p>
+
+                <h3>Sacramental Character and the Unrepeatable Three</h3>
+
+                <p>Baptism, Confirmation, and Holy Orders each imprint an indelible <span class="key-term">sacramental character</span> on the soul. This is a permanent spiritual mark, a configuration to Christ that cannot be undone or repeated. A validly baptized person who apostatizes and later returns to the Church is not re-baptized. The character remains. A priest who is laicized retains his ordination. He is forbidden to exercise it, but he remains ontologically a priest.</p>
+
+                <p>The character configures the recipient to Christ in distinct modes: Baptism and Confirmation configure the faithful to share in Christ's priestly, prophetic, and kingly offices as members of his Body. Holy Orders configures the ordained minister to act <em>in persona Christi capitis</em> (in the person of Christ the head), particularly in the celebration of the Eucharist and the forgiveness of sins.</p>
+
+                <h3>Ordinary Means and Baptism of Desire</h3>
+
+                <p>The Church teaches that the sacraments are the ordinary means through which God's saving grace reaches human beings. This does not mean grace is imprisoned in the sacraments. Catholic theology affirms <em>baptism of desire</em>: those who, through no fault of their own, never received sacramental Baptism but sincerely sought God and lived according to their conscience can be saved. God is not bound by the sacraments, even though we are.</p>
             `
         },
 
@@ -1194,8 +1356,8 @@ const MODULE_DATA = {
                 <div class="reading-meta">From the Catechism of the Catholic Church, §§1113–1116 (simplified)</div>
                 <div class="reading-body">
                     <p>The sacraments of the Church were instituted by Christ. They are his gift to us. There are seven sacraments: Baptism, Confirmation, Eucharist, Penance, Anointing of the Sick, Holy Orders, and Matrimony.</p>
-                    <p>The sacraments touch all the stages and important moments of Christian life. They give us the grace we need at each stage. They make the Church, and the Church makes them. Through the sacraments, Jesus continues his work of saving and healing us today — not just two thousand years ago in Palestine, but right here, right now.</p>
-                    <p>Each sacrament uses physical things — water, oil, bread, wine, words, hands — because we are physical people. God meets us where we are. He comes to us through things we can experience with our senses, and through them, He changes us on the inside.</p>
+                    <p>The sacraments touch all the stages and important moments of Christian life. They give us the grace we need at each stage. They make the Church, and the Church makes them. Through the sacraments, Jesus continues his work of saving and healing us today, not just two thousand years ago in Palestine, but right here, right now.</p>
+                    <p>Each sacrament uses physical things: water, oil, bread, wine, words, hands. We are physical people, and God meets us where we are. He comes to us through things we can experience with our senses, and through them, He changes us on the inside.</p>
                 </div>
                 <div class="reflection-block">
                     <h4>Reflect on These Questions</h4>
@@ -1210,15 +1372,15 @@ const MODULE_DATA = {
                 <h2>Reading: Ex Opere Operato and the Council of Trent</h2>
                 <div class="reading-meta">Historical and dogmatic theology — Council of Trent, Session VII (1547)</div>
                 <div class="reading-body">
-                    <p>One of the most important — and most misunderstood — principles of Catholic sacramental theology is the phrase <em>ex opere operato</em>: "from the work worked." The Council of Trent defined this against the Protestant reformers who argued that the effectiveness of a sacrament depended entirely on the faith of the recipient.</p>
-                    <p>The Catholic position is more subtle and more robust: the sacraments work because of Christ's action, not ours. A Baptism performed by an unworthy priest is still a valid Baptism, because it is Christ who baptizes. A priest in a state of mortal sin who consecrates the Eucharist still confects a valid Eucharist. The grace is real regardless of human failure — because the source is divine, not human.</p>
-                    <p>This does not mean faith and disposition are irrelevant. The Catechism clarifies that the sacrament works <em>ex opere operato</em> with respect to its validity, but the <em>fruitfulness</em> of the sacrament — how much grace actually takes root in the soul — depends on the recipient's dispositions. A person who approaches Communion in mortal sin commits a sacrilege and receives no grace, though the sacrament remains valid.</p>
-                    <p>This distinction is pastorally important: it grounds the Church's sacramental ministry in the reliability of Christ, not the holiness of the minister. It is also the theological foundation for why the Church takes sacramental form and matter so seriously — a priest who changes the words of consecration jeopardizes validity, not merely aesthetics.</p>
+                    <p>One of the most important and most misunderstood principles of Catholic sacramental theology is the phrase <em>ex opere operato</em>: "from the work worked." The Council of Trent defined this against the Protestant reformers who argued that the effectiveness of a sacrament depended entirely on the faith of the recipient.</p>
+                    <p>The Catholic position is more subtle and more robust: the sacraments work because of Christ's action, not ours. A Baptism performed by an unworthy priest is still a valid Baptism, because it is Christ who baptizes. A priest in a state of mortal sin who consecrates the Eucharist still confects a valid Eucharist. The grace is real regardless of human failure, because the source is divine, not human.</p>
+                    <p>This does not mean faith and disposition are irrelevant. The Catechism clarifies that the sacrament works <em>ex opere operato</em> with respect to its validity, but the <em>fruitfulness</em> of the sacrament, meaning how much grace actually takes root in the soul, depends on the recipient's dispositions. A person who approaches Communion in mortal sin commits a sacrilege and receives no grace, though the sacrament remains valid.</p>
+                    <p>The distinction grounds the Church's sacramental ministry in the reliability of Christ, not the holiness of the minister. It is also the theological foundation for why the Church takes sacramental form and matter so seriously. A priest who changes the words of consecration jeopardizes validity, not merely aesthetics.</p>
                 </div>
                 <div class="reflection-block">
                     <h4>Theological Reflection</h4>
                     <ol>
-                        <li>Why might the Protestant emphasis on faith as the source of sacramental efficacy seem appealing — and what does Catholic theology offer in response?</li>
+                        <li>Why might the Protestant emphasis on faith as the source of sacramental efficacy seem appealing? And what does Catholic theology offer in response?</li>
                         <li>What is the difference between the validity of a sacrament and its fruitfulness? Why does this distinction matter practically?</li>
                         <li>How does ex opere operato protect the faithful from dependence on the holiness of their priests?</li>
                     </ol>
@@ -1232,25 +1394,25 @@ const MODULE_DATA = {
                 q: "How many sacraments did Jesus give the Church?",
                 options: ["Three","Five","Seven","Twelve"],
                 correct: 2,
-                explanation: "Jesus gave the Church seven sacraments — one for each major moment of our spiritual life, from birth into God's family through death."
+                explanation: "Jesus gave the Church seven sacraments, one for each major moment of our spiritual life, from birth into God's family through death."
             },
             {
                 q: "Which sacrament washes away sin and makes us members of God's family?",
                 options: ["Confirmation","Baptism","Eucharist","Holy Orders"],
                 correct: 1,
-                explanation: "Baptism is the first sacrament. It washes away sin, makes us children of God, and brings us into the Church — God's family."
+                explanation: "Baptism is the first sacrament. It washes away sin, makes us children of God, and brings us into the Church, God's family."
             },
             {
                 q: "In which sacrament do we receive Jesus himself in Holy Communion?",
                 options: ["Reconciliation","Anointing of the Sick","Matrimony","Eucharist"],
                 correct: 3,
-                explanation: "In the Eucharist, we receive Jesus himself — his body and blood — in Holy Communion. It is the source and summit of the Christian life."
+                explanation: "In the Eucharist, we receive Jesus himself, his body and blood, in Holy Communion. It is the source and summit of the Christian life."
             },
             {
                 q: "What is a sacrament?",
                 options: ["A prayer said in Latin","An outward sign that gives us God's grace on the inside","A rule the Church requires us to follow","A gift we give to God during Mass"],
                 correct: 1,
-                explanation: "A sacrament is an outward sign — something we can see, hear, or touch — that gives us God's grace on the inside. Jesus instituted all seven sacraments."
+                explanation: "A sacrament is an outward sign, something we can see, hear, or touch, that gives us God's grace on the inside. Jesus instituted all seven sacraments."
             },
             {
                 q: "In which sacrament are our sins forgiven by God through a priest?",
@@ -1270,29 +1432,90 @@ const MODULE_DATA = {
                             q: "Which three sacraments make up the 'Sacraments of Initiation'?",
                             options: ["Baptism, Matrimony, Holy Orders", "Baptism, Confirmation, Eucharist", "Confession, Anointing, Confirmation", "Eucharist, Holy Orders, Anointing"],
                             correct: 1,
-                            explanation: "Baptism, Confirmation, and Eucharist are the Sacraments of Initiation — they make us full members of the Body of Christ."
+                            explanation: "Baptism, Confirmation, and Eucharist are the Sacraments of Initiation. They make us full members of the Body of Christ."
                         },
                         {
                             q: "The phrase 'ex opere operato' means the sacraments work because of:",
                             options: ["The faith of the recipient", "The holiness of the priest", "Christ's action, not human merit", "The bishop's approval"],
                             correct: 2,
-                            explanation: "Ex opere operato means 'from the work worked' — the sacrament's validity comes from Christ's action, not the minister's or recipient's holiness."
+                            explanation: "Ex opere operato means 'from the work worked.' The sacrament's validity comes from Christ's action, not the minister's or recipient's holiness."
                         },
                         {
                             q: "Which three sacraments imprint an indelible mark on the soul and cannot be repeated?",
                             options: ["Eucharist, Reconciliation, Anointing", "Matrimony, Holy Orders, Confirmation", "Baptism, Confirmation, Holy Orders", "Baptism, Eucharist, Matrimony"],
                             correct: 2,
-                            explanation: "Baptism, Confirmation, and Holy Orders each imprint a permanent sacramental character — configuring the recipient to Christ in an unrepeatable way."
+                            explanation: "Baptism, Confirmation, and Holy Orders each imprint a permanent sacramental character, configuring the recipient to Christ in an unrepeatable way."
                         },
                         {
                             q: "A sacrament uses physical elements (water, oil, bread) because:",
                             options: ["Traditions required it", "God meets physical people through physical things", "The words alone are not holy enough", "It makes the ceremony longer"],
                             correct: 1,
-                            explanation: "We are embodied beings. God meets us where we are — through things we can see, touch, and taste — and through them works an interior transformation."
+                            explanation: "We are embodied beings. God meets us where we are, through things we can see, touch, and taste, and through them works an interior transformation."
                         }
             ]
         }
 };
+
+const SORT_FEEDBACK = {
+    'ss-1-Initiation':  'Correct. Baptism is the first sacrament of initiation. It makes us children of God and members of the Church.',
+    'ss-1-Healing':     'Not quite. Baptism begins our life in the Church. It is a sacrament of initiation, not healing.',
+    'ss-1-Service':     'Not quite. Baptism is about entering the Church family, not serving a specific vocation. It is a sacrament of initiation.',
+    'ss-2-Initiation':  'Correct. Confirmation completes our initiation into the Church, sealing us with the gifts of the Holy Spirit.',
+    'ss-2-Healing':     'Not quite. Confirmation strengthens our faith through the Holy Spirit. It is the second sacrament of initiation.',
+    'ss-2-Service':     'Not quite. Confirmation is about completing our initiation, not about a vocation of service.',
+    'ss-3-Initiation':  'Correct. The Eucharist is the third and greatest sacrament of initiation: Jesus himself, received in Holy Communion.',
+    'ss-3-Healing':     'Not quite. The Eucharist nourishes us, but its primary role is completing our initiation into the Body of Christ.',
+    'ss-3-Service':     'Not quite. The Eucharist is the source and summit of Christian life, a sacrament of initiation, not service.',
+    'ss-4-Healing':     'Correct. Reconciliation (Confession) heals the wound of sin and restores our friendship with God.',
+    'ss-4-Initiation':  'Not quite. Reconciliation restores us when we fall. It is a sacrament of healing, not initiation.',
+    'ss-4-Service':     'Not quite. Reconciliation heals and forgives. It is a sacrament of healing.',
+    'ss-5-Healing':     'Correct. Anointing of the Sick brings God\'s comfort and strength to those who are seriously ill or dying.',
+    'ss-5-Initiation':  'Not quite. Anointing of the Sick is for those who are ill or near death, a sacrament of healing.',
+    'ss-5-Service':     'Not quite. Anointing of the Sick is about healing and comfort, not vocation.',
+    'ss-6-Service':     'Correct. Holy Orders ordains men as deacons, priests, or bishops to serve the whole Church.',
+    'ss-6-Initiation':  'Not quite. Holy Orders is a call to serve the Church, not about entering it. It is a sacrament of service.',
+    'ss-6-Healing':     'Not quite. Holy Orders is about ordination to serve God\'s people, a sacrament of service.',
+    'ss-7-Service':     'Correct. Matrimony unites a man and woman in a lifelong covenant to love each other and build the domestic Church.',
+    'ss-7-Initiation':  'Not quite. Matrimony is a vocation of love and service, not a sacrament of initiation.',
+    'ss-7-Healing':     'Not quite. Matrimony is a lifelong covenant of service: husband and wife serving each other and their family.',
+};
+
+function sortAnswer(btn, gameId, itemId, chosen, correct) {
+    const item = document.getElementById(itemId);
+    if (item.dataset.answered) return;
+    item.dataset.answered = '1';
+    item.querySelectorAll('.sort-btn').forEach(b => {
+        b.disabled = true;
+        if (b.dataset.value === correct && chosen !== correct) b.classList.add('sg-reveal');
+    });
+    btn.classList.add(chosen === correct ? 'sg-correct' : 'sg-wrong');
+    const fb = item.querySelector('.sort-item-feedback');
+    fb.textContent = SORT_FEEDBACK[itemId + '-' + chosen] || '';
+    fb.classList.add('visible');
+    const game = document.getElementById(gameId);
+    const total = game.querySelectorAll('.sort-item').length;
+    const done  = game.querySelectorAll('.sort-item[data-answered]').length;
+    if (done === total) {
+        const numCorrect = game.querySelectorAll('.sort-btn.sg-correct').length;
+        const scoreEl = game.querySelector('.sort-score');
+        scoreEl.querySelector('.sg-score-text').textContent =
+            numCorrect + ' out of ' + total + ' correct' + (numCorrect === total ? ' — Perfect!' : '. Review the ones in red and try again.');
+        scoreEl.style.display = 'block';
+    }
+}
+
+function resetSortGame(gameId) {
+    const game = document.getElementById(gameId);
+    game.querySelectorAll('.sort-item').forEach(item => {
+        delete item.dataset.answered;
+        item.querySelectorAll('.sort-btn').forEach(b => {
+            b.disabled = false;
+            b.classList.remove('sg-correct', 'sg-wrong', 'sg-reveal');
+        });
+        item.querySelector('.sort-item-feedback').classList.remove('visible');
+    });
+    game.querySelector('.sort-score').style.display = 'none';
+}
 
 window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
