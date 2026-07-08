@@ -787,6 +787,118 @@
             box-shadow: var(--shadow-md);
         }
 
+        /* ─── QUESTION STATUS BADGES ────────────────────── */
+        .status-badge {
+            display: inline-block;
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            text-transform: uppercase;
+        }
+        .status-pending  { background: rgba(251,191,36,0.15); color: #b45309; border: 1px solid rgba(251,191,36,0.4); }
+        .status-answered { background: rgba(99,102,241,0.12); color: #4f46e5; border: 1px solid rgba(99,102,241,0.3); }
+        .status-published{ background: rgba(16,185,129,0.12); color: #065f46; border: 1px solid rgba(16,185,129,0.3); }
+
+        .q-filter-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        .q-filter-btn {
+            padding: 0.4rem 1rem;
+            border: 1.5px solid var(--border);
+            background: transparent;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+        .q-filter-btn.active { background: var(--navy); color: white; border-color: var(--navy); }
+        .q-filter-btn:hover:not(.active) { border-color: var(--navy); color: var(--navy); }
+
+        .q-card {
+            background: var(--off-white);
+            border: 1px solid var(--border);
+            border-left: 3px solid var(--gold-dark);
+            padding: 1.25rem 1.5rem;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+            transition: box-shadow 0.2s;
+        }
+        .q-card:hover { box-shadow: var(--shadow-sm); }
+        .q-card.status-pending-card  { border-left-color: #f59e0b; }
+        .q-card.status-answered-card { border-left-color: #6366f1; }
+        .q-card.status-published-card{ border-left-color: #10b981; }
+
+        .q-card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+        .q-text {
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--navy);
+            line-height: 1.5;
+        }
+        .q-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.35rem;
+        }
+        .q-answer-display {
+            background: rgba(212,165,116,0.08);
+            border: 1px solid var(--border-gold);
+            border-radius: 6px;
+            padding: 0.85rem 1rem;
+            margin-top: 0.75rem;
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+        .q-answer-display strong {
+            display: block;
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gold-dark);
+            margin-bottom: 0.4rem;
+        }
+        .q-answer-form {
+            display: none;
+            margin-top: 0.85rem;
+            padding-top: 0.85rem;
+            border-top: 1px solid var(--border);
+        }
+        .q-answer-form.open { display: block; }
+        .q-answer-form textarea {
+            width: 100%;
+            padding: 0.65rem 0.85rem;
+            border: 1.5px solid var(--border);
+            border-radius: 6px;
+            font-size: 0.88rem;
+            font-family: 'Inter', sans-serif;
+            background: var(--white);
+            color: var(--text-primary);
+            resize: vertical;
+            min-height: 100px;
+            transition: border-color 0.2s;
+        }
+        .q-answer-form textarea:focus { outline: none; border-color: var(--gold); }
+        .q-form-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.65rem;
+            justify-content: flex-end;
+        }
+
         /* ─── RESPONSIVE ─────────────────────────────────── */
         @media (max-width: 768px) {
             .form-grid { grid-template-columns: 1fr; }
@@ -856,6 +968,10 @@
                         <span class="num" id="appleMusicCount">0</span>
                         <span class="lbl">Apple Music</span>
                     </div>
+                    <div class="stat-pill">
+                        <span class="num" id="pendingQCount">0</span>
+                        <span class="lbl">Pending Q&amp;As</span>
+                    </div>
                 </div>
             </div>
 
@@ -866,6 +982,7 @@
                     <button class="tab-btn" onclick="showTab('applemusic', this)">Apple Music</button>
                     <button class="tab-btn" onclick="showTab('users', this)">Users</button>
                     <button class="tab-btn" onclick="showTab('oneof1', this)">1-of-1 Cards</button>
+                    <button class="tab-btn" onclick="showTab('questions', this)">Questions</button>
                 </div>
             </nav>
         </header>
@@ -1179,12 +1296,43 @@
 
             </div>
 
+            <!-- ─── QUESTIONS TAB ─── -->
+            <div id="questions" class="tab-content">
+
+                <div class="info-banner">
+                    <strong>How this works:</strong> When students submit a question on a module page, it arrives here as <em>Pending</em>.
+                    Write an answer and save as <em>Draft</em> (private, for your review), or click <strong>Publish to FAQ</strong> to push it live
+                    below that module's content. Published Q&amp;As are loaded dynamically from Firestore — no redeployment needed.
+                </div>
+
+                <div class="admin-card">
+                    <div class="admin-card-header">
+                        <h2>Module Questions</h2>
+                        <span class="count-badge" id="questionListCount">0 questions</span>
+                    </div>
+
+                    <div id="questionToast"></div>
+
+                    <div class="q-filter-bar">
+                        <button class="q-filter-btn active" onclick="filterQuestions('all', this)">All</button>
+                        <button class="q-filter-btn" onclick="filterQuestions('pending', this)">Pending</button>
+                        <button class="q-filter-btn" onclick="filterQuestions('answered', this)">Answered</button>
+                        <button class="q-filter-btn" onclick="filterQuestions('published', this)">Published</button>
+                    </div>
+
+                    <div id="questionsList" class="items-list">
+                        <div class="loading">Loading questions from Firebase</div>
+                    </div>
+                </div>
+
+            </div>
+
         </div>
     </div>
 
     <script type="module">
         import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
-        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, setDoc, arrayUnion, serverTimestamp, query, orderBy } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc, setDoc, arrayUnion, serverTimestamp, query, orderBy, where } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
 
         const auth = window.auth;
         const db = window.db;
@@ -1297,7 +1445,7 @@
 
         // ── Load all data ────────────────────────────────
         async function loadAllData() {
-            await Promise.all([loadVideos(), loadSpotify(), loadAppleMusic(), loadUsers(), load1of1Cards()]);
+            await Promise.all([loadVideos(), loadSpotify(), loadAppleMusic(), loadUsers(), load1of1Cards(), loadQuestions()]);
             await updateStats();
         }
 
@@ -1682,14 +1830,16 @@
 
         // ── Stats ────────────────────────────────────────
         async function updateStats() {
-            const [vSnap, sSnap, aSnap] = await Promise.all([
+            const [vSnap, sSnap, aSnap, pqSnap] = await Promise.all([
                 getDocs(collection(db, 'videos')),
                 getDocs(collection(db, 'spotify')),
-                getDocs(collection(db, 'applemusic'))
+                getDocs(collection(db, 'applemusic')),
+                getDocs(query(collection(db, 'moduleQuestions'), where('status', '==', 'pending')))
             ]);
             document.getElementById('videoCount').textContent = vSnap.size;
             document.getElementById('spotifyCount').textContent = sSnap.size;
             document.getElementById('appleMusicCount').textContent = aSnap.size;
+            document.getElementById('pendingQCount').textContent = pqSnap.size;
             document.getElementById('videoListCount').textContent = `${vSnap.size} video${vSnap.size !== 1 ? 's' : ''}`;
             document.getElementById('spotifyListCount').textContent = `${sSnap.size} playlist${sSnap.size !== 1 ? 's' : ''}`;
             document.getElementById('appleMusicListCount').textContent = `${aSnap.size} playlist${aSnap.size !== 1 ? 's' : ''}`;
@@ -1766,6 +1916,125 @@
                 container.innerHTML = `<div class="error-message">Error: ${escHtml(err.message)}</div>`;
             }
         }
+
+        // ── QUESTIONS ────────────────────────────────────
+        let allQuestions = [];
+
+        async function loadQuestions() {
+            const container = document.getElementById('questionsList');
+            if (!container) return;
+            container.innerHTML = '<div class="loading">Loading questions from Firebase</div>';
+            try {
+                const q = query(collection(db, 'moduleQuestions'), orderBy('submittedAt', 'desc'));
+                const snapshot = await getDocs(q);
+                allQuestions = [];
+                snapshot.forEach(docSnap => {
+                    allQuestions.push({ id: docSnap.id, ...docSnap.data() });
+                });
+                const countEl = document.getElementById('questionListCount');
+                if (countEl) countEl.textContent = `${allQuestions.length} question${allQuestions.length !== 1 ? 's' : ''}`;
+                renderQuestions(allQuestions);
+            } catch (err) {
+                container.innerHTML = `<div class="error-message">Error loading questions: ${escHtml(err.message)}</div>`;
+            }
+        }
+
+        function renderQuestions(questions) {
+            const container = document.getElementById('questionsList');
+            if (!questions.length) {
+                container.innerHTML = '<div class="empty-state">No questions yet. When students submit questions on module pages, they\'ll appear here.</div>';
+                return;
+            }
+            container.innerHTML = '';
+            questions.forEach(q => {
+                const date = q.submittedAt?.toDate
+                    ? q.submittedAt.toDate().toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+                    : 'Unknown date';
+                const submitter = q.submittedBy === 'anonymous' ? 'Anonymous' : escHtml(q.submittedBy || 'Unknown');
+                const card = document.createElement('div');
+                card.className = `q-card status-${q.status}-card`;
+                card.id = `q-card-${q.id}`;
+                card.innerHTML = `
+                    <div class="q-card-header">
+                        <div style="flex:1;min-width:0;">
+                            <div class="q-text">${escHtml(q.question)}</div>
+                            <div class="q-meta">
+                                <span class="status-badge status-${q.status}">${q.status}</span>
+                                &nbsp;<span class="item-module-badge">${escHtml(q.studyTitle || q.studyId || 'Unknown module')}</span>
+                                &nbsp;&middot;&nbsp;${submitter}&nbsp;&middot;&nbsp;${date}
+                            </div>
+                            ${q.answer ? `<div class="q-answer-display"><strong>Your Answer</strong>${escHtml(q.answer)}</div>` : ''}
+                            <div class="q-answer-form" id="qform-${q.id}">
+                                <label style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);display:block;margin-bottom:0.4rem;">Write Answer</label>
+                                <textarea id="qans-${q.id}" placeholder="Type your answer here…">${escHtml(q.answer || '')}</textarea>
+                                <div class="q-form-actions">
+                                    <button class="btn btn-cancel-edit" onclick="toggleAnswerForm('${q.id}')">Cancel</button>
+                                    <button class="btn btn-save" onclick="saveAnswer('${q.id}', 'answered')">Save as Draft</button>
+                                    <button class="btn btn-gold" onclick="saveAnswer('${q.id}', 'published')">Publish to FAQ</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="item-actions" style="flex-shrink:0;align-items:flex-start;">
+                            ${q.status === 'published'
+                                ? `<button class="btn btn-outline" style="font-size:0.78rem;padding:0.4rem 0.85rem;" onclick="updateQStatus('${q.id}', 'answered')">Unpublish</button>`
+                                : ''}
+                            <button class="btn btn-edit" onclick="toggleAnswerForm('${q.id}')">${q.answer ? 'Edit Answer' : 'Answer'}</button>
+                            <button class="btn btn-danger" onclick="deleteQuestion('${q.id}')">Delete</button>
+                        </div>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        window.filterQuestions = (status, btn) => {
+            document.querySelectorAll('.q-filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            renderQuestions(status === 'all' ? allQuestions : allQuestions.filter(q => q.status === status));
+        };
+
+        window.toggleAnswerForm = (id) => {
+            document.getElementById(`qform-${id}`).classList.toggle('open');
+        };
+
+        window.saveAnswer = async (id, status) => {
+            const answer = document.getElementById(`qans-${id}`).value.trim();
+            if (!answer) { alert('Please write an answer before saving.'); return; }
+            try {
+                const updates = { answer, status };
+                if (status === 'answered') updates.answeredAt = serverTimestamp();
+                if (status === 'published') { updates.answeredAt = serverTimestamp(); updates.publishedAt = serverTimestamp(); }
+                await updateDoc(doc(db, 'moduleQuestions', id), updates);
+                await loadQuestions();
+                await updateStats();
+                showToast('questionToast', status === 'published' ? '✓ Answer published to FAQ' : '✓ Answer saved as draft');
+            } catch (err) {
+                alert('Error: ' + err.message);
+            }
+        };
+
+        window.updateQStatus = async (id, status) => {
+            try {
+                await updateDoc(doc(db, 'moduleQuestions', id), { status });
+                await loadQuestions();
+                await updateStats();
+                showToast('questionToast', `✓ Question marked as ${status}`);
+            } catch (err) {
+                alert('Error: ' + err.message);
+            }
+        };
+
+        window.deleteQuestion = async (id) => {
+            if (confirm('Delete this question? This cannot be undone.')) {
+                try {
+                    await deleteDoc(doc(db, 'moduleQuestions', id));
+                    await loadQuestions();
+                    await updateStats();
+                } catch (err) {
+                    alert('Error deleting question: ' + err.message);
+                }
+            }
+        };
 
         // ── Helpers ──────────────────────────────────────
         function showToast(id, msg, type = 'success') {
