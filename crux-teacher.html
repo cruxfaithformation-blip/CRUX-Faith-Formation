@@ -1660,31 +1660,35 @@
     // ── LOAD ROSTER ────────────────────────────────────────
     async function loadRoster() {
         const rosterList = document.getElementById('rosterList');
-        const studentUids = currentTeacher.students || [];
-
-        document.getElementById('statStudents').textContent = studentUids.length;
-
-        if (studentUids.length === 0) {
-            rosterList.innerHTML = `
-                <div class="no-students">
-                    <div class="icon">👥</div>
-                    <p>No students yet. Share your class code to get started.</p>
-                </div>`;
-            currentStudents = [];
-            updateRecipientNote();
-            updateEmailPreview();
-            return;
-        }
 
         try {
-            // Fetch user doc + progress for each student
-            const results = await Promise.all(studentUids.map(async uid => {
-                const [userSnap, progressSnap] = await Promise.all([
-                    getDoc(doc(db, 'users', uid)),
-                    getDoc(doc(db, 'userProgress', uid))
-                ]);
-                const userData     = userSnap.exists()     ? userSnap.data()     : {};
-                const progressData = progressSnap.exists() ? progressSnap.data() : {};
+            // Students link to a teacher by adding teacherId to their own
+            // userProgress.teacherIds (they can't write to the teacher's doc),
+            // so the roster is derived by querying for that link, not by
+            // reading a students array off the teacher doc.
+            const q    = query(collection(db, 'userProgress'), where('teacherIds', 'array-contains', currentTeacherUid));
+            const snap = await getDocs(q);
+
+            document.getElementById('statStudents').textContent = snap.size;
+
+            if (snap.empty) {
+                rosterList.innerHTML = `
+                    <div class="no-students">
+                        <div class="icon">👥</div>
+                        <p>No students yet. Share your class code to get started.</p>
+                    </div>`;
+                currentStudents = [];
+                updateRecipientNote();
+                updateEmailPreview();
+                return;
+            }
+
+            // Fetch user doc for each student alongside the progress data already in hand
+            const results = await Promise.all(snap.docs.map(async progressDoc => {
+                const uid           = progressDoc.id;
+                const progressData  = progressDoc.data();
+                const userSnap      = await getDoc(doc(db, 'users', uid));
+                const userData      = userSnap.exists() ? userSnap.data() : {};
                 return {
                     uid,
                     name:  userData.username || userData.email?.split('@')[0] || 'Student',
@@ -1906,17 +1910,12 @@
     window.removeStudent = async function(uid, name) {
         if (!confirm(`Remove ${name} from your class? They will need to re-enter your class code to rejoin.`)) return;
         try {
-            // Remove from teacher's students array
-            await updateDoc(doc(db, 'teachers', currentTeacherUid), {
-                students: arrayRemove(uid)
-            });
-            // Remove teacher from student's teacherIds
+            // Remove teacher from student's teacherIds — this is the roster's source of truth
             const progressRef = doc(db, 'userProgress', uid);
             const snap = await getDoc(progressRef);
             if (snap.exists()) {
                 await updateDoc(progressRef, { teacherIds: arrayRemove(currentTeacherUid) });
             }
-            currentTeacher.students = (currentTeacher.students || []).filter(s => s !== uid);
             showToast(`${name} removed from class`);
             await loadRoster();
         } catch (err) {
@@ -2084,6 +2083,7 @@
     };
 
     let editingPlanId = null;
+    let currentPlans  = [];   // array of lesson plan docs, keyed by id — avoids embedding JSON in onclick attributes
 
     // ── WORKSHEET PICKER ───────────────────────────────────
     window.updateWsOptions = function() {
@@ -2104,9 +2104,10 @@
     };
 
     // ── OPEN PLAN MODAL ────────────────────────────────────
-    window.openPlanModal = function(planId = null, planData = null) {
+    window.openPlanModal = function(planId = null) {
         editingPlanId = planId;
-        const isEdit  = !!planId;
+        const isEdit    = !!planId;
+        const planData  = isEdit ? currentPlans.find(p => p.id === planId) : null;
 
         document.getElementById('planModalTitle').textContent = isEdit ? 'Edit Lesson Plan' : 'New Lesson Plan';
         document.getElementById('planModalSub').textContent   = isEdit ? 'Update your lesson plan.' : 'Build and save a lesson plan for your class.';
@@ -2206,6 +2207,7 @@
 
             const plans = [];
             snap.forEach(d => plans.push({ id: d.id, ...d.data() }));
+            currentPlans = plans;
 
             grid.innerHTML = plans.map(p => {
                 const moduleLabel = MODULE_LABELS[p.module] || p.module || 'Module';
@@ -2229,8 +2231,8 @@
                     ${p.notes ? `<div class="plan-card-notes">${p.notes}</div>` : ''}
                     <div class="plan-card-actions">
                         ${presLink ? `<button class="btn-plan-action primary" onclick="window.open('${presLink}','_blank')">▶ Present</button>` : ''}
-                        ${(p.worksheets||[]).length ? `<button class="btn-plan-action" onclick="printWorksheets(${JSON.stringify(p.worksheets)})">🖨 Print</button>` : ''}
-                        <button class="btn-plan-action" onclick="openPlanModal('${p.id}', ${JSON.stringify(p).replace(/'/g,'&#39;')})">Edit</button>
+                        ${(p.worksheets||[]).length ? `<button class="btn-plan-action" onclick="printWorksheets('${p.id}')">🖨 Print</button>` : ''}
+                        <button class="btn-plan-action" onclick="openPlanModal('${p.id}')">Edit</button>
                         <button class="btn-plan-action danger" onclick="deletePlan('${p.id}', '${p.title.replace(/'/g,"\\'")}')">✕</button>
                     </div>
                 </div>`;
@@ -2243,8 +2245,9 @@
     }
 
     // ── PRINT WORKSHEETS ───────────────────────────────────
-    window.printWorksheets = function(worksheets) {
-        worksheets.forEach(wsId => window.open(wsId + '.html', '_blank'));
+    window.printWorksheets = function(planId) {
+        const plan = currentPlans.find(p => p.id === planId);
+        (plan?.worksheets || []).forEach(wsId => window.open(wsId + '.html', '_blank'));
     };
 
     // ── DELETE PLAN ────────────────────────────────────────
