@@ -257,6 +257,20 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 }
 .wys-media-opt:hover { border-color: var(--gold); }
 .wys-media-opt.selected { border-color: var(--gold); background: var(--gold-pale); color: var(--navy); }
+.wys-col-bg { flex: 0 0 auto; }
+.wys-bg-row { display: flex; align-items: center; gap: 0.5rem; }
+.wys-color-input {
+  width: 38px; height: 32px; padding: 0; border: 1.5px solid var(--border); border-radius: 6px;
+  cursor: pointer; background: none;
+}
+.wys-color-input::-webkit-color-swatch-wrapper { padding: 2px; }
+.wys-color-input::-webkit-color-swatch { border: none; border-radius: 4px; }
+.wys-bg-reset {
+  font-size: 0.68rem; font-weight: 600; color: var(--muted); background: none; border: none;
+  cursor: pointer; text-decoration: underline; padding: 0;
+}
+.wys-bg-reset:hover { color: var(--navy); }
+.wys-bg-reset:disabled { opacity: 0.35; cursor: default; text-decoration: none; }
 
 /* ─── PRESENTATION OVERLAY ──────────────────────────────────────── */
 #presentOverlay {
@@ -1094,6 +1108,27 @@ function updateField(field, value) {
   if (field === 'title') renderSlideList();
 }
 
+/* Custom per-slide background overrides the theme/type default.
+   Applied with !important priority so it wins over the theme CSS,
+   which also uses !important on #presentSlide/#editableSlide backgrounds. */
+function applySlideBg(el, slide) {
+  if (!el) return;
+  if (slide && slide.bgColor) el.style.setProperty('background', slide.bgColor, 'important');
+  else el.style.removeProperty('background');
+}
+
+function setSlideBg(color) {
+  if (selectedIndex < 0 || selectedIndex >= slides.length) return;
+  var slide = slides[selectedIndex];
+  if (color) slide.bgColor = color; else delete slide.bgColor;
+  save();
+  applySlideBg(document.getElementById('editableSlide'), slide);
+  var input = document.getElementById('bgColorInput');
+  var resetBtn = document.getElementById('bgResetBtn');
+  if (input) input.value = slide.bgColor || '#141829';
+  if (resetBtn) resetBtn.disabled = !slide.bgColor;
+}
+
 /* ─── WYSIWYG CANVAS ─────────────────────────────────────────────── */
 var focusedLineEl = null;
 
@@ -1122,6 +1157,7 @@ function renderCanvasSlide() {
     buildControlsStrip(slide);
 
   document.getElementById('editableSlide').innerHTML += buildEditableSlideHTML(slide);
+  applySlideBg(document.getElementById('editableSlide'), slide);
   attachEditListeners(slide);
   updateFmtToolbar(null);
 }
@@ -1146,6 +1182,13 @@ function buildControlsStrip(slide) {
     '<div class="wys-col wys-col-type">' +
       '<span class="wys-label">Slide Type</span>' +
       '<div class="wys-type-grid">' + typeGrid + '</div>' +
+    '</div>' +
+    '<div class="wys-col wys-col-bg">' +
+      '<span class="wys-label">Background</span>' +
+      '<div class="wys-bg-row">' +
+        '<input type="color" class="wys-color-input" id="bgColorInput" value="' + (slide.bgColor || '#141829') + '" oninput="setSlideBg(this.value)" title="Custom background color for this slide">' +
+        '<button class="wys-bg-reset" id="bgResetBtn" onclick="setSlideBg(null)"' + (slide.bgColor ? '' : ' disabled') + '>Reset</button>' +
+      '</div>' +
     '</div>' +
     '<div class="wys-col wys-col-notes">' +
       '<div class="wys-notes-row">' +
@@ -1537,6 +1580,7 @@ function renderPresentSlide() {
   if (!slide) return;
   const container = document.getElementById('presentSlide');
   container.className = 'type-' + slide.type + (vocabMode === 'simple' ? ' simple-mode' : '');
+  applySlideBg(container, slide);
   document.getElementById('slideContentArea').innerHTML = buildSlideHTML(slide);
   document.getElementById('notesText').textContent = slide.note || 'No presenter notes.';
   document.getElementById('slideCounter').textContent = (presentIndex+1) + ' / ' + slides.length;
