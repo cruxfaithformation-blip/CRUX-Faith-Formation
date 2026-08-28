@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — Acts 1–2: Guided Study</title>
+<meta name="description" content="A guided study of Acts 1-2, covering the Ascension, the restored Twelve, Pentecost, and the birth of the Church, with word studies, Church Fathers, CCC references, and reflection prompts.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --navy: #1a1f36;
+  --navy-deep: #0f1222;
+  --navy-light: #252b47;
+  --navy-mid: #2e3555;
+  --gold: #d4a574;
+  --gold-light: #e8c99a;
+  --gold-pale: #f5ead8;
+  --gold-dim: rgba(212,165,116,0.15);
+  --cream: #faf8f4;
+  --off-white: #f4f2ee;
+  --white: #ffffff;
+  --text-primary: #1a1f36;
+  --text-secondary: #5a6080;
+  --text-muted: #8a90aa;
+  --text-muted-dark: rgba(255,255,255,0.45);
+  --text-soft: rgba(255,255,255,0.7);
+  --border: rgba(26,31,54,0.1);
+  --border-gold: rgba(212,165,116,0.3);
+  --green: #2d6a4f;
+  --green-light: #e8f5ee;
+  --purple: #4a2c6b;
+  --purple-light: #f0eaf8;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Crimson Pro', Georgia, serif;
+  background: var(--navy-deep);
+  color: var(--white);
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1000;
+  opacity: 0.6;
+}
+
+/* NAV */
+.site-nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+  padding: 1rem 2.5rem;
+  display: flex; align-items: center; justify-content: space-between;
+  background: rgba(15,18,34,0.92); backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(212,165,116,0.08);
+}
+.nav-logo { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 900; letter-spacing: 5px; color: var(--gold); text-decoration: none; }
+.nav-back { font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 500; letter-spacing: 1px; color: var(--text-muted-dark); text-decoration: none; transition: color 0.2s; display: flex; align-items: center; gap: 0.4rem; }
+.nav-back:hover { color: var(--gold); }
+
+/* HERO */
+.hero { padding: 6rem 2rem 3rem; text-align: center; position: relative; overflow: hidden; background: var(--navy-deep); }
+.hero::before { content: ''; position: absolute; width: 700px; height: 500px; background: radial-gradient(ellipse, rgba(212,165,116,0.09) 0%, transparent 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; }
+.hero-track { font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.6rem; animation: fadeUp 0.7s ease both; }
+.hero-book { font-family: 'Playfair Display', serif; font-size: clamp(2.2rem, 6vw, 4rem); font-weight: 900; color: var(--white); line-height: 1; margin-bottom: 0.4rem; animation: fadeUp 0.7s ease 0.1s both; }
+.hero-subtitle { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.15rem; color: var(--gold); margin-bottom: 1.25rem; animation: fadeUp 0.7s ease 0.2s both; }
+.hero-meta { display: flex; align-items: center; justify-content: center; gap: 1.25rem; flex-wrap: wrap; animation: fadeUp 0.7s ease 0.3s both; }
+.hero-tag { font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600; letter-spacing: 1px; color: var(--text-muted-dark); padding: 0.25rem 0.65rem; border: 1px solid rgba(255,255,255,0.08); border-radius: 4px; }
+
+/* PROGRESS BAR */
+.progress-bar { background: var(--navy-light); padding: 0.6rem 2rem; display: flex; align-items: center; gap: 1rem; border-bottom: 0.5px solid rgba(255,255,255,0.06); position: sticky; top: 57px; z-index: 145; }
+.progress-label { font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600; color: var(--gold); letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; }
+.progress-track { flex: 1; height: 3px; background: var(--navy-mid); border-radius: 2px; overflow: hidden; }
+.progress-fill { height: 100%; width: 0%; background: var(--gold); border-radius: 2px; transition: width 0.5s ease; }
+.progress-count { font-family: 'Inter', sans-serif; font-size: 0.68rem; color: rgba(255,255,255,0.35); white-space: nowrap; }
+
+/* STUDY LAYOUT */
+.study-area { background: var(--cream); color: var(--text-primary); }
+.study-layout { display: grid; grid-template-columns: 1fr 268px; gap: 2rem; max-width: 1100px; margin: 0 auto; padding: 2.5rem 2rem; align-items: start; }
+
+/* SIDEBAR */
+.study-sidebar { position: sticky; top: 110px; display: flex; flex-direction: column; gap: 1rem; }
+.sidebar-card { background: var(--white); border: 1px solid var(--border); border-radius: 10px; overflow: hidden; }
+.sidebar-card-head { padding: 0.7rem 1rem; background: var(--navy); font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+.sidebar-toc { list-style: none; padding: 0.5rem 0; }
+.sidebar-toc a { display: flex; align-items: center; gap: 0.6rem; padding: 0.5rem 1rem; font-family: 'Inter', sans-serif; font-size: 0.78rem; color: var(--text-secondary); text-decoration: none; transition: all 0.15s; border-left: 2px solid transparent; }
+.sidebar-toc a:hover { color: var(--navy); background: var(--off-white); }
+.sidebar-toc a.active { color: var(--navy); font-weight: 600; border-left-color: var(--gold); background: var(--off-white); }
+.toc-num { width: 20px; height: 20px; border-radius: 50%; background: var(--navy); color: var(--gold); font-family: 'Inter', sans-serif; font-size: 0.62rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.sidebar-key-terms { list-style: none; padding: 0.75rem 1rem; display: flex; flex-direction: column; gap: 0.6rem; }
+.sidebar-key-terms li { font-size: 0.82rem; color: var(--text-secondary); padding-bottom: 0.6rem; border-bottom: 1px solid var(--border); line-height: 1.5; }
+.sidebar-key-terms li:last-child { border: none; padding-bottom: 0; }
+.sidebar-key-terms strong { display: block; font-family: 'Playfair Display', serif; font-size: 0.88rem; color: var(--navy); font-weight: 600; }
+
+/* MAIN STUDY CONTENT */
+.study-section { margin-bottom: 0.5rem; }
+.section-inner { padding: 2rem 0; }
+.section-sep { height: 1px; background: var(--border); margin: 2rem 0 0; }
+.section-eyebrow { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 1.5rem; }
+.section-number { width: 28px; height: 28px; border-radius: 50%; background: var(--navy); color: var(--gold); font-family: 'Inter', sans-serif; font-size: 0.75rem; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.section-label { font-family: 'Inter', sans-serif; font-size: 0.7rem; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--text-muted); }
+.section-label-verses { font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 600; color: var(--gold); letter-spacing: 1px; margin-left: auto; background: var(--navy); padding: 0.2rem 0.55rem; border-radius: 3px; }
+.section-divider { flex: 1; height: 0.5px; background: var(--border); }
+.section-title { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 700; color: var(--navy); margin-bottom: 0.3rem; line-height: 1.25; }
+.section-title-sub { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: var(--text-muted); margin-bottom: 1.5rem; }
+.section-body p { font-family: 'Crimson Pro', Georgia, serif; font-size: 1.1rem; color: var(--text-secondary); line-height: 1.85; margin-bottom: 1.1rem; }
+.section-body p:last-child { margin-bottom: 0; }
+.section-body p strong { color: var(--text-primary); }
+
+/* SCRIPTURE OPENING (epigraph) */
+.scripture-opening { margin-bottom: 1.75rem; padding: 1.5rem 1.75rem; background: var(--navy); border-radius: 8px; border-left: 3px solid var(--gold); }
+.scripture-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.65; display: block; margin-bottom: 0.75rem; }
+.scripture-ref { font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 600; color: var(--gold); letter-spacing: 1.5px; text-transform: uppercase; }
+
+/* SCRIPTURE CALLOUT (inline) */
+.scripture-callout { margin: 1.5rem 0; padding: 1.25rem 1.5rem; background: var(--off-white); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; }
+.sc-ref { font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); display: block; margin-bottom: 0.5rem; }
+.scripture-callout p { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1rem; color: var(--text-primary); line-height: 1.65; margin: 0; }
+
+/* WORD STUDY */
+.word-study { margin: 1.75rem 0; border: 1px solid var(--border-gold); border-radius: 8px; overflow: hidden; }
+.word-study-head { background: var(--gold-pale); padding: 0.65rem 1rem; display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap; }
+.ws-label { font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); }
+.ws-term { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 600; color: var(--navy); }
+.ws-transliteration { font-family: 'Crimson Pro', serif; font-size: 0.88rem; color: var(--text-muted); font-style: italic; }
+.ws-strongs { margin-left: auto; font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 600; color: var(--text-muted); background: white; border: 1px solid var(--border-gold); padding: 0.15rem 0.5rem; border-radius: 4px; text-decoration: none; transition: color 0.2s, border-color 0.2s; }
+.ws-strongs:hover { color: var(--gold); border-color: var(--gold); }
+.word-study-body { padding: 1rem 1.25rem; }
+.ws-definitions { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.85rem; }
+.ws-def-chip { padding: 0.2rem 0.65rem; background: var(--navy); color: var(--gold-light); border-radius: 20px; font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 500; }
+.ws-def-chip.primary { background: var(--gold); color: var(--navy); font-weight: 700; }
+.ws-note { font-family: 'Crimson Pro', serif; font-size: 0.98rem; color: var(--text-secondary); line-height: 1.65; }
+.ws-note strong { color: var(--text-primary); font-weight: 600; }
+.ws-phonetic { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--text-muted); font-style: italic; opacity: 0.85; }
+.ws-speak { background: none; border: none; cursor: pointer; font-size: 0.8rem; padding: 0; opacity: 0.4; line-height: 1; transition: opacity 0.15s; }
+.ws-speak:hover { opacity: 1; }
+
+/* PATRISTIC QUOTE */
+.patristic-quote { margin: 1.75rem 0; padding: 1.25rem 1.5rem 1.25rem 1.75rem; background: var(--navy); border-radius: 8px; position: relative; }
+.patristic-quote::before { content: '\201C'; position: absolute; top: -0.6rem; left: 1rem; font-family: 'Playfair Display', serif; font-size: 3rem; color: var(--gold); line-height: 1; opacity: 0.55; }
+.patristic-label { font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.65rem; }
+.patristic-text { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.98rem; color: rgba(255,255,255,0.82); line-height: 1.7; margin-bottom: 0.75rem; }
+.patristic-attribution { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: rgba(255,255,255,0.38); }
+
+/* COMMENTARY TOGGLE (supplementary research, not the author's voice) */
+.commentary-toggle-wrap { margin: 1.25rem 0; }
+.commentary-toggle { display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.45rem 1rem; border: 1px solid var(--border-gold); border-radius: 20px; background: var(--gold-pale); color: var(--navy); font-family: 'Inter', sans-serif; font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; user-select: none; }
+.commentary-toggle:hover { background: var(--gold-light); }
+.ct-icon { font-size: 0.8rem; transition: transform 0.2s; }
+.commentary-toggle.open .ct-icon { transform: rotate(45deg); }
+.commentary-panel { display: none; margin-top: 0.75rem; padding: 1.25rem; background: var(--white); border: 1px solid var(--border-gold); border-radius: 8px; }
+.commentary-panel.open { display: block; }
+.commentary-panel-label { font-family: 'Inter', sans-serif; font-size: 0.6rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.75rem; }
+.commentary-panel p { font-family: 'Crimson Pro', serif; font-size: 0.98rem; color: var(--text-secondary); line-height: 1.75; margin-bottom: 0.75rem; }
+.commentary-panel p:last-child { margin-bottom: 0; }
+.commentary-panel ul { padding-left: 1.2rem; margin-bottom: 0.75rem; }
+.commentary-panel li { font-family: 'Crimson Pro', serif; font-size: 0.96rem; color: var(--text-secondary); line-height: 1.65; margin-bottom: 0.5rem; }
+
+/* CCC / commentary tag */
+.commentary-ccc { display: inline-block; margin-top: 0.4rem; padding: 0.22rem 0.6rem; background: var(--navy); color: var(--gold); border-radius: 4px; font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600; }
+
+/* REFLECTION */
+.reflection-block { margin: 1.75rem 0; padding: 1.5rem; background: var(--purple-light); border-radius: 8px; border-left: 3px solid var(--purple); }
+.reflection-block h4 { font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--purple); margin-bottom: 0.5rem; }
+.reflection-prompt { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.98rem; color: var(--text-primary); line-height: 1.65; margin-bottom: 0.85rem; }
+.reflection-prompt strong { font-style: normal; color: var(--purple); }
+.reflection-textarea { width: 100%; min-height: 80px; padding: 0.75rem 1rem; border: 1px solid rgba(74,44,107,0.2); border-radius: 6px; font-family: 'Crimson Pro', Georgia, serif; font-size: 1rem; color: var(--text-primary); background: white; resize: vertical; line-height: 1.6; margin-bottom: 1rem; }
+.reflection-textarea:last-of-type { margin-bottom: 0; }
+.reflection-textarea:focus { outline: none; border-color: var(--purple); }
+.journal-status { font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--text-muted); min-height: 1.2rem; margin-top: 0.4rem; transition: opacity 0.3s; }
+.journal-status.saved { color: var(--green); }
+.journal-status.error { color: #b91c1c; }
+.journal-signin-prompt { display: none; align-items: center; gap: 0.5rem; margin-top: 0.75rem; padding: 0.6rem 0.85rem; background: rgba(212,165,116,0.08); border: 1px solid rgba(212,165,116,0.2); border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.78rem; color: var(--text-secondary); }
+.journal-signin-prompt a { color: var(--purple); font-weight: 600; text-decoration: none; }
+.journal-signin-prompt a:hover { text-decoration: underline; }
+.journal-indicator { display: none; align-items: center; gap: 0.5rem; margin-bottom: 0.75rem; font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--text-muted); }
+.journal-indicator-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); flex-shrink: 0; }
+
+/* FURTHER STUDY RESOURCES */
+.sidebar-resource-list { list-style: none; padding: 0.75rem 1rem; display: flex; flex-direction: column; gap: 0; }
+.sidebar-resource-list li { font-family: 'Crimson Pro', serif; font-size: 0.85rem; color: var(--text-secondary); padding: 0.45rem 0; border-bottom: 1px solid var(--border); line-height: 1.45; }
+.sidebar-resource-list li:last-child { border: none; padding-bottom: 0; }
+.sidebar-resource-list li strong { display: block; font-family: 'Inter', sans-serif; font-size: 0.72rem; color: var(--text-primary); font-weight: 600; margin-bottom: 0.1rem; }
+
+/* BOTTOM NAV */
+.module-bottom-nav { display: flex; justify-content: space-between; align-items: center; padding: 1.25rem 2rem; background: var(--white); border-top: 1px solid var(--border); position: sticky; bottom: 0; z-index: 100; }
+.nav-btn { padding: 0.6rem 1.25rem; border-radius: 6px; font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600; cursor: pointer; border: none; text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem; transition: all 0.2s; }
+.nav-btn:not(.primary) { background: var(--off-white); color: var(--text-secondary); }
+.nav-btn:not(.primary):hover { background: var(--border); }
+.nav-btn.primary { background: var(--gold); color: var(--navy); }
+.nav-btn.primary:hover { background: var(--gold-light); }
+.nav-btn.disabled { background: var(--off-white); color: var(--text-muted); cursor: default; opacity: 0.6; }
+.nav-btn.disabled:hover { background: var(--off-white); }
+
+/* ANIMATIONS */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* RESPONSIVE */
+@media (max-width: 900px) {
+  .study-layout { grid-template-columns: 1fr; }
+  .study-sidebar { position: static; order: -1; }
+}
+@media (max-width: 600px) {
+  .site-nav { padding: 0.85rem 1.25rem; }
+  .study-layout { padding: 1.5rem 1rem; }
+  .hero { padding: 5.5rem 1.25rem 2.5rem; }
+}
+</style>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-LQ35DLTVKY');
+</script>
+</head>
+<body>
+
+<nav class="site-nav">
+  <a href="index.html" class="nav-logo">CRUX</a>
+  <a href="crux-bible-acts-overview.html" class="nav-back">← Overview</a>
+</nav>
+
+<section class="hero">
+  <p class="hero-track">Bible Study · Guided · Acts of the Apostles</p>
+  <h1 class="hero-book">Acts 1–2</h1>
+  <p class="hero-subtitle">Waiting, and What It Was For</p>
+  <div class="hero-meta">
+    <span class="hero-tag">4 Movements</span>
+    <span class="hero-tag">Greek Word Studies</span>
+    <span class="hero-tag">Church Fathers</span>
+    <span class="hero-tag">CCC References</span>
+    <span class="hero-tag">Reflection Prompts</span>
+  </div>
+</section>
+
+<div class="progress-bar">
+  <span class="progress-label">Progress</span>
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+  <span class="progress-count" id="progressCount">0 of 4 sections</span>
+</div>
+
+<div class="study-area">
+  <div class="scripture-opening" style="max-width:1100px;margin-left:auto;margin-right:auto;">
+    <span class="scripture-text">"But you shall receive power when the Holy Spirit has come upon you; and you shall be my witnesses in Jerusalem and in all Judea and Samaria and to the end of the earth."</span>
+    <span class="scripture-ref">Acts 1:8</span>
+  </div>
+
+  <div class="study-layout">
+    <main class="study-main">
+
+      <!-- ─── MOVEMENT 1 ─── -->
+      <div class="study-section" id="section-1">
+        <div class="section-inner">
+          <div class="section-eyebrow">
+            <div class="section-number">1</div>
+            <span class="section-label">Movement One</span>
+            <div class="section-divider"></div>
+            <span class="section-label-verses">1:1–11</span>
+          </div>
+
+          <h2 class="section-title">You Will Be My Witnesses</h2>
+          <p class="section-title-sub">Forty days, one promise, and a sky full of questions</p>
+
+          <div class="section-body">
+            <p>Acts of the Apostles opens exactly where the Overview module left off, with the question of certainty. Luke told Theophilus he'd investigated everything closely, so you'd know the truth of what you'd been taught. Verse 3 is where that promise gets specific: "many proofs," over the course of forty days, not one vision or one appearance you could talk yourself out of. This isn't a legend written generations later. It's an introduction to an argument: that what's said about Jesus Christ is true, and the author has spoken with people who saw it happen.</p>
+
+            <p>Jewish tradition held that the land and the covenant belonged to Israel and would stay that way. What the disciples were still missing is that God's plan was never actually that small. His promise to Abraham was always that "in you all the nations of the earth shall be blessed" (Genesis 12:3), and the prophets spoke for centuries about a light to the nations, not just the restoration of one. It's not that Israel forfeited anything or that the land was reassigned as a punishment. It's that the covenant God made with Israel was always meant to open out to everyone, and the resurrection is the moment it actually starts.</p>
+
+            <p>The disciples were expecting a hybrid solution. They knew the Pharisees and Sadducees had betrayed Jesus and that Gentiles would now be welcomed into the fold, but they wrongly assumed the kingdom would still remain centered in Israel. Jesus tells them instead that they have to leave home and spread the good news to the ends of the earth, so that all who hear it may be saved.</p>
+          </div>
+
+          <div class="scripture-callout">
+            <span class="sc-ref">Acts 1:6</span>
+            <p>"Lord, will you at this time restore the kingdom to Israel?"</p>
+          </div>
+
+          <div class="section-body">
+            <p>The modern version of that question isn't hard to find: "when is God going to come back and fix this broken world?" We believe Christ is coming back, and that he'll be the final judge. But where is he in the world today? He's within all those who are part of his Church, and he calls us to be the change that's needed. As part of the Church, we aren't called to just stay home where it's safe and comfortable, read our Bibles, and wait for salvation. We're called to be active participants, evangelizing others, continuing the same calling the apostles received: keep spreading the word to the ends of the earth so that all may be saved.</p>
+          </div>
+
+          <div class="scripture-callout">
+            <span class="sc-ref">Acts 1:8</span>
+            <p>"You shall receive power when the Holy Spirit has come upon you; and you shall be my witnesses in Jerusalem and in all Judea and Samaria and to the end of the earth."</p>
+          </div>
+
+          <div class="section-body">
+            <p>Hold onto that promise as you keep reading. It's the map for everything Acts does next, and you'll watch it unfold chapter by chapter rather than needing it explained in advance.</p>
+
+            <p>The instinct of the apostles was to stand in awe of what was now happening. They had seen the resurrection, witnessed with their own eyes that everything Jesus said was true, and knew they'd been chosen for this position in that small sliver of history. But the angels beside them tell them their story is only just beginning. Before, they were fishermen. Now they must become fishers of men. Their time living under the wing of Jesus is over. It's their turn to put on the armor of God and go forth, and God calls them to do it immediately, with no time to waste.</p>
+          </div>
+
+          <div class="reflection-block">
+            <h4>Reflection — Movement One</h4>
+            <div class="journal-indicator" id="journal-indicator">
+              <span class="journal-indicator-dot"></span>
+              <span id="journal-last-saved">Responses save to your Study Journal</span>
+            </div>
+            <p class="reflection-prompt">What's the "restore the kingdom" question you still find yourself asking God: the visible, on-your-timeline fix you're waiting for instead of the mission he's already given you?</p>
+            <textarea class="reflection-textarea" data-reflection-key="s1_q1" placeholder="Your reflection..."></textarea>
+            <p class="reflection-prompt">The angels tell the disciples to stop staring at the sky and get moving. Where in your own life are you still staring up at a spiritual high instead of walking out what it changed in you?</p>
+            <textarea class="reflection-textarea" data-reflection-key="s1_q2" placeholder="Your reflection..."></textarea>
+            <div class="journal-status" id="journal-status-s1"></div>
+            <div class="journal-signin-prompt">📖 <a href="crux-account.html">Sign in</a> to save your reflections to your Study Journal.</div>
+          </div>
+        </div>
+        <div class="section-sep"></div>
+      </div>
+
+      <!-- ─── MOVEMENT 2 ─── -->
+      <div class="study-section" id="section-2">
+        <div class="section-inner">
+          <div class="section-eyebrow">
+            <div class="section-number">2</div>
+            <span class="section-label">Movement Two</span>
+            <div class="section-divider"></div>
+            <span class="section-label-verses">1:12–26</span>
+          </div>
+
+          <h2 class="section-title">Twelve Again</h2>
+          <p class="section-title-sub">The upper room, and the number that had to be whole</p>
+
+          <div class="section-body">
+            <p>Back in Jerusalem, the Eleven return to the upstairs room and devote themselves to prayer, and Mary the mother of Jesus is named among them. It's worth noting: Mary remained with the apostles, knowing the work was still unfinished.</p>
+
+            <p>The Bible has a distinct way of using certain numbers to symbolize something. Seven represents completeness, rest, divine fullness. Forty represents testing, trial, a generation passing before a major transition. And twelve represents God's people, complete and governed. The original twelve tribes of Israel (the sons of Jacob) set the base pattern that gets replicated in the twelve apostles. When Judas betrays Jesus, the apostles aren't complete without a twelfth, so they choose Matthias to join their order. God seemingly uses numbers throughout the Bible as a kind of signature, marking that these are his people and what's being done comes from him.</p>
+          </div>
+
+          <div class="word-study">
+            <div class="word-study-head">
+              <span class="ws-label">Word Study</span>
+              <span class="ws-term">κλῆρος</span>
+              <span class="ws-transliteration">klēros</span>
+              <span class="ws-phonetic">KLAY-ros</span>
+              <button class="ws-speak" onclick="speakGreek('kleros')" title="Hear pronunciation">🔊</button>
+              <a class="ws-strongs" href="https://www.blueletterbible.org/lexicon/g2819" target="_blank" rel="noopener">G2819</a>
+            </div>
+            <div class="word-study-body">
+              <div class="ws-definitions">
+                <span class="ws-def-chip primary">lot</span>
+                <span class="ws-def-chip">portion, share</span>
+                <span class="ws-def-chip">allotted inheritance</span>
+              </div>
+              <p class="ws-note"><strong>Klēros</strong> is where the word "clergy" eventually comes from: a portion assigned, not chosen by the one who receives it. Casting lots was a real, established Old Testament practice (Urim and Thummim, Proverbs 16:33: "the lot is cast into the lap, but the decision is wholly from the Lord"), used to remove human preference entirely and let God decide. This is the last time anyone in the New Testament is chosen for ministry this way. After Pentecost, the pattern shifts to the Spirit guiding through prayer and discernment instead.</p>
+            </div>
+          </div>
+
+          <div class="commentary-toggle-wrap">
+            <button class="commentary-toggle" onclick="toggleCommentary(this)">
+              <span class="ct-icon">+</span> Dive deeper: what actually happened to Judas?
+            </button>
+            <div class="commentary-panel">
+              <p class="commentary-panel-label">Commentary</p>
+              <p>Acts 1:18 describes Judas buying a field with the money from his betrayal and dying in a graphic fall. Matthew 27:5 says he hanged himself. This is one of the most common "the Bible contradicts itself" objections people raise. The standard harmonization: Judas hanged himself, as Matthew records, and the rope or branch gave way, causing the fall Luke describes. The field itself was purchased with the returned blood money in Judas's name by the priests. A Jewish legal idiom treats a transaction made with someone's money, even after their death, as being made "by" them. Both accounts are describing the same event from different angles, not contradicting each other.</p>
+            </div>
+          </div>
+
+          <div class="reflection-block">
+            <h4>Reflection — Movement Two</h4>
+            <p class="reflection-prompt">The Twelve had to be whole before Pentecost could happen. Is there something in your own life, a relationship, a commitment, that needs to be made whole before you can move forward into what God's asking of you?</p>
+            <textarea class="reflection-textarea" data-reflection-key="s2_q1" placeholder="Your reflection..."></textarea>
+            <div class="journal-status" id="journal-status-s2"></div>
+            <div class="journal-signin-prompt">📖 <a href="crux-account.html">Sign in</a> to save your reflections to your Study Journal.</div>
+          </div>
+        </div>
+        <div class="section-sep"></div>
+      </div>
+
+      <!-- ─── MOVEMENT 3 ─── -->
+      <div class="study-section" id="section-3">
+        <div class="section-inner">
+          <div class="section-eyebrow">
+            <div class="section-number">3</div>
+            <span class="section-label">Movement Three</span>
+            <div class="section-divider"></div>
+            <span class="section-label-verses">2:1–13</span>
+          </div>
+
+          <h2 class="section-title">Pentecost</h2>
+          <p class="section-title-sub">What Babel scattered, the Spirit begins to gather</p>
+
+          <div class="section-body">
+            <p>In Genesis 11 we read the story of the tower of Babel being built, and honestly, every time I read it, I get a kick out of it. God actually says, "Come, let us go down and there confuse their language, so that they may not understand one another's speech" (Genesis 11:7). Why did God do this? It seems like a pretty funny practical joke when you read it at face value, but the actual intent of God isn't just to confuse the people for the sake of it. He's confusing their language because the entire population of God's people had found themselves living in the same place, speaking the same language, and building a tower that would reach the heavens. God didn't want a single population to be blessed, and he certainly didn't want the greatest feat of his people to be building a very tall tower. He wanted his grace to spread to all corners of the earth, so he confused their language and scattered them.</p>
+
+            <p>Pentecost flips the story of Babel on its head. Instead of confusing everyone's language, God lets the crowd hear the apostles, filled with the Spirit and speaking in tongues they'd never learned, each in their own native language. What one event scattered through confusion, the other begins to bring back together through understanding. It isn't a coincidence that this happened on Pentecost either. The feast was one of three great pilgrimage feasts where Jews "from every nation under heaven" would gather. God knew this would be an opportunity to speak to all of his people who were once scattered. By this point in Jewish tradition, Pentecost had also come to be associated with Moses receiving the Law at Sinai (the Ten Commandments). Its original purpose in the Torah was actually a harvest feast, the firstfruits of the wheat, but now God makes it the day a new law is born. What was once a list of rules written on stone now becomes a commandment written on the hearts of all his people: love me and love one another in Jesus's name.</p>
+          </div>
+
+          <div class="scripture-callout">
+            <span class="sc-ref">Acts 2:2–4</span>
+            <p>"And suddenly a sound came from heaven like the rush of a mighty wind, and it filled all the house where they were sitting. And there appeared to them tongues as of fire, distributed and resting on each one of them. And they were all filled with the Holy Spirit and began to speak in other tongues, as the Spirit gave them utterance."</p>
+          </div>
+
+          <div class="patristic-quote">
+            <p class="patristic-label">Church Father</p>
+            <p class="patristic-text">"At Babel, tongues divided humanity because pride had made it one in ambition against God. At Pentecost, tongues gather humanity because charity now unites what pride had scattered."</p>
+            <p class="patristic-attribution">— traditional patristic reading, echoed by Augustine on Pentecost</p>
+          </div>
+
+          <div class="section-body">
+            <p>Not everyone is as amazed as others at this miracle of the apostles speaking so that everyone heard them in their own native language. Some mock, saying the apostles are just drunk and rambling. They refuse to acknowledge a miracle happening right before their eyes. That same skepticism can still be seen all around the world today, and it was present within the first minutes of the Church forming, right alongside those who listened, believed, and were amazed.</p>
+          </div>
+
+          <div class="reflection-block">
+            <h4>Reflection — Movement Three</h4>
+            <p class="reflection-prompt">Babel scattered people who couldn't understand each other. Where in your own relationships or community is there a "Babel," a place understanding has broken down, that could use a Pentecost instead?</p>
+            <textarea class="reflection-textarea" data-reflection-key="s3_q1" placeholder="Your reflection..."></textarea>
+            <div class="journal-status" id="journal-status-s3"></div>
+            <div class="journal-signin-prompt">📖 <a href="crux-account.html">Sign in</a> to save your reflections to your Study Journal.</div>
+          </div>
+        </div>
+        <div class="section-sep"></div>
+      </div>
+
+      <!-- ─── MOVEMENT 4 ─── -->
+      <div class="study-section" id="section-4">
+        <div class="section-inner">
+          <div class="section-eyebrow">
+            <div class="section-number">4</div>
+            <span class="section-label">Movement Four</span>
+            <div class="section-divider"></div>
+            <span class="section-label-verses">2:14–47</span>
+          </div>
+
+          <h2 class="section-title">Peter's Sermon &amp; the First Church</h2>
+          <p class="section-title-sub">From conviction to a way of life</p>
+
+          <div class="section-body">
+            <p>Peter doesn't soften his message for those who stay and listen. He doesn't pander to them and say "I know it wasn't you who crucified my Lord, and I know you're sorry, but..." He tells them straight up: "this Jesus whom YOU crucified" truly is the Son of God, and despite the miracles he performed in your midst, you still handed him over to be mocked, spat on, and killed. The crowd is then "cut to the heart," knowing that what Peter says is true. They had the Messiah in their midst, and they rejected him. The crowd who had formed to mock or watch left asking the only question that mattered: "what can we do to fix it?"</p>
+          </div>
+
+          <div class="word-study">
+            <div class="word-study-head">
+              <span class="ws-label">Word Study</span>
+              <span class="ws-term">κατανύσσομαι</span>
+              <span class="ws-transliteration">katanyssomai</span>
+              <span class="ws-phonetic">kat-an-OOS-so-my</span>
+              <button class="ws-speak" onclick="speakGreek('katanyssomai')" title="Hear pronunciation">🔊</button>
+              <a class="ws-strongs" href="https://www.blueletterbible.org/lexicon/g2660" target="_blank" rel="noopener">G2660</a>
+            </div>
+            <div class="word-study-body">
+              <div class="ws-definitions">
+                <span class="ws-def-chip primary">cut to the heart</span>
+                <span class="ws-def-chip">pierced</span>
+                <span class="ws-def-chip">struck with compunction</span>
+              </div>
+              <p class="ws-note">"Cut to the heart" (v.37) translates a single, violent Greek verb, <strong>katanyssomai</strong>, to pierce or prick sharply. This isn't polite conviction. It's the same intensity a physical wound would carry, just aimed at the conscience instead of the body. Whatever Peter said, it didn't just persuade the crowd intellectually. It wounded something in them that needed wounding.</p>
+            </div>
+          </div>
+
+          <div class="commentary-toggle-wrap">
+            <button class="commentary-toggle" onclick="toggleCommentary(this)">
+              <span class="ct-icon">+</span> Dive deeper: the Old Testament case Peter makes
+            </button>
+            <div class="commentary-panel">
+              <p class="commentary-panel-label">Commentary</p>
+              <ul>
+                <li><strong>Joel 2:28–32.</strong> Peter opens by quoting Joel's prophecy that God would "pour out my Spirit on all flesh" in the last days. This isn't a stray proof-text; it's Peter telling the crowd that what they just watched happen was foretold centuries earlier, not a spontaneous, unexplainable event.</li>
+                <li><strong>Psalm 16.</strong> Peter argues David's line "you will not let your Holy One see corruption" can't be about David himself, since David's tomb was still in Jerusalem, well known to everyone listening. He reads it instead as David prophesying the resurrection of the one who would come after him.</li>
+                <li><strong>Psalm 110.</strong> "The Lord said to my Lord, sit at my right hand" is the verse Peter uses to argue Jesus is now exalted at God's right hand, exactly where the Spirit they just witnessed being poured out is coming from.</li>
+              </ul>
+              <p>The structure of this sermon (this fulfills prophecy, here is who Jesus is and what happened to him, here is what you should do about it) becomes the template for nearly every sermon in the rest of Acts.</p>
+            </div>
+          </div>
+
+          <div class="scripture-callout">
+            <span class="sc-ref">Acts 2:38</span>
+            <p>"Repent, and be baptized every one of you in the name of Jesus Christ for the forgiveness of your sins; and you shall receive the gift of the Holy Spirit."</p>
+          </div>
+
+          <div class="section-body">
+            <p>Baptism is worth pausing on here. It's more than a symbolic gesture. In the moment someone is baptized in Jesus's name, they receive the same Spirit poured out at Pentecost, sealed within them in a permanent, new way. The Holy Spirit can draw a person toward faith before that moment, and that's grace too, but baptism is where the Spirit comes to dwell, where the relationship becomes definitive. Without it, someone can seek God, even love him imperfectly. Baptism is what makes that relationship complete.</p>
+          </div>
+
+          <div class="scripture-callout">
+            <span class="sc-ref">Acts 2:42</span>
+            <p>"And they devoted themselves to the apostles' teaching and fellowship, to the breaking of bread and the prayers."</p>
+          </div>
+
+          <div class="word-study">
+            <div class="word-study-head">
+              <span class="ws-label">Word Study</span>
+              <span class="ws-term">κοινωνία</span>
+              <span class="ws-transliteration">koinōnia</span>
+              <span class="ws-phonetic">koy-noh-NEE-ah</span>
+              <button class="ws-speak" onclick="speakGreek('koinonia')" title="Hear pronunciation">🔊</button>
+              <a class="ws-strongs" href="https://www.blueletterbible.org/lexicon/g2842" target="_blank" rel="noopener">G2842</a>
+            </div>
+            <div class="word-study-body">
+              <div class="ws-definitions">
+                <span class="ws-def-chip primary">fellowship</span>
+                <span class="ws-def-chip">shared life</span>
+                <span class="ws-def-chip">partnership</span>
+              </div>
+              <p class="ws-note"><strong>Koinōnia</strong> means more than "hanging out." It's the word Paul later uses for genuine partnership and shared stake in something, closer to being business partners or co-owners than acquaintances. Luke lists it as one of four things the earliest Christians devoted themselves to, right alongside doctrine, the Eucharist, and prayer, not an optional social add-on to the faith, but one of its four load-bearing pillars.</p>
+            </div>
+          </div>
+
+          <div class="section-body">
+            <p>The people of the Church might not literally have everything in common. Some dress differently, speak different languages, come from different backgrounds. What the Church does is bring us together as one: one Church that follows the same teaching handed down from the earliest followers of Christ.</p>
+          </div>
+
+          <div class="reflection-block">
+            <h4>Reflection — Movement Four</h4>
+            <div class="journal-indicator" id="journal-indicator-m4">
+              <span class="journal-indicator-dot"></span>
+              <span id="journal-last-saved-m4">Responses save to your Study Journal</span>
+            </div>
+            <p class="reflection-prompt"><strong>Teaching.</strong> Am I actually being formed, or just consuming content and calling it faith?</p>
+            <textarea class="reflection-textarea" data-reflection-key="s4_q1" placeholder="Your reflection..."></textarea>
+            <p class="reflection-prompt"><strong>Fellowship.</strong> Is my community real and costly, or just people I'm friendly with?</p>
+            <textarea class="reflection-textarea" data-reflection-key="s4_q2" placeholder="Your reflection..."></textarea>
+            <p class="reflection-prompt"><strong>Breaking of bread.</strong> Is the Eucharist the center of my week, or an obligation I clear?</p>
+            <textarea class="reflection-textarea" data-reflection-key="s4_q3" placeholder="Your reflection..."></textarea>
+            <p class="reflection-prompt"><strong>Prayer.</strong> Is it structured and regular, or only something I reach for in a crisis?</p>
+            <textarea class="reflection-textarea" data-reflection-key="s4_q4" placeholder="Your reflection..."></textarea>
+            <div class="journal-status" id="journal-status-s4"></div>
+            <div class="journal-signin-prompt">📖 <a href="crux-account.html">Sign in</a> to save your reflections to your Study Journal.</div>
+          </div>
+        </div>
+      </div>
+
+    </main>
+
+    <!-- SIDEBAR -->
+    <aside class="study-sidebar">
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">In This Study</div>
+        <ul class="sidebar-toc">
+          <li><a href="#section-1" class="active"><span class="toc-num">1</span>You Will Be My Witnesses</a></li>
+          <li><a href="#section-2"><span class="toc-num">2</span>Twelve Again</a></li>
+          <li><a href="#section-3"><span class="toc-num">3</span>Pentecost</a></li>
+          <li><a href="#section-4"><span class="toc-num">4</span>Peter's Sermon &amp; the First Church</a></li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Key Terms</div>
+        <ul class="sidebar-key-terms">
+          <li><strong>klēros / κλῆρος</strong> "Lot," an assigned portion used to remove human preference and let God decide</li>
+          <li><strong>katanyssomai / κατανύσσομαι</strong> "Cut to the heart," pierced, not just persuaded</li>
+          <li><strong>koinōnia / κοινωνία</strong> "Fellowship," shared life and stake, not just acquaintance</li>
+        </ul>
+      </div>
+
+      <div class="sidebar-card">
+        <div class="sidebar-card-head">Further Study</div>
+        <ul class="sidebar-resource-list">
+          <li><strong>Navarre Bible: Acts of the Apostles</strong>Scripture text with commentary from the Church Fathers and modern theologians</li>
+          <li><strong>Ignatius Catholic Study Bible</strong>Acts of the Apostles, notes and essays from a Catholic perspective</li>
+          <li><strong>CCC §1262–1274</strong>The effects of Baptism</li>
+          <li><strong>CCC §949–953</strong>Communion in spiritual and material goods</li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<div class="module-bottom-nav">
+  <a href="crux-bible-acts-overview.html" class="nav-btn">← Overview</a>
+  <span class="nav-btn disabled">Acts 3–4 — Coming Soon</span>
+</div>
+
+<script>
+function toggleCommentary(btn) {
+  btn.classList.toggle('open');
+  const panel = btn.nextElementSibling;
+  panel.classList.toggle('open');
+}
+
+function speakGreek(text) {
+  if (!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const utt = new SpeechSynthesisUtterance(text);
+  utt.rate = 0.82;
+  window.speechSynthesis.speak(utt);
+}
+
+const sections = document.querySelectorAll('.study-section');
+const tocLinks = document.querySelectorAll('.sidebar-toc a');
+
+const sectionObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      tocLinks.forEach(link => link.classList.remove('active'));
+      const id = entry.target.id;
+      const activeLink = document.querySelector(`.sidebar-toc a[href="#${id}"]`);
+      if (activeLink) activeLink.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => sectionObserver.observe(s));
+
+const TOTAL_SECTIONS = 4;
+const seenSections = new Set();
+const progressObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) seenSections.add(entry.target.id);
+    const count = seenSections.size;
+    document.getElementById('progressFill').style.width = (count / TOTAL_SECTIONS * 100) + '%';
+    document.getElementById('progressCount').textContent = count + ' of ' + TOTAL_SECTIONS + ' sections';
+  });
+}, { threshold: 0.15 });
+sections.forEach(s => progressObserver.observe(s));
+</script>
+
+<!-- Study Journal: save/load reflections to Firebase -->
+<script type="module">
+import { initializeApp, getApps } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+import { getFirestore, doc, getDoc, setDoc, updateDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+  authDomain: "crux-faith-formation.firebaseapp.com",
+  projectId: "crux-faith-formation",
+  storageBucket: "crux-faith-formation.firebasestorage.app",
+  messagingSenderId: "838141015985",
+  appId: "1:838141015985:web:2655e570663e182d75ef90"
+};
+
+const app = getApps().length ? getApps()[0] : initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db   = getFirestore(app);
+
+const STUDY_ID       = 'acts_1_2';
+const STUDY_TITLE    = 'Acts 1–2';
+const STUDY_SUBTITLE = 'Waiting, and What It Was For';
+const STUDY_URL      = 'crux-bible-acts-1-2.html';
+
+let isDocNew   = true;
+let saveTimers = {};
+
+const KEY_TO_STATUS = {
+  s1_q1: 's1', s1_q2: 's1',
+  s2_q1: 's2',
+  s3_q1: 's3',
+  s4_q1: 's4', s4_q2: 's4', s4_q3: 's4', s4_q4: 's4'
+};
+
+function setStatus(key, msg, isError) {
+  const el = document.getElementById('journal-status-' + KEY_TO_STATUS[key]);
+  if (!el) return;
+  el.textContent = msg;
+  el.className = 'journal-status' + (isError ? ' error' : (msg === 'Saving...' ? '' : ' saved'));
+  if (!isError && msg !== 'Saving...') {
+    setTimeout(() => { el.textContent = ''; el.className = 'journal-status'; }, 3000);
+  }
+}
+
+function getAssociatedPrompt(textarea) {
+  let el = textarea.previousElementSibling;
+  while (el) {
+    if (el.classList.contains('reflection-prompt')) return el.textContent.trim();
+    el = el.previousElementSibling;
+  }
+  return '';
+}
+
+async function saveResponse(uid, key, text, prompt) {
+  setStatus(key, 'Saving...');
+  const wasNew = isDocNew;
+  if (isDocNew) isDocNew = false;
+  try {
+    const ref = doc(db, 'userProgress', uid, 'studyReflections', STUDY_ID);
+    if (wasNew) {
+      await setDoc(ref, {
+        studyTitle: STUDY_TITLE,
+        studySubtitle: STUDY_SUBTITLE,
+        studyUrl: STUDY_URL,
+        firstSaved: serverTimestamp(),
+        lastUpdated: serverTimestamp(),
+        responses: { [key]: { prompt, text, updatedAt: serverTimestamp() } }
+      });
+    } else {
+      await updateDoc(ref, {
+        lastUpdated: serverTimestamp(),
+        [`responses.${key}`]: { prompt, text, updatedAt: serverTimestamp() }
+      });
+    }
+    setStatus(key, 'Saved to your journal ✓');
+  } catch (err) {
+    isDocNew = wasNew;
+    console.error('Journal save error:', err);
+    setStatus(key, 'Could not save — try again', true);
+  }
+}
+
+async function loadResponses(uid) {
+  try {
+    const snap = await getDoc(doc(db, 'userProgress', uid, 'studyReflections', STUDY_ID));
+    if (!snap.exists()) return;
+    isDocNew = false;
+    const { responses = {} } = snap.data();
+    Object.entries(responses).forEach(([key, val]) => {
+      const ta = document.querySelector(`[data-reflection-key="${key}"]`);
+      if (ta && val.text) ta.value = val.text;
+    });
+  } catch (err) {
+    console.error('Journal load error:', err);
+  }
+}
+
+function initJournal(uid) {
+  loadResponses(uid);
+  document.querySelectorAll('.reflection-textarea[data-reflection-key]').forEach(ta => {
+    const key = ta.dataset.reflectionKey;
+    ta.addEventListener('input', () => {
+      clearTimeout(saveTimers[key]);
+      setStatus(key, 'Saving...');
+      saveTimers[key] = setTimeout(() => {
+        saveResponse(uid, key, ta.value.trim(), getAssociatedPrompt(ta));
+      }, 1500);
+    });
+  });
+  document.querySelectorAll('.journal-signin-prompt').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.journal-indicator').forEach(el => el.style.display = 'flex');
+}
+
+onAuthStateChanged(auth, user => {
+  if (user) {
+    initJournal(user.uid);
+  } else {
+    document.querySelectorAll('.journal-signin-prompt').forEach(el => el.style.display = 'flex');
+  }
+});
+</script>
+
+</body>
+</html>
