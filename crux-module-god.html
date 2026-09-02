@@ -1,0 +1,1101 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <title>CRUX — Who Is God?</title>
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-LQ35DLTVKY"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-LQ35DLTVKY');
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,600&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDK v10 -->
+    <script type="module">
+        import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js';
+        import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js';
+        import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js';
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyCq2cyJUMIA9pGWz9PZ8VPdw1hi0-iv3cU",
+            authDomain: "crux-faith-formation.firebaseapp.com",
+            projectId: "crux-faith-formation",
+            storageBucket: "crux-faith-formation.firebasestorage.app",
+            messagingSenderId: "838141015985",
+            appId: "1:838141015985:web:2655e570663e182d75ef90",
+            measurementId: "G-LQ35DLTVKY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        window.db = getFirestore(app);
+        window.auth = getAuth(app);
+        window.fsModules = { doc, getDoc, setDoc, updateDoc, collection, addDoc, serverTimestamp };
+
+        onAuthStateChanged(window.auth, (user) => {
+            window.currentUser = user || null;
+            const el = document.getElementById('userDisplay');
+            if (el) el.textContent = user ? user.email.split('@')[0] : 'Guest';
+            if (user) loadUserProgress();
+        });
+    </script>
+
+    <style>
+        :root {
+            color-scheme: light;
+            --navy: #1a1f36;
+            --navy-mid: #242a45;
+            --navy-light: #2f3659;
+            --gold: #d4a574;
+            --gold-light: #e8c9a0;
+            --gold-dark: #b8895a;
+            --white: #ffffff;
+            --off-white: #f8f7f4;
+            --text-primary: #1a1f36;
+            --text-secondary: #5a6282;
+            --text-muted: #8890b0;
+            --border: rgba(26, 31, 54, 0.1);
+            --border-gold: rgba(212, 165, 116, 0.3);
+            --shadow-sm: 0 2px 8px rgba(26, 31, 54, 0.08);
+            --shadow-md: 0 4px 20px rgba(26, 31, 54, 0.12);
+            --shadow-lg: 0 8px 40px rgba(26, 31, 54, 0.18);
+            --green: #2e7d32;
+            --green-light: #e8f5e9;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--off-white);
+            color: var(--text-primary);
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        /* ─── HEADER ──────────────────────────────────────── */
+        header {
+            background: var(--navy);
+            padding: 1rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.2);
+        }
+
+        .header-left { display: flex; align-items: center; gap: 1.5rem; }
+
+        .back-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: rgba(255,255,255,0.6);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: color 0.2s;
+            border: none;
+            background: none;
+            cursor: pointer;
+        }
+
+        .back-btn:hover { color: var(--gold); }
+
+        .header-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: var(--gold);
+            letter-spacing: 4px;
+            text-decoration: none;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-chip {
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.12);
+            color: rgba(255,255,255,0.7);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .xp-chip {
+            background: rgba(212, 165, 116, 0.15);
+            border: 1px solid var(--border-gold);
+            color: var(--gold);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            display: none;
+        }
+
+        /* ─── PROGRESS BAR ────────────────────────────────── */
+        .progress-track {
+            background: rgba(255,255,255,0.08);
+            height: 3px;
+            position: sticky;
+            top: 57px;
+            z-index: 99;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: var(--gold);
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        /* ─── MAIN LAYOUT ─────────────────────────────────── */
+        .module-wrap {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 3rem 2rem 6rem;
+        }
+
+        /* ─── STEP INDICATOR ──────────────────────────────── */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 2.5rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        .step-dot {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            border: 2px solid var(--border);
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.7rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .step.active .step-dot {
+            background: var(--navy);
+            border-color: var(--navy);
+            color: var(--white);
+        }
+
+        .step.complete .step-dot {
+            background: var(--green);
+            border-color: var(--green);
+            color: var(--white);
+        }
+
+        .step-label {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .step.active .step-label { color: var(--navy); font-weight: 600; }
+        .step.complete .step-label { color: var(--green); }
+
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background: var(--border);
+            margin: 0 0.5rem;
+            transition: background 0.3s ease;
+        }
+
+        .step-line.complete { background: var(--green); }
+
+        /* ─── MODULE HEADER ───────────────────────────────── */
+        .module-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .module-eyebrow {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-eyebrow .grade-tag {
+            display: inline-block;
+            background: rgba(212, 165, 116, 0.12);
+            color: var(--gold-dark);
+            padding: 0.2rem 0.65rem;
+            border-radius: 20px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+        }
+
+        .module-eyebrow .topic-tag {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        .module-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1.2;
+            margin-bottom: 0.75rem;
+        }
+
+        .module-subtitle {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+        }
+
+        /* ─── LEVEL TOGGLE ────────────────────────────────── */
+        .level-toggle {
+            display: inline-flex;
+            background: var(--white);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .level-btn {
+            padding: 0.6rem 1.4rem;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .level-btn.active {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        /* ─── CONTENT PANELS ──────────────────────────────── */
+        .panel {
+            display: none;
+            animation: fadeUp 0.35s ease;
+        }
+
+        .panel.active { display: block; }
+
+        @keyframes fadeUp {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ─── LESSON CONTENT ──────────────────────────────── */
+        .lesson-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .lesson-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 1.25rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .lesson-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.15rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin: 1.5rem 0 0.6rem;
+        }
+
+        .lesson-card p {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.85;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card ul, .lesson-card ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .lesson-card li {
+            color: var(--text-primary);
+            font-size: 0.97rem;
+            line-height: 1.75;
+            margin-bottom: 0.4rem;
+        }
+
+        .highlight-box {
+            background: rgba(212, 165, 116, 0.08);
+            border-left: 3px solid var(--gold);
+            border-radius: 0 8px 8px 0;
+            padding: 1.25rem 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .highlight-box p {
+            margin-bottom: 0;
+            font-style: italic;
+            color: var(--navy);
+            font-size: 0.95rem;
+        }
+
+        .highlight-box cite {
+            display: block;
+            font-size: 0.8rem;
+            color: var(--gold-dark);
+            font-weight: 600;
+            margin-top: 0.4rem;
+            font-style: normal;
+            letter-spacing: 0.5px;
+        }
+
+        .key-term {
+            display: inline-block;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 0.15rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.82rem;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            margin: 0 0.1rem;
+        }
+
+        /* ─── READING SECTION ─────────────────────────────── */
+        .reading-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .reading-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .reading-meta {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .reading-body {
+            font-size: 0.97rem;
+            line-height: 1.9;
+            color: var(--text-primary);
+        }
+
+        .reading-body p { margin-bottom: 1.1rem; }
+
+        .reflection-block {
+            background: var(--navy);
+            border-radius: 10px;
+            padding: 1.75rem;
+            margin-top: 2rem;
+        }
+
+        .reflection-block h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--gold);
+            font-size: 1rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .reflection-block ol {
+            padding-left: 1.25rem;
+        }
+
+        .reflection-block li {
+            color: rgba(255,255,255,0.8);
+            font-size: 0.92rem;
+            line-height: 1.7;
+            margin-bottom: 0.6rem;
+        }
+
+        /* ─── QUIZ ────────────────────────────────────────── */
+        .quiz-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border);
+            margin-bottom: 1.5rem;
+        }
+
+        .quiz-card h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.5rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .quiz-intro {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question-block {
+            margin-bottom: 2rem;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .question-block:last-of-type { border-bottom: none; }
+
+        .question-num {
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: var(--gold-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .question-text {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--navy);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+        }
+
+        .options-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .option-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+            padding: 0.85rem 1.1rem;
+            background: var(--off-white);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.92rem;
+            color: var(--text-primary);
+            width: 100%;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            border-color: var(--navy);
+            background: rgba(26, 31, 54, 0.04);
+        }
+
+        .option-btn.selected {
+            border-color: var(--navy);
+            background: rgba(26, 31, 54, 0.06);
+        }
+
+        .option-btn.correct {
+            border-color: var(--green);
+            background: var(--green-light);
+            color: var(--green);
+        }
+
+        .option-btn.incorrect {
+            border-color: #c62828;
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .option-letter {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            border: 1.5px solid currentColor;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.72rem;
+            font-weight: 700;
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+
+        .answer-feedback {
+            margin-top: 0.75rem;
+            padding: 0.85rem 1rem;
+            border-radius: 7px;
+            font-size: 0.88rem;
+            line-height: 1.55;
+            display: none;
+        }
+
+        .answer-feedback.correct {
+            background: var(--green-light);
+            color: var(--green);
+            border-left: 3px solid var(--green);
+        }
+
+        .answer-feedback.incorrect {
+            background: #ffebee;
+            color: #c62828;
+            border-left: 3px solid #c62828;
+        }
+
+        /* ─── NAVIGATION BUTTONS ──────────────────────────── */
+        .nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 2rem;
+            background: var(--navy);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary:hover {
+            background: var(--navy-light);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .btn-primary:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.9rem 1.5rem;
+            background: transparent;
+            color: var(--text-secondary);
+            border: 1.5px solid var(--border);
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--navy);
+            color: var(--navy);
+        }
+
+        .btn-gold {
+            background: var(--gold);
+            color: var(--navy);
+        }
+
+        .btn-gold:hover {
+            background: var(--gold-dark);
+            color: var(--white);
+        }
+
+        /* ─── COMPLETION SCREEN ───────────────────────────── */
+        .completion-screen {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .completion-icon {
+            font-size: 4rem;
+            margin-bottom: 1.5rem;
+            display: block;
+        }
+
+        .completion-screen h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            color: var(--navy);
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .completion-screen p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            max-width: 500px;
+            margin: 0 auto 2rem;
+            line-height: 1.7;
+        }
+
+        .xp-award {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: var(--navy);
+            color: var(--gold);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 2.5rem;
+            font-family: 'Playfair Display', serif;
+        }
+
+        .score-display {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            border: 1px solid var(--border);
+            box-shadow: var(--shadow-sm);
+            display: inline-block;
+            margin-bottom: 2.5rem;
+            min-width: 240px;
+        }
+
+        .score-display .score-num {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: var(--navy);
+            line-height: 1;
+        }
+
+        .score-display .score-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            margin-top: 0.25rem;
+        }
+
+        .completion-actions {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        /* ─── LOADING STATE ───────────────────────────────── */
+        .loading-state {
+            text-align: center;
+            padding: 5rem 2rem;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid var(--border);
+            border-top-color: var(--navy);
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        .loading-state p { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* ─── RESPONSIVE ──────────────────────────────────── */
+        @media (max-width: 640px) {
+            .module-wrap { padding: 2rem 1.25rem 5rem; }
+            .module-title { font-size: 1.7rem; }
+            .lesson-card, .reading-card, .quiz-card { padding: 1.75rem 1.25rem; }
+            .step-label { display: none; }
+            .nav-bar { flex-direction: column-reverse; }
+            .nav-bar .btn-primary, .nav-bar .btn-secondary { width: 100%; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-left">
+        <button class="back-btn" id="backBtn" onclick="window.location.href='index.html#youth'">
+            ← Back
+        </button>
+        <a href="index.html" class="header-logo">CRUX</a>
+    </div>
+    <div class="header-right">
+        <span class="xp-chip" id="xpChip">⭐ <span id="xpDisplay">0</span> XP</span>
+        <span class="user-chip">👤 <span id="userDisplay">Guest</span></span>
+    </div>
+</header>
+
+<div class="progress-track">
+    <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div class="module-wrap">
+
+    <!-- Loading state — shown while a module loads -->
+    <div class="loading-state" id="loadingState">
+        <div class="loading-spinner"></div>
+        <p>Loading module...</p>
+    </div>
+
+    <!-- Step indicator -->
+    <div class="step-indicator" id="stepIndicator" style="display:none;">
+        <div class="step active" id="step1">
+            <div class="step-dot">1</div>
+            <span class="step-label">Lesson</span>
+        </div>
+        <div class="step-line" id="line1"></div>
+        <div class="step" id="step2">
+            <div class="step-dot">2</div>
+            <span class="step-label">Reading</span>
+        </div>
+        <div class="step-line" id="line2"></div>
+        <div class="step" id="step3">
+            <div class="step-dot">3</div>
+            <span class="step-label">Quiz</span>
+        </div>
+    </div>
+
+    <!-- Module header -->
+    <div class="module-header" id="moduleHeader" style="display:none;">
+        <div class="module-eyebrow">
+            <span class="grade-tag" id="gradeTag">Grades 3–8</span>
+            <span class="topic-tag" id="topicTag">Faith Formation</span>
+        </div>
+        <h1 class="module-title" id="moduleTitle">Loading...</h1>
+        <p class="module-subtitle" id="moduleSubtitle"></p>
+    </div>
+
+    <!-- Level toggle -->
+    <div id="levelToggleWrap" style="display:none;">
+        <div class="level-toggle">
+            <button class="level-btn active" id="btnBeginner" onclick="setLevel('beginner')">Beginner</button>
+            <button class="level-btn" id="btnTheologian" onclick="setLevel('theologian')">Theologian</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 1: LESSON ─────────────────────────────── -->
+    <div class="panel" id="panelLesson">
+        <div class="lesson-card" id="lessonContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <span></span>
+            <button class="btn-primary" onclick="goToReading()">
+                Continue to Reading →
+            </button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 2: READING ────────────────────────────── -->
+    <div class="panel" id="panelReading">
+        <div class="reading-card" id="readingContent">
+            <!-- Populated by JS -->
+        </div>
+        <div class="nav-bar">
+            <button class="btn-secondary" onclick="goToLesson()">← Back to Lesson</button>
+            <button class="btn-primary" onclick="goToQuiz()">Take the Quiz →</button>
+        </div>
+    </div>
+
+    <!-- ── PANEL 3: QUIZ ───────────────────────────────── -->
+    <div class="panel" id="panelQuiz">
+        <div class="quiz-card">
+            <h2>Knowledge Check</h2>
+            <p class="quiz-intro">Answer all questions — you can review your answers before submitting.</p>
+            <div id="quizQuestions">
+                <!-- Populated by JS -->
+            </div>
+            <div class="nav-bar">
+                <button class="btn-secondary" onclick="goToReading()">← Back to Reading</button>
+                <button class="btn-primary btn-gold" id="submitQuizBtn" onclick="submitQuiz()" disabled>
+                    Submit Answers →
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ── PANEL 4: COMPLETE ───────────────────────────── -->
+    <div class="panel" id="panelComplete">
+        <div class="completion-screen">
+            <span class="completion-icon">✟</span>
+            <h2 id="completionTitle">Module Complete!</h2>
+            <p id="completionMessage">You've completed this lesson. Keep going — the faith is worth knowing deeply.</p>
+
+            <div class="score-display">
+                <div class="score-num" id="scoreNum">0/0</div>
+                <div class="score-label">Quiz Score</div>
+            </div>
+
+            <div class="xp-award" id="xpAwardDisplay" style="display:none;">
+                ⭐ +<span id="xpEarned">0</span> XP Earned
+            </div>
+
+            <div class="completion-actions">
+                <button class="btn-secondary" onclick="window.location.href='crux-modules.html'">
+                    ← All Modules
+                </button>
+                <button class="btn-primary" onclick="reviewAnswers()">
+                    Review Answers
+                </button>
+                <button class="btn-primary" id="practiceGamesBtn" style="display:none;background:var(--gold-dark);color:var(--white);" onclick="goToPracticeGames()">
+                    🎮 Practice Games
+                </button>
+                <button class="btn-primary btn-gold" id="nextModuleBtn" style="display:none;" onclick="loadNextModule()">
+                    Next Module →
+                </button>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+<script src="crux-module-engine.js"></script>
+<script>
+// Module data for: god
+const MODULE_DATA = {
+        id: 'god',
+        title: 'Who Is God?',
+        subtitle: 'Creator and Father: who God is before anything else, and why he made you at all.',
+        gradeTag: 'Grades 3–8',
+        topic: 'Core Beliefs',
+        xpReward: 50,
+        nextModule: 'trinity',
+
+        lesson: {
+            beginner: `
+                <h2>Who Is God? — Lesson</h2>
+
+                <p>Before anything else existed, God was there. Everything we see, from flowers to the sea to the stars, was created by God out of his love. There was God first, and then came creation, made by God out of love.</p>
+
+                <p>That is why God calls us to respect creation, the world we live in, and the creatures that live on it. Everything around us is a piece of his creation, and just like we wouldn't want anyone to abuse something we created, it saddens God when he sees his creation mistreated. As part of his creation, we're called to respect the people and things he created, and by doing this, we show him that we love and respect him.</p>
+
+                <h3>Made in God's Image: Soul, Intellect, and Free Will</h3>
+
+                <p>When God created human beings, he gave us a very special gift that he didn't give the rest of his creation. That gift is called a <span class="key-term">soul</span>, a spiritual part of us that connects us back to him in heaven. Along with our soul, he gave humanity intellect and free will.</p>
+
+                <p><span class="key-term">Intellect</span> is the unique ability human beings have to learn and reason. Unlike a dog, who may bark when he's hungry or turn over when he wants his belly rubbed, we can go beyond reacting to our basic needs to survive and actually question "why are we here?" The ability to ask why we're here, to be amazed at the beauty and wonder of the world he created, and to love one another is what the Bible meant when it said God created us in his image. God loves all of his creation, but human beings are special to him for that reason.</p>
+
+                <p><span class="key-term">Free will</span> is how we use that intellect to decide what we will do with the life he gave us. It allows us to understand right from wrong and the option to choose. That doesn't mean we'll always choose what is right, and he knows this, but he gives us the choice because without it we couldn't freely choose to love him.</p>
+
+                <div class="highlight-box">
+                    <p>"Before I formed you in the womb I knew you."</p>
+                    <cite>— Jeremiah 1:5</cite>
+                </div>
+
+                <h3>Why Free Will Matters</h3>
+
+                <p>Think about it this way: imagine loving someone more than anything in the world, but they never had the option to choose to love you back. If God created us with no option but to love him, would that really be love, or would we be more like puppets there for entertainment? Free will allows us to decide to love him back. Adam and Eve were given this same free will, and they chose to disobey God. God knew this was a possibility, but he gave them the option anyway.</p>
+
+                <h3>Our Father in Heaven</h3>
+
+                <p>God is more than just our creator. Jesus teaches us that God is our Father in heaven who has loved us since before we were born. He knew and loved us personally before our parents on earth ever even met, just as Scripture tells us: "Before I formed you in the womb I knew you." Just like our parents on earth, God loves us and wants what is good for us. He wants a relationship with us that goes beyond just showing up to church on Sundays.</p>
+
+                <h3>Prayer and Guidance</h3>
+
+                <p>With free will, God calls us to make decisions that help others, not hurt them. If a person in your class is being made fun of, for example, do you stand by and say nothing, or even laugh along with the bully? Or do you stand up for that person, like Jesus would, and say "that's not right"? God gives us the option, but it makes him happy when we do what is good. He also gives us a <span class="key-term">conscience</span> that tells us right from wrong. We know in our hearts what the right choice should be, but free will allows us to listen to our conscience or ignore it.</p>
+
+                <h3>Faith, Hope, and Charity</h3>
+
+                <p>We are all given theological virtues that help us build a relationship with him. These virtues are faith, hope, and charity.</p>
+
+                <p>Faith is believing in God and trusting that he will help us, even during difficult times. Hope is trusting in God's promises and having confidence that we will be with him in heaven someday. Charity is loving God above all things and showing love to others through kindness and helping those in need.</p>
+
+                <p>When we live with faith, hope, and charity, God sees it, and he loves us for it. And when God calls us home to heaven, we won't be there alone. We'll be with him, and with everyone else who loved him too: family and friends who went before us, together again, forever.</p>
+            `,
+            theologian: `
+                <h2>Who Is God? — Theologian Level</h2>
+
+                <h3>What Creation Ex Nihilo Rules Out</h3>
+
+                <p>"God creates the world" sounds simple until you ask what it's actually claiming. Two ancient alternatives are worth naming, because the Church's answer was defined specifically against them. Some Greek philosophy (Plato's <em>Timaeus</em>, for instance) pictured a divine craftsman, the Demiurge, shaping the world out of pre-existing, uncreated chaotic matter. On that view, matter is co-eternal with God; God organizes, but doesn't originate. Other traditions collapse God and the world together entirely: pantheism, where the universe simply <em>is</em> God's own substance unfolding, not something distinct from him.</p>
+
+                <p>Catholic teaching rejects both. God doesn't shape pre-existing material, and creation isn't an emanation of his own being. He creates <span class="key-term">ex nihilo</span>, from nothing, needing no material and no help (CCC 296–298). This was formally taught at the Fourth Lateran Council (1215): God "fashioned each creature from nothing, spiritual and corporeal." The doctrine matters because it's the only view that keeps God fully transcendent (not made of the same stuff as his creation) and fully sovereign (not constrained by material he didn't make) at the same time.</p>
+
+                <h3>Continuous Creation, Not a One-Time Event</h3>
+
+                <p>A common misreading treats creation as something God did once, long ago, and then stepped back from. That reading is closer to deism than Catholic teaching. CCC 301 corrects this directly: "with creation, God does not abandon his creatures to themselves... he also gives them the being and continuance to act." Creation isn't a past event the universe is now coasting on. It's a relationship being sustained right now, in this moment. If God's sustaining act stopped, creation wouldn't persist on its own. This is what theologians call <span class="key-term">conservatio</span> (conservation): God doesn't just start the story, he's holding every page of it up as it's being read.</p>
+
+                <h3>What "Made in God's Image" Actually Means</h3>
+
+                <p>CCC 1701–1709 grounds "made in the image of God" specifically in rational intellect, free will, and the capacity for relationship with God (sometimes called <em>capax Dei</em>, Latin for "capable of God"). This connects to something already built into the Trinity module: Augustine's psychological analogy, where memory, intellect, and will in the human soul offer a faint image of the Trinity itself. The two ideas reinforce each other. We're made in God's image not primarily because we resemble him physically (he has no body), but because the structure of a rational, free, loving mind is itself a created echo of the kind of being God is.</p>
+
+                <h3>Why "Father" Is Revealed Language, Not Intuited Language</h3>
+
+                <p>CCC 2779 makes a point worth taking seriously: before we can rightly pray "Our Father," we have to clear away false, human-shaped images of fatherhood drawn from our own experience, since not every human father models the term well. CCC 2780 is the theological anchor: we call God "Father" not because it's an intuitive human metaphor we projected onto him, but because the Son revealed him that way, and the Spirit lets us share in that same filial relationship. It's revealed, not invented.</p>
+
+                <p>Worth distinguishing two senses of divine fatherhood the Catechism itself separates: God is Father of all as Creator, in a general sense, but the fuller, adoptive sense (CCC 1996–1997) belongs specifically to those united to Christ through Baptism, who share by grace in the relationship the Son has with the Father by nature. Every human being is a creature of God the Father. Not everyone yet knows themselves as his adopted child. That's the difference the Gospel makes.</p>
+            `
+        },
+
+        reading: {
+            beginner: `
+                <h2>Reading: Why God Made Us</h2>
+                <div class="reading-meta">Catechism of the Catholic Church, Paragraph 1</div>
+                <div class="reading-body">
+                    <p>"God, infinitely perfect and blessed in himself, in a plan of sheer goodness freely created man to make him share in his own blessed life. For this reason, at every time and in every place, God draws close to man. He calls man to seek him, to know him, to love him with all his strength."</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Reflect on These Questions</h4>
+                    <ol>
+                        <li>This says God created us out of "sheer goodness," not because he needed anything from us. Why do you think that matters?</li>
+                        <li>God "draws close to man" and calls us to know and love him. Can you think of a time you felt God drawing close to you?</li>
+                        <li>How is this different from thinking of God as distant or uninterested in your life?</li>
+                    </ol>
+                </div>
+            `,
+            theologian: `
+                <h2>Reading: Divine Providence</h2>
+                <div class="reading-meta">Catechism of the Catholic Church, Paragraphs 302–304</div>
+                <div class="reading-body">
+                    <p>"Creation has its own goodness and proper perfection, but it did not spring forth complete from the hands of the Creator. The universe was created 'in a state of journeying' toward an ultimate perfection yet to be attained, to which God has destined it. We call 'divine providence' the dispositions by which God guides his creation toward this perfection... The witness of Scripture is unanimous that the solicitude of divine providence is concrete and immediate; God cares for all, from the least things to the great events of the world and its history."</p>
+                </div>
+                <div class="reflection-block">
+                    <h4>Theological Reflection</h4>
+                    <ol>
+                        <li>Creation is described as still "journeying" toward perfection, not finished. What does that suggest about how we should understand the world's imperfection and suffering?</li>
+                        <li>Providence is described as "concrete and immediate," not distant oversight. How does that compare to how providence sometimes gets talked about, more like a general plan than personal attention?</li>
+                        <li>If God cares for "the least things" and "the great events" with the same providence, what does that suggest about the value of ordinary, small moments in your own life?</li>
+                    </ol>
+                </div>
+            `
+        },
+
+        quiz: {
+            beginner: [
+            {
+                q: "How did God create the world?",
+                options: ["Out of material that already existed","Out of nothing, by his own power","By asking angels to build it","It has always existed, uncreated"],
+                correct: 1,
+                explanation: "God didn't shape the world out of anything else. He made it out of nothing, freely, out of love."
+            },
+            {
+                q: "What did God give human beings that he didn't give the rest of creation?",
+                options: ["Fur and claws","A soul, intellect, and free will","The ability to fly","Perfect knowledge of the future"],
+                correct: 1,
+                explanation: "Humans are made in God's image with a soul, the ability to reason (intellect), and the ability to freely choose (free will), gifts the rest of creation doesn't share."
+            },
+            {
+                q: "Why did God give us free will, even knowing we might choose wrong?",
+                options: ["He didn't realize we might misuse it","So we could freely choose to love him back","To test us and punish us","Free will was an accident of creation"],
+                correct: 1,
+                explanation: "Love that isn't freely chosen isn't really love. God gave us freedom so our love for him could be real, not forced."
+            },
+            {
+                q: "According to Jesus, what should we call God?",
+                options: ["Judge","Ruler","Father","Master"],
+                correct: 2,
+                explanation: "Jesus taught us to pray to God as \"Our Father,\" showing us God wants a real, loving relationship with us, not just obedience."
+            },
+            {
+                q: "What are the three theological virtues?",
+                options: ["Courage, patience, and kindness","Faith, hope, and charity","Wisdom, justice, and temperance","Prayer, fasting, and almsgiving"],
+                correct: 1,
+                explanation: "Faith, hope, and charity are the virtues that help us build a relationship with God: trusting him, hoping for eternal life with him, and loving him and others."
+            }
+            ],
+            theologian: [
+            {
+                q: "What does \"creation ex nihilo\" mean, and why does it matter?",
+                options: ["God organized pre-existing matter","God created out of nothing, ruling out both pantheism and eternal matter","God is identical with the created world","Creation refers only to the beginning of time"],
+                correct: 1,
+                explanation: "Ex nihilo was formally taught at the Fourth Lateran Council (1215). It preserves both God's transcendence (he isn't made of the same \"stuff\" as creation) and his sovereignty (he isn't limited by pre-existing material)."
+            },
+            {
+                q: "What does \"continuous creation\" (CCC 301) mean?",
+                options: ["God created the world once and now lets it run on its own","God continues to actively sustain creation's existence moment to moment","Creation is still incomplete and not yet real","God re-creates the world every day from scratch"],
+                correct: 1,
+                explanation: "Catholic teaching rejects deism. God doesn't just start creation and step back; he actively sustains its existence at every moment (conservatio)."
+            },
+            {
+                q: "Per CCC 2779–2780, why can we rightly call God \"Father\"?",
+                options: ["Because \"father\" is a natural human metaphor anyone would arrive at","Because the Son revealed God this way, and the Spirit lets us share in that relationship","Because ancient cultures always described their gods this way","Because it's the safest, most neutral title for God"],
+                correct: 1,
+                explanation: "\"Father\" is revealed language, not intuited language. We know God this way because Christ showed us, not because we guessed it."
+            },
+            {
+                q: "What's the difference between God's fatherhood as Creator and adoptive divine sonship (CCC 1996–1997)?",
+                options: ["There is no difference","God is Father of all by creation, but adoptive sonship through Christ and Baptism is a fuller, distinct relationship","Adoptive sonship replaces God's fatherhood as Creator","Only some people were created by God at all"],
+                correct: 1,
+                explanation: "Every person is a creature of God the Father. Adoptive sonship, sharing by grace in the Son's own relationship with the Father, is something entered into through Christ and Baptism specifically."
+            },
+            {
+                q: "How does Augustine's psychological analogy (memory, intellect, will) connect to being made \"in God's image\"?",
+                options: ["It doesn't connect, they're unrelated doctrines","The structure of a rational, free mind is itself a created echo of the kind of being God is","It proves the human soul is literally divine","It was rejected by the Church as heretical"],
+                correct: 1,
+                explanation: "Being made in God's image isn't primarily physical resemblance. It's the rational, free, relational structure of the soul itself reflecting, faintly, the kind of being God is."
+            }
+            ]
+        }
+};
+
+window.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('backBtn').onclick = () => window.location.href = 'crux-modules.html';
+    initModule(MODULE_DATA);
+});
+</script>
+</body>
+</html>

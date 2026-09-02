@@ -550,7 +550,7 @@ body::before {
 <section class="hero">
   <div class="hero-eyebrow">Faith Formation</div>
   <h1 class="hero-title">Learn the <span>Faith</span></h1>
-  <p class="hero-tagline">Eighteen modules across five pillars — what we believe, how we worship, how we live, how we pray, and who we are.</p>
+  <p class="hero-tagline">Sixteen modules across five pillars — what we believe, how we worship, how we live, how we pray, and who we are.</p>
   <div class="hero-meta">18 Modules &nbsp;·&nbsp; Greek Word Studies &nbsp;·&nbsp; Earn XP</div>
 </section>
 
@@ -575,6 +575,21 @@ body::before {
       </div>
     </div>
     <div class="module-grid">
+
+      <a href="crux-modules.html?module=god" class="module-card">
+        <div class="module-card-track">Pillar I · What We Believe</div>
+        <div class="module-card-title">Who Is God?</div>
+        <div class="module-card-desc">Creator and Father: who God is before anything else, and why he made you at all.</div>
+        <div class="module-card-footer">
+          <div class="module-card-badges">
+            <span class="badge badge-xp">50 XP</span>
+            </div>
+          <div class="module-card-actions">
+            <span class="btn-games" onclick="event.stopPropagation(); event.preventDefault(); location.href='crux-games.html?module=god'">▶ Games</span>
+            <span class="module-card-arrow">Begin →</span>
+          </div>
+        </div>
+      </a>
 
       <a href="crux-modules.html?module=trinity" class="module-card">
         <div class="module-card-track">Pillar I · What We Believe</div>
@@ -904,6 +919,7 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     const routes = {
         'lords_prayer': 'crux-module-lords-prayer.html',
         'bible_geography': 'crux-module-geography.html',
+        'god': 'crux-module-god.html',
         'trinity': 'crux-module-trinity.html',
         'sacraments': 'crux-module-sacraments.html',
         'jesus': 'crux-module-jesus.html',

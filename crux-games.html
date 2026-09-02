@@ -288,6 +288,62 @@ sacraments: {
     },
 },
 
+// ─── WHO IS GOD ───────────────────────────────────────────
+god: {
+    title: 'Who Is God?',
+    eyebrow: 'Pillar I · What We Believe',
+    desc: 'Five games on creation, free will, and God our Father.',
+    moduleLink: 'crux-modules.html?module=god',
+    games: [
+        { id:'flashcard',   icon:'🃏', name:'Flashcards',      desc:'Key terms from creation, the soul, and God the Father.',                         xp:15 },
+        { id:'scramble',    icon:'🔤', name:'Word Scramble',   desc:'Unscramble vocabulary about who God is and what he gave us.',                    xp:15 },
+        { id:'matching',    icon:'🔗', name:'Matching Pairs',  desc:'Match each term to what it actually means.',                                     xp:20 },
+        { id:'truefalse',   icon:'✅', name:'True or False',   desc:'Statements about creation, free will, and God as Father.',                       xp:15 },
+        { id:'fillinblank', icon:'✏️', name:'Fill in the Blank',desc:'Complete key sentences about who God is.',                                      xp:15 },
+    ],
+    flashcards: [
+        { term:'Soul',                def:'The spiritual part of every human being that connects us back to God, forever.' },
+        { term:'Intellect',           def:'The God-given ability to reason, to learn, and to ask "why are we here?"' },
+        { term:'Free Will',           def:'The ability to freely choose right from wrong. Without it, love could not be real.' },
+        { term:'Creation Ex Nihilo',  def:'Latin for "out of nothing." God made the world from nothing at all, needing no material and no help.' },
+        { term:'Conscience',          def:'The inner voice that tells us right from wrong and helps guide our free choices.' },
+        { term:'Theological Virtues', def:'Faith, Hope, and Charity, the three virtues that help us build a relationship with God.' },
+        { term:'Providence',          def:'God\'s ongoing care and guidance over everything he created, not just at the beginning, but every moment.' },
+    ],
+    scrambles: [
+        { word:'SOUL',        clue:'The spiritual part of us that connects us to God forever.' },
+        { word:'INTELLECT',   clue:'The God-given ability to reason and ask "why are we here?"' },
+        { word:'CONSCIENCE',  clue:'The inner voice that tells us right from wrong.' },
+        { word:'PROVIDENCE',  clue:'God\'s ongoing care and guidance over everything he created.' },
+        { word:'CHARITY',     clue:'The theological virtue of loving God above all and loving our neighbor.' },
+    ],
+    matching: [
+        { term:'Soul',               def:'Connects us back to God forever' },
+        { term:'Intellect',          def:'Ability to reason and ask why' },
+        { term:'Free Will',          def:'Ability to freely choose right or wrong' },
+        { term:'Creation Ex Nihilo', def:'Made from nothing, by God\'s power alone' },
+        { term:'Conscience',         def:'Inner voice telling us right from wrong' },
+        { term:'Faith',              def:'Trusting and believing in God' },
+        { term:'Charity',            def:'Loving God above all things, and loving others' },
+    ],
+    truefalse: [
+        { stmt:'God created the world out of material that already existed.',                     ans:false, expl:'False! God created everything "ex nihilo," out of nothing at all, needing no material and no help.' },
+        { stmt:'Human beings are the only part of creation given a soul, intellect, and free will.', ans:true,  expl:'Correct! These gifts are what it means to be made in God\'s image.' },
+        { stmt:'God gave us free will so that our love for him could be real, not forced.',         ans:true,  expl:'Correct! Love that isn\'t freely chosen isn\'t really love.' },
+        { stmt:'Jesus taught us to call God "Father."',                                             ans:true,  expl:'Correct! Jesus taught us to pray "Our Father," showing God wants a real relationship with us.' },
+        { stmt:'The three theological virtues are faith, hope, and courage.',                      ans:false, expl:'False! The three theological virtues are faith, hope, and charity.' },
+        { stmt:'Free will means we will always choose to do the right thing.',                     ans:false, expl:'False! Free will means we CAN choose wrong, and Adam and Eve did. God still gives us the choice, because it\'s the only way our love for him can be real.' },
+    ],
+    fillinblank: [
+        { sentence:'God created the world out of ___, not from anything that already existed.', answer:'nothing',    wordBank:['nothing','chaos','light','water'] },
+        { sentence:'Jesus taught us to pray to God as our ___.',                                answer:'Father',     wordBank:['Father','Judge','Ruler','King'] },
+        { sentence:'The ___ tells us right from wrong and helps guide our choices.',            answer:'conscience', wordBank:['conscience','intellect','soul','spirit'] },
+        { sentence:'The three theological virtues are faith, hope, and ___.',                   answer:'charity',    wordBank:['charity','courage','wisdom','patience'] },
+        { sentence:'God\'s ongoing care and guidance over everything he created is called ___.', answer:'providence', wordBank:['providence','grace','mercy','glory'] },
+    ],
+    dragdrop: null,
+},
+
 // ─── TRINITY ──────────────────────────────────────────────
 trinity: {
     title: 'The Holy Trinity',
