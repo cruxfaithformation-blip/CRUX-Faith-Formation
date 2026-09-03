@@ -49,6 +49,8 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .hdr-btn.present:hover { opacity: 0.9; }
 .hdr-btn.danger { background: rgba(163,45,45,0.15); color: #e07070; }
 .hdr-btn.danger:hover { background: rgba(163,45,45,0.28); }
+.hdr-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.hdr-btn:disabled:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.55); }
 
 /* Vocab toggle (shared style for header + present controls) */
 .vocab-toggle {
@@ -178,7 +180,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   padding: 0.4rem 0 0.4rem 1.5em;
   border-bottom: 1px solid rgba(255,255,255,0.06); position: relative;
 }
-.body-line[data-type="bullet"]::before { content: '—'; color: var(--gold); font-size: 0.85em; position: absolute; left: 0; top: 0.4rem; pointer-events: none; }
+.body-line[data-type="bullet"]::before { content: var(--bullet-marker, '—'); color: var(--gold); font-size: 0.85em; position: absolute; left: 0; top: 0.4rem; pointer-events: none; }
 .body-line[data-type="highlight"] {
   font-size: clamp(1rem,2.2vw,1.35rem); color: var(--gold-light); font-weight: 600;
   padding: 0.4rem 0 0.4rem 1.5em;
@@ -258,6 +260,16 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .wys-media-opt:hover { border-color: var(--gold); }
 .wys-media-opt.selected { border-color: var(--gold); background: var(--gold-pale); color: var(--navy); }
 .wys-col-bg { flex: 0 0 auto; }
+.wys-col-bullet { flex: 0 0 auto; }
+.wys-bullet-row { display: flex; align-items: center; gap: 0.3rem; }
+.wys-bullet-opt {
+  width: 30px; height: 30px; border: 1.5px solid var(--border); border-radius: 6px;
+  cursor: pointer; text-align: center; font-size: 0.95rem; line-height: 1;
+  color: var(--muted); background: var(--white); transition: all 0.12s;
+  display: flex; align-items: center; justify-content: center;
+}
+.wys-bullet-opt:hover { border-color: var(--gold); color: var(--navy); }
+.wys-bullet-opt.selected { border-color: var(--gold); background: var(--gold-pale); color: var(--navy); }
 .wys-bg-row { display: flex; align-items: center; gap: 0.5rem; }
 .wys-color-input {
   width: 38px; height: 32px; padding: 0; border: 1.5px solid var(--border); border-radius: 6px;
@@ -583,7 +595,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   border-bottom: 1px solid rgba(255,255,255,0.06);
   display: flex; align-items: baseline; gap: 0.75rem;
 }
-.sc-content .slide-body ul li::before { content: '—'; color: var(--gold); font-size: 0.85em; flex-shrink: 0; }
+.sc-content .slide-body ul li::before { content: var(--bullet-marker, '—'); color: var(--gold); font-size: 0.85em; flex-shrink: 0; }
 .sc-content .slide-body ul li.highlight { color: var(--gold-light); font-weight: 600; }
 .sc-content .slide-body ul li.highlight::before { content: '★'; }
 .sc-content .slide-body blockquote {
@@ -613,7 +625,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   line-height: 1.7; padding: 0.2rem 0;
   display: flex; align-items: baseline; justify-content: center; gap: 0.6rem;
 }
-.sc-scripture .scripture-notes ul li::before { content: '·'; color: var(--gold); }
+.sc-scripture .scripture-notes ul li::before { content: var(--bullet-marker, '·'); color: var(--gold); }
 
 .sc-callout { text-align: center; }
 .sc-callout h2 {
@@ -628,7 +640,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   padding: 0.35rem 0; line-height: 1.5;
   display: flex; align-items: baseline; justify-content: center; gap: 0.75rem;
 }
-.sc-callout .callout-body ul li::before { content: '—'; color: var(--gold); }
+.sc-callout .callout-body ul li::before { content: var(--bullet-marker, '—'); color: var(--gold); }
 .sc-callout .callout-body ul li.highlight { color: var(--gold-light); font-weight: 600; }
 .sc-callout .callout-body ul li.highlight::before { content: '★'; }
 
@@ -683,7 +695,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .sc-split .split-body p { font-size: clamp(0.95rem, 2vw, 1.2rem); line-height: 1.75; margin-bottom: 0.4rem; }
 .sc-split .split-body ul { list-style: none; }
 .sc-split .split-body ul li { font-size: clamp(0.92rem, 2vw, 1.18rem); padding: 0.5rem 0; border-bottom: 1px solid rgba(255,255,255,0.06); display: flex; align-items: baseline; gap: 0.7rem; }
-.sc-split .split-body ul li::before { content: '—'; color: var(--gold); flex-shrink: 0; font-size: 0.85em; }
+.sc-split .split-body ul li::before { content: var(--bullet-marker, '—'); color: var(--gold); flex-shrink: 0; font-size: 0.85em; }
 .sc-split .split-body ul li.highlight { color: var(--gold-light); font-weight: 600; }
 .sc-split .split-body ul li.highlight::before { content: '★'; }
 .sc-split .split-body blockquote { border-left: 3px solid var(--gold); padding: 0.55rem 1.1rem; margin: 0.6rem 0; font-style: italic; font-family: 'Playfair Display', serif; font-size: clamp(0.9rem, 1.8vw, 1.15rem); color: rgba(255,255,255,0.65); }
@@ -697,7 +709,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .sc-definition .def-body p { margin-bottom: 0.35rem; }
 .sc-definition .def-body ul { list-style: none; margin-top: 1rem; }
 .sc-definition .def-body ul li { font-size: clamp(0.9rem, 1.8vw, 1.1rem); color: rgba(255,255,255,0.5); padding: 0.3rem 0; display: flex; align-items: baseline; justify-content: center; gap: 0.6rem; font-style: normal; }
-.sc-definition .def-body ul li::before { content: '·'; color: var(--gold); }
+.sc-definition .def-body ul li::before { content: var(--bullet-marker, '·'); color: var(--gold); }
 .sc-definition .def-body ul li.highlight { color: var(--gold-light); font-weight: 600; }
 .sc-definition .def-body ul li.highlight::before { content: '★'; }
 
@@ -714,7 +726,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .comp-col-body p { font-size: clamp(0.88rem, 1.8vw, 1.1rem); line-height: 1.7; margin-bottom: 0.35rem; }
 .comp-col-body ul { list-style: none; }
 .comp-col-body ul li { font-size: clamp(0.85rem, 1.7vw, 1.05rem); padding: 0.4rem 0; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; align-items: baseline; gap: 0.6rem; }
-.comp-col-body ul li::before { content: '—'; color: var(--gold); flex-shrink: 0; font-size: 0.8em; }
+.comp-col-body ul li::before { content: var(--bullet-marker, '—'); color: var(--gold); flex-shrink: 0; font-size: 0.8em; }
 .comp-col-body ul li.highlight { color: var(--gold-light); font-weight: 600; }
 .comp-col-body ul li.highlight::before { content: '★'; }
 
@@ -828,6 +840,8 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
         <button class="tsz-reset" id="globalTextScaleReset" onclick="resetGlobalTextScale()" disabled>Reset</button>
       </div>
       <a href="crux-present-tutorial.html" target="_blank" class="hdr-btn ghost" title="How to use this editor">? Help</a>
+      <button class="hdr-btn ghost" id="undoBtn" onclick="undo()" title="Undo (Ctrl+Z)" disabled>↶ Undo</button>
+      <button class="hdr-btn ghost" id="redoBtn" onclick="redo()" title="Redo (Ctrl+Shift+Z)" disabled>↷ Redo</button>
       <button class="hdr-btn ghost" onclick="resetDefaults()">Reset</button>
       <button class="hdr-btn danger" id="deleteBtn" onclick="confirmDelete()" style="display:none">Delete</button>
       <button class="hdr-btn present" onclick="enterPresent()">▶ Present</button>
@@ -898,6 +912,18 @@ const TYPES = [
   { id:'split',            icon:'⊟', label:'Split' },
   { id:'definition',       icon:'◻', label:'Definition' },
   { id:'comparison',       icon:'⇌', label:'Comparison' },
+];
+
+/* ─── BULLET STYLES ──────────────────────────────────────────────
+   Per-slide override for the bullet glyph, same pattern as bgColor/
+   textScale. Unset = each slide type keeps its own historical default
+   (mostly em dash, scripture-notes/definition use a middle dot). */
+const BULLET_STYLES = [
+  { id:'dash',    glyph:'—', label:'Dash' },
+  { id:'dot',     glyph:'•', label:'Dot' },
+  { id:'arrow',   glyph:'→', label:'Arrow' },
+  { id:'check',   glyph:'✓', label:'Check' },
+  { id:'diamond', glyph:'◆', label:'Diamond' },
 ];
 
 /* ─── DEFAULT SLIDES ─────────────────────────────────────────────── */
@@ -1000,6 +1026,22 @@ let dragSrcIndex = -1;
 let slideTheme = 'crux';    // 'crux' | 'bright' | 'chalk'
 let slideTextScale = 1;     // global default text scale; individual slides may override via slide.textScale
 
+/* ─── UNDO / REDO ─────────────────────────────────────────────────
+   One shared history for every kind of edit (text, slide add/delete/
+   reorder, type/bg/bullet/scale changes) — same model as PowerPoint's
+   Ctrl+Z, not a per-field browser undo. Discrete actions (button clicks)
+   are naturally spaced out in time, so each becomes its own step; rapid
+   keystrokes while typing are grouped into one step via a short debounce,
+   the same way most editors avoid undoing one letter at a time. */
+let undoStack = [];
+let redoStack = [];
+let lastCommittedSlides = null;
+let undoDebounceTimer = null;
+const UNDO_DEBOUNCE_MS = 500;
+const UNDO_HISTORY_LIMIT = 60;
+
+function cloneSlides() { return JSON.parse(JSON.stringify(slides)); }
+
 /* ─── INIT ──────────────────────────────────────────────────────── */
 (function init() {
   const saved = localStorage.getItem('crux-present-god-v1');
@@ -1015,6 +1057,7 @@ let slideTextScale = 1;     // global default text scale; individual slides may 
   } else {
     slides = defaultCopy();
   }
+  lastCommittedSlides = cloneSlides();
   syncVocabUI();
   syncThemeUI();
   syncTextScaleUI();
@@ -1029,6 +1072,60 @@ function defaultCopy() {
 /* ─── SAVE ──────────────────────────────────────────────────────── */
 function save() {
   localStorage.setItem('crux-present-god-v1', JSON.stringify({ slides: slides, nextId: nextId, vocabMode: vocabMode, slideTheme: slideTheme, slideTextScale: slideTextScale }));
+  noteUndoCheckpoint();
+}
+
+function noteUndoCheckpoint() {
+  clearTimeout(undoDebounceTimer);
+  undoDebounceTimer = setTimeout(function() {
+    if (lastCommittedSlides) {
+      undoStack.push(lastCommittedSlides);
+      if (undoStack.length > UNDO_HISTORY_LIMIT) undoStack.shift();
+    }
+    lastCommittedSlides = cloneSlides();
+    redoStack = [];
+    updateUndoRedoButtons();
+  }, UNDO_DEBOUNCE_MS);
+}
+
+function undo() {
+  clearTimeout(undoDebounceTimer);
+  // If there are edits since the last checkpoint (e.g. mid-typing), commit
+  // them as their own step first, so undo always reverts what's on screen.
+  if (lastCommittedSlides && JSON.stringify(lastCommittedSlides) !== JSON.stringify(slides)) {
+    undoStack.push(lastCommittedSlides);
+  }
+  if (undoStack.length === 0) { showToast('Nothing to undo'); return; }
+  redoStack.push(cloneSlides());
+  slides = undoStack.pop();
+  lastCommittedSlides = cloneSlides();
+  afterHistoryChange('Undid last change');
+}
+
+function redo() {
+  clearTimeout(undoDebounceTimer);
+  if (redoStack.length === 0) { showToast('Nothing to redo'); return; }
+  undoStack.push(cloneSlides());
+  slides = redoStack.pop();
+  lastCommittedSlides = cloneSlides();
+  afterHistoryChange('Redid change');
+}
+
+function afterHistoryChange(msg) {
+  localStorage.setItem('crux-present-god-v1', JSON.stringify({ slides: slides, nextId: nextId, vocabMode: vocabMode, slideTheme: slideTheme, slideTextScale: slideTextScale }));
+  if (selectedIndex >= slides.length) selectedIndex = slides.length - 1;
+  renderSlideList();
+  if (selectedIndex >= 0 && slides.length > 0) renderCanvasSlide();
+  else document.getElementById('slideCanvas').innerHTML = '<div class="wysiwyg-empty"><div class="ep-icon">📋</div><p>Select a slide to edit,<br>or click <strong>+ Add Slide</strong>.</p></div>';
+  updateUndoRedoButtons();
+  if (msg) showToast(msg);
+}
+
+function updateUndoRedoButtons() {
+  var u = document.getElementById('undoBtn');
+  var r = document.getElementById('redoBtn');
+  if (u) u.disabled = undoStack.length === 0;
+  if (r) r.disabled = redoStack.length === 0;
 }
 
 function setTheme(theme) {
@@ -1228,6 +1325,25 @@ function setSlideBg(color) {
   if (resetBtn) resetBtn.disabled = !slide.bgColor;
 }
 
+/* Custom per-slide bullet marker. Stored as a bare style id (e.g. 'dot');
+   applied as a quoted CSS content string so `content: var(--bullet-marker, '—')`
+   substitutes correctly. Unset falls back to each slide type's own default. */
+function applyBulletStyle(el, slide) {
+  if (!el) return;
+  var style = slide && slide.bulletStyle && BULLET_STYLES.find(function(b) { return b.id === slide.bulletStyle; });
+  if (style) el.style.setProperty('--bullet-marker', "'" + style.glyph + "'");
+  else el.style.removeProperty('--bullet-marker');
+}
+
+function setBulletStyle(styleId) {
+  if (selectedIndex < 0 || selectedIndex >= slides.length) return;
+  var slide = slides[selectedIndex];
+  if (styleId) slide.bulletStyle = styleId; else delete slide.bulletStyle;
+  save();
+  applyBulletStyle(document.getElementById('editableSlide'), slide);
+  renderCanvasSlide();
+}
+
 /* ─── WYSIWYG CANVAS ─────────────────────────────────────────────── */
 var focusedLineEl = null;
 
@@ -1257,6 +1373,7 @@ function renderCanvasSlide() {
 
   document.getElementById('editableSlide').innerHTML += buildEditableSlideHTML(slide);
   applySlideBg(document.getElementById('editableSlide'), slide);
+  applyBulletStyle(document.getElementById('editableSlide'), slide);
   applyTextScale(document.getElementById('editableSlide'), slide);
   attachEditListeners(slide);
   updateFmtToolbar(null);
@@ -1289,6 +1406,16 @@ function buildControlsStrip(slide) {
       '<div class="wys-bg-row">' +
         '<input type="color" class="wys-color-input" id="bgColorInput" value="' + (slide.bgColor || '#141829') + '" oninput="setSlideBg(this.value)" title="Custom background color for this slide">' +
         '<button class="wys-bg-reset" id="bgResetBtn" onclick="setSlideBg(null)"' + (slide.bgColor ? '' : ' disabled') + '>Reset</button>' +
+      '</div>' +
+    '</div>' +
+    '<div class="wys-col wys-col-bullet">' +
+      '<span class="wys-label">Bullet Style</span>' +
+      '<div class="wys-bullet-row">' +
+        BULLET_STYLES.map(function(b) {
+          return '<div class="wys-bullet-opt' + (slide.bulletStyle === b.id ? ' selected' : '') +
+            '" onclick="setBulletStyle(\'' + b.id + '\')" title="' + b.label + '">' + b.glyph + '</div>';
+        }).join('') +
+        '<button class="wys-bg-reset" id="bulletResetBtn" onclick="setBulletStyle(null)"' + (slide.bulletStyle ? '' : ' disabled') + '>Reset</button>' +
       '</div>' +
     '</div>' +
     '<div class="wys-col wys-col-textsize">' +
@@ -1691,6 +1818,7 @@ function renderPresentSlide() {
   const container = document.getElementById('presentSlide');
   container.className = 'type-' + slide.type + (vocabMode === 'simple' ? ' simple-mode' : '');
   applySlideBg(container, slide);
+  applyBulletStyle(container, slide);
   document.getElementById('slideContentArea').innerHTML = buildSlideHTML(slide);
   applyTextScale(container, slide);
   document.getElementById('notesText').textContent = slide.note || 'No presenter notes.';
@@ -1894,7 +2022,23 @@ function showToast(msg) {
 
 /* ─── KEYBOARD ──────────────────────────────────────────────────── */
 document.addEventListener('keydown', function(e) {
-  if (!document.getElementById('presentOverlay').classList.contains('active')) return;
+  if (!document.getElementById('presentOverlay').classList.contains('active')) {
+    // Editor mode: Ctrl/Cmd+Z to undo, Ctrl/Cmd+Shift+Z (or Ctrl+Y) to redo.
+    // Always take over from the browser's native per-field undo so the
+    // whole deck shares one history, the same as PowerPoint.
+    var cmdOrCtrl = e.ctrlKey || e.metaKey;
+    if (cmdOrCtrl && !e.altKey && e.key.toLowerCase() === 'z') {
+      e.preventDefault();
+      if (e.shiftKey) redo(); else undo();
+      return;
+    }
+    if (cmdOrCtrl && !e.altKey && e.key.toLowerCase() === 'y') {
+      e.preventDefault();
+      redo();
+      return;
+    }
+    return;
+  }
   if (e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' ') { e.preventDefault(); nextSlide(); }
   else if (e.key==='ArrowLeft'||e.key==='ArrowUp')             { e.preventDefault(); prevSlide(); }
   else if (e.key==='Escape')                                    exitPresent();
