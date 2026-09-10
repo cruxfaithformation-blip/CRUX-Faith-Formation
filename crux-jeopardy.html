@@ -543,6 +543,18 @@ const COLORS = ['#e74c3c','#3498db','#2ecc71','#f39c12'];
 // ── QUESTION BANK ────────────────────────────────────────────────
 // 5 questions per module, difficulty escalates 100 → 500
 const QB = {
+  god: { label:'Who Is God?', q:[
+    { c:'Catholic teaching holds that God created the world "ex nihilo." What does this Latin phrase mean, and what two rival ideas does it rule out?',
+      a:'Out of nothing. It rules out the idea that God merely shaped pre-existing eternal matter, as in Plato\'s Demiurge, and pantheism, the idea that the universe simply is God\'s own substance.' },
+    { c:'CCC 301 teaches that creation is not a one-time event God stepped back from. What is the theological term for God\'s ongoing act of sustaining creation\'s existence moment to moment?',
+      a:'Conservatio, or continuous creation. If God\'s sustaining act stopped, creation would not persist on its own.' },
+    { c:'CCC 1701 through 1709 ground "made in the image of God" in three specific human capacities. Name them, and give the Latin term for our capacity to receive a relationship with God.',
+      a:'Rational intellect, free will, and the capacity for relationship with God. The Latin term is capax Dei: "capable of God."' },
+    { c:'CCC 2779 through 2780 teach that calling God "Father" is revealed language, not intuited language. Explain the distinction.',
+      a:'We do not call God Father because it is an obvious human metaphor we invented. The Son revealed God this way, and the Holy Spirit lets us share in that same filial relationship: it was given to us, not guessed at.' },
+    { c:'CCC 1996 to 1997 distinguishes two senses of divine fatherhood. Name both, and state which one is entered into through Christ and Baptism specifically.',
+      a:'God is Father of all as Creator, in a general sense. The fuller, adoptive sense belongs to those united to Christ through Baptism, who share by grace in the relationship the Son has with the Father by nature. Adoptive sonship is the one entered into through Christ and Baptism.' }
+  ]},
   trinity: { label:'The Holy Trinity', q:[
     { c:'The Trinity is one God in how many Persons?',
       a:'Three — Father, Son, and Holy Spirit' },
@@ -775,6 +787,18 @@ const QB = {
 
 // ── ELEMENTARY QUESTION BANK (Grades 3–5) ───────────────────────
 const QB_E = {
+  god: { label:'Who Is God?', q:[
+    { c:'How did God create the whole world?',
+      a:'Out of nothing at all, by his own power and love' },
+    { c:'What special gift did God give human beings that he didn\'t give the rest of creation?',
+      a:'A soul, along with intellect and free will' },
+    { c:'God gave us free will even though we might choose wrong. Why did he do that?',
+      a:'So we could freely choose to love him back. Love that isn\'t chosen freely isn\'t really love.' },
+    { c:'What did Jesus teach us to call God?',
+      a:'Our Father' },
+    { c:'Name the three theological virtues that help us build a relationship with God.',
+      a:'Faith, Hope, and Charity' }
+  ]},
   trinity: { label:'The Holy Trinity', q:[
     { c:'The Trinity is one God in how many Persons?',
       a:'Three — Father, Son, and Holy Spirit' },
@@ -996,8 +1020,8 @@ const QB_E = {
 // ── PRESET BOARDS ────────────────────────────────────────────────
 const BOARDS = [
   { id:'p1', eyebrow:'Pillar I', name:'What We Believe',
-    desc:'Trinity · Jesus Christ · Mary & Saints · Prodigal Son · Bible Geography',
-    cats:['trinity','jesus','mary','prodigal_son','geography'],
+    desc:'Who Is God? · Trinity · Jesus Christ · Mary & Saints · Prodigal Son · Bible Geography',
+    cats:['god','trinity','jesus','mary','prodigal_son','geography'],
     fj:{ c:'This Greek word — meaning "of the same substance" — was the pivotal term at the Council of Nicaea in 325 AD. It differed from the heretical alternative by a single letter, yet the difference was everything. Name the term, name the heresy it refuted, and state what that heresy taught.',
          a:'Homoousios. It refuted Arianism, which taught that the Son was the greatest of all creatures — but a creature nonetheless ("there was a time when he was not"). Homoousios declared the Son identical in substance to the Father: truly and fully God.' },
     fjE:{ c:'At Jesus\'s baptism in the Jordan River, all three Persons of the Trinity appear at the same time. Describe what each Person does or appears as.',
@@ -1033,6 +1057,7 @@ const BOARDS = [
 ];
 
 const ALL_MODULES = [
+  { id:'god',            label:'Who Is God?',                   pillar:'Pillar I' },
   { id:'trinity',        label:'The Holy Trinity',              pillar:'Pillar I' },
   { id:'jesus',          label:'Who Is Jesus Christ?',          pillar:'Pillar I' },
   { id:'mary',           label:'Mary & the Saints',             pillar:'Pillar I' },
