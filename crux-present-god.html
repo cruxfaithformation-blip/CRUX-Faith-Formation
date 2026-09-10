@@ -283,6 +283,59 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 }
 .wys-bg-reset:hover { color: var(--navy); }
 .wys-bg-reset:disabled { opacity: 0.35; cursor: default; text-decoration: none; }
+.wys-col-badge { flex: 0 0 auto; }
+.wys-hint { font-size: 0.66rem; color: var(--muted); margin-bottom: 0.3rem; line-height: 1.4; }
+.pv-editor { min-height: 90px; font-family: 'DM Mono', monospace; font-size: 0.76rem; }
+
+/* ─── VISUAL TYPES: Steps / Icon Grid / Timeline ────────────────── */
+.pv-wrap .slide-label { margin-bottom: 0.5rem; }
+.pv-empty-hint { color: rgba(255,255,255,0.4); font-size: 0.95rem; font-style: italic; padding: 1rem 0; }
+.pv-badge {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 2.4em; height: 2.4em; border-radius: 50%;
+  border: 2px solid var(--gold); color: var(--gold);
+  font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.1rem;
+  margin-bottom: 0.6rem;
+}
+
+.pv-steps { display: flex; align-items: stretch; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; }
+.pv-step-card {
+  flex: 1 1 160px; min-width: 140px; background: rgba(255,255,255,0.05);
+  border: 1.5px solid rgba(255,255,255,0.12); border-radius: 10px;
+  padding: 1rem 0.9rem; text-align: center; position: relative;
+}
+.pv-step-num {
+  position: absolute; top: -10px; left: -10px;
+  width: 26px; height: 26px; border-radius: 50%;
+  background: var(--gold); color: var(--navy-deep);
+  font-size: 0.72rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+.pv-step-icon { font-size: 1.6rem; margin-bottom: 0.35rem; }
+.pv-step-label { font-weight: 700; font-size: 1rem; margin-bottom: 0.25rem; color: var(--white); }
+.pv-step-desc { font-size: 0.8rem; color: rgba(255,255,255,0.6); line-height: 1.4; }
+.pv-step-arrow {
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; color: var(--gold); flex: 0 0 auto; opacity: 0.7;
+}
+
+.pv-icongrid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 0.6rem; margin-top: 1rem; }
+.pv-icon-tile {
+  background: rgba(255,255,255,0.05); border: 1.5px solid rgba(255,255,255,0.12); border-radius: 10px;
+  padding: 1rem 0.75rem; text-align: center;
+}
+.pv-icon-glyph { font-size: 1.7rem; margin-bottom: 0.4rem; }
+.pv-icon-label { font-weight: 700; font-size: 0.92rem; color: var(--white); }
+
+.pv-timeline { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; }
+.pv-tl-row {
+  display: flex; align-items: center; gap: 1rem;
+  padding: 0.6rem 0.9rem; border-radius: 8px; border: 1.5px solid rgba(255,255,255,0.12);
+  background: rgba(255,255,255,0.03);
+}
+.pv-tl-row.flex { border-color: var(--gold); background: rgba(212,165,116,0.1); }
+.pv-tl-range { flex: 0 0 auto; font-weight: 800; color: var(--gold); font-size: 0.85rem; min-width: 90px; }
+.pv-tl-label { font-size: 0.95rem; color: rgba(255,255,255,0.85); }
 
 /* ─── PRESENTATION OVERLAY ──────────────────────────────────────── */
 #presentOverlay {
@@ -353,6 +406,19 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 [data-theme="bright"] .sc-content .slide-body ul li::before { color: #f57c00 !important; }
 [data-theme="bright"] .sc-content .slide-body ul li.highlight { color: #e65100 !important; }
 [data-theme="bright"] .sc-content .slide-body blockquote { color: #37474f !important; border-left-color: #e65100 !important; }
+
+/* Steps / Icon Grid / Timeline (bright) */
+[data-theme="bright"] .pv-badge { border-color: #e65100 !important; color: #e65100 !important; }
+[data-theme="bright"] .pv-empty-hint { color: rgba(0,0,0,0.35) !important; }
+[data-theme="bright"] .pv-step-card, [data-theme="bright"] .pv-icon-tile { background: rgba(0,0,0,0.03) !important; border-color: rgba(0,0,0,0.1) !important; }
+[data-theme="bright"] .pv-step-num { background: #f57c00 !important; color: #fff !important; }
+[data-theme="bright"] .pv-step-label, [data-theme="bright"] .pv-icon-label { color: #1a237e !important; }
+[data-theme="bright"] .pv-step-desc { color: #546e7a !important; }
+[data-theme="bright"] .pv-step-arrow { color: #f57c00 !important; }
+[data-theme="bright"] .pv-tl-row { background: rgba(0,0,0,0.02) !important; border-color: rgba(0,0,0,0.1) !important; }
+[data-theme="bright"] .pv-tl-row.flex { border-color: #f57c00 !important; background: rgba(245,124,0,0.08) !important; }
+[data-theme="bright"] .pv-tl-range { color: #e65100 !important; }
+[data-theme="bright"] .pv-tl-label { color: #37474f !important; }
 
 /* Scripture slide */
 [data-theme="bright"] .sc-scripture .scripture-ref { color: #1565c0 !important; }
@@ -451,6 +517,17 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 [data-theme="chalk"] .sc-content h2 { color: #f5f0e8 !important; }
 [data-theme="chalk"] .sc-content .slide-body { color: rgba(245,240,232,0.85) !important; }
 [data-theme="chalk"] .sc-content .slide-body ul li::before { color: #ffd54f !important; }
+[data-theme="chalk"] .pv-badge { border-color: #ffd54f !important; color: #ffd54f !important; }
+[data-theme="chalk"] .pv-empty-hint { color: rgba(245,240,232,0.4) !important; }
+[data-theme="chalk"] .pv-step-card, [data-theme="chalk"] .pv-icon-tile { background: rgba(255,255,255,0.06) !important; border-color: rgba(255,255,255,0.15) !important; }
+[data-theme="chalk"] .pv-step-num { background: #ffd54f !important; color: #1e3a1f !important; }
+[data-theme="chalk"] .pv-step-label, [data-theme="chalk"] .pv-icon-label { color: #f5f0e8 !important; }
+[data-theme="chalk"] .pv-step-desc { color: rgba(245,240,232,0.7) !important; }
+[data-theme="chalk"] .pv-step-arrow { color: #ffd54f !important; }
+[data-theme="chalk"] .pv-tl-row { background: rgba(255,255,255,0.04) !important; border-color: rgba(255,255,255,0.15) !important; }
+[data-theme="chalk"] .pv-tl-row.flex { border-color: #ffd54f !important; background: rgba(255,213,79,0.1) !important; }
+[data-theme="chalk"] .pv-tl-range { color: #ffd54f !important; }
+[data-theme="chalk"] .pv-tl-label { color: rgba(245,240,232,0.85) !important; }
 [data-theme="chalk"] .sc-scripture blockquote { color: rgba(245,240,232,0.85) !important; border-left-color: #ffd54f !important; }
 [data-theme="chalk"] .sc-scripture .ref { color: #ffd54f !important; }
 [data-theme="chalk"] .sc-callout { background: rgba(255,255,255,0.06) !important; border-color: #ffd54f !important; }
@@ -912,6 +989,9 @@ const TYPES = [
   { id:'split',            icon:'⊟', label:'Split' },
   { id:'definition',       icon:'◻', label:'Definition' },
   { id:'comparison',       icon:'⇌', label:'Comparison' },
+  { id:'steps',            icon:'→', label:'Steps' },
+  { id:'icongrid',         icon:'▦', label:'Icon Grid' },
+  { id:'timeline',         icon:'≣', label:'Timeline' },
 ];
 
 /* ─── BULLET STYLES ──────────────────────────────────────────────
@@ -1227,6 +1307,13 @@ function setBodyTabWys(tab) {
   bodyTab = tab;
   const slide = slides[selectedIndex];
   if (!slide) return;
+  var isVisual = slide.type === 'steps' || slide.type === 'icongrid' || slide.type === 'timeline';
+  if (isVisual) {
+    // Visual types edit via the controls-strip textarea (not inline contenteditable),
+    // so the whole canvas + strip must re-render to show the other tab's saved text.
+    renderCanvasSlide();
+    return;
+  }
   document.querySelectorAll('.wvt').forEach(function(b) {
     b.classList.toggle('active', (tab === 'advanced' && b.textContent.includes('Advanced')) || (tab === 'simple' && b.textContent.includes('Child')));
   });
@@ -1381,8 +1468,12 @@ function renderCanvasSlide() {
 
 function buildControlsStrip(slide) {
   var isMedia = slide.type === 'media';
+  var isVisual = slide.type === 'steps' || slide.type === 'icongrid' || slide.type === 'timeline';
+  var hasBadge = isVisual || slide.type === 'content' || slide.type === 'definition';
   var mt = slide.mediaType || 'youtube';
   var effScale = slide.textScale != null ? slide.textScale : slideTextScale;
+  var bf = bodyTab === 'simple' ? 'bodySimple' : 'body';
+  var raw = slide[bf] || slide.body || '';
   var typeGrid = TYPES.map(function(t) {
     return '<div class="wys-type-opt' + (slide.type === t.id ? ' selected' : '') +
       '" onclick="changeType(\'' + t.id + '\')" title="' + t.label + '">' +
@@ -1396,6 +1487,10 @@ function buildControlsStrip(slide) {
     '<input class="wys-input" type="text" placeholder="Paste URL…" value="' + escHtml(slide.mediaUrl || '') + '" oninput="changeMediaUrl(this.value)">' +
     '<input class="wys-input" type="text" placeholder="Caption (optional)…" value="' + escHtml(slide.mediaCaption || '') + '" oninput="updateField(\'mediaCaption\',this.value)">'
     : '';
+  var visualHtml = isVisual ?
+    '<div class="wys-hint">' + escHtml(visualPlaceholder(slide.type)) + '</div>' +
+    '<textarea class="wys-notes-input pv-editor" id="visualBodyTextarea" placeholder="' + escHtml(visualPlaceholder(slide.type)) + '" oninput="updateVisualBody(this.value)">' + escHtml(raw) + '</textarea>'
+    : '';
   return '<div class="wysiwyg-controls">' +
     '<div class="wys-col wys-col-type">' +
       '<span class="wys-label">Slide Type</span>' +
@@ -1408,6 +1503,14 @@ function buildControlsStrip(slide) {
         '<button class="wys-bg-reset" id="bgResetBtn" onclick="setSlideBg(null)"' + (slide.bgColor ? '' : ' disabled') + '>Reset</button>' +
       '</div>' +
     '</div>' +
+    (hasBadge ?
+    '<div class="wys-col wys-col-badge">' +
+      '<span class="wys-label">Hero Badge</span>' +
+      '<div class="wys-bg-row">' +
+        '<input type="text" class="wys-input" style="width:64px;margin-bottom:0;text-align:center;" maxlength="3" placeholder="I" value="' + escHtml(slide.badge || '') + '" oninput="setSlideBadge(this.value)">' +
+        '<button class="wys-bg-reset" id="badgeClearBtn" onclick="setSlideBadge(\'\')"' + (slide.badge ? '' : ' disabled') + '>Clear</button>' +
+      '</div>' +
+    '</div>' : '') +
     '<div class="wys-col wys-col-bullet">' +
       '<span class="wys-label">Bullet Style</span>' +
       '<div class="wys-bullet-row">' +
@@ -1435,7 +1538,7 @@ function buildControlsStrip(slide) {
           '<button class="wvt' + (bodyTab === 'simple'   ? ' active' : '') + '" onclick="setBodyTabWys(\'simple\')">Child-Friendly</button>' +
         '</div>' +
       '</div>' +
-      mediaHtml +
+      mediaHtml + visualHtml +
       '<textarea class="wys-notes-input" placeholder="Private notes shown only during presentation…" oninput="updateField(\'note\',this.value)">' + escHtml(slide.note || '') + '</textarea>' +
     '</div>' +
   '</div>';
@@ -1512,6 +1615,7 @@ function buildEditableSlideHTML(slide) {
   if (type === 'definition') {
     return '<div class="slide-content sc-definition">' +
       '<div class="def-eyebrow">Key Term</div>' +
+      (slide.badge ? '<div class="pv-badge">' + escHtml(slide.badge) + '</div>' : '') +
       '<div class="def-term editable-field" contenteditable="true" data-field="title" data-placeholder="Term…">' + escHtml(slide.title || '') + '</div>' +
       '<div class="def-rule"></div>' +
       '<div class="def-body"><div class="editable-body" id="editableBody">' + buildBodyLines(lines.filter(function(l){return l.trim();})) + '</div></div>' +
@@ -1560,9 +1664,19 @@ function buildEditableSlideHTML(slide) {
     '</div>';
   }
 
+  if (type === 'steps' || type === 'icongrid' || type === 'timeline') {
+    return '<div class="slide-content sc-content pv-wrap">' +
+      '<div class="slide-label">Pillar I · What We Believe</div>' +
+      (slide.badge ? '<div class="pv-badge">' + escHtml(slide.badge) + '</div>' : '') +
+      '<h2 class="editable-field" contenteditable="true" data-field="title" data-placeholder="Heading…">' + escHtml(slide.title || '') + '</h2>' +
+      renderVisualTypeBody(type, raw) +
+    '</div>';
+  }
+
   // Default: content
   return '<div class="slide-content sc-content">' +
     '<div class="slide-label">Pillar I · What We Believe</div>' +
+    (slide.badge ? '<div class="pv-badge">' + escHtml(slide.badge) + '</div>' : '') +
     '<h2 class="editable-field" contenteditable="true" data-field="title" data-placeholder="Heading…">' + escHtml(slide.title || '') + '</h2>' +
     '<div class="slide-body"><div class="editable-body" id="editableBody">' + buildBodyLines(lines.filter(function(l){return l.trim();})) + '</div></div>' +
   '</div>';
@@ -1577,6 +1691,73 @@ function buildBodyLines(lines) {
     else if (line.startsWith('> ')) { type = 'quote';     text = line.slice(2); }
     return '<div class="body-line" data-type="' + type + '" contenteditable="true">' + escHtml(text) + '</div>';
   }).join('');
+}
+
+/* ─── VISUAL TYPES: Steps / Icon Grid / Timeline ─────────────────
+   These three are edited through a plain textarea in the controls
+   strip (same pattern as the Media type's URL/caption fields) rather
+   than inline contenteditable, since each line carries more than one
+   piece of data. One line per item, fields separated by " | ". The
+   preview is pure read-only rendering, shared by the editable canvas
+   and Present mode so there's only one place that can drift. */
+function parseItemLines(raw) {
+  return (raw || '').split('\n').map(function(l) { return l.trim(); }).filter(Boolean).map(function(l) {
+    return l.split('|').map(function(p) { return p.trim(); });
+  });
+}
+
+function visualPlaceholder(type) {
+  if (type === 'steps')    return 'icon | label | description  (one step per line)';
+  if (type === 'icongrid') return 'icon | label  (one tile per line)';
+  if (type === 'timeline') return 'range | label  (one row per line — end a line with * to highlight it)';
+  return '';
+}
+
+function renderStepsBody(raw) {
+  var items = parseItemLines(raw);
+  if (!items.length) return '<div class="pv-empty-hint">Add steps below: ' + escHtml(visualPlaceholder('steps')) + '</div>';
+  return '<div class="pv-steps">' + items.map(function(parts, i) {
+    var icon = parts[0] || '', label = parts[1] || '', desc = parts[2] || '';
+    var card = '<div class="pv-step-card">' +
+      '<div class="pv-step-num">' + (i + 1) + '</div>' +
+      (icon ? '<div class="pv-step-icon">' + escHtml(icon) + '</div>' : '') +
+      '<div class="pv-step-label">' + escHtml(label) + '</div>' +
+      (desc ? '<div class="pv-step-desc">' + escHtml(desc) + '</div>' : '') +
+    '</div>';
+    return card + (i < items.length - 1 ? '<div class="pv-step-arrow">→</div>' : '');
+  }).join('') + '</div>';
+}
+
+function renderIconGridBody(raw) {
+  var items = parseItemLines(raw);
+  if (!items.length) return '<div class="pv-empty-hint">Add tiles below: ' + escHtml(visualPlaceholder('icongrid')) + '</div>';
+  return '<div class="pv-icongrid">' + items.map(function(parts) {
+    var icon = parts[0] || '', label = parts[1] || '';
+    return '<div class="pv-icon-tile">' +
+      (icon ? '<div class="pv-icon-glyph">' + escHtml(icon) + '</div>' : '') +
+      '<div class="pv-icon-label">' + escHtml(label) + '</div>' +
+    '</div>';
+  }).join('') + '</div>';
+}
+
+function renderTimelineBody(raw) {
+  var items = parseItemLines(raw);
+  if (!items.length) return '<div class="pv-empty-hint">Add rows below: ' + escHtml(visualPlaceholder('timeline')) + '</div>';
+  return '<div class="pv-timeline">' + items.map(function(parts) {
+    var range = parts[0] || '', label = parts[1] || '', flex = false;
+    if (/\*\s*$/.test(label)) { flex = true; label = label.replace(/\*\s*$/, '').trim(); }
+    return '<div class="pv-tl-row' + (flex ? ' flex' : '') + '">' +
+      '<span class="pv-tl-range">' + escHtml(range) + '</span>' +
+      '<span class="pv-tl-label">' + escHtml(label) + '</span>' +
+    '</div>';
+  }).join('') + '</div>';
+}
+
+function renderVisualTypeBody(type, raw) {
+  if (type === 'steps')    return renderStepsBody(raw);
+  if (type === 'icongrid') return renderIconGridBody(raw);
+  if (type === 'timeline') return renderTimelineBody(raw);
+  return '';
 }
 
 function attachEditListeners(slide) {
@@ -1753,6 +1934,27 @@ function changeMediaUrl(val) {
   if (es) { es.innerHTML = '<div class="slide-bg-glow"></div>' + buildEditableSlideHTML(slides[selectedIndex]); attachEditListeners(slides[selectedIndex]); }
 }
 
+function updateVisualBody(val) {
+  if (selectedIndex < 0) return;
+  var slide = slides[selectedIndex];
+  var bf = bodyTab === 'simple' ? 'bodySimple' : 'body';
+  slide[bf] = val;
+  save();
+  var es = document.getElementById('editableSlide');
+  if (es) { es.innerHTML = '<div class="slide-bg-glow"></div>' + buildEditableSlideHTML(slide); attachEditListeners(slide); }
+}
+
+function setSlideBadge(val) {
+  if (selectedIndex < 0) return;
+  var slide = slides[selectedIndex];
+  if (val) slide.badge = val; else delete slide.badge;
+  save();
+  var es = document.getElementById('editableSlide');
+  if (es) { es.innerHTML = '<div class="slide-bg-glow"></div>' + buildEditableSlideHTML(slide); attachEditListeners(slide); }
+  var clearBtn = document.getElementById('badgeClearBtn');
+  if (clearBtn) clearBtn.disabled = !slide.badge;
+}
+
 /* ─── ADD / MOVE / DELETE ───────────────────────────────────────── */
 function addSlide() {
   slides.push({ id: nextId++, type:'content', title:'New Slide', body:'- Point one\n- Point two\n- Point three', bodySimple:'- Point one\n- Point two\n- Point three', note:'', mediaType:'youtube', mediaUrl:'', mediaCaption:'' });
@@ -1922,6 +2124,7 @@ function buildSlideHTML(slide) {
   if (type === 'definition') {
     return '<div class="slide-content sc-definition">' +
       '<div class="def-eyebrow">Key Term</div>' +
+      (slide.badge ? '<div class="pv-badge">' + escHtml(slide.badge) + '</div>' : '') +
       '<div class="def-term">' + escHtml(slide.title) + '</div>' +
       '<div class="def-rule"></div>' +
       '<div class="def-body">' + parseLines(body.split('\n').filter(function(l){return l.trim();})) + '</div>' +
@@ -1973,9 +2176,19 @@ function buildSlideHTML(slide) {
     '</div>';
   }
 
+  if (type === 'steps' || type === 'icongrid' || type === 'timeline') {
+    return '<div class="slide-content sc-content pv-wrap">' +
+      '<div class="slide-label">Pillar I · What We Believe</div>' +
+      (slide.badge ? '<div class="pv-badge">' + escHtml(slide.badge) + '</div>' : '') +
+      '<h2>' + escHtml(slide.title) + '</h2>' +
+      renderVisualTypeBody(type, body) +
+    '</div>';
+  }
+
   // Default: content
   return '<div class="slide-content sc-content">' +
     '<div class="slide-label">Pillar I · What We Believe</div>' +
+    (slide.badge ? '<div class="pv-badge">' + escHtml(slide.badge) + '</div>' : '') +
     '<h2>' + escHtml(slide.title) + '</h2>' +
     '<div class="slide-body">' + parseLines(body.split('\n').filter(function(l){return l.trim();})) + '</div>' +
   '</div>';
