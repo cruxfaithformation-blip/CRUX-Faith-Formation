@@ -101,9 +101,9 @@
         .flashcard-front{background:var(--navy);border:2px solid rgba(212,165,116,0.2);}
         .flashcard-back{background:var(--off-white);border:2px solid var(--border-gold);transform:rotateY(180deg);}
         .flashcard-front .card-label{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;}
-        .flashcard-front .card-term{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--white);font-weight:700;line-height:1.2;}
+        .flashcard-front .card-def{font-size:1.05rem;color:rgba(255,255,255,0.85);line-height:1.65;}
         .flashcard-back .card-label{font-size:0.68rem;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold-dark);margin-bottom:0.75rem;}
-        .flashcard-back .card-def{font-size:1rem;color:var(--text-primary);line-height:1.65;}
+        .flashcard-back .card-term{font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--text-primary);font-weight:700;line-height:1.2;}
         .flashcard-hint{text-align:center;font-size:0.78rem;color:var(--text-muted);margin-bottom:1.5rem;}
         .flashcard-nav{display:flex;gap:0.75rem;justify-content:center;}
         /* Scramble */
@@ -234,7 +234,7 @@ sacraments: {
     desc: 'Six games to reinforce what you\'ve learned. Complete each one to earn XP.',
     moduleLink: 'crux-modules.html?module=sacraments',
     games: [
-        { id:'flashcard',   icon:'🃏', name:'Flashcards',       desc:'Flip each card to reveal the definition. Test yourself on all 7 sacraments.',          xp:15 },
+        { id:'flashcard',   icon:'🃏', name:'Flashcards',       desc:'Read the definition, then flip to reveal the term. Test yourself on all 7 sacraments.',          xp:15 },
         { id:'scramble',    icon:'🔤', name:'Word Scramble',    desc:'Unscramble key sacrament vocabulary. Tap letters to build the answer.',               xp:15 },
         { id:'matching',    icon:'🔗', name:'Matching Pairs',   desc:'Match each sacrament to its correct description.',                                    xp:20 },
         { id:'truefalse',   icon:'✅', name:'True or False',    desc:'Quick-fire statements about the sacraments. How fast can you go?',                   xp:15 },
@@ -826,11 +826,11 @@ function renderFlashcard(body) {
         </div>
         <div class="flashcard-wrap" onclick="flipCard()">
             <div class="flashcard" id="fc">
-                <div class="flashcard-face flashcard-front"><div class="card-label">Term</div><div class="card-term">${card.term}</div></div>
-                <div class="flashcard-face flashcard-back"><div class="card-label">Definition</div><div class="card-def">${card.def}</div></div>
+                <div class="flashcard-face flashcard-front"><div class="card-label">Definition</div><div class="card-def">${card.def}</div></div>
+                <div class="flashcard-face flashcard-back"><div class="card-label">Term</div><div class="card-term">${card.term}</div></div>
             </div>
         </div>
-        <p class="flashcard-hint" id="fcHint">Tap card to flip · Showing term</p>
+        <p class="flashcard-hint" id="fcHint">Tap card to flip · Showing definition</p>
         <div class="flashcard-nav">
             <button class="btn-game outline" onclick="fcNav(-1)" ${fcIndex===0?'disabled':''}>← Prev</button>
             ${fcIndex<cards.length-1
@@ -844,7 +844,7 @@ window.flipCard = function() {
     fcFlipped = !fcFlipped;
     document.getElementById('fc')?.classList.toggle('flipped', fcFlipped);
     const h = document.getElementById('fcHint');
-    if (h) h.textContent = `Tap card to flip · ${fcFlipped?'Showing definition':'Showing term'}`;
+    if (h) h.textContent = `Tap card to flip · ${fcFlipped?'Showing term':'Showing definition'}`;
 };
 
 window.fcNav = function(dir) {
