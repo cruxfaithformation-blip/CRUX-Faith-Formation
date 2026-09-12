@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — St. Joan of Arc</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --navy: #1a1f36; --navy-deep: #0f1222; --navy-mid: #252b47; --navy-light: #2f3659;
+  --gold: #d4a574; --gold-light: #e8c99a; --gold-pale: #f5ead8;
+  --cream: #faf7f2; --white: #ffffff;
+  --text-soft: rgba(255,255,255,0.72); --text-faint: rgba(255,255,255,0.4);
+  --green: #4a7a42; --blue: #5a7aaa; --rose: #b06a8f;
+}
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Inter', sans-serif; background: var(--navy-deep); color: var(--white);
+}
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+.top-chrome {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem 1.75rem; pointer-events: none;
+}
+.tc-logo { font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: 5px; font-size: 1rem; color: var(--gold); opacity: 0.85; }
+.tc-exit {
+  pointer-events: all; font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 1px; color: var(--text-faint); text-decoration: none;
+  padding: 0.35rem 0.8rem; border: 1px solid rgba(255,255,255,0.12); border-radius: 20px;
+  transition: all 0.15s;
+}
+.tc-exit:hover { color: var(--gold); border-color: rgba(212,165,116,0.4); }
+
+.stage { position: relative; height: 100%; }
+.slide {
+  position: absolute; inset: 0; display: none;
+  align-items: center; justify-content: center;
+  padding: 6rem 6vw 7rem;
+  opacity: 0; transition: opacity 0.35s ease;
+}
+.slide.active { display: flex; opacity: 1; }
+.slide-inner { max-width: 980px; width: 100%; text-align: center; }
+.slide-inner.wide { max-width: 1180px; }
+.slide-inner.left { text-align: left; }
+
+.eyebrow {
+  font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 1.1rem;
+}
+.big-title {
+  font-family: 'Playfair Display', serif; font-weight: 900; color: var(--white);
+  font-size: clamp(2.1rem, 5.2vw, 4rem); line-height: 1.08; margin-bottom: 1.1rem;
+}
+.big-title em { color: var(--gold); font-style: normal; }
+.lede {
+  font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
+  font-size: clamp(1.05rem, 2vw, 1.4rem); color: var(--text-soft); line-height: 1.55;
+  max-width: 700px; margin: 0 auto;
+}
+.slide-inner.left .lede { margin: 0; }
+.body-text {
+  font-family: 'Inter', sans-serif; font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+  color: var(--text-soft); line-height: 1.8; max-width: 680px; margin: 1.5rem auto 0;
+}
+.slide-inner.left .body-text { margin-left: 0; margin-right: 0; }
+
+.flourish { width: 46px; height: 2px; background: var(--gold); margin: 1.6rem auto; opacity: 0.6; }
+.slide-inner.left .flourish { margin-left: 0; }
+
+.point-list { list-style: none; text-align: left; max-width: 620px; margin: 2rem auto 0; display: flex; flex-direction: column; gap: 1rem; }
+.point-list li { display: flex; align-items: flex-start; gap: 0.9rem; font-size: 1.05rem; color: var(--text-soft); line-height: 1.5; }
+.point-list .pt-mark { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: rgba(212,165,116,0.14); border: 1px solid rgba(212,165,116,0.35); color: var(--gold); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; margin-top: 0.1rem; }
+
+.step-flow { display: flex; align-items: stretch; justify-content: center; gap: 0; margin-top: 2.25rem; flex-wrap: wrap; }
+.step-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 12px;
+  padding: 1.5rem 1.25rem; width: 200px; display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+}
+.step-num { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.6rem; color: var(--gold); }
+.step-icon { font-size: 1.6rem; }
+.step-label { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.92rem; color: var(--white); }
+.step-desc { font-size: 0.8rem; color: var(--text-faint); line-height: 1.5; }
+.step-arrow { display: flex; align-items: center; justify-content: center; width: 46px; color: rgba(212,165,116,0.4); font-size: 1.3rem; flex-shrink: 0; }
+@media (max-width: 900px) { .step-arrow { width: 100%; transform: rotate(90deg); padding: 0.3rem 0; } }
+
+.pillar-mark {
+  width: 68px; height: 68px; border-radius: 50%; border: 2px solid var(--gold);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;
+  font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.5rem; color: var(--gold);
+  background: rgba(212,165,116,0.07);
+}
+
+.portrait-frame {
+  width: 168px; height: 168px; border-radius: 50%; overflow: hidden; margin: 0 auto 1.6rem;
+  border: 3px solid var(--gold); box-shadow: 0 0 0 6px rgba(212,165,116,0.12), 0 10px 30px rgba(0,0,0,0.4);
+}
+.portrait-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.quote-block {
+  max-width: 680px; margin: 2rem auto 0; padding: 1.8rem 2rem;
+  border-left: 3px solid var(--gold); background: rgba(255,255,255,0.03);
+  text-align: left; border-radius: 0 10px 10px 0;
+}
+.quote-text {
+  font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
+  font-size: clamp(1.1rem, 2.2vw, 1.5rem); color: var(--white); line-height: 1.5;
+}
+.quote-cite {
+  margin-top: 0.9rem; font-family: 'Inter', sans-serif; font-size: 0.8rem; font-weight: 600;
+  letter-spacing: 0.5px; color: var(--gold);
+}
+
+.fact-row { display: flex; justify-content: center; gap: 1rem; margin-top: 2.25rem; flex-wrap: wrap; }
+.fact-chip {
+  padding: 0.8rem 1.4rem; border-radius: 12px; background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.09); text-align: left; min-width: 150px;
+}
+.fact-label { font-family: 'Inter', sans-serif; font-size: 0.65rem; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--text-faint); margin-bottom: 0.3rem; }
+.fact-value { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.05rem; color: var(--gold-light); }
+
+.nav-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+  padding: 1.25rem 1.5rem 1.5rem;
+  background: linear-gradient(to top, rgba(15,18,34,0.95), transparent);
+}
+.nav-btn {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); color: var(--text-soft);
+  width: 42px; height: 42px; border-radius: 50%; cursor: pointer; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+.nav-btn:disabled { opacity: 0.25; cursor: default; }
+.nav-dots { display: flex; gap: 0.4rem; }
+.nav-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.18); cursor: pointer; transition: all 0.15s; }
+.nav-dot:hover { background: rgba(255,255,255,0.4); }
+.nav-dot.active { background: var(--gold); width: 20px; border-radius: 4px; }
+.nav-count { font-family: 'Inter', sans-serif; font-size: 0.68rem; color: var(--text-faint); letter-spacing: 1px; min-width: 48px; text-align: center; }
+
+@media (max-width: 640px) {
+  .slide { padding: 5rem 6vw 6.5rem; }
+  .fact-row { gap: 0.6rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-chrome">
+  <div class="tc-logo">CRUX</div>
+  <a href="crux-pack-classroom.html" class="tc-exit">Exit</a>
+</div>
+
+<div class="stage" id="stage">
+
+  <!-- 1 — TITLE -->
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="portrait-frame"><img src="images/saints/joan-arc.jpg" alt="Saint Joan of Arc"></div>
+      <p class="eyebrow">Feast Day · May 30</p>
+      <h1 class="big-title">Saint <em>Joan of Arc</em></h1>
+      <div class="flourish"></div>
+      <p class="lede">Patron of France and of soldiers.</p>
+    </div>
+  </section>
+
+  <!-- 2 — HOOK -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Hard to Believe, But True</p>
+      <h1 class="big-title">A Farm Girl Led an Army.<br>She Was <em>Seventeen</em>.</h1>
+      <p class="body-text">No armor training. No royal family. No army of her own. Just a teenage girl from a tiny village who believed God was asking her to do something enormous, and who said yes. By the time she was nineteen, kings and soldiers all knew her name.</p>
+    </div>
+  </section>
+
+  <!-- 3 — EARLY LIFE -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Domrémy, France · Around 1412</p>
+      <h1 class="big-title">An Ordinary Girl in a Country at War</h1>
+      <p class="body-text">Jeanne d'Arc grew up in a small farming village called Domrémy. She helped with chores, tended sheep, and went to Mass like everyone else. But France was in the middle of a long, brutal war with England, called the Hundred Years' War, and it had already dragged on for decades. Whole villages like hers lived in fear of soldiers passing through.</p>
+    </div>
+  </section>
+
+  <!-- 4 — THE VOICES -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Around Age Thirteen</p>
+      <h1 class="big-title">Something Started Calling Her</h1>
+      <p class="body-text">Joan later testified that she began hearing voices she believed belonged to Saint Michael the Archangel, Saint Catherine of Alexandria, and Saint Margaret of Antioch. At first they told her to be good and to go to church often. Over time, she said, they told her something much bigger: that she had to help save France, and help Charles, the uncrowned heir to the throne, become king.</p>
+      <p class="body-text">The Church doesn't ask us to be certain about the details of anyone's private visions, including Joan's. What the Church later recognized, when it named her a saint, was something we can be certain about: her faith was real, and she followed where she believed God was leading her, even when it cost her everything.</p>
+    </div>
+  </section>
+
+  <!-- 5 — CONVINCING THE DAUPHIN -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">1429</p>
+      <h1 class="big-title">Convincing a Prince to Trust a Peasant Girl</h1>
+      <p class="body-text">Joan left home and traveled to find Charles, the Dauphin (the French word for the heir to the throne). It was not an easy journey. She had to convince guards, then noblemen, then finally Charles himself, that God had truly sent her. Charles had her questioned by churchmen for weeks before he agreed. Eventually, he gave her something remarkable for a seventeen-year-old farm girl: soldiers, armor, and a place at the head of his army.</p>
+    </div>
+  </section>
+
+  <!-- 6 — ORLEANS CAMPAIGN -->
+  <section class="slide">
+    <div class="slide-inner wide">
+      <p class="eyebrow">Spring and Summer 1429</p>
+      <h1 class="big-title">Nine Days That Changed France</h1>
+      <div class="step-flow">
+        <div class="step-card"><div class="step-icon">🏰</div><div class="step-label">The Siege</div><div class="step-desc">English forces had surrounded the city of Orléans for months</div></div>
+        <div class="step-arrow">→</div>
+        <div class="step-card"><div class="step-icon">⚔️</div><div class="step-label">Joan Arrives</div><div class="step-desc">She led troops into the city and rallied their courage</div></div>
+        <div class="step-arrow">→</div>
+        <div class="step-card"><div class="step-icon">🕊️</div><div class="step-label">Orléans Freed</div><div class="step-desc">In just nine days, the siege was broken</div></div>
+        <div class="step-arrow">→</div>
+        <div class="step-card"><div class="step-icon">👑</div><div class="step-label">Reims</div><div class="step-desc">Charles VII was crowned king, with Joan at his side</div></div>
+      </div>
+      <p class="body-text">Joan didn't fight like a typical soldier. She carried a banner, not a sword, and led from the front, but her presence changed how the French army believed in itself. What had felt hopeless for years suddenly felt possible.</p>
+    </div>
+  </section>
+
+  <!-- 7 — CAPTURE AND TRIAL -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">1430–1431</p>
+      <h1 class="big-title">Captured, and Judged Unfairly</h1>
+      <p class="body-text">About a year after Orléans, Joan was captured during a battle near the town of Compiègne. She was eventually handed over to the English, who wanted her out of the way for good. They put her on trial in the city of Rouen, in front of a court of churchmen who were loyal to England, not to the truth. The trial was not fair. Joan, still a teenager, stood alone and answered hard questions with remarkable steadiness and faith.</p>
+    </div>
+  </section>
+
+  <!-- 8 — DEATH AND THE RETRIAL -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">1431, and Then 1456</p>
+      <h1 class="big-title">Killed Unjustly, Later Cleared</h1>
+      <p class="body-text">In May 1431, when Joan was only about nineteen, that unfair court had her put to death. It is one of the saddest parts of her story, and it happened because she refused to say her faith and her calling weren't real.</p>
+      <p class="body-text">But her story doesn't end there. Twenty-five years later, Pope Callixtus III ordered a new trial to look at everything again. In 1456, that court threw out the first verdict completely and declared Joan innocent. The Church itself said, clearly and publicly, that what had been done to her was wrong. Justice came late, but it came.</p>
+    </div>
+  </section>
+
+  <!-- 9 — WHY A SAINT -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Canonized 1920</p>
+      <h1 class="big-title">Why the Church Calls Her a Saint</h1>
+      <p class="body-text">It's tempting to think Joan is a saint because she won battles. She isn't. Plenty of people in history have led armies. Joan is a saint because of what was underneath all of it: total trust in God, courage to follow him even when powerful people doubted her, and a faith that never broke, not even when she was scared, alone, and on trial for her life.</p>
+      <ul class="point-list" style="margin-left:auto;margin-right:auto;">
+        <li><span class="pt-mark">✓</span> She listened for God's call, even as a young teenager</li>
+        <li><span class="pt-mark">✓</span> She obeyed, even when it was frightening and costly</li>
+        <li><span class="pt-mark">✓</span> She stayed faithful to the very end, and was proven right</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 10 — QUOTE -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Her Own Words, at Her Trial</p>
+      <h1 class="big-title">What She Said Under Pressure</h1>
+      <div class="quote-block">
+        <p class="quote-text">"If I am not in a state of grace, may God put me there; and if I am, may God so keep me. I should be the saddest in all the world if I knew that I were not in the grace of God."</p>
+        <p class="quote-cite">— Saint Joan of Arc, at her trial, 1431</p>
+      </div>
+      <p class="body-text">Her judges asked her a trick question meant to trap her. Her answer showed a faith that was humble, honest, and completely unshaken.</p>
+    </div>
+  </section>
+
+  <!-- 11 — QUICK FACTS -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">A Few Things Worth Remembering</p>
+      <h1 class="big-title">Saint Joan of Arc, at a Glance</h1>
+      <div class="fact-row">
+        <div class="fact-chip"><div class="fact-label">Born</div><div class="fact-value">c. 1412, Domrémy</div></div>
+        <div class="fact-chip"><div class="fact-label">Died</div><div class="fact-value">1431, Rouen</div></div>
+        <div class="fact-chip"><div class="fact-label">Age at Orléans</div><div class="fact-value">About 17</div></div>
+        <div class="fact-chip"><div class="fact-label">Canonized</div><div class="fact-value">1920</div></div>
+        <div class="fact-chip"><div class="fact-label">Patron Of</div><div class="fact-value">France, Soldiers</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 — CLOSING -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Feast Day · May 30</p>
+      <h1 class="big-title">One girl.<br>Total trust.<br><em>A faith that never broke.</em></h1>
+      <div class="flourish"></div>
+      <p class="lede">Saint Joan of Arc, pray for us, that we would listen for God's call and have the courage to follow it, wherever it leads.</p>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="prevSlide()" title="Previous (←)">←</button>
+  <span class="nav-count" id="slideCount">1 / 12</span>
+  <div class="nav-dots" id="navDots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="nextSlide()" title="Next (→)">→</button>
+</div>
+
+<script>
+var slides = document.querySelectorAll('.slide');
+var total = slides.length;
+var idx = 0;
+
+function renderDots() {
+  var dots = document.getElementById('navDots');
+  dots.innerHTML = '';
+  for (var i = 0; i < total; i++) {
+    var d = document.createElement('div');
+    d.className = 'nav-dot' + (i === idx ? ' active' : '');
+    d.onclick = (function(n) { return function() { goTo(n); }; })(i);
+    dots.appendChild(d);
+  }
+}
+
+function render() {
+  slides.forEach(function(s, i) { s.classList.toggle('active', i === idx); });
+  document.getElementById('slideCount').textContent = (idx + 1) + ' / ' + total;
+  document.getElementById('prevBtn').disabled = idx === 0;
+  document.getElementById('nextBtn').disabled = idx === total - 1;
+  renderDots();
+}
+
+function nextSlide() { if (idx < total - 1) { idx++; render(); } }
+function prevSlide() { if (idx > 0) { idx--; render(); } }
+function goTo(n) { idx = n; render(); }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+});
+
+render();
+</script>
+</body>
+</html>

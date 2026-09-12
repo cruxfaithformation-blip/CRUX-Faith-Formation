@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — St. Francis of Assisi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --navy: #1a1f36; --navy-deep: #0f1222; --navy-mid: #252b47; --navy-light: #2f3659;
+  --gold: #d4a574; --gold-light: #e8c99a; --gold-pale: #f5ead8;
+  --cream: #faf7f2; --white: #ffffff;
+  --text-soft: rgba(255,255,255,0.72); --text-faint: rgba(255,255,255,0.4);
+  --green: #4a7a42; --blue: #5a7aaa; --rose: #b06a8f;
+}
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Inter', sans-serif; background: var(--navy-deep); color: var(--white);
+}
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* ─── CHROME ─────────────────────────────────────────────────────── */
+.top-chrome {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem 1.75rem; pointer-events: none;
+}
+.tc-logo { font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: 5px; font-size: 1rem; color: var(--gold); opacity: 0.85; }
+.tc-exit {
+  pointer-events: all; font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 1px; color: var(--text-faint); text-decoration: none;
+  padding: 0.35rem 0.8rem; border: 1px solid rgba(255,255,255,0.12); border-radius: 20px;
+  transition: all 0.15s;
+}
+.tc-exit:hover { color: var(--gold); border-color: rgba(212,165,116,0.4); }
+
+/* ─── SLIDE STAGE ────────────────────────────────────────────────── */
+.stage { position: relative; height: 100%; }
+.slide {
+  position: absolute; inset: 0; display: none;
+  align-items: center; justify-content: center;
+  padding: 6rem 6vw 7rem;
+  opacity: 0; transition: opacity 0.35s ease;
+}
+.slide.active { display: flex; opacity: 1; }
+.slide-inner { max-width: 980px; width: 100%; text-align: center; }
+.slide-inner.wide { max-width: 1180px; }
+
+.eyebrow {
+  font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 1.1rem;
+}
+.big-title {
+  font-family: 'Playfair Display', serif; font-weight: 900; color: var(--white);
+  font-size: clamp(2.1rem, 5.2vw, 4rem); line-height: 1.08; margin-bottom: 1.1rem;
+}
+.big-title em { color: var(--gold); font-style: normal; }
+.lede {
+  font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
+  font-size: clamp(1.05rem, 2vw, 1.4rem); color: var(--text-soft); line-height: 1.55;
+  max-width: 700px; margin: 0 auto;
+}
+.body-text {
+  font-family: 'Inter', sans-serif; font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+  color: var(--text-soft); line-height: 1.8; max-width: 680px; margin: 1.5rem auto 0;
+}
+
+/* Divider flourish under title */
+.flourish { width: 46px; height: 2px; background: var(--gold); margin: 1.6rem auto; opacity: 0.6; }
+
+/* ─── PORTRAIT ────────────────────────────────────────────────────── */
+.portrait-frame {
+  width: 176px; height: 176px; margin: 0 auto 1.6rem; border-radius: 50%; overflow: hidden;
+  border: 3px solid var(--gold); box-shadow: 0 0 0 6px rgba(212,165,116,0.1), 0 20px 40px rgba(0,0,0,0.45);
+}
+.portrait-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ─── QUOTE / CITATION ───────────────────────────────────────────── */
+.cite {
+  font-family: 'Inter', sans-serif; font-size: 0.82rem; color: var(--text-faint);
+  margin-top: 1.1rem; letter-spacing: 0.3px;
+}
+
+/* ─── GENERIC BULLET LIST ────────────────────────────────────────── */
+.point-list { list-style: none; text-align: left; max-width: 620px; margin: 2rem auto 0; display: flex; flex-direction: column; gap: 1rem; }
+.point-list li { display: flex; align-items: flex-start; gap: 0.9rem; font-size: 1.05rem; color: var(--text-soft); line-height: 1.5; }
+.point-list .pt-mark { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: rgba(212,165,116,0.14); border: 1px solid rgba(212,165,116,0.35); color: var(--gold); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; margin-top: 0.1rem; }
+
+/* ─── STEP FLOW ───────────────────────────────────────────────────── */
+.step-flow { display: flex; align-items: stretch; justify-content: center; gap: 0; margin-top: 2.25rem; flex-wrap: wrap; }
+.step-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 12px;
+  padding: 1.5rem 1.25rem; width: 220px; display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+}
+.step-icon { font-size: 1.6rem; }
+.step-label { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.92rem; color: var(--white); }
+.step-desc { font-size: 0.8rem; color: var(--text-faint); line-height: 1.5; }
+.step-arrow { display: flex; align-items: center; justify-content: center; width: 46px; color: rgba(212,165,116,0.4); font-size: 1.3rem; flex-shrink: 0; }
+@media (max-width: 900px) { .step-arrow { width: 100%; transform: rotate(90deg); padding: 0.3rem 0; } }
+
+/* ─── NAV CONTROLS ────────────────────────────────────────────────── */
+.nav-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+  padding: 1.25rem 1.5rem 1.5rem;
+  background: linear-gradient(to top, rgba(15,18,34,0.95), transparent);
+}
+.nav-btn {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); color: var(--text-soft);
+  width: 42px; height: 42px; border-radius: 50%; cursor: pointer; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+.nav-btn:disabled { opacity: 0.25; cursor: default; }
+.nav-dots { display: flex; gap: 0.4rem; }
+.nav-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.18); cursor: pointer; transition: all 0.15s; }
+.nav-dot:hover { background: rgba(255,255,255,0.4); }
+.nav-dot.active { background: var(--gold); width: 20px; border-radius: 4px; }
+.nav-count { font-family: 'Inter', sans-serif; font-size: 0.68rem; color: var(--text-faint); letter-spacing: 1px; min-width: 48px; text-align: center; }
+
+@media (max-width: 640px) {
+  .slide { padding: 5rem 6vw 6.5rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-chrome">
+  <div class="tc-logo">CRUX</div>
+  <a href="crux-pack-classroom.html" class="tc-exit">Exit</a>
+</div>
+
+<div class="stage" id="stage">
+
+  <!-- 1 — TITLE -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Saint Card Deep Dive · Feast Day: October 4</p>
+      <div class="portrait-frame"><img src="images/saints/francis-assisi.jpg" alt="Portrait of St. Francis of Assisi"></div>
+      <h1 class="big-title">St. Francis of <em>Assisi</em></h1>
+      <div class="flourish"></div>
+      <p class="lede">Patron of Ecology and Animals</p>
+    </div>
+  </section>
+
+  <!-- 2 — HOOK -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Before He Was A Saint</p>
+      <h1 class="big-title">He Had Everything.<br>Then He Walked Away From <em>All</em> of It.</h1>
+      <p class="body-text">Francis grew up rich. His father was one of the wealthiest merchants in town, and Francis had the finest clothes, the biggest parties, and big dreams of becoming a knight. Then, on purpose, he gave every bit of it away. That's not an accident in this story. It's the whole point of it.</p>
+    </div>
+  </section>
+
+  <!-- 3 — EARLY LIFE -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Assisi, Italy · Around 1181</p>
+      <h1 class="big-title">The Merchant's Son</h1>
+      <ul class="point-list" style="margin-left:auto;margin-right:auto;">
+        <li><span class="pt-mark">✓</span> Born Giovanni di Pietro di Bernardone, in the hill town of Assisi, Italy</li>
+        <li><span class="pt-mark">✓</span> His father, Pietro, sold fine cloth from France and was one of the richest men in town</li>
+        <li><span class="pt-mark">✓</span> Friends started calling him "Francesco," meaning "the Frenchman," and the name stuck</li>
+        <li><span class="pt-mark">✓</span> He loved music, parties, and fine clothes, and dreamed of becoming a knight</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- 4 — TURNING POINT -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">War Changes Everything</p>
+      <h1 class="big-title">A Year as a Prisoner, and a Voice from a Cross</h1>
+      <p class="body-text">Francis got his chance at glory when Assisi went to war with a nearby city. He was captured and spent about a year as a prisoner before coming home sick and shaken. A little later, praying alone in a run-down old church called San Damiano, Francis said he heard Christ speak to him from the crucifix on the wall: "Francis, go and repair my house, which you see is falling into ruin." At first, he thought that simply meant fixing the building, stone by stone.</p>
+    </div>
+  </section>
+
+  <!-- 5 — BREAK WITH FATHER -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">The Town Square</p>
+      <h1 class="big-title">He Gave Back Everything, Down to His Clothes</h1>
+      <p class="body-text">To pay for repairs at San Damiano, Francis sold some of his father's cloth without asking first. His father was furious, and dragged him in front of the whole town and the local bishop, demanding his money back. Francis didn't argue. He took off every piece of clothing he was wearing, right there in the square, and handed it back. From now on, he said, he had only one Father: the one in heaven.</p>
+    </div>
+  </section>
+
+  <!-- 6 — LADY POVERTY -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">A Choice, Not an Accident</p>
+      <h1 class="big-title">Choosing to Own <em>Nothing</em>, On Purpose</h1>
+      <p class="body-text">Francis didn't just lose his money. He chose to stay poor, on purpose, for the rest of his life. He wore a rough brown robe tied with a rope, begged for his food, and talked about poverty like a close friend, one he even nicknamed "Lady Poverty." It sounds strange. But for Francis, owning nothing meant trusting God with everything. Other young men in Assisi noticed, and one by one, they joined him.</p>
+    </div>
+  </section>
+
+  <!-- 7 — WHAT HE BUILT -->
+  <section class="slide">
+    <div class="slide-inner wide">
+      <p class="eyebrow">A Movement Begins</p>
+      <h1 class="big-title">What Francis Actually Built</h1>
+      <div class="step-flow">
+        <div class="step-card"><div class="step-icon">👥</div><div class="step-label">The Friars</div><div class="step-desc">Brothers who owned nothing and lived, prayed, and served together</div></div>
+        <div class="step-arrow">→</div>
+        <div class="step-card"><div class="step-icon">📣</div><div class="step-label">Preaching</div><div class="step-desc">In town squares and marketplaces, in plain words everyone could understand</div></div>
+        <div class="step-arrow">→</div>
+        <div class="step-card"><div class="step-icon">🌎</div><div class="step-label">All Creation</div><div class="step-desc">He called the sun, the wind, even death itself "brother" and "sister"</div></div>
+      </div>
+      <p class="body-text">Pope Innocent III approved Francis's way of life around 1209. Within just a few years, thousands of men and women across Europe wanted to live this way too.</p>
+    </div>
+  </section>
+
+  <!-- 8 — LEGENDS -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Brother Wolf, Sister Bird?</p>
+      <h1 class="big-title">Stories Grew Up Around Him</h1>
+      <p class="body-text">You may have heard that Francis preached to a flock of birds who sat and listened quietly, or that he talked a fierce wolf into leaving a town called Gubbio alone. Those stories are beautiful, and Christians have told them for hundreds of years. But they were written down long after Francis died, by people who loved him and wanted to capture what he was like. Historians can't prove they happened exactly that way. What we do know for certain: Francis truly believed every living thing, animal, plant, sun, and moon, was a gift from God, worth honoring.</p>
+    </div>
+  </section>
+
+  <!-- 9 — CANTICLE OF THE SUN -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">San Damiano · 1224</p>
+      <h1 class="big-title">A Song of Praise, Near the End</h1>
+      <p class="lede">"Praised be You, my Lord, through Brother Sun, who is the day, and through whom You give us light. Praised be You, my Lord, through Sister Moon and the stars. Praised be You, my Lord, through Brothers Wind and Air, through Sister Water, through Brother Fire."</p>
+      <p class="cite">— adapted from the Canticle of the Sun, written by St. Francis, c. 1224</p>
+      <p class="body-text">Sick and nearly blind, Francis wrote this song of praise near the end of his life. It's one of the oldest poems in the Italian language, and it's still prayed today.</p>
+    </div>
+  </section>
+
+  <!-- 10 — STIGMATA -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Mount La Verna · 1224</p>
+      <h1 class="big-title">Marks Like Christ's Own Wounds</h1>
+      <p class="body-text">Two years before he died, Francis went up a mountain called La Verna to pray and fast for forty days. He said he had a vision there, and afterward, marks appeared on his own hands, feet, and side, in the same places Jesus was wounded on the cross. These marks are called the stigmata, and Francis is the first person in recorded history known to have received them. He wore bandages and kept them hidden for the rest of his life, because he didn't want the attention.</p>
+    </div>
+  </section>
+
+  <!-- 11 — LEGACY -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">October 3, 1226</p>
+      <h1 class="big-title">He Died Poor. The Church Called Him a Saint Within Two Years.</h1>
+      <p class="body-text">Francis died at a small chapel near Assisi called the Porziuncola, asking to be laid on the bare ground one last time, the way he'd lived. He was declared a saint in 1228, remarkably fast even by the Church's standards. His brothers, the Franciscans, still live his way of simplicity today, all over the world. In 2013, a newly elected pope chose the name Francis in his honor, the first pope in history ever to do so.</p>
+    </div>
+  </section>
+
+  <!-- 12 — DISPUTED QUOTE -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">A Line Often Credited to Him</p>
+      <h1 class="big-title">"Preach the Gospel at all times.<br>When necessary, use words."</h1>
+      <p class="body-text">People have repeated this line for a hundred years and credited it to Francis. Here's the honest truth: there's no record he ever actually said it. It doesn't show up anywhere in his own writings or in the accounts written by people who knew him. Historians think it was written by someone much later, summing up what Francis's whole life was already saying without words: how you live can preach louder than what you say.</p>
+    </div>
+  </section>
+
+  <!-- 13 — CLOSING -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Let's Remember Him</p>
+      <h1 class="big-title">October 4.<br>He gave away everything he had,<br><em>and found everything that mattered.</em></h1>
+      <div class="flourish"></div>
+      <p class="lede">The next time you feel the sun or the wind, or see an animal, you can remember Brother Francis, who saw God's fingerprints in every bit of it.</p>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="prevSlide()" title="Previous (←)">←</button>
+  <span class="nav-count" id="slideCount">1 / 13</span>
+  <div class="nav-dots" id="navDots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="nextSlide()" title="Next (→)">→</button>
+</div>
+
+<script>
+var slides = document.querySelectorAll('.slide');
+var total = slides.length;
+var idx = 0;
+
+function renderDots() {
+  var dots = document.getElementById('navDots');
+  dots.innerHTML = '';
+  for (var i = 0; i < total; i++) {
+    var d = document.createElement('div');
+    d.className = 'nav-dot' + (i === idx ? ' active' : '');
+    d.onclick = (function(n) { return function() { goTo(n); }; })(i);
+    dots.appendChild(d);
+  }
+}
+
+function render() {
+  slides.forEach(function(s, i) { s.classList.toggle('active', i === idx); });
+  document.getElementById('slideCount').textContent = (idx + 1) + ' / ' + total;
+  document.getElementById('prevBtn').disabled = idx === 0;
+  document.getElementById('nextBtn').disabled = idx === total - 1;
+  renderDots();
+}
+
+function nextSlide() { if (idx < total - 1) { idx++; render(); } }
+function prevSlide() { if (idx > 0) { idx--; render(); } }
+function goTo(n) { idx = n; render(); }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+});
+
+render();
+</script>
+</body>
+</html>

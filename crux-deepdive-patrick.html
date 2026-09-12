@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — St. Patrick</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --navy: #1a1f36; --navy-deep: #0f1222; --navy-mid: #252b47; --navy-light: #2f3659;
+  --gold: #d4a574; --gold-light: #e8c99a; --gold-pale: #f5ead8;
+  --cream: #faf7f2; --white: #ffffff;
+  --text-soft: rgba(255,255,255,0.72); --text-faint: rgba(255,255,255,0.4);
+  --green: #4a7a42; --blue: #5a7aaa; --rose: #b06a8f;
+}
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Inter', sans-serif; background: var(--navy-deep); color: var(--white);
+}
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+.top-chrome {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem 1.75rem; pointer-events: none;
+}
+.tc-logo { font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: 5px; font-size: 1rem; color: var(--gold); opacity: 0.85; }
+.tc-exit {
+  pointer-events: all; font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 1px; color: var(--text-faint); text-decoration: none;
+  padding: 0.35rem 0.8rem; border: 1px solid rgba(255,255,255,0.12); border-radius: 20px;
+  transition: all 0.15s;
+}
+.tc-exit:hover { color: var(--gold); border-color: rgba(212,165,116,0.4); }
+
+.stage { position: relative; height: 100%; }
+.slide {
+  position: absolute; inset: 0; display: none;
+  align-items: center; justify-content: center;
+  padding: 6rem 6vw 7rem;
+  opacity: 0; transition: opacity 0.35s ease;
+}
+.slide.active { display: flex; opacity: 1; }
+.slide-inner { max-width: 980px; width: 100%; text-align: center; }
+.slide-inner.wide { max-width: 1180px; }
+
+.eyebrow {
+  font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 1.1rem;
+}
+.big-title {
+  font-family: 'Playfair Display', serif; font-weight: 900; color: var(--white);
+  font-size: clamp(2.1rem, 5.2vw, 4rem); line-height: 1.08; margin-bottom: 1.1rem;
+}
+.big-title em { color: var(--gold); font-style: normal; }
+.lede {
+  font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
+  font-size: clamp(1.05rem, 2vw, 1.4rem); color: var(--text-soft); line-height: 1.55;
+  max-width: 700px; margin: 0 auto;
+}
+.body-text {
+  font-family: 'Inter', sans-serif; font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+  color: var(--text-soft); line-height: 1.8; max-width: 680px; margin: 1.5rem auto 0;
+}
+
+/* Divider flourish under title */
+.flourish { width: 46px; height: 2px; background: var(--gold); margin: 1.6rem auto; opacity: 0.6; }
+
+/* ─── PORTRAIT ────────────────────────────────────────────────────── */
+.portrait {
+  width: 168px; height: 168px; object-fit: cover; object-position: center 20%;
+  border-radius: 50%; border: 2px solid var(--gold); display: block; margin: 0 auto 1.5rem;
+  box-shadow: 0 0 0 6px rgba(212,165,116,0.08), 0 12px 30px rgba(0,0,0,0.4);
+}
+
+/* ─── GENERIC BULLET LIST ────────────────────────────────────────── */
+.point-list { list-style: none; text-align: left; max-width: 660px; margin: 2rem auto 0; display: flex; flex-direction: column; gap: 1.1rem; }
+.point-list li { display: flex; align-items: flex-start; gap: 0.9rem; font-size: 1.02rem; color: var(--text-soft); line-height: 1.6; }
+.point-list .pt-mark { flex-shrink: 0; width: 30px; height: 30px; border-radius: 50%; background: rgba(212,165,116,0.14); border: 1px solid rgba(212,165,116,0.35); color: var(--gold); font-size: 0.95rem; display: flex; align-items: center; justify-content: center; margin-top: 0.1rem; }
+
+/* ─── STEP FLOW (mission timeline) ───────────────────────────────── */
+.step-flow { display: flex; align-items: stretch; justify-content: center; gap: 0; margin-top: 2.25rem; flex-wrap: wrap; }
+.step-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 12px;
+  padding: 1.5rem 1.25rem; width: 210px; display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+}
+.step-num { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.6rem; color: var(--gold); }
+.step-icon { font-size: 1.6rem; }
+.step-label { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.92rem; color: var(--white); }
+.step-desc { font-size: 0.8rem; color: var(--text-faint); line-height: 1.5; }
+.step-arrow { display: flex; align-items: center; justify-content: center; width: 46px; color: rgba(212,165,116,0.4); font-size: 1.3rem; flex-shrink: 0; }
+@media (max-width: 900px) { .step-arrow { width: 100%; transform: rotate(90deg); padding: 0.3rem 0; } }
+
+/* ─── PILLAR MARK (feast-day badge) ──────────────────────────────── */
+.pillar-mark {
+  width: 68px; height: 68px; border-radius: 50%; border: 2px solid var(--gold);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;
+  font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.3rem; color: var(--gold);
+  background: rgba(212,165,116,0.07);
+}
+
+/* ─── QUOTE ATTRIBUTION ───────────────────────────────────────────── */
+.quote-cite {
+  margin-top: 1.3rem; font-family: 'Inter', sans-serif; font-size: 0.82rem; font-weight: 600;
+  letter-spacing: 1px; color: var(--gold);
+}
+
+/* ─── NAV CONTROLS ────────────────────────────────────────────────── */
+.nav-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+  padding: 1.25rem 1.5rem 1.5rem;
+  background: linear-gradient(to top, rgba(15,18,34,0.95), transparent);
+}
+.nav-btn {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); color: var(--text-soft);
+  width: 42px; height: 42px; border-radius: 50%; cursor: pointer; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+.nav-btn:disabled { opacity: 0.25; cursor: default; }
+.nav-dots { display: flex; gap: 0.4rem; }
+.nav-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.18); cursor: pointer; transition: all 0.15s; }
+.nav-dot:hover { background: rgba(255,255,255,0.4); }
+.nav-dot.active { background: var(--gold); width: 20px; border-radius: 4px; }
+.nav-count { font-family: 'Inter', sans-serif; font-size: 0.68rem; color: var(--text-faint); letter-spacing: 1px; min-width: 48px; text-align: center; }
+
+@media (max-width: 640px) {
+  .slide { padding: 5rem 6vw 6.5rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-chrome">
+  <div class="tc-logo">CRUX</div>
+  <a href="crux-pack-classroom.html" class="tc-exit">Exit</a>
+</div>
+
+<div class="stage" id="stage">
+
+  <!-- 1 — TITLE -->
+  <section class="slide">
+    <div class="slide-inner">
+      <img class="portrait" src="images/saints/patrick.jpg" alt="Saint Patrick">
+      <p class="eyebrow">March 17 · Patron of Ireland</p>
+      <h1 class="big-title">Saint <em>Patrick</em></h1>
+      <div class="flourish"></div>
+      <p class="lede">A boy who was taken from his home by force, and grew up to go back on purpose.</p>
+    </div>
+  </section>
+
+  <!-- 2 — HOOK -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Here's the Surprising Part</p>
+      <h1 class="big-title">He Wasn't Even <em>Irish</em>.</h1>
+      <p class="body-text">Saint Patrick is the most famous saint in Ireland, but he wasn't born there. He came from far away, across the sea, from a place we now call Britain. He didn't choose Ireland first. Ireland came looking for him, in the worst possible way.</p>
+    </div>
+  </section>
+
+  <!-- 3 — EARLY LIFE -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Where the Story Begins</p>
+      <h1 class="big-title">A Boy in Roman Britain</h1>
+      <p class="body-text">Patrick was born around the year 385, in a part of the world ruled by Rome. His family was Christian, and his father even served the local church as a deacon. But Patrick himself wasn't very interested in God as a kid. He later admitted he barely thought about his faith at all. He had no idea how much that was about to change.</p>
+    </div>
+  </section>
+
+  <!-- 4 — KIDNAPPING AND SLAVERY -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">The Hardest Part of the Story</p>
+      <h1 class="big-title">Taken from Everything He Knew</h1>
+      <p class="body-text">When Patrick was about sixteen, raiders from Ireland attacked the coast near his home. They captured him, along with many others, and took him across the sea. He was sold as a slave and sent to work alone in the hills, watching sheep, cold and hungry, far from his family.</p>
+      <p class="body-text" style="margin-top:1rem;">He stayed there for six years. It was one of the loneliest things that could happen to anyone. But Patrick later wrote that it was also where he finally learned to pray, with his whole heart, for the first time in his life.</p>
+    </div>
+  </section>
+
+  <!-- 5 — ESCAPE AND RETURN HOME -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Six Years Later</p>
+      <h1 class="big-title">The Voice That Said <em>Run</em></h1>
+      <p class="body-text">One night, Patrick heard a voice in a dream telling him it was time to go home, and that a ship was waiting for him. He set out on foot, walked a long and dangerous way to the coast, and talked his way onto a ship. After more hard travel, he finally made it back to Britain and his family, who could hardly believe he was alive.</p>
+    </div>
+  </section>
+
+  <!-- 6 — THE CALL BACK -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">The Twist Nobody Expected</p>
+      <h1 class="big-title">Called Back to the Place<br>That Hurt Him Most</h1>
+      <p class="body-text">Years later, safe at home, Patrick had another dream. A man handed him a letter titled "The Voice of the Irish." As he read it, he heard the voices of the very people who had once enslaved him, calling him to come back and tell them about God. Most people would have said no. Patrick said yes.</p>
+    </div>
+  </section>
+
+  <!-- 7 — TRANSITION TO MISSION -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Back to Ireland, On Purpose This Time</p>
+      <h1 class="big-title">From Prisoner to <em>Bishop</em></h1>
+      <p class="lede">The Church trained Patrick as a priest, and later made him a bishop, then sent him back across the very sea he had once crossed in chains.</p>
+    </div>
+  </section>
+
+  <!-- 8 — MISSION TIMELINE -->
+  <section class="slide">
+    <div class="slide-inner wide">
+      <p class="eyebrow">His Life's Work</p>
+      <h1 class="big-title">What Patrick Did as a Missionary</h1>
+      <div class="step-flow">
+        <div class="step-card"><div class="step-icon">📖</div><div class="step-label">Trained</div><div class="step-desc">Studied and became a priest, then a bishop</div></div>
+        <div class="step-arrow">→</div>
+        <div class="step-card"><div class="step-icon">⛵</div><div class="step-label">Returned</div><div class="step-desc">Sailed back to Ireland, the land of his captivity</div></div>
+        <div class="step-arrow">→</div>
+        <div class="step-card"><div class="step-icon">🗣️</div><div class="step-label">Preached</div><div class="step-desc">Traveled the island, telling people about Jesus</div></div>
+        <div class="step-arrow">→</div>
+        <div class="step-card"><div class="step-icon">⛪</div><div class="step-label">Built the Church</div><div class="step-desc">Baptized new believers and trained local priests</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 9 — LEGENDS: SHAMROCK AND SNAKES -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Stories People Still Tell</p>
+      <h1 class="big-title">Legend, Not <em>History</em></h1>
+      <ul class="point-list" style="margin-left:auto;margin-right:auto;">
+        <li><span class="pt-mark">☘</span> One story says Patrick used a shamrock, three leaves on a single stem, to help explain the Holy Trinity: one God, three Persons. It's a lovely picture, though the story wasn't written down until centuries after Patrick died.</li>
+        <li><span class="pt-mark">🐍</span> Another story says Patrick drove all the snakes out of Ireland. Ireland's cold, sea-locked island probably never had snakes to begin with. Many people think this legend is really about something else Patrick drove out: the old beliefs Christianity was replacing.</li>
+      </ul>
+      <p class="body-text">Even legends can point to something true. Patrick brought a whole new way of seeing God to an entire island.</p>
+    </div>
+  </section>
+
+  <!-- 10 — LEGACY -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Why We Call Him a Saint</p>
+      <h1 class="big-title">He Forgave, and He Stayed</h1>
+      <p class="body-text">The Church doesn't call Patrick a saint because of shamrocks or snakes. He's a saint because he forgave the people who once enslaved him, spent the rest of his life serving them, and helped build the Christian faith in Ireland almost from nothing. Today he's remembered as the patron saint, the special protector and friend in prayer, of the whole country.</p>
+    </div>
+  </section>
+
+  <!-- 11 — QUOTE -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">In His Own Words</p>
+      <h1 class="big-title">A Stone in the Mud</h1>
+      <p class="lede">"I was like a stone lying deep in the mud. Then he who is powerful came, and in his mercy pulled me out, and lifted me up."</p>
+      <p class="quote-cite">— St. Patrick, Confessio</p>
+      <p class="body-text">Patrick wrote those words himself, near the end of his life, looking back at everything God had done with one scared, enslaved teenager.</p>
+    </div>
+  </section>
+
+  <!-- 12 — CLOSING -->
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="pillar-mark">17</div>
+      <p class="eyebrow">Let's Remember</p>
+      <h1 class="big-title">One boy.<br>One long walk home.<br><em>One saint for Ireland.</em></h1>
+      <div class="flourish"></div>
+      <p class="lede">Every March 17th, we remember Patrick: not for driving out snakes, but for going back to forgive.</p>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="prevSlide()" title="Previous (←)">←</button>
+  <span class="nav-count" id="slideCount">1 / 12</span>
+  <div class="nav-dots" id="navDots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="nextSlide()" title="Next (→)">→</button>
+</div>
+
+<script>
+var slides = document.querySelectorAll('.slide');
+var total = slides.length;
+var idx = 0;
+
+function renderDots() {
+  var dots = document.getElementById('navDots');
+  dots.innerHTML = '';
+  for (var i = 0; i < total; i++) {
+    var d = document.createElement('div');
+    d.className = 'nav-dot' + (i === idx ? ' active' : '');
+    d.onclick = (function(n) { return function() { goTo(n); }; })(i);
+    dots.appendChild(d);
+  }
+}
+
+function render() {
+  slides.forEach(function(s, i) { s.classList.toggle('active', i === idx); });
+  document.getElementById('slideCount').textContent = (idx + 1) + ' / ' + total;
+  document.getElementById('prevBtn').disabled = idx === 0;
+  document.getElementById('nextBtn').disabled = idx === total - 1;
+  renderDots();
+}
+
+function nextSlide() { if (idx < total - 1) { idx++; render(); } }
+function prevSlide() { if (idx > 0) { idx--; render(); } }
+function goTo(n) { idx = n; render(); }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+});
+
+render();
+</script>
+</body>
+</html>

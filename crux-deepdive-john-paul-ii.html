@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — St. John Paul II</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --navy: #1a1f36; --navy-deep: #0f1222; --navy-mid: #252b47; --navy-light: #2f3659;
+  --gold: #d4a574; --gold-light: #e8c99a; --gold-pale: #f5ead8;
+  --cream: #faf7f2; --white: #ffffff;
+  --text-soft: rgba(255,255,255,0.72); --text-faint: rgba(255,255,255,0.4);
+  --green: #4a7a42; --blue: #5a7aaa; --rose: #b06a8f;
+}
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Inter', sans-serif; background: var(--navy-deep); color: var(--white);
+}
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+/* ─── CHROME ─────────────────────────────────────────────────────── */
+.top-chrome {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem 1.75rem; pointer-events: none;
+}
+.tc-logo { font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: 5px; font-size: 1rem; color: var(--gold); opacity: 0.85; }
+.tc-exit {
+  pointer-events: all; font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 1px; color: var(--text-faint); text-decoration: none;
+  padding: 0.35rem 0.8rem; border: 1px solid rgba(255,255,255,0.12); border-radius: 20px;
+  transition: all 0.15s;
+}
+.tc-exit:hover { color: var(--gold); border-color: rgba(212,165,116,0.4); }
+
+/* ─── SLIDE STAGE ────────────────────────────────────────────────── */
+.stage { position: relative; height: 100%; }
+.slide {
+  position: absolute; inset: 0; display: none;
+  align-items: center; justify-content: center;
+  padding: 6rem 6vw 7rem;
+  opacity: 0; transition: opacity 0.35s ease;
+}
+.slide.active { display: flex; opacity: 1; }
+.slide-inner { max-width: 980px; width: 100%; text-align: center; }
+.slide-inner.wide { max-width: 1180px; }
+.slide-inner.left { text-align: left; }
+
+.eyebrow {
+  font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 1.1rem;
+}
+.big-title {
+  font-family: 'Playfair Display', serif; font-weight: 900; color: var(--white);
+  font-size: clamp(2.1rem, 5.2vw, 4rem); line-height: 1.08; margin-bottom: 1.1rem;
+}
+.big-title em { color: var(--gold); font-style: normal; }
+.lede {
+  font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
+  font-size: clamp(1.05rem, 2vw, 1.4rem); color: var(--text-soft); line-height: 1.55;
+  max-width: 700px; margin: 0 auto;
+}
+.slide-inner.left .lede { margin: 0; }
+.body-text {
+  font-family: 'Inter', sans-serif; font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+  color: var(--text-soft); line-height: 1.8; max-width: 680px; margin: 1.5rem auto 0;
+}
+.slide-inner.left .body-text { margin-left: 0; margin-right: 0; }
+
+/* Divider flourish under title */
+.flourish { width: 46px; height: 2px; background: var(--gold); margin: 1.6rem auto; opacity: 0.6; }
+.slide-inner.left .flourish { margin-left: 0; }
+
+/* ─── GENERIC BULLET LIST ────────────────────────────────────────── */
+.point-list { list-style: none; text-align: left; max-width: 620px; margin: 2rem auto 0; display: flex; flex-direction: column; gap: 1rem; }
+.point-list li { display: flex; align-items: flex-start; gap: 0.9rem; font-size: 1.05rem; color: var(--text-soft); line-height: 1.5; }
+.point-list .pt-mark { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: rgba(212,165,116,0.14); border: 1px solid rgba(212,165,116,0.35); color: var(--gold); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; margin-top: 0.1rem; font-family: 'Inter', sans-serif; font-weight: 700; }
+
+/* ─── STEP FLOW (journey / timeline slides) ──────────────────────── */
+.step-flow { display: flex; align-items: stretch; justify-content: center; gap: 0; margin-top: 2.25rem; flex-wrap: wrap; }
+.step-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 12px;
+  padding: 1.5rem 1.25rem; width: 200px; display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+}
+.step-num { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.6rem; color: var(--gold); }
+.step-icon { font-size: 1.6rem; }
+.step-label { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.92rem; color: var(--white); }
+.step-desc { font-size: 0.8rem; color: var(--text-faint); line-height: 1.5; }
+.step-arrow { display: flex; align-items: center; justify-content: center; width: 46px; color: rgba(212,165,116,0.4); font-size: 1.3rem; flex-shrink: 0; }
+@media (max-width: 900px) { .step-arrow { width: 100%; transform: rotate(90deg); padding: 0.3rem 0; } }
+
+/* ─── PILLAR MARK ─────────────────────────────────────────────────── */
+.pillar-mark {
+  width: 68px; height: 68px; border-radius: 50%; border: 2px solid var(--gold);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;
+  font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.5rem; color: var(--gold);
+  background: rgba(212,165,116,0.07);
+}
+
+/* ─── PORTRAIT FRAME ──────────────────────────────────────────────── */
+.portrait-frame {
+  width: 180px; height: 180px; border-radius: 50%; overflow: hidden;
+  border: 3px solid var(--gold); margin: 0 auto 1.75rem;
+  box-shadow: 0 0 0 6px rgba(212,165,116,0.12);
+}
+.portrait-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+/* ─── QUOTE SLIDE ─────────────────────────────────────────────────── */
+.quote-block {
+  font-family: 'Playfair Display', serif; font-style: italic; font-weight: 700;
+  font-size: clamp(2.1rem, 5.5vw, 3.4rem); color: var(--gold-light); line-height: 1.25;
+  max-width: 780px; margin: 0 auto;
+}
+.quote-cite {
+  font-family: 'Inter', sans-serif; font-size: 0.85rem; color: var(--text-faint);
+  margin-top: 1.75rem; letter-spacing: 0.5px;
+}
+
+/* ─── NAV CONTROLS ────────────────────────────────────────────────── */
+.nav-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+  padding: 1.25rem 1.5rem 1.5rem;
+  background: linear-gradient(to top, rgba(15,18,34,0.95), transparent);
+}
+.nav-btn {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); color: var(--text-soft);
+  width: 42px; height: 42px; border-radius: 50%; cursor: pointer; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+.nav-btn:disabled { opacity: 0.25; cursor: default; }
+.nav-dots { display: flex; gap: 0.4rem; }
+.nav-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.18); cursor: pointer; transition: all 0.15s; }
+.nav-dot:hover { background: rgba(255,255,255,0.4); }
+.nav-dot.active { background: var(--gold); width: 20px; border-radius: 4px; }
+.nav-count { font-family: 'Inter', sans-serif; font-size: 0.68rem; color: var(--text-faint); letter-spacing: 1px; min-width: 48px; text-align: center; }
+
+@media (max-width: 640px) {
+  .slide { padding: 5rem 6vw 6.5rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-chrome">
+  <div class="tc-logo">CRUX</div>
+  <a href="crux-pack-classroom.html" class="tc-exit">Exit</a>
+</div>
+
+<div class="stage" id="stage">
+
+  <!-- 1 — TITLE -->
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="portrait-frame"><img src="images/saints/john-paul-ii.jpg" alt="Saint John Paul II"></div>
+      <p class="eyebrow">Feast Day · October 22</p>
+      <h1 class="big-title">Saint <em>John Paul II</em></h1>
+      <div class="flourish"></div>
+      <p class="lede">Patron of World Youth Day and Families</p>
+    </div>
+  </section>
+
+  <!-- 2 — HOOK -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Meet the Saint</p>
+      <h1 class="big-title">A Pope Who Skied, Hiked,<br>and <em>Forgave</em></h1>
+      <p class="body-text">This is the story of a pope who loved mountains, loved young people, and once looked the man who shot him in the eyes and forgave him. His name was Karol Wojtyła, and before the world knew him as Pope John Paul II, he was just a boy from a small town in Poland who lost almost everyone he loved.</p>
+    </div>
+  </section>
+
+  <!-- 3 — EARLY LIFE -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Poland, 1920</p>
+      <h1 class="big-title">A Boy Named <em>Karol</em></h1>
+      <p class="lede">Karol Józef Wojtyła was born on May 18, 1920, in a small Polish town called Wadowice.</p>
+      <ul class="point-list">
+        <li><span class="pt-mark">8</span> His mother died when Karol was just eight years old.</li>
+        <li><span class="pt-mark">12</span> His older brother Edmund, a doctor, died when Karol was twelve.</li>
+        <li><span class="pt-mark">20</span> His father, who raised him alone and prayed with him every day, died when Karol was twenty.</li>
+      </ul>
+      <p class="body-text">By the time he was barely an adult, Karol had lost his entire family. But he never lost his faith.</p>
+    </div>
+  </section>
+
+  <!-- 4 — NAZI OCCUPATION -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">World War II</p>
+      <h1 class="big-title">Faith Under Occupation</h1>
+      <p class="body-text">In 1939, Nazi Germany invaded Poland and shut down Karol's university. To survive, and to avoid being sent away to Germany, Karol worked backbreaking shifts in a stone quarry, and later in a chemical factory. The Nazis had banned the training of new priests. So Karol studied for the priesthood in secret, meeting with other students behind closed doors in an underground seminary, knowing he could be arrested just for showing up.</p>
+    </div>
+  </section>
+
+  <!-- 5 — PRIEST AND BISHOP -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">After the War</p>
+      <h1 class="big-title">Father <em>Wojtyła</em></h1>
+      <p class="body-text">Karol was ordained a priest on November 1, 1946. But Poland's troubles weren't over. A new Communist government took power, one that also didn't want the Church to have any influence over the people. Father Wojtyła kept teaching, kept praying, and kept caring for his people anyway. Over time, he became a bishop, and then the Archbishop of Kraków, quietly defending the Church's freedom every step of the way.</p>
+    </div>
+  </section>
+
+  <!-- 6 — ELECTED POPE / TIMELINE -->
+  <section class="slide">
+    <div class="slide-inner wide">
+      <p class="eyebrow">October 16, 1978</p>
+      <h1 class="big-title">From <em>Priest</em> to <em>Pope</em></h1>
+      <div class="step-flow">
+        <div class="step-card"><div class="step-num">1946</div><div class="step-icon">⛪</div><div class="step-label">Priest</div><div class="step-desc">Ordained in secret-trained faith</div></div>
+        <div class="step-arrow">→</div>
+        <div class="step-card"><div class="step-num">1958</div><div class="step-icon">✦</div><div class="step-label">Bishop</div><div class="step-desc">Shepherd of a diocese</div></div>
+        <div class="step-arrow">→</div>
+        <div class="step-card"><div class="step-num">1964</div><div class="step-icon">✝</div><div class="step-label">Archbishop</div><div class="step-desc">Led the Church in Kraków</div></div>
+        <div class="step-arrow">→</div>
+        <div class="step-card"><div class="step-num">1978</div><div class="step-icon">🔑</div><div class="step-label">Pope</div><div class="step-desc">263rd successor of St. Peter</div></div>
+      </div>
+      <p class="body-text">When the cardinals elected him pope, he became the first non-Italian pope in 455 years, and the first pope ever from Poland.</p>
+    </div>
+  </section>
+
+  <!-- 7 — YOUNG PEOPLE / WORLD YOUTH DAY -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">For the Young Church</p>
+      <h1 class="big-title">He Loved Young People</h1>
+      <p class="body-text">Pope John Paul II was famous for being active. He skied down mountains, hiked, and kayaked, even as pope. He traveled to more countries than any pope before him, and he especially loved meeting young people. In 1985, he started something new called World Youth Day, a huge gathering where young Catholics from all over the world come together to pray, sing, and celebrate their faith. Millions of kids and teenagers have gone ever since.</p>
+    </div>
+  </section>
+
+  <!-- 8 — ASSASSINATION ATTEMPT AND FORGIVENESS -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">May 13, 1981</p>
+      <h1 class="big-title">He Was Shot, and He <em>Forgave</em></h1>
+      <p class="body-text">One afternoon in St. Peter's Square, a man named Mehmet Ali Ağca shot Pope John Paul II. The pope was badly hurt and spent weeks recovering in the hospital. Just days later, from his hospital bed, he publicly forgave the man who tried to kill him. Two years afterward, he did something even harder: he visited Ağca in his prison cell, sat with him, and spoke to him quietly, face to face. It's one of the most remarkable stories of mercy in modern history.</p>
+    </div>
+  </section>
+
+  <!-- 9 — FALL OF COMMUNISM -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Eastern Europe</p>
+      <h1 class="big-title">A Quiet Kind of Courage</h1>
+      <p class="body-text">In 1979, Pope John Paul II went home to Poland for the first time as pope. Huge crowds came out to see him, and he told them not to be afraid. That trip gave people across Poland the courage to hope for something better than life under Communist rule. His words and his example helped inspire a peaceful movement for freedom that spread across Eastern Europe, and by 1989, Communist governments across the region began to fall, without a war.</p>
+    </div>
+  </section>
+
+  <!-- 10 — LEGACY / CANONIZATION -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">A Life of Faith</p>
+      <h1 class="big-title">Why We Call Him <em>Saint</em></h1>
+      <p class="body-text">Pope John Paul II led the Church for more than 26 years, one of the longest papacies in history. He is remembered for his courage under persecution, his mercy toward an enemy, his tireless travel to meet people where they were, and his deep love for young people and families. He died on April 2, 2005. Less than ten years later, on April 27, 2014, Pope Francis declared him a saint of the Catholic Church.</p>
+    </div>
+  </section>
+
+  <!-- 11 — QUOTE -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">His Words</p>
+      <p class="quote-block">"Be not afraid.<br>Open wide the doors to Christ."</p>
+      <p class="quote-cite">— Pope John Paul II, first homily as pope, October 22, 1978</p>
+    </div>
+  </section>
+
+  <!-- 12 — CLOSING -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Let's Remember</p>
+      <h1 class="big-title">A boy from Poland.<br>A shepherd who wasn't afraid.<br><em>A saint for us.</em></h1>
+      <div class="flourish"></div>
+      <p class="lede">October 22. St. John Paul II, pray for us.</p>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="prevSlide()" title="Previous (←)">←</button>
+  <span class="nav-count" id="slideCount">1 / 12</span>
+  <div class="nav-dots" id="navDots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="nextSlide()" title="Next (→)">→</button>
+</div>
+
+<script>
+var slides = document.querySelectorAll('.slide');
+var total = slides.length;
+var idx = 0;
+
+function renderDots() {
+  var dots = document.getElementById('navDots');
+  dots.innerHTML = '';
+  for (var i = 0; i < total; i++) {
+    var d = document.createElement('div');
+    d.className = 'nav-dot' + (i === idx ? ' active' : '');
+    d.onclick = (function(n) { return function() { goTo(n); }; })(i);
+    dots.appendChild(d);
+  }
+}
+
+function render() {
+  slides.forEach(function(s, i) { s.classList.toggle('active', i === idx); });
+  document.getElementById('slideCount').textContent = (idx + 1) + ' / ' + total;
+  document.getElementById('prevBtn').disabled = idx === 0;
+  document.getElementById('nextBtn').disabled = idx === total - 1;
+  renderDots();
+}
+
+function nextSlide() { if (idx < total - 1) { idx++; render(); } }
+function prevSlide() { if (idx > 0) { idx--; render(); } }
+function goTo(n) { idx = n; render(); }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+});
+
+render();
+</script>
+</body>
+</html>

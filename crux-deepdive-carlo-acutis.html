@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CRUX — St. Carlo Acutis</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+  --navy: #1a1f36; --navy-deep: #0f1222; --navy-mid: #252b47; --navy-light: #2f3659;
+  --gold: #d4a574; --gold-light: #e8c99a; --gold-pale: #f5ead8;
+  --cream: #faf7f2; --white: #ffffff;
+  --text-soft: rgba(255,255,255,0.72); --text-faint: rgba(255,255,255,0.4);
+  --green: #4a7a42; --blue: #5a7aaa; --rose: #b06a8f;
+}
+html, body { height: 100%; overflow: hidden; }
+body {
+  font-family: 'Inter', sans-serif; background: var(--navy-deep); color: var(--white);
+}
+body::before {
+  content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 1;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+}
+
+.top-chrome {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1.1rem 1.75rem; pointer-events: none;
+}
+.tc-logo { font-family: 'Playfair Display', serif; font-weight: 900; letter-spacing: 5px; font-size: 1rem; color: var(--gold); opacity: 0.85; }
+.tc-exit {
+  pointer-events: all; font-family: 'Inter', sans-serif; font-size: 0.68rem; font-weight: 600;
+  letter-spacing: 1px; color: var(--text-faint); text-decoration: none;
+  padding: 0.35rem 0.8rem; border: 1px solid rgba(255,255,255,0.12); border-radius: 20px;
+  transition: all 0.15s;
+}
+.tc-exit:hover { color: var(--gold); border-color: rgba(212,165,116,0.4); }
+
+.stage { position: relative; height: 100%; }
+.slide {
+  position: absolute; inset: 0; display: none;
+  align-items: center; justify-content: center;
+  padding: 6rem 6vw 7rem;
+  opacity: 0; transition: opacity 0.35s ease;
+}
+.slide.active { display: flex; opacity: 1; }
+.slide-inner { max-width: 980px; width: 100%; text-align: center; }
+.slide-inner.wide { max-width: 1180px; }
+.slide-inner.left { text-align: left; }
+
+.eyebrow {
+  font-family: 'Inter', sans-serif; font-size: 0.72rem; font-weight: 700; letter-spacing: 4px;
+  text-transform: uppercase; color: var(--gold); margin-bottom: 1.1rem;
+}
+.big-title {
+  font-family: 'Playfair Display', serif; font-weight: 900; color: var(--white);
+  font-size: clamp(2.1rem, 5.2vw, 4rem); line-height: 1.08; margin-bottom: 1.1rem;
+}
+.big-title em { color: var(--gold); font-style: normal; }
+.lede {
+  font-family: 'Playfair Display', serif; font-style: italic; font-weight: 400;
+  font-size: clamp(1.05rem, 2vw, 1.4rem); color: var(--text-soft); line-height: 1.55;
+  max-width: 700px; margin: 0 auto;
+}
+.slide-inner.left .lede { margin: 0; }
+.body-text {
+  font-family: 'Inter', sans-serif; font-size: clamp(0.95rem, 1.4vw, 1.15rem);
+  color: var(--text-soft); line-height: 1.8; max-width: 680px; margin: 1.5rem auto 0;
+}
+.slide-inner.left .body-text { margin-left: 0; margin-right: 0; }
+
+.flourish { width: 46px; height: 2px; background: var(--gold); margin: 1.6rem auto; opacity: 0.6; }
+.slide-inner.left .flourish { margin-left: 0; }
+
+.point-list { list-style: none; text-align: left; max-width: 620px; margin: 2rem auto 0; display: flex; flex-direction: column; gap: 1rem; }
+.point-list li { display: flex; align-items: flex-start; gap: 0.9rem; font-size: 1.05rem; color: var(--text-soft); line-height: 1.5; }
+.point-list .pt-mark { flex-shrink: 0; width: 26px; height: 26px; border-radius: 50%; background: rgba(212,165,116,0.14); border: 1px solid rgba(212,165,116,0.35); color: var(--gold); font-size: 0.85rem; display: flex; align-items: center; justify-content: center; margin-top: 0.1rem; }
+
+.step-flow { display: flex; align-items: stretch; justify-content: center; gap: 0; margin-top: 2.25rem; flex-wrap: wrap; }
+.step-card {
+  background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.09); border-radius: 12px;
+  padding: 1.5rem 1.25rem; width: 200px; display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+}
+.step-num { font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.6rem; color: var(--gold); }
+.step-icon { font-size: 1.6rem; }
+.step-label { font-family: 'Inter', sans-serif; font-weight: 700; font-size: 0.92rem; color: var(--white); }
+.step-desc { font-size: 0.8rem; color: var(--text-faint); line-height: 1.5; }
+.step-arrow { display: flex; align-items: center; justify-content: center; width: 46px; color: rgba(212,165,116,0.4); font-size: 1.3rem; flex-shrink: 0; }
+@media (max-width: 900px) { .step-arrow { width: 100%; transform: rotate(90deg); padding: 0.3rem 0; } }
+
+.pillar-mark {
+  width: 68px; height: 68px; border-radius: 50%; border: 2px solid var(--gold);
+  display: flex; align-items: center; justify-content: center; margin: 0 auto 1.5rem;
+  font-family: 'Playfair Display', serif; font-weight: 900; font-size: 1.5rem; color: var(--gold);
+  background: rgba(212,165,116,0.07);
+}
+
+.portrait-frame {
+  width: 168px; height: 168px; border-radius: 50%; overflow: hidden; margin: 0 auto 1.6rem;
+  border: 3px solid var(--gold); box-shadow: 0 0 0 7px rgba(212,165,116,0.09);
+}
+.portrait-frame img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+.badge-row { display: flex; justify-content: center; gap: 0.9rem; margin-top: 1.6rem; flex-wrap: wrap; }
+.badge-chip {
+  padding: 0.55rem 1.2rem; border-radius: 30px; font-family: 'Inter', sans-serif; font-weight: 700;
+  font-size: 0.82rem; border: 1.5px solid rgba(212,165,116,0.5); color: var(--gold); background: rgba(212,165,116,0.1);
+}
+
+.quote-block {
+  font-family: 'Playfair Display', serif; font-style: italic; font-weight: 600;
+  font-size: clamp(1.3rem, 3vw, 2rem); line-height: 1.5; color: var(--white);
+  max-width: 800px; margin: 1.5rem auto 0; position: relative;
+}
+.quote-cite { font-family: 'Inter', sans-serif; font-style: normal; font-weight: 600; font-size: 0.85rem; color: var(--gold); letter-spacing: 0.5px; margin-top: 1.4rem; }
+
+.nav-bar {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 50;
+  display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+  padding: 1.25rem 1.5rem 1.5rem;
+  background: linear-gradient(to top, rgba(15,18,34,0.95), transparent);
+}
+.nav-btn {
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); color: var(--text-soft);
+  width: 42px; height: 42px; border-radius: 50%; cursor: pointer; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center; transition: all 0.15s;
+}
+.nav-btn:hover:not(:disabled) { border-color: var(--gold); color: var(--gold); }
+.nav-btn:disabled { opacity: 0.25; cursor: default; }
+.nav-dots { display: flex; gap: 0.4rem; }
+.nav-dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.18); cursor: pointer; transition: all 0.15s; }
+.nav-dot:hover { background: rgba(255,255,255,0.4); }
+.nav-dot.active { background: var(--gold); width: 20px; border-radius: 4px; }
+.nav-count { font-family: 'Inter', sans-serif; font-size: 0.68rem; color: var(--text-faint); letter-spacing: 1px; min-width: 48px; text-align: center; }
+
+@media (max-width: 640px) {
+  .slide { padding: 5rem 6vw 6.5rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="top-chrome">
+  <div class="tc-logo">CRUX</div>
+  <a href="crux-pack-classroom.html" class="tc-exit">Exit</a>
+</div>
+
+<div class="stage" id="stage">
+
+  <!-- 1 — TITLE -->
+  <section class="slide">
+    <div class="slide-inner">
+      <div class="portrait-frame"><img src="images/saints/carlo-acutis.jpg" alt="St. Carlo Acutis"></div>
+      <p class="eyebrow">Feast Day · October 12</p>
+      <h1 class="big-title">St. <em>Carlo Acutis</em></h1>
+      <div class="flourish"></div>
+      <p class="lede">Patron of the Internet, and the newest saint in the whole Church.</p>
+    </div>
+  </section>
+
+  <!-- 2 — HOOK -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Meet Carlo</p>
+      <h1 class="big-title">A Kid Just Like You</h1>
+      <p class="body-text">Carlo loved video games. He loved building websites. He wore jeans and sneakers, not fancy robes. He was a totally normal kid who did his homework and hung out with friends. And in September 2025, the Church declared him a saint. If Carlo can become a saint, so can you.</p>
+    </div>
+  </section>
+
+  <!-- 3 — EARLY LIFE -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Growing Up</p>
+      <h1 class="big-title">Born in London,<br>Raised in <em>Milan</em></h1>
+      <p class="body-text">Carlo was born in London in 1991 to Italian parents, then grew up in Milan, Italy. He had a happy, ordinary childhood. He played soccer, took care of his pets, and loved animals. He was funny, kind to classmates who got left out, and already, even as a little kid, he loved to pray.</p>
+    </div>
+  </section>
+
+  <!-- 4 — EUCHARIST -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">His Favorite Thing</p>
+      <h1 class="big-title">His <em>Highway</em> to Heaven</h1>
+      <p class="body-text">Starting around age seven, Carlo went to Mass every single day. He wasn't forced to. He wanted to. He said the Eucharist, Jesus truly present in Holy Communion, was his "highway to heaven." Think of it like his favorite way to feel close to God, every single day, no matter what.</p>
+    </div>
+  </section>
+
+  <!-- 5 — TECH SKILLS -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">His Other Favorite Thing</p>
+      <h1 class="big-title">A Kid Who Loved <em>Computers</em></h1>
+      <p class="body-text">Carlo taught himself to code before most kids even had a computer at home. He built websites for fun, the way some kids build with Legos. But Carlo didn't just want to make cool stuff. He wanted to use his skills for something bigger than himself.</p>
+    </div>
+  </section>
+
+  <!-- 6 — THE WEBSITE -->
+  <section class="slide">
+    <div class="slide-inner wide">
+      <p class="eyebrow">His Biggest Project</p>
+      <h1 class="big-title">He Built a Website About Miracles</h1>
+      <div class="step-flow">
+        <div class="step-card"><div class="step-num">1</div><div class="step-icon">💻</div><div class="step-label">He Coded It Himself</div><div class="step-desc">Taught himself to build the whole site</div></div>
+        <div class="step-arrow">→</div>
+        <div class="step-card"><div class="step-num">2</div><div class="step-icon">🔎</div><div class="step-label">He Researched Miracles</div><div class="step-desc">Documented Eucharistic miracles from history</div></div>
+        <div class="step-arrow">→</div>
+        <div class="step-card"><div class="step-num">3</div><div class="step-icon">🌍</div><div class="step-label">Sorted by Country</div><div class="step-desc">Organized by where each one happened</div></div>
+        <div class="step-arrow">→</div>
+        <div class="step-card"><div class="step-num">4</div><div class="step-icon">🌐</div><div class="step-label">Shared Worldwide</div><div class="step-desc">Translated into nearly 20 languages</div></div>
+      </div>
+      <p class="body-text">His exhibit has now traveled to churches and schools all over the world, all because one kid decided his computer could be used to help people love God.</p>
+    </div>
+  </section>
+
+  <!-- 7 — DIAGNOSIS -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">A Hard Chapter</p>
+      <h1 class="big-title">Getting Sick</h1>
+      <p class="body-text">When Carlo was 15, doctors found that he had leukemia, a serious illness in the blood. It was scary and it was hard. But Carlo faced it with incredible courage and trust in God. He offered up his suffering as a prayer, for the Pope and for the whole Church, saying he wanted his pain to be used for good instead of wasted.</p>
+    </div>
+  </section>
+
+  <!-- 8 — DEATH -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">October 12, 2006</p>
+      <h1 class="big-title">Home to Heaven at 15</h1>
+      <p class="body-text">Carlo died just three days after he first got sick. He was only 15 years old. Before he died, he told his family not to be afraid, because he was going straight to God. That's why the Church remembers him every year on October 12, the day he went home to heaven.</p>
+    </div>
+  </section>
+
+  <!-- 9 — BEATIFICATION & CANONIZATION -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Becoming a Saint</p>
+      <h1 class="big-title">Blessed, Then <em>Saint</em></h1>
+      <p class="body-text">In 2020, the Church declared Carlo "Blessed," the step right before sainthood. Then on September 7, 2025, Pope Leo XIV declared him a saint in St. Peter's Square in Rome, in front of thousands of people. Carlo became the Church's first millennial saint, the first saint from the generation that grew up online.</p>
+      <div class="badge-row">
+        <span class="badge-chip">Beatified · 2020</span>
+        <span class="badge-chip">Canonized · Sept 7, 2025</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 — WHY A SAINT -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Why It Matters</p>
+      <h1 class="big-title">Why the Church Calls Him a Saint</h1>
+      <ul class="point-list" style="margin-left:auto;margin-right:auto;">
+        <li><span class="pt-mark">✓</span> He loved Jesus in the Eucharist more than anything else</li>
+        <li><span class="pt-mark">✓</span> He used his ordinary talents for something holy</li>
+        <li><span class="pt-mark">✓</span> He was kind to kids who felt left out</li>
+        <li><span class="pt-mark">✓</span> He faced hard things with real trust in God</li>
+      </ul>
+      <p class="body-text">Carlo shows us that you don't need to be an adult, or a priest, or a nun, to become close to God. You just need to say yes with whatever you've got, even a laptop.</p>
+    </div>
+  </section>
+
+  <!-- 11 — QUOTE -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">In His Own Words</p>
+      <h1 class="big-title">Be an Original</h1>
+      <p class="quote-block">"All people are born as originals, but many die as photocopies."</p>
+      <p class="quote-cite">— St. Carlo Acutis</p>
+      <p class="body-text">Carlo meant that God made you one of a kind, on purpose. Don't spend your life just copying everyone else. Be exactly who God made you to be.</p>
+    </div>
+  </section>
+
+  <!-- 12 — CLOSING -->
+  <section class="slide">
+    <div class="slide-inner">
+      <p class="eyebrow">Remember This</p>
+      <h1 class="big-title">October 12.<br>A kid with a laptop.<br><em>A saint for us.</em></h1>
+      <div class="flourish"></div>
+      <p class="lede">St. Carlo Acutis, pray for us, that we'd love Jesus as much as you did, and use whatever we've got for something bigger than ourselves.</p>
+    </div>
+  </section>
+
+</div>
+
+<div class="nav-bar">
+  <button class="nav-btn" id="prevBtn" onclick="prevSlide()" title="Previous (←)">←</button>
+  <span class="nav-count" id="slideCount">1 / 12</span>
+  <div class="nav-dots" id="navDots"></div>
+  <button class="nav-btn" id="nextBtn" onclick="nextSlide()" title="Next (→)">→</button>
+</div>
+
+<script>
+var slides = document.querySelectorAll('.slide');
+var total = slides.length;
+var idx = 0;
+
+function renderDots() {
+  var dots = document.getElementById('navDots');
+  dots.innerHTML = '';
+  for (var i = 0; i < total; i++) {
+    var d = document.createElement('div');
+    d.className = 'nav-dot' + (i === idx ? ' active' : '');
+    d.onclick = (function(n) { return function() { goTo(n); }; })(i);
+    dots.appendChild(d);
+  }
+}
+
+function render() {
+  slides.forEach(function(s, i) { s.classList.toggle('active', i === idx); });
+  document.getElementById('slideCount').textContent = (idx + 1) + ' / ' + total;
+  document.getElementById('prevBtn').disabled = idx === 0;
+  document.getElementById('nextBtn').disabled = idx === total - 1;
+  renderDots();
+}
+
+function nextSlide() { if (idx < total - 1) { idx++; render(); } }
+function prevSlide() { if (idx > 0) { idx--; render(); } }
+function goTo(n) { idx = n; render(); }
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  else if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+});
+
+render();
+</script>
+</body>
+</html>
