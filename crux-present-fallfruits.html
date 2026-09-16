@@ -262,6 +262,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .wys-col-bg { flex: 0 0 auto; }
 .wys-col-bgimage { flex: 1; min-width: 160px; }
 .wys-col-freeform { flex: 1; min-width: 180px; }
+.wys-col-media, .wys-col-visual { flex: 1.4; min-width: 220px; }
 .wys-col-bullet { flex: 0 0 auto; }
 .wys-bullet-row { display: flex; align-items: center; gap: 0.3rem; }
 .wys-bullet-opt {
@@ -1998,6 +1999,7 @@ function buildControlsStrip(slide) {
     '<input class="wys-input" type="text" placeholder="Paste URL…" value="' + escHtml(slide.mediaUrl || '') + '" oninput="changeMediaUrl(this.value)">' +
     '<input class="wys-input" type="text" placeholder="Caption (optional)…" value="' + escHtml(slide.mediaCaption || '') + '" oninput="updateField(\'mediaCaption\',this.value)">'
     : '';
+  var visualLabel = slide.type === 'steps' ? 'Steps' : slide.type === 'icongrid' ? 'Icon Grid Items' : slide.type === 'timeline' ? 'Timeline Rows' : 'Slide Content';
   var visualHtml = isVisual ?
     '<div class="wys-hint">' + escHtml(visualPlaceholder(slide.type)) + '</div>' +
     '<textarea class="wys-notes-input pv-editor" id="visualBodyTextarea" placeholder="' + escHtml(visualPlaceholder(slide.type)) + '" oninput="updateVisualBody(this.value)">' + escHtml(raw) + '</textarea>'
@@ -2059,6 +2061,16 @@ function buildControlsStrip(slide) {
         '<button class="wys-bg-reset" id="slideTextScaleReset" onclick="resetSlideTextScale()"' + (slide.textScale != null ? '' : ' disabled') + '>Reset</button>' +
       '</div>' +
     '</div>' +
+    (isMedia ?
+    '<div class="wys-col wys-col-media">' +
+      '<span class="wys-label">Media</span>' +
+      mediaHtml +
+    '</div>' : '') +
+    (isVisual ?
+    '<div class="wys-col wys-col-visual">' +
+      '<span class="wys-label">' + escHtml(visualLabel) + '</span>' +
+      visualHtml +
+    '</div>' : '') +
     '<div class="wys-col wys-col-notes">' +
       '<div class="wys-notes-row">' +
         '<span class="wys-label">Presenter Notes</span>' +
@@ -2067,7 +2079,6 @@ function buildControlsStrip(slide) {
           '<button class="wvt' + (bodyTab === 'simple'   ? ' active' : '') + '" onclick="setBodyTabWys(\'simple\')">Child-Friendly</button>' +
         '</div>' +
       '</div>' +
-      mediaHtml + visualHtml +
       '<textarea class="wys-notes-input" placeholder="Private notes shown only during presentation…" oninput="updateField(\'note\',this.value)">' + escHtml(slide.note || '') + '</textarea>' +
     '</div>' +
   '</div>';
