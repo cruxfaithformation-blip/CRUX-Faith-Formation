@@ -261,6 +261,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .wys-media-opt.selected { border-color: var(--gold); background: var(--gold-pale); color: var(--navy); }
 .wys-col-bg { flex: 0 0 auto; }
 .wys-col-bgimage { flex: 1; min-width: 160px; }
+.wys-col-freeform { flex: 1; min-width: 180px; }
 .wys-col-bullet { flex: 0 0 auto; }
 .wys-bullet-row { display: flex; align-items: center; gap: 0.3rem; }
 .wys-bullet-opt {
@@ -350,11 +351,41 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   display: none; z-index: 7;
 }
 .pv-layer-editable:hover .pv-layer-del, .pv-layer-editable.selected .pv-layer-del,
-.pv-layer-editable:hover .pv-layer-resize, .pv-layer-editable.selected .pv-layer-resize { display: block; }
+.pv-layer-editable:hover .pv-layer-resize, .pv-layer-editable.selected .pv-layer-resize,
+.pv-textbox-editable:hover .pv-layer-del, .pv-textbox-editable.selected .pv-layer-del,
+.pv-textbox-editable:hover .pv-layer-resize, .pv-textbox-editable.selected .pv-layer-resize { display: block; }
 .pv-layer-hint {
   position: absolute; left: 1rem; bottom: 1rem; z-index: 3; pointer-events: none;
   font-family: 'Inter', sans-serif; font-size: 0.68rem; color: rgba(212,165,116,0.4); letter-spacing: 0.5px;
 }
+
+/* ─── FREE-FLOATING TEXT BOXES ───────────────────────────────────
+   Reuses .pv-layer-del/.pv-layer-resize for the delete button and
+   resize handle — same look, same show-on-hover/selected rule above,
+   just applied under a different wrapper class. */
+.pv-textbox { position: absolute; box-sizing: border-box; z-index: 6; touch-action: none; }
+.pv-textbox-content {
+  width: 100%; height: 100%; outline: none; color: #fff;
+  font-family: 'Playfair Display', serif; font-weight: 700; line-height: 1.3;
+  overflow: visible; word-wrap: break-word; cursor: text;
+  text-shadow: 0 1px 4px rgba(0,0,0,0.55);
+}
+.pv-textbox-editable { border: 1.5px dashed transparent; }
+.pv-textbox-editable:not(.editing) { cursor: move; }
+.pv-textbox-editable:not(.editing) .pv-textbox-content { pointer-events: none; }
+.pv-textbox-editable:hover, .pv-textbox-editable.selected { border-color: rgba(212,165,116,0.7); }
+.pv-textbox-fontctrl {
+  position: absolute; top: -34px; left: 0; display: none; align-items: center; gap: 3px;
+  background: rgba(8,10,22,0.92); border: 1px solid rgba(212,165,116,0.18); border-radius: 6px;
+  padding: 0.22rem 0.35rem; z-index: 8; white-space: nowrap;
+}
+.pv-textbox-editable.selected .pv-textbox-fontctrl { display: flex; }
+.pv-textbox-fontctrl button {
+  width: 20px; height: 20px; border-radius: 4px; border: none; cursor: pointer;
+  background: rgba(255,255,255,0.1); color: #fff; font-size: 0.62rem; font-weight: 700;
+}
+.pv-textbox-fontctrl button:hover { background: rgba(212,165,116,0.3); }
+.pv-textbox-fontpct { font-size: 0.6rem; color: rgba(255,255,255,0.6); min-width: 30px; text-align: center; }
 #editableSlide.drop-active { outline: 3px dashed var(--gold); outline-offset: -3px; }
 .pv-icon-label { font-weight: 700; font-size: 0.92rem; color: var(--white); }
 
@@ -1712,10 +1743,183 @@ function attachDropZone(el) {
   el.addEventListener('drop', handleSlideDrop);
   el.addEventListener('pointerdown', function(e) {
     if (e.target === el) {
-      var sel = el.querySelectorAll('.pv-layer.selected');
+      var sel = el.querySelectorAll('.pv-layer.selected, .pv-textbox.selected');
       for (var i = 0; i < sel.length; i++) sel[i].classList.remove('selected');
     }
   });
+}
+
+/* ─── FREE-FLOATING TEXT BOXES ─────────────────────────────────────
+   A second, independent overlay alongside the image layers above —
+   small draggable, resizable, contenteditable text elements with their
+   own font size, separate from the slide's structured title/body
+   content. Good for captions next to a dropped-in image, a pull quote
+   placed by hand, etc. Stored as slide.textBoxes = [{id, text, x, y, w,
+   h, fontSize}], same percent-of-slide-box convention as image layers,
+   for the same reason: it holds up across the editable canvas and
+   Present mode without extra conversion.
+
+   Interaction model: single pointerdown on the box drags/moves it
+   (matches image layers) UNLESS the box is in "editing" mode, entered
+   via double-click, which hands normal cursor/selection behavior back
+   to the browser so the text itself can be edited. Blurring the text
+   (click elsewhere, Escape) exits editing mode automatically. */
+var textBoxNextId = 1;
+var activeTextBoxDrag = null;
+
+function renderTextBoxes(container, slide) {
+  if (!container) return;
+  var old = container.querySelectorAll('.pv-textbox');
+  for (var i = 0; i < old.length; i++) old[i].remove();
+  var interactive = container.id === 'editableSlide';
+  var boxes = (slide && slide.textBoxes) || [];
+  boxes.forEach(function(box) {
+    var wrap = document.createElement('div');
+    wrap.className = 'pv-textbox' + (interactive ? ' pv-textbox-editable' : '');
+    wrap.style.left = box.x + '%';
+    wrap.style.top = box.y + '%';
+    wrap.style.width = box.w + '%';
+    wrap.style.height = box.h + '%';
+    wrap.dataset.boxId = box.id;
+
+    var content = document.createElement('div');
+    content.className = 'pv-textbox-content';
+    content.style.fontSize = (box.fontSize || 1.4) + 'rem';
+    content.textContent = box.text || '';
+    if (interactive) content.contentEditable = 'true';
+    wrap.appendChild(content);
+
+    if (interactive) {
+      content.addEventListener('input', function() { box.text = content.textContent; save(); });
+      content.addEventListener('blur', function() { wrap.classList.remove('editing'); });
+      content.addEventListener('keydown', function(e) { if (e.key === 'Escape') content.blur(); });
+      wrap.addEventListener('dblclick', function(e) {
+        e.stopPropagation();
+        wrap.classList.add('editing');
+        content.focus();
+      });
+
+      var del = document.createElement('button');
+      del.type = 'button'; del.className = 'pv-layer-del'; del.textContent = '✕'; del.title = 'Remove text box';
+      del.addEventListener('pointerdown', function(e) { e.stopPropagation(); });
+      del.addEventListener('click', function(e) { e.stopPropagation(); removeTextBox(slide, box.id); });
+      wrap.appendChild(del);
+
+      var handle = document.createElement('div');
+      handle.className = 'pv-layer-resize';
+      handle.addEventListener('pointerdown', function(e) { startTextBoxInteraction(e, slide, box, wrap, 'resize'); });
+      wrap.appendChild(handle);
+
+      var fontctrl = document.createElement('div');
+      fontctrl.className = 'pv-textbox-fontctrl';
+      var minus = document.createElement('button');
+      minus.type = 'button'; minus.textContent = 'A-';
+      var pct = document.createElement('span');
+      pct.className = 'pv-textbox-fontpct';
+      pct.textContent = (Math.round((box.fontSize || 1.4) * 10) / 10) + 'rem';
+      var plus = document.createElement('button');
+      plus.type = 'button'; plus.textContent = 'A+';
+      minus.addEventListener('pointerdown', function(e) { e.stopPropagation(); });
+      plus.addEventListener('pointerdown', function(e) { e.stopPropagation(); });
+      minus.addEventListener('click', function(e) { e.stopPropagation(); bumpTextBoxFontSize(slide, box, -0.1); });
+      plus.addEventListener('click', function(e) { e.stopPropagation(); bumpTextBoxFontSize(slide, box, 0.1); });
+      fontctrl.appendChild(minus); fontctrl.appendChild(pct); fontctrl.appendChild(plus);
+      wrap.appendChild(fontctrl);
+
+      wrap.addEventListener('pointerdown', function(e) {
+        if (wrap.classList.contains('editing')) return; // let normal text-cursor interaction happen
+        if (e.target === handle || e.target === del || fontctrl.contains(e.target)) return;
+        startTextBoxInteraction(e, slide, box, wrap, 'move');
+      });
+    }
+
+    container.appendChild(wrap);
+  });
+}
+
+function bumpTextBoxFontSize(slide, box, delta) {
+  box.fontSize = Math.max(0.6, Math.min(6, Math.round(((box.fontSize || 1.4) + delta) * 10) / 10));
+  save();
+  renderCanvasSlide();
+}
+
+function startTextBoxInteraction(e, slide, box, wrapEl, mode) {
+  e.preventDefault();
+  e.stopPropagation();
+  var container = wrapEl.parentElement;
+  var rect = container.getBoundingClientRect();
+  var prevSelected = container.querySelectorAll('.pv-layer.selected, .pv-textbox.selected');
+  for (var i = 0; i < prevSelected.length; i++) prevSelected[i].classList.remove('selected');
+  wrapEl.classList.add('selected');
+  activeTextBoxDrag = {
+    slide: slide, box: box, el: wrapEl, mode: mode,
+    startClientX: e.clientX, startClientY: e.clientY,
+    startX: box.x, startY: box.y, startW: box.w, startH: box.h,
+    rectW: rect.width, rectH: rect.height
+  };
+  window.addEventListener('pointermove', onTextBoxPointerMove);
+  window.addEventListener('pointerup', onTextBoxPointerUp);
+}
+
+function onTextBoxPointerMove(e) {
+  if (!activeTextBoxDrag) return;
+  var d = activeTextBoxDrag;
+  var dxPct = ((e.clientX - d.startClientX) / d.rectW) * 100;
+  var dyPct = ((e.clientY - d.startClientY) / d.rectH) * 100;
+  if (d.mode === 'move') {
+    d.box.x = Math.max(0, Math.min(100 - d.box.w, d.startX + dxPct));
+    d.box.y = Math.max(0, Math.min(100 - d.box.h, d.startY + dyPct));
+  } else {
+    d.box.w = Math.max(6, Math.min(100 - d.box.x, d.startW + dxPct));
+    d.box.h = Math.max(4, Math.min(100 - d.box.y, d.startH + dyPct));
+  }
+  d.el.style.left = d.box.x + '%';
+  d.el.style.top = d.box.y + '%';
+  d.el.style.width = d.box.w + '%';
+  d.el.style.height = d.box.h + '%';
+}
+
+function onTextBoxPointerUp() {
+  if (!activeTextBoxDrag) return;
+  activeTextBoxDrag = null;
+  window.removeEventListener('pointermove', onTextBoxPointerMove);
+  window.removeEventListener('pointerup', onTextBoxPointerUp);
+  save();
+}
+
+function removeTextBox(slide, boxId) {
+  if (!slide.textBoxes) return;
+  slide.textBoxes = slide.textBoxes.filter(function(b) { return b.id !== boxId; });
+  save();
+  renderCanvasSlide();
+}
+
+function addTextBox() {
+  if (selectedIndex < 0 || selectedIndex >= slides.length) return;
+  var slide = slides[selectedIndex];
+  if (!slide.textBoxes) slide.textBoxes = [];
+  var w = 26, h = 10;
+  var newBox = {
+    id: 'txt' + (textBoxNextId++) + '_' + Date.now(),
+    text: 'New text', x: 50 - w / 2, y: 50 - h / 2, w: w, h: h, fontSize: 1.4
+  };
+  slide.textBoxes.push(newBox);
+  save();
+  renderCanvasSlide();
+  setTimeout(function() {
+    var es = document.getElementById('editableSlide');
+    var wrap = es && es.querySelector('.pv-textbox[data-box-id="' + newBox.id + '"]');
+    if (!wrap) return;
+    wrap.classList.add('editing', 'selected');
+    var content = wrap.querySelector('.pv-textbox-content');
+    if (!content) return;
+    content.focus();
+    var range = document.createRange();
+    range.selectNodeContents(content);
+    var sel = window.getSelection();
+    sel.removeAllRanges();
+    sel.addRange(range);
+  }, 0);
 }
 
 /* Custom per-slide bullet marker. Stored as a bare style id (e.g. 'dot');
@@ -1820,6 +2024,13 @@ function buildControlsStrip(slide) {
       '<input type="text" class="wys-input" style="margin-bottom:0;" id="bgImageInput" placeholder="' +
         (isBgImgEmbedded ? '🖼 Local image embedded (~' + Math.round((slide.bgImage || '').length / 1365) + ' KB) — type a URL to replace' : 'or paste an image URL…') +
         '" value="' + (isBgImgEmbedded ? '' : escHtml(slide.bgImage || '')) + '" oninput="setSlideBgImage(this.value)" title="Full-bleed background image for this slide — shown behind the text with a dark overlay for readability">' +
+    '</div>' +
+    '<div class="wys-col wys-col-freeform">' +
+      '<span class="wys-label">On-Slide Elements</span>' +
+      '<div class="wys-bg-row">' +
+        '<button class="wys-browse-btn" onclick="addTextBox()" title="Add a draggable, resizable text box on top of this slide">+ Text Box</button>' +
+      '</div>' +
+      '<div class="wys-hint" style="margin-top:0.3rem;">Drag images onto the slide itself to place them — see the canvas above.</div>' +
     '</div>' +
     (hasBadge ?
     '<div class="wys-col wys-col-badge">' +
@@ -2095,11 +2306,12 @@ function attachEditListeners(slide) {
   var es = document.getElementById('editableSlide');
   if (!es) return;
   // Every caller of this function has just replaced #editableSlide's
-  // innerHTML, which wipes any image-layer elements along with it —
-  // re-render them and re-arm the drop zone here so there's one place
-  // to keep in sync rather than five separate call sites.
+  // innerHTML, which wipes any image-layer/text-box elements along with
+  // it — re-render them and re-arm the drop zone here so there's one
+  // place to keep in sync rather than five separate call sites.
   attachDropZone(es);
   renderImageLayers(es, slide);
+  renderTextBoxes(es, slide);
   es.addEventListener('focusin', function(e) {
     var line = e.target.closest('[data-type]');
     focusedLineEl = line || null;
@@ -2361,6 +2573,7 @@ function renderPresentSlide() {
   document.getElementById('slideContentArea').innerHTML = buildSlideHTML(slide);
   applyTextScale(container, slide);
   renderImageLayers(container, slide);
+  renderTextBoxes(container, slide);
   document.getElementById('notesText').textContent = slide.note || 'No presenter notes.';
   document.getElementById('slideCounter').textContent = (presentIndex+1) + ' / ' + slides.length;
   // Vocab badge
