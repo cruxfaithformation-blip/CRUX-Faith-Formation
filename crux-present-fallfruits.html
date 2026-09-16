@@ -321,6 +321,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   display: flex; align-items: center; justify-content: center;
 }
 .pv-step-icon { font-size: 1.6rem; margin-bottom: 0.35rem; }
+.pv-step-img { width: 48px; height: 48px; object-fit: contain; margin: 0 auto 0.4rem; display: block; }
 .pv-step-label { font-weight: 700; font-size: 1rem; margin-bottom: 0.25rem; color: var(--white); }
 .pv-step-desc { font-size: 0.8rem; color: rgba(255,255,255,0.6); line-height: 1.4; }
 .pv-step-arrow {
@@ -1156,6 +1157,27 @@ const DEFAULT_SLIDES = [
     body:'images/fall-fruits/icons/charity.jpg | Charity\nimages/fall-fruits/icons/joy.jpg | Joy\nimages/fall-fruits/icons/peace.jpg | Peace\nimages/fall-fruits/icons/patience.jpg | Patience\nimages/fall-fruits/icons/kindness.jpg | Kindness\nimages/fall-fruits/icons/goodness.jpg | Goodness\nimages/fall-fruits/icons/generosity.jpg | Generosity\nimages/fall-fruits/icons/gentleness.jpg | Gentleness\nimages/fall-fruits/icons/faithfulness.jpg | Faithfulness\nimages/fall-fruits/icons/modesty.jpg | Modesty\nimages/fall-fruits/icons/self-control.jpg | Self-Control\nimages/fall-fruits/icons/chastity.jpg | Chastity',
     bodySimple:'images/fall-fruits/icons/charity.jpg | Charity\nimages/fall-fruits/icons/joy.jpg | Joy\nimages/fall-fruits/icons/peace.jpg | Peace\nimages/fall-fruits/icons/patience.jpg | Patience\nimages/fall-fruits/icons/kindness.jpg | Kindness\nimages/fall-fruits/icons/goodness.jpg | Goodness\nimages/fall-fruits/icons/generosity.jpg | Generosity\nimages/fall-fruits/icons/gentleness.jpg | Gentleness\nimages/fall-fruits/icons/faithfulness.jpg | Faithfulness\nimages/fall-fruits/icons/modesty.jpg | Modesty\nimages/fall-fruits/icons/self-control.jpg | Self-Control\nimages/fall-fruits/icons/chastity.jpg | Chastity',
     note:'CCC 1832. This is what it looks like on the outside when the Holy Spirit is working on the inside.'
+  },
+  {
+    id:16, type:'steps',
+    title:'What Do They Mean? (Part 1)',
+    body:'images/fall-fruits/icons/charity.jpg | Charity | Choosing what\'s good for someone else — like sharing your snack with a friend who forgot theirs\nimages/fall-fruits/icons/joy.jpg | Joy | A deep happiness that stays even when things are hard — like feeling okay after losing a game\nimages/fall-fruits/icons/peace.jpg | Peace | Feeling calm inside even when things are stressful — like staying steady on a busy day\nimages/fall-fruits/icons/patience.jpg | Patience | Staying kind even when things take a long time — like waiting your turn without complaining',
+    bodySimple:'images/fall-fruits/icons/charity.jpg | Charity | Choosing what\'s good for someone else\nimages/fall-fruits/icons/joy.jpg | Joy | Happiness that stays even when things are hard\nimages/fall-fruits/icons/peace.jpg | Peace | Feeling calm inside, even on a stressful day\nimages/fall-fruits/icons/patience.jpg | Patience | Staying kind when something takes a long time',
+    note:'First 4 of 12. Read each one, then ask for a show of hands: who has done this recently without realizing it was one of the Fruits?'
+  },
+  {
+    id:17, type:'steps',
+    title:'What Do They Mean? (Part 2)',
+    body:'images/fall-fruits/icons/kindness.jpg | Kindness | Noticing someone who needs help and doing something about it — like sitting with the new kid at lunch\nimages/fall-fruits/icons/goodness.jpg | Goodness | Doing the right thing even when no one\'s watching — like telling the truth about an accident\nimages/fall-fruits/icons/generosity.jpg | Generosity | Giving even when it costs you something — like sharing your allowance with someone in need\nimages/fall-fruits/icons/gentleness.jpg | Gentleness | Being strong enough to push back, but choosing not to — like staying calm when someone\'s mean',
+    bodySimple:'images/fall-fruits/icons/kindness.jpg | Kindness | Noticing someone who needs help and doing something\nimages/fall-fruits/icons/goodness.jpg | Goodness | Doing the right thing even when no one\'s watching\nimages/fall-fruits/icons/generosity.jpg | Generosity | Giving even when it costs you something\nimages/fall-fruits/icons/gentleness.jpg | Gentleness | Choosing to be gentle when you could push back',
+    note:'Second 4 of 12.'
+  },
+  {
+    id:18, type:'steps',
+    title:'What Do They Mean? (Part 3)',
+    body:'images/fall-fruits/icons/faithfulness.jpg | Faithfulness | Keeping your word and following through, even when it\'s hard — like showing up for a promise when you\'re tired\nimages/fall-fruits/icons/modesty.jpg | Modesty | Not needing to show off or brag to feel good about yourself — like staying humble after winning\nimages/fall-fruits/icons/self-control.jpg | Self-Control | Saying no to something you want because you know it isn\'t good for you — like your Halloween candy\nimages/fall-fruits/icons/chastity.jpg | Chastity | Respecting your own body and other people\'s, and keeping your thoughts, words, and actions honest and pure',
+    bodySimple:'images/fall-fruits/icons/faithfulness.jpg | Faithfulness | Keeping your word, even when it\'s hard\nimages/fall-fruits/icons/modesty.jpg | Modesty | Not needing to show off to feel good about yourself\nimages/fall-fruits/icons/self-control.jpg | Self-Control | Saying no to something you want, because you know it isn\'t good for you\nimages/fall-fruits/icons/chastity.jpg | Chastity | Respecting yourself and others, keeping your thoughts and actions honest',
+    note:'Last 4 of 12. Chastity is the one that needs the most care — keep it to respect and purity of heart, nothing more: not saying mean things about how someone looks, treating your own body and other people\'s with respect. Don\'t over-explain beyond that at this age.'
   },
   {
     id:13, type:'content',
@@ -2258,9 +2280,12 @@ function renderStepsBody(raw) {
   if (!items.length) return '<div class="pv-empty-hint">Add steps below: ' + escHtml(visualPlaceholder('steps')) + '</div>';
   return '<div class="pv-steps">' + items.map(function(parts, i) {
     var icon = parts[0] || '', label = parts[1] || '', desc = parts[2] || '';
+    var iconHtml = '';
+    if (icon && isImageRef(icon)) iconHtml = '<img class="pv-step-img" src="' + escHtml(icon) + '" alt="">';
+    else if (icon) iconHtml = '<div class="pv-step-icon">' + escHtml(icon) + '</div>';
     var card = '<div class="pv-step-card">' +
       '<div class="pv-step-num">' + (i + 1) + '</div>' +
-      (icon ? '<div class="pv-step-icon">' + escHtml(icon) + '</div>' : '') +
+      iconHtml +
       '<div class="pv-step-label">' + escHtml(label) + '</div>' +
       (desc ? '<div class="pv-step-desc">' + escHtml(desc) + '</div>' : '') +
     '</div>';
