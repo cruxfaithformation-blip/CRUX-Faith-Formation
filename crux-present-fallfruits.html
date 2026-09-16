@@ -333,6 +333,29 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 }
 .pv-icon-glyph { font-size: 1.7rem; margin-bottom: 0.4rem; }
 .pv-icon-img { width: 44px; height: 44px; object-fit: contain; margin: 0 auto 0.4rem; display: block; }
+
+/* ─── FREE-FLOATING IMAGE LAYERS (drag-drop onto a slide, then move/resize) ─── */
+.pv-layer { position: absolute; box-sizing: border-box; z-index: 5; touch-action: none; }
+.pv-layer-img { width: 100%; height: 100%; object-fit: contain; display: block; pointer-events: none; user-select: none; -webkit-user-drag: none; }
+.pv-layer-editable { border: 1.5px dashed transparent; cursor: move; }
+.pv-layer-editable:hover, .pv-layer-editable.selected { border-color: rgba(212,165,116,0.7); }
+.pv-layer-del {
+  position: absolute; top: -11px; right: -11px; width: 20px; height: 20px; border-radius: 50%;
+  background: rgba(163,45,45,0.9); color: #fff; border: none; font-size: 11px; line-height: 1; cursor: pointer;
+  display: none; align-items: center; justify-content: center; z-index: 7; padding: 0;
+}
+.pv-layer-resize {
+  position: absolute; bottom: -6px; right: -6px; width: 14px; height: 14px; border-radius: 3px;
+  background: var(--gold); border: 1.5px solid var(--navy-deep); cursor: nwse-resize;
+  display: none; z-index: 7;
+}
+.pv-layer-editable:hover .pv-layer-del, .pv-layer-editable.selected .pv-layer-del,
+.pv-layer-editable:hover .pv-layer-resize, .pv-layer-editable.selected .pv-layer-resize { display: block; }
+.pv-layer-hint {
+  position: absolute; left: 1rem; bottom: 1rem; z-index: 3; pointer-events: none;
+  font-family: 'Inter', sans-serif; font-size: 0.68rem; color: rgba(212,165,116,0.4); letter-spacing: 0.5px;
+}
+#editableSlide.drop-active { outline: 3px dashed var(--gold); outline-offset: -3px; }
 .pv-icon-label { font-weight: 700; font-size: 0.92rem; color: var(--white); }
 
 .pv-timeline { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; }
@@ -1522,6 +1545,179 @@ function handleBgImageFile(inputEl) {
   reader.readAsDataURL(file);
 }
 
+/* ─── FREE-FLOATING IMAGE LAYERS ──────────────────────────────────
+   Separate from the background image: a slide can carry any number of
+   small images that sit on TOP of the slide content, each independently
+   draggable and resizable — drop a fruit icon in a corner, a character
+   portrait next to a bullet, etc. Stored as slide.images = [{id, src, x,
+   y, w, h}], all four numbers percentages of the slide box, so the same
+   layout holds up whether it's shown in the editable canvas or fullscreen
+   Present mode (both containers use identical padding, confirmed against
+   their CSS, so the percentage math lines up between the two views). */
+var layerNextId = 1;
+var activeLayerDrag = null;
+
+function renderImageLayers(container, slide) {
+  if (!container) return;
+  var old = container.querySelectorAll('.pv-layer');
+  for (var i = 0; i < old.length; i++) old[i].remove();
+  var interactive = container.id === 'editableSlide';
+  var images = (slide && slide.images) || [];
+  images.forEach(function(layer) {
+    var wrap = document.createElement('div');
+    wrap.className = 'pv-layer' + (interactive ? ' pv-layer-editable' : '');
+    wrap.style.left = layer.x + '%';
+    wrap.style.top = layer.y + '%';
+    wrap.style.width = layer.w + '%';
+    wrap.style.height = layer.h + '%';
+    wrap.dataset.layerId = layer.id;
+    var img = document.createElement('img');
+    img.className = 'pv-layer-img';
+    img.src = layer.src;
+    img.alt = '';
+    wrap.appendChild(img);
+    if (interactive) {
+      var del = document.createElement('button');
+      del.type = 'button';
+      del.className = 'pv-layer-del';
+      del.textContent = '✕';
+      del.title = 'Remove image';
+      del.addEventListener('pointerdown', function(e) { e.stopPropagation(); });
+      del.addEventListener('click', function(e) { e.stopPropagation(); removeImageLayer(slide, layer.id); });
+      wrap.appendChild(del);
+      var handle = document.createElement('div');
+      handle.className = 'pv-layer-resize';
+      handle.addEventListener('pointerdown', function(e) { startLayerInteraction(e, slide, layer, wrap, 'resize'); });
+      wrap.appendChild(handle);
+      wrap.addEventListener('pointerdown', function(e) {
+        if (e.target === handle || e.target === del) return;
+        startLayerInteraction(e, slide, layer, wrap, 'move');
+      });
+    }
+    container.appendChild(wrap);
+  });
+  if (interactive && !images.length) {
+    var hint = document.createElement('div');
+    hint.className = 'pv-layer-hint';
+    hint.textContent = 'Drag & drop an image anywhere on this slide';
+    container.appendChild(hint);
+  }
+}
+
+function startLayerInteraction(e, slide, layer, wrapEl, mode) {
+  e.preventDefault();
+  e.stopPropagation();
+  var container = wrapEl.parentElement;
+  var rect = container.getBoundingClientRect();
+  var prevSelected = container.querySelectorAll('.pv-layer.selected');
+  for (var i = 0; i < prevSelected.length; i++) prevSelected[i].classList.remove('selected');
+  wrapEl.classList.add('selected');
+  activeLayerDrag = {
+    slide: slide, layer: layer, el: wrapEl, mode: mode,
+    startClientX: e.clientX, startClientY: e.clientY,
+    startX: layer.x, startY: layer.y, startW: layer.w, startH: layer.h,
+    rectW: rect.width, rectH: rect.height
+  };
+  window.addEventListener('pointermove', onLayerPointerMove);
+  window.addEventListener('pointerup', onLayerPointerUp);
+}
+
+function onLayerPointerMove(e) {
+  if (!activeLayerDrag) return;
+  var d = activeLayerDrag;
+  var dxPct = ((e.clientX - d.startClientX) / d.rectW) * 100;
+  var dyPct = ((e.clientY - d.startClientY) / d.rectH) * 100;
+  if (d.mode === 'move') {
+    d.layer.x = Math.max(0, Math.min(100 - d.layer.w, d.startX + dxPct));
+    d.layer.y = Math.max(0, Math.min(100 - d.layer.h, d.startY + dyPct));
+  } else {
+    d.layer.w = Math.max(4, Math.min(100 - d.layer.x, d.startW + dxPct));
+    d.layer.h = Math.max(4, Math.min(100 - d.layer.y, d.startH + dyPct));
+  }
+  d.el.style.left = d.layer.x + '%';
+  d.el.style.top = d.layer.y + '%';
+  d.el.style.width = d.layer.w + '%';
+  d.el.style.height = d.layer.h + '%';
+}
+
+function onLayerPointerUp() {
+  if (!activeLayerDrag) return;
+  activeLayerDrag = null;
+  window.removeEventListener('pointermove', onLayerPointerMove);
+  window.removeEventListener('pointerup', onLayerPointerUp);
+  save();
+}
+
+function removeImageLayer(slide, layerId) {
+  if (!slide.images) return;
+  slide.images = slide.images.filter(function(l) { return l.id !== layerId; });
+  save();
+  renderCanvasSlide();
+}
+
+function addImageLayerFromSrc(src, dropXPct, dropYPct) {
+  if (selectedIndex < 0 || selectedIndex >= slides.length) return;
+  var slide = slides[selectedIndex];
+
+  if (src.indexOf('data:') === 0) {
+    var estBytes = JSON.stringify(slides).length + src.length;
+    if (estBytes > 4 * 1024 * 1024) {
+      showToast('That image would push this deck past the browser storage limit — try a smaller file, or host it in the repo and paste a path instead');
+      return;
+    }
+  }
+
+  if (!slide.images) slide.images = [];
+  var w = 22, h = 22; // percent — a reasonable default tile size, freely resizable after
+  var x = dropXPct != null ? Math.max(0, Math.min(100 - w, dropXPct - w / 2)) : (50 - w / 2);
+  var y = dropYPct != null ? Math.max(0, Math.min(100 - h, dropYPct - h / 2)) : (50 - h / 2);
+  slide.images.push({ id: 'img' + (layerNextId++) + '_' + Date.now(), src: src, x: x, y: y, w: w, h: h });
+  save();
+  renderCanvasSlide();
+}
+
+function handleSlideDrop(e) {
+  e.preventDefault();
+  var container = document.getElementById('editableSlide');
+  if (!container) return;
+  container.classList.remove('drop-active');
+  var rect = container.getBoundingClientRect();
+  var xPct = ((e.clientX - rect.left) / rect.width) * 100;
+  var yPct = ((e.clientY - rect.top) / rect.height) * 100;
+
+  var file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+  if (file) {
+    if (!/^image\//.test(file.type)) { showToast('Please drop an image file'); return; }
+    var MAX_BYTES = 1.5 * 1024 * 1024;
+    if (file.size > MAX_BYTES) {
+      showToast('That image is ' + (Math.round(file.size / 1024 / 1024 * 10) / 10) + 'MB — please use one under 1.5MB, or host it in the repo and paste a path instead');
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function(ev) { addImageLayerFromSrc(ev.target.result, xPct, yPct); };
+    reader.onerror = function() { showToast('Could not read that file'); };
+    reader.readAsDataURL(file);
+    return;
+  }
+
+  var url = (e.dataTransfer && (e.dataTransfer.getData('text/uri-list') || e.dataTransfer.getData('text/plain'))) || '';
+  url = url.split('\n')[0].trim();
+  if (url) addImageLayerFromSrc(url, xPct, yPct);
+}
+
+function attachDropZone(el) {
+  if (!el) return;
+  el.addEventListener('dragover', function(e) { e.preventDefault(); el.classList.add('drop-active'); });
+  el.addEventListener('dragleave', function() { el.classList.remove('drop-active'); });
+  el.addEventListener('drop', handleSlideDrop);
+  el.addEventListener('pointerdown', function(e) {
+    if (e.target === el) {
+      var sel = el.querySelectorAll('.pv-layer.selected');
+      for (var i = 0; i < sel.length; i++) sel[i].classList.remove('selected');
+    }
+  });
+}
+
 /* Custom per-slide bullet marker. Stored as a bare style id (e.g. 'dot');
    applied as a quoted CSS content string so `content: var(--bullet-marker, '—')`
    substitutes correctly. Unset falls back to each slide type's own default. */
@@ -1898,6 +2094,12 @@ function renderVisualTypeBody(type, raw) {
 function attachEditListeners(slide) {
   var es = document.getElementById('editableSlide');
   if (!es) return;
+  // Every caller of this function has just replaced #editableSlide's
+  // innerHTML, which wipes any image-layer elements along with it —
+  // re-render them and re-arm the drop zone here so there's one place
+  // to keep in sync rather than five separate call sites.
+  attachDropZone(es);
+  renderImageLayers(es, slide);
   es.addEventListener('focusin', function(e) {
     var line = e.target.closest('[data-type]');
     focusedLineEl = line || null;
@@ -2158,6 +2360,7 @@ function renderPresentSlide() {
   applyBulletStyle(container, slide);
   document.getElementById('slideContentArea').innerHTML = buildSlideHTML(slide);
   applyTextScale(container, slide);
+  renderImageLayers(container, slide);
   document.getElementById('notesText').textContent = slide.note || 'No presenter notes.';
   document.getElementById('slideCounter').textContent = (presentIndex+1) + ' / ' + slides.length;
   // Vocab badge
