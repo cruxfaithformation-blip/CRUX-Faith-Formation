@@ -1616,13 +1616,13 @@ function buildControlsStrip(slide) {
     '<div class="wys-col wys-col-bgimage">' +
       '<span class="wys-label">Background Image</span>' +
       '<div class="wys-bg-row">' +
-        '<input type="text" class="wys-input" style="flex:1;margin-bottom:0;" id="bgImageInput" placeholder="' +
-          (isBgImgEmbedded ? '🖼 Local image embedded (~' + Math.round((slide.bgImage || '').length / 1365) + ' KB) — type a URL to replace' : 'Paste image URL…') +
-          '" value="' + (isBgImgEmbedded ? '' : escHtml(slide.bgImage || '')) + '" oninput="setSlideBgImage(this.value)" title="Full-bleed background image for this slide — shown behind the text with a dark overlay for readability">' +
         '<button class="wys-browse-btn" onclick="document.getElementById(\'bgImageFilePicker\').click()" title="Choose an image file from your computer">📁 Browse…</button>' +
         '<button class="wys-bg-reset" id="bgImageResetBtn" onclick="setSlideBgImage(\'\')"' + (slide.bgImage ? '' : ' disabled') + '>Clear</button>' +
         '<input type="file" accept="image/*" id="bgImageFilePicker" style="display:none" onchange="handleBgImageFile(this)">' +
       '</div>' +
+      '<input type="text" class="wys-input" style="margin-bottom:0;" id="bgImageInput" placeholder="' +
+        (isBgImgEmbedded ? '🖼 Local image embedded (~' + Math.round((slide.bgImage || '').length / 1365) + ' KB) — type a URL to replace' : 'or paste an image URL…') +
+        '" value="' + (isBgImgEmbedded ? '' : escHtml(slide.bgImage || '')) + '" oninput="setSlideBgImage(this.value)" title="Full-bleed background image for this slide — shown behind the text with a dark overlay for readability">' +
     '</div>' +
     (hasBadge ?
     '<div class="wys-col wys-col-badge">' +
