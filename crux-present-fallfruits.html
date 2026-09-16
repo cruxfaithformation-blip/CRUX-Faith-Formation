@@ -332,6 +332,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   padding: 1rem 0.75rem; text-align: center;
 }
 .pv-icon-glyph { font-size: 1.7rem; margin-bottom: 0.4rem; }
+.pv-icon-img { width: 44px; height: 44px; object-fit: contain; margin: 0 auto 0.4rem; display: block; }
 .pv-icon-label { font-weight: 700; font-size: 0.92rem; color: var(--white); }
 
 .pv-timeline { display: flex; flex-direction: column; gap: 0.5rem; margin-top: 1rem; }
@@ -1829,7 +1830,7 @@ function parseItemLines(raw) {
 
 function visualPlaceholder(type) {
   if (type === 'steps')    return 'icon | label | description  (one step per line)';
-  if (type === 'icongrid') return 'icon | label  (one tile per line)';
+  if (type === 'icongrid') return 'icon | label  (one tile per line — icon can be an emoji, or an image path/URL)';
   if (type === 'timeline') return 'range | label  (one row per line — end a line with * to highlight it)';
   return '';
 }
@@ -1849,13 +1850,26 @@ function renderStepsBody(raw) {
   }).join('') + '</div>';
 }
 
+/* An icon/step slot can be either a plain glyph (emoji/character, e.g. "✦")
+   or a reference to an actual image — a pasted URL, a data: URL from the
+   background-image Browse flow, or a path into the repo's images/ folder.
+   Detected by shape rather than requiring a special prefix, so existing
+   glyph-only decks keep working unchanged. */
+function isImageRef(str) {
+  if (!str) return false;
+  return /^(https?:|data:image|\.{0,2}\/)/i.test(str) || /\.(png|jpe?g|gif|webp|svg)(\?.*)?$/i.test(str);
+}
+
 function renderIconGridBody(raw) {
   var items = parseItemLines(raw);
   if (!items.length) return '<div class="pv-empty-hint">Add tiles below: ' + escHtml(visualPlaceholder('icongrid')) + '</div>';
   return '<div class="pv-icongrid">' + items.map(function(parts) {
     var icon = parts[0] || '', label = parts[1] || '';
+    var iconHtml = '';
+    if (icon && isImageRef(icon)) iconHtml = '<img class="pv-icon-img" src="' + escHtml(icon) + '" alt="">';
+    else if (icon) iconHtml = '<div class="pv-icon-glyph">' + escHtml(icon) + '</div>';
     return '<div class="pv-icon-tile">' +
-      (icon ? '<div class="pv-icon-glyph">' + escHtml(icon) + '</div>' : '') +
+      iconHtml +
       '<div class="pv-icon-label">' + escHtml(label) + '</div>' +
     '</div>';
   }).join('') + '</div>';
