@@ -260,6 +260,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .wys-media-opt:hover { border-color: var(--gold); }
 .wys-media-opt.selected { border-color: var(--gold); background: var(--gold-pale); color: var(--navy); }
 .wys-col-bg { flex: 0 0 auto; }
+.wys-col-bgimage { flex: 1; min-width: 160px; }
 .wys-col-bullet { flex: 0 0 auto; }
 .wys-bullet-row { display: flex; align-items: center; gap: 0.3rem; }
 .wys-bullet-opt {
@@ -1415,11 +1416,22 @@ function updateField(field, value) {
 
 /* Custom per-slide background overrides the theme/type default.
    Applied with !important priority so it wins over the theme CSS,
-   which also uses !important on #presentSlide/#editableSlide backgrounds. */
+   which also uses !important on #presentSlide/#editableSlide backgrounds.
+   A bgImage takes priority over a bgColor when both are set — the image
+   is composed with a dark navy gradient overlay baked into the same
+   `background` shorthand string, so slide text stays readable without
+   needing a separate DOM layer or per-theme overrides. */
 function applySlideBg(el, slide) {
   if (!el) return;
-  if (slide && slide.bgColor) el.style.setProperty('background', slide.bgColor, 'important');
-  else el.style.removeProperty('background');
+  if (slide && slide.bgImage) {
+    var safeUrl = String(slide.bgImage).replace(/["'()]/g, '');
+    var overlay = 'linear-gradient(180deg, rgba(15,18,34,0.55) 0%, rgba(15,18,34,0.82) 100%)';
+    el.style.setProperty('background', overlay + ', url(' + safeUrl + ') center / cover no-repeat', 'important');
+  } else if (slide && slide.bgColor) {
+    el.style.setProperty('background', slide.bgColor, 'important');
+  } else {
+    el.style.removeProperty('background');
+  }
 }
 
 function setSlideBg(color) {
@@ -1432,6 +1444,18 @@ function setSlideBg(color) {
   var resetBtn = document.getElementById('bgResetBtn');
   if (input) input.value = slide.bgColor || '#141829';
   if (resetBtn) resetBtn.disabled = !slide.bgColor;
+}
+
+function setSlideBgImage(url) {
+  if (selectedIndex < 0 || selectedIndex >= slides.length) return;
+  var slide = slides[selectedIndex];
+  if (url) slide.bgImage = url; else delete slide.bgImage;
+  save();
+  applySlideBg(document.getElementById('editableSlide'), slide);
+  var input = document.getElementById('bgImageInput');
+  var resetBtn = document.getElementById('bgImageResetBtn');
+  if (input) input.value = slide.bgImage || '';
+  if (resetBtn) resetBtn.disabled = !slide.bgImage;
 }
 
 /* Custom per-slide bullet marker. Stored as a bare style id (e.g. 'dot');
@@ -1523,6 +1547,13 @@ function buildControlsStrip(slide) {
       '<div class="wys-bg-row">' +
         '<input type="color" class="wys-color-input" id="bgColorInput" value="' + (slide.bgColor || '#141829') + '" oninput="setSlideBg(this.value)" title="Custom background color for this slide">' +
         '<button class="wys-bg-reset" id="bgResetBtn" onclick="setSlideBg(null)"' + (slide.bgColor ? '' : ' disabled') + '>Reset</button>' +
+      '</div>' +
+    '</div>' +
+    '<div class="wys-col wys-col-bgimage">' +
+      '<span class="wys-label">Background Image</span>' +
+      '<div class="wys-bg-row">' +
+        '<input type="text" class="wys-input" style="flex:1;margin-bottom:0;" id="bgImageInput" placeholder="Paste image URL…" value="' + escHtml(slide.bgImage || '') + '" oninput="setSlideBgImage(this.value)" title="Full-bleed background image for this slide — shown behind the text with a dark overlay for readability">' +
+        '<button class="wys-bg-reset" id="bgImageResetBtn" onclick="setSlideBgImage(\'\')"' + (slide.bgImage ? '' : ' disabled') + '>Clear</button>' +
       '</div>' +
     '</div>' +
     (hasBadge ?
