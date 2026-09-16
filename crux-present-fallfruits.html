@@ -284,6 +284,12 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 }
 .wys-bg-reset:hover { color: var(--navy); }
 .wys-bg-reset:disabled { opacity: 0.35; cursor: default; text-decoration: none; }
+.wys-browse-btn {
+  font-size: 0.68rem; font-weight: 600; color: var(--navy); background: var(--gold-pale);
+  border: 1.5px solid var(--border); border-radius: 5px; padding: 0.32rem 0.6rem;
+  cursor: pointer; white-space: nowrap; transition: all 0.12s;
+}
+.wys-browse-btn:hover { border-color: var(--gold); }
 .wys-col-badge { flex: 0 0 auto; }
 .wys-hint { font-size: 0.66rem; color: var(--muted); margin-bottom: 0.3rem; line-height: 1.4; }
 .pv-editor { min-height: 90px; font-family: 'DM Mono', monospace; font-size: 0.76rem; }
@@ -1174,8 +1180,22 @@ function defaultCopy() {
 }
 
 /* ─── SAVE ──────────────────────────────────────────────────────── */
+/* Wrapped in try/catch because embedded (data: URL) background images
+   count against the browser's per-origin storage quota (~5-10MB) along
+   with everything else in the deck — a failed write here shouldn't throw
+   silently and leave the teacher thinking their edit was saved. */
+function persistState() {
+  try {
+    localStorage.setItem('crux-present-fallfruits-v1', JSON.stringify({ slides: slides, nextId: nextId, vocabMode: vocabMode, slideTheme: slideTheme, slideTextScale: slideTextScale }));
+    return true;
+  } catch (e) {
+    showToast('Could not save — this deck is too large for browser storage. Try a smaller image, or host it in the repo and paste a URL instead.');
+    return false;
+  }
+}
+
 function save() {
-  localStorage.setItem('crux-present-fallfruits-v1', JSON.stringify({ slides: slides, nextId: nextId, vocabMode: vocabMode, slideTheme: slideTheme, slideTextScale: slideTextScale }));
+  persistState();
   noteUndoCheckpoint();
 }
 
@@ -1216,7 +1236,7 @@ function redo() {
 }
 
 function afterHistoryChange(msg) {
-  localStorage.setItem('crux-present-fallfruits-v1', JSON.stringify({ slides: slides, nextId: nextId, vocabMode: vocabMode, slideTheme: slideTheme, slideTextScale: slideTextScale }));
+  persistState();
   if (selectedIndex >= slides.length) selectedIndex = slides.length - 1;
   renderSlideList();
   if (selectedIndex >= 0 && slides.length > 0) renderCanvasSlide();
@@ -1450,13 +1470,55 @@ function setSlideBg(color) {
 function setSlideBgImage(url) {
   if (selectedIndex < 0 || selectedIndex >= slides.length) return;
   var slide = slides[selectedIndex];
+  var prevImage = slide.bgImage;
   if (url) slide.bgImage = url; else delete slide.bgImage;
+
+  // A locally-browsed file is embedded as a data: URL right in this
+  // slide's JSON, sharing the one browser storage quota with the whole
+  // deck (every slide, every embedded image). Check before committing
+  // rather than after, so a rejected image never gets written and lost.
+  if (url && url.indexOf('data:') === 0) {
+    var estBytes = JSON.stringify(slides).length;
+    if (estBytes > 4 * 1024 * 1024) {
+      slide.bgImage = prevImage;
+      showToast('That image would push this deck past the browser storage limit — try a smaller file, or host it in the repo and paste a URL instead');
+      return;
+    }
+  }
+
   save();
   applySlideBg(document.getElementById('editableSlide'), slide);
   var input = document.getElementById('bgImageInput');
   var resetBtn = document.getElementById('bgImageResetBtn');
-  if (input) input.value = slide.bgImage || '';
+  var isEmbedded = slide.bgImage && slide.bgImage.indexOf('data:') === 0;
+  if (input) {
+    input.value = isEmbedded ? '' : (slide.bgImage || '');
+    input.placeholder = isEmbedded
+      ? '🖼 Local image embedded (~' + Math.round(slide.bgImage.length / 1365) + ' KB) — type a URL to replace'
+      : 'Paste image URL…';
+  }
   if (resetBtn) resetBtn.disabled = !slide.bgImage;
+}
+
+/* Browse-from-computer: reads the chosen file as a data: URL (no server,
+   no hosting needed) and hands it to setSlideBgImage like a pasted URL.
+   Good for quick local iteration; for a final/shared set of images,
+   hosting them in the repo and pasting a path is lighter on storage
+   and is what actually ships to the live site by default. */
+function handleBgImageFile(inputEl) {
+  var file = inputEl.files && inputEl.files[0];
+  inputEl.value = ''; // allow re-picking the same file later
+  if (!file) return;
+  if (!/^image\//.test(file.type)) { showToast('Please choose an image file'); return; }
+  var MAX_BYTES = 1.5 * 1024 * 1024;
+  if (file.size > MAX_BYTES) {
+    showToast('That image is ' + (Math.round(file.size / 1024 / 1024 * 10) / 10) + 'MB — please use one under 1.5MB, or host it in the repo and paste a URL instead');
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(e) { setSlideBgImage(e.target.result); };
+  reader.onerror = function() { showToast('Could not read that file'); };
+  reader.readAsDataURL(file);
 }
 
 /* Custom per-slide bullet marker. Stored as a bare style id (e.g. 'dot');
@@ -1517,6 +1579,7 @@ function buildControlsStrip(slide) {
   var isMedia = slide.type === 'media';
   var isVisual = slide.type === 'steps' || slide.type === 'icongrid' || slide.type === 'timeline';
   var hasBadge = isVisual || slide.type === 'content' || slide.type === 'definition';
+  var isBgImgEmbedded = slide.bgImage && slide.bgImage.indexOf('data:') === 0;
   var mt = slide.mediaType || 'youtube';
   var effScale = slide.textScale != null ? slide.textScale : slideTextScale;
   var bf = bodyTab === 'simple' ? 'bodySimple' : 'body';
@@ -1553,8 +1616,12 @@ function buildControlsStrip(slide) {
     '<div class="wys-col wys-col-bgimage">' +
       '<span class="wys-label">Background Image</span>' +
       '<div class="wys-bg-row">' +
-        '<input type="text" class="wys-input" style="flex:1;margin-bottom:0;" id="bgImageInput" placeholder="Paste image URL…" value="' + escHtml(slide.bgImage || '') + '" oninput="setSlideBgImage(this.value)" title="Full-bleed background image for this slide — shown behind the text with a dark overlay for readability">' +
+        '<input type="text" class="wys-input" style="flex:1;margin-bottom:0;" id="bgImageInput" placeholder="' +
+          (isBgImgEmbedded ? '🖼 Local image embedded (~' + Math.round((slide.bgImage || '').length / 1365) + ' KB) — type a URL to replace' : 'Paste image URL…') +
+          '" value="' + (isBgImgEmbedded ? '' : escHtml(slide.bgImage || '')) + '" oninput="setSlideBgImage(this.value)" title="Full-bleed background image for this slide — shown behind the text with a dark overlay for readability">' +
+        '<button class="wys-browse-btn" onclick="document.getElementById(\'bgImageFilePicker\').click()" title="Choose an image file from your computer">📁 Browse…</button>' +
         '<button class="wys-bg-reset" id="bgImageResetBtn" onclick="setSlideBgImage(\'\')"' + (slide.bgImage ? '' : ' disabled') + '>Clear</button>' +
+        '<input type="file" accept="image/*" id="bgImageFilePicker" style="display:none" onchange="handleBgImageFile(this)">' +
       '</div>' +
     '</div>' +
     (hasBadge ?
