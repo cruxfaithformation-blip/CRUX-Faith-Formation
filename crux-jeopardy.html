@@ -555,6 +555,18 @@ const QB = {
     { c:'CCC 1996 to 1997 distinguishes two senses of divine fatherhood. Name both, and state which one is entered into through Christ and Baptism specifically.',
       a:'God is Father of all as Creator, in a general sense. The fuller, adoptive sense belongs to those united to Christ through Baptism, who share by grace in the relationship the Son has with the Father by nature. Adoptive sonship is the one entered into through Christ and Baptism.' }
   ]},
+  fallfruits: { label:'The Fall & the Fruits of the Spirit', q:[
+    { c:'CCC 410–411 calls Genesis 3:15 by a specific name — the first announcement of a Redeemer, spoken in the very same scene as the first sin. Name this term.',
+      a:'The Protoevangelium — the "first gospel"' },
+    { c:'In Genesis 3:15, God tells the serpent "they will strike at your head, while you strike at their heel." Explain the theological asymmetry in this line.',
+      a:'A strike to the head is fatal; a strike to the heel is a real wound but not final — foreshadowing Christ\'s Passion (a real wound) and Resurrection (the decisive, fatal blow to sin and death)' },
+    { c:'St. Leo the Great, quoted in CCC 412, gives a striking answer to why God permitted the Fall at all. Summarize his argument.',
+      a:'Christ\'s grace gave us blessings greater than what was lost — the theological shape of "O Felix Culpa," the "happy fault" language from the Easter Exsultet' },
+    { c:'CCC 1832 lists twelve Fruits of the Holy Spirit, expanding beyond Paul\'s nine in Galatians 5:22–23. Name the three fruits the Catholic tradition adds beyond Paul\'s list.',
+      a:'Generosity, modesty, and chastity — added via Jerome\'s Latin Vulgate rendering of the passage' },
+    { c:'CCC 1790 states a person must always obey the certain judgment of conscience, even an erroneous one. CCC 1791–1793 distinguishes two kinds of ignorance behind an erroneous conscience. Name both, and state which one removes moral culpability.',
+      a:'Culpable ignorance — the person didn\'t try to find the truth, or dulled their conscience through habitual sin — still culpable. Invincible ignorance — genuinely not the person\'s fault — removes culpability, though the act remains an objective evil.' }
+  ]},
   trinity: { label:'The Holy Trinity', q:[
     { c:'The Trinity is one God in how many Persons?',
       a:'Three — Father, Son, and Holy Spirit' },
@@ -799,6 +811,18 @@ const QB_E = {
     { c:'Name the three theological virtues that help us build a relationship with God.',
       a:'Faith, Hope, and Charity' }
   ]},
+  fallfruits: { label:'The Fall & the Fruits of the Spirit', q:[
+    { c:'What is temptation?',
+      a:'The pull toward doing something wrong — not the same thing as actually doing it' },
+    { c:'What did God promise right after Adam and Eve sinned?',
+      a:'That a Savior was coming' },
+    { c:'What does "salvation" mean?',
+      a:'God forgiving our sins and restoring our friendship with him through Jesus' },
+    { c:'What do we call the twelve good things the Holy Spirit grows in us, like kindness, patience, and self-control?',
+      a:'The Fruits of the Holy Spirit' },
+    { c:'What is it called when you look back at your day before bed and ask God to help you do better tomorrow?',
+      a:'An Examination of Conscience' }
+  ]},
   trinity: { label:'The Holy Trinity', q:[
     { c:'The Trinity is one God in how many Persons?',
       a:'Three — Father, Son, and Holy Spirit' },
@@ -1020,8 +1044,8 @@ const QB_E = {
 // ── PRESET BOARDS ────────────────────────────────────────────────
 const BOARDS = [
   { id:'p1', eyebrow:'Pillar I', name:'What We Believe',
-    desc:'Who Is God? · Trinity · Jesus Christ · Mary & Saints · Prodigal Son · Bible Geography',
-    cats:['god','trinity','jesus','mary','prodigal_son','geography'],
+    desc:'Who Is God? · The Fall & the Fruits · Trinity · Jesus Christ · Mary & Saints · Prodigal Son · Bible Geography',
+    cats:['god','fallfruits','trinity','jesus','mary','prodigal_son','geography'],
     fj:{ c:'This Greek word — meaning "of the same substance" — was the pivotal term at the Council of Nicaea in 325 AD. It differed from the heretical alternative by a single letter, yet the difference was everything. Name the term, name the heresy it refuted, and state what that heresy taught.',
          a:'Homoousios. It refuted Arianism, which taught that the Son was the greatest of all creatures — but a creature nonetheless ("there was a time when he was not"). Homoousios declared the Son identical in substance to the Father: truly and fully God.' },
     fjE:{ c:'At Jesus\'s baptism in the Jordan River, all three Persons of the Trinity appear at the same time. Describe what each Person does or appears as.',
@@ -1058,6 +1082,7 @@ const BOARDS = [
 
 const ALL_MODULES = [
   { id:'god',            label:'Who Is God?',                   pillar:'Pillar I' },
+  { id:'fallfruits',     label:'The Fall & the Fruits',         pillar:'Pillar I' },
   { id:'trinity',        label:'The Holy Trinity',              pillar:'Pillar I' },
   { id:'jesus',          label:'Who Is Jesus Christ?',          pillar:'Pillar I' },
   { id:'mary',           label:'Mary & the Saints',             pillar:'Pillar I' },
