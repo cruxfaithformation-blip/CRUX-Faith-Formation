@@ -388,6 +388,29 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 }
 .pv-textbox-fontctrl button:hover { background: rgba(212,165,116,0.3); }
 .pv-textbox-fontpct { font-size: 0.6rem; color: rgba(255,255,255,0.6); min-width: 30px; text-align: center; }
+
+/* ─── DRAGGABLE STRUCTURED CONTENT (title/body block as a whole) ───
+   Repositions .slide-content (the slide's built-in title/body render)
+   as one unit, separate from the free image/text layers above — so a
+   title can be dragged aside to make room for an image underneath it
+   without rebuilding that text as a free text box. Position stored as
+   slide.contentOffsetX/Y in percent; .slide-content is already
+   position:relative, so left/top percent resolves against the
+   containing block, the same mechanism the layers above rely on. */
+.content-drag-handle {
+  position: absolute; top: 0.6rem; left: 0.6rem; z-index: 9;
+  display: flex; align-items: center; gap: 0.3rem;
+  background: rgba(8,10,22,0.85); border: 1px solid rgba(212,165,116,0.3); border-radius: 6px;
+  padding: 0.3rem 0.55rem; cursor: move; touch-action: none;
+  font-family: 'Inter', sans-serif; font-size: 0.65rem; color: rgba(255,255,255,0.7);
+  opacity: 0.55; transition: opacity 0.15s;
+}
+.content-drag-handle:hover, .content-drag-handle.dragging { opacity: 1; border-color: var(--gold); color: var(--gold-light); }
+.content-drag-reset {
+  background: none; border: none; color: rgba(255,255,255,0.4); cursor: pointer;
+  font-size: 0.65rem; text-decoration: underline; padding: 0 0 0 0.3rem; margin: 0;
+}
+.content-drag-reset:hover { color: var(--gold); }
 #editableSlide.drop-active { outline: 3px dashed var(--gold); outline-offset: -3px; }
 .pv-icon-label { font-weight: 700; font-size: 0.92rem; color: var(--white); }
 
@@ -1945,6 +1968,84 @@ function addTextBox() {
   }, 0);
 }
 
+/* ─── DRAGGABLE STRUCTURED CONTENT BLOCK ───────────────────────────
+   See the CSS comment above .content-drag-handle for the full explanation. */
+var activeContentDrag = null;
+
+function applyContentOffset(container, slide) {
+  if (!container) return;
+  var el = container.querySelector('.slide-content');
+  if (!el) return;
+  var x = (slide && slide.contentOffsetX) || 0;
+  var y = (slide && slide.contentOffsetY) || 0;
+  if (x || y) { el.style.left = x + '%'; el.style.top = y + '%'; }
+  else { el.style.left = ''; el.style.top = ''; }
+}
+
+function renderContentDragHandle(container, slide) {
+  if (!container) return;
+  var old = container.querySelector('.content-drag-handle');
+  if (old) old.remove();
+  if (container.id !== 'editableSlide') return;
+  var handle = document.createElement('div');
+  handle.className = 'content-drag-handle';
+  handle.title = 'Drag to move the title/text block';
+  handle.innerHTML = '⠿ Move Text';
+  var hasOffset = !!((slide.contentOffsetX) || (slide.contentOffsetY));
+  if (hasOffset) {
+    var reset = document.createElement('button');
+    reset.type = 'button';
+    reset.className = 'content-drag-reset';
+    reset.textContent = 'Reset';
+    reset.addEventListener('pointerdown', function(e) { e.stopPropagation(); });
+    reset.addEventListener('click', function(e) {
+      e.stopPropagation();
+      delete slide.contentOffsetX; delete slide.contentOffsetY;
+      save();
+      renderCanvasSlide();
+    });
+    handle.appendChild(reset);
+  }
+  handle.addEventListener('pointerdown', function(e) { startContentDrag(e, slide, container, handle); });
+  container.appendChild(handle);
+}
+
+function startContentDrag(e, slide, container, handleEl) {
+  e.preventDefault();
+  e.stopPropagation();
+  if (e.target.classList.contains('content-drag-reset')) return;
+  var rect = container.getBoundingClientRect();
+  handleEl.classList.add('dragging');
+  activeContentDrag = {
+    slide: slide, container: container,
+    startClientX: e.clientX, startClientY: e.clientY,
+    startX: slide.contentOffsetX || 0, startY: slide.contentOffsetY || 0,
+    rectW: rect.width, rectH: rect.height
+  };
+  window.addEventListener('pointermove', onContentPointerMove);
+  window.addEventListener('pointerup', onContentPointerUp);
+}
+
+function onContentPointerMove(e) {
+  if (!activeContentDrag) return;
+  var d = activeContentDrag;
+  var dxPct = ((e.clientX - d.startClientX) / d.rectW) * 100;
+  var dyPct = ((e.clientY - d.startClientY) / d.rectH) * 100;
+  d.slide.contentOffsetX = Math.max(-40, Math.min(40, d.startX + dxPct));
+  d.slide.contentOffsetY = Math.max(-40, Math.min(40, d.startY + dyPct));
+  applyContentOffset(d.container, d.slide);
+}
+
+function onContentPointerUp() {
+  if (!activeContentDrag) return;
+  var d = activeContentDrag;
+  activeContentDrag = null;
+  window.removeEventListener('pointermove', onContentPointerMove);
+  window.removeEventListener('pointerup', onContentPointerUp);
+  save();
+  renderCanvasSlide();
+}
+
 /* Custom per-slide bullet marker. Stored as a bare style id (e.g. 'dot');
    applied as a quoted CSS content string so `content: var(--bullet-marker, '—')`
    substitutes correctly. Unset falls back to each slide type's own default. */
@@ -2348,6 +2449,8 @@ function attachEditListeners(slide) {
   attachDropZone(es);
   renderImageLayers(es, slide);
   renderTextBoxes(es, slide);
+  applyContentOffset(es, slide);
+  renderContentDragHandle(es, slide);
   es.addEventListener('focusin', function(e) {
     var line = e.target.closest('[data-type]');
     focusedLineEl = line || null;
@@ -2610,6 +2713,7 @@ function renderPresentSlide() {
   applyTextScale(container, slide);
   renderImageLayers(container, slide);
   renderTextBoxes(container, slide);
+  applyContentOffset(container, slide);
   document.getElementById('notesText').textContent = slide.note || 'No presenter notes.';
   document.getElementById('slideCounter').textContent = (presentIndex+1) + ' / ' + slides.length;
   // Vocab badge
