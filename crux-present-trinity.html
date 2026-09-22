@@ -496,6 +496,40 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .theme-swatch.bright { background: linear-gradient(135deg,#fff3e0 50%,#f57c00 50%); }
 .theme-swatch.chalk { background: linear-gradient(135deg,#2d4a2e 50%,#ffd54f 50%); }
 
+/* Global text size control (header) */
+.text-scale-ctrl {
+  display: flex; align-items: center; gap: 0.3rem;
+  background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 6px; padding: 4px 6px; flex-shrink: 0;
+}
+.tsz-label {
+  font-size: 0.6rem; letter-spacing: 1px; text-transform: uppercase;
+  color: rgba(255,255,255,0.3); white-space: nowrap; padding-right: 0.15rem;
+}
+.tsz-btn {
+  width: 20px; height: 20px; border-radius: 4px; border: none; cursor: pointer;
+  background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.6);
+  font-size: 0.65rem; font-weight: 700; transition: all 0.12s;
+  display: flex; align-items: center; justify-content: center;
+}
+.tsz-btn:hover { background: rgba(212,165,116,0.2); color: var(--gold); }
+.tsz-pct { font-size: 0.65rem; font-weight: 600; color: rgba(255,255,255,0.55); min-width: 30px; text-align: center; }
+.tsz-reset {
+  font-size: 0.6rem; font-weight: 600; color: rgba(255,255,255,0.3); background: none; border: none;
+  cursor: pointer; padding: 0 0.2rem; text-decoration: underline;
+}
+.tsz-reset:hover { color: rgba(255,255,255,0.7); }
+.tsz-reset:disabled { opacity: 0.3; cursor: default; text-decoration: none; }
+
+/* Per-slide text size control (controls strip) */
+.ts-btn {
+  width: 24px; height: 24px; border-radius: 5px; border: 1.5px solid var(--border);
+  background: var(--white); color: var(--navy); font-size: 0.65rem; font-weight: 700;
+  cursor: pointer; transition: all 0.12s;
+}
+.ts-btn:hover { border-color: var(--gold); }
+.ts-pct { font-size: 0.7rem; font-weight: 600; color: var(--muted); min-width: 32px; text-align: center; }
+
 /* Simple-mode tint — subtle green tint on slide bg to signal the mode */
 #presentSlide.simple-mode::after {
   content: ''; position: absolute; inset: 0; pointer-events: none;
@@ -785,6 +819,14 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
         <div class="theme-swatch bright" id="swatchBright" title="Colorful" onclick="setTheme('bright')"></div>
         <div class="theme-swatch chalk" id="swatchChalk" title="Chalkboard" onclick="setTheme('chalk')"></div>
       </div>
+      <!-- Global text size control -->
+      <div class="text-scale-ctrl" title="Default text size for the whole presentation">
+        <span class="tsz-label">Text Size</span>
+        <button class="tsz-btn" onclick="bumpGlobalTextScale(-0.05)">A-</button>
+        <span class="tsz-pct" id="globalTextScaleLabel">100%</span>
+        <button class="tsz-btn" onclick="bumpGlobalTextScale(0.05)">A+</button>
+        <button class="tsz-reset" id="globalTextScaleReset" onclick="resetGlobalTextScale()" disabled>Reset</button>
+      </div>
       <a href="crux-present-tutorial.html" target="_blank" class="hdr-btn ghost" title="How to use this editor">? Help</a>
       <button class="hdr-btn ghost" onclick="resetDefaults()">Reset</button>
       <button class="hdr-btn danger" id="deleteBtn" onclick="confirmDelete()" style="display:none">Delete</button>
@@ -956,6 +998,7 @@ let bodyTab = 'advanced';   // which tab is open in editor
 let nextId = 100;
 let dragSrcIndex = -1;
 let slideTheme = 'crux';    // 'crux' | 'bright' | 'chalk'
+let slideTextScale = 1;     // global default text scale; individual slides may override via slide.textScale
 
 /* ─── INIT ──────────────────────────────────────────────────────── */
 (function init() {
@@ -967,12 +1010,14 @@ let slideTheme = 'crux';    // 'crux' | 'bright' | 'chalk'
       nextId  = p.nextId || 100;
       vocabMode = p.vocabMode || 'advanced';
       slideTheme = p.slideTheme || 'crux';
+      slideTextScale = p.slideTextScale || 1;
     } catch(e) { slides = defaultCopy(); }
   } else {
     slides = defaultCopy();
   }
   syncVocabUI();
   syncThemeUI();
+  syncTextScaleUI();
   renderSlideList();
   if (slides.length > 0) selectSlide(0);
 })();
@@ -983,7 +1028,7 @@ function defaultCopy() {
 
 /* ─── SAVE ──────────────────────────────────────────────────────── */
 function save() {
-  localStorage.setItem('crux-present-trinity-v3', JSON.stringify({ slides: slides, nextId: nextId, vocabMode: vocabMode, slideTheme: slideTheme }));
+  localStorage.setItem('crux-present-trinity-v3', JSON.stringify({ slides: slides, nextId: nextId, vocabMode: vocabMode, slideTheme: slideTheme, slideTextScale: slideTextScale }));
 }
 
 function setTheme(theme) {
@@ -1004,6 +1049,60 @@ function syncThemeUI() {
   if (overlay) overlay.dataset.theme = slideTheme === 'crux' ? '' : slideTheme;
   var wrapper = document.querySelector('.wysiwyg-wrapper');
   if (wrapper) wrapper.dataset.theme = slideTheme === 'crux' ? '' : slideTheme;
+}
+
+/* ─── TEXT SIZE ─────────────────────────────────────────────────── */
+/* Effective scale = slide's own override if set, else the global default.
+   Applied as a CSS transform on .slide-content rather than rewriting every
+   font-size rule, since each slide type has its own hand-tuned typography. */
+function clampScale(v) {
+  v = Math.round(v * 20) / 20; // snap to nearest 5%
+  return Math.min(1.35, Math.max(0.75, v));
+}
+
+function applyTextScale(root, slide) {
+  if (!root) return;
+  var el = root.querySelector('.slide-content');
+  if (!el) return;
+  var scale = slide && slide.textScale != null ? slide.textScale : slideTextScale;
+  el.style.transform = scale === 1 ? '' : 'scale(' + scale + ')';
+}
+
+function syncTextScaleUI() {
+  var label = document.getElementById('globalTextScaleLabel');
+  var reset = document.getElementById('globalTextScaleReset');
+  if (label) label.textContent = Math.round(slideTextScale * 100) + '%';
+  if (reset) reset.disabled = slideTextScale === 1;
+}
+
+function bumpGlobalTextScale(delta) {
+  slideTextScale = clampScale(slideTextScale + delta);
+  save();
+  syncTextScaleUI();
+  if (selectedIndex >= 0) renderCanvasSlide();
+}
+
+function resetGlobalTextScale() {
+  slideTextScale = 1;
+  save();
+  syncTextScaleUI();
+  if (selectedIndex >= 0) renderCanvasSlide();
+}
+
+function bumpSlideTextScale(delta) {
+  if (selectedIndex < 0 || selectedIndex >= slides.length) return;
+  var slide = slides[selectedIndex];
+  var base = slide.textScale != null ? slide.textScale : slideTextScale;
+  slide.textScale = clampScale(base + delta);
+  save();
+  renderCanvasSlide();
+}
+
+function resetSlideTextScale() {
+  if (selectedIndex < 0 || selectedIndex >= slides.length) return;
+  delete slides[selectedIndex].textScale;
+  save();
+  renderCanvasSlide();
 }
 
 /* ─── VOCAB MODE ────────────────────────────────────────────────── */
@@ -1158,6 +1257,7 @@ function renderCanvasSlide() {
 
   document.getElementById('editableSlide').innerHTML += buildEditableSlideHTML(slide);
   applySlideBg(document.getElementById('editableSlide'), slide);
+  applyTextScale(document.getElementById('editableSlide'), slide);
   attachEditListeners(slide);
   updateFmtToolbar(null);
 }
@@ -1165,6 +1265,7 @@ function renderCanvasSlide() {
 function buildControlsStrip(slide) {
   var isMedia = slide.type === 'media';
   var mt = slide.mediaType || 'youtube';
+  var effScale = slide.textScale != null ? slide.textScale : slideTextScale;
   var typeGrid = TYPES.map(function(t) {
     return '<div class="wys-type-opt' + (slide.type === t.id ? ' selected' : '') +
       '" onclick="changeType(\'' + t.id + '\')" title="' + t.label + '">' +
@@ -1188,6 +1289,15 @@ function buildControlsStrip(slide) {
       '<div class="wys-bg-row">' +
         '<input type="color" class="wys-color-input" id="bgColorInput" value="' + (slide.bgColor || '#141829') + '" oninput="setSlideBg(this.value)" title="Custom background color for this slide">' +
         '<button class="wys-bg-reset" id="bgResetBtn" onclick="setSlideBg(null)"' + (slide.bgColor ? '' : ' disabled') + '>Reset</button>' +
+      '</div>' +
+    '</div>' +
+    '<div class="wys-col wys-col-textsize">' +
+      '<span class="wys-label">Text Size</span>' +
+      '<div class="wys-bg-row">' +
+        '<button class="ts-btn" onclick="bumpSlideTextScale(-0.05)">A-</button>' +
+        '<span class="ts-pct" id="slideTextScaleLabel">' + Math.round(effScale * 100) + '%</span>' +
+        '<button class="ts-btn" onclick="bumpSlideTextScale(0.05)">A+</button>' +
+        '<button class="wys-bg-reset" id="slideTextScaleReset" onclick="resetSlideTextScale()"' + (slide.textScale != null ? '' : ' disabled') + '>Reset</button>' +
       '</div>' +
     '</div>' +
     '<div class="wys-col wys-col-notes">' +
@@ -1582,6 +1692,7 @@ function renderPresentSlide() {
   container.className = 'type-' + slide.type + (vocabMode === 'simple' ? ' simple-mode' : '');
   applySlideBg(container, slide);
   document.getElementById('slideContentArea').innerHTML = buildSlideHTML(slide);
+  applyTextScale(container, slide);
   document.getElementById('notesText').textContent = slide.note || 'No presenter notes.';
   document.getElementById('slideCounter').textContent = (presentIndex+1) + ' / ' + slides.length;
   // Vocab badge
