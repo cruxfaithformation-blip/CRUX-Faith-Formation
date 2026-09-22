@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Classroom Presentation: The Holy Trinity — CRUX</title>
+<title>Classroom Presentation: The Holy Trinity &amp; The New Commandment — CRUX</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
@@ -889,7 +889,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   <header id="editorHeader">
     <a href="crux-teach-trinity.html" class="hdr-logo">CRUX</a>
     <div class="hdr-mid">
-      <div class="hdr-title">The Holy Trinity <span>›</span> Classroom Presentation</div>
+      <div class="hdr-title">The Holy Trinity &amp; The New Commandment <span>›</span> Classroom Presentation</div>
     </div>
     <div class="hdr-actions">
       <!-- Vocab toggle -->
@@ -990,87 +990,101 @@ const TYPES = [
 const DEFAULT_SLIDES = [
   {
     id:1, type:'title',
-    title:'The Holy Trinity',
+    title:'The Holy Trinity & The New Commandment',
     body:'Pillar I — What We Believe',
     bodySimple:'Pillar I — What We Believe',
-    note:'Welcome students. Tell them to look at the question written on the board before you begin.'
+    note:'Welcome students. Two big ideas today: who God is (Three Persons, One God), and what Jesus commands us to do about it — love each other the way he loves us.'
   },
   {
     id:2, type:'question-opening',
     title:'Before we begin…',
     body:'If God is love —\nwho did he love\nbefore he created anything?',
     bodySimple:'Think about this...\n\nIf God is love —\nwho did he love\nbefore he made anything?',
-    note:'Let this sit in silence. Ask for answers without correcting them. Then say: this is the question the Trinity answers.'
+    note:'Let this sit in silence. Take a few answers without correcting them. Say: this is the question the Trinity answers — and it sets up why Jesus can command us to love the way he does.'
   },
   {
-    id:3, type:'split',
-    title:'What the Church Teaches',
-    body:'- One God in three Persons\n- Not three gods — tritheism\n- Not one God in three disguises — modalism\n- Father, Son, and Holy Spirit — each fully God\n- Distinct from each other, but not separate',
-    bodySimple:'- God is ONE — there is only one God\n- But God is also THREE Persons: Father, Son, and Holy Spirit\n- They are not three separate gods\n- They are not the same Person in different disguises\n★ God is, inside himself, a family of love',
-    note:'Name both errors clearly. Students often carry a vague tritheism or modalism. Both are wrong in important ways.'
-  },
-  {
-    id:4, type:'definition',
+    id:3, type:'definition',
     title:'Trinity',
-    body:'Three Persons. One God.\n\nFather, Son, and Holy Spirit — each fully God, none greater than another.\n\n- The Father — unbegotten, the eternal source\n- The Son — eternally begotten of the Father\n- The Holy Spirit — proceeds from Father and Son\n★ "Begotten, not made, consubstantial with the Father"',
-    bodySimple:'Three Persons. One God.\n\nFather, Son, and Holy Spirit.\n\n- God the Father — who loves and creates everything\n- God the Son — Jesus, who became human for us\n- God the Holy Spirit — who lives in our hearts\n★ We meet all three Persons at our Baptism',
-    note:'The starred line is from the Nicene Creed. Ask if they recognize it — they say it every Sunday at Mass.'
+    body:'Three Persons. One God.\n\nFather, Son, and Holy Spirit — each fully God, none greater than another, none before another.\n\n- The Father\n- The Son (Jesus)\n- The Holy Spirit\n★ "I believe in one God" — the very first line of the Creed we say every Sunday',
+    bodySimple:'Three Persons. One God.\n\nFather, Son, and Holy Spirit.\n\n- God the Father — who loves and creates everything\n- God the Son — Jesus, who became human for us\n- God the Holy Spirit — who lives in our hearts\n★ We meet all three Persons every time we make the Sign of the Cross',
+    note:'This is the headline of the whole lesson. Say it slowly: three Persons, one God. Let it feel like a real claim, not a riddle to solve.'
   },
   {
-    id:5, type:'content',
-    title:'The Crisis',
-    body:'> "There was a time when He was not."\n\n- Arius (4th century): Jesus = the greatest creature\n- A creature cannot redeem creation\n- Only the Creator can bear the weight of sin\n- The whole faith hangs on this distinction',
-    bodySimple:'- Long ago, a man named Arius taught something new\n- He said: "Jesus was created — he wasn\'t always there"\n- The Church said: if Jesus isn\'t fully God, he can\'t save us\n- You cannot fix something that is bigger than you\n★ The whole Church had to decide what was true',
-    note:'Help students feel the stakes. This was not an academic debate — it was the pivotal crisis of early Christianity.'
+    id:4, type:'content',
+    title:'One God, Three Persons',
+    body:'- The Father IS God. The Son IS God. The Holy Spirit IS God.\n- The Father IS NOT the Son. The Son IS NOT the Holy Spirit.\n- Three distinct Persons — not three gods, and not one Person wearing three masks\n★ This is exactly what the Shield of Faith diagram in your workbook shows — IS lines and IS NOT lines',
+    bodySimple:'- The Father IS God. The Son IS God. The Holy Spirit IS God.\n- But the Father IS NOT the Son, and the Son IS NOT the Holy Spirit\n- They are three real, different Persons — but only one God\n★ Not three gods. Not one person pretending to be three.',
+    note:'If your workbook has the Shield of Faith (Scutum Fidei) activity, this is the slide to point back to — same IS/IS NOT logic, just spoken instead of drawn.'
   },
   {
-    id:6, type:'comparison',
-    title:'Council of Nicaea — 325 AD',
-    body:'homoiousios\n"similar substance" — Arius\n- Jesus is like God\n- The greatest creature, not the Creator\n- A creature cannot bear the weight of sin\n---\nhomoousios\n"same substance" — Athanasius\n- Jesus IS God\n★ One iota of difference\n★ The entire faith at stake',
-    bodySimple:'What Arius said\n- Jesus was created by God\n- The greatest being — but not God himself\n- Similar to God, not the same as God\n---\nWhat the Church decided\n- Jesus IS God — same, not just similar\n★ If Jesus is not fully God, he cannot save us\n★ This answer became the Creed we pray at Mass',
-    note:'Write both Greek words on the board. The visual difference of one letter (iota) makes the point powerfully.'
-  },
-  {
-    id:7, type:'split',
-    title:'Athanasius contra mundum',
-    body:'- Bishop of Alexandria\n- Exiled five times by emperors who backed Arius\n- Stood alone while the world bent\n★ "Athanasius against the world"\n- He outlasted four emperors. He was right.',
-    bodySimple:'- A bishop who knew Jesus was fully God\n- Almost everyone disagreed — even the Emperor\n- Forced to leave his home five times\n- He never gave up telling the truth\n★ He was right. The Church remembered him.',
-    note:'Ask students: would you hold a position if everyone told you to let it go? His courage is the argument that doctrine matters.'
-  },
-  {
-    id:8, type:'scripture',
+    id:5, type:'scripture',
     title:'Matthew 28:19',
-    body:'"Go and baptize them in the name of the Father, and of the Son, and of the Holy Spirit."\n\n- "in the name" — singular, one God\n- Three Persons, one name\n- The baptismal formula used at every Catholic baptism',
-    bodySimple:'"Go and baptize them in the name of the Father, and of the Son, and of the Holy Spirit."\n\n- Jesus says ONE name — not three\n- Father, Son, and Holy Spirit all share that one name\n★ These same words are spoken at every Baptism',
+    body:'"Go and baptize them in the name of the Father, and of the Son, and of the Holy Spirit."\n\n- "in the name" — singular, one God\n- Three Persons, one name\n- The words spoken at every Catholic baptism',
+    bodySimple:'"Go and baptize them in the name of the Father, and of the Son, and of the Holy Spirit."\n\n- Jesus says ONE name — not three\n- Father, Son, and Holy Spirit all share that one name\n★ These same words are spoken at every baptism, including yours',
     note:'Ask: how many names? One — singular. Jesus does not say "in the names of." One name belonging to three Persons.'
   },
   {
-    id:9, type:'scripture',
-    title:'1 John 4:8',
-    body:'"God is love."\n\n- Not "God is loving" — God IS love\n- Love requires a real object\n- If God is eternally love, love must exist within God\n★ The Trinity is why this is possible',
-    bodySimple:'"God is love."\n\n- The Bible doesn\'t just say God loves us\n- It says God IS love — love is what he is\n- The Father loves the Son. The Son loves the Father.\n- The Holy Spirit is the love they share\n★ God has always been a family of love — before anything was made',
-    note:'This is the philosophical argument for the Trinity. God cannot be eternally love without real relationship within himself.'
-  },
-  {
-    id:10, type:'content',
+    id:6, type:'content',
     title:'The Sign of the Cross',
-    body:'"In the name" — one name, one God\n"Of the Father, and of the Son, and of the Holy Spirit" — three Persons\n\n- Done at Baptism, at meals, at death\n- One of the oldest Christian practices\n★ Trinitarian theology in a gesture',
+    body:'"In the name" — one name, one God\n"Of the Father, and of the Son, and of the Holy Spirit" — three Persons\n\n- Done at Baptism, at meals, at the start and end of prayer\n- One of the oldest Christian practices\n★ Trinitarian theology in a single gesture',
     bodySimple:'"In the name" — one God\n"Of the Father, and of the Son, and of the Holy Spirit" — three Persons\n\n- You have done this since your Baptism\n- Christians have done this for 2,000 years\n★ A whole prayer about God in one small movement',
-    note:'Have students make the Sign of the Cross slowly together. Walk through each phrase aloud.'
+    note:'Have students make the Sign of the Cross slowly together. Walk through each phrase aloud, matching the words to the motion.'
   },
   {
-    id:11, type:'discussion',
+    id:7, type:'scripture',
+    title:'1 John 4:8',
+    body:'"God is love."\n\n- Not "God is loving" — God IS love\n- Love needs someone to love\n- The Father loves the Son, the Son loves the Father, and the Holy Spirit is that love between them\n★ God didn\'t start loving when he made us — he has always been love, inside himself',
+    bodySimple:'"God is love."\n\n- The Bible doesn\'t just say God loves us\n- It says God IS love — that\'s what he is, all the way through\n- The Father loves the Son. The Son loves the Father. The Holy Spirit is the love they share.\n★ God was already a family of love before he ever made anything',
+    note:'This answers the opening question directly — callback to slide 2. God had someone to love before creation: himself, as Trinity.'
+  },
+  {
+    id:8, type:'discussion',
     title:'Discussion',
-    body:'- What changes if Jesus is "similar to" God rather than the "same as" God?\n- When Jesus prayed in Gethsemane, was he praying to himself? Why or why not?\n- If God is a communion of love, what does that say about what we are made for?\n★ "Catholics believe in three gods." How do you respond?',
-    bodySimple:'- What are the three Persons of the Trinity?\n- When Jesus prayed, was he talking to himself? How do you know?\n- If God is a family of love inside himself, why does that matter for us?\n★ How would you explain the Trinity to a friend using your own words?',
-    note:'Start with the first question. Move to deeper questions based on class energy. The last (★) is the stretch challenge.'
+    body:'- Which Person of the Trinity feels most real to you right now — the Father, Jesus, or the Holy Spirit? Why?\n- If God is, inside himself, a family of love — what does that tell us about what we\'re made for?\n★ How would you explain the Trinity to a friend, in your own words?',
+    bodySimple:'- Which Person of the Trinity do you think about the most — the Father, Jesus, or the Holy Spirit?\n- If God is a family of love inside himself, what does that mean for how we\'re supposed to live?\n★ How would you explain the Trinity to a friend, in your own words?',
+    note:'Start with the first question. The second question is the bridge into the New Commandment — let it land before moving on.'
   },
   {
-    id:12, type:'takehome',
+    id:9, type:'content',
+    title:'So How Do We Live This?',
+    body:'- The Father, Son, and Holy Spirit have loved each other perfectly, forever\n- Jesus doesn\'t just want us to believe that — he wants us to join in it\n★ Right before he died, Jesus gave his friends one command that sums up what that looks like',
+    bodySimple:'- The Father, Son, and Holy Spirit love each other perfectly, always\n- Jesus wants us to be part of that love — not just believe in it\n★ Right before he died, Jesus gave one command about how to do that',
+    note:'Short bridge slide. Land on: the Trinity isn\'t just a doctrine to understand, it\'s the love we\'re invited into — and Jesus tells us exactly what that looks like next.'
+  },
+  {
+    id:10, type:'scripture',
+    title:'John 13:34–35',
+    body:'"I give you a new commandment: love one another. As I have loved you, so you also should love one another. This is how all will know that you are my disciples, if you have love for one another."\n\n- Spoken at the Last Supper, hours before his arrest\n- "As I have loved you" — the standard just changed',
+    bodySimple:'"I give you a new commandment: love one another. As I have loved you, so you also should love one another. This is how all will know that you are my disciples, if you have love for one another."\n\n- Jesus said this at the Last Supper, right before he died\n★ Loving each other is how people are supposed to recognize us as his followers',
+    note:'This is the heart of Lesson 2. Read it slowly, twice if needed.'
+  },
+  {
+    id:11, type:'content',
+    title:'What Makes It NEW?',
+    body:'- "Love your neighbor" was already commanded in the Old Testament (Leviticus 19:18)\n- What\'s new isn\'t the command to love — it\'s the standard\n- "As I have loved you" — not as much as you love yourself, but as much as Jesus loves you\n★ Jesus loved by laying down his life. That\'s the bar now.',
+    bodySimple:'- Loving your neighbor wasn\'t a brand new idea — the Old Testament already said to do that\n- What\'s new is HOW MUCH: "as I have loved you"\n- Jesus loved us enough to die for us\n★ That\'s the size of love he\'s asking us to have for each other',
+    note:'Key point: the newness is the standard, not the command itself. Jesus\'s own sacrificial love becomes the measuring stick.'
+  },
+  {
+    id:12, type:'content',
+    title:'What Does This Look Like?',
+    body:'- Loving like Jesus isn\'t just being nice when it\'s easy\n- It\'s choosing someone else\'s good even when it costs you something\n- Sitting with the kid no one sits with. Forgiving someone who hasn\'t said sorry. Standing up for someone being made fun of.\n★ "By this everyone will know you are my disciples" — not by what we say, by how we love',
+    bodySimple:'- Loving like Jesus means more than just being nice when it\'s easy\n- It means choosing to help someone even when it costs you something\n- Sitting with the kid who\'s alone. Forgiving a friend. Standing up for someone being teased.\n★ People are supposed to be able to tell we follow Jesus just by how we treat each other',
+    note:'Use concrete, classroom-relatable examples. This is where the lesson gets practical — don\'t rush it.'
+  },
+  {
+    id:13, type:'discussion',
+    title:'Discussion',
+    body:'- The Father, Son, and Holy Spirit have loved each other perfectly, forever. Jesus asks us to love each other the same way. What\'s the connection?\n- Can you love someone "as Jesus loved" without it costing you anything? Why or why not?\n★ Who is one person you could love better this week, and what would that actually look like?',
+    bodySimple:'- The Trinity is God loving perfectly, inside himself. Jesus asks us to share in that same kind of love. How are those connected?\n- Does loving like Jesus always feel easy? Why or why not?\n★ Who is one person you could love better this week — and what would that look like?',
+    note:'The starred question is the actual take-home in disguise — let it lead naturally into the next slide.'
+  },
+  {
+    id:14, type:'takehome',
     title:'Take-Home',
-    body:'Pray the Glory Be three times this week.\n\nOnce thinking about the Father.\nOnce thinking about the Son.\nOnce thinking about the Holy Spirit.\n\nCome back ready to share one thing you noticed.',
-    bodySimple:'Pray the Glory Be three times this week.\n\nOnce thinking about the Father.\nOnce thinking about the Son.\nOnce thinking about the Holy Spirit.\n\nCome back ready to share one thing you noticed.',
-    note:'Keep the close simple. The goal is to let the doctrine become prayer. Any honest observation is a good one.'
+    body:'This week, love one person the way Jesus loves you — not just when it\'s easy.\n\nBefore you do it, think about the Trinity: Father, Son, and Holy Spirit loving each other perfectly, and inviting you into that same love.\n\nCome back ready to share what you noticed.',
+    bodySimple:'This week, love one person the way Jesus loves you — not just when it\'s easy.\n\nBefore you do it, think about the Trinity: Father, Son, and Holy Spirit loving each other perfectly, and inviting you into that same love.\n\nCome back ready to share what you noticed.',
+    note:'Same closing pattern as every module. The goal is for the doctrine (Trinity) and the command (love one another) to become one lived habit, not two separate facts.'
   }
 ];
 
