@@ -1,0 +1,814 @@
+<title>The Fall & the Fruits Teacher's Guide</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy: #0f1b2d;
+  --gold: #c9a84c;
+  --light-gold: #e8d5a3;
+  --ink: #1a1a1a;
+  --page: #ffffff;
+  --offwhite: #faf8f4;
+  --rule: #d4c9b0;
+  --soft: #555;
+  --teacher-bg: #f4f1eb;
+  --takeaway-bg: #0f1b2d;
+}
+
+html { font-size: 11pt; }
+
+body {
+  background: #d0ccc4;
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+  padding-block: 0.4in;
+}
+
+.page {
+  background: var(--page);
+  width: 8.5in;
+  min-height: 11in;
+  margin: 0.4in auto;
+  padding: 0.8in 0.9in 0.85in;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  position: relative;
+}
+
+.running-header {
+  position: absolute;
+  top: 0.35in;
+  left: 0.9in;
+  right: 0.9in;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 7.5pt;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 0.5pt solid var(--rule);
+  padding-bottom: 0.1in;
+}
+
+.crux-mark { font-family: 'Playfair Display', serif; font-weight: 900; }
+
+.teacher-badge {
+  background: var(--navy);
+  color: white;
+  font-size: 6.5pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.06in 0.14in;
+  border-radius: 2px;
+}
+
+.guide-cover {
+  border-bottom: 2pt solid var(--navy);
+  padding-bottom: 0.3in;
+  margin-bottom: 0.35in;
+}
+
+.guide-eyebrow {
+  font-size: 7.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.12in;
+}
+
+.guide-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26pt;
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1.1;
+  margin-bottom: 0.08in;
+}
+
+.guide-sub {
+  font-size: 10pt;
+  color: var(--soft);
+  letter-spacing: 0.05em;
+}
+
+.at-a-glance {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.15in;
+  margin-top: 0.2in;
+  padding-top: 0.2in;
+  border-top: 0.5pt solid var(--rule);
+}
+
+.glance-label {
+  font-size: 6.5pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.05in;
+}
+
+.glance-value {
+  font-size: 9pt;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.4;
+}
+
+.section-block { margin-bottom: 0.32in; }
+
+.section-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.12in;
+  padding-bottom: 0.06in;
+  border-bottom: 0.5pt solid var(--rule);
+}
+
+.flow-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.1in;
+  font-size: 8.5pt;
+}
+
+.flow-table th {
+  background: var(--navy);
+  color: white;
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.07in 0.1in;
+  text-align: left;
+}
+
+.flow-table td {
+  padding: 0.07in 0.1in;
+  border-bottom: 0.5pt solid var(--rule);
+  vertical-align: top;
+  line-height: 1.45;
+  color: var(--soft);
+}
+
+.flow-table tr:nth-child(even) td { background: var(--offwhite); }
+
+.flow-table td:first-child {
+  font-weight: 700;
+  color: var(--navy);
+  white-space: nowrap;
+  width: 0.6in;
+}
+
+.flow-table td:nth-child(2) {
+  font-weight: 600;
+  color: var(--ink);
+  width: 1.4in;
+}
+
+.lesson-step { margin-bottom: 0.28in; }
+
+.step-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.15in;
+  margin-bottom: 0.1in;
+}
+
+.step-time {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: white;
+  background: var(--navy);
+  padding: 0.04in 0.1in;
+  border-radius: 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.step-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.step-slide {
+  font-size: 7pt;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-left: auto;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.step-body {
+  font-size: 9.5pt;
+  line-height: 1.7;
+  color: var(--soft);
+  margin-bottom: 0.1in;
+}
+
+.step-body p { margin-bottom: 0.08in; }
+.step-body strong { color: var(--ink); }
+
+.do-box {
+  background: var(--offwhite);
+  border-left: 3pt solid var(--rule);
+  padding: 0.1in 0.14in;
+  margin-bottom: 0.1in;
+  font-size: 9pt;
+  line-height: 1.6;
+  color: var(--soft);
+}
+
+.do-box strong { color: var(--navy); display: block; margin-bottom: 0.04in; font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase; }
+
+.prep-box {
+  background: #fbf2e3;
+  border: 0.5pt solid var(--gold);
+  border-radius: 3px;
+  padding: 0.1in 0.14in;
+  margin-bottom: 0.12in;
+  font-size: 8.5pt;
+  line-height: 1.6;
+  color: #6b5426;
+}
+
+.prep-box strong { color: #8a6a1f; display: block; margin-bottom: 0.04in; font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase; }
+
+.takeaway-box {
+  background: var(--takeaway-bg);
+  color: white;
+  padding: 0.18in 0.2in;
+  margin: 0.12in 0 0.1in;
+  border-radius: 3px;
+}
+
+.takeaway-label {
+  font-size: 6.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.1in;
+  display: flex;
+  align-items: center;
+  gap: 0.1in;
+}
+
+.takeaway-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(201,168,76,0.3);
+}
+
+.takeaway-body {
+  font-size: 9.5pt;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.88);
+  font-style: italic;
+}
+
+.takeaway-body strong { color: var(--light-gold); font-style: normal; }
+
+.student-says {
+  background: var(--teacher-bg);
+  border: 0.5pt solid var(--rule);
+  border-radius: 3px;
+  padding: 0.12in 0.15in;
+  margin: 0.1in 0;
+  font-size: 9pt;
+  line-height: 1.65;
+}
+
+.student-says-label {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.08in;
+}
+
+.student-says-q {
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 0.06in;
+  font-style: italic;
+}
+
+.student-says-a { color: var(--soft); line-height: 1.7; }
+
+.watch-box {
+  display: flex;
+  gap: 0.15in;
+  margin-top: 0.08in;
+}
+
+.watch-col {
+  flex: 1;
+  background: var(--offwhite);
+  border-top: 2pt solid var(--rule);
+  padding: 0.1in 0.12in;
+  font-size: 8.5pt;
+  line-height: 1.6;
+  color: var(--soft);
+}
+
+.watch-col-label {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.06in;
+}
+
+.watch-col.good { border-top-color: #3a7a4a; }
+.watch-col.good .watch-col-label { color: #3a7a4a; }
+.watch-col.watch { border-top-color: #9a6020; }
+.watch-col.watch .watch-col-label { color: #9a6020; }
+
+.page-num {
+  position: absolute;
+  bottom: 0.4in;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 8pt;
+  color: var(--rule);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+hr.step-rule {
+  border: none;
+  border-top: 0.5pt solid var(--rule);
+  margin: 0.2in 0;
+}
+
+@media print {
+  body { background: white; padding-block: 0; }
+  .page { margin: 0; box-shadow: none; page-break-after: always; }
+}
+
+@media (max-width: 900px) {
+  body { padding-inline: 12px; }
+  .page { width: 100%; min-height: 0; padding: 0.5in 0.4in; }
+  .at-a-glance { grid-template-columns: repeat(2, 1fr); }
+  .watch-box { flex-direction: column; }
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ══════════════════════════════════ PAGE 1 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>The Fall &amp; the Fruits &middot; Module 2</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <div class="guide-cover">
+    <div class="guide-eyebrow">CRUX Companion &nbsp;&middot;&nbsp; Beginner's Edition &nbsp;&middot;&nbsp; Grade 4</div>
+    <div class="guide-title">Teacher's Guide<br>The Fall &amp; the Fruits of the Spirit</div>
+    <div class="guide-sub">Pillar I &nbsp;&middot;&nbsp; What We Believe &nbsp;&middot;&nbsp; Week 2 of the &ldquo;Who Is God?&rdquo; two-part unit &nbsp;&middot;&nbsp; Use alongside the Classroom Presentation and Workbook Chapter 2</div>
+
+    <div class="at-a-glance">
+      <div class="glance-item">
+        <div class="glance-label">Total Time</div>
+        <div class="glance-value">60 minutes</div>
+      </div>
+      <div class="glance-item">
+        <div class="glance-label">Materials</div>
+        <div class="glance-value">Screen/projector, Workbook Chapter 2 (pp. 10&ndash;15). Pick and paste a Pinocchio clip into Slide 4 before class. It ships blank.</div>
+      </div>
+      <div class="glance-item">
+        <div class="glance-label">Scripture</div>
+        <div class="glance-value">Genesis 3:15 &middot; Galatians 5:22&ndash;23</div>
+      </div>
+      <div class="glance-item">
+        <div class="glance-label">Slides</div>
+        <div class="glance-value">crux-present-fallfruits.html &nbsp;&middot;&nbsp; 18 slides</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <div class="section-heading">Lesson at a Glance</div>
+    <table class="flow-table">
+      <thead>
+        <tr><th>Time</th><th>Section</th><th>What's Happening</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>0&ndash;2 min</td><td>Opening Prayer</td><td>Sign of the Cross. Quick recap of last week.</td></tr>
+        <tr><td>2&ndash;4 min</td><td>Before We Begin</td><td>Slide 2. Why wasn't the garden enough?</td></tr>
+        <tr><td>4&ndash;7 min</td><td>Free Will, Revisited</td><td>Slide 3. The Pinocchio bridge from Week 1.</td></tr>
+        <tr><td>7&ndash;13 min</td><td>Video + Two Voices</td><td>Slides 4&ndash;5. The Fox/Cricket, then the Serpent/Spirit parallel.</td></tr>
+        <tr><td>13&ndash;18 min</td><td>What Temptation Feels Like</td><td>Slide 6. Your own story goes here.</td></tr>
+        <tr><td>18&ndash;26 min</td><td>The Story + Genesis 3:15</td><td>Slides 7&ndash;8. In order, then the first promise.</td></tr>
+        <tr><td>26&ndash;30 min</td><td>Salvation</td><td>Slide 9. God's first move was a promise, not punishment.</td></tr>
+        <tr><td>30&ndash;37 min</td><td>The Fruits + Galatians</td><td>Slides 10&ndash;11. The apple farm story goes here.</td></tr>
+        <tr><td>37&ndash;49 min</td><td>The Twelve Fruits, In Detail</td><td>Slides 12, 16&ndash;18. Icon grid, then three rounds of four.</td></tr>
+        <tr><td>49&ndash;53 min</td><td>Examination of Conscience</td><td>Slide 13. Your nightly prayer routine goes here.</td></tr>
+        <tr><td>53&ndash;57 min</td><td>Discussion</td><td>Slide 14. Let it breathe.</td></tr>
+        <tr><td>57&ndash;60 min</td><td>Take-Home + Closing</td><td>Slide 15. Hand out the card. Close in prayer.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-block">
+    <div class="section-heading">The Goal of This Lesson</div>
+    <div class="step-body">
+      <p>Last week ended on a cliffhanger: God gave Adam and Eve real freedom, and they used it to choose wrong. This week answers what happened next, and it answers it fast. God's very first move after the first sin wasn't punishment. It was a promise. That order matters more than any other single fact in the lesson.</p>
+      <p>The second half shifts from what went wrong to what helps us choose better right now: the Holy Spirit, our conscience, and the Fruits that show the Spirit is actually working in us. Twelve fruits is a lot to hold onto. Don't aim for students to memorize the list today. Aim for them to recognize a few by name when they see one in their own life this week.</p>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Core Takeaway</div>
+      <div class="takeaway-body">
+        "A relationship with God doesn't build itself. Just like any relationship, it takes showing up for it, every day. If you want to be a great athlete, you have to put in the work: study the playbook, listen to your coaches, and practice. <strong>Our relationship with God works the same way.</strong> The more we learn about who he is, spend time with him in prayer, and read his word, the easier it gets to see which path we should take. And the clearer his voice gets when our conscience is trying to guide us there."
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">1</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 2 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>The Fall &amp; the Fruits &middot; Module 2</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <div class="section-heading" style="margin-bottom:0.2in;">Teaching the Lesson: Step by Step</div>
+
+  <!-- STEP 1 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">0&ndash;2 min</span>
+      <span class="step-title">Opening Prayer</span>
+      <span class="step-slide">Slide 1</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Lead the Sign of the Cross with the title slide on screen. Remind students in one sentence: last week covered creation and God as Father. Today picks up right where that left off.
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 2 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">2&ndash;4 min</span>
+      <span class="step-title">Before We Begin</span>
+      <span class="step-slide">Slide 2</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Read the question aloud: <em>"Adam and Eve had everything in the garden. So why wasn't it enough?"</em> Take a few answers without correcting them. Don't resolve it. It's the question the whole lesson answers.
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 3 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">4&ndash;7 min</span>
+      <span class="step-title">Free Will, Revisited</span>
+      <span class="step-slide">Slide 3</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Recap Week 1 in one line: God gave real free will so love could be chosen, not forced. Then bridge to Pinocchio, setting up the video on the next slide. Don't explain the comparison yet. Let the video make it first.
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway: The Pinocchio Bridge</div>
+      <div class="takeaway-body">
+        "God gave us free will so we could be more than just puppets on strings. Do you know the story of Pinocchio? He was a wooden puppet who wanted to become a real boy. <strong>Part of becoming real was being given a conscience, a little voice named Jiminy Cricket, to help him tell right from wrong.</strong> God gives every one of us that same gift for real. He gave us free will so we could truly choose to love him. But a choice only means something if you could have chosen differently. That's also why we're able to choose wrong."
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">2</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 3 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>The Fall &amp; the Fruits &middot; Module 2</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">7&ndash;13 min</span>
+      <span class="step-title">The Video + Two Voices, One Choice</span>
+      <span class="step-slide">Slides 4&ndash;5</span>
+    </div>
+    <div class="prep-box">
+      <strong>Prep Before Class</strong>
+      Slide 4's video field is blank by default. Pick a short clip of Honest John the Fox and "Give a Little Whistle," and paste the URL in before you teach this.
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Play the clip. Keep it short. Move straight to Slide 5's side-by-side comparison, Fox and Serpent, Cricket and Holy Spirit, and let the parallel do the work.
+    </div>
+    <div class="step-body">
+      <p>Then ask: "Pinocchio didn't always listen to Jiminy Cricket. Do you always listen to your conscience?" A few honest "no" answers are the point, not a problem to fix.</p>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 5 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">13&ndash;18 min</span>
+      <span class="step-title">What Temptation Feels Like</span>
+      <span class="step-slide">Slide 6</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Name the distinction first: temptation is the pull toward something wrong, not the wrong thing itself. Then tell your own story below in your own words. Ask afterward: "Has that ever happened to you?"
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway: The Video Game Story</div>
+      <div class="takeaway-body">
+        "Temptation isn't the same thing as sin. It's the pull toward it, and everybody feels that pull. When I was a kid, a video game I was dying to play came out, so I faked being sick to stay home from school. I knew my parents would have to leave for work, which meant I'd have the whole day to play. <strong>The temptation for me was a video game. I knew lying to my parents was wrong, but I wanted to play that badly.</strong> I felt so guilty afterward that I only played for less than an hour before I turned off the console and went back to bed. That's what temptation feels like: wanting something so much you talk yourself into believing the wrong choice is worth it."
+      </div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"Isn't it just as bad to be tempted as it is to actually do it?"</div>
+      <div class="student-says-a">No, and that's worth saying clearly. Feeling the pull isn't a sin. Scripture actually says Jesus himself was tempted in the desert for forty days and never sinned (Matthew 4:1&ndash;11). Being tempted isn't a failure. What you do with it is the part that counts.</div>
+    </div>
+  </div>
+
+  <div class="page-num">3</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 4 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>The Fall &amp; the Fruits &middot; Module 2</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">18&ndash;26 min</span>
+      <span class="step-title">The Story, In Order + Genesis 3:15</span>
+      <span class="step-slide">Slides 7&ndash;8</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Walk the timeline on Slide 7 row by row. Land on the last row on purpose: the promise of a Savior comes in the very same scene as the sin, not later. Move to Slide 8 and read Genesis 3:15 aloud yourself, slowly.
+    </div>
+    <div class="step-body">
+      <p>A strike to the head is fatal. A strike to the heel is a real wound, but not final. That's the shape of the promise: victory, at a real cost, given the instant it's needed.</p>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway: What the Sin Actually Broke</div>
+      <div class="takeaway-body">
+        "In the Garden of Eden, God told Adam and Eve not to eat from one specific tree, but he didn't spell out every detail of what would happen if they did. He could have described the exact punishment in advance, so there'd be no chance they'd risk it. He didn't, on purpose. Having a real choice is what makes obedience mean something. <strong>When Adam and Eve ate the fruit anyway, what broke wasn't just a rule. It was trust.</strong>"
+      </div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 7 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">26&ndash;30 min</span>
+      <span class="step-title">Salvation</span>
+      <span class="step-slide">Slide 9</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Define salvation plainly: God forgiving our sins and restoring our friendship with him, through Jesus. Say clearly that God never stopped loving Adam and Eve, and never stops loving a student for making a mistake either.
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway: God Didn't Walk Away</div>
+      <div class="takeaway-body">
+        "God never stopped loving Adam and Eve just because they disobeyed him, and he will never stop loving you when you make mistakes either. That doesn't mean he just hands out a free pass to keep sinning forever. Forgiveness cost him everything. <strong>He gave his one and only Son, Jesus, to make that forgiveness possible.</strong> And God didn't wait to promise this. The very same moment Adam and Eve sinned, he had already promised a Savior was coming."
+      </div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"If God knew they'd sin, why didn't he just stop them?"</div>
+      <div class="student-says-a">Bring it back to Week 1: love that's forced isn't real love. God wanted Adam and Eve to choose him freely, the same way he wants that from you. A love that couldn't have gone wrong wouldn't have been a real choice at all.</div>
+    </div>
+  </div>
+
+  <div class="page-num">4</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 5 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>The Fall &amp; the Fruits &middot; Module 2</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 8 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">30&ndash;37 min</span>
+      <span class="step-title">The Fruits of the Holy Spirit + Galatians</span>
+      <span class="step-slide">Slides 10&ndash;11</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Bridge with the question on Slide 10: how do we choose better than Adam and Eve did? Tell the apple farm story below, then move to Slide 11 and read Galatians 5:22&ndash;23 aloud. Point out that Paul writes "fruit," singular, not "fruits."
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway: The Apple Farm</div>
+      <div class="takeaway-body">
+        "I worked on a friend's apple farm every summer when I was growing up, and here's something interesting about apple trees: if you just let one grow wild, it'll still produce fruit. Just small, bitter crab apples. To grow good, sweet apples, you have to prune it. We had to cut off the branches that shot straight up, because they were stealing the nutrients the good branches needed. <strong>God asks us to do the same thing with our own lives, pruning away the things that pull us toward temptation and away from him.</strong> But he doesn't leave us to do that pruning alone. When Jesus rose from the dead, he left us a helper: the Holy Spirit."
+      </div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"How do I know it's really my conscience talking, and not just what I want to do?"</div>
+      <div class="student-says-a">Good question, and worth taking seriously. God is always calling us toward good, because he is good, all the time. The more we study the life of Jesus, the more we recognize his voice, the same way you can grow so close to someone you can finish each other's sentences. That's a relationship you build over time, not something you're handed all at once.</div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 9 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">37&ndash;49 min</span>
+      <span class="step-title">The Twelve Fruits, In Detail</span>
+      <span class="step-slide">Slides 12, 16&ndash;18</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Slide 12 shows all twelve at once, as a full harvest. Then work through Slides 16&ndash;18 in three rounds of four, reading each fruit's kid-level example aloud. After each round, ask for a show of hands: who's done this recently without realizing it was one of the Fruits?
+    </div>
+    <div class="step-body">
+      <p>Chastity is the one that needs the most care. Keep it to respect and purity of heart, nothing more: not saying unkind things about how someone looks, treating your own body and other people's with respect. Don't go further than that at this age.</p>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"Why is chastity on the list? Isn't that a grown-up word?"</div>
+      <div class="student-says-a">Keep your answer short and age-appropriate: it means respecting yourself and others, and keeping your thoughts, words, and actions honest. That's the whole answer for this age. You don't need to say more, and you shouldn't.</div>
+    </div>
+
+    <div class="watch-box">
+      <div class="watch-col good">
+        <div class="watch-col-label">Signs It's Landing</div>
+        Hands going up for the "who's done this" check. Students connecting a fruit to a specific person they know, a teacher, a sibling, a friend.
+      </div>
+      <div class="watch-col watch">
+        <div class="watch-col-label">Signs They're Lost</div>
+        Twelve names blurring together. Slow down and pick just three to really land: kindness, patience, self-control. The rest can stay lighter.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">5</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 6 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>The Fall &amp; the Fruits &middot; Module 2</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 10 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">49&ndash;53 min</span>
+      <span class="step-title">Examination of Conscience</span>
+      <span class="step-slide">Slide 13</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Walk through the questions on the slide, then make it real with your own nightly routine below. This is what turns tonight's take-home from an assignment into a habit worth keeping.
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway: A Nightly Habit</div>
+      <div class="takeaway-body">
+        "Every night when I pray, I start by thanking God for the good things from my day, maybe it was something big, like a promotion, or something small, like a presentation going well or a kind word from someone. But then I do something called an Examination of Conscience: I look back and tell God, honestly, where I could have done better. <strong>I compare how I lived that day to how Jesus lived and how he told us to treat one another.</strong> When I fall short, I tell God I'm sorry and ask him to help me listen to my conscience better tomorrow."
+      </div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 11 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">53&ndash;57 min</span>
+      <span class="step-title">Discussion</span>
+      <span class="step-slide">Slide 14</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Start with the Pinocchio question, it calls back to Slide 5. Work down the list. The starred question is the stretch challenge if the class still has energy.
+    </div>
+    <div class="step-body">
+      <p>Don't rush the silence after a question. Call on students who haven't spoken yet before you rephrase.</p>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 12 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">57&ndash;60 min</span>
+      <span class="step-title">Take-Home + Closing Prayer</span>
+      <span class="step-slide">Slide 15</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Hand out the Examination of Conscience card from Workbook Chapter 2. Read Slide 15 aloud: try it every night this week. Close with a short prayer, an Act of Contrition or a simple original line works.
+    </div>
+    <div class="step-body">
+      <p>Remind students to scan the QR code in their workbook to unlock this chapter's digital content and XP.</p>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- HARD QUESTIONS -->
+  <div class="section-block">
+    <div class="section-heading">When Students Don't Get It</div>
+    <div class="step-body" style="margin-bottom:0.15in;">
+      <p>This lesson covers a lot of ground fast. A student who pushes back on the pacing or the logic is paying attention. Here's how to meet the ones most likely to come up.</p>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"If God forgave Adam and Eve right away, why do we still have to say sorry when we mess up?"</div>
+      <div class="student-says-a">Because forgiveness is offered, but a relationship still needs both people showing up. God's promise was immediate. Our own turning back to him, admitting what we did, asking for help, is how we actually receive it. That's what the Examination of Conscience is for.</div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"Why do bad things still happen if the Holy Spirit is helping us?"</div>
+      <div class="student-says-a">The Spirit doesn't take away free will, ours or anyone else's. He gives us the help to choose well. People still get to choose badly, and sometimes they do. That's not the Spirit failing. It's the same freedom Week 1 was about, still in play.</div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"Isn't self-control just about not eating too much candy?"</div>
+      <div class="student-says-a">That's a real example, and a fine place to start. Push it one step further: self-control is saying no to anything you want in the moment because you know it isn't good for you, or isn't good for someone else. Candy is the easy version. Most of the time it shows up in smaller, harder moments, like walking away from a fight instead of saying something you'd regret.</div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <div class="section-block">
+    <div class="section-heading">Before Next Class</div>
+    <div class="step-body">
+      <p><strong>Remind students</strong> to scan the QR code in Workbook Chapter 2 for XP and to unlock the digital chapter content.</p>
+      <p><strong>Next class: The Holy Trinity &amp; the New Commandment.</strong> Two weeks of free will, temptation, and the Spirit's help set up a natural next question: who exactly is this Holy Spirit, and how does he relate to the Father and the Son? That's where Week 3 begins.</p>
+    </div>
+  </div>
+
+  <div class="page-num">6</div>
+</div>

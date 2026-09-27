@@ -1,0 +1,830 @@
+<title>Who Is Jesus Christ Teacher's Guide</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy: #0f1b2d;
+  --gold: #c9a84c;
+  --light-gold: #e8d5a3;
+  --ink: #1a1a1a;
+  --page: #ffffff;
+  --offwhite: #faf8f4;
+  --rule: #d4c9b0;
+  --soft: #555;
+  --teacher-bg: #f4f1eb;
+  --takeaway-bg: #0f1b2d;
+}
+
+html { font-size: 11pt; }
+
+body {
+  background: #d0ccc4;
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+  padding-block: 0.4in;
+}
+
+.page {
+  background: var(--page);
+  width: 8.5in;
+  min-height: 11in;
+  margin: 0.4in auto;
+  padding: 0.8in 0.9in 0.85in;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  position: relative;
+}
+
+.running-header {
+  position: absolute;
+  top: 0.35in;
+  left: 0.9in;
+  right: 0.9in;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 7.5pt;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 0.5pt solid var(--rule);
+  padding-bottom: 0.1in;
+}
+
+.crux-mark { font-family: 'Playfair Display', serif; font-weight: 900; }
+
+.teacher-badge {
+  background: var(--navy);
+  color: white;
+  font-size: 6.5pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.06in 0.14in;
+  border-radius: 2px;
+}
+
+.guide-cover {
+  border-bottom: 2pt solid var(--navy);
+  padding-bottom: 0.3in;
+  margin-bottom: 0.35in;
+}
+
+.guide-eyebrow {
+  font-size: 7.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.12in;
+}
+
+.guide-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26pt;
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1.1;
+  margin-bottom: 0.08in;
+}
+
+.guide-sub {
+  font-size: 10pt;
+  color: var(--soft);
+  letter-spacing: 0.05em;
+}
+
+.at-a-glance {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.15in;
+  margin-top: 0.2in;
+  padding-top: 0.2in;
+  border-top: 0.5pt solid var(--rule);
+}
+
+.glance-label {
+  font-size: 6.5pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.05in;
+}
+
+.glance-value {
+  font-size: 9pt;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.4;
+}
+
+.section-block { margin-bottom: 0.32in; }
+
+.section-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.12in;
+  padding-bottom: 0.06in;
+  border-bottom: 0.5pt solid var(--rule);
+}
+
+.flow-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.1in;
+  font-size: 8.5pt;
+}
+
+.flow-table th {
+  background: var(--navy);
+  color: white;
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.07in 0.1in;
+  text-align: left;
+}
+
+.flow-table td {
+  padding: 0.07in 0.1in;
+  border-bottom: 0.5pt solid var(--rule);
+  vertical-align: top;
+  line-height: 1.45;
+  color: var(--soft);
+}
+
+.flow-table tr:nth-child(even) td { background: var(--offwhite); }
+
+.flow-table td:first-child {
+  font-weight: 700;
+  color: var(--navy);
+  white-space: nowrap;
+  width: 0.6in;
+}
+
+.flow-table td:nth-child(2) {
+  font-weight: 600;
+  color: var(--ink);
+  width: 1.5in;
+}
+
+.lesson-step { margin-bottom: 0.28in; }
+
+.step-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.15in;
+  margin-bottom: 0.1in;
+}
+
+.step-time {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: white;
+  background: var(--navy);
+  padding: 0.04in 0.1in;
+  border-radius: 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.step-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.step-slide {
+  font-size: 7pt;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-left: auto;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.step-body {
+  font-size: 9.5pt;
+  line-height: 1.7;
+  color: var(--soft);
+  margin-bottom: 0.1in;
+}
+
+.step-body p { margin-bottom: 0.08in; }
+.step-body strong { color: var(--ink); }
+
+.do-box {
+  background: var(--offwhite);
+  border-left: 3pt solid var(--rule);
+  padding: 0.1in 0.14in;
+  margin-bottom: 0.1in;
+  font-size: 9pt;
+  line-height: 1.6;
+  color: var(--soft);
+}
+
+.do-box strong { color: var(--navy); display: block; margin-bottom: 0.04in; font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase; }
+
+.story-text {
+  background: var(--offwhite);
+  border: 0.5pt solid var(--rule);
+  border-radius: 3px;
+  padding: 0.14in 0.18in;
+  margin-bottom: 0.12in;
+}
+
+.story-chapter { margin-bottom: 0.14in; }
+.story-chapter:last-child { margin-bottom: 0; }
+
+.story-chapter-label {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.05in;
+}
+
+.story-chapter-body {
+  font-family: 'Playfair Display', serif;
+  font-size: 9.5pt;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+.media-box {
+  background: #fbf2e3;
+  border: 0.5pt solid var(--gold);
+  border-radius: 3px;
+  padding: 0.12in 0.16in;
+  margin-bottom: 0.12in;
+  font-size: 8.5pt;
+  line-height: 1.6;
+  color: #6b5426;
+}
+.media-box strong { color: #8a6a1f; display: block; margin-bottom: 0.05in; font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase; }
+.media-box ul { margin: 0.05in 0 0; padding-left: 0.18in; }
+.media-box li { margin-bottom: 0.07in; }
+.media-box .clip-source { font-weight: 700; color: #8a6a1f; }
+
+.takeaway-box {
+  background: var(--takeaway-bg);
+  color: white;
+  padding: 0.18in 0.2in;
+  margin: 0.12in 0 0.1in;
+  border-radius: 3px;
+}
+
+.takeaway-label {
+  font-size: 6.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.1in;
+  display: flex;
+  align-items: center;
+  gap: 0.1in;
+}
+
+.takeaway-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(201,168,76,0.3);
+}
+
+.takeaway-body {
+  font-size: 9.5pt;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.88);
+  font-style: italic;
+}
+
+.takeaway-body strong { color: var(--light-gold); font-style: normal; }
+
+.student-says {
+  background: var(--teacher-bg);
+  border: 0.5pt solid var(--rule);
+  border-radius: 3px;
+  padding: 0.12in 0.15in;
+  margin: 0.1in 0;
+  font-size: 9pt;
+  line-height: 1.65;
+}
+
+.student-says-label {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.08in;
+}
+
+.student-says-q {
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 0.06in;
+  font-style: italic;
+}
+
+.student-says-a { color: var(--soft); line-height: 1.7; }
+
+.watch-box {
+  display: flex;
+  gap: 0.15in;
+  margin-top: 0.08in;
+}
+
+.watch-col {
+  flex: 1;
+  background: var(--offwhite);
+  border-top: 2pt solid var(--rule);
+  padding: 0.1in 0.12in;
+  font-size: 8.5pt;
+  line-height: 1.6;
+  color: var(--soft);
+}
+
+.watch-col-label {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.06in;
+}
+
+.watch-col.good { border-top-color: #3a7a4a; }
+.watch-col.good .watch-col-label { color: #3a7a4a; }
+.watch-col.watch { border-top-color: #9a6020; }
+.watch-col.watch .watch-col-label { color: #9a6020; }
+
+.page-num {
+  position: absolute;
+  bottom: 0.4in;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 8pt;
+  color: var(--rule);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+hr.step-rule {
+  border: none;
+  border-top: 0.5pt solid var(--rule);
+  margin: 0.2in 0;
+}
+
+@media print {
+  body { background: white; padding-block: 0; }
+  .page { margin: 0; box-shadow: none; page-break-after: always; }
+}
+
+@media (max-width: 900px) {
+  body { padding-inline: 12px; }
+  .page { width: 100%; min-height: 0; padding: 0.5in 0.4in; }
+  .at-a-glance { grid-template-columns: repeat(2, 1fr); }
+  .watch-box { flex-direction: column; }
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ══════════════════════════════════ PAGE 1 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>Who Is Jesus Christ? &middot; Week 4</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <div class="guide-cover">
+    <div class="guide-eyebrow">CRUX Companion &nbsp;&middot;&nbsp; Beginner's Edition &nbsp;&middot;&nbsp; Grade 4</div>
+    <div class="guide-title">Teacher's Guide<br>Who Is Jesus Christ?</div>
+    <div class="guide-sub">Pillar I &nbsp;&middot;&nbsp; What We Believe &nbsp;&middot;&nbsp; Follows the Trinity &amp; New Commandment lesson &nbsp;&middot;&nbsp; Use alongside the Classroom Presentation</div>
+
+    <div class="at-a-glance">
+      <div class="glance-item">
+        <div class="glance-label">Total Time</div>
+        <div class="glance-value">60 minutes</div>
+      </div>
+      <div class="glance-item">
+        <div class="glance-label">Materials</div>
+        <div class="glance-value">Screen/projector. No printed workbook chapter yet (Ch. 3 is listed but not built). "Build Your Player Card" is a ready-to-print take-home tied to this lesson.</div>
+      </div>
+      <div class="glance-item">
+        <div class="glance-label">Scripture</div>
+        <div class="glance-value">John 1:14 &middot; Matthew 16:15&ndash;16 &middot; Luke 24:5&ndash;6</div>
+      </div>
+      <div class="glance-item">
+        <div class="glance-label">Slides</div>
+        <div class="glance-value">crux-present-jesus.html &nbsp;&middot;&nbsp; 19 slides</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <div class="section-heading">Lesson at a Glance</div>
+    <table class="flow-table">
+      <thead>
+        <tr><th>Time</th><th>Section</th><th>What's Happening</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>0&ndash;2 min</td><td>Opening Prayer</td><td>Sign of the Cross. Quick recap of Who Is God, the Fall, and the Trinity.</td></tr>
+        <tr><td>2&ndash;4 min</td><td>Before We Begin</td><td>Slide 2. Jesus's own question, held for later.</td></tr>
+        <tr><td>4&ndash;7 min</td><td>The Incarnation</td><td>Slide 3. The headline of the whole lesson.</td></tr>
+        <tr><td>7&ndash;10 min</td><td>Where He Grew Up</td><td>Slide 4. Nazareth, a carpenter's trade, thirty quiet years.</td></tr>
+        <tr><td>10&ndash;17 min</td><td>John 1:14 + Fully God, Fully Man</td><td>Slides 5&ndash;6. The claim, then the call-and-response.</td></tr>
+        <tr><td>17&ndash;20 min</td><td>His Public Ministry</td><td>Slide 7. Three years, after thirty of waiting.</td></tr>
+        <tr><td>20&ndash;24 min</td><td>Peter's Confession</td><td>Slide 8. The opening question, answered.</td></tr>
+        <tr><td>24&ndash;31 min</td><td>The Title Christ + Resurrection</td><td>Slides 9&ndash;10. Messiah, then the empty tomb.</td></tr>
+        <tr><td>31&ndash;35 min</td><td>Why Both Natures Matter</td><td>Slide 11. The hinge into his own words.</td></tr>
+        <tr><td>35&ndash;38 min</td><td>His Own Words, Part 1</td><td>Slides 14&ndash;16. The bridge, then Mark 10 and Matthew 7.</td></tr>
+        <tr><td>38&ndash;46 min</td><td>His Own Words, Part 2</td><td>Slides 17, 19 &amp; 18. Mark 1, John 15, and Luke 23.</td></tr>
+        <tr><td>46&ndash;53 min</td><td>Discussion</td><td>Slide 12. Give it real room after the last passage lands.</td></tr>
+        <tr><td>53&ndash;60 min</td><td>Take-Home + Closing</td><td>Slide 13. Their own answer, in their own words.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-block">
+    <div class="section-heading">The Goal of This Lesson</div>
+    <div class="step-body">
+      <p>Three weeks of foundation land here. Free will, the Fall, the Trinity, all of it points at one Person. The opening question and the closing question are the same question, Jesus's own: <strong>"Who do you say that I am?"</strong> Everything between the two askings, the doctrine, the scripture, his own words, exists to help a fourth grader answer that honestly instead of reciting it.</p>
+      <p>The second half of the lesson is a deliberate shift, from doctrine about Jesus to Jesus's own words. Everything through "Why Both Natures Matter" answers <em>who</em> he is. The five passages that follow answer <em>what that actually looks like</em>, in things he really said, not a summary of him. Don't rush this half to save time elsewhere.</p>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Core Takeaway</div>
+      <div class="takeaway-body">
+        "A man who was not God cannot wipe our sins away with his actions. <strong>A human cannot save humanity. Only a God who is both human and eternal can do that.</strong> That's the whole reason both natures have to be true at once, not just one or the other."
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">1</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 2 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>Who Is Jesus Christ? &middot; Week 4</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <div class="section-heading" style="margin-bottom:0.2in;">Teaching the Lesson: Step by Step</div>
+
+  <!-- STEP 1 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">0&ndash;2 min</span>
+      <span class="step-title">Opening Prayer</span>
+      <span class="step-slide">Slide 1</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Lead the Sign of the Cross. In one line, remind the class where the last three weeks have gone: who God is, what the Fall broke, and the Trinity. Today narrows all of it to one Person.
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 2 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">2&ndash;4 min</span>
+      <span class="step-title">Before We Begin</span>
+      <span class="step-slide">Slide 2</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Read Jesus's own question aloud: <em>"But who do you say that I am?"</em> Take a few honest answers without correcting any of them. Say the class will come back to how Peter answered by the end of class. Don't answer it yourself yet.
+    </div>
+    <div class="step-body">
+      <p>You already have your own answer ready. It's waiting for you on Slide 8's Takeaway box, once Peter gives his. Hold it until then.</p>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 3 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">4&ndash;7 min</span>
+      <span class="step-title">The Incarnation</span>
+      <span class="step-slide">Slide 3</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      This is the headline of the whole lesson. Say it slowly: fully God and fully human, at the same time, not half of each. Don't rush past it to get to what's next.
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 4 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">7&ndash;10 min</span>
+      <span class="step-title">Where He Grew Up</span>
+      <span class="step-slide">Slide 4</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Name Nazareth as a small, unremarkable town on purpose. Thirty ordinary years, learning a trade, before anyone knew who he really was. God didn't need an entrance.
+    </div>
+  </div>
+
+  <div class="page-num">2</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 3 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>Who Is Jesus Christ? &middot; Week 4</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">10&ndash;17 min</span>
+      <span class="step-title">John 1:14 + Fully God, Fully Man</span>
+      <span class="step-slide">Slides 5&ndash;6</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Read John 1:14 aloud. "Became flesh" means actually became human, not appeared human. Move to Slide 6 and run it as call-and-response: read each example, have students shout "human" or "God." Weeping is the one that usually surprises them into thinking harder.
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"If Jesus is God, why did he get hungry and tired? Doesn't that seem beneath him?"</div>
+      <div class="student-says-a">That's the whole point of the Incarnation, not a problem with it. He wasn't play-acting at being human. He really got hungry, really got tired, really died. If any of that had been fake, he wouldn't have actually become one of us. He'd just be visiting.</div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 6 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">17&ndash;20 min</span>
+      <span class="step-title">His Public Ministry</span>
+      <span class="step-slide">Slide 7</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Keep this an overview, not a deep dive into any one miracle. The point is scope: thirty quiet years, then three intense ones. Twelve disciples, parables, healing, all of it in that short window.
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 7 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">20&ndash;24 min</span>
+      <span class="step-title">Peter's Confession</span>
+      <span class="step-slide">Slide 8</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Read Matthew 16:15&ndash;16. Let students notice the callback to Slide 2 themselves before you point it out. Peter doesn't say "a good teacher." He says Messiah, Son of the living God. Then give your own answer below.
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway: Your Own Answer</div>
+      <div class="takeaway-body">
+        "Jesus is more than just a human who sacrificed himself for the greater good. He is God made flesh. Above and beyond any human who has ever walked the face of the earth. We sometimes take for granted that he was a martyr, because we've seen so many stories of warriors and even saints who gave their lives for a greater cause, but Jesus's sacrifice was so much bigger than giving his own life. <strong>He is the Son of the living God, with the authority to forgive sins, and by being willing to give himself up on the cross, he gave us a path to the Father.</strong> Better yet, he wants an actual relationship with us, through the Holy Spirit. Jesus is more than a hero or someone to look up to. He's a best friend, the ultimate teacher, and the path to eternal life. He is the way, the truth, and the life, and no one comes to the Father except through him."
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">3</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 4 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>Who Is Jesus Christ? &middot; Week 4</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 8 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">24&ndash;31 min</span>
+      <span class="step-title">The Title Christ + Resurrection</span>
+      <span class="step-slide">Slides 9&ndash;10</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Clear up the vocabulary first: Christ isn't a last name. It's a title, "Anointed One," the same word as Messiah in Hebrew. Then move to Slide 10 and read Luke 24:5&ndash;6 aloud. He didn't almost die. He really died, and really rose.
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway: Reading Isaiah 53</div>
+      <div class="takeaway-body">
+        "Reading Isaiah 53, and then reading the Gospel accounts of the crucifixion, that was the first time I really started to see Jesus wasn't just a person who came at the right time. <strong>He was the Messiah who was promised from the very beginning.</strong>"
+      </div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 9 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">31&ndash;35 min</span>
+      <span class="step-title">Why Both Natures Matter</span>
+      <span class="step-slide">Slide 11</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      To save us, Jesus had to be fully God, strong enough to defeat sin and death. He also had to be fully human, actually representing us, not rescuing us from the outside. Both had to be true. This is the hinge into what comes next: his own words, showing what that love actually looks like.
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway: The Coach Who's Taken the Hits</div>
+      <div class="takeaway-body">
+        "When I was playing sports, I had a hard time listening to people who had never played the game before tell me how to practice, prepare, or play. There was just something different about a coach who had put on the cleats and pads before and taken hits on the playing field. <strong>Someone who hasn't taken a head-on hit from a middle linebacker telling you to just hit the hole doesn't give you much confidence in their opinion.</strong> That's the plainest version of why Jesus had to actually become one of us, not just watch from outside and give instructions."
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">4</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 5 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>Who Is Jesus Christ? &middot; Week 4</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 10 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">35&ndash;38 min</span>
+      <span class="step-title">His Own Words, Part 1</span>
+      <span class="step-slide">Slides 14&ndash;16</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Slide 14 signals the shift in one line: everything so far has been about who Jesus is, now it's about what he actually said and did. Then read Slide 15 (Mark 10:13&ndash;16) and Slide 16 (Matthew 7:12) straight off the screen, each is short enough to read exactly as written.
+    </div>
+    <div class="step-body">
+      <p>On Mark 10: land the starred line personally. This age group tends to assume the "important" parts of Jesus's story are about adults. This is the one moment that's explicitly about them.</p>
+      <p>On Matthew 7:12: if Week 1's conscience/free-will discussion landed well, call back to it here. The Golden Rule is conscience compressed into one usable sentence.</p>
+    </div>
+
+    <div class="media-box">
+      <strong>Optional: Bring It to Life on Screen</strong>
+      If you want a video moment alongside these passages, both of these are widely used in Catholic classrooms. Preview and clip the exact scene yourself before class; don't queue up a full episode unsupervised.
+      <ul>
+        <li><span class="clip-source">The Chosen, Season 1, Episode 3</span>, &ldquo;Jesus Loves the Little Children.&rdquo; Built entirely around Jesus with kids, the single best pairing for the Mark 10 passage above.</li>
+        <li><span class="clip-source">The King of Kings</span> (2025, Angel Studios, rated PG, animated). Built specifically for family and classroom viewing, unlike most Chosen episodes. Covers Jesus's whole life in about 90 minutes, so it's a film for a different class period, not a quick clip. Streams on the Angel app.</li>
+      </ul>
+      A note on The Chosen: it dramatizes some material beyond the Gospels, normal for the genre, and a few episodes carry content not meant for this age group. The episode above is gentle and compassion-focused, but preview your exact clip length rather than trusting the episode synopsis alone.
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 11 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">38&ndash;46 min</span>
+      <span class="step-title">His Own Words, Part 2</span>
+      <span class="step-slide">Slides 17, 19 &amp; 18</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Read Slide 17 (Mark 1:40&ndash;42), Slide 19 (John 15:12&ndash;13), and Slide 18 (Luke 23:34) in order, straight off the screen. Let Luke 23:34 close the block quietly. Move to Discussion right after, no need to add anything on top of it.
+    </div>
+    <div class="step-body">
+      <p>On Mark 1: this is concrete and visual for this age. A man everyone else was required to avoid, and Jesus touched him anyway. Ask who's someone other kids avoid, and what going toward them instead would actually look like.</p>
+      <p>On John 15: this is the direct thread back to the Resurrection slide earlier in the lesson. Jesus is explaining, in his own words, the meaning of what you already taught him doing.</p>
+      <p>On Luke 23:34, for your own background, not for class: this line is bracketed in the NABRE because it's absent from some of the oldest Greek manuscripts of Luke. It's long-established in Christian tradition and worth teaching plainly at this level. Not something to raise with the class.</p>
+    </div>
+
+    <div class="media-box">
+      <strong>Optional: A Second Clip</strong>
+      <ul>
+        <li><span class="clip-source">The Chosen, Season 1, Episode 7</span>, &ldquo;Invitations.&rdquo; Jesus calls Matthew, a tax collector everyone else despised, and eats at his house. Pairs naturally with the Mark 1 passage's theme: Jesus going toward the person everyone else was avoiding.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="page-num">5</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 6 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>Who Is Jesus Christ? &middot; Week 4</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 12 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">46&ndash;53 min</span>
+      <span class="step-title">Discussion</span>
+      <span class="step-slide">Slide 12</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Start with the first question, it's the whole lesson in one ask. Give it real room. The class just heard five passages land back to back. Don't rush to fill the quiet after you ask it.
+    </div>
+
+    <div class="watch-box">
+      <div class="watch-col good">
+        <div class="watch-col-label">Signs It's Landing</div>
+        Students referencing a specific passage by name, not just "Jesus was nice." Genuine hesitation before answering the second question, that's the fully-God/fully-human tension actually being felt, not just recited.
+      </div>
+      <div class="watch-col watch">
+        <div class="watch-col-label">Signs They're Lost</div>
+        Flat, generic answers ("he's nice," "he's good"). Ask directly: "Which of the five things Jesus said or did stuck with you most?"
+      </div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 13 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">53&ndash;60 min</span>
+      <span class="step-title">Take-Home + Closing Prayer</span>
+      <span class="step-slide">Slide 13</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Assign Slide 13: answer Jesus's question for yourself this week, in writing or out loud, in their own words, not what they think they're supposed to say. If you're using the "Build Your Player Card" printable, hand it out now. Close with a short prayer.
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- HARD QUESTIONS -->
+  <div class="section-block">
+    <div class="section-heading">When Students Don't Get It</div>
+    <div class="step-body" style="margin-bottom:0.15in;">
+      <p>This lesson asks a lot of a fourth grader in one sitting. A hard question here usually means the lesson actually landed.</p>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"If Jesus knew he'd rise again, was the Cross even a real sacrifice?"</div>
+      <div class="student-says-a">Yes. Knowing the ending doesn't make the cost less real while you're paying it. He really suffered, really died, on Good Friday, with no shortcut through it. Ask a student who's ever finished something genuinely hard: did knowing you'd finish eventually make the hard part not hurt?</div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"Why did Jesus have to actually die? Couldn't God just forgive us without that?"</div>
+      <div class="student-says-a">A human being couldn't undo what sin broke, and God the Father wasn't the one who needed to become human to fix it from the inside. Only someone who was both God, strong enough to defeat death, and human, able to actually stand in our place, could do it. That's the fully-God, fully-man answer again, from a different angle.</div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"Is the Holy Spirit just a feeling, or is he actually a person?"</div>
+      <div class="student-says-a">A real Person, the Third Person of the Trinity, same as students learned in the Trinity lesson. Not a feeling that comes and goes. Fully present, fully with each person who follows Jesus, whether that person notices him in the moment or not.</div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <div class="section-block">
+    <div class="section-heading">Before Next Class</div>
+    <div class="step-body">
+      <p><strong>No workbook chapter for this module yet.</strong> The presentation, the discussion, and their own written answer to "who do you say that I am" are this week's full take-home. The "Build Your Player Card" printable is available if you want a hands-on piece to send home alongside it.</p>
+      <p><strong>Next class: Mary &amp; the Saints.</strong> Three weeks on who Jesus is set up a natural next question: who are the people who followed him well, and what does that following actually look like in a real life?</p>
+    </div>
+  </div>
+
+  <div class="page-num">6</div>
+</div>

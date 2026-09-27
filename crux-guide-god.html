@@ -1,0 +1,781 @@
+<title>Who Is God? Teacher's Guide</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy: #0f1b2d;
+  --gold: #c9a84c;
+  --light-gold: #e8d5a3;
+  --ink: #1a1a1a;
+  --page: #ffffff;
+  --offwhite: #faf8f4;
+  --rule: #d4c9b0;
+  --soft: #555;
+  --teacher-bg: #f4f1eb;
+  --takeaway-bg: #0f1b2d;
+}
+
+html { font-size: 11pt; }
+
+body {
+  background: #d0ccc4;
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+  padding-block: 0.4in;
+}
+
+.page {
+  background: var(--page);
+  width: 8.5in;
+  min-height: 11in;
+  margin: 0.4in auto;
+  padding: 0.8in 0.9in 0.85in;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  position: relative;
+}
+
+/* ── RUNNING HEADER ── */
+.running-header {
+  position: absolute;
+  top: 0.35in;
+  left: 0.9in;
+  right: 0.9in;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 7.5pt;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 0.5pt solid var(--rule);
+  padding-bottom: 0.1in;
+}
+
+.crux-mark { font-family: 'Playfair Display', serif; font-weight: 900; }
+
+.teacher-badge {
+  background: var(--navy);
+  color: white;
+  font-size: 6.5pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.06in 0.14in;
+  border-radius: 2px;
+}
+
+/* ── COVER HEADER ── */
+.guide-cover {
+  border-bottom: 2pt solid var(--navy);
+  padding-bottom: 0.3in;
+  margin-bottom: 0.35in;
+}
+
+.guide-eyebrow {
+  font-size: 7.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.12in;
+}
+
+.guide-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28pt;
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1.1;
+  margin-bottom: 0.08in;
+}
+
+.guide-sub {
+  font-size: 10pt;
+  color: var(--soft);
+  letter-spacing: 0.05em;
+}
+
+.at-a-glance {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.15in;
+  margin-top: 0.2in;
+  padding-top: 0.2in;
+  border-top: 0.5pt solid var(--rule);
+}
+
+.glance-label {
+  font-size: 6.5pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.05in;
+}
+
+.glance-value {
+  font-size: 9pt;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.4;
+}
+
+/* ── SECTION HEADING ── */
+.section-block { margin-bottom: 0.32in; }
+
+.section-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.12in;
+  padding-bottom: 0.06in;
+  border-bottom: 0.5pt solid var(--rule);
+}
+
+/* ── LESSON FLOW TABLE ── */
+.flow-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.1in;
+  font-size: 9pt;
+}
+
+.flow-table th {
+  background: var(--navy);
+  color: white;
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.08in 0.12in;
+  text-align: left;
+}
+
+.flow-table td {
+  padding: 0.08in 0.12in;
+  border-bottom: 0.5pt solid var(--rule);
+  vertical-align: top;
+  line-height: 1.5;
+  color: var(--soft);
+}
+
+.flow-table tr:nth-child(even) td { background: var(--offwhite); }
+
+.flow-table td:first-child {
+  font-weight: 700;
+  color: var(--navy);
+  white-space: nowrap;
+  width: 0.65in;
+}
+
+.flow-table td:nth-child(2) {
+  font-weight: 600;
+  color: var(--ink);
+  width: 1.5in;
+}
+
+/* ── LESSON STEP ── */
+.lesson-step { margin-bottom: 0.28in; }
+
+.step-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.15in;
+  margin-bottom: 0.1in;
+}
+
+.step-time {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: white;
+  background: var(--navy);
+  padding: 0.04in 0.1in;
+  border-radius: 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.step-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.step-slide {
+  font-size: 7pt;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-left: auto;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.step-body {
+  font-size: 9.5pt;
+  line-height: 1.7;
+  color: var(--soft);
+  margin-bottom: 0.1in;
+}
+
+.step-body p { margin-bottom: 0.08in; }
+.step-body strong { color: var(--ink); }
+
+/* ── CALLOUT BOXES ── */
+.do-box {
+  background: var(--offwhite);
+  border-left: 3pt solid var(--rule);
+  padding: 0.1in 0.14in;
+  margin-bottom: 0.1in;
+  font-size: 9pt;
+  line-height: 1.6;
+  color: var(--soft);
+}
+
+.do-box strong { color: var(--navy); display: block; margin-bottom: 0.04in; font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase; }
+
+.takeaway-box {
+  background: var(--takeaway-bg);
+  color: white;
+  padding: 0.18in 0.2in;
+  margin: 0.12in 0 0.1in;
+  border-radius: 3px;
+}
+
+.takeaway-label {
+  font-size: 6.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.1in;
+  display: flex;
+  align-items: center;
+  gap: 0.1in;
+}
+
+.takeaway-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(201,168,76,0.3);
+}
+
+.takeaway-body {
+  font-size: 9.5pt;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.88);
+  font-style: italic;
+}
+
+.takeaway-body strong { color: var(--light-gold); font-style: normal; }
+
+.student-says {
+  background: var(--teacher-bg);
+  border: 0.5pt solid var(--rule);
+  border-radius: 3px;
+  padding: 0.12in 0.15in;
+  margin: 0.1in 0;
+  font-size: 9pt;
+  line-height: 1.65;
+}
+
+.student-says-label {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.08in;
+}
+
+.student-says-q {
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 0.06in;
+  font-style: italic;
+}
+
+.student-says-a { color: var(--soft); line-height: 1.7; }
+
+.watch-box {
+  display: flex;
+  gap: 0.15in;
+  margin-top: 0.08in;
+}
+
+.watch-col {
+  flex: 1;
+  background: var(--offwhite);
+  border-top: 2pt solid var(--rule);
+  padding: 0.1in 0.12in;
+  font-size: 8.5pt;
+  line-height: 1.6;
+  color: var(--soft);
+}
+
+.watch-col-label {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.06in;
+}
+
+.watch-col.good { border-top-color: #3a7a4a; }
+.watch-col.good .watch-col-label { color: #3a7a4a; }
+.watch-col.watch { border-top-color: #9a6020; }
+.watch-col.watch .watch-col-label { color: #9a6020; }
+
+.page-num {
+  position: absolute;
+  bottom: 0.4in;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 8pt;
+  color: var(--rule);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+hr.step-rule {
+  border: none;
+  border-top: 0.5pt solid var(--rule);
+  margin: 0.2in 0;
+}
+
+@media print {
+  body { background: white; padding-block: 0; }
+  .page { margin: 0; box-shadow: none; page-break-after: always; }
+}
+
+@media (max-width: 900px) {
+  body { padding-inline: 12px; }
+  .page { width: 100%; min-height: 0; padding: 0.5in 0.4in; }
+  .at-a-glance { grid-template-columns: repeat(2, 1fr); }
+  .watch-box { flex-direction: column; }
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ══════════════════════════════════ PAGE 1 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>Who Is God? &middot; Module 1</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <div class="guide-cover">
+    <div class="guide-eyebrow">CRUX Companion &nbsp;&middot;&nbsp; Beginner's Edition &nbsp;&middot;&nbsp; Grade 4</div>
+    <div class="guide-title">Teacher's Guide<br>Who Is God?</div>
+    <div class="guide-sub">Pillar I &nbsp;&middot;&nbsp; What We Believe &nbsp;&middot;&nbsp; Week 1 of the &ldquo;Who Is God?&rdquo; two-part unit &nbsp;&middot;&nbsp; Use alongside the Classroom Presentation</div>
+
+    <div class="at-a-glance">
+      <div class="glance-item">
+        <div class="glance-label">Total Time</div>
+        <div class="glance-value">60 minutes</div>
+      </div>
+      <div class="glance-item">
+        <div class="glance-label">Materials</div>
+        <div class="glance-value">Screen/projector for the presentation. No printed workbook chapter for this module yet. The presentation and discussion carry the full lesson.</div>
+      </div>
+      <div class="glance-item">
+        <div class="glance-label">Scripture</div>
+        <div class="glance-value">Jeremiah 1:5</div>
+      </div>
+      <div class="glance-item">
+        <div class="glance-label">Slides</div>
+        <div class="glance-value">crux-present-god.html &nbsp;&middot;&nbsp; 12 slides</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <div class="section-heading">Lesson at a Glance</div>
+    <table class="flow-table">
+      <thead>
+        <tr><th>Time</th><th>Section</th><th>What's Happening</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>0&ndash;2 min</td><td>Opening Prayer</td><td>Sign of the Cross as a class. Title slide on screen.</td></tr>
+        <tr><td>2&ndash;5 min</td><td>Before We Begin</td><td>Slide 2. The opening question, held in silence.</td></tr>
+        <tr><td>5&ndash;10 min</td><td>God the Creator</td><td>Slide 3. Creation out of nothing, out of love.</td></tr>
+        <tr><td>10&ndash;16 min</td><td>Made in God's Image</td><td>Slides 4&ndash;5. Soul, intellect, free will. Taught through the dog comparison.</td></tr>
+        <tr><td>16&ndash;24 min</td><td>Why Free Will Matters</td><td>Slide 6. The hinge of the lesson. Marriage analogy, a nod to Adam &amp; Eve.</td></tr>
+        <tr><td>24&ndash;33 min</td><td>Our Father + Scripture</td><td>Slides 7&ndash;8. From Creator to Father. Jeremiah 1:5, read quietly.</td></tr>
+        <tr><td>33&ndash;40 min</td><td>Prayer and Guidance</td><td>Slide 9. Conscience, free will, and the bullying scenario.</td></tr>
+        <tr><td>40&ndash;50 min</td><td>Discussion</td><td>Slide 10. Let it breathe. This is the room to think out loud.</td></tr>
+        <tr><td>50&ndash;55 min</td><td>Faith, Hope, Charity</td><td>Slide 11. First introduction. These come back all year.</td></tr>
+        <tr><td>55&ndash;60 min</td><td>Take-Home + Closing</td><td>Slide 12. Assign the Our Father. Close by praying it together.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="section-block">
+    <div class="section-heading">The Goal of This Lesson</div>
+    <div class="step-body">
+      <p>Students won't leave today able to define God theologically, and that's not the point. The goal is to move them from "God made the world," a fact they likely already hold, to "God made <em>me</em>, on purpose, out of love, and wants to know me," a relationship they may not yet feel. Everything in this lesson serves that one shift: the soul/intellect/free will framework, the pivot to Father, the conscience discussion.</p>
+      <p>This is also the first of two linked lessons. Free will is introduced here, and Adam and Eve are only named in passing. That's deliberate. Next week's module, <strong>The Fall &amp; the Fruits of the Spirit</strong>, picks that thread back up. Don't resolve it today.</p>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Core Takeaway</div>
+      <div class="takeaway-body">
+        "When we live with faith, hope, and charity, God sees it, and he loves us for it. <strong>And when God calls us home to heaven, we won't be there alone.</strong> We'll be with him, and with everyone else who loved him too, together again, forever. That's what today is actually about."
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">1</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 2 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>Who Is God? &middot; Module 1</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <div class="section-heading" style="margin-bottom:0.2in;">Teaching the Lesson: Step by Step</div>
+
+  <!-- STEP 1 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">0&ndash;2 min</span>
+      <span class="step-title">Opening Prayer</span>
+      <span class="step-slide">Slide 1</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Lead the class in the Sign of the Cross with the title slide on screen. Ask, casually, where they think the world came from. You're not looking for a right answer. You're just warming up the room before the real question hits on Slide 2.
+    </div>
+    <div class="step-body">
+      <p>Whatever they say, space, dinosaurs, "I don't know," is fine. You're not correcting it. You're setting up the contrast for what comes next.</p>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 2 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">2&ndash;5 min</span>
+      <span class="step-title">Before We Begin</span>
+      <span class="step-slide">Slide 2</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Read the question aloud: <em>"Before anything existed, what was there?"</em> Then stop talking. Let it sit in real silence for 10&ndash;15 seconds before you say anything else.
+    </div>
+    <div class="step-body">
+      <p>This is the question the whole lesson answers: God, and only God. Don't answer it yet yourself. Let it hang as you move into Slide 3. Fourth graders rarely get handed real silence in a classroom. Give it to them anyway.</p>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 3 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">5&ndash;10 min</span>
+      <span class="step-title">God the Creator</span>
+      <span class="step-slide">Slide 3</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Walk through Slide 3's three points. Land hard on the middle one: God didn't build the world out of material that was already sitting there. He made it out of nothing, freely, needing no help.
+    </div>
+    <div class="step-body">
+      <p>Kids will not naturally separate "God organized existing stuff" from "God made it from nothing." That distinction is the whole point of the slide. If a student asks "made it out of what, then?", that's the right question. The honest answer: nothing else at all. Just his own power and love.</p>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway: Why This Matters</div>
+      <div class="takeaway-body">
+        "Everything around us is a piece of his creation. Just like we wouldn't want anyone to abuse something we made ourselves, <strong>it saddens God when he sees his creation mistreated.</strong> As part of his creation, we're called to respect the people and things he created. Doing that is how we show him we love and respect him too."
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">2</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 3 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>Who Is God? &middot; Module 1</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">10&ndash;16 min</span>
+      <span class="step-title">Made in God's Image</span>
+      <span class="step-slide">Slides 4&ndash;5</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Slide 4 names the three gifts: soul, intellect, free will. Before you explain intellect in the abstract, jump to Slide 5 and open with the dog. Ask if anyone has a pet, or use one you know about.
+    </div>
+    <div class="step-body">
+      <p>This comparison is the strongest hook in the first half of the lesson. Lead with it, not the vocabulary. Get the dog example landed first, then circle back and name the three words on Slide 4 now that the idea is already concrete.</p>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway: The Dog Comparison</div>
+      <div class="takeaway-body">
+        "A dog can love you back. It has enough will to choose things, like when to go for a walk. <strong>But it can't wonder 'why am I here?' Only we can do that.</strong> The ability to be amazed at the world he created, and to ask why we're here, is what the Bible means when it says we're made in God's image."
+      </div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"So my dog doesn't have a soul? That seems mean."</div>
+      <div class="student-says-a">You can say: God loves every part of his creation, including your dog, and your dog loves you in a real way too. But the Bible teaches that human beings carry something no other creature does: a soul that lives forever, the ability to reason, and the freedom to choose. Your dog isn't loved any less for that. You just matter in a specific way nothing else does.</div>
+    </div>
+
+    <div class="watch-box">
+      <div class="watch-col good">
+        <div class="watch-col-label">Signs It's Landing</div>
+        Kids offering their own pet stories. Someone asks a "why" question unprompted. That's the gift you're describing, happening in real time. Point that out if it happens.
+      </div>
+      <div class="watch-col watch">
+        <div class="watch-col-label">Signs They're Lost</div>
+        Confusion about "soul" as a word. Ground it again: it's the part of you that will still exist and be with God even after your body doesn't.
+      </div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 5 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">16&ndash;24 min</span>
+      <span class="step-title">Why Free Will Matters</span>
+      <span class="step-slide">Slide 6</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      This slide is the hinge of the whole lesson. If time runs short anywhere else, protect this one. Use the marriage analogy below in your own words, then let the slide's closing line about Adam and Eve land as a single sentence. Don't expand it into a full story.
+    </div>
+    <div class="step-body">
+      <p>Resist the urge to explain the Fall right now. It's a cliffhanger by design. Next week's lesson is built entirely around what happens next. A one-sentence acknowledgment is the right amount today.</p>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway: The Marriage Analogy</div>
+      <div class="takeaway-body">
+        "Think about someone you love more than anything in the world. Now imagine they didn't have a choice but to love you back. No way to ever say no. <strong>Would that really be love, or would they just be there for entertainment, like a puppet?</strong> Free will means our love for God can be real. Adam and Eve were given that same freedom, and they chose to disobey. God knew that was possible. He gave them the choice anyway."
+      </div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"If God knew they'd mess up, why did he let them choose at all?"</div>
+      <div class="student-says-a">That's the sharpest question you can ask today, and it's exactly the right one. Hold onto it. Say: that's actually where next week's whole lesson picks up. For now, just sit with this: love that's forced isn't really love. God wanted the real thing.</div>
+    </div>
+  </div>
+
+  <div class="page-num">3</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 4 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>Who Is God? &middot; Module 1</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 6 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">24&ndash;33 min</span>
+      <span class="step-title">Our Father + Scripture</span>
+      <span class="step-slide">Slides 7&ndash;8</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Slide 7 makes the pivot from Creator to Father. Slow your pace here on purpose. Move to Slide 8 and read Jeremiah 1:5 aloud yourself, slowly, then hold quiet for a few seconds before moving on.
+    </div>
+    <div class="step-body">
+      <p>This is the emotional center of the whole lesson, more than the free-will discussion. It's meant to feel personal, not doctrinal. Don't over-explain the verse. Let it do the work.</p>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway: From Creator to Father</div>
+      <div class="takeaway-body">
+        "God is more than just our creator. Jesus teaches us that God is our Father in heaven who has loved us since before we were born. <strong>He knew and loved us personally before our parents on earth ever even met.</strong> Just like our parents on earth, God loves us and wants what is good for us. He wants a relationship that goes beyond just showing up on Sundays."
+      </div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 7 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">33&ndash;40 min</span>
+      <span class="step-title">Prayer and Guidance</span>
+      <span class="step-slide">Slide 9</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Use the bullying scenario on the slide as a live moment, not a rhetorical question. Actually pause and let a few students answer before you move on. This is meant to be discussed, not just read.
+    </div>
+    <div class="step-body">
+      <p>The goal is to make conscience concrete. It's the voice inside that tells you right from wrong, and free will means you can choose to listen to it or ignore it, every single day, in small moments exactly like this one.</p>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway: The Bullying Example</div>
+      <div class="takeaway-body">
+        "If a person in your class is being made fun of, do you stand by and say nothing? Or even laugh along? Or do you stand up for that person like Jesus would, and say <strong>'that's not right'?</strong> God gives us the option either way. But it makes him happy when we do what's good. That's your conscience talking. Free will means you get to choose whether you listen to it."
+      </div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"What if I don't know what the right choice even is?"</div>
+      <div class="student-says-a">That's honest, and it happens to adults too. Say: that's part of why we keep coming back to church, to Scripture, and to praying. It trains your conscience over time, so it gets clearer, not louder. You're not expected to have it all figured out at ten years old.</div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 8 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">40&ndash;50 min</span>
+      <span class="step-title">Discussion</span>
+      <span class="step-slide">Slide 10</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Start with the first question and work down. The starred question ("explain free will to a friend, in your own words") is the stretch challenge. Only reach for it if the class still has energy and time to spare.
+    </div>
+    <div class="step-body">
+      <p>Don't rush to fill silence after you ask a question. Call on students who haven't spoken yet before you re-ask or rephrase.</p>
+    </div>
+
+    <div class="watch-box">
+      <div class="watch-col good">
+        <div class="watch-col-label">Signs It's Landing</div>
+        Personal answers, not textbook ones. A student references something that actually happened to them. Quiet after a question is usually thinking, not checking out.
+      </div>
+      <div class="watch-col watch">
+        <div class="watch-col-label">Signs They're Lost</div>
+        Flat one-word answers across the room. Try: "Has anyone ever seen someone stand up for a friend? What happened?"
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">4</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 5 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>Who Is God? &middot; Module 1</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 9 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">50&ndash;55 min</span>
+      <span class="step-title">Faith, Hope, and Charity</span>
+      <span class="step-slide">Slide 11</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Introduce all three terms clearly. This is the first time students hear "theological virtues" named directly, and they'll come back across every module this year. Name them slowly and distinctly. Don't rush through them as one list.
+    </div>
+    <div class="step-body">
+      <p>You don't need a long illustration for each. A single clear sentence per virtue, said with weight, does more here than an extended example.</p>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway: The Three Virtues</div>
+      <div class="takeaway-body">
+        "Faith is believing in God and trusting that he will help us, even during difficult times. Hope is trusting in God's promises, and having confidence we'll be with him in heaven someday. <strong>Charity is loving God above all things, and showing love to others through kindness and helping those in need.</strong> When we live with faith, hope, and charity, God sees it, and he loves us for it."
+      </div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 10 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">55&ndash;60 min</span>
+      <span class="step-title">Take-Home + Closing Prayer</span>
+      <span class="step-slide">Slide 12</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Read Slide 12 aloud: pray the Our Father once each day this week, and before praying it, think of one gift God gave: soul, mind, or the freedom to choose. Then close class by praying the Our Father together, right now, out loud.
+    </div>
+    <div class="step-body">
+      <p>Closing on the actual prayer, not just an assignment to do it later, is what makes the take-home stick. The last thing students hear in class should be spoken to God, not read off a slide.</p>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- HARD QUESTIONS -->
+  <div class="section-block">
+    <div class="section-heading">When Students Don't Get It</div>
+    <div class="step-body" style="margin-bottom:0.15in;">
+      <p>A sharp question today is a good sign, not a problem to shut down. Here's how to meet the ones most likely to come up.</p>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"Why did God make us if he doesn't need us?"</div>
+      <div class="student-says-a">Because that's what makes it love and not loneliness. God didn't create us to fill a gap in himself. He's already complete. He created us freely, out of love, to share his life with us. That's a gift, not a need being filled.</div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"How do we know God is really our Father and not just a story people tell?"</div>
+      <div class="student-says-a">Fair question. Say: we call God "Father" because Jesus himself taught us to, not because someone guessed it or made it sound nice. That's a specific claim Christians make that most other beliefs about God don't. He told us directly who he is to us.</div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"My family doesn't really do church much. Does God still love me the same?"</div>
+      <div class="student-says-a">Yes, completely, and that's worth saying plainly. Today's whole lesson is that God loved you before you were even born, before anyone in your family did anything at all. Showing up isn't what earns his love. It's just one way we love him back.</div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <div class="section-block">
+    <div class="section-heading">Before Next Class</div>
+    <div class="step-body">
+      <p><strong>No workbook or QR code for this module yet.</strong> The presentation and the Our Father commitment are this week's full take-home.</p>
+      <p><strong>Next class, The Fall &amp; the Fruits of the Spirit,</strong> picks up exactly where today left the free-will thread hanging: what Adam and Eve actually chose, and what God did about it. If a student asked today's hardest question, why did God let them choose wrong, you can tell them honestly: that's next week.</p>
+    </div>
+  </div>
+
+  <div class="page-num">5</div>
+</div>

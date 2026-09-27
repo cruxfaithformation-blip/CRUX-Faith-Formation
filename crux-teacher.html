@@ -2087,6 +2087,18 @@
         jesus: 'crux-present-jesus.html'
     };
 
+    // Standalone 60-minute Teacher's Guides: slide-by-slide talking points,
+    // timing, and anticipated student questions, meant to be read before
+    // class rather than squinted at in the presentation's cramped notes
+    // panel. Same registration pattern as PRESENTATION_LINKS: a module only
+    // gets a "Guide" button on its plan card if it has an entry here.
+    const GUIDE_LINKS = {
+        god: 'crux-guide-god.html',
+        fallfruits: 'crux-guide-fallfruits.html',
+        trinity: 'crux-guide-trinity.html',
+        jesus: 'crux-guide-jesus.html'
+    };
+
     let editingPlanId = null;
     let currentPlans  = [];   // array of lesson plan docs, keyed by id — avoids embedding JSON in onclick attributes
 
@@ -2223,7 +2235,8 @@
                     const found   = allWs.find(w => w.id === wsId);
                     return found ? `<span class="plan-ws-tag">${found.label}</span>` : '';
                 }).join('');
-                const presLink = PRESENTATION_LINKS[p.module];
+                const presLink  = PRESENTATION_LINKS[p.module];
+                const guideLink = GUIDE_LINKS[p.module];
 
                 return `
                 <div class="plan-card">
@@ -2236,6 +2249,7 @@
                     ${p.notes ? `<div class="plan-card-notes">${p.notes}</div>` : ''}
                     <div class="plan-card-actions">
                         ${presLink ? `<button class="btn-plan-action primary" onclick="window.open('${presLink}','_blank')">▶ Present</button>` : ''}
+                        ${guideLink ? `<button class="btn-plan-action" onclick="window.open('${guideLink}','_blank')">📖 Guide</button>` : ''}
                         ${(p.worksheets||[]).length ? `<button class="btn-plan-action" onclick="printWorksheets('${p.id}')">🖨 Print</button>` : ''}
                         <button class="btn-plan-action" onclick="openPlanModal('${p.id}')">Edit</button>
                         <button class="btn-plan-action danger" onclick="deletePlan('${p.id}', '${p.title.replace(/'/g,"\\'")}')">✕</button>

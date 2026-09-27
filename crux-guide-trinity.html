@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Teacher's Guide — The Holy Trinity — CRUX</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy: #0f1b2d;
+  --gold: #c9a84c;
+  --light-gold: #e8d5a3;
+  --ink: #1a1a1a;
+  --page: #ffffff;
+  --offwhite: #faf8f4;
+  --rule: #d4c9b0;
+  --soft: #555;
+  --teacher-bg: #f4f1eb;
+  --takeaway-bg: #0f1b2d;
+}
+
+html { font-size: 11pt; }
+
+body {
+  background: #d0ccc4;
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+}
+
+.page {
+  background: var(--page);
+  width: 8.5in;
+  min-height: 11in;
+  margin: 0.4in auto;
+  padding: 0.8in 0.9in 0.85in;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  position: relative;
+}
+
+/* ── RUNNING HEADER ── */
+.running-header {
+  position: absolute;
+  top: 0.35in;
+  left: 0.9in;
+  right: 0.9in;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 7.5pt;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 0.5pt solid var(--rule);
+  padding-bottom: 0.1in;
+}
+
+.crux-mark { font-family: 'Playfair Display', serif; font-weight: 900; }
+
+.teacher-badge {
+  background: var(--navy);
+  color: white;
+  font-size: 6.5pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.06in 0.14in;
+  border-radius: 2px;
+}
+
+/* ── COVER HEADER ── */
+.guide-cover {
+  border-bottom: 2pt solid var(--navy);
+  padding-bottom: 0.3in;
+  margin-bottom: 0.35in;
+}
+
+.guide-eyebrow {
+  font-size: 7.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.12in;
+}
+
+.guide-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 28pt;
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1.1;
+  margin-bottom: 0.08in;
+}
+
+.guide-sub {
+  font-size: 10pt;
+  color: var(--soft);
+  letter-spacing: 0.05em;
+}
+
+.at-a-glance {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.15in;
+  margin-top: 0.2in;
+  padding-top: 0.2in;
+  border-top: 0.5pt solid var(--rule);
+}
+
+.glance-item {}
+
+.glance-label {
+  font-size: 6.5pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.05in;
+}
+
+.glance-value {
+  font-size: 9pt;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.4;
+}
+
+/* ── SECTION HEADING ── */
+.section-block {
+  margin-bottom: 0.32in;
+}
+
+.section-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.12in;
+  padding-bottom: 0.06in;
+  border-bottom: 0.5pt solid var(--rule);
+}
+
+/* ── LESSON FLOW TABLE ── */
+.flow-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.1in;
+  font-size: 9pt;
+}
+
+.flow-table th {
+  background: var(--navy);
+  color: white;
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.08in 0.12in;
+  text-align: left;
+}
+
+.flow-table td {
+  padding: 0.08in 0.12in;
+  border-bottom: 0.5pt solid var(--rule);
+  vertical-align: top;
+  line-height: 1.5;
+  color: var(--soft);
+}
+
+.flow-table tr:nth-child(even) td { background: var(--offwhite); }
+
+.flow-table td:first-child {
+  font-weight: 700;
+  color: var(--navy);
+  white-space: nowrap;
+  width: 0.65in;
+}
+
+.flow-table td:nth-child(2) {
+  font-weight: 600;
+  color: var(--ink);
+  width: 1.5in;
+}
+
+/* ── LESSON STEP ── */
+.lesson-step {
+  margin-bottom: 0.28in;
+  page-break-inside: avoid;
+}
+
+.step-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.15in;
+  margin-bottom: 0.1in;
+}
+
+.step-time {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: white;
+  background: var(--navy);
+  padding: 0.04in 0.1in;
+  border-radius: 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.step-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.step-slide {
+  font-size: 7pt;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.step-body {
+  font-size: 9.5pt;
+  line-height: 1.7;
+  color: var(--soft);
+  margin-bottom: 0.1in;
+}
+
+.step-body p { margin-bottom: 0.08in; }
+.step-body strong { color: var(--ink); }
+
+/* ── CALLOUT BOXES ── */
+
+/* Teacher action box */
+.do-box {
+  background: var(--offwhite);
+  border-left: 3pt solid var(--rule);
+  padding: 0.1in 0.14in;
+  margin-bottom: 0.1in;
+  font-size: 9pt;
+  line-height: 1.6;
+  color: var(--soft);
+}
+
+.do-box strong { color: var(--navy); display: block; margin-bottom: 0.04in; font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase; }
+
+/* Takeaway box — Andrew's voice */
+.takeaway-box {
+  background: var(--takeaway-bg);
+  color: white;
+  padding: 0.18in 0.2in;
+  margin: 0.12in 0 0.1in;
+  border-radius: 3px;
+  page-break-inside: avoid;
+}
+
+.takeaway-label {
+  font-size: 6.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.1in;
+  display: flex;
+  align-items: center;
+  gap: 0.1in;
+}
+
+.takeaway-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(201,168,76,0.3);
+}
+
+.takeaway-body {
+  font-size: 9.5pt;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.88);
+  font-style: italic;
+}
+
+.takeaway-body strong {
+  color: var(--light-gold);
+  font-style: normal;
+}
+
+/* If a student says */
+.student-says {
+  background: var(--teacher-bg);
+  border: 0.5pt solid var(--rule);
+  border-radius: 3px;
+  padding: 0.12in 0.15in;
+  margin: 0.1in 0;
+  font-size: 9pt;
+  line-height: 1.65;
+  page-break-inside: avoid;
+}
+
+.student-says-label {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.08in;
+}
+
+.student-says-q {
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 0.06in;
+  font-style: italic;
+}
+
+.student-says-a {
+  color: var(--soft);
+  line-height: 1.7;
+}
+
+/* Watch for */
+.watch-box {
+  display: flex;
+  gap: 0.15in;
+  margin-top: 0.08in;
+}
+
+.watch-col {
+  flex: 1;
+  background: var(--offwhite);
+  border-top: 2pt solid var(--rule);
+  padding: 0.1in 0.12in;
+  font-size: 8.5pt;
+  line-height: 1.6;
+  color: var(--soft);
+}
+
+.watch-col-label {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.06in;
+}
+
+.watch-col.good { border-top-color: #3a7a4a; }
+.watch-col.good .watch-col-label { color: #3a7a4a; }
+.watch-col.watch { border-top-color: #9a6020; }
+.watch-col.watch .watch-col-label { color: #9a6020; }
+
+/* Page number */
+.page-num {
+  position: absolute;
+  bottom: 0.4in;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 8pt;
+  color: var(--rule);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+/* Horizontal rule */
+hr.step-rule {
+  border: none;
+  border-top: 0.5pt solid var(--rule);
+  margin: 0.2in 0;
+}
+
+@media print {
+  body { background: white; }
+  .page { margin: 0; box-shadow: none; }
+  .page { page-break-after: always; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════ PAGE 1 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span> &nbsp;·&nbsp; Teacher's Guide</span>
+    <span>Chapter 1 — The Holy Trinity</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- Cover header -->
+  <div class="guide-cover">
+    <div class="guide-eyebrow">CRUX Companion &nbsp;·&nbsp; Beginner's Edition &nbsp;·&nbsp; Grades 3–5</div>
+    <div class="guide-title">Teacher's Guide<br>Chapter 1: The Holy Trinity</div>
+    <div class="guide-sub">Pillar I &nbsp;·&nbsp; What We Believe &nbsp;·&nbsp; Use alongside the Companion Workbook &amp; Classroom Presentation</div>
+
+    <div class="at-a-glance">
+      <div class="glance-item">
+        <div class="glance-label">Total Time</div>
+        <div class="glance-value">60 minutes</div>
+      </div>
+      <div class="glance-item">
+        <div class="glance-label">Materials</div>
+        <div class="glance-value">Workbooks, colored pencils, screen for presentation</div>
+      </div>
+      <div class="glance-item">
+        <div class="glance-label">Scripture</div>
+        <div class="glance-value">Matthew 28:19</div>
+      </div>
+      <div class="glance-item">
+        <div class="glance-label">Slides</div>
+        <div class="glance-value">CRUX_Trinity_Presentation.html &nbsp;·&nbsp; 13 slides</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lesson flow -->
+  <div class="section-block">
+    <div class="section-heading">Lesson at a Glance</div>
+    <table class="flow-table">
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Section</th>
+          <th>What's Happening</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>0–2 min</td><td>Opening Prayer</td><td>Sign of the Cross as a class. Moment of silence.</td></tr>
+        <tr><td>2–10 min</td><td>Watch Together</td><td>Bible Project video on the Trinity (~8 min). Screen on Slide 3.</td></tr>
+        <tr><td>10–15 min</td><td>Opening Discussion</td><td>"What do you already know about the Trinity?" Turn &amp; talk, then share out.</td></tr>
+        <tr><td>15–25 min</td><td>Lesson</td><td>Slides 5–6. The Big Idea + Three Persons. Teacher-led with discussion.</td></tr>
+        <tr><td>25–30 min</td><td>Shield of Faith</td><td>Slide 7. Walk through the diagram. Students begin workbook Activity 2.</td></tr>
+        <tr><td>30–33 min</td><td>Scripture</td><td>Matthew 28:19 read aloud together.</td></tr>
+        <tr><td>33–43 min</td><td>Discussion</td><td>Slides 9–10. Two reflection questions. Let the conversation breathe.</td></tr>
+        <tr><td>43–55 min</td><td>Workbook Activities</td><td>Slide 11. Students work independently: Match the Term, Shield, Prayer.</td></tr>
+        <tr><td>55–58 min</td><td>Quiz</td><td>Slide 12. Read questions aloud. Reveal answers together.</td></tr>
+        <tr><td>58–60 min</td><td>Closing Prayer</td><td>Glory Be. Remind students about CRUX QR code for 50 XP.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Core goal -->
+  <div class="section-block">
+    <div class="section-heading">The Goal of This Lesson</div>
+    <div class="step-body">
+      <p>This is not a lesson where students are expected to leave with the Trinity fully figured out. No one does. The goal is to give students a framework — the Trinity is real, it matters, and it tells us something specific about who God is and how he operates in the world.</p>
+      <p>The Scutum Fidei and the vocabulary are tools. The deeper work is helping students feel the weight of the story: a God who created everything, then stepped into his creation, then left his Spirit behind. That's the thread running through everything in this lesson.</p>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Core Takeaway</div>
+      <div class="takeaway-body">
+        "You don't need to fully grasp the Trinity, just like you don't need to fully grasp how the cells in our body work or how wifi somehow makes its way into our phones. <strong>But it is real, and it is important to know that our God has a way of working both in the material world and outside of it.</strong> He can create and do with his creation what he wants. That's why miracles are possible."
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">1</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 2 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span> &nbsp;·&nbsp; Teacher's Guide</span>
+    <span>Chapter 1 — The Holy Trinity</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <div class="section-heading" style="margin-bottom:0.2in;">Teaching the Lesson — Step by Step</div>
+
+  <!-- STEP 1 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">0–2 min</span>
+      <span class="step-title">Opening Prayer</span>
+      <span class="step-slide">Slide 2</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Lead the class in the Sign of the Cross. Put Slide 2 on the screen. Read it aloud slowly, then hold 10–15 seconds of silence before speaking.
+    </div>
+    <div class="step-body">
+      <p>Don't rush the silence. Students this age rarely sit in quiet. Let it land before you move on. It sets the tone that this is a different kind of class.</p>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 2 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">2–10 min</span>
+      <span class="step-title">Watch Together</span>
+      <span class="step-slide">Slide 3</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Play the Bible Project video directly from Slide 3 (~8 min). No setup needed. The video is embedded. Make sure the room has internet and sound before class.
+    </div>
+    <div class="step-body">
+      <p>After the video ends, before moving to the next slide, ask two or three students: <em>"What was one thing you noticed? Did anything surprise you?"</em> Accept all answers without correcting. This is a warm-up, not a test.</p>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 3 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">10–25 min</span>
+      <span class="step-title">The Big Idea + Three Persons</span>
+      <span class="step-slide">Slides 4–6</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Slide 4 opens the discussion ("What do you already know?"). Give students 2 minutes to turn and talk, then call on a few. Slides 5–6 are teacher-led. Read through the cards on Slide 6 and add your own explanation for each Person.
+    </div>
+    <div class="step-body">
+      <p>Slide 6 is your biggest teaching moment before the diagram. When you get to God the Son, this is where you can bring the room forward. Students this age have likely studied Greek mythology and ancient history. Use that.</p>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway — The Son</div>
+      <div class="takeaway-body">
+        "<strong>What God that they've ever learned about came down from his throne to be spat on and crucified?</strong> Only ours. And what did he do after that? He left us the Holy Spirit to be with us in times of need. There is no better religion to be a part of than one where our God would lay down his life for us — who are so unworthy."
+      </div>
+    </div>
+
+    <div class="watch-box">
+      <div class="watch-col good">
+        <div class="watch-col-label">Signs It's Landing</div>
+        Students asking follow-up questions. Comparing to what they've heard before. Nodding, leaning forward.
+      </div>
+      <div class="watch-col watch">
+        <div class="watch-col-label">Signs They're Lost</div>
+        Blank faces, side conversations. Slow down and ask: "Which part would you want me to say again differently?"
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">2</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 3 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span> &nbsp;·&nbsp; Teacher's Guide</span>
+    <span>Chapter 1 — The Holy Trinity</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">25–30 min</span>
+      <span class="step-title">The Shield of Faith</span>
+      <span class="step-slide">Slide 7</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Put Slide 7 on the screen. Walk through the diagram first. Explain the solid lines (IS) and dashed lines (IS NOT). Then have students open their workbooks to Activity 2 and label the blank diagram using the word bank.
+    </div>
+    <div class="step-body">
+      <p>The IS / IS NOT language isn't just theological precision. It points to something students can actually observe in Scripture. When you explain it, anchor it to a scene they know.</p>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway — IS / IS NOT</div>
+      <div class="takeaway-body">
+        "The three Persons of the Trinity are of the same substance, but they are separate. <strong>That's why Jesus prays to God in the garden.</strong> His spiritual presence is not within this earthly world, so he prays. And that shows us something remarkable — prayer truly does cross through the physical realm into the spiritual realm. When Jesus prays, he's doing exactly what we do."
+      </div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"Wait — if Jesus IS God, why is he praying to God? Isn't that weird?"</div>
+      <div class="student-says-a">That's exactly the right question. Jesus the Son is fully God. But he's a distinct Person from the Father. They are the same substance, but they are not the same Person. The Son, while on earth in a human body, prays to the Father. That's not a contradiction. That's the Trinity in action. And it means prayer is real. It goes somewhere.</div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 5 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">30–43 min</span>
+      <span class="step-title">Scripture + Discussion</span>
+      <span class="step-slide">Slides 8–10</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Read Matthew 28:19 aloud together from Slide 8. Then move through Slides 9–10. Let the discussion breathe. Don't rush to fill silence. Call on students who haven't spoken yet.
+    </div>
+    <div class="step-body">
+      <p>Discussion Question 2 is where the whole lesson converges. You're not just asking a theology question. You're asking students to feel the weight of the story. Let them sit with it.</p>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway — The Discussion Goal</div>
+      <div class="takeaway-body">
+        "What you want them to land on — even if they can't say it yet — is this: <strong>'God created me, loved me, and then died for me. Why wouldn't I follow him?'</strong> That's the question you're trying to plant. You don't need them to answer it out loud. You just need it to be the thing they're sitting with when they leave."
+      </div>
+    </div>
+
+    <div class="watch-box">
+      <div class="watch-col good">
+        <div class="watch-col-label">Signs It's Landing</div>
+        Personal answers. Students referencing their own experience of prayer, or people they know. Quiet after a response is thinking, not boredom.
+      </div>
+      <div class="watch-col watch">
+        <div class="watch-col-label">Signs They're Lost</div>
+        One-word answers ("I don't know"). Try asking: "Has anyone ever felt like God was close? Or far away? Tell us about that."
+      </div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 6 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">43–55 min</span>
+      <span class="step-title">Workbook Activities</span>
+      <span class="step-slide">Slide 11</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Put Slide 11 on the screen and give students 10–12 minutes to work through Activities 1–3 in their workbooks. Walk the room. Sit with students who are stuck on the prayer. Early finishers can write a second prayer to a different Person.
+    </div>
+    <div class="step-body">
+      <p>Activity 3, the prayer, is not a writing assignment. Don't grade it. If a student says they don't know what to write, ask them: "What's one thing you want to say to God today? Just write that."</p>
+    </div>
+  </div>
+
+  <div class="page-num">3</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 4 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span> &nbsp;·&nbsp; Teacher's Guide</span>
+    <span>Chapter 1 — The Holy Trinity</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 7 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">55–60 min</span>
+      <span class="step-title">Quiz + Closing Prayer</span>
+      <span class="step-slide">Slides 12–13</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Read each quiz question aloud on Slide 12. Let students call out answers, then click "Reveal Answers." Close with the Glory Be on Slide 13. Remind students to scan the QR code in their workbook for 50 XP on CRUX.
+    </div>
+    <div class="step-body">
+      <p>Keep the quiz light. It's a review, not a grade. End on the prayer, not the quiz. The last thing they hear in class should be spoken to God, not a right answer.</p>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- HARD QUESTIONS -->
+  <div class="section-block">
+    <div class="section-heading">When Students Don't Get It</div>
+    <div class="step-body" style="margin-bottom:0.15in;">
+      <p>Some student is going to push back — "this doesn't make sense" or "how can God be three things at once?" That's not a problem. That's a good student. Here's how to meet it.</p>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Answer for the Skeptic</div>
+      <div class="takeaway-body">
+        "<strong>It shouldn't make sense to you. If it was easy enough for all of us to understand, everyone in the world would be Christian.</strong> You don't need the answers to everything in the universe — but you should trust that a God who could create the universe can also work within it. He showed that with every miracle Jesus performed. We aren't expected to know how it happens. <strong>Just that he did it for us.</strong> And that's not a small thing."
+      </div>
+    </div>
+
+    <div class="student-says" style="margin-top:0.15in;">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"My parents say all religions are basically the same."</div>
+      <div class="student-says-a">You can say: "Most religions have a god who is powerful and far away. Ours is different. Our God stepped into history as a person, lived a real life, was executed, and came back. You can disagree with that — but it's not the same story as every other religion. It's a very specific claim."</div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"Why does it matter if God is one Person or three?"</div>
+      <div class="student-says-a">Because it changes who God is. If God is just one Person alone, he needed to create us to have something to love. But if God is Father, Son, and Holy Spirit — three Persons in a relationship of love — then he didn't need us. He chose us. That's a different kind of love entirely.</div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"I prayed once and nothing happened."</div>
+      <div class="student-says-a">Don't dismiss it. Say: "I've felt that too. Most people have. Prayer isn't a vending machine — but it is real. Jesus prayed in the garden the night before he died, and he didn't get the answer he asked for either. That didn't make the prayer meaningless. Keep going."</div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- NOTES -->
+  <div class="section-block">
+    <div class="section-heading">Before Next Class</div>
+    <div class="step-body">
+      <p><strong>Remind students</strong> to scan the QR code in their workbook to earn 50 XP on CRUX and unlock their digital chapter content.</p>
+      <p><strong>Collect workbooks</strong> if your program keeps them in class, or let students take them home.</p>
+      <p><strong>Next chapter:</strong> Who Is Jesus Christ? — build on everything from this lesson. The Trinity gives students the framework; Chapter 2 gives them the story.</p>
+    </div>
+  </div>
+
+  <div class="page-num">4</div>
+</div>
+
+</body>
+</html>
