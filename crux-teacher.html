@@ -1067,6 +1067,31 @@
         .tab-panel { display: none; }
         .tab-panel.active { display: block; }
 
+        /* ─── TEACHING GUIDES QUICK ACCESS ───────────────────── */
+        .guides-quickaccess {
+            background: var(--white); border: 1px solid var(--border);
+            border-radius: 12px; padding: 1.25rem 1.5rem;
+            margin-bottom: 1.75rem; box-shadow: var(--shadow-sm);
+        }
+        .guides-quickaccess-header {
+            display: flex; align-items: baseline; justify-content: space-between;
+            flex-wrap: wrap; gap: 0.4rem; margin-bottom: 0.9rem;
+        }
+        .guides-quickaccess-header h4 {
+            font-family: 'Playfair Display', serif; font-size: 1.05rem;
+            font-weight: 700; color: var(--navy);
+        }
+        .guides-quickaccess-header span { font-size: 0.78rem; color: var(--text-muted); }
+        .guides-row { display: flex; flex-wrap: wrap; gap: 0.6rem; }
+        .guide-pill {
+            display: inline-flex; align-items: center; gap: 0.45rem;
+            padding: 0.55rem 1rem; background: transparent;
+            border: 1.5px solid var(--border-gold); border-radius: 8px;
+            font-size: 0.8rem; font-weight: 700; color: var(--navy);
+            font-family: 'Inter', sans-serif; cursor: pointer; transition: all 0.2s;
+        }
+        .guide-pill:hover { background: var(--navy); color: var(--white); border-color: var(--navy); }
+
         /* ─── LESSON PLANS ────────────────────────────────── */
         .plans-header {
             display: flex; align-items: center; justify-content: space-between;
@@ -1349,6 +1374,14 @@
 
     <!-- ── LESSON PLANS TAB ── -->
     <div class="tab-panel" id="tab-plans">
+        <div class="guides-quickaccess">
+            <div class="guides-quickaccess-header">
+                <h4>📖 Teaching Guides</h4>
+                <span>Read before class, no lesson plan needed</span>
+            </div>
+            <div id="guidesRow" class="guides-row"></div>
+        </div>
+
         <div class="plans-header">
             <h3>Lesson Plans</h3>
             <button class="btn-new-plan" onclick="openPlanModal()">+ New Lesson Plan</button>
@@ -2098,6 +2131,20 @@
         trinity: 'crux-guide-trinity.html',
         jesus: 'crux-guide-jesus.html'
     };
+
+    // Standalone access to every guide, independent of saved lesson plans.
+    // Renders once on load from the same GUIDE_LINKS/MODULE_LABELS a new
+    // guide is already registered in, so nothing extra to wire up here
+    // later, just add the entries above and this row picks it up.
+    function renderGuidesRow() {
+        const row = document.getElementById('guidesRow');
+        if (!row) return;
+        row.innerHTML = Object.keys(GUIDE_LINKS).map(mod => {
+            const label = MODULE_LABELS[mod] || mod;
+            return `<button class="guide-pill" onclick="window.open('${GUIDE_LINKS[mod]}','_blank')">📖 ${label}</button>`;
+        }).join('');
+    }
+    renderGuidesRow();
 
     let editingPlanId = null;
     let currentPlans  = [];   // array of lesson plan docs, keyed by id — avoids embedding JSON in onclick attributes
