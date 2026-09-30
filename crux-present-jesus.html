@@ -905,6 +905,9 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .sc-definition { text-align: center; max-width: 760px; margin: 0 auto; }
 .sc-definition .def-eyebrow { font-size: 0.62rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase; color: rgba(255,255,255,0.2); margin-bottom: 2rem; }
 .sc-definition .def-term { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(3rem, 9vw, 6rem); line-height: 1; background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 60%, #b8895a 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 1.75rem; letter-spacing: 0.01em; }
+/* Gradient text only paints the line box; with line-height 1 the descenders
+   (the y in Trinity) fall outside it and vanish. Extend the box downward. */
+.sc-definition .def-term { padding-bottom: 0.18em; }
 .sc-definition .def-rule { width: 56px; height: 1px; background: rgba(212,165,116,0.35); margin: 0 auto 1.75rem; }
 .sc-definition .def-body { font-family: 'Playfair Display', serif; font-style: italic; font-size: clamp(1.1rem, 2.5vw, 1.5rem); color: rgba(255,255,255,0.6); line-height: 1.7; }
 .sc-definition .def-body p { margin-bottom: 0.35rem; }
