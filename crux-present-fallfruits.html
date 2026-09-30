@@ -211,6 +211,25 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .fmt-btn:hover { color: rgba(255,255,255,0.9); background: rgba(255,255,255,0.12); }
 .fmt-btn.fmt-active { background: var(--gold); color: var(--navy); border-color: var(--gold); }
 .fmt-sep { width: 1px; height: 13px; background: rgba(255,255,255,0.1); margin: 0 0.1rem; }
+.fmt-size-select {
+  font-size: 0.63rem; font-weight: 700; padding: 0.2rem 0.25rem; border-radius: 4px; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.8);
+}
+.fmt-size-select option { background: #0d0f1a; color: #fff; }
+.size-target-active { outline: 1px dashed rgba(212,165,116,0.55); outline-offset: 3px; }
+/* Per-element drag: offsets are stored in cqw/cqh, so both slide surfaces
+   are size containers and a moved line lands in the same spot in the
+   editor and in present mode. */
+#editableSlide, #presentSlide { container-type: size; }
+.el-drag-grip {
+  position: absolute; z-index: 15; width: 18px; height: 22px; display: none;
+  align-items: center; justify-content: center; box-sizing: border-box;
+  background: rgba(8,10,22,0.88); color: var(--gold); border: 1px solid rgba(212,165,116,0.4);
+  border-radius: 4px; cursor: grab; font-size: 12px; line-height: 1; user-select: none; touch-action: none;
+}
+.el-drag-grip.visible { display: flex; }
+.el-drag-grip:active { cursor: grabbing; }
+.el-dragging { outline: 1px dashed var(--gold); outline-offset: 3px; }
 
 /* Controls strip below slide */
 .wysiwyg-controls {
@@ -1862,17 +1881,16 @@ function renderTextBoxes(container, slide) {
       minus.type = 'button'; minus.textContent = 'A-';
       var pct = document.createElement('span');
       pct.className = 'pv-textbox-fontpct';
-      pct.textContent = (Math.round((box.fontSize || 1.4) * 10) / 10) + 'rem';
+      pct.textContent = Math.round((box.fontSize || 1.4) / 1.4 * 100) + '%';
       var plus = document.createElement('button');
       plus.type = 'button'; plus.textContent = 'A+';
-      minus.addEventListener('pointerdown', function(e) { e.stopPropagation(); });
-      plus.addEventListener('pointerdown', function(e) { e.stopPropagation(); });
-      minus.addEventListener('click', function(e) { e.stopPropagation(); bumpTextBoxFontSize(slide, box, -0.1); });
-      plus.addEventListener('click', function(e) { e.stopPropagation(); bumpTextBoxFontSize(slide, box, 0.1); });
+      holdToRepeat(minus, function() { setSizeTarget(content); stepSizeTarget(-1); });
+      holdToRepeat(plus,  function() { setSizeTarget(content); stepSizeTarget(1); });
       fontctrl.appendChild(minus); fontctrl.appendChild(pct); fontctrl.appendChild(plus);
       wrap.appendChild(fontctrl);
 
       wrap.addEventListener('pointerdown', function(e) {
+        setSizeTarget(content);
         if (wrap.classList.contains('editing')) return; // let normal text-cursor interaction happen
         if (e.target === handle || e.target === del || fontctrl.contains(e.target)) return;
         startTextBoxInteraction(e, slide, box, wrap, 'move');
@@ -1883,10 +1901,259 @@ function renderTextBoxes(container, slide) {
   });
 }
 
-function bumpTextBoxFontSize(slide, box, delta) {
-  box.fontSize = Math.max(0.6, Math.min(6, Math.round(((box.fontSize || 1.4) + delta) * 10) / 10));
+/* ─── PER-ELEMENT TEXT SIZE ─────────────────────────────────────────
+   Any title, line, subtitle or quote can be sized on its own. Sizes live
+   in slide.textSizes keyed by the element's normalized text, so the same
+   map applies to both the editor and present-mode markup (which differ in
+   structure) without threading ids through every slide-type builder. The
+   size is applied with CSS zoom so each element keeps its own
+   type-specific clamp() font-size and reflows. Text boxes keep their own
+   box.fontSize (rem) but share the same controls. */
+var sizeTargetEl = null;
+var SIZE_STEP = 0.1, SIZE_MIN = 0.4, SIZE_MAX = 4;
+
+function sizeKey(text) {
+  return String(text || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+}
+
+function isTextBoxContent(el) {
+  return !!(el && el.classList && el.classList.contains('pv-textbox-content'));
+}
+
+function applyElementSizes(root, slide) {
+  if (!root || !slide) return;
+  var map = slide.textSizes || {};
+  var offs = slide.textOffsets || {};
+  if (!Object.keys(map).length && !Object.keys(offs).length) return;
+  var els = root.querySelectorAll('*');
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    if (el.closest('.pv-textbox, .pv-layer, .content-drag-handle, .fmt-toolbar')) continue;
+    var k = sizeKey(el.textContent);
+    if (!k || (map[k] == null && !offs[k])) continue;
+    // Only the innermost element carrying this text, so wrappers don't compound the zoom.
+    var inner = false;
+    for (var c = 0; c < el.children.length; c++) {
+      if (sizeKey(el.children[c].textContent) === k) { inner = true; break; }
+    }
+    if (inner) continue;
+    if (map[k] != null) el.style.zoom = map[k];
+    if (offs[k]) el.style.translate = offs[k].x + 'cqw ' + offs[k].y + 'cqh';
+  }
+}
+
+function markSizeKeys(es) {
+  var els = es.querySelectorAll('.editable-field, .body-line');
+  for (var i = 0; i < els.length; i++) els[i].dataset.sizeKey = sizeKey(els[i].textContent);
+}
+
+// Keep a sized element's size when its text is edited.
+function syncSizeKeys(es, slide) {
+  var els = es.querySelectorAll('[data-size-key]');
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    var oldK = el.dataset.sizeKey, newK = sizeKey(el.textContent);
+    if (!newK || oldK === newK) continue;
+    if (slide.textSizes && slide.textSizes[oldK] != null) {
+      slide.textSizes[newK] = slide.textSizes[oldK];
+      delete slide.textSizes[oldK];
+    }
+    if (slide.textOffsets && slide.textOffsets[oldK]) {
+      slide.textOffsets[newK] = slide.textOffsets[oldK];
+      delete slide.textOffsets[oldK];
+    }
+    el.dataset.sizeKey = newK;
+  }
+}
+
+function setSizeTarget(el) {
+  if (sizeTargetEl && sizeTargetEl !== el) sizeTargetEl.classList.remove('size-target-active');
+  sizeTargetEl = el;
+  if (el) el.classList.add('size-target-active');
+  syncSizeSelect();
+}
+
+function textBoxFor(el) {
+  var slide = slides[selectedIndex];
+  var wrap = el.closest('.pv-textbox');
+  if (!slide || !wrap || !slide.textBoxes) return null;
+  return slide.textBoxes.filter(function(b) { return b.id === wrap.dataset.boxId; })[0] || null;
+}
+
+function getSizeTargetScale() {
+  var el = sizeTargetEl;
+  if (!el || !el.isConnected) return 1;
+  if (isTextBoxContent(el)) { var box = textBoxFor(el); return box ? (box.fontSize || 1.4) / 1.4 : 1; }
+  return parseFloat(el.style.zoom) || 1;
+}
+
+function setSizeTargetScale(scale) {
+  var el = sizeTargetEl;
+  var slide = slides[selectedIndex];
+  if (!el || !el.isConnected || !slide) { showToast('Click into a title, line, or text box first'); return; }
+  scale = Math.min(SIZE_MAX, Math.max(SIZE_MIN, Math.round(scale * 100) / 100));
+  if (isTextBoxContent(el)) {
+    var box = textBoxFor(el);
+    if (!box) return;
+    box.fontSize = Math.round(1.4 * scale * 100) / 100;
+    el.style.fontSize = box.fontSize + 'rem';
+    var pct = el.parentElement.querySelector('.pv-textbox-fontpct');
+    if (pct) pct.textContent = Math.round(scale * 100) + '%';
+  } else {
+    var k = sizeKey(el.textContent);
+    if (!k) { showToast('Type some text first, then size it'); return; }
+    if (!slide.textSizes) slide.textSizes = {};
+    if (scale === 1) delete slide.textSizes[k]; else slide.textSizes[k] = scale;
+    el.dataset.sizeKey = k;
+    el.style.zoom = scale === 1 ? '' : scale;
+  }
   save();
-  renderCanvasSlide();
+  syncSizeSelect();
+}
+
+function stepSizeTarget(dir) {
+  setSizeTargetScale(getSizeTargetScale() + dir * SIZE_STEP);
+}
+
+function setSizeTargetPct(val) {
+  setSizeTargetScale(parseInt(val, 10) / 100);
+  if (sizeTargetEl && sizeTargetEl.isConnected && !isTextBoxContent(sizeTargetEl)) sizeTargetEl.focus();
+}
+
+function buildSizeOptions(current) {
+  // Literal here (not a top-level var): the init IIFE renders the toolbar before later vars are assigned.
+  var list = [50, 75, 90, 100, 110, 125, 150, 175, 200, 250, 300];
+  if (list.indexOf(current) < 0) { list.push(current); list.sort(function(a, b) { return a - b; }); }
+  return list.map(function(v) {
+    return '<option value="' + v + '"' + (v === current ? ' selected' : '') + '>' + v + '%</option>';
+  }).join('');
+}
+
+function syncSizeSelect() {
+  var sel = document.getElementById('fmtSizeSelect');
+  if (sel) sel.innerHTML = buildSizeOptions(Math.round(getSizeTargetScale() * 100));
+}
+
+// Press = one step; hold = keep stepping quickly until release.
+function holdToRepeat(btn, fn) {
+  var delayT = null, repeatT = null;
+  function stop() { clearTimeout(delayT); clearInterval(repeatT); delayT = repeatT = null; }
+  btn.addEventListener('pointerdown', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    fn();
+    delayT = setTimeout(function() { repeatT = setInterval(fn, 70); }, 350);
+  });
+  btn.addEventListener('mousedown', function(e) { e.preventDefault(); });
+  btn.addEventListener('click', function(e) { e.stopPropagation(); });
+  ['pointerup', 'pointerleave', 'pointercancel'].forEach(function(ev) { btn.addEventListener(ev, stop); });
+}
+
+/* ─── PER-ELEMENT DRAG ──────────────────────────────────────────────
+   A grip appears beside whichever title/line is hovered or being edited;
+   dragging it moves just that element. Offsets are stored per element
+   (same text key as textSizes) in container units. Double-click resets. */
+function attachElementDrag(es, slide) {
+  var grip = document.createElement('div');
+  grip.className = 'el-drag-grip';
+  grip.textContent = '⠿';
+  grip.title = 'Drag to move this text · double-click to put it back';
+  es.appendChild(grip);
+  var dragging = null;
+
+  function isMovable(el) { return el && es.contains(el) && !el.closest('.pv-textbox'); }
+  function placeGrip(el) {
+    if (!isMovable(el)) { grip.classList.remove('visible'); grip.targetEl = null; return; }
+    var er = es.getBoundingClientRect(), r = el.getBoundingClientRect();
+    grip.style.left = Math.max(2, r.left - er.left - 24) + 'px';
+    grip.style.top = Math.max(2, r.top - er.top + 2) + 'px';
+    grip.targetEl = el;
+    grip.classList.add('visible');
+  }
+  function offsetOf(el) {
+    var t = (el.style.translate || '').match(/(-?[\d.]+)cqw\s+(-?[\d.]+)cqh/);
+    return t ? { x: parseFloat(t[1]), y: parseFloat(t[2]) } : { x: 0, y: 0 };
+  }
+  function setOffset(el, o) {
+    el.style.translate = (o.x || o.y) ? (o.x + 'cqw ' + o.y + 'cqh') : '';
+  }
+
+  es.addEventListener('mouseover', function(e) {
+    if (dragging || e.target === grip) return;
+    var t = e.target.closest('.editable-field, .body-line');
+    if (isMovable(t)) placeGrip(t);
+  });
+  es.addEventListener('mouseleave', function() {
+    if (dragging) return;
+    placeGrip(sizeTargetEl && !isTextBoxContent(sizeTargetEl) ? sizeTargetEl : null);
+  });
+  es.addEventListener('focusin', function(e) {
+    var t = e.target.closest('.editable-field, .body-line');
+    if (isMovable(t)) placeGrip(t);
+  });
+
+  grip.addEventListener('pointerdown', function(e) {
+    var el = grip.targetEl;
+    if (!el) return;
+    e.preventDefault(); e.stopPropagation();
+    var k = sizeKey(el.textContent);
+    if (!k) { showToast('Type some text first, then move it'); return; }
+    // Calibrate: how many screen px one cqw/cqh unit moves this element
+    // (depends on slide size, the element's zoom, and the slide text scale).
+    var start = offsetOf(el);
+    var r0 = el.getBoundingClientRect();
+    setOffset(el, { x: start.x + 10, y: start.y + 10 });
+    var r1 = el.getBoundingClientRect();
+    setOffset(el, start);
+    var fx = (r1.left - r0.left) / 10 || 1, fy = (r1.top - r0.top) / 10 || 1;
+    dragging = { el: el, k: k, start: start, sx: e.clientX, sy: e.clientY, fx: fx, fy: fy, cur: start };
+    el.classList.add('el-dragging');
+    grip.setPointerCapture(e.pointerId);
+  });
+  grip.addEventListener('pointermove', function(e) {
+    if (!dragging) return;
+    var d = dragging;
+    d.cur = {
+      x: Math.round((d.start.x + (e.clientX - d.sx) / d.fx) * 10) / 10,
+      y: Math.round((d.start.y + (e.clientY - d.sy) / d.fy) * 10) / 10
+    };
+    setOffset(d.el, d.cur);
+    placeGrip(d.el);
+  });
+  function endDrag() {
+    if (!dragging) return;
+    var d = dragging;
+    dragging = null;
+    d.el.classList.remove('el-dragging');
+    if (!slide.textOffsets) slide.textOffsets = {};
+    if (Math.abs(d.cur.x) < 0.2 && Math.abs(d.cur.y) < 0.2) { delete slide.textOffsets[d.k]; setOffset(d.el, { x: 0, y: 0 }); }
+    else slide.textOffsets[d.k] = d.cur;
+    d.el.dataset.sizeKey = d.k;
+    save();
+    placeGrip(d.el);
+  }
+  grip.addEventListener('pointerup', endDrag);
+  grip.addEventListener('pointercancel', endDrag);
+  grip.addEventListener('dblclick', function(e) {
+    e.stopPropagation();
+    var el = grip.targetEl;
+    if (!el) return;
+    var k = sizeKey(el.textContent);
+    if (slide.textOffsets) delete slide.textOffsets[k];
+    setOffset(el, { x: 0, y: 0 });
+    save();
+    placeGrip(el);
+  });
+}
+
+function wireSizeButtons() {
+  sizeTargetEl = null;
+  var btns = document.querySelectorAll('#fmtToolbar .fmt-size-btn');
+  for (var i = 0; i < btns.length; i++) {
+    (function(btn) {
+      var dir = parseInt(btn.dataset.sizeDir, 10);
+      holdToRepeat(btn, function() { stepSizeTarget(dir); });
+    })(btns[i]);
+  }
 }
 
 function startTextBoxInteraction(e, slide, box, wrapEl, mode) {
@@ -2088,6 +2355,11 @@ function renderCanvasSlide() {
         '<div class="fmt-sep"></div>' +
         '<button class="fmt-btn" onclick="addBodyLine()" title="Add line below">+ Line</button>' +
         '<button class="fmt-btn" onclick="removeBodyLine()" title="Delete line" style="color:rgba(220,80,80,0.75)">✕</button>' +
+        '<div class="fmt-sep"></div>' +
+        '<span class="fmt-lbl">Size:</span>' +
+        '<button class="fmt-btn fmt-size-btn" data-size-dir="-1" title="Smaller (hold to keep shrinking · Cmd/Ctrl+Shift+&lt;)">A−</button>' +
+        '<select class="fmt-size-select" id="fmtSizeSelect" onchange="setSizeTargetPct(this.value)" title="Text size of the selected title, line, or text box">' + buildSizeOptions(100) + '</select>' +
+        '<button class="fmt-btn fmt-size-btn" data-size-dir="1" title="Bigger (hold to keep growing · Cmd/Ctrl+Shift+&gt;)">A+</button>' +
       '</div>' +
     '</div>' +
     buildControlsStrip(slide);
@@ -2098,6 +2370,7 @@ function renderCanvasSlide() {
   applyTextScale(document.getElementById('editableSlide'), slide);
   attachEditListeners(slide);
   updateFmtToolbar(null);
+  wireSizeButtons();
 }
 
 function buildControlsStrip(slide) {
@@ -2451,7 +2724,12 @@ function attachEditListeners(slide) {
   renderTextBoxes(es, slide);
   applyContentOffset(es, slide);
   renderContentDragHandle(es, slide);
+  applyElementSizes(es, slide);
+  markSizeKeys(es);
+  attachElementDrag(es, slide);
   es.addEventListener('focusin', function(e) {
+    var sizeEl = e.target.closest('.editable-field, .body-line, .pv-textbox-content');
+    if (sizeEl) setSizeTarget(sizeEl);
     var line = e.target.closest('[data-type]');
     focusedLineEl = line || null;
     updateFmtToolbar(line ? line.dataset.type : null);
@@ -2462,6 +2740,11 @@ function attachEditListeners(slide) {
     document.execCommand('insertText', false, text);
   });
   es.addEventListener('keydown', function(e) {
+    if ((e.metaKey || e.ctrlKey) && e.shiftKey && (e.key === '>' || e.key === '.' || e.key === '<' || e.key === ',')) {
+      e.preventDefault();
+      stepSizeTarget(e.key === '>' || e.key === '.' ? 1 : -1);
+      return;
+    }
     var line = document.activeElement.closest('[data-type]');
     if (e.key === 'Enter' && line) {
       e.preventDefault();
@@ -2538,6 +2821,7 @@ function serializeFromCanvas() {
     if (bf === 'bodySimple' && !slide.body) slide.body = slide.bodySimple;
   }
 
+  syncSizeKeys(es, slide);
   save();
   renderSlideList();
 }
@@ -2711,6 +2995,7 @@ function renderPresentSlide() {
   applyBulletStyle(container, slide);
   document.getElementById('slideContentArea').innerHTML = buildSlideHTML(slide);
   applyTextScale(container, slide);
+  applyElementSizes(document.getElementById('slideContentArea'), slide);
   renderImageLayers(container, slide);
   renderTextBoxes(container, slide);
   applyContentOffset(container, slide);
