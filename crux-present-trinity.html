@@ -757,6 +757,37 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .media-placeholder { padding: 4rem 2rem; border: 1px dashed rgba(212,165,116,0.25); border-radius: 10px; color: rgba(255,255,255,0.25); font-size: 0.9rem; text-align: center; width: 100%; max-width: 600px; }
 .media-caption { font-size: clamp(0.72rem, 1.5vw, 0.9rem); color: rgba(255,255,255,0.35); text-align: center; font-style: italic; }
 
+/* Visual slide — title across the top, open slate below for image layers.
+   Slate position must match VISUAL_SLATE in the script (first dropped
+   image snaps to fill it). */
+.sc-visual { position: absolute; inset: 0; max-width: none; pointer-events: none; }
+.sc-visual .visual-title {
+  position: absolute; left: 7%; right: 7%; top: 5%; min-height: 10%;
+  display: flex; align-items: center; justify-content: center; text-align: center;
+  font-family: 'Playfair Display', serif; font-weight: 700; color: #fff;
+  font-size: clamp(1.4rem, 3.6vw, 2.6rem); line-height: 1.15;
+  transform-origin: center top; pointer-events: auto;
+}
+.sc-visual .visual-rule { position: absolute; left: 50%; top: 16.5%; width: 56px; height: 2px; margin-left: -28px; background: var(--gold); opacity: 0.7; }
+.visual-slate {
+  position: absolute; left: 7%; top: 19%; width: 86%; height: 77%;
+  border: 1.5px dashed rgba(212,165,116,0.3); border-radius: 10px;
+  display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem;
+  color: rgba(255,255,255,0.3); font-size: 0.85rem; text-align: center; padding: 1rem;
+  pointer-events: auto; cursor: pointer; transition: border-color 0.15s, background 0.15s;
+}
+.visual-slate:hover { border-color: var(--gold); background: rgba(212,165,116,0.04); }
+.visual-slate-icon { font-size: 2rem; opacity: 0.5; }
+.visual-slate-idea { color: rgba(212,165,116,0.65); font-style: italic; max-width: 32rem; }
+#editableSlide.type-visual, #presentSlide.type-visual { background: #050810; }
+/* In present mode the builder output sits inside #slideContentArea (itself a
+   .slide-content); let the visual layout position against #presentSlide instead. */
+#presentSlide.type-visual #slideContentArea { position: static; max-width: none; transform: none !important; }
+[data-theme="bright"] #presentSlide.type-visual,
+.wysiwyg-wrapper[data-theme="bright"] #editableSlide.type-visual { background: #1a1a2e !important; }
+[data-theme="chalk"] #presentSlide.type-visual,
+.wysiwyg-wrapper[data-theme="chalk"] #editableSlide.type-visual { background: #111 !important; }
+
 /* ─── SPLIT LAYOUT ──────────────────────────────────────────────── */
 .sc-split { display: grid; grid-template-columns: 1fr 1px 1fr; max-width: 100%; }
 .sc-split .split-left { padding-right: 3.5rem; }
@@ -981,6 +1012,7 @@ const TYPES = [
   { id:'discussion',       icon:'◎', label:'Discussion' },
   { id:'takehome',         icon:'↑', label:'Take-Home' },
   { id:'media',            icon:'▶', label:'Media' },
+  { id:'visual',           icon:'▣', label:'Visual' },
   { id:'split',            icon:'⊟', label:'Split' },
   { id:'definition',       icon:'◻', label:'Definition' },
   { id:'comparison',       icon:'⇌', label:'Comparison' },
@@ -991,100 +1023,152 @@ const DEFAULT_SLIDES = [
   {
     id:1, type:'title',
     title:'The Holy Trinity & The New Commandment',
-    body:'Pillar I — What We Believe',
-    bodySimple:'Pillar I — What We Believe',
-    note:'Welcome students. Two big ideas today: who God is (Three Persons, One God), and what Jesus commands us to do about it — love each other the way he loves us.'
+    body:'Pillar I · What We Believe',
+    bodySimple:'Pillar I · What We Believe',
+    note:'Welcome students. Two big ideas today. Who God is: three Persons, one God. And what Jesus asks us to do about it: love each other the way he loves us.'
   },
   {
     id:2, type:'question-opening',
     title:'Before we begin…',
-    body:'If God is love —\nwho did he love\nbefore he created anything?',
-    bodySimple:'Think about this...\n\nIf God is love —\nwho did he love\nbefore he made anything?',
-    note:'Let this sit in silence. Take a few answers without correcting them. Say: this is the question the Trinity answers — and it sets up why Jesus can command us to love the way he does.'
+    body:'If God is love,\nwho did he love\nbefore he made anything?',
+    bodySimple:'If God is love,\nwho did he love\nbefore he made anything?',
+    note:'Let this sit in silence. Take a few answers without correcting them. Tell them we\'ll come back to it. The Trinity is the answer.'
   },
   {
     id:3, type:'definition',
     title:'Trinity',
-    body:'Three Persons. One God.\n\nFather, Son, and Holy Spirit — each fully God, none greater than another, none before another.\n\n- The Father\n- The Son (Jesus)\n- The Holy Spirit\n★ "I believe in one God" — the very first line of the Creed we say every Sunday',
-    bodySimple:'Three Persons. One God.\n\nFather, Son, and Holy Spirit.\n\n- God the Father — who loves and creates everything\n- God the Son — Jesus, who became human for us\n- God the Holy Spirit — who lives in our hearts\n★ We meet all three Persons every time we make the Sign of the Cross',
-    note:'This is the headline of the whole lesson. Say it slowly: three Persons, one God. Let it feel like a real claim, not a riddle to solve.'
+    body:'Three Persons. One God.\n\n- The Father\n- The Son\n- The Holy Spirit',
+    bodySimple:'Three Persons. One God.\n\n- The Father, who made everything\n- The Son, Jesus, who became one of us\n- The Holy Spirit, who lives in our hearts',
+    note:'The headline of the whole lesson. Say it slowly: three Persons, one God. Each one fully God. None greater, none first. We say it every Sunday in the Creed: "I believe in one God."'
   },
   {
-    id:4, type:'content',
-    title:'One God, Three Persons',
-    body:'- The Father IS God. The Son IS God. The Holy Spirit IS God.\n- The Father IS NOT the Son. The Son IS NOT the Holy Spirit.\n- Three distinct Persons — not three gods, and not one Person wearing three masks\n★ This is exactly what the Shield of Faith diagram in your workbook shows — IS lines and IS NOT lines',
-    bodySimple:'- The Father IS God. The Son IS God. The Holy Spirit IS God.\n- But the Father IS NOT the Son, and the Son IS NOT the Holy Spirit\n- They are three real, different Persons — but only one God\n★ Not three gods. Not one person pretending to be three.',
-    note:'If your workbook has the Shield of Faith (Scutum Fidei) activity, this is the slide to point back to — same IS/IS NOT logic, just spoken instead of drawn.'
+    id:4, type:'visual',
+    title:'Three Persons, One God',
+    imageIdea:'Andrei Rublev\'s Trinity icon (pre-loaded)',
+    images:[{ id:'def-rublev', src:'images/trinity/rublev-trinity.jpg', x:7, y:19, w:86, h:77 }],
+    body:'', bodySimple:'',
+    note:'VOICEOVER: A monk named Andrei Rublev painted this icon in Russia around 1411. It shows the three visitors who came to Abraham\'s tent in Genesis 18, and Christians have seen the Trinity in them ever since. Look at the faces. They\'re the same. Three Persons, one God. Ask: what do you notice about how they\'re sitting? (They lean toward each other. They share one table.)'
   },
   {
-    id:5, type:'scripture',
-    title:'Matthew 28:19',
-    body:'"Go and baptize them in the name of the Father, and of the Son, and of the Holy Spirit."\n\n- "in the name" — singular, one God\n- Three Persons, one name\n- The words spoken at every Catholic baptism',
-    bodySimple:'"Go and baptize them in the name of the Father, and of the Son, and of the Holy Spirit."\n\n- Jesus says ONE name — not three\n- Father, Son, and Holy Spirit all share that one name\n★ These same words are spoken at every baptism, including yours',
-    note:'Ask: how many names? One — singular. Jesus does not say "in the names of." One name belonging to three Persons.'
+    id:5, type:'content',
+    title:'IS and IS NOT',
+    body:'- The Father, the Son, and the Holy Spirit each IS God\n- The Father IS NOT the Son. The Son IS NOT the Spirit.\n★ Three Persons. One God, not three gods.',
+    bodySimple:'- The Father is God. The Son is God. The Holy Spirit is God.\n- But the Father is not the Son\n★ One God, not three',
+    note:'Keep it to these two lines. They aren\'t three gods, and they aren\'t one Person wearing three masks. The next slide shows it as a picture.'
   },
   {
-    id:6, type:'content',
-    title:'The Sign of the Cross',
-    body:'"In the name" — one name, one God\n"Of the Father, and of the Son, and of the Holy Spirit" — three Persons\n\n- Done at Baptism, at meals, at the start and end of prayer\n- One of the oldest Christian practices\n★ Trinitarian theology in a single gesture',
-    bodySimple:'"In the name" — one God\n"Of the Father, and of the Son, and of the Holy Spirit" — three Persons\n\n- You have done this since your Baptism\n- Christians have done this for 2,000 years\n★ A whole prayer about God in one small movement',
-    note:'Have students make the Sign of the Cross slowly together. Walk through each phrase aloud, matching the words to the motion.'
+    id:6, type:'visual',
+    title:'The Shield of the Trinity',
+    imageIdea:'Scutum Fidei diagram (pre-loaded)',
+    images:[{ id:'def-shield', src:'images/trinity/shield-of-the-trinity.svg', x:7, y:19, w:86, h:77 }],
+    body:'', bodySimple:'',
+    note:'VOICEOVER: Christians have drawn this diagram for about 800 years. Trace it with your finger. From the center, every Person connects to God with IS. Around the outside, the Persons connect to each other with IS NOT. The Father is God. The Father is not the Son. Same shield as the one in your workbook.'
   },
   {
     id:7, type:'scripture',
-    title:'1 John 4:8',
-    body:'"God is love."\n\n- Not "God is loving" — God IS love\n- Love needs someone to love\n- The Father loves the Son, the Son loves the Father, and the Holy Spirit is that love between them\n★ God didn\'t start loving when he made us — he has always been love, inside himself',
-    bodySimple:'"God is love."\n\n- The Bible doesn\'t just say God loves us\n- It says God IS love — that\'s what he is, all the way through\n- The Father loves the Son. The Son loves the Father. The Holy Spirit is the love they share.\n★ God was already a family of love before he ever made anything',
-    note:'This answers the opening question directly — callback to slide 2. God had someone to love before creation: himself, as Trinity.'
+    title:'Matthew 28:19',
+    body:'"Go and baptize them in the name of the Father, and of the Son, and of the Holy Spirit."\n\n★ One name. Three Persons.',
+    bodySimple:'"Go and baptize them in the name of the Father, and of the Son, and of the Holy Spirit."\n\n★ One name, not three',
+    note:'Ask: how many names? One. Jesus doesn\'t say "in the names of." One name, belonging to three Persons.'
   },
   {
-    id:8, type:'discussion',
-    title:'Discussion',
-    body:'- Which Person of the Trinity feels most real to you right now — the Father, Jesus, or the Holy Spirit? Why?\n- If God is, inside himself, a family of love — what does that tell us about what we\'re made for?\n★ How would you explain the Trinity to a friend, in your own words?',
-    bodySimple:'- Which Person of the Trinity do you think about the most — the Father, Jesus, or the Holy Spirit?\n- If God is a family of love inside himself, what does that mean for how we\'re supposed to live?\n★ How would you explain the Trinity to a friend, in your own words?',
-    note:'Start with the first question. The second question is the bridge into the New Commandment — let it land before moving on.'
+    id:8, type:'visual',
+    title:'In the Name',
+    imageIdea:'Baptism: water poured over a baby\'s head at the font (Leonardo prompt #1)',
+    body:'', bodySimple:'',
+    note:'VOICEOVER: Most of you were baptized as babies. A priest or deacon poured water over your head and said the exact words Jesus gave in Matthew 28. In the name of the Father, and of the Son, and of the Holy Spirit. You\'ve belonged to the Trinity since that day.'
   },
   {
     id:9, type:'content',
-    title:'So How Do We Live This?',
-    body:'- The Father, Son, and Holy Spirit have loved each other perfectly, forever\n- Jesus doesn\'t just want us to believe that — he wants us to join in it\n★ Right before he died, Jesus gave his friends one command that sums up what that looks like',
-    bodySimple:'- The Father, Son, and Holy Spirit love each other perfectly, always\n- Jesus wants us to be part of that love — not just believe in it\n★ Right before he died, Jesus gave one command about how to do that',
-    note:'Short bridge slide. Land on: the Trinity isn\'t just a doctrine to understand, it\'s the love we\'re invited into — and Jesus tells us exactly what that looks like next.'
+    title:'The Sign of the Cross',
+    body:'"In the name": one God\n"Of the Father, and of the Son, and of the Holy Spirit": three Persons\n\n★ The whole Trinity in one gesture',
+    bodySimple:'"In the name": one God\n"Father, Son, and Holy Spirit": three Persons\n\n★ You\'ve done this since your Baptism',
+    note:'Have students make the Sign of the Cross slowly together. Match each phrase to the motion. Christians have prayed this way for close to 2,000 years.'
   },
   {
-    id:10, type:'scripture',
-    title:'John 13:34–35',
-    body:'"I give you a new commandment: love one another. As I have loved you, so you also should love one another. This is how all will know that you are my disciples, if you have love for one another."\n\n- Spoken at the Last Supper, hours before his arrest\n- "As I have loved you" — the standard just changed',
-    bodySimple:'"I give you a new commandment: love one another. As I have loved you, so you also should love one another. This is how all will know that you are my disciples, if you have love for one another."\n\n- Jesus said this at the Last Supper, right before he died\n★ Loving each other is how people are supposed to recognize us as his followers',
-    note:'This is the heart of Lesson 2. Read it slowly, twice if needed.'
+    id:10, type:'visual',
+    title:'St. Patrick\'s Shamrock',
+    imageIdea:'Shamrock (pre-loaded) or St. Patrick holding one (Leonardo prompt #2)',
+    images:[{ id:'def-shamrock', src:'images/trinity/shamrock.webp', x:7, y:19, w:86, h:77 }],
+    body:'', bodySimple:'',
+    note:'VOICEOVER: The story goes that St. Patrick picked a shamrock off the ground to explain the Trinity to the Irish. Three leaves, one plant. It\'s a good start, but every picture of the Trinity breaks somewhere. A leaf is only part of the shamrock, and the Son isn\'t part of God. He is fully God. Ask: can anyone spot where the shamrock falls short?'
   },
   {
-    id:11, type:'content',
-    title:'What Makes It NEW?',
-    body:'- "Love your neighbor" was already commanded in the Old Testament (Leviticus 19:18)\n- What\'s new isn\'t the command to love — it\'s the standard\n- "As I have loved you" — not as much as you love yourself, but as much as Jesus loves you\n★ Jesus loved by laying down his life. That\'s the bar now.',
-    bodySimple:'- Loving your neighbor wasn\'t a brand new idea — the Old Testament already said to do that\n- What\'s new is HOW MUCH: "as I have loved you"\n- Jesus loved us enough to die for us\n★ That\'s the size of love he\'s asking us to have for each other',
-    note:'Key point: the newness is the standard, not the command itself. Jesus\'s own sacrificial love becomes the measuring stick.'
+    id:11, type:'scripture',
+    title:'1 John 4:8',
+    body:'"God is love."\n\n- Love needs someone to love\n★ God has always been a family of love',
+    bodySimple:'"God is love."\n\n- The Father loves the Son. The Son loves the Father.\n★ The Holy Spirit is the love they share',
+    note:'Callback to slide 2. Who did God love before he made anything? Himself, as Trinity. The Father loves the Son, the Son loves the Father, and the Holy Spirit is that love. God didn\'t start loving when he made us.'
   },
   {
-    id:12, type:'content',
-    title:'What Does This Look Like?',
-    body:'- Loving like Jesus isn\'t just being nice when it\'s easy\n- It\'s choosing someone else\'s good even when it costs you something\n- Sitting with the kid no one sits with. Forgiving someone who hasn\'t said sorry. Standing up for someone being made fun of.\n★ "By this everyone will know you are my disciples" — not by what we say, by how we love',
-    bodySimple:'- Loving like Jesus means more than just being nice when it\'s easy\n- It means choosing to help someone even when it costs you something\n- Sitting with the kid who\'s alone. Forgiving a friend. Standing up for someone being teased.\n★ People are supposed to be able to tell we follow Jesus just by how we treat each other',
-    note:'Use concrete, classroom-relatable examples. This is where the lesson gets practical — don\'t rush it.'
+    id:12, type:'visual',
+    title:'A Family of Love',
+    imageIdea:'Triquetra: three woven loops of gold light (Leonardo prompt #3)',
+    body:'', bodySimple:'',
+    note:'VOICEOVER: Three loops woven together, with no beginning and no end. This knot is called a triquetra. Before there was a world, there was already love. The Father, the Son, and the Holy Spirit, loving each other forever. That\'s the answer to our opening question.'
   },
   {
     id:13, type:'discussion',
     title:'Discussion',
-    body:'- The Father, Son, and Holy Spirit have loved each other perfectly, forever. Jesus asks us to love each other the same way. What\'s the connection?\n- Can you love someone "as Jesus loved" without it costing you anything? Why or why not?\n★ Who is one person you could love better this week, and what would that actually look like?',
-    bodySimple:'- The Trinity is God loving perfectly, inside himself. Jesus asks us to share in that same kind of love. How are those connected?\n- Does loving like Jesus always feel easy? Why or why not?\n★ Who is one person you could love better this week — and what would that look like?',
-    note:'The starred question is the actual take-home in disguise — let it lead naturally into the next slide.'
+    body:'- Which Person of the Trinity do you think about most? Why?\n★ How would you explain the Trinity to a friend?',
+    bodySimple:'- Which Person of the Trinity do you think about most?\n★ How would you explain the Trinity to a friend?',
+    note:'Start with the first question. Let a few students try the starred one in their own words.'
   },
   {
-    id:14, type:'takehome',
+    id:14, type:'visual',
+    title:'A Seat at the Table',
+    imageIdea:'Rublev icon again, or a warm table with one open seat (Leonardo prompt #4)',
+    body:'', bodySimple:'',
+    note:'VOICEOVER: Think back to Rublev\'s icon. The table has an open side, facing us. Many people think he left it open on purpose. God\'s love isn\'t a closed circle. There\'s a seat for you. Jesus doesn\'t just want us to believe in that love. He wants us to join it, and on his last night he told his friends how.'
+  },
+  {
+    id:15, type:'visual',
+    title:'The Last Supper',
+    imageIdea:'Jesus kneeling to wash Peter\'s feet (Leonardo prompt #5)',
+    body:'', bodySimple:'',
+    note:'VOICEOVER: It\'s Jesus\'s last night before the Cross. He gets down on his knees and washes his friends\' dirty feet. That was a servant\'s job. Peter can\'t believe it. Then Jesus stands up and gives them a new commandment.'
+  },
+  {
+    id:16, type:'scripture',
+    title:'John 13:34–35',
+    body:'"I give you a new commandment: love one another. As I have loved you, so you also should love one another. This is how all will know that you are my disciples, if you have love for one another."',
+    bodySimple:'"I give you a new commandment: love one another. As I have loved you, so you also should love one another. This is how all will know that you are my disciples, if you have love for one another."\n\n★ People will know us by how we love',
+    note:'The heart of Lesson 2. Read it slowly, twice if needed. Spoken at the Last Supper, hours before his arrest.'
+  },
+  {
+    id:17, type:'content',
+    title:'What Makes It NEW?',
+    body:'- "Love your neighbor" was already the law (Leviticus 19:18)\n- The new part: "as I have loved you"\n★ Jesus loved us all the way to the Cross',
+    bodySimple:'- Loving your neighbor was already a rule\n- The new part: love like Jesus loves\n★ He loved us enough to die for us',
+    note:'The command to love isn\'t new. The standard is. Jesus\'s own love, all the way to the Cross, is the measuring stick now.'
+  },
+  {
+    id:18, type:'content',
+    title:'What Does This Look Like?',
+    body:'- Sit with the kid who\'s alone\n- Forgive before they say sorry\n- Stand up for someone being teased\n★ Love that costs you something',
+    bodySimple:'- Sit with the kid who\'s alone\n- Forgive a friend\n- Stand up for someone being teased\n★ Love that costs you something',
+    note:'Make it concrete. Ask for one more example from their own week. Don\'t rush this slide.'
+  },
+  {
+    id:19, type:'visual',
+    title:'Love One Another',
+    imageIdea:'Lunchroom: one student sits down next to a kid eating alone (Leonardo prompt #6)',
+    body:'', bodySimple:'',
+    note:'VOICEOVER: What do you see? One kid eating alone. One kid who chose to sit down next to them. Nobody made them do it. Ask: what did it cost? What did it give the kid who was alone? That\'s what "as I have loved you" looks like at lunch.'
+  },
+  {
+    id:20, type:'discussion',
+    title:'Discussion',
+    body:'- God is a family of love. Jesus asks us to love the same way. How are those connected?\n★ Who is one person you could love better this week?',
+    bodySimple:'- Is loving like Jesus always easy? Why not?\n★ Who is one person you could love better this week?',
+    note:'The starred question is the take-home in disguise. Let it lead into the next slide.'
+  },
+  {
+    id:21, type:'takehome',
     title:'Take-Home',
-    body:'This week, love one person the way Jesus loves you — not just when it\'s easy.\n\nBefore you do it, think about the Trinity: Father, Son, and Holy Spirit loving each other perfectly, and inviting you into that same love.\n\nCome back ready to share what you noticed.',
-    bodySimple:'This week, love one person the way Jesus loves you — not just when it\'s easy.\n\nBefore you do it, think about the Trinity: Father, Son, and Holy Spirit loving each other perfectly, and inviting you into that same love.\n\nCome back ready to share what you noticed.',
-    note:'Same closing pattern as every module. The goal is for the doctrine (Trinity) and the command (love one another) to become one lived habit, not two separate facts.'
+    body:'This week, love one person the way Jesus loves you. Even when it\'s not easy.\n\nCome back ready to share what happened.',
+    bodySimple:'This week, love one person the way Jesus loves you. Even when it\'s not easy.\n\nCome back ready to share what happened.',
+    note:'Same closing pattern as every module. The goal is for the Trinity and the New Commandment to become one habit: we love because God is love.'
   }
 ];
 
@@ -1102,7 +1186,7 @@ let slideTextScale = 1;     // global default text scale; individual slides may 
 
 /* ─── INIT ──────────────────────────────────────────────────────── */
 (function init() {
-  const saved = localStorage.getItem('crux-present-trinity-v3');
+  const saved = localStorage.getItem('crux-present-trinity-v4');
   if (saved) {
     try {
       const p = JSON.parse(saved);
@@ -1123,7 +1207,9 @@ let slideTextScale = 1;     // global default text scale; individual slides may 
 })();
 
 function defaultCopy() {
-  return DEFAULT_SLIDES.map(function(s) { return Object.assign({}, s); });
+  // Deep copy: default slides carry nested image-layer objects that get
+  // mutated in place when a teacher moves/resizes them.
+  return JSON.parse(JSON.stringify(DEFAULT_SLIDES));
 }
 
 /* ─── SAVE ──────────────────────────────────────────────────────── */
@@ -1133,7 +1219,7 @@ function defaultCopy() {
    silently and leave the teacher thinking their edit was saved. */
 function save() {
   try {
-    localStorage.setItem('crux-present-trinity-v3', JSON.stringify({ slides: slides, nextId: nextId, vocabMode: vocabMode, slideTheme: slideTheme, slideTextScale: slideTextScale }));
+    localStorage.setItem('crux-present-trinity-v4', JSON.stringify({ slides: slides, nextId: nextId, vocabMode: vocabMode, slideTheme: slideTheme, slideTextScale: slideTextScale }));
   } catch (e) {
     showToast('Could not save — this deck is too large for browser storage. Try a smaller image, or host it in the repo and paste a URL instead.');
   }
@@ -1170,7 +1256,7 @@ function clampScale(v) {
 
 function applyTextScale(root, slide) {
   if (!root) return;
-  var el = root.querySelector('.slide-content');
+  var el = root.querySelector('.visual-title') || root.querySelector('.slide-content');
   if (!el) return;
   var scale = slide && slide.textScale != null ? slide.textScale : slideTextScale;
   el.style.transform = scale === 1 ? '' : 'scale(' + scale + ')';
@@ -1394,6 +1480,8 @@ function handleBgImageFile(inputEl) {
 
 /* ─── FREE-FLOATING IMAGE LAYERS ─────────────────────────────────── */
 var layerNextId = 1;
+// Slate area on Visual slides, in % of the slide. Keep in sync with .visual-slate CSS.
+var VISUAL_SLATE = { x: 7, y: 19, w: 86, h: 77 };
 var activeLayerDrag = null;
 
 function renderImageLayers(container, slide) {
@@ -1432,7 +1520,7 @@ function renderImageLayers(container, slide) {
     }
     container.appendChild(wrap);
   });
-  if (interactive && !images.length) {
+  if (interactive && !images.length && slide.type !== 'visual') {
     var hint = document.createElement('div');
     hint.className = 'pv-layer-hint';
     hint.textContent = 'Drag & drop an image anywhere on this slide';
@@ -1504,12 +1592,33 @@ function addImageLayerFromSrc(src, dropXPct, dropYPct) {
   }
 
   if (!slide.images) slide.images = [];
+  if (slide.type === 'visual' && !slide.images.length) {
+    slide.images.push(Object.assign({ id: 'img' + (layerNextId++) + '_' + Date.now(), src: src }, VISUAL_SLATE));
+    save();
+    renderCanvasSlide();
+    return;
+  }
   var w = 22, h = 22;
   var x = dropXPct != null ? Math.max(0, Math.min(100 - w, dropXPct - w / 2)) : (50 - w / 2);
   var y = dropYPct != null ? Math.max(0, Math.min(100 - h, dropYPct - h / 2)) : (50 - h / 2);
   slide.images.push({ id: 'img' + (layerNextId++) + '_' + Date.now(), src: src, x: x, y: y, w: w, h: h });
   save();
   renderCanvasSlide();
+}
+
+function handleSlateFile(inputEl) {
+  var file = inputEl.files && inputEl.files[0];
+  inputEl.value = '';
+  if (!file) return;
+  if (!/^image\//.test(file.type)) { showToast('Please choose an image file'); return; }
+  if (file.size > 1.5 * 1024 * 1024) {
+    showToast('That image is ' + (Math.round(file.size / 1024 / 1024 * 10) / 10) + 'MB — please use one under 1.5MB, or host it in the repo and paste a path instead');
+    return;
+  }
+  var reader = new FileReader();
+  reader.onload = function(ev) { addImageLayerFromSrc(ev.target.result); };
+  reader.onerror = function() { showToast('Could not read that file'); };
+  reader.readAsDataURL(file);
 }
 
 function handleSlideDrop(e) {
@@ -1729,7 +1838,7 @@ function addTextBox() {
 var activeContentDrag = null;
 
 function applyContentOffset(container, slide) {
-  if (!container) return;
+  if (!container || (slide && slide.type === 'visual')) return;
   var el = container.querySelector('.slide-content');
   if (!el) return;
   var x = (slide && slide.contentOffsetX) || 0;
@@ -1742,7 +1851,7 @@ function renderContentDragHandle(container, slide) {
   if (!container) return;
   var old = container.querySelector('.content-drag-handle');
   if (old) old.remove();
-  if (container.id !== 'editableSlide') return;
+  if (container.id !== 'editableSlide' || slide.type === 'visual') return;
   var handle = document.createElement('div');
   handle.className = 'content-drag-handle';
   handle.title = 'Drag to move the title/text block';
@@ -1838,6 +1947,7 @@ function renderCanvasSlide() {
 
 function buildControlsStrip(slide) {
   var isMedia = slide.type === 'media';
+  var isVisual = slide.type === 'visual';
   var mt = slide.mediaType || 'youtube';
   var effScale = slide.textScale != null ? slide.textScale : slideTextScale;
   var isBgImgEmbedded = slide.bgImage && slide.bgImage.indexOf('data:') === 0;
@@ -1906,6 +2016,7 @@ function buildControlsStrip(slide) {
           '<button class="wvt' + (bodyTab === 'simple'   ? ' active' : '') + '" onclick="setBodyTabWys(\'simple\')">Child-Friendly</button>' +
         '</div>' +
       '</div>' +
+      (isVisual ? '<input class="wys-input" type="text" placeholder="Image idea (shown on the empty slate, editor only)…" title="Image idea" value="' + escHtml(slide.imageIdea || '') + '" oninput="updateField(\'imageIdea\',this.value)">' : '') +
       '<textarea class="wys-notes-input" placeholder="Private notes shown only during presentation…" oninput="updateField(\'note\',this.value)">' + escHtml(slide.note || '') + '</textarea>' +
     '</div>' +
   '</div>';
@@ -2006,6 +2117,21 @@ function buildEditableSlideHTML(slide) {
           '<div class="comp-col-body"><div class="editable-body" id="editableBodyRight">' + buildBodyLines(rLines.slice(1)) + '</div></div>' +
         '</div>' +
       '</div>' +
+    '</div>';
+  }
+
+  if (type === 'visual') {
+    var hasImg = slide.images && slide.images.length;
+    return '<div class="slide-content sc-visual">' +
+      '<div class="visual-title editable-field" contenteditable="true" data-field="title" data-placeholder="Title…">' + escHtml(slide.title || '') + '</div>' +
+      '<div class="visual-rule"></div>' +
+      (hasImg ? '' :
+        '<div class="visual-slate" onclick="document.getElementById(\'slateFilePicker\').click()">' +
+          '<div class="visual-slate-icon">🖼</div>' +
+          '<div>Drop an image here, or click to browse</div>' +
+          (slide.imageIdea ? '<div class="visual-slate-idea">Idea: ' + escHtml(slide.imageIdea) + '</div>' : '') +
+          '<input type="file" accept="image/*" id="slateFilePicker" style="display:none" onclick="event.stopPropagation()" onchange="handleSlateFile(this)">' +
+        '</div>') +
     '</div>';
   }
 
@@ -2430,6 +2556,13 @@ function buildSlideHTML(slide) {
           '<div class="comp-col-body">' + rightBody + '</div>' +
         '</div>' +
       '</div>' +
+    '</div>';
+  }
+
+  if (type === 'visual') {
+    return '<div class="slide-content sc-visual">' +
+      '<div class="visual-title">' + escHtml(slide.title || '') + '</div>' +
+      '<div class="visual-rule"></div>' +
     '</div>';
   }
 
