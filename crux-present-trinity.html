@@ -219,14 +219,25 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
    are size containers and a moved line lands in the same spot in the
    editor and in present mode. */
 #editableSlide, #presentSlide { container-type: size; }
-.el-drag-grip {
-  position: absolute; z-index: 15; width: 18px; height: 22px; display: none;
-  align-items: center; justify-content: center; box-sizing: border-box;
-  background: rgba(8,10,22,0.88); color: var(--gold); border: 1px solid rgba(212,165,116,0.4);
-  border-radius: 4px; cursor: grab; font-size: 12px; line-height: 1; user-select: none; touch-action: none;
+/* Hover tools beside each title/line: drag grip + quick size buttons,
+   stacked in the left margin so moving the mouse to them never crosses
+   another line. */
+.el-tools {
+  position: absolute; z-index: 15; display: none; flex-direction: column; align-items: center; gap: 2px;
+  width: 26px; box-sizing: border-box; padding: 2px;
+  background: rgba(8,10,22,0.92); border: 1px solid rgba(212,165,116,0.4); border-radius: 6px;
+  user-select: none;
 }
-.el-drag-grip.visible { display: flex; }
+.el-tools.visible { display: flex; }
+.el-drag-grip, .el-size-btn {
+  width: 20px; height: 20px; display: flex; align-items: center; justify-content: center;
+  border: none; border-radius: 4px; padding: 0; line-height: 1; font-family: inherit;
+}
+.el-drag-grip { color: var(--gold); cursor: grab; font-size: 12px; touch-action: none; }
 .el-drag-grip:active { cursor: grabbing; }
+.el-size-btn { background: rgba(255,255,255,0.1); color: #fff; font-size: 0.6rem; font-weight: 700; cursor: pointer; }
+.el-size-btn:hover { background: rgba(212,165,116,0.35); }
+.el-size-pct { font-size: 0.5rem; color: rgba(255,255,255,0.7); line-height: 1.2; }
 .el-dragging { outline: 1px dashed var(--gold); outline-offset: 3px; }
 
 /* Controls strip below slide */
@@ -1912,21 +1923,43 @@ function holdToRepeat(btn, fn) {
    dragging it moves just that element. Offsets are stored per element
    (same text key as textSizes) in container units. Double-click resets. */
 function attachElementDrag(es, slide) {
+  var tools = document.createElement('div');
+  tools.className = 'el-tools';
   var grip = document.createElement('div');
   grip.className = 'el-drag-grip';
   grip.textContent = '⠿';
   grip.title = 'Drag to move this text · double-click to put it back';
-  es.appendChild(grip);
+  var plusBtn = document.createElement('button');
+  plusBtn.type = 'button'; plusBtn.className = 'el-size-btn'; plusBtn.textContent = 'A+';
+  plusBtn.title = 'Bigger (hold to keep growing)';
+  var pctLbl = document.createElement('div');
+  pctLbl.className = 'el-size-pct';
+  var minusBtn = document.createElement('button');
+  minusBtn.type = 'button'; minusBtn.className = 'el-size-btn'; minusBtn.textContent = 'A−';
+  minusBtn.title = 'Smaller (hold to keep shrinking)';
+  tools.appendChild(grip); tools.appendChild(plusBtn); tools.appendChild(pctLbl); tools.appendChild(minusBtn);
+  es.appendChild(tools);
   var dragging = null;
+
+  function sizeFromTools(dir) {
+    var el = grip.targetEl;
+    if (!el) return;
+    setSizeTarget(el);
+    stepSizeTarget(dir);
+    placeGrip(el);
+  }
+  holdToRepeat(plusBtn, function() { sizeFromTools(1); });
+  holdToRepeat(minusBtn, function() { sizeFromTools(-1); });
 
   function isMovable(el) { return el && es.contains(el) && !el.closest('.pv-textbox'); }
   function placeGrip(el) {
-    if (!isMovable(el)) { grip.classList.remove('visible'); grip.targetEl = null; return; }
+    if (!isMovable(el)) { tools.classList.remove('visible'); grip.targetEl = null; return; }
     var er = es.getBoundingClientRect(), r = el.getBoundingClientRect();
-    grip.style.left = Math.max(2, r.left - er.left - 24) + 'px';
-    grip.style.top = Math.max(2, r.top - er.top + 2) + 'px';
+    pctLbl.textContent = Math.round((parseFloat(el.style.zoom) || 1) * 100) + '%';
+    tools.classList.add('visible');
+    tools.style.left = Math.max(2, r.left - er.left - tools.offsetWidth - 6) + 'px';
+    tools.style.top = Math.max(2, Math.min(er.height - tools.offsetHeight - 2, r.top - er.top)) + 'px';
     grip.targetEl = el;
-    grip.classList.add('visible');
   }
   function offsetOf(el) {
     var t = (el.style.translate || '').match(/(-?[\d.]+)cqw\s+(-?[\d.]+)cqh/);
@@ -1937,7 +1970,7 @@ function attachElementDrag(es, slide) {
   }
 
   es.addEventListener('mouseover', function(e) {
-    if (dragging || e.target === grip) return;
+    if (dragging || tools.contains(e.target)) return;
     var t = e.target.closest('.editable-field, .body-line');
     if (isMovable(t)) placeGrip(t);
   });
