@@ -1,10 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Teacher's Guide — The Holy Trinity — CRUX</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<title>Holy Trinity Teacher's Guide</title>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -27,6 +21,7 @@ body {
   background: #d0ccc4;
   font-family: 'Inter', sans-serif;
   color: var(--ink);
+  padding-block: 0.4in;
 }
 
 .page {
@@ -39,7 +34,6 @@ body {
   position: relative;
 }
 
-/* ── RUNNING HEADER ── */
 .running-header {
   position: absolute;
   top: 0.35in;
@@ -70,7 +64,6 @@ body {
   border-radius: 2px;
 }
 
-/* ── COVER HEADER ── */
 .guide-cover {
   border-bottom: 2pt solid var(--navy);
   padding-bottom: 0.3in;
@@ -88,7 +81,7 @@ body {
 
 .guide-title {
   font-family: 'Playfair Display', serif;
-  font-size: 28pt;
+  font-size: 26pt;
   font-weight: 900;
   color: var(--navy);
   line-height: 1.1;
@@ -110,8 +103,6 @@ body {
   border-top: 0.5pt solid var(--rule);
 }
 
-.glance-item {}
-
 .glance-label {
   font-size: 6.5pt;
   font-weight: 700;
@@ -128,10 +119,7 @@ body {
   line-height: 1.4;
 }
 
-/* ── SECTION HEADING ── */
-.section-block {
-  margin-bottom: 0.32in;
-}
+.section-block { margin-bottom: 0.32in; }
 
 .section-heading {
   font-family: 'Playfair Display', serif;
@@ -143,12 +131,11 @@ body {
   border-bottom: 0.5pt solid var(--rule);
 }
 
-/* ── LESSON FLOW TABLE ── */
 .flow-table {
   width: 100%;
   border-collapse: collapse;
   margin-bottom: 0.1in;
-  font-size: 9pt;
+  font-size: 8.5pt;
 }
 
 .flow-table th {
@@ -158,15 +145,15 @@ body {
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  padding: 0.08in 0.12in;
+  padding: 0.07in 0.1in;
   text-align: left;
 }
 
 .flow-table td {
-  padding: 0.08in 0.12in;
+  padding: 0.07in 0.1in;
   border-bottom: 0.5pt solid var(--rule);
   vertical-align: top;
-  line-height: 1.5;
+  line-height: 1.45;
   color: var(--soft);
 }
 
@@ -176,7 +163,7 @@ body {
   font-weight: 700;
   color: var(--navy);
   white-space: nowrap;
-  width: 0.65in;
+  width: 0.6in;
 }
 
 .flow-table td:nth-child(2) {
@@ -185,11 +172,7 @@ body {
   width: 1.5in;
 }
 
-/* ── LESSON STEP ── */
-.lesson-step {
-  margin-bottom: 0.28in;
-  page-break-inside: avoid;
-}
+.lesson-step { margin-bottom: 0.28in; }
 
 .step-header {
   display: flex;
@@ -226,6 +209,7 @@ body {
   color: var(--gold);
   margin-left: auto;
   flex-shrink: 0;
+  white-space: nowrap;
 }
 
 .step-body {
@@ -238,9 +222,6 @@ body {
 .step-body p { margin-bottom: 0.08in; }
 .step-body strong { color: var(--ink); }
 
-/* ── CALLOUT BOXES ── */
-
-/* Teacher action box */
 .do-box {
   background: var(--offwhite);
   border-left: 3pt solid var(--rule);
@@ -253,14 +234,54 @@ body {
 
 .do-box strong { color: var(--navy); display: block; margin-bottom: 0.04in; font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase; }
 
-/* Takeaway box — Andrew's voice */
+.story-text {
+  background: var(--offwhite);
+  border: 0.5pt solid var(--rule);
+  border-radius: 3px;
+  padding: 0.14in 0.18in;
+  margin-bottom: 0.12in;
+}
+
+.story-chapter { margin-bottom: 0.14in; }
+.story-chapter:last-child { margin-bottom: 0; }
+
+.story-chapter-label {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.05in;
+}
+
+.story-chapter-body {
+  font-family: 'Playfair Display', serif;
+  font-size: 9.5pt;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+.media-box {
+  background: #fbf2e3;
+  border: 0.5pt solid var(--gold);
+  border-radius: 3px;
+  padding: 0.12in 0.16in;
+  margin-bottom: 0.12in;
+  font-size: 8.5pt;
+  line-height: 1.6;
+  color: #6b5426;
+}
+.media-box strong { color: #8a6a1f; display: block; margin-bottom: 0.05in; font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase; }
+.media-box ul { margin: 0.05in 0 0; padding-left: 0.18in; }
+.media-box li { margin-bottom: 0.07in; }
+.media-box .clip-source { font-weight: 700; color: #8a6a1f; }
+
 .takeaway-box {
   background: var(--takeaway-bg);
   color: white;
   padding: 0.18in 0.2in;
   margin: 0.12in 0 0.1in;
   border-radius: 3px;
-  page-break-inside: avoid;
 }
 
 .takeaway-label {
@@ -289,12 +310,8 @@ body {
   font-style: italic;
 }
 
-.takeaway-body strong {
-  color: var(--light-gold);
-  font-style: normal;
-}
+.takeaway-body strong { color: var(--light-gold); font-style: normal; }
 
-/* If a student says */
 .student-says {
   background: var(--teacher-bg);
   border: 0.5pt solid var(--rule);
@@ -303,7 +320,6 @@ body {
   margin: 0.1in 0;
   font-size: 9pt;
   line-height: 1.65;
-  page-break-inside: avoid;
 }
 
 .student-says-label {
@@ -322,12 +338,8 @@ body {
   font-style: italic;
 }
 
-.student-says-a {
-  color: var(--soft);
-  line-height: 1.7;
-}
+.student-says-a { color: var(--soft); line-height: 1.7; }
 
-/* Watch for */
 .watch-box {
   display: flex;
   gap: 0.15in;
@@ -358,7 +370,6 @@ body {
 .watch-col.watch { border-top-color: #9a6020; }
 .watch-col.watch .watch-col-label { color: #9a6020; }
 
-/* Page number */
 .page-num {
   position: absolute;
   bottom: 0.4in;
@@ -371,7 +382,6 @@ body {
   letter-spacing: 0.1em;
 }
 
-/* Horizontal rule */
 hr.step-rule {
   border: none;
   border-top: 0.5pt solid var(--rule);
@@ -379,27 +389,53 @@ hr.step-rule {
 }
 
 @media print {
-  body { background: white; }
-  .page { margin: 0; box-shadow: none; }
-  .page { page-break-after: always; }
+  body { background: white; padding-block: 0; }
+  .page { margin: 0; box-shadow: none; page-break-after: always; }
+}
+
+@media (max-width: 900px) {
+  body { padding-inline: 12px; }
+  .page { width: 100%; min-height: 0; padding: 0.5in 0.4in; }
+  .at-a-glance { grid-template-columns: repeat(2, 1fr); }
+  .watch-box { flex-direction: column; }
 }
 </style>
-</head>
-<body>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+/* Voiceover box for image-only (Visual) slides */
+.voice-box {
+  background: #eef1f7;
+  border: 0.5pt solid #b9c3d6;
+  border-left: 3pt solid var(--navy);
+  border-radius: 3px;
+  padding: 0.12in 0.16in;
+  margin-bottom: 0.1in;
+  font-size: 9pt;
+  line-height: 1.65;
+  color: #23304a;
+}
+.voice-box strong { color: var(--navy); display: block; margin-bottom: 0.05in; font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase; }
+.voice-box .voice-show { font-size: 8pt; font-style: italic; color: #5a6478; margin-bottom: 0.06in; }
+.voice-box .voice-ask { margin-top: 0.06in; font-weight: 600; color: var(--navy); }
+.voice-box .voice-optional { margin-top: 0.06in; font-size: 8.5pt; color: #5a6478; }
+/* 13-row lesson table: tighter rows so it shares page 1 with the cover */
+.flow-table td { padding-top: 0.035in; padding-bottom: 0.035in; }
+.step-slide.is-visual { background: var(--navy); color: white; padding: 0.02in 0.08in; border-radius: 2px; }
+</style>
 
 <!-- ══════════════════════════════════ PAGE 1 ══ -->
 <div class="page">
   <div class="running-header">
-    <span><span class="crux-mark">CRUX</span> &nbsp;·&nbsp; Teacher's Guide</span>
-    <span>Chapter 1 — The Holy Trinity</span>
+    <span><span class="crux-mark">CRUX</span>&nbsp;·&nbsp;Teacher's Guide</span>
+    <span>The Holy Trinity &amp; The New Commandment · Week 3</span>
     <span class="teacher-badge">Not for Students</span>
   </div>
 
-  <!-- Cover header -->
   <div class="guide-cover">
-    <div class="guide-eyebrow">CRUX Companion &nbsp;·&nbsp; Beginner's Edition &nbsp;·&nbsp; Grades 3–5</div>
-    <div class="guide-title">Teacher's Guide<br>Chapter 1: The Holy Trinity</div>
-    <div class="guide-sub">Pillar I &nbsp;·&nbsp; What We Believe &nbsp;·&nbsp; Use alongside the Companion Workbook &amp; Classroom Presentation</div>
+    <div class="guide-eyebrow">CRUX Companion &nbsp;·&nbsp; Beginner's Edition &nbsp;·&nbsp; Grade 4</div>
+    <div class="guide-title">Teacher's Guide<br>The Holy Trinity &amp; The New Commandment</div>
+    <div class="guide-sub">Pillar I &nbsp;·&nbsp; What We Believe &nbsp;·&nbsp; Follows The Fall &amp; the Fruits of the Spirit &nbsp;·&nbsp; Use alongside the Classroom Presentation</div>
 
     <div class="at-a-glance">
       <div class="glance-item">
@@ -408,59 +444,41 @@ hr.step-rule {
       </div>
       <div class="glance-item">
         <div class="glance-label">Materials</div>
-        <div class="glance-value">Workbooks, colored pencils, screen for presentation</div>
+        <div class="glance-value">Screen/projector. Holy Trinity Trifold, one per student (print double-sided, flip on short edge). Pencils. Companion Workbook if you use its Shield of Faith activity.</div>
       </div>
       <div class="glance-item">
         <div class="glance-label">Scripture</div>
-        <div class="glance-value">Matthew 28:19</div>
+        <div class="glance-value">Matthew 28:19 · 1 John 4:8 · John 13:34–35</div>
       </div>
       <div class="glance-item">
         <div class="glance-label">Slides</div>
-        <div class="glance-value">CRUX_Trinity_Presentation.html &nbsp;·&nbsp; 13 slides</div>
+        <div class="glance-value">crux-present-trinity.html &nbsp;·&nbsp; 22 slides (8 are image slides)</div>
       </div>
     </div>
   </div>
 
-  <!-- Lesson flow -->
   <div class="section-block">
     <div class="section-heading">Lesson at a Glance</div>
     <table class="flow-table">
       <thead>
-        <tr>
-          <th>Time</th>
-          <th>Section</th>
-          <th>What's Happening</th>
-        </tr>
+        <tr><th>Time</th><th>Section</th><th>What's Happening</th></tr>
       </thead>
       <tbody>
-        <tr><td>0–2 min</td><td>Opening Prayer</td><td>Sign of the Cross as a class. Moment of silence.</td></tr>
-        <tr><td>2–10 min</td><td>Watch Together</td><td>Bible Project video on the Trinity (~8 min). Screen on Slide 3.</td></tr>
-        <tr><td>10–15 min</td><td>Opening Discussion</td><td>"What do you already know about the Trinity?" Turn &amp; talk, then share out.</td></tr>
-        <tr><td>15–25 min</td><td>Lesson</td><td>Slides 5–6. The Big Idea + Three Persons. Teacher-led with discussion.</td></tr>
-        <tr><td>25–30 min</td><td>Shield of Faith</td><td>Slide 7. Walk through the diagram. Students begin workbook Activity 2.</td></tr>
-        <tr><td>30–33 min</td><td>Scripture</td><td>Matthew 28:19 read aloud together.</td></tr>
-        <tr><td>33–43 min</td><td>Discussion</td><td>Slides 9–10. Two reflection questions. Let the conversation breathe.</td></tr>
-        <tr><td>43–55 min</td><td>Workbook Activities</td><td>Slide 11. Students work independently: Match the Term, Shield, Prayer.</td></tr>
-        <tr><td>55–58 min</td><td>Quiz</td><td>Slide 12. Read questions aloud. Reveal answers together.</td></tr>
-        <tr><td>58–60 min</td><td>Closing Prayer</td><td>Glory Be. Remind students about CRUX QR code for 50 XP.</td></tr>
+        <tr><td>0–2 min</td><td>Opening Prayer</td><td>Slide 1. Sign of the Cross as a class.</td></tr>
+        <tr><td>2–5 min</td><td>Before We Begin</td><td>Slide 2. Who did God love before he made anything? Held for later.</td></tr>
+        <tr><td>5–11 min</td><td>Three Persons, One God</td><td>Slides 3–4. The headline, then Rublev's icon.</td></tr>
+        <tr><td>11–16 min</td><td>IS and IS NOT</td><td>Slides 5–6. The rule, then the Shield of the Trinity.</td></tr>
+        <tr><td>16–21 min</td><td>One Name</td><td>Slides 7–9. Matthew 28:19, Baptism, the Sign of the Cross.</td></tr>
+        <tr><td>21–26 min</td><td>Pictures That Help</td><td>Slides 10–11. The shamrock, then the frozen lake.</td></tr>
+        <tr><td>26–29 min</td><td>God Is Love</td><td>Slides 12–13. 1 John 4:8 answers the opening question.</td></tr>
+        <tr><td>29–34 min</td><td>Discussion</td><td>Slide 14. Explain the Trinity in your own words.</td></tr>
+        <tr><td>34–42 min</td><td>Trifold Activity</td><td>Holy Trinity Trifold. IS or IS NOT, then the three Persons.</td></tr>
+        <tr><td>42–47 min</td><td>Invited In</td><td>Slides 15–17. A seat at the table, the Last Supper, John 13.</td></tr>
+        <tr><td>47–52 min</td><td>The New Commandment</td><td>Slides 18–20. What's new, and what it looks like at lunch.</td></tr>
+        <tr><td>52–57 min</td><td>Discussion</td><td>Slide 21. Who could you love better this week?</td></tr>
+        <tr><td>57–60 min</td><td>Take-Home + Closing</td><td>Slide 22. Glory Be.</td></tr>
       </tbody>
     </table>
-  </div>
-
-  <!-- Core goal -->
-  <div class="section-block">
-    <div class="section-heading">The Goal of This Lesson</div>
-    <div class="step-body">
-      <p>This is not a lesson where students are expected to leave with the Trinity fully figured out. No one does. The goal is to give students a framework — the Trinity is real, it matters, and it tells us something specific about who God is and how he operates in the world.</p>
-      <p>The Scutum Fidei and the vocabulary are tools. The deeper work is helping students feel the weight of the story: a God who created everything, then stepped into his creation, then left his Spirit behind. That's the thread running through everything in this lesson.</p>
-    </div>
-
-    <div class="takeaway-box">
-      <div class="takeaway-label">Your Core Takeaway</div>
-      <div class="takeaway-body">
-        "You don't need to fully grasp the Trinity, just like you don't need to fully grasp how the cells in our body work or how wifi somehow makes its way into our phones. <strong>But it is real, and it is important to know that our God has a way of working both in the material world and outside of it.</strong> He can create and do with his creation what he wants. That's why miracles are possible."
-      </div>
-    </div>
   </div>
 
   <div class="page-num">1</div>
@@ -470,80 +488,43 @@ hr.step-rule {
 <!-- ══════════════════════════════════ PAGE 2 ══ -->
 <div class="page">
   <div class="running-header">
-    <span><span class="crux-mark">CRUX</span> &nbsp;·&nbsp; Teacher's Guide</span>
-    <span>Chapter 1 — The Holy Trinity</span>
+    <span><span class="crux-mark">CRUX</span>&nbsp;·&nbsp;Teacher's Guide</span>
+    <span>The Holy Trinity &amp; The New Commandment · Week 3</span>
     <span class="teacher-badge">Not for Students</span>
   </div>
 
-  <div class="section-heading" style="margin-bottom:0.2in;">Teaching the Lesson — Step by Step</div>
+  <div class="section-block">
+    <div class="section-heading">The Goal of This Lesson</div>
+    <div class="step-body">
+      <p>Nobody leaves this lesson with the Trinity figured out, and they aren't supposed to. The goal is a framework: the Trinity is real, it matters, and it tells us who God is. Three Persons, one God, loving each other before anything else existed.</p>
+      <p>The second half turns that belief into a command. If God is a family of love, Jesus's New Commandment is the invitation to join it: love one another the way he loves us. Keep the two halves connected. The Trinity is what God is. The New Commandment is what that means for how we live.</p>
+    </div>
 
-  <!-- STEP 1 -->
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Core Takeaway</div>
+      <div class="takeaway-body">"You don't need to fully grasp the Trinity, just like you don't need to fully grasp how the cells in our body work or how wifi somehow makes its way into our phones. But it is real, and it is important to know that our God has a way of working both in the material world and outside of it. He can create and do with his creation what he wants. That's why miracles are possible."</div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <div class="section-heading">About the Image Slides</div>
+    <div class="step-body">
+      <p>Eight slides are just a title and a picture. They're there so students look up instead of reading. On those slides, the words come from you. Each one has a <strong>Say This</strong> box below with a short voiceover. Say it in your own words, then point at the picture as you go. The same script is in the slide's Presenter Notes (press <strong>N</strong> while presenting).</p>
+      <p>Each Say This box starts with a one-line description of the picture. If an image ever fails to load, read that line aloud and keep going.</p>
+    </div>
+  </div>
+
+  <div class="section-heading">Teaching the Lesson, Step by Step</div>
+
   <div class="lesson-step">
     <div class="step-header">
       <span class="step-time">0–2 min</span>
       <span class="step-title">Opening Prayer</span>
-      <span class="step-slide">Slide 2</span>
+      <span class="step-slide">Slide 1</span>
     </div>
     <div class="do-box">
       <strong>Do This</strong>
-      Lead the class in the Sign of the Cross. Put Slide 2 on the screen. Read it aloud slowly, then hold 10–15 seconds of silence before speaking.
-    </div>
-    <div class="step-body">
-      <p>Don't rush the silence. Students this age rarely sit in quiet. Let it land before you move on. It sets the tone that this is a different kind of class.</p>
-    </div>
-  </div>
-
-  <hr class="step-rule">
-
-  <!-- STEP 2 -->
-  <div class="lesson-step">
-    <div class="step-header">
-      <span class="step-time">2–10 min</span>
-      <span class="step-title">Watch Together</span>
-      <span class="step-slide">Slide 3</span>
-    </div>
-    <div class="do-box">
-      <strong>Do This</strong>
-      Play the Bible Project video directly from Slide 3 (~8 min). No setup needed. The video is embedded. Make sure the room has internet and sound before class.
-    </div>
-    <div class="step-body">
-      <p>After the video ends, before moving to the next slide, ask two or three students: <em>"What was one thing you noticed? Did anything surprise you?"</em> Accept all answers without correcting. This is a warm-up, not a test.</p>
-    </div>
-  </div>
-
-  <hr class="step-rule">
-
-  <!-- STEP 3 -->
-  <div class="lesson-step">
-    <div class="step-header">
-      <span class="step-time">10–25 min</span>
-      <span class="step-title">The Big Idea + Three Persons</span>
-      <span class="step-slide">Slides 4–6</span>
-    </div>
-    <div class="do-box">
-      <strong>Do This</strong>
-      Slide 4 opens the discussion ("What do you already know?"). Give students 2 minutes to turn and talk, then call on a few. Slides 5–6 are teacher-led. Read through the cards on Slide 6 and add your own explanation for each Person.
-    </div>
-    <div class="step-body">
-      <p>Slide 6 is your biggest teaching moment before the diagram. When you get to God the Son, this is where you can bring the room forward. Students this age have likely studied Greek mythology and ancient history. Use that.</p>
-    </div>
-
-    <div class="takeaway-box">
-      <div class="takeaway-label">Your Takeaway — The Son</div>
-      <div class="takeaway-body">
-        "<strong>What God that they've ever learned about came down from his throne to be spat on and crucified?</strong> Only ours. And what did he do after that? He left us the Holy Spirit to be with us in times of need. There is no better religion to be a part of than one where our God would lay down his life for us — who are so unworthy."
-      </div>
-    </div>
-
-    <div class="watch-box">
-      <div class="watch-col good">
-        <div class="watch-col-label">Signs It's Landing</div>
-        Students asking follow-up questions. Comparing to what they've heard before. Nodding, leaning forward.
-      </div>
-      <div class="watch-col watch">
-        <div class="watch-col-label">Signs They're Lost</div>
-        Blank faces, side conversations. Slow down and ask: "Which part would you want me to say again differently?"
-      </div>
+      Lead the Sign of the Cross slowly, as a class. Tell them there are two big ideas today: who God is (three Persons, one God), and what Jesus asks us to do about it (love each other the way he loves us).
     </div>
   </div>
 
@@ -554,91 +535,54 @@ hr.step-rule {
 <!-- ══════════════════════════════════ PAGE 3 ══ -->
 <div class="page">
   <div class="running-header">
-    <span><span class="crux-mark">CRUX</span> &nbsp;·&nbsp; Teacher's Guide</span>
-    <span>Chapter 1 — The Holy Trinity</span>
+    <span><span class="crux-mark">CRUX</span>&nbsp;·&nbsp;Teacher's Guide</span>
+    <span>The Holy Trinity &amp; The New Commandment · Week 3</span>
     <span class="teacher-badge">Not for Students</span>
   </div>
 
-  <!-- STEP 4 -->
   <div class="lesson-step">
     <div class="step-header">
-      <span class="step-time">25–30 min</span>
-      <span class="step-title">The Shield of Faith</span>
-      <span class="step-slide">Slide 7</span>
+      <span class="step-time">2–5 min</span>
+      <span class="step-title">Before We Begin</span>
+      <span class="step-slide">Slide 2</span>
     </div>
     <div class="do-box">
       <strong>Do This</strong>
-      Put Slide 7 on the screen. Walk through the diagram first. Explain the solid lines (IS) and dashed lines (IS NOT). Then have students open their workbooks to Activity 2 and label the blank diagram using the word bank.
-    </div>
-    <div class="step-body">
-      <p>The IS / IS NOT language isn't just theological precision. It points to something students can actually observe in Scripture. When you explain it, anchor it to a scene they know.</p>
-    </div>
-
-    <div class="takeaway-box">
-      <div class="takeaway-label">Your Takeaway — IS / IS NOT</div>
-      <div class="takeaway-body">
-        "The three Persons of the Trinity are of the same substance, but they are separate. <strong>That's why Jesus prays to God in the garden.</strong> His spiritual presence is not within this earthly world, so he prays. And that shows us something remarkable — prayer truly does cross through the physical realm into the spiritual realm. When Jesus prays, he's doing exactly what we do."
-      </div>
-    </div>
-
-    <div class="student-says">
-      <div class="student-says-label">If a Student Says</div>
-      <div class="student-says-q">"Wait — if Jesus IS God, why is he praying to God? Isn't that weird?"</div>
-      <div class="student-says-a">That's exactly the right question. Jesus the Son is fully God. But he's a distinct Person from the Father. They are the same substance, but they are not the same Person. The Son, while on earth in a human body, prays to the Father. That's not a contradiction. That's the Trinity in action. And it means prayer is real. It goes somewhere.</div>
+      Read the question and let it sit in silence: <em>If God is love, who did he love before he made anything?</em> Take a few answers without correcting any of them. Tell them the class will answer it by Slide 12.
     </div>
   </div>
 
   <hr class="step-rule">
 
-  <!-- STEP 5 -->
   <div class="lesson-step">
     <div class="step-header">
-      <span class="step-time">30–43 min</span>
-      <span class="step-title">Scripture + Discussion</span>
-      <span class="step-slide">Slides 8–10</span>
+      <span class="step-time">5–8 min</span>
+      <span class="step-title">Trinity</span>
+      <span class="step-slide">Slide 3</span>
     </div>
     <div class="do-box">
       <strong>Do This</strong>
-      Read Matthew 28:19 aloud together from Slide 8. Then move through Slides 9–10. Let the discussion breathe. Don't rush to fill silence. Call on students who haven't spoken yet.
+      The headline of the whole lesson. Say it slowly: three Persons, one God. Each one fully God. None greater, none first. Walk through the three and add your own explanation for each Person. When you get to the Son, this is where you can bring the room forward.
     </div>
-    <div class="step-body">
-      <p>Discussion Question 2 is where the whole lesson converges. You're not just asking a theology question. You're asking students to feel the weight of the story. Let them sit with it.</p>
-    </div>
-
     <div class="takeaway-box">
-      <div class="takeaway-label">Your Takeaway — The Discussion Goal</div>
-      <div class="takeaway-body">
-        "What you want them to land on — even if they can't say it yet — is this: <strong>'God created me, loved me, and then died for me. Why wouldn't I follow him?'</strong> That's the question you're trying to plant. You don't need them to answer it out loud. You just need it to be the thing they're sitting with when they leave."
-      </div>
-    </div>
-
-    <div class="watch-box">
-      <div class="watch-col good">
-        <div class="watch-col-label">Signs It's Landing</div>
-        Personal answers. Students referencing their own experience of prayer, or people they know. Quiet after a response is thinking, not boredom.
-      </div>
-      <div class="watch-col watch">
-        <div class="watch-col-label">Signs They're Lost</div>
-        One-word answers ("I don't know"). Try asking: "Has anyone ever felt like God was close? Or far away? Tell us about that."
-      </div>
+      <div class="takeaway-label">Your Takeaway: The Son</div>
+      <div class="takeaway-body">"What God that they've ever learned about came down from his throne to be spat on and crucified? Only ours. And what did he do after that? He left us the Holy Spirit to be with us in times of need. There is no better religion to be a part of than one where our God would lay down his life for us — who are so unworthy."</div>
     </div>
   </div>
 
   <hr class="step-rule">
 
-  <!-- STEP 6 -->
   <div class="lesson-step">
     <div class="step-header">
-      <span class="step-time">43–55 min</span>
-      <span class="step-title">Workbook Activities</span>
-      <span class="step-slide">Slide 11</span>
+      <span class="step-time">8–11 min</span>
+      <span class="step-title">Three Persons, One God</span>
+      <span class="step-slide is-visual">Slide 4 · Image</span>
     </div>
-    <div class="do-box">
-      <strong>Do This</strong>
-      Put Slide 11 on the screen and give students 10–12 minutes to work through Activities 1–3 in their workbooks. Walk the room. Sit with students who are stuck on the prayer. Early finishers can write a second prayer to a different Person.
-    </div>
-    <div class="step-body">
-      <p>Activity 3, the prayer, is not a writing assignment. Don't grade it. If a student says they don't know what to write, ask them: "What's one thing you want to say to God today? Just write that."</p>
+    <div class="voice-box">
+      <strong>Say This</strong>
+      <div class="voice-show">On screen: Andrei Rublev's icon of the Trinity. Three figures around one table.</div>
+      A monk named Andrei Rublev painted this icon in Russia around 1411. It shows the three visitors who came to Abraham's tent in Genesis 18, and Christians have seen the Trinity in them ever since. Look at the faces. They're the same. Three Persons, one God.
+      <div class="voice-ask">Ask: What do you notice about how they're sitting? <span style="font-weight:400">(They lean toward each other. They share one table. Hold onto that. It comes back on Slide 15.)</span></div>
     </div>
   </div>
 
@@ -649,76 +593,439 @@ hr.step-rule {
 <!-- ══════════════════════════════════ PAGE 4 ══ -->
 <div class="page">
   <div class="running-header">
-    <span><span class="crux-mark">CRUX</span> &nbsp;·&nbsp; Teacher's Guide</span>
-    <span>Chapter 1 — The Holy Trinity</span>
+    <span><span class="crux-mark">CRUX</span>&nbsp;·&nbsp;Teacher's Guide</span>
+    <span>The Holy Trinity &amp; The New Commandment · Week 3</span>
     <span class="teacher-badge">Not for Students</span>
   </div>
 
-  <!-- STEP 7 -->
   <div class="lesson-step">
     <div class="step-header">
-      <span class="step-time">55–60 min</span>
-      <span class="step-title">Quiz + Closing Prayer</span>
-      <span class="step-slide">Slides 12–13</span>
+      <span class="step-time">11–13 min</span>
+      <span class="step-title">IS and IS NOT</span>
+      <span class="step-slide">Slide 5</span>
     </div>
     <div class="do-box">
       <strong>Do This</strong>
-      Read each quiz question aloud on Slide 12. Let students call out answers, then click "Reveal Answers." Close with the Glory Be on Slide 13. Remind students to scan the QR code in their workbook for 50 XP on CRUX.
+      Keep it to the two lines on the slide. Each Person IS God. No Person IS another Person. They aren't three gods, and they aren't one Person wearing three masks.
     </div>
-    <div class="step-body">
-      <p>Keep the quiz light. It's a review, not a grade. End on the prayer, not the quiz. The last thing they hear in class should be spoken to God, not a right answer.</p>
-    </div>
-  </div>
-
-  <hr class="step-rule">
-
-  <!-- HARD QUESTIONS -->
-  <div class="section-block">
-    <div class="section-heading">When Students Don't Get It</div>
-    <div class="step-body" style="margin-bottom:0.15in;">
-      <p>Some student is going to push back — "this doesn't make sense" or "how can God be three things at once?" That's not a problem. That's a good student. Here's how to meet it.</p>
-    </div>
-
     <div class="takeaway-box">
-      <div class="takeaway-label">Your Answer for the Skeptic</div>
-      <div class="takeaway-body">
-        "<strong>It shouldn't make sense to you. If it was easy enough for all of us to understand, everyone in the world would be Christian.</strong> You don't need the answers to everything in the universe — but you should trust that a God who could create the universe can also work within it. He showed that with every miracle Jesus performed. We aren't expected to know how it happens. <strong>Just that he did it for us.</strong> And that's not a small thing."
-      </div>
+      <div class="takeaway-label">Your Takeaway: IS / IS NOT</div>
+      <div class="takeaway-body">"The three Persons of the Trinity are of the same substance, but they are separate. That's why Jesus prays to God in the garden. His spiritual presence is not within this earthly world, so he prays. And that shows us something remarkable — prayer truly does cross through the physical realm into the spiritual realm. When Jesus prays, he's doing exactly what we do."</div>
     </div>
-
-    <div class="student-says" style="margin-top:0.15in;">
-      <div class="student-says-label">If a Student Says</div>
-      <div class="student-says-q">"My parents say all religions are basically the same."</div>
-      <div class="student-says-a">You can say: "Most religions have a god who is powerful and far away. Ours is different. Our God stepped into history as a person, lived a real life, was executed, and came back. You can disagree with that — but it's not the same story as every other religion. It's a very specific claim."</div>
-    </div>
-
     <div class="student-says">
       <div class="student-says-label">If a Student Says</div>
-      <div class="student-says-q">"Why does it matter if God is one Person or three?"</div>
-      <div class="student-says-a">Because it changes who God is. If God is just one Person alone, he needed to create us to have something to love. But if God is Father, Son, and Holy Spirit — three Persons in a relationship of love — then he didn't need us. He chose us. That's a different kind of love entirely.</div>
-    </div>
-
-    <div class="student-says">
-      <div class="student-says-label">If a Student Says</div>
-      <div class="student-says-q">"I prayed once and nothing happened."</div>
-      <div class="student-says-a">Don't dismiss it. Say: "I've felt that too. Most people have. Prayer isn't a vending machine — but it is real. Jesus prayed in the garden the night before he died, and he didn't get the answer he asked for either. That didn't make the prayer meaningless. Keep going."</div>
+      <div class="student-says-q">"Wait, if Jesus IS God, why is he praying to God? Isn't that weird?"</div>
+      <div class="student-says-a">That's exactly the right question. Jesus the Son is fully God. But he's a distinct Person from the Father. They are the same substance, but they are not the same Person. The Son, while on earth in a human body, prays to the Father. That's not a contradiction. That's the Trinity in action. And it means prayer is real. It goes somewhere.</div>
     </div>
   </div>
 
   <hr class="step-rule">
 
-  <!-- NOTES -->
-  <div class="section-block">
-    <div class="section-heading">Before Next Class</div>
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">13–16 min</span>
+      <span class="step-title">The Shield of the Trinity</span>
+      <span class="step-slide is-visual">Slide 6 · Image</span>
+    </div>
+    <div class="voice-box">
+      <strong>Say This</strong>
+      <div class="voice-show">On screen: the Shield of the Trinity diagram. God in the center, the three Persons at the corners.</div>
+      Christians have drawn this diagram for about 800 years. Let's trace it. From the center, every Person connects to God with the word IS. The Father is God. The Son is God. The Holy Spirit is God. Around the outside, the Persons connect to each other with IS NOT. The Father is not the Son. The Son is not the Holy Spirit.
+      <div class="voice-ask">Ask: Can someone come up and trace one IS line and one IS NOT line for us?</div>
+    </div>
     <div class="step-body">
-      <p><strong>Remind students</strong> to scan the QR code in their workbook to earn 50 XP on CRUX and unlock their digital chapter content.</p>
-      <p><strong>Collect workbooks</strong> if your program keeps them in class, or let students take them home.</p>
-      <p><strong>Next chapter:</strong> Who Is Jesus Christ? — build on everything from this lesson. The Trinity gives students the framework; Chapter 2 gives them the story.</p>
+      <p>If your workbook has the Shield of Faith activity, this is the moment to point to it. It's the same diagram.</p>
     </div>
   </div>
 
   <div class="page-num">4</div>
 </div>
 
-</body>
-</html>
+
+<!-- ══════════════════════════════════ PAGE 5 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;·&nbsp;Teacher's Guide</span>
+    <span>The Holy Trinity &amp; The New Commandment · Week 3</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">16–18 min</span>
+      <span class="step-title">Matthew 28:19</span>
+      <span class="step-slide">Slide 7</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Read the verse aloud together. Ask: how many names? One. Jesus doesn't say "in the names of." One name, belonging to three Persons.
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">18–19 min</span>
+      <span class="step-title">In the Name</span>
+      <span class="step-slide is-visual">Slide 8 · Image</span>
+    </div>
+    <div class="voice-box">
+      <strong>Say This</strong>
+      <div class="voice-show">On screen: a priest pouring water over a baby at the font.</div>
+      Most of you were baptized as babies. A priest or deacon poured water over your head and said the exact words Jesus gave in Matthew 28: in the name of the Father, and of the Son, and of the Holy Spirit. You've belonged to the Trinity since that day.
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">19–21 min</span>
+      <span class="step-title">The Sign of the Cross</span>
+      <span class="step-slide">Slide 9</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Have everyone make the Sign of the Cross slowly, together. Match each phrase to the motion. "In the name" is one God. "Father, Son, and Holy Spirit" is three Persons. Christians have prayed this way for close to 2,000 years.
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">21–23 min</span>
+      <span class="step-title">St. Patrick's Shamrock</span>
+      <span class="step-slide is-visual">Slide 10 · Image</span>
+    </div>
+    <div class="voice-box">
+      <strong>Say This</strong>
+      <div class="voice-show">On screen: St. Patrick on an Irish hillside, holding up a shamrock to a group of villagers.</div>
+      The story goes that St. Patrick picked a shamrock off the ground to explain the Trinity to the people of Ireland. Three leaves, one plant. It's a good start, but every picture of the Trinity breaks somewhere. A leaf is only part of the shamrock, and the Son isn't part of God. He is fully God.
+      <div class="voice-ask">Ask: Can anyone spot where the shamrock falls short?</div>
+    </div>
+  </div>
+
+  <div class="page-num">5</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 6 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;·&nbsp;Teacher's Guide</span>
+    <span>The Holy Trinity &amp; The New Commandment · Week 3</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">23–26 min</span>
+      <span class="step-title">The Frozen Lake</span>
+      <span class="step-slide is-visual">Slide 11 · Image</span>
+    </div>
+    <div class="voice-box">
+      <strong>Say This</strong>
+      <div class="voice-show">On screen: one frozen lake, cut away so you can see all three layers. Mist rising above, ice on top, water and fish underneath.</div>
+      The shamrock is a good start, but it falls short. Here's a picture I like a little better: a frozen lake on a cold morning. A fish swimming underneath knows the lake as water. A rabbit hopping across the top only feels the ice under its feet. It never sees the water below or the mist above its head. A bird flying overhead sees the mist rising off the lake, but has no idea there's ice and water underneath. It's all one lake. The lake is God. The water is the Father, the ice is the Son, and the mist is the Holy Spirit.
+      <div class="voice-optional"><strong style="display:inline;font-size:inherit;letter-spacing:0;text-transform:none">Optional:</strong> Even this picture breaks. The Father, Son, and Holy Spirit aren't three ways of seeing God, depending on where you stand. Each one is fully God, all the time, and they really are three different Persons.</div>
+    </div>
+    <div class="step-body">
+      <p>Point to each layer as you name it. The picture works because all three are there at the same time, in one lake. If a student asks whether the ice melts into water, that's the spot where this picture breaks, and it's worth saying so.</p>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">26–28 min</span>
+      <span class="step-title">1 John 4:8</span>
+      <span class="step-slide">Slide 12</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Go back to the opening question. Who did God love before he made anything? Himself, as Trinity. The Father loves the Son, the Son loves the Father, and the Holy Spirit is that love. God didn't start loving when he made us.
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">28–29 min</span>
+      <span class="step-title">A Family of Love</span>
+      <span class="step-slide is-visual">Slide 13 · Image</span>
+    </div>
+    <div class="voice-box">
+      <strong>Say This</strong>
+      <div class="voice-show">On screen: a triquetra, three loops of gold light woven together.</div>
+      Three loops woven together, with no beginning and no end. This knot is called a triquetra. Before there was a world, there was already love: the Father, the Son, and the Holy Spirit, loving each other forever. That's the answer to our opening question.
+    </div>
+  </div>
+
+  <div class="page-num">6</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 7 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;·&nbsp;Teacher's Guide</span>
+    <span>The Holy Trinity &amp; The New Commandment · Week 3</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">29–34 min</span>
+      <span class="step-title">Discussion</span>
+      <span class="step-slide">Slide 14</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Start with "Which Person of the Trinity do you think about most?" Then give a few students a try at the starred question: how would you explain the Trinity to a friend? Let them use the shield, the shamrock, or the lake.
+    </div>
+    <div class="watch-box">
+      <div class="watch-col">
+        <div class="watch-col-label">Signs It's Landing</div>
+        Students using IS and IS NOT on their own. Picking a picture and saying where it breaks.
+      </div>
+      <div class="watch-col">
+        <div class="watch-col-label">Signs They're Lost</div>
+        Blank faces, side conversations. Slow down and ask: "Which part would you want me to say again differently?"
+      </div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">34–42 min</span>
+      <span class="step-title">Holy Trinity Trifold</span>
+      <span class="step-slide">Keep Slide 14 up</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Hand out the trifold folded, GOD side up. Point out the cover: one God. Have them lift the cover and do the IS or IS NOT fill-in first, then unfold it to meet the three Persons and check their answers against the IS NOT labels on the folds. Give the rest of the time to the three prompts inside. Early finishers can practice the Sign of the Cross steps on the back.
+    </div>
+    <div class="step-body">
+      <p>The fold does the teaching. Folded up, there's one GOD. Opened, there are three Persons, each labeled IS GOD, with IS NOT on the folds between them. Say that out loud once while they're unfolding it.</p>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">42–43 min</span>
+      <span class="step-title">A Seat at the Table</span>
+      <span class="step-slide is-visual">Slide 15 · Image</span>
+    </div>
+    <div class="voice-box">
+      <strong>Say This</strong>
+      <div class="voice-show">On screen: a candlelit table set for a meal, with the near side open, facing us.</div>
+      Think back to Rublev's icon. The table has an open side, facing us. Many people think he left it open on purpose. God's love isn't a closed circle. There's a seat for you. Jesus doesn't just want us to believe in that love. He wants us to join it, and on his last night he told his friends how.
+    </div>
+  </div>
+
+  <div class="page-num">7</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 8 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;·&nbsp;Teacher's Guide</span>
+    <span>The Holy Trinity &amp; The New Commandment · Week 3</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">43–44 min</span>
+      <span class="step-title">The Last Supper</span>
+      <span class="step-slide is-visual">Slide 16 · Image</span>
+    </div>
+    <div class="voice-box">
+      <strong>Say This</strong>
+      <div class="voice-show">On screen: Jesus kneeling to wash Peter's feet.</div>
+      It's Jesus's last night before the Cross. He gets down on his knees and washes his friends' dirty feet. That was a servant's job. Peter can't believe it. Then Jesus stands up and gives them a new commandment.
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">44–47 min</span>
+      <span class="step-title">John 13:34–35</span>
+      <span class="step-slide">Slide 17</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      The heart of the second half. Read it slowly, twice if needed. He said this at the Last Supper, hours before his arrest.
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">47–49 min</span>
+      <span class="step-title">What Makes It NEW?</span>
+      <span class="step-slide">Slide 18</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      "Love your neighbor" was already in Leviticus 19:18. The command to love isn't new. The standard is: "as I have loved you." Jesus's own love, all the way to the Cross, is the measuring stick now.
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">49–51 min</span>
+      <span class="step-title">What Does This Look Like?</span>
+      <span class="step-slide">Slide 19</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Make it concrete. After the three examples on the slide, ask for one more from their own week. Don't rush this slide.
+    </div>
+  </div>
+
+  <div class="page-num">8</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 9 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;·&nbsp;Teacher's Guide</span>
+    <span>The Holy Trinity &amp; The New Commandment · Week 3</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">51–52 min</span>
+      <span class="step-title">Love One Another</span>
+      <span class="step-slide is-visual">Slide 20 · Image</span>
+    </div>
+    <div class="voice-box">
+      <strong>Say This</strong>
+      <div class="voice-show">On screen: a lunchroom. Two kids at the end of an empty table, one who was alone and one who chose to sit there.</div>
+      What do you see? One kid eating alone. One kid who chose to sit down next to them. Nobody made them do it.
+      <div class="voice-ask">Ask: What did it cost? What did it give the kid who was alone? That's what "as I have loved you" looks like at lunch.</div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">52–57 min</span>
+      <span class="step-title">Discussion</span>
+      <span class="step-slide">Slide 21</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Ask how the two halves connect: God is a family of love, and Jesus asks us to love the same way. The starred question is the take-home in disguise. Let it lead into the last slide.
+    </div>
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Takeaway: The Discussion Goal</div>
+      <div class="takeaway-body">"What you want them to land on — even if they can't say it yet — is this: 'God created me, loved me, and then died for me. Why wouldn't I follow him?' That's the question you're trying to plant. You don't need them to answer it out loud. You just need it to be the thing they're sitting with when they leave."</div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">57–60 min</span>
+      <span class="step-title">Take-Home + Closing Prayer</span>
+      <span class="step-slide">Slide 22</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Read the take-home: love one person this week the way Jesus loves you, even when it's not easy, and come back ready to share what happened. Close with the Glory Be. It's a prayer to all three Persons, which makes it the right way to end this lesson.
+    </div>
+  </div>
+
+  <div class="page-num">9</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 10 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;·&nbsp;Teacher's Guide</span>
+    <span>The Holy Trinity &amp; The New Commandment · Week 3</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <div class="section-block">
+    <div class="section-heading">When Students Don't Get It</div>
+    <div class="step-body">
+      <p>Some student is going to push back: "this doesn't make sense," or "how can God be three things at once?" That's not a problem. That's a good student. Here's how to meet it.</p>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Answer for the Skeptic</div>
+      <div class="takeaway-body">"It shouldn't make sense to you. If it was easy enough for all of us to understand, everyone in the world would be Christian. You don't need the answers to everything in the universe — but you should trust that a God who could create the universe can also work within it. He showed that with every miracle Jesus performed. We aren't expected to know how it happens. Just that he did it for us. And that's not a small thing."</div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"My parents say all religions are basically the same."</div>
+      <div class="student-says-a">You can say: "Most religions have a god who is powerful and far away. Ours is different. Our God stepped into history as a person, lived a real life, was executed, and came back. You can disagree with that, but it's not the same story as every other religion. It's a very specific claim."</div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"Why does it matter if God is one Person or three?"</div>
+      <div class="student-says-a">Because it changes who God is. If God is just one Person alone, he needed to create us to have something to love. But if God is Father, Son, and Holy Spirit, three Persons in a relationship of love, then he didn't need us. He chose us. That's a different kind of love entirely. (This is the opening question from Slide 2, from the other side.)</div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"So the Trinity is like water, ice, and steam?"</div>
+      <div class="student-says-a">Close, and it's a good picture, but it breaks in one place. Water turns into ice and then into steam. God doesn't switch between being the Father, the Son, and the Spirit. All three are fully God, all the time, at once. That's why the frozen lake has all three there together.</div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"I prayed once and nothing happened."</div>
+      <div class="student-says-a">Don't dismiss it. Say: "I've felt that too. Most people have. Prayer isn't a vending machine, but it is real. Jesus prayed in the garden the night before he died, and he didn't get the answer he asked for either. That didn't make the prayer meaningless. Keep going."</div>
+    </div>
+  </div>
+
+  <div class="page-num">10</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 11 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;·&nbsp;Teacher's Guide</span>
+    <span>The Holy Trinity &amp; The New Commandment · Week 3</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <div class="section-block">
+    <div class="section-heading">Before Next Class</div>
+    <div class="step-body">
+      <p>Let students take their trifolds home, and ask them to show someone the GOD cover and explain the IS NOT folds.</p>
+      <p>Remind students to scan the QR code in their workbook to earn 50 XP on CRUX.</p>
+      <p>Next week: <strong>Who Is Jesus Christ?</strong> The Trinity gives students the framework. Next week gives them the Person at the center of it.</p>
+    </div>
+  </div>
+
+  <div class="page-num">11</div>
+</div>
+
+
