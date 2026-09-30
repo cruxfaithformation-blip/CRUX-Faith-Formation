@@ -1059,7 +1059,7 @@ const TYPES = [
 // Bump when adding default slides. A slide marked `since: N` is inserted
 // (after the slide whose id is `after`) into saved decks older than N, so
 // teachers get new slides without losing their own edits.
-const DECK_VERSION = 2;
+const DECK_VERSION = 3;
 const DEFAULT_SLIDES = [
   {
     id:1, type:'title',
@@ -1116,6 +1116,7 @@ const DEFAULT_SLIDES = [
     id:8, type:'visual',
     title:'In the Name',
     imageIdea:'Baptism: water poured over a baby\'s head at the font (Leonardo prompt #1)',
+    images:[{ id:'def-baptism', src:'images/trinity/baptism.jpg', x:7, y:19, w:86, h:77 }], imagesSince:3,
     body:'', bodySimple:'',
     note:'VOICEOVER: Most of you were baptized as babies. A priest or deacon poured water over your head and said the exact words Jesus gave in Matthew 28. In the name of the Father, and of the Son, and of the Holy Spirit. You\'ve belonged to the Trinity since that day.'
   },
@@ -1130,7 +1131,7 @@ const DEFAULT_SLIDES = [
     id:10, type:'visual',
     title:'St. Patrick\'s Shamrock',
     imageIdea:'Shamrock (pre-loaded) or St. Patrick holding one (Leonardo prompt #2)',
-    images:[{ id:'def-shamrock', src:'images/trinity/shamrock.webp', x:7, y:19, w:86, h:77 }],
+    images:[{ id:'def-patrick', src:'images/trinity/st-patrick-shamrock.jpg', x:7, y:19, w:86, h:77 }], imagesSince:3,
     body:'', bodySimple:'',
     note:'VOICEOVER: The story goes that St. Patrick picked a shamrock off the ground to explain the Trinity to the Irish. Three leaves, one plant. It\'s a good start, but every picture of the Trinity breaks somewhere. A leaf is only part of the shamrock, and the Son isn\'t part of God. He is fully God. Ask: can anyone spot where the shamrock falls short?'
   },
@@ -1138,6 +1139,7 @@ const DEFAULT_SLIDES = [
     id:22, type:'visual', since:2, after:10,
     title:'The Frozen Lake',
     imageIdea:'Frozen lake at dawn in cross-section: mist above, ice on top, water and fish below (Leonardo prompt #7)',
+    images:[{ id:'def-lake', src:'images/trinity/frozen-lake.jpg', x:7, y:19, w:86, h:77 }], imagesSince:3,
     body:'', bodySimple:'',
     note:'VOICEOVER: The shamrock is a good start, but it falls short. Here\'s a picture I like a little better: a frozen lake on a cold morning. A fish swimming underneath knows the lake as water. A rabbit hopping across the top only feels the ice under its feet. It never sees the water below or the mist above its head. A bird flying overhead sees the mist rising off the lake, but has no idea there\'s ice and water underneath. It\'s all one lake. The lake is God. The water is the Father, the ice is the Son, and the mist is the Holy Spirit. (Optional: Even this picture breaks. The Father, Son, and Holy Spirit aren\'t three ways of seeing God, depending on where you stand. Each one is fully God, all the time, and they really are three different Persons.)'
   },
@@ -1152,6 +1154,7 @@ const DEFAULT_SLIDES = [
     id:12, type:'visual',
     title:'A Family of Love',
     imageIdea:'Triquetra: three woven loops of gold light (Leonardo prompt #3)',
+    images:[{ id:'def-triquetra', src:'images/trinity/triquetra-light.jpg', x:7, y:19, w:86, h:77 }], imagesSince:3,
     body:'', bodySimple:'',
     note:'VOICEOVER: Three loops woven together, with no beginning and no end. This knot is called a triquetra. Before there was a world, there was already love. The Father, the Son, and the Holy Spirit, loving each other forever. That\'s the answer to our opening question.'
   },
@@ -1166,6 +1169,7 @@ const DEFAULT_SLIDES = [
     id:14, type:'visual',
     title:'A Seat at the Table',
     imageIdea:'Rublev icon again, or a warm table with one open seat (Leonardo prompt #4)',
+    images:[{ id:'def-seat', src:'images/trinity/open-seat.jpg', x:7, y:19, w:86, h:77 }], imagesSince:3,
     body:'', bodySimple:'',
     note:'VOICEOVER: Think back to Rublev\'s icon. The table has an open side, facing us. Many people think he left it open on purpose. God\'s love isn\'t a closed circle. There\'s a seat for you. Jesus doesn\'t just want us to believe in that love. He wants us to join it, and on his last night he told his friends how.'
   },
@@ -1173,6 +1177,7 @@ const DEFAULT_SLIDES = [
     id:15, type:'visual',
     title:'The Last Supper',
     imageIdea:'Jesus kneeling to wash Peter\'s feet (Leonardo prompt #5)',
+    images:[{ id:'def-feet', src:'images/trinity/washing-feet.jpg', x:7, y:19, w:86, h:77 }], imagesSince:3,
     body:'', bodySimple:'',
     note:'VOICEOVER: It\'s Jesus\'s last night before the Cross. He gets down on his knees and washes his friends\' dirty feet. That was a servant\'s job. Peter can\'t believe it. Then Jesus stands up and gives them a new commandment.'
   },
@@ -1201,6 +1206,7 @@ const DEFAULT_SLIDES = [
     id:19, type:'visual',
     title:'Love One Another',
     imageIdea:'Lunchroom: one student sits down next to a kid eating alone (Leonardo prompt #6)',
+    images:[{ id:'def-lunch', src:'images/trinity/lunchroom.jpg', x:7, y:19, w:86, h:77 }], imagesSince:3,
     body:'', bodySimple:'',
     note:'VOICEOVER: What do you see? One kid eating alone. One kid who chose to sit down next to them. Nobody made them do it. Ask: what did it cost? What did it give the kid who was alone? That\'s what "as I have loved you" looks like at lunch.'
   },
@@ -1259,6 +1265,13 @@ let slideTextScale = 1;     // global default text scale; individual slides may 
 function mergeNewDefaults(savedVersion) {
   if (savedVersion >= DECK_VERSION) return;
   defaultCopy().forEach(function(d) {
+    // New default images for an existing slide: fill it only if the teacher
+    // hasn't added their own (empty, or still holding our pre-loaded 'def-' image).
+    if (d.imagesSince && d.imagesSince > savedVersion) {
+      var mine = slides.filter(function(s) { return s.id === d.id; })[0];
+      var untouched = mine && mine.type === 'visual' && (!mine.images || mine.images.every(function(l) { return String(l.id).indexOf('def-') === 0; }));
+      if (untouched) mine.images = d.images;
+    }
     if (!d.since || d.since <= savedVersion) return;
     if (slides.some(function(s) { return s.id === d.id; })) return;
     var at = slides.findIndex(function(s) { return s.id === d.after; });
