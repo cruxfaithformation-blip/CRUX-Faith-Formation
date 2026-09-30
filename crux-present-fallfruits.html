@@ -1872,6 +1872,7 @@ function renderTextBoxes(container, slide) {
     content.className = 'pv-textbox-content';
     content.style.fontSize = (box.fontSize || 1.4) + 'rem';
     content.textContent = box.text || '';
+    if (box.inline) applyColors(content, box.inline);
     if (interactive) content.contentEditable = 'true';
     wrap.appendChild(content);
 
@@ -2101,7 +2102,7 @@ document.addEventListener('selectionchange', function() {
   var r = sel.getRangeAt(0);
   var node = r.commonAncestorContainer;
   var el = node.nodeType === 3 ? node.parentElement : node;
-  var host = el && el.closest ? el.closest('#editableSlide .editable-field, #editableSlide .body-line') : null;
+  var host = el && el.closest ? el.closest('#editableSlide .editable-field, #editableSlide .body-line, #editableSlide .pv-textbox-content') : null;
   if (!host) return; // focus moved to the toolbar or color picker: keep the last selection
   savedTextRange = sel.isCollapsed ? null : { range: r.cloneRange(), host: host };
 });
@@ -2128,7 +2129,14 @@ function clearColorSpans(el) {
   el.normalize();
 }
 
-function wrapTextRange(el, start, end, color) {
+// Inline styles on highlighted words: color (c), bold/normal weight (w),
+// italic/normal style (s). Entries are { t, n, k, v }; older color-only
+// entries are { t, n, c } and still read as kind 'c'.
+var INLINE_PROPS = { c: 'color', w: 'fontWeight', s: 'fontStyle' };
+function entryKind(e) { return e.k || 'c'; }
+function entryVal(e) { return e.k ? e.v : e.c; }
+
+function wrapTextRange(el, start, end, kind, val) {
   var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
   var nodes = [], n;
   while ((n = walker.nextNode())) nodes.push(n);
@@ -2143,7 +2151,7 @@ function wrapTextRange(el, start, end, color) {
     if (b < ne) mid.splitText(b - a);
     var span = document.createElement('span');
     span.className = 'tc';
-    span.style.color = color;
+    span.style[INLINE_PROPS[kind]] = val;
     mid.parentNode.insertBefore(span, mid);
     span.appendChild(mid);
   });
@@ -2153,47 +2161,102 @@ function applyColors(el, entries) {
   clearColorSpans(el);
   (entries || []).forEach(function(e) {
     var idx = nthIndex(el.textContent, e.t, e.n);
-    if (idx >= 0) wrapTextRange(el, idx, idx + e.t.length, e.c);
+    if (idx >= 0) wrapTextRange(el, idx, idx + e.t.length, entryKind(e), entryVal(e));
   });
 }
 
-function applyTextColor(color) {
+// Where a host element's inline styles live: text boxes keep them on the
+// box itself; built-in titles/lines use slide.textColors keyed by their text.
+function inlineStoreFor(host, slide) {
+  if (isTextBoxContent(host)) {
+    var box = textBoxFor(host);
+    return {
+      get: function() { return (box && box.inline) || []; },
+      set: function(list) { if (!box) return; if (list.length) box.inline = list; else delete box.inline; }
+    };
+  }
+  var k = sizeKey(host.textContent);
+  return {
+    get: function() { return (slide.textColors && slide.textColors[k]) || []; },
+    set: function(list) {
+      if (!slide.textColors) slide.textColors = {};
+      if (list.length) slide.textColors[k] = list; else delete slide.textColors[k];
+      host.dataset.sizeKey = k;
+    }
+  };
+}
+
+function currentSelectionInfo() {
   var slide = slides[selectedIndex];
   var st = savedTextRange;
   if (!slide || !st || !st.host.isConnected ||
-      !st.host.contains(st.range.startContainer) || !st.host.contains(st.range.endContainer)) {
-    showToast('Highlight some words first, then pick a color');
-    return;
-  }
-  var host = st.host, r = st.range;
-  var phrase = r.toString();
-  if (!phrase.trim()) { showToast('Highlight some words first, then pick a color'); return; }
+      !st.host.contains(st.range.startContainer) || !st.host.contains(st.range.endContainer)) return null;
+  var phrase = st.range.toString();
+  if (!phrase.trim()) return null;
   var pre = document.createRange();
-  pre.selectNodeContents(host);
-  pre.setEnd(r.startContainer, r.startOffset);
-  var start = pre.toString().length, end = start + phrase.length;
-  var full = host.textContent;
-  var k = sizeKey(full);
-  if (!slide.textColors) slide.textColors = {};
-  // Drop any earlier color that overlaps the new selection, then add this one.
-  var list = (slide.textColors[k] || []).filter(function(e) {
-    var i = nthIndex(full, e.t, e.n);
-    return i < 0 || i >= end || i + e.t.length <= start;
+  pre.selectNodeContents(st.host);
+  pre.setEnd(st.range.startContainer, st.range.startOffset);
+  var start = pre.toString().length;
+  return { slide: slide, host: st.host, range: st.range, phrase: phrase, start: start, end: start + phrase.length, full: st.host.textContent };
+}
+
+// Put the selection back on the same words after re-wrapping, so a teacher
+// can press B, then I, then pick a color without re-highlighting.
+function reselectOffsets(host, start, end) {
+  var walker = document.createTreeWalker(host, NodeFilter.SHOW_TEXT);
+  var pos = 0, n, r = document.createRange(), gotStart = false;
+  while ((n = walker.nextNode())) {
+    var len = n.nodeValue.length;
+    if (!gotStart && start <= pos + len) { r.setStart(n, start - pos); gotStart = true; }
+    if (gotStart && end <= pos + len) { r.setEnd(n, end - pos); break; }
+    pos += len;
+  }
+  if (!gotStart) return;
+  var sel = window.getSelection();
+  sel.removeAllRanges(); sel.addRange(r);
+  savedTextRange = { range: r.cloneRange(), host: host };
+}
+
+// kind/val: the style to add (null val = only remove). removeKinds: which
+// existing styles overlapping the selection to drop first.
+function setInlineStyle(kind, val, removeKinds) {
+  var info = currentSelectionInfo();
+  if (!info) { showToast('Highlight some words first'); return; }
+  var store = inlineStoreFor(info.host, info.slide);
+  var list = store.get().filter(function(e) {
+    if (removeKinds.indexOf(entryKind(e)) < 0) return true;
+    var i = nthIndex(info.full, e.t, e.n);
+    return i < 0 || i >= info.end || i + e.t.length <= info.start;
   });
-  if (color) list.push({ t: phrase, n: occurrenceBefore(full, phrase, start), c: color });
-  if (list.length) slide.textColors[k] = list; else delete slide.textColors[k];
-  host.dataset.sizeKey = k;
-  applyColors(host, list);
-  savedTextRange = null;
+  if (kind && val != null) list.push({ t: info.phrase, n: occurrenceBefore(info.full, info.phrase, info.start), k: kind, v: val });
+  store.set(list);
+  applyColors(info.host, list);
+  reselectOffsets(info.host, info.start, info.end);
   save();
+}
+
+function applyTextColor(color) { setInlineStyle('c', color, ['c']); }
+
+// Bold and italic toggle from what the highlighted words look like now, so
+// "I" on a Scripture quote (italic by default) makes it upright, and back.
+function toggleInlineStyle(kind) {
+  var info = currentSelectionInfo();
+  if (!info) { showToast('Highlight some words first'); return; }
+  var node = info.range.startContainer;
+  var el = node.nodeType === 3 ? node.parentElement : node;
+  var cs = getComputedStyle(el);
+  var val = kind === 'w'
+    ? (parseInt(cs.fontWeight, 10) >= 600 ? '400' : '700')
+    : (cs.fontStyle === 'italic' ? 'normal' : 'italic');
+  setInlineStyle(kind, val, [kind]);
 }
 
 function clearTextColor() {
   var slide = slides[selectedIndex];
-  if (savedTextRange && savedTextRange.host.isConnected) { applyTextColor(null); return; }
+  if (currentSelectionInfo()) { setInlineStyle(null, null, ['c', 'w', 's']); return; }
   var el = sizeTargetEl;
-  if (!slide || !el || !el.isConnected || isTextBoxContent(el)) { showToast('Highlight the colored words first'); return; }
-  if (slide.textColors) delete slide.textColors[sizeKey(el.textContent)];
+  if (!slide || !el || !el.isConnected) { showToast('Highlight the words to reset first'); return; }
+  inlineStoreFor(el, slide).set([]);
   clearColorSpans(el);
   save();
 }
@@ -2533,12 +2596,16 @@ function renderCanvasSlide() {
         '<select class="fmt-size-select" id="fmtSizeSelect" onchange="setSizeTargetPct(this.value)" title="Text size of the selected title, line, or text box">' + buildSizeOptions(100) + '</select>' +
         '<button class="fmt-btn fmt-size-btn" data-size-dir="1" title="Bigger (hold to keep growing · Cmd/Ctrl+Shift+&gt;)">A+</button>' +
         '<div class="fmt-sep"></div>' +
+        '<span class="fmt-lbl">Style:</span>' +
+        '<button class="fmt-btn" style="font-weight:900" title="Bold on/off for the highlighted words (Cmd/Ctrl+B)" onmousedown="event.preventDefault()" onclick="toggleInlineStyle(\'w\')">B</button>' +
+        '<button class="fmt-btn" style="font-style:italic;font-family:Georgia,serif" title="Italic on/off for the highlighted words (Cmd/Ctrl+I)" onmousedown="event.preventDefault()" onclick="toggleInlineStyle(\'s\')">I</button>' +
+        '<div class="fmt-sep"></div>' +
         '<span class="fmt-lbl">Color:</span>' +
         TEXT_COLOR_SWATCHES().map(function(sw) {
           return '<button class="fmt-swatch" style="background:' + sw.c + '" title="' + sw.name + ' (highlight words first)" onmousedown="event.preventDefault()" onclick="applyTextColor(\'' + sw.c + '\')"></button>';
         }).join('') +
         '<input type="color" class="fmt-color-input" value="#e8b04b" title="Pick any color for the highlighted words" onchange="applyTextColor(this.value)">' +
-        '<button class="fmt-btn" title="Remove color from the highlighted words (or the whole line if nothing is highlighted)" onmousedown="event.preventDefault()" onclick="clearTextColor()">✕</button>' +
+        '<button class="fmt-btn" title="Reset color, bold, and italic on the highlighted words (or the whole line if nothing is highlighted)" onmousedown="event.preventDefault()" onclick="clearTextColor()">✕</button>' +
       '</div>' +
     '</div>' +
     buildControlsStrip(slide);
@@ -2919,6 +2986,11 @@ function attachEditListeners(slide) {
     document.execCommand('insertText', false, text);
   });
   es.addEventListener('keydown', function(e) {
+    if ((e.metaKey || e.ctrlKey) && !e.shiftKey && !e.altKey && (e.key === 'b' || e.key === 'B' || e.key === 'i' || e.key === 'I')) {
+      e.preventDefault();
+      toggleInlineStyle(e.key.toLowerCase() === 'b' ? 'w' : 's');
+      return;
+    }
     if ((e.metaKey || e.ctrlKey) && e.shiftKey && (e.key === '>' || e.key === '.' || e.key === '<' || e.key === ',')) {
       e.preventDefault();
       stepSizeTarget(e.key === '>' || e.key === '.' ? 1 : -1);
