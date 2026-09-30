@@ -214,6 +214,13 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.06); color: rgba(255,255,255,0.8);
 }
 .fmt-size-select option { background: #0d0f1a; color: #fff; }
+.fmt-toolbar { flex-wrap: wrap; justify-content: flex-end; max-width: calc(100% - 9rem); row-gap: 0.3rem; }
+.fmt-swatch {
+  width: 16px; height: 16px; border-radius: 50%; padding: 0; cursor: pointer;
+  border: 1px solid rgba(255,255,255,0.4); box-sizing: border-box;
+}
+.fmt-swatch:hover { transform: scale(1.15); }
+.fmt-color-input { width: 22px; height: 20px; padding: 0; border: none; background: none; cursor: pointer; }
 .size-target-active { outline: 1px dashed rgba(212,165,116,0.55); outline-offset: 3px; }
 /* Per-element drag: offsets are stored in cqw/cqh, so both slide surfaces
    are size containers and a moved line lands in the same spot in the
@@ -1818,13 +1825,15 @@ function applyElementSizes(root, slide) {
   if (!root || !slide) return;
   var map = slide.textSizes || {};
   var offs = slide.textOffsets || {};
-  if (!Object.keys(map).length && !Object.keys(offs).length) return;
+  var cols = slide.textColors || {};
+  if (!Object.keys(map).length && !Object.keys(offs).length && !Object.keys(cols).length) return;
+  var toColor = [];
   var els = root.querySelectorAll('*');
   for (var i = 0; i < els.length; i++) {
     var el = els[i];
     if (el.closest('.pv-textbox, .pv-layer, .content-drag-handle, .fmt-toolbar')) continue;
     var k = sizeKey(el.textContent);
-    if (!k || (map[k] == null && !offs[k])) continue;
+    if (!k || (map[k] == null && !offs[k] && !cols[k])) continue;
     // Only the innermost element carrying this text, so wrappers don't compound the zoom.
     var inner = false;
     for (var c = 0; c < el.children.length; c++) {
@@ -1833,7 +1842,10 @@ function applyElementSizes(root, slide) {
     if (inner) continue;
     if (map[k] != null) el.style.zoom = map[k];
     if (offs[k]) el.style.translate = offs[k].x + 'cqw ' + offs[k].y + 'cqh';
+    if (cols[k]) toColor.push([el, cols[k]]);
   }
+  // After the loop: wrapping adds child spans, which would confuse the innermost-match check above.
+  toColor.forEach(function(pair) { applyColors(pair[0], pair[1]); });
 }
 
 function markSizeKeys(es) {
@@ -1855,6 +1867,10 @@ function syncSizeKeys(es, slide) {
     if (slide.textOffsets && slide.textOffsets[oldK]) {
       slide.textOffsets[newK] = slide.textOffsets[oldK];
       delete slide.textOffsets[oldK];
+    }
+    if (slide.textColors && slide.textColors[oldK]) {
+      slide.textColors[newK] = slide.textColors[oldK];
+      delete slide.textColors[oldK];
     }
     el.dataset.sizeKey = newK;
   }
@@ -1940,6 +1956,126 @@ function holdToRepeat(btn, fn) {
   btn.addEventListener('mousedown', function(e) { e.preventDefault(); });
   btn.addEventListener('click', function(e) { e.stopPropagation(); });
   ['pointerup', 'pointerleave', 'pointercancel'].forEach(function(ev) { btn.addEventListener(ev, stop); });
+}
+
+/* ─── TEXT COLOR FOR HIGHLIGHTED WORDS ───────────────────────────────
+   Highlighted words inside a title/line get their own color. Stored in
+   slide.textColors under the element's text key as { t: phrase,
+   n: which occurrence of the phrase, c: color }, then re-applied by
+   wrapping that phrase in a span after every render (editor and present).
+   Text itself stays plain, so every slide-type builder is untouched. */
+function TEXT_COLOR_SWATCHES() {
+  return [
+    { name: 'Gold',  c: '#e8b04b' },
+    { name: 'White', c: '#ffffff' },
+    { name: 'Red',   c: '#e5645a' },
+    { name: 'Blue',  c: '#6ab7ff' },
+    { name: 'Green', c: '#7ccf8a' }
+  ];
+}
+
+var savedTextRange = null;
+document.addEventListener('selectionchange', function() {
+  var sel = window.getSelection();
+  if (!sel.rangeCount) return;
+  var r = sel.getRangeAt(0);
+  var node = r.commonAncestorContainer;
+  var el = node.nodeType === 3 ? node.parentElement : node;
+  var host = el && el.closest ? el.closest('#editableSlide .editable-field, #editableSlide .body-line') : null;
+  if (!host) return; // focus moved to the toolbar or color picker: keep the last selection
+  savedTextRange = sel.isCollapsed ? null : { range: r.cloneRange(), host: host };
+});
+
+function nthIndex(text, phrase, n) {
+  var i = -1;
+  for (var c = 0; c <= n; c++) { i = text.indexOf(phrase, i + 1); if (i < 0) return -1; }
+  return i;
+}
+
+function occurrenceBefore(text, phrase, start) {
+  var count = 0, i = text.indexOf(phrase);
+  while (i >= 0 && i < start) { count++; i = text.indexOf(phrase, i + 1); }
+  return count;
+}
+
+function clearColorSpans(el) {
+  var spans = el.querySelectorAll('span.tc');
+  for (var i = 0; i < spans.length; i++) {
+    var sp = spans[i];
+    while (sp.firstChild) sp.parentNode.insertBefore(sp.firstChild, sp);
+    sp.remove();
+  }
+  el.normalize();
+}
+
+function wrapTextRange(el, start, end, color) {
+  var walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+  var nodes = [], n;
+  while ((n = walker.nextNode())) nodes.push(n);
+  var pos = 0;
+  nodes.forEach(function(node) {
+    var ns = pos, ne = pos + node.nodeValue.length;
+    pos = ne;
+    var a = Math.max(start, ns), b = Math.min(end, ne);
+    if (a >= b) return;
+    var mid = node;
+    if (a > ns) mid = mid.splitText(a - ns);
+    if (b < ne) mid.splitText(b - a);
+    var span = document.createElement('span');
+    span.className = 'tc';
+    span.style.color = color;
+    mid.parentNode.insertBefore(span, mid);
+    span.appendChild(mid);
+  });
+}
+
+function applyColors(el, entries) {
+  clearColorSpans(el);
+  (entries || []).forEach(function(e) {
+    var idx = nthIndex(el.textContent, e.t, e.n);
+    if (idx >= 0) wrapTextRange(el, idx, idx + e.t.length, e.c);
+  });
+}
+
+function applyTextColor(color) {
+  var slide = slides[selectedIndex];
+  var st = savedTextRange;
+  if (!slide || !st || !st.host.isConnected ||
+      !st.host.contains(st.range.startContainer) || !st.host.contains(st.range.endContainer)) {
+    showToast('Highlight some words first, then pick a color');
+    return;
+  }
+  var host = st.host, r = st.range;
+  var phrase = r.toString();
+  if (!phrase.trim()) { showToast('Highlight some words first, then pick a color'); return; }
+  var pre = document.createRange();
+  pre.selectNodeContents(host);
+  pre.setEnd(r.startContainer, r.startOffset);
+  var start = pre.toString().length, end = start + phrase.length;
+  var full = host.textContent;
+  var k = sizeKey(full);
+  if (!slide.textColors) slide.textColors = {};
+  // Drop any earlier color that overlaps the new selection, then add this one.
+  var list = (slide.textColors[k] || []).filter(function(e) {
+    var i = nthIndex(full, e.t, e.n);
+    return i < 0 || i >= end || i + e.t.length <= start;
+  });
+  if (color) list.push({ t: phrase, n: occurrenceBefore(full, phrase, start), c: color });
+  if (list.length) slide.textColors[k] = list; else delete slide.textColors[k];
+  host.dataset.sizeKey = k;
+  applyColors(host, list);
+  savedTextRange = null;
+  save();
+}
+
+function clearTextColor() {
+  var slide = slides[selectedIndex];
+  if (savedTextRange && savedTextRange.host.isConnected) { applyTextColor(null); return; }
+  var el = sizeTargetEl;
+  if (!slide || !el || !el.isConnected || isTextBoxContent(el)) { showToast('Highlight the colored words first'); return; }
+  if (slide.textColors) delete slide.textColors[sizeKey(el.textContent)];
+  clearColorSpans(el);
+  save();
 }
 
 /* ─── PER-ELEMENT DRAG ──────────────────────────────────────────────
@@ -2263,6 +2399,13 @@ function renderCanvasSlide() {
         '<button class="fmt-btn fmt-size-btn" data-size-dir="-1" title="Smaller (hold to keep shrinking · Cmd/Ctrl+Shift+&lt;)">A−</button>' +
         '<select class="fmt-size-select" id="fmtSizeSelect" onchange="setSizeTargetPct(this.value)" title="Text size of the selected title, line, or text box">' + buildSizeOptions(100) + '</select>' +
         '<button class="fmt-btn fmt-size-btn" data-size-dir="1" title="Bigger (hold to keep growing · Cmd/Ctrl+Shift+&gt;)">A+</button>' +
+        '<div class="fmt-sep"></div>' +
+        '<span class="fmt-lbl">Color:</span>' +
+        TEXT_COLOR_SWATCHES().map(function(sw) {
+          return '<button class="fmt-swatch" style="background:' + sw.c + '" title="' + sw.name + ' (highlight words first)" onmousedown="event.preventDefault()" onclick="applyTextColor(\'' + sw.c + '\')"></button>';
+        }).join('') +
+        '<input type="color" class="fmt-color-input" value="#e8b04b" title="Pick any color for the highlighted words" onchange="applyTextColor(this.value)">' +
+        '<button class="fmt-btn" title="Remove color from the highlighted words (or the whole line if nothing is highlighted)" onmousedown="event.preventDefault()" onclick="clearTextColor()">✕</button>' +
       '</div>' +
     '</div>' +
     buildControlsStrip(slide);
