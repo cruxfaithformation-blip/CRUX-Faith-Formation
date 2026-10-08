@@ -194,7 +194,7 @@ body::before {
 
 /* ── DESTINATION TILES ── */
 .destinations {
-  display: grid; grid-template-columns: repeat(5, 1fr);
+  display: grid; grid-template-columns: repeat(3, 1fr);
   border-top: 1px solid rgba(212,165,116,0.12);
   border-bottom: 1px solid rgba(212,165,116,0.12);
 }
@@ -205,7 +205,8 @@ body::before {
   display: flex; flex-direction: column; gap: 0.5rem;
   transition: background 0.2s; position: relative; overflow: hidden;
 }
-.dest-tile:last-child { border-right: none; }
+.dest-tile:nth-child(3n) { border-right: none; }
+.dest-tile:nth-child(n+4) { border-top: 1px solid rgba(212,165,116,0.1); }
 .dest-tile:hover { background: rgba(212,165,116,0.05); }
 .dest-tile::after {
   content: ''; position: absolute; bottom: 0; left: 0; right: 0;
@@ -414,7 +415,7 @@ footer {
   display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem;
 }
 .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 900; letter-spacing: 5px; color: var(--gold); }
-.footer-links { display: flex; gap: 2rem; list-style: none; }
+.footer-links { display: flex; gap: 0.75rem 2rem; list-style: none; flex-wrap: wrap; }
 .footer-links a { font-family: 'Inter', sans-serif; font-size: 0.75rem; color: var(--text-muted); text-decoration: none; transition: color 0.2s; }
 .footer-links a:hover { color: var(--gold); }
 .footer-copy { font-family: 'Inter', sans-serif; font-size: 0.7rem; color: var(--text-muted); }
@@ -489,10 +490,9 @@ footer {
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .destinations { grid-template-columns: repeat(2, 1fr); }
-  .dest-tile:nth-child(2) { border-right: none; }
-  .dest-tile:nth-child(3) { border-top: 1px solid rgba(212,165,116,0.1); }
-  .dest-tile:nth-child(4) { border-right: none; border-top: 1px solid rgba(212,165,116,0.1); }
-  .dest-tile:nth-child(5) { grid-column: 1 / -1; border-top: 1px solid rgba(212,165,116,0.1); }
+  .dest-tile:nth-child(3n) { border-right: 1px solid rgba(212,165,116,0.1); }
+  .dest-tile:nth-child(2n) { border-right: none; }
+  .dest-tile:nth-child(n+3) { border-top: 1px solid rgba(212,165,116,0.1); }
   .xp-inner { grid-template-columns: 1fr; gap: 3rem; }
   .card-grid { display: none; }
 }
@@ -500,8 +500,6 @@ footer {
   .site-nav { padding: 1rem 1.25rem; }
   .nav-links { display: none; }
   .destinations { grid-template-columns: 1fr 1fr; }
-  .dest-tile:nth-child(2) { border-right: none; }
-  .dest-tile:nth-child(3), .dest-tile:nth-child(4), .dest-tile:nth-child(5) { border-top: 1px solid rgba(212,165,116,0.1); }
   .hero-btns { flex-direction: column; align-items: center; }
   .video-categories { grid-template-columns: 1fr; }
   .playlist-grid { grid-template-columns: 1fr; }
@@ -557,9 +555,9 @@ footer {
     <li class="nav-dropdown">
       <a href="crux-formation.html">Formation</a>
       <div class="nav-dropdown-menu">
-        <a href="crux-adult-formation.html">The Foundation</a>
-        <a href="crux-modules.html">Five Pillars</a>
-        <a href="crux-faith-reason.html">Faith &amp; Reason</a>
+        <a href="crux-adult-formation.html">Learn the Basics</a>
+        <a href="crux-faith-reason.html">Find Answers</a>
+        <a href="crux-modules.html">Go Deeper</a>
         <div class="nav-drop-divider"></div>
         <a href="crux-start-here.html">Start Here</a>
       </div>
@@ -580,9 +578,9 @@ footer {
 <div class="nav-mobile-menu" id="navMobileMenu">
   <a href="index.html">Home</a>
   <a href="crux-formation.html">Formation</a>
-  <a href="crux-adult-formation.html">The Foundation</a>
-  <a href="crux-modules.html">Five Pillars</a>
-  <a href="crux-faith-reason.html">Faith &amp; Reason</a>
+  <a href="crux-adult-formation.html">Learn the Basics</a>
+  <a href="crux-faith-reason.html">Find Answers</a>
+  <a href="crux-modules.html">Go Deeper</a>
   <a href="crux-bible-study.html">Bible Study</a>
   <a href="crux-pack-store.html">Saint Cards</a>
   <a href="cruxgames.html">Games</a>
@@ -605,11 +603,25 @@ footer {
 </section>
 
 <div class="destinations">
-  <a href="crux-modules.html" class="dest-tile reveal">
+  <a href="crux-adult-formation.html" class="dest-tile reveal">
     <span class="dest-icon">✟</span>
-    <p class="dest-label">Formation</p>
-    <div class="dest-title">Faith Formation</div>
-    <p class="dest-desc">18 modules across five pillars — the Creed, Sacraments, moral life, prayer, and Church identity. All ages.</p>
+    <p class="dest-label">The Foundation</p>
+    <div class="dest-title">Learn the Basics</div>
+    <p class="dest-desc">New to the faith, or coming back to it? Start from the beginning. No prior knowledge required.</p>
+    <p class="dest-arrow">Start here →</p>
+  </a>
+  <a href="crux-faith-reason.html" class="dest-tile reveal">
+    <span class="dest-icon">◇</span>
+    <p class="dest-label">Faith &amp; Reason</p>
+    <div class="dest-title">Find Answers</div>
+    <p class="dest-desc">Honest answers to the hardest questions about God, Jesus, and the Bible.</p>
+    <p class="dest-arrow">Find my question →</p>
+  </a>
+  <a href="crux-modules.html" class="dest-tile reveal">
+    <span class="dest-icon">✠</span>
+    <p class="dest-label">The Five Pillars</p>
+    <div class="dest-title">Go Deeper</div>
+    <p class="dest-desc">The Creed, the Sacraments, the moral life, prayer, and Church identity. Beginner and Theologian levels.</p>
     <p class="dest-arrow">Explore modules →</p>
   </a>
   <a href="crux-bible-study.html" class="dest-tile reveal">
@@ -632,13 +644,6 @@ footer {
     <div class="dest-title">Games</div>
     <p class="dest-desc">Six game types for every module — flashcards, word scramble, matching pairs, and more.</p>
     <p class="dest-arrow">Play now →</p>
-  </a>
-  <a href="crux-faith-reason.html" class="dest-tile reveal">
-    <span class="dest-icon">◇</span>
-    <p class="dest-label">Reason</p>
-    <div class="dest-title">Faith &amp; Reason</div>
-    <p class="dest-desc">Honest answers to the hardest questions about God, Jesus, and the Bible.</p>
-    <p class="dest-arrow">Open Faith &amp; Reason →</p>
   </a>
 </div>
 
@@ -922,8 +927,9 @@ footer {
 <footer>
   <div class="footer-logo">CRUX</div>
   <ul class="footer-links">
-    <li><a href="crux-modules.html">Faith Formation</a></li>
-    <li><a href="crux-faith-reason.html">Faith &amp; Reason</a></li>
+    <li><a href="crux-adult-formation.html">Learn the Basics</a></li>
+    <li><a href="crux-faith-reason.html">Find Answers</a></li>
+    <li><a href="crux-modules.html">Go Deeper</a></li>
     <li><a href="crux-bible-study.html">Bible Study</a></li>
     <li><a href="crux-pack-store.html">Saint Cards</a></li>
     <li><a href="crux-videos.html">Videos</a></li>
