@@ -194,7 +194,7 @@ body::before {
 
 /* ── DESTINATION TILES ── */
 .destinations {
-  display: grid; grid-template-columns: repeat(4, 1fr);
+  display: grid; grid-template-columns: repeat(5, 1fr);
   border-top: 1px solid rgba(212,165,116,0.12);
   border-bottom: 1px solid rgba(212,165,116,0.12);
 }
@@ -491,6 +491,8 @@ footer {
   .destinations { grid-template-columns: repeat(2, 1fr); }
   .dest-tile:nth-child(2) { border-right: none; }
   .dest-tile:nth-child(3) { border-top: 1px solid rgba(212,165,116,0.1); }
+  .dest-tile:nth-child(4) { border-right: none; border-top: 1px solid rgba(212,165,116,0.1); }
+  .dest-tile:nth-child(5) { grid-column: 1 / -1; border-top: 1px solid rgba(212,165,116,0.1); }
   .xp-inner { grid-template-columns: 1fr; gap: 3rem; }
   .card-grid { display: none; }
 }
@@ -499,7 +501,7 @@ footer {
   .nav-links { display: none; }
   .destinations { grid-template-columns: 1fr 1fr; }
   .dest-tile:nth-child(2) { border-right: none; }
-  .dest-tile:nth-child(3), .dest-tile:nth-child(4) { border-top: 1px solid rgba(212,165,116,0.1); }
+  .dest-tile:nth-child(3), .dest-tile:nth-child(4), .dest-tile:nth-child(5) { border-top: 1px solid rgba(212,165,116,0.1); }
   .hero-btns { flex-direction: column; align-items: center; }
   .video-categories { grid-template-columns: 1fr; }
   .playlist-grid { grid-template-columns: 1fr; }
@@ -557,6 +559,7 @@ footer {
       <div class="nav-dropdown-menu">
         <a href="crux-adult-formation.html">The Foundation</a>
         <a href="crux-modules.html">Five Pillars</a>
+        <a href="crux-faith-reason.html">Faith &amp; Reason</a>
         <div class="nav-drop-divider"></div>
         <a href="crux-start-here.html">Start Here</a>
       </div>
@@ -579,6 +582,7 @@ footer {
   <a href="crux-formation.html">Formation</a>
   <a href="crux-adult-formation.html">The Foundation</a>
   <a href="crux-modules.html">Five Pillars</a>
+  <a href="crux-faith-reason.html">Faith &amp; Reason</a>
   <a href="crux-bible-study.html">Bible Study</a>
   <a href="crux-pack-store.html">Saint Cards</a>
   <a href="cruxgames.html">Games</a>
@@ -628,6 +632,13 @@ footer {
     <div class="dest-title">Games</div>
     <p class="dest-desc">Six game types for every module — flashcards, word scramble, matching pairs, and more.</p>
     <p class="dest-arrow">Play now →</p>
+  </a>
+  <a href="crux-faith-reason.html" class="dest-tile reveal">
+    <span class="dest-icon">◇</span>
+    <p class="dest-label">Reason</p>
+    <div class="dest-title">Faith &amp; Reason</div>
+    <p class="dest-desc">Honest answers to the hardest questions about God, Jesus, and the Bible.</p>
+    <p class="dest-arrow">Open Faith &amp; Reason →</p>
   </a>
 </div>
 
@@ -912,6 +923,7 @@ footer {
   <div class="footer-logo">CRUX</div>
   <ul class="footer-links">
     <li><a href="crux-modules.html">Faith Formation</a></li>
+    <li><a href="crux-faith-reason.html">Faith &amp; Reason</a></li>
     <li><a href="crux-bible-study.html">Bible Study</a></li>
     <li><a href="crux-pack-store.html">Saint Cards</a></li>
     <li><a href="crux-videos.html">Videos</a></li>
