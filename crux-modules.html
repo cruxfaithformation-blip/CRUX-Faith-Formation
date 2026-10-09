@@ -914,10 +914,7 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 (function() {
     const params = new URLSearchParams(window.location.search);
     const id = params.get('module');
-    if (!id) {
-        document.getElementById('landingScreen').style.display = 'block';
-        return;
-    }
+    if (!id) return; // no ?module= param: stay on this page
     const routes = {
         'lords_prayer': 'crux-module-lords-prayer.html',
         'bible_geography': 'crux-module-geography.html',
