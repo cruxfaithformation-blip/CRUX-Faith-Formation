@@ -806,6 +806,10 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
   transform-origin: center top; pointer-events: auto;
 }
 .sc-visual .visual-rule { position: absolute; left: 50%; top: 16.5%; width: 56px; height: 2px; margin-left: -28px; background: var(--gold); opacity: 0.7; }
+.sc-visual .visual-link { position: absolute; right: 3%; bottom: 4%; z-index: 20; pointer-events: auto; background: var(--gold); color: var(--navy-deep); font-family: 'Inter', sans-serif; font-weight: 700; font-size: clamp(12px, 1.3vw, 18px); padding: 0.7em 1.2em; border-radius: 999px; text-decoration: none; box-shadow: 0 4px 16px rgba(0,0,0,0.35); }
+.sc-visual:has(.visual-link) { z-index: 6; } /* above image layers (z 5); clicks still pass through except on the link */
+.sc-visual .visual-link:hover { background: var(--gold-light); }
+.sc-visual .visual-link:focus-visible { outline: 2px solid var(--cream); outline-offset: 3px; }
 .visual-slate {
   position: absolute; left: 7%; top: 19%; width: 86%; height: 77%;
   border: 1.5px dashed rgba(212,165,116,0.3); border-radius: 10px;
@@ -1062,7 +1066,7 @@ const TYPES = [
 // Bump when adding default slides. A slide marked `since: N` is inserted
 // (after the slide whose id is `after`) into saved decks older than N, so
 // teachers get new slides without losing their own edits.
-const DECK_VERSION = 3;
+const DECK_VERSION = 4;
 const DEFAULT_SLIDES = [
   {
     id:1, type:'title',
@@ -1181,8 +1185,9 @@ const DEFAULT_SLIDES = [
     title:'Where It Happened',
     imageIdea:'Map: Egypt, Sinai, Jerusalem, Bethlehem, Nazareth (pre-loaded)',
     images:[{ id:'def-map', src:'images/bible/bible-map.svg', x:7, y:19, w:86, h:77 }],
+    linkUrl:'https://cruxfaith.com/crux-map-bible.html', linkLabel:'Open the interactive map', linkSince:4,
     body:'', bodySimple:'',
-    note:'VOICEOVER: These are real places. You can fly to Jerusalem today. Moses led God\'s people out of Egypt and across this desert to Mount Sinai. David was king in Jerusalem. Jesus was born in Bethlehem and grew up in Nazareth, a few days\' walk apart.\n\nJust point and name them. The journeys come next week.'
+    note:'VOICEOVER: These are real places. You can fly to Jerusalem today. Moses led God\'s people out of Egypt and across this desert to Mount Sinai. David was king in Jerusalem. Jesus was born in Bethlehem and grew up in Nazareth, a few days\' walk apart.\n\nJust point and name them. The journeys come next week.\n\nINTERACTIVE MAP: Click "Open the interactive map" (bottom right) to walk through all five places on a real map. "Next place" flies to each one and shows the verse and what the place is called today. Try "From space" at Mount Sinai or the Nile, and "Roman times" at Bethlehem to see the map from when Jesus lived.'
   },
   {
     id:14, type:'visual',
@@ -1255,6 +1260,11 @@ function mergeNewDefaults(savedVersion) {
   defaultCopy().forEach(function(d) {
     // New default images for an existing slide: fill it only if the teacher
     // hasn't added their own (empty, or still holding our pre-loaded 'def-' image).
+    // A link added to an existing default slide: copy it unless the teacher set their own.
+    if (d.linkSince && d.linkSince > savedVersion) {
+      var withLink = slides.filter(function(s) { return s.id === d.id; })[0];
+      if (withLink && !withLink.linkUrl) { withLink.linkUrl = d.linkUrl; withLink.linkLabel = d.linkLabel; }
+    }
     if (d.imagesSince && d.imagesSince > savedVersion) {
       var mine = slides.filter(function(s) { return s.id === d.id; })[0];
       var untouched = mine && mine.type === 'visual' && (!mine.images || mine.images.every(function(l) { return String(l.id).indexOf('def-') === 0; }));
@@ -2563,6 +2573,14 @@ function buildControlsStrip(slide) {
   '</div>';
 }
 
+// Optional button on a visual slide that opens a page in a new tab (e.g. an interactive map).
+// Only http(s) and same-site relative links are allowed.
+function visualLinkHTML(slide) {
+  var url = String(slide.linkUrl || '');
+  if (!url || /^\s*(javascript|data|vbscript):/i.test(url)) return '';
+  return '<a class="visual-link" href="' + escHtml(url) + '" target="_blank" rel="noopener">' + escHtml(slide.linkLabel || 'Open link') + ' &#8599;</a>';
+}
+
 function buildEditableSlideHTML(slide) {
   var type = slide.type;
   var bf = bodyTab === 'simple' ? 'bodySimple' : 'body';
@@ -2673,6 +2691,7 @@ function buildEditableSlideHTML(slide) {
           (slide.imageIdea ? '<div class="visual-slate-idea">Idea: ' + escHtml(slide.imageIdea) + '</div>' : '') +
           '<input type="file" accept="image/*" id="slateFilePicker" style="display:none" onclick="event.stopPropagation()" onchange="handleSlateFile(this)">' +
         '</div>') +
+      visualLinkHTML(slide) +
     '</div>';
   }
 
@@ -3121,6 +3140,7 @@ function buildSlideHTML(slide) {
     return '<div class="slide-content sc-visual">' +
       '<div class="visual-title">' + escHtml(slide.title || '') + '</div>' +
       '<div class="visual-rule"></div>' +
+      visualLinkHTML(slide) +
     '</div>';
   }
 

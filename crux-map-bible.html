@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Where It Happened · CRUX</title>
+<meta name="description" content="An interactive map of five Bible places, from Egypt and Mount Sinai to Jerusalem, Bethlehem, and Nazareth, shown on today's map, from space, and in Roman times.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
+<style>
+:root {
+  --navy: #1a1f36;
+  --navy-deep: #0f1222;
+  --navy-mid: #252b47;
+  --gold: #d4a574;
+  --gold-light: #e8c99a;
+  --cream: #faf8f4;
+  --ink: #1a1f36;
+  --muted: #5b6178;
+  --sea: #2f6f8f;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--navy-deep); color: var(--cream); font-family: 'Inter', system-ui, sans-serif; display: flex; flex-direction: column; }
+
+/* Header */
+.bar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 12px 20px; background: var(--navy); border-bottom: 1px solid rgba(212,165,116,.25); }
+.brand { font-family: 'Playfair Display', Georgia, serif; font-weight: 900; letter-spacing: .14em; color: var(--gold); text-decoration: none; font-size: 18px; }
+.bar h1 { margin: 0; font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 700; color: var(--cream); }
+.bar .sub { font-size: 13px; color: var(--gold-light); letter-spacing: .08em; text-transform: uppercase; }
+.bar .spacer { flex: 1; }
+.layers { display: flex; background: var(--navy-deep); border: 1px solid rgba(212,165,116,.35); border-radius: 999px; padding: 3px; gap: 2px; }
+.layers button { font: 600 13px/1 'Inter', sans-serif; color: var(--gold-light); background: transparent; border: 0; border-radius: 999px; padding: 9px 14px; cursor: pointer; min-height: 36px; }
+.layers button[aria-pressed="true"] { background: var(--gold); color: var(--navy-deep); }
+.layers button:focus-visible, .stops button:focus-visible, .nav button:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 2px; }
+
+/* Map + card */
+.stage { position: relative; flex: 1; min-height: 0; }
+#map { position: absolute; inset: 0; background: #cfe0e8; }
+.card { position: absolute; left: 20px; bottom: 28px; z-index: 500; width: 400px; max-width: calc(100% - 40px); background: var(--cream); color: var(--ink); border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.35); padding: 18px 20px 16px; display: flex; flex-direction: column; gap: 10px; }
+.stops { display: flex; gap: 6px; flex-wrap: wrap; }
+.stops button { font: 700 14px/1 'Inter', sans-serif; border: 2px solid var(--navy); background: #fff; color: var(--navy); border-radius: 999px; padding: 7px 12px; cursor: pointer; min-height: 34px; }
+.stops button[aria-pressed="true"] { background: var(--navy); color: var(--gold-light); }
+.eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #8a5a22; }
+.card h2 { margin: 0; font-family: 'Playfair Display', Georgia, serif; font-size: 30px; line-height: 1.1; }
+.what { margin: 0; font-size: 16px; line-height: 1.45; }
+.verse { margin: 0; padding: 10px 12px; background: #f1ebe0; border-radius: 8px; font-family: Georgia, serif; font-size: 15.5px; line-height: 1.45; }
+.verse cite { display: block; margin-top: 4px; font-style: normal; font-family: 'Inter', sans-serif; font-size: 12.5px; font-weight: 700; color: var(--muted); }
+.today { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 14px; }
+.today b { background: var(--navy); color: var(--gold-light); border-radius: 6px; padding: 3px 9px; font-size: 12px; letter-spacing: .1em; text-transform: uppercase; }
+.fact { margin: 0; font-size: 14px; line-height: 1.45; color: var(--muted); }
+.note { margin: 0; font-size: 13px; line-height: 1.4; color: #8a3b12; font-style: italic; }
+.nav { display: flex; gap: 8px; justify-content: space-between; }
+.nav button { font: 600 14px/1 'Inter', sans-serif; border: 0; border-radius: 8px; padding: 10px 14px; cursor: pointer; min-height: 40px; background: var(--gold); color: var(--navy-deep); }
+.nav button.ghost { background: transparent; color: var(--navy); border: 1.5px solid var(--navy); }
+.nav button:disabled { opacity: .4; cursor: default; }
+.era { position: absolute; right: 20px; top: 16px; z-index: 500; max-width: 300px; background: rgba(15,18,34,.88); color: var(--cream); font-size: 13px; line-height: 1.4; padding: 10px 12px; border-radius: 10px; }
+
+/* Pins */
+.pin { width: 40px; height: 40px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--gold); border: 3px solid var(--navy-deep); display: grid; place-items: center; box-shadow: 0 4px 10px rgba(0,0,0,.35); }
+.pin span { transform: rotate(45deg); font: 800 16px/1 'Inter', sans-serif; color: var(--navy-deep); }
+.pin.on { background: #fff; border-color: #b4322a; }
+.pin.on span { color: #b4322a; }
+.leaflet-tooltip.place { background: var(--navy-deep); color: var(--cream); border: 0; font: 700 13px 'Inter', sans-serif; padding: 4px 8px; box-shadow: none; }
+.leaflet-tooltip.place::before { display: none; }
+
+@media (max-width: 640px) {
+  .bar { padding: 10px 16px; }
+  .bar h1 { font-size: 18px; }
+  .card { left: 0; right: 0; bottom: 0; width: auto; max-width: none; border-radius: 14px 14px 0 0; max-height: 58%; overflow-y: auto; padding: 14px 16px; }
+  .card h2 { font-size: 24px; }
+  .era { left: 16px; right: 16px; top: 10px; max-width: none; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+
+<header class="bar">
+  <a class="brand" href="index.html">CRUX</a>
+  <div>
+    <div class="sub">Week 5 · The Bible: God's Story</div>
+    <h1>Where It Happened</h1>
+  </div>
+  <div class="spacer"></div>
+  <div class="layers" role="group" aria-label="Map style">
+    <button type="button" data-layer="today" aria-pressed="true">Today's map</button>
+    <button type="button" data-layer="satellite" aria-pressed="false">From space</button>
+    <button type="button" data-layer="ancient" aria-pressed="false">Roman times</button>
+  </div>
+</header>
+
+<main class="stage">
+  <div id="map" aria-label="Map of Bible places"></div>
+  <div class="era" id="eraNote" hidden></div>
+
+  <section class="card" aria-live="polite">
+    <div class="stops" id="stopTabs" role="group" aria-label="Places"></div>
+    <div class="eyebrow" id="cEyebrow"></div>
+    <h2 id="cTitle"></h2>
+    <p class="what" id="cWhat"></p>
+    <blockquote class="verse" id="cVerse"></blockquote>
+    <div class="today" id="cToday"></div>
+    <p class="fact" id="cFact"></p>
+    <p class="note" id="cNote" hidden></p>
+    <div class="nav">
+      <button type="button" class="ghost" id="btnPrev">Back</button>
+      <button type="button" class="ghost" id="btnAll">Show all</button>
+      <button type="button" id="btnNext">Next place</button>
+    </div>
+  </section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<script>
+/* Five places from the Week 5 "Where It Happened" slide. Verses are NABRE.
+   Coordinates: Sinai is the traditional site (Jebel Musa); Egypt is placed in
+   the Nile Delta region where Exodus puts the Israelites (approximate). */
+var PLACES = [
+  {
+    name: 'Egypt',
+    who: 'Moses',
+    what: 'God\'s people were slaves here. God sent Moses to tell Pharaoh to let them go.',
+    verse: 'Now, go! I am sending you to Pharaoh to bring my people, the Israelites, out of Egypt.',
+    ref: 'Exodus 3:10',
+    today: 'Egypt',
+    fact: 'The great pyramids were already more than 1,000 years old when Moses was born.',
+    note: 'The pin marks the Nile Delta, the area of Egypt where the Israelites lived. Nobody knows the exact spot.',
+    lat: 30.8, lng: 31.8, zoom: 7
+  },
+  {
+    name: 'Mount Sinai',
+    who: 'Moses',
+    what: 'After leaving Egypt, Moses led the people across the desert to this mountain. Here God gave them the Ten Commandments.',
+    verse: 'When the LORD came down upon Mount Sinai, to the top of the mountain, the LORD summoned Moses to the top of the mountain, and Moses went up.',
+    ref: 'Exodus 19:20',
+    today: 'Egypt (Sinai Peninsula)',
+    fact: 'A monastery at the foot of this mountain, Saint Catherine\'s, has been home to monks for about 1,500 years.',
+    note: 'This is the traditional mountain. Scholars still debate which mountain it really was.',
+    lat: 28.5394, lng: 33.9750, zoom: 9
+  },
+  {
+    name: 'Jerusalem',
+    who: 'King David',
+    what: 'King David captured this city and made it his capital. It became the most important city in the Bible.',
+    verse: 'David nevertheless captured the fortress of Zion, which is the City of David.',
+    ref: '2 Samuel 5:7',
+    today: 'Jerusalem',
+    fact: 'About 1,000 years after David, Jesus died and rose again in this same city.',
+    note: '',
+    lat: 31.7780, lng: 35.2354, zoom: 12, labelSide: 'left'
+  },
+  {
+    name: 'Bethlehem',
+    who: 'Jesus is born',
+    what: 'Joseph and Mary traveled here, to King David\'s hometown, and Jesus was born.',
+    verse: 'And Joseph too went up from Galilee from the town of Nazareth to Judea, to the city of David that is called Bethlehem, because he was of the house and family of David,',
+    ref: 'Luke 2:4',
+    today: 'West Bank (Palestinian territories)',
+    fact: 'Bethlehem is only about 6 miles from Jerusalem. A church has stood over the place of Jesus\'s birth since the 300s.',
+    note: '',
+    lat: 31.7043, lng: 35.2077, zoom: 12
+  },
+  {
+    name: 'Nazareth',
+    who: 'Jesus grows up',
+    what: 'Jesus grew up here with Mary and Joseph, in a small village in the hills of Galilee.',
+    verse: 'He went down with them and came to Nazareth, and was obedient to them; and his mother kept all these things in her heart.',
+    ref: 'Luke 2:51',
+    today: 'Israel',
+    fact: 'Nazareth is about 90 miles from Bethlehem by road. On foot, that was a trip of about four days.',
+    note: '',
+    lat: 32.7021, lng: 35.2978, zoom: 11
+  }
+];
+
+var ERA_NOTE = {
+  ancient: 'Roman times: the map from when Jesus lived. Place names are in Latin, and the red lines are Roman roads. Moses lived over 1,000 years before this map.',
+  satellite: 'A real photo from space. You can see the desert, the Nile River, and the Sea of Galilee.'
+};
+
+var map = L.map('map', { zoomControl: true, worldCopyJump: false, minZoom: 4, maxZoom: 16 });
+var LAYERS = {
+  today: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+    maxZoom: 16, attribution: 'Map tiles &copy; Esri'
+  }),
+  satellite: L.layerGroup([
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 16, attribution: 'Imagery &copy; Esri, Maxar, Earthstar Geographics'
+    }),
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+      maxZoom: 16
+    })
+  ]),
+  ancient: L.tileLayer('https://dh.gu.se/tiles/imperium/{z}/{x}/{y}.png', {
+    maxZoom: 11, maxNativeZoom: 11,
+    attribution: '<a href="https://imperium.ahlfeldt.se/" target="_blank" rel="noopener">Digital Atlas of the Roman Empire</a> (CC BY 4.0)'
+  })
+};
+var currentLayer = 'today';
+LAYERS.today.addTo(map);
+
+var markers = PLACES.map(function (p, i) {
+  var icon = L.divIcon({ className: '', html: '<div class="pin"><span>' + (i + 1) + '</span></div>', iconSize: [40, 40], iconAnchor: [6, 40] });
+  var m = L.marker([p.lat, p.lng], { icon: icon, title: p.name, keyboard: true }).addTo(map);
+  var left = p.labelSide === 'left';
+  m.bindTooltip(p.name, { permanent: true, direction: left ? 'left' : 'right', offset: left ? [-4, -22] : [18, -22], className: 'place' });
+  m.on('click', function () { show(i); });
+  return m;
+});
+
+var allBounds = L.latLngBounds(PLACES.map(function (p) { return [p.lat, p.lng]; })).pad(0.25);
+var current = -1;
+
+var tabs = document.getElementById('stopTabs');
+PLACES.forEach(function (p, i) {
+  var b = document.createElement('button');
+  b.type = 'button';
+  b.textContent = (i + 1) + ' ' + p.name;
+  b.setAttribute('aria-pressed', 'false');
+  b.addEventListener('click', function () { show(i); });
+  tabs.appendChild(b);
+});
+
+function setText(id, text) { document.getElementById(id).textContent = text; }
+
+function show(i, stayPut) {
+  current = i;
+  var p = PLACES[i];
+  setText('cEyebrow', 'Place ' + (i + 1) + ' of ' + PLACES.length + ' · ' + p.who);
+  setText('cTitle', p.name);
+  setText('cWhat', p.what);
+  var v = document.getElementById('cVerse');
+  v.textContent = '“' + p.verse + '”';
+  var c = document.createElement('cite');
+  c.textContent = p.ref + ' (NABRE)';
+  v.appendChild(c);
+  var t = document.getElementById('cToday');
+  t.textContent = '';
+  var b = document.createElement('b');
+  b.textContent = 'Today';
+  t.appendChild(b);
+  t.appendChild(document.createTextNode(p.today));
+  setText('cFact', p.fact);
+  var n = document.getElementById('cNote');
+  n.hidden = !p.note;
+  n.textContent = p.note;
+  Array.prototype.forEach.call(tabs.children, function (el, k) { el.setAttribute('aria-pressed', k === i ? 'true' : 'false'); });
+  markers.forEach(function (m, k) {
+    var el = m.getElement();
+    if (el) el.firstChild.classList.toggle('on', k === i);
+  });
+  var z = currentLayer === 'ancient' ? Math.min(p.zoom, 10) : p.zoom;
+  if (!stayPut) map.flyTo([p.lat, p.lng], z, { duration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 1.6 });
+  document.getElementById('btnPrev').disabled = i === 0;
+  document.getElementById('btnNext').disabled = i === PLACES.length - 1;
+}
+
+/* Keep pins out from under the info card: it sits on the left on wide screens
+   and along the bottom on phones. */
+function boundsPadding() {
+  return window.innerWidth > 640
+    ? { paddingTopLeft: [450, 30], paddingBottomRight: [40, 30] }
+    : { paddingTopLeft: [20, 20], paddingBottomRight: [20, Math.round(window.innerHeight * 0.5)] };
+}
+
+function showAll() {
+  var opts = boundsPadding();
+  opts.duration = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 1.4;
+  map.flyToBounds(allBounds, opts);
+}
+
+document.getElementById('btnPrev').addEventListener('click', function () { if (current > 0) show(current - 1); });
+document.getElementById('btnNext').addEventListener('click', function () { if (current < PLACES.length - 1) show(current + 1); });
+document.getElementById('btnAll').addEventListener('click', showAll);
+
+Array.prototype.forEach.call(document.querySelectorAll('.layers button'), function (btn) {
+  btn.addEventListener('click', function () {
+    var key = btn.getAttribute('data-layer');
+    if (key === currentLayer) return;
+    map.removeLayer(LAYERS[currentLayer]);
+    LAYERS[key].addTo(map);
+    currentLayer = key;
+    Array.prototype.forEach.call(document.querySelectorAll('.layers button'), function (b) {
+      b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+    });
+    var era = document.getElementById('eraNote');
+    era.hidden = !ERA_NOTE[key];
+    era.textContent = ERA_NOTE[key] || '';
+    if (key === 'ancient' && map.getZoom() > 11) map.setZoom(11);
+  });
+});
+
+/* Arrow keys step through places when presenting (ignored while typing or using map keys). */
+document.addEventListener('keydown', function (e) {
+  if (e.target.closest && e.target.closest('input, textarea, .leaflet-container')) return;
+  if (e.key === 'ArrowRight' && current < PLACES.length - 1) show(current + 1);
+  if (e.key === 'ArrowLeft' && current > 0) show(current - 1);
+});
+
+/* Open on the overview with all five pins; the card starts at place 1. */
+map.fitBounds(allBounds, boundsPadding());
+show(0, true);
+</script>
+</body>
+</html>
