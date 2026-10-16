@@ -1062,7 +1062,7 @@ const TYPES = [
 // Bump when adding default slides. A slide marked `since: N` is inserted
 // (after the slide whose id is `after`) into saved decks older than N, so
 // teachers get new slides without losing their own edits.
-const DECK_VERSION = 1;
+const DECK_VERSION = 2;
 const DEFAULT_SLIDES = [
   {
     id:1, type:'title',
@@ -1092,6 +1092,14 @@ const DEFAULT_SLIDES = [
     images:[{ id:'def-caravaggio', src:'images/bible/caravaggio-inspiration-matthew.jpg', x:7, y:19, w:86, h:77 }],
     body:'', bodySimple:'',
     note:'VOICEOVER: Forty writers. One Author. Saint Paul wrote that "all Scripture is inspired by God" (2 Timothy 3:16). Inspired means God worked through the writers. It\'s like a coach and a quarterback. The coach calls the play, but the quarterback throws it with his own arm, in his own style. Matthew sounds like Matthew. Paul sounds like Paul. But the play is God\'s.\n\nThis painting is by Caravaggio, from 1602. It hangs in a church in Rome.\n\nASK: In this painting, who\'s really writing?'
+  },
+  {
+    id:18, type:'visual', since:2, after:4,
+    title:'One Story',
+    imageIdea:'Cross-reference arc chart, 33,000+ connections (pre-loaded)',
+    images:[{ id:'def-crossrefs', src:'images/bible/cross-references.svg', x:7, y:19, w:86, h:77 }],
+    body:'', bodySimple:'',
+    note:'VOICEOVER: Every line on this picture connects two chapters of the Bible that talk about the same thing. There are more than 33,000 lines. Genesis is way over on the left. Revelation is way over on the right.\n\nThese writers lived hundreds of years apart. Shepherds, kings, fishermen, a doctor, a tax collector. They never sat down together and planned it. And it still tells one story.\n\nPoint to the numbers.\n\n1. Genesis 3:15. Remember Week 2? Right after the Fall, God promised the serpent would be beaten. Now go all the way to the other end. Revelation 12:9: "the ancient serpent... was thrown down." The first promise and the last page.\n\n2. Genesis 22:8. Isaac asks his dad where the lamb is. Abraham says, "God will provide the sheep." Almost two thousand years later, John the Baptist sees Jesus walking toward him and says, "Behold, the Lamb of God" (John 1:29).\n\n3. Micah 5:1. Micah said a ruler would come from tiny little Bethlehem. Matthew 2:6 quotes him when Jesus is born there. That line is short because Micah is one of the last books before the New Testament starts.\n\n4. Psalm 22:19. "For my clothing they cast lots." Casting lots is like rolling dice. At the cross, Roman soldiers rolled dice for Jesus\'s clothes (John 19:24). Those soldiers had never read a Jewish psalm.\n\nSome writers quoted older books on purpose, the way you quote your favorite movie. But Abraham didn\'t know about Jesus, and the soldiers weren\'t trying to make a psalm come true. Forty writers couldn\'t plan that. One Author could.\n\nASK: Which line surprised you the most?\n\n[Teacher note, not for class: In the NABRE, Genesis 22:8 says "sheep," not "lamb." The two dark gaps under the arcs are the seven Old Testament books found in Catholic Bibles but not in the OpenBible.info dataset (Tobit, Judith, Wisdom, Sirach, Baruch, 1 and 2 Maccabees). They connect too; the data just doesn\'t include them. If a student asks, that\'s a great reason to tell them Catholic Bibles have 73 books.]'
   },
   {
     id:5, type:'visual',
