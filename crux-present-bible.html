@@ -1062,7 +1062,7 @@ const TYPES = [
 // Bump when adding default slides. A slide marked `since: N` is inserted
 // (after the slide whose id is `after`) into saved decks older than N, so
 // teachers get new slides without losing their own edits.
-const DECK_VERSION = 2;
+const DECK_VERSION = 3;
 const DEFAULT_SLIDES = [
   {
     id:1, type:'title',
@@ -1084,6 +1084,18 @@ const DEFAULT_SLIDES = [
     images:[{ id:'def-library', src:'images/bible/library-73.svg', x:7, y:19, w:86, h:77 }],
     body:'', bodySimple:'',
     note:'VOICEOVER: The Bible is 73 books. Some are history. Some are poems and songs. Some are letters. About 40 different people wrote them, over about 1,500 years, in three languages: Hebrew, Aramaic, and Greek. Count the spines if you want. Seventy-three.\n\nPoint out the colors. Each color is a different kind of book. We\'ll sort them in a minute.'
+  },
+  {
+    id:19, type:'visual', since:3, after:3,
+    title:'Before It Was a Book',
+    imageIdea:'The Great Isaiah Scroll: close-up of columns, plus the whole scroll unrolled (pre-loaded, public domain)',
+    images:[
+      { id:'def-scroll-cols', src:'images/bible/isaiah-scroll-columns.jpg', x:7, y:18, w:86, h:58 },
+      { id:'def-scroll-full', src:'images/bible/isaiah-scroll-full.jpg', x:7, y:78, w:86, h:6 }
+    ],
+    textBoxes:[{ id:'def-scroll-caption', text:'The whole Book of Isaiah, unrolled: about 24 feet long', x:7, y:85, w:86, h:7, fontSize:1.1 }],
+    body:'', bodySimple:'',
+    note:'VOICEOVER: [Hold up your papyrus scroll.] When these books were first written, nobody had a Bible like yours. No pages. No cover. They wrote on scrolls.\n\nSome scrolls were papyrus, like this one. Papyrus is a kind of paper made from a reed plant that grows along the Nile River in Egypt. Others were parchment, which is animal skin scraped thin and dried. You wrote with a reed pen and ink, then rolled it up.\n\nThe picture is a real scroll, the Great Isaiah Scroll. It\'s about 2,100 years old. A young shepherd found it in a cave near the Dead Sea in 1947. Look at the strip along the bottom. That\'s the whole thing unrolled, about 24 feet long. The whole Book of Isaiah. One book, one scroll.\n\nJesus read from a scroll of Isaiah too. In Luke 4, at the synagogue in his hometown of Nazareth, "he unrolled the scroll and found the passage." When he finished, he rolled it back up and handed it to the attendant (Luke 4:17-20).\n\nSo the Bible didn\'t start out as one book. It started as a shelf full of scrolls. That\'s why we called it a library. Later, Christians started copying the books onto pages sewn together on one side, called a codex. That\'s the great-great-grandparent of the Bible in your hands. And the chapter and verse numbers? Those came even later. We\'ll get to that in a few minutes.\n\nASK: Pass the scroll around. If the Bible were 73 scrolls, how would you carry it to church? How would you find one verse?\n\n[Teacher note, not for class: The Great Isaiah Scroll is parchment, not papyrus. When you point at the picture, say "a scroll like this," not "papyrus like this." Facts: found in Qumran Cave 1 in 1947, dated to about 125 BC, about 24 feet (7.3 m) long, and it contains all 66 chapters of Isaiah. Images: Wikimedia Commons, public domain (Google Art Project scan, Israel Museum).]'
   },
   {
     id:4, type:'visual',
@@ -1146,7 +1158,7 @@ const DEFAULT_SLIDES = [
     title:'Bible Scavenger Hunt',
     imageIdea:'A treasure map with a Bible at the X (Leonardo prompt #3)',
     body:'', bodySimple:'',
-    note:'ACTIVITY (10 min): Pairs, one Bible and one verse card each. Verses: Jeremiah 1:5, Genesis 3:15, Galatians 5:22-23, Matthew 28:19, 1 John 4:8, John 13:34, John 1:14.\n\nVOICEOVER: When you find yours, stand up and read it out loud. Then the class has to guess which week we learned it.\n\nThis is the review for Weeks 1 to 4, without re-teaching any of it.'
+    note:'ACTIVITY (15 min): Pairs, one Bible and one Treasure Hunt handout each. Four stops, one from each week so far, then the treasure. 1. Jeremiah 1:5. 2. Galatians 5:22-23. 3. Matthew 28:19. 4. John 1:14. Treasure: John 3:16. Bonus for early finishers: 1 John 4:8.\n\nVOICEOVER: At each stop, copy one line from the verse to mark it found. Follow the trail to the treasure. When you find a stop, read your line out loud, and the class has to guess which week we learned it.\n\nWhen most pairs reach the treasure, read John 3:16 out loud together.\n\nThis is the review for Weeks 1 to 4, without re-teaching any of it. Short on time? Each pair does two stops (1-2 or 3-4), then everyone finds John 3:16 together.'
   },
   {
     id:11, type:'visual',
