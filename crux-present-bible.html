@@ -1066,18 +1066,20 @@ const TYPES = [
 // Bump when adding default slides. A slide marked `since: N` is inserted
 // (after the slide whose id is `after`) into saved decks older than N, so
 // teachers get new slides without losing their own edits.
-const DECK_VERSION = 5;
+const DECK_VERSION = 6;
 const DEFAULT_SLIDES = [
   {
-    id:1, type:'title',
+    id:1, type:'title', bgSince:6,
     title:'The Bible: God\'s Story',
+    bgImage:'images/bible/title-bible.jpg',
     body:'', bodySimple:'',
-    note:'VOICEOVER: Lead the Sign of the Cross. Today we\'re talking about a book you\'ve definitely seen, probably own, and maybe have never really opened. By the end of class, you\'ll know how to find anything in it.\n\n[Background image: Leonardo prompt #1, title-bible.jpg. Set it as this slide\'s Background Image.]'
+    note:'VOICEOVER: Lead the Sign of the Cross. Today we\'re talking about a book you\'ve definitely seen, probably own, and maybe have never really opened. By the end of class, you\'ll know how to find anything in it.'
   },
   {
-    id:2, type:'visual',
+    id:2, type:'visual', imagesSince:6,
     title:'What\'s the best-selling book of all time?',
-    imageIdea:'A towering stack of old books, the top one glowing (Leonardo prompt #2)',
+    imageIdea:'A towering stack of old books, the top one glowing (pre-loaded)',
+    images:[{ id:'def-bookstack', src:'images/bible/book-stack.jpg', x:7, y:19, w:86, h:77 }],
     body:'', bodySimple:'',
     note:'VOICEOVER: Take a few guesses. Let them say Harry Potter. Then: It\'s the Bible. Billions of copies, more than any other book in history. And here\'s the twist. It isn\'t even one book.'
   },
@@ -1165,8 +1167,9 @@ const DEFAULT_SLIDES = [
     note:'VOICEOVER: Demo it live with a Bible in your hand. Book first. Then the big number, the chapter. Then the small number, the verse. John 13:34 is the New Commandment we learned in Week 3.\n\nFun fact: the people who wrote the Bible didn\'t put in chapters or verses. An archbishop named Stephen Langton added chapters about 800 years ago, and a printer named Robert Estienne added verse numbers in 1551, so people could find things faster. Now you can too.'
   },
   {
-    id:10, type:'content', replaceSince:5,
+    id:10, type:'content', replaceSince:5, bgSince:6,
     title:'Treasure Hunt: How to Play',
+    bgImage:'images/bible/treasure-map.jpg',
     body:'- Team up with a partner. You need one Bible and one treasure map.\n- Go to the stops in order: 1, 2, 3, 4. Find each verse in your Bible.\n- Copy one line from the verse onto your map to mark the spot.\n- Read your line out loud. Can the class guess which week we learned it?\n★ Follow the trail to the treasure: John 3:16!\n> Done early? Try the bonus stop.',
     bodySimple:'- Get a partner, a Bible, and a map.\n- Find stops 1, 2, 3, 4, in order.\n- Copy one line from each verse.\n- Read it out loud. Guess the week!\n★ The treasure is John 3:16!\n> Done early? Try the bonus.',
     note:'ACTIVITY (15 min): Pairs, one Bible and one Treasure Hunt handout each. Four stops, one from each week so far, then the treasure. 1. Jeremiah 1:5. 2. Galatians 5:22-23. 3. Matthew 28:19. 4. John 1:14. Treasure: John 3:16. Bonus for early finishers: 1 John 4:8.\n\nVOICEOVER: At each stop, copy one line from the verse to mark it found. Follow the trail to the treasure. When you find a stop, read your line out loud, and the class has to guess which week we learned it.\n\nWhen most pairs reach the treasure, read John 3:16 out loud together.\n\nThis is the review for Weeks 1 to 4, without re-teaching any of it. Short on time? Each pair does two stops (1-2 or 3-4), then everyone finds John 3:16 together.'
@@ -1197,9 +1200,10 @@ const DEFAULT_SLIDES = [
     note:'VOICEOVER: These are real places. You can fly to Jerusalem today. Moses led God\'s people out of Egypt and across this desert to Mount Sinai. David was king in Jerusalem. Jesus was born in Bethlehem and grew up in Nazareth, a few days\' walk apart.\n\nJust point and name them. The journeys come next week.\n\nINTERACTIVE MAP: Click "Open the interactive map" (bottom right) to walk through all five places on a real map. "Next place" flies to each one and shows the verse and what the place is called today. Try "From space" at Mount Sinai or the Nile, and "Roman times" at Bethlehem to see the map from when Jesus lived.'
   },
   {
-    id:14, type:'visual',
+    id:14, type:'visual', imagesSince:6,
     title:'We Hear It Every Sunday',
-    imageIdea:'A priest lifting the Book of the Gospels at Mass (Leonardo prompt #4)',
+    imageIdea:'A priest lifting the Book of the Gospels at Mass (pre-loaded)',
+    images:[{ id:'def-gospel-mass', src:'images/bible/gospel-at-mass.jpg', x:7, y:19, w:86, h:77 }],
     body:'', bodySimple:'',
     note:'VOICEOVER: Every Mass has a part called the Liturgy of the Word. A first reading, usually from the Old Testament. A Psalm. A reading from one of the letters. And then the Gospel. Everybody stands for the Gospel, because these are Jesus\'s own words and actions.\n\nPRAYER OF THE WEEK: teach the responses and practice them twice.\nReader: The Word of the Lord. All: Thanks be to God.\nPriest: The Gospel of the Lord. All: Praise to you, Lord Jesus Christ.'
   },
@@ -1275,6 +1279,11 @@ function mergeNewDefaults(savedVersion) {
         var at0 = slides.indexOf(old);
         slides[at0] = JSON.parse(JSON.stringify(d));
       }
+    }
+    // A background image added to an existing default slide: fill it only if the teacher has none.
+    if (d.bgSince && d.bgSince > savedVersion) {
+      var bgMine = slides.filter(function(s) { return s.id === d.id; })[0];
+      if (bgMine && !bgMine.bgImage) bgMine.bgImage = d.bgImage;
     }
     // A link added to an existing default slide: copy it unless the teacher set their own.
     if (d.linkSince && d.linkSince > savedVersion) {
