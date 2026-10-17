@@ -1066,7 +1066,7 @@ const TYPES = [
 // Bump when adding default slides. A slide marked `since: N` is inserted
 // (after the slide whose id is `after`) into saved decks older than N, so
 // teachers get new slides without losing their own edits.
-const DECK_VERSION = 8;
+const DECK_VERSION = 9;
 const DEFAULT_SLIDES = [
   {
     id:1, type:'title', bgSince:6,
@@ -1216,8 +1216,10 @@ const DEFAULT_SLIDES = [
     note:'BEFORE REVEALING: Everybody, find Matthew 6:26. Go. First to find it reads it aloud: "Look at the birds in the sky; they do not sow or reap, they gather nothing into barns, yet your heavenly Father feeds them. Are not you more important than they?"\n\nVOICEOVER: Jesus said this to a crowd full of worried people. Worried about food, about money, about tomorrow. Birds don\'t plant anything. They don\'t have a fridge. And they wake up every morning singing anyway, because God takes care of them.\n\nThe Bible says God\'s word is "living and effective" (Hebrews 4:12). A verse written 2,000 years ago can talk to you about something you\'re worried about this week. A test. Tryouts. Something at home. You matter more to God than the birds do. And he\'s got them covered.\n\n[YOUR STORY: a time this verse found you when you needed it.]\n\nASK: What\'s something people your age worry about?'
   },
   {
-    id:16, type:'content', replaceSince:7, replaceIfTitle:'What\'s your favorite Bible story? Why?',
+    id:16, type:'visual', replaceSince:9, replaceIfTitle:'What\'s your favorite Bible story? Why?',
     title:'What\'s your favorite Bible story? Why?',
+    imageIdea:'Favorite Bible Stories infographic, 12 watercolor story cards (pre-loaded)',
+    images:[{ id:'def-favorites', src:'images/bible/favorite-bible-stories.jpg', x:0, y:0, w:100, h:100 }],
     body:'- Noah\'s Ark · Joseph and his colorful coat\n- Moses parts the Red Sea · David and Goliath\n- Daniel in the lions\' den · Jonah and the big fish\n- The birth of Jesus · Jesus calms the storm\n- Jesus feeds 5,000 people · The Good Samaritan\n- The Prodigal Son · The empty tomb\n★ Pick one of these, or any story you love. Why is it your favorite?',
     bodySimple:'- Noah\'s Ark · Joseph\'s colorful coat\n- The Red Sea · David and Goliath\n- Daniel and the lions · Jonah and the big fish\n- The birth of Jesus · Jesus calms the storm\n- Jesus feeds 5,000 · The Good Samaritan\n- The Prodigal Son · The empty tomb\n★ Pick one, or any story you love. Why?',
     note:'DISCUSSION: The list is there to jog memories, so more hands go up. Kids can pick one of these or any other story. Follow up each answer with: Which shelf is it on?\n\nSHELF ANSWER KEY:\n- LAW: Noah\'s Ark (Genesis 6-9), Joseph (Genesis 37-50), the Red Sea (Exodus 14)\n- HISTORY: David and Goliath (1 Samuel 17)\n- PROPHETS: Daniel in the lions\' den (Daniel 6), Jonah (Jonah 1-2)\n- GOSPELS: the birth of Jesus (Luke 2:1-20), Jesus calms the storm (Mark 4:35-41), feeds 5,000 (John 6:1-14, and in all four Gospels), the Good Samaritan (Luke 10:25-37), the Prodigal Son (Luke 15:11-32), the empty tomb (all four Gospels)\n\nIf someone picks the Prodigal Son, mention there\'s a whole CRUX module on it.'
