@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bible Map · CRUX</title>
-<meta name="description" content="An interactive Bible map for the classroom: the places from Week 5 and the missionary journeys of Saint Paul, shown on today's map, from space, and in Roman times.">
+<meta name="description" content="An interactive Bible map: key places from Moses to Jesus and the missionary journeys of Saint Paul, shown on today's map, from space, and in Roman times.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -136,8 +136,8 @@ body { background: var(--navy-deep); color: var(--cream); font-family: 'Inter', 
    also its link: crux-map-bible.html#paul2 opens Paul's 2nd journey. */
 var STORIES = [
   {
-    id: 'week5', label: 'Where It Happened', when: 'Week 5 · Moses to Jesus',
-    sub: 'Week 5 · The Bible: God\'s Story', title: 'Where It Happened',
+    id: 'places', label: 'Where It Happened', when: 'Moses to Jesus',
+    sub: 'Key places in God\'s story', title: 'Where It Happened',
     labels: 'always', smallTabs: false,
     stops: [
       { name: 'Egypt', who: 'Moses',
@@ -366,7 +366,7 @@ var STORIES = [
 ];
 
 var ERA_NOTE = {
-  week5: { ancient: 'Roman times: the map from when Jesus lived. Place names are in Latin, and the red lines are Roman roads. Moses lived over 1,000 years before this map.' },
+  places: { ancient: 'Roman times: the map from when Jesus lived. Place names are in Latin, and the red lines are Roman roads. Moses lived over 1,000 years before this map.' },
   paul: { ancient: 'Roman times: the world Paul traveled. Place names are in Latin, and the red lines are the Roman roads he could have walked.' },
   satellite: 'A real photo from space. Zoom in to see deserts, rivers, mountains, and seas.'
 };
@@ -437,7 +437,11 @@ STORIES.forEach(function (s) {
   strip.appendChild(b);
 });
 
+// Older links still work: #week5 was this story's first name.
+var STORY_ALIASES = { week5: 'places' };
+
 function loadStory(id, animate) {
+  id = STORY_ALIASES[id] || id;
   var s = STORIES.filter(function (x) { return x.id === id; })[0] || STORIES[0];
   story = s;
   storyLayer.clearLayers();
@@ -549,7 +553,7 @@ function showAll() {
 function updateEraNote() {
   var note = '';
   if (currentLayer === 'satellite') note = ERA_NOTE.satellite;
-  if (currentLayer === 'ancient') note = (story.id === 'week5' ? ERA_NOTE.week5 : ERA_NOTE.paul).ancient;
+  if (currentLayer === 'ancient') note = (story.id === 'places' ? ERA_NOTE.places : ERA_NOTE.paul).ancient;
   el('eraNote').hidden = !note;
   setText('eraNote', note);
 }
@@ -586,8 +590,8 @@ window.addEventListener('hashchange', function () {
   if (story && id !== story.id) loadStory(id, true);
 });
 
-/* Open on the story named in the link (#paul1 etc.), else Week 5. */
-loadStory(location.hash.replace('#', '') || 'week5', false);
+/* Open on the story named in the link (#paul1 etc.), else Where It Happened. */
+loadStory(location.hash.replace('#', '') || 'places', false);
 </script>
 </body>
 </html>
