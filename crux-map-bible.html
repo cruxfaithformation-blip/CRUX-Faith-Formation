@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Where It Happened · CRUX</title>
-<meta name="description" content="An interactive map of five Bible places, from Egypt and Mount Sinai to Jerusalem, Bethlehem, and Nazareth, shown on today's map, from space, and in Roman times.">
+<title>Bible Map · CRUX</title>
+<meta name="description" content="An interactive Bible map for the classroom: the places from Week 5 and the missionary journeys of Saint Paul, shown on today's map, from space, and in Roman times.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -19,14 +19,13 @@
   --cream: #faf8f4;
   --ink: #1a1f36;
   --muted: #5b6178;
-  --sea: #2f6f8f;
 }
 * { box-sizing: border-box; }
 html, body { height: 100%; margin: 0; }
 body { background: var(--navy-deep); color: var(--cream); font-family: 'Inter', system-ui, sans-serif; display: flex; flex-direction: column; }
 
 /* Header */
-.bar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 12px 20px; background: var(--navy); border-bottom: 1px solid rgba(212,165,116,.25); }
+.bar { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; padding: 12px 20px; background: var(--navy); }
 .brand { font-family: 'Playfair Display', Georgia, serif; font-weight: 900; letter-spacing: .14em; color: var(--gold); text-decoration: none; font-size: 18px; }
 .bar h1 { margin: 0; font-family: 'Playfair Display', Georgia, serif; font-size: 22px; font-weight: 700; color: var(--cream); }
 .bar .sub { font-size: 13px; color: var(--gold-light); letter-spacing: .08em; text-transform: uppercase; }
@@ -34,14 +33,22 @@ body { background: var(--navy-deep); color: var(--cream); font-family: 'Inter', 
 .layers { display: flex; background: var(--navy-deep); border: 1px solid rgba(212,165,116,.35); border-radius: 999px; padding: 3px; gap: 2px; }
 .layers button { font: 600 13px/1 'Inter', sans-serif; color: var(--gold-light); background: transparent; border: 0; border-radius: 999px; padding: 9px 14px; cursor: pointer; min-height: 36px; }
 .layers button[aria-pressed="true"] { background: var(--gold); color: var(--navy-deep); }
-.layers button:focus-visible, .stops button:focus-visible, .nav button:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 2px; }
+
+/* Stories strip: a timeline, oldest on the left */
+.stories { display: flex; align-items: stretch; gap: 8px; padding: 8px 20px 12px; background: var(--navy); border-bottom: 1px solid rgba(212,165,116,.25); overflow-x: auto; }
+.stories-label { align-self: center; font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); padding-right: 4px; white-space: nowrap; }
+.story { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; flex: none; text-align: left; font: 600 14px/1.15 'Inter', sans-serif; color: var(--cream); background: var(--navy-mid); border: 1.5px solid transparent; border-radius: 10px; padding: 8px 12px; cursor: pointer; min-height: 44px; }
+.story small { font-weight: 500; font-size: 12px; color: var(--gold-light); }
+.story .swatch { display: inline-block; width: 18px; height: 4px; border-radius: 2px; margin-right: 6px; vertical-align: middle; }
+.story[aria-pressed="true"] { border-color: var(--gold); background: #2f3658; }
+.layers button:focus-visible, .story:focus-visible, .stops button:focus-visible, .nav button:focus-visible { outline: 2px solid var(--gold-light); outline-offset: 2px; }
 
 /* Map + card */
 .stage { position: relative; flex: 1; min-height: 0; }
 #map { position: absolute; inset: 0; background: #cfe0e8; }
-.card { position: absolute; left: 20px; bottom: 28px; z-index: 500; width: 400px; max-width: calc(100% - 40px); background: var(--cream); color: var(--ink); border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.35); padding: 18px 20px 16px; display: flex; flex-direction: column; gap: 10px; }
+.card { position: absolute; left: 20px; bottom: 28px; z-index: 500; width: 400px; max-width: calc(100% - 40px); max-height: calc(100% - 48px); overflow-y: auto; background: var(--cream); color: var(--ink); border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,.35); padding: 18px 20px 16px; display: flex; flex-direction: column; gap: 10px; }
 .stops { display: flex; gap: 6px; flex-wrap: wrap; }
-.stops button { font: 700 14px/1 'Inter', sans-serif; border: 2px solid var(--navy); background: #fff; color: var(--navy); border-radius: 999px; padding: 7px 12px; cursor: pointer; min-height: 34px; }
+.stops button { font: 700 14px/1 'Inter', sans-serif; border: 2px solid var(--navy); background: #fff; color: var(--navy); border-radius: 999px; padding: 7px 12px; cursor: pointer; min-height: 34px; min-width: 34px; }
 .stops button[aria-pressed="true"] { background: var(--navy); color: var(--gold-light); }
 .eyebrow { font-size: 12px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; color: #8a5a22; }
 .card h2 { margin: 0; font-family: 'Playfair Display', Georgia, serif; font-size: 30px; line-height: 1.1; }
@@ -60,7 +67,7 @@ body { background: var(--navy-deep); color: var(--cream); font-family: 'Inter', 
 
 /* Pins */
 .pin { width: 40px; height: 40px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); background: var(--gold); border: 3px solid var(--navy-deep); display: grid; place-items: center; box-shadow: 0 4px 10px rgba(0,0,0,.35); }
-.pin span { transform: rotate(45deg); font: 800 16px/1 'Inter', sans-serif; color: var(--navy-deep); }
+.pin span { transform: rotate(45deg); font: 800 15px/1 'Inter', sans-serif; color: var(--navy-deep); }
 .pin.on { background: #fff; border-color: #b4322a; }
 .pin.on span { color: #b4322a; }
 .leaflet-tooltip.place { background: var(--navy-deep); color: var(--cream); border: 0; font: 700 13px 'Inter', sans-serif; padding: 4px 8px; box-shadow: none; }
@@ -69,7 +76,8 @@ body { background: var(--navy-deep); color: var(--cream); font-family: 'Inter', 
 @media (max-width: 640px) {
   .bar { padding: 10px 16px; }
   .bar h1 { font-size: 18px; }
-  .card { left: 0; right: 0; bottom: 0; width: auto; max-width: none; border-radius: 14px 14px 0 0; max-height: 58%; overflow-y: auto; padding: 14px 16px; }
+  .stories { padding: 6px 16px 10px; }
+  .card { left: 0; right: 0; bottom: 0; width: auto; max-width: none; border-radius: 14px 14px 0 0; max-height: 55%; padding: 14px 16px; }
   .card h2 { font-size: 24px; }
   .era { left: 16px; right: 16px; top: 10px; max-width: none; }
 }
@@ -81,8 +89,8 @@ body { background: var(--navy-deep); color: var(--cream); font-family: 'Inter', 
 <header class="bar">
   <a class="brand" href="index.html">CRUX</a>
   <div>
-    <div class="sub">Week 5 · The Bible: God's Story</div>
-    <h1>Where It Happened</h1>
+    <div class="sub" id="storySub"></div>
+    <h1 id="storyTitle"></h1>
   </div>
   <div class="spacer"></div>
   <div class="layers" role="group" aria-label="Map style">
@@ -91,13 +99,16 @@ body { background: var(--navy-deep); color: var(--cream); font-family: 'Inter', 
     <button type="button" data-layer="ancient" aria-pressed="false">Roman times</button>
   </div>
 </header>
+<nav class="stories" id="storyStrip" aria-label="Stories on the map">
+  <span class="stories-label">Stories</span>
+</nav>
 
 <main class="stage">
-  <div id="map" aria-label="Map of Bible places"></div>
+  <div id="map" aria-label="Bible map"></div>
   <div class="era" id="eraNote" hidden></div>
 
   <section class="card" aria-live="polite">
-    <div class="stops" id="stopTabs" role="group" aria-label="Places"></div>
+    <div class="stops" id="stopTabs" role="group" aria-label="Stops"></div>
     <div class="eyebrow" id="cEyebrow"></div>
     <h2 id="cTitle"></h2>
     <p class="what" id="cWhat"></p>
@@ -108,80 +119,260 @@ body { background: var(--navy-deep); color: var(--cream); font-family: 'Inter', 
     <div class="nav">
       <button type="button" class="ghost" id="btnPrev">Back</button>
       <button type="button" class="ghost" id="btnAll">Show all</button>
-      <button type="button" id="btnNext">Next place</button>
+      <button type="button" id="btnNext">Next stop</button>
     </div>
   </section>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <script>
-/* Five places from the Week 5 "Where It Happened" slide. Verses are NABRE.
-   Coordinates: Sinai is the traditional site (Jebel Musa); Egypt is placed in
-   the Nile Delta region where Exodus puts the Israelites (approximate). */
-var PLACES = [
+/* ─── STORIES ───────────────────────────────────────────────────────────
+   Each story is one tab in the Stories strip, listed oldest first.
+   stops:  numbered pins, in order. Verses are NABRE (bible.usccb.org).
+           pinOf: n reuses stop n's pin (a journey that ends where it began).
+   route:  optional [lat, lng] points for the path line, stops and the
+           harbors/roads between them. Routes are approximate.
+   To add a story (Abraham, the Exodus...), add an entry here. Its id is
+   also its link: crux-map-bible.html#paul2 opens Paul's 2nd journey. */
+var STORIES = [
   {
-    name: 'Egypt',
-    who: 'Moses',
-    what: 'God\'s people were slaves here. God sent Moses to tell Pharaoh to let them go.',
-    verse: 'Now, go! I am sending you to Pharaoh to bring my people, the Israelites, out of Egypt.',
-    ref: 'Exodus 3:10',
-    today: 'Egypt',
-    fact: 'The great pyramids were already more than 1,000 years old when Moses was born.',
-    note: 'The pin marks the Nile Delta, the area of Egypt where the Israelites lived. Nobody knows the exact spot.',
-    lat: 30.8, lng: 31.8, zoom: 7
+    id: 'week5', label: 'Where It Happened', when: 'Week 5 · Moses to Jesus',
+    sub: 'Week 5 · The Bible: God\'s Story', title: 'Where It Happened',
+    labels: 'always', smallTabs: false,
+    stops: [
+      { name: 'Egypt', who: 'Moses',
+        what: 'God\'s people were slaves here. God sent Moses to tell Pharaoh to let them go.',
+        verse: 'Now, go! I am sending you to Pharaoh to bring my people, the Israelites, out of Egypt.', ref: 'Exodus 3:10',
+        today: 'Egypt', fact: 'The great pyramids were already more than 1,000 years old when Moses was born.',
+        note: 'The pin marks the Nile Delta, the area of Egypt where the Israelites lived. Nobody knows the exact spot.',
+        lat: 30.8, lng: 31.8, zoom: 7 },
+      { name: 'Mount Sinai', who: 'Moses',
+        what: 'After leaving Egypt, Moses led the people across the desert to this mountain. Here God gave them the Ten Commandments.',
+        verse: 'When the LORD came down upon Mount Sinai, to the top of the mountain, the LORD summoned Moses to the top of the mountain, and Moses went up.', ref: 'Exodus 19:20',
+        today: 'Egypt (Sinai Peninsula)', fact: 'A monastery at the foot of this mountain, Saint Catherine\'s, has been home to monks for about 1,500 years.',
+        note: 'This is the traditional mountain. Scholars still debate which mountain it really was.',
+        lat: 28.5394, lng: 33.9750, zoom: 9 },
+      { name: 'Jerusalem', who: 'King David',
+        what: 'King David captured this city and made it his capital. It became the most important city in the Bible.',
+        verse: 'David nevertheless captured the fortress of Zion, which is the City of David.', ref: '2 Samuel 5:7',
+        today: 'Jerusalem', fact: 'About 1,000 years after David, Jesus died and rose again in this same city.',
+        lat: 31.7780, lng: 35.2354, zoom: 12, labelSide: 'left' },
+      { name: 'Bethlehem', who: 'Jesus is born',
+        what: 'Joseph and Mary traveled here, to King David\'s hometown, and Jesus was born.',
+        verse: 'And Joseph too went up from Galilee from the town of Nazareth to Judea, to the city of David that is called Bethlehem, because he was of the house and family of David,', ref: 'Luke 2:4',
+        today: 'West Bank (Palestinian territories)', fact: 'Bethlehem is only about 6 miles from Jerusalem. A church has stood over the place of Jesus\'s birth since the 300s.',
+        lat: 31.7043, lng: 35.2077, zoom: 12 },
+      { name: 'Nazareth', who: 'Jesus grows up',
+        what: 'Jesus grew up here with Mary and Joseph, in a small village in the hills of Galilee.',
+        verse: 'He went down with them and came to Nazareth, and was obedient to them; and his mother kept all these things in her heart.', ref: 'Luke 2:51',
+        today: 'Israel', fact: 'Nazareth is about 90 miles from Bethlehem by road. On foot, that was a trip of about four days.',
+        lat: 32.7021, lng: 35.2978, zoom: 11 }
+    ]
   },
   {
-    name: 'Mount Sinai',
-    who: 'Moses',
-    what: 'After leaving Egypt, Moses led the people across the desert to this mountain. Here God gave them the Ten Commandments.',
-    verse: 'When the LORD came down upon Mount Sinai, to the top of the mountain, the LORD summoned Moses to the top of the mountain, and Moses went up.',
-    ref: 'Exodus 19:20',
-    today: 'Egypt (Sinai Peninsula)',
-    fact: 'A monastery at the foot of this mountain, Saint Catherine\'s, has been home to monks for about 1,500 years.',
-    note: 'This is the traditional mountain. Scholars still debate which mountain it really was.',
-    lat: 28.5394, lng: 33.9750, zoom: 9
+    id: 'paul1', label: 'Paul\'s 1st Journey', when: 'About AD 46 to 48 · Acts 13-14', color: '#c0392b',
+    sub: 'Saint Paul · Acts 13-14', title: 'Paul\'s First Missionary Journey',
+    labels: 'current', smallTabs: true,
+    stops: [
+      { name: 'Antioch', who: 'The journey begins',
+        what: 'The church in Antioch prayed, and the Holy Spirit sent Paul and Barnabas out to tell the world about Jesus.',
+        verse: 'While they were worshiping the Lord and fasting, the holy Spirit said, “Set apart for me Barnabas and Saul for the work to which I have called them.”', ref: 'Acts 13:2',
+        today: 'Antakya, Turkey', fact: 'Antioch is where followers of Jesus were first called Christians (Acts 11:26).',
+        lat: 36.2021, lng: 36.1606, zoom: 8 },
+      { name: 'Paphos, Cyprus', who: 'An island stop',
+        what: 'They sailed to the island of Cyprus. A magician tried to stop them, but the Roman governor believed in Jesus.',
+        verse: 'When the proconsul saw what had happened, he came to believe, for he was astonished by the teaching about the Lord.', ref: 'Acts 13:12',
+        today: 'Cyprus', fact: 'Barnabas was from Cyprus, so this was a trip to his home island (Acts 4:36).',
+        lat: 34.757, lng: 32.406, zoom: 8 },
+      { name: 'Perga', who: 'Someone goes home',
+        what: 'They landed in what is now Turkey. Their helper John Mark left the trip and went back to Jerusalem.',
+        verse: 'From Paphos, Paul and his companions set sail and arrived at Perga in Pamphylia. But John left them and returned to Jerusalem.', ref: 'Acts 13:13',
+        today: 'Turkey (ruins near Antalya)', fact: 'Many believe this John Mark later wrote the Gospel of Mark.',
+        lat: 36.961, lng: 30.854, zoom: 8 },
+      { name: 'Antioch in Pisidia', who: 'A light to the nations',
+        what: 'Paul preached in the synagogue. The next Sabbath, almost the whole city came to listen.',
+        verse: 'For so the Lord has commanded us, ‘I have made you a light to the Gentiles, that you may be an instrument of salvation to the ends of the earth.’', ref: 'Acts 13:47',
+        today: 'Turkey (ruins near Yalvaç)', fact: 'This is a different Antioch from the one where the trip started. Many Roman cities had the same name.',
+        lat: 38.306, lng: 31.189, zoom: 8 },
+      { name: 'Iconium', who: 'Many believe',
+        what: 'Lots of people believed, but others got angry and planned to hurt them, so they moved on.',
+        verse: 'In Iconium they entered the Jewish synagogue together and spoke in such a way that a great number of both Jews and Greeks came to believe…', ref: 'Acts 14:1',
+        today: 'Konya, Turkey', fact: 'Today Iconium is Konya, a big city of more than two million people.',
+        lat: 37.871, lng: 32.485, zoom: 8 },
+      { name: 'Lystra', who: 'A man walks',
+        what: 'Paul healed a man who had never walked. The crowd thought Paul and Barnabas were gods! Later, enemies threw stones at Paul and left him for dead, but he got up.',
+        verse: '…called out in a loud voice, “Stand up straight on your feet.” He jumped up and began to walk about.', ref: 'Acts 14:10',
+        today: 'Turkey (ruins)', fact: 'Paul came back to Lystra on his next journey and met a young man named Timothy here.',
+        lat: 37.578, lng: 32.452, zoom: 8 },
+      { name: 'Derbe', who: 'The farthest point',
+        what: 'Many people became disciples here. Then Paul and Barnabas turned around and visited every new church again.',
+        verse: 'After they had proclaimed the good news to that city and made a considerable number of disciples, they returned to Lystra and to Iconium and to Antioch.', ref: 'Acts 14:21',
+        today: 'Turkey (ruins)', fact: 'They went back through the same towns, even the ones where they had been attacked.',
+        note: 'Archaeologists think Derbe was here, but the exact spot is not certain.',
+        lat: 37.36, lng: 33.27, zoom: 8 },
+      { name: 'Home to Antioch', who: 'Mission report', pinOf: 0,
+        what: 'They sailed home and told the church everything God had done.',
+        verse: 'And when they arrived, they called the church together and reported what God had done with them and how he had opened the door of faith to the Gentiles.', ref: 'Acts 14:27',
+        today: 'Antakya, Turkey', fact: 'The whole trip was about 1,400 miles, mostly on foot.',
+        lat: 36.2021, lng: 36.1606, zoom: 7 }
+    ],
+    route: [[36.2021,36.1606],[36.123,35.922],[35.185,33.900],[34.757,32.406],[36.961,30.854],[38.306,31.189],[37.871,32.485],[37.578,32.452],[37.36,33.27],[37.578,32.452],[37.871,32.485],[38.306,31.189],[36.961,30.854],[36.885,30.704],[35.95,32.6],[36.123,35.922],[36.2021,36.1606]]
   },
   {
-    name: 'Jerusalem',
-    who: 'King David',
-    what: 'King David captured this city and made it his capital. It became the most important city in the Bible.',
-    verse: 'David nevertheless captured the fortress of Zion, which is the City of David.',
-    ref: '2 Samuel 5:7',
-    today: 'Jerusalem',
-    fact: 'About 1,000 years after David, Jesus died and rose again in this same city.',
-    note: '',
-    lat: 31.7780, lng: 35.2354, zoom: 12, labelSide: 'left'
+    id: 'paul2', label: 'Paul\'s 2nd Journey', when: 'About AD 49 to 52 · Acts 15-18', color: '#2c6fbb',
+    sub: 'Saint Paul · Acts 15-18', title: 'Paul\'s Second Missionary Journey',
+    labels: 'current', smallTabs: true,
+    stops: [
+      { name: 'Antioch', who: 'A new team',
+        what: 'Paul set out again, this time with a new partner named Silas.',
+        verse: 'But Paul chose Silas and departed after being commended by the brothers to the grace of the Lord.', ref: 'Acts 15:40',
+        today: 'Antakya, Turkey', fact: 'Paul and Barnabas disagreed about bringing John Mark again, so they split into two teams (Acts 15:39).',
+        lat: 36.2021, lng: 36.1606, zoom: 7 },
+      { name: 'Lystra', who: 'Timothy joins',
+        what: 'Back in Lystra, a young believer named Timothy joined the team.',
+        verse: 'He reached (also) Derbe and Lystra where there was a disciple named Timothy, the son of a Jewish woman who was a believer, but his father was a Greek.', ref: 'Acts 16:1',
+        today: 'Turkey (ruins)', fact: 'Two books of the Bible, 1 and 2 Timothy, are letters Paul later wrote to him.',
+        lat: 37.578, lng: 32.452, zoom: 7 },
+      { name: 'Troas', who: 'A dream at night',
+        what: 'Paul dreamed of a man asking for help across the sea in Macedonia, so they sailed for Europe.',
+        verse: 'During [the] night Paul had a vision. A Macedonian stood before him and implored him with these words, “Come over to Macedonia and help us.”', ref: 'Acts 16:9',
+        today: 'Turkey (ruins)', fact: 'Right after this, Acts starts saying “we.” Luke, who wrote Acts, may have joined the team here.',
+        lat: 39.752, lng: 26.159, zoom: 8 },
+      { name: 'Philippi', who: 'Singing in jail',
+        what: 'Paul and Silas were beaten and locked up. At midnight they sang to God, and an earthquake opened every door. The jailer and his family were baptized.',
+        verse: 'About midnight, while Paul and Silas were praying and singing hymns to God as the prisoners listened, there was suddenly such a severe earthquake that the foundations of the jail shook; all the doors flew open, and the chains of all were pulled loose.', ref: 'Acts 16:25-26',
+        today: 'Greece (ruins)', fact: 'A businesswoman named Lydia was baptized here, one of the first Christians in Europe.',
+        lat: 41.013, lng: 24.286, zoom: 8 },
+      { name: 'Thessalonica', who: 'Another king',
+        what: 'An angry crowd said Paul\'s team was turning the world upside down.',
+        verse: '…“These people who have been creating a disturbance all over the world have now come here, and Jason has welcomed them. They all act in opposition to the decrees of Caesar and claim instead that there is another king, Jesus.”', ref: 'Acts 17:6-7',
+        today: 'Thessaloniki, Greece', fact: 'Paul later wrote two letters to the Christians here: 1 and 2 Thessalonians.',
+        lat: 40.640, lng: 22.944, zoom: 8 },
+      { name: 'Berea', who: 'Bible checkers',
+        what: 'The people of Berea checked everything Paul said against the Scriptures, every single day.',
+        verse: 'These Jews were more fair-minded than those in Thessalonica, for they received the word with all willingness and examined the scriptures daily to determine whether these things were so.', ref: 'Acts 17:11',
+        today: 'Veria, Greece', fact: 'Looking things up in the Bible to check them is exactly what the Bereans did.',
+        lat: 40.524, lng: 22.202, zoom: 8 },
+      { name: 'Athens', who: 'The unknown god',
+        what: 'In this famous city full of statues of gods, Paul found an altar to an “unknown god” and told them who that God really is.',
+        verse: 'For as I walked around looking carefully at your shrines, I even discovered an altar inscribed, ‘To an Unknown God.’ What therefore you unknowingly worship, I proclaim to you.', ref: 'Acts 17:23',
+        today: 'Athens, Greece', fact: 'Paul gave this speech on a rocky hill called the Areopagus. You can still climb it today.',
+        lat: 37.972, lng: 23.726, zoom: 9 },
+      { name: 'Corinth', who: 'Do not be afraid',
+        what: 'Jesus spoke to Paul in a vision and told him to keep going. Paul stayed a year and a half.',
+        verse: 'One night in a vision the Lord said to Paul, “Do not be afraid. Go on speaking, and do not be silent, for I am with you. No one will attack and harm you, for I have many people in this city.”', ref: 'Acts 18:9-10',
+        today: 'Greece (ruins)', fact: 'Paul later wrote two letters to this church: 1 and 2 Corinthians.',
+        lat: 37.906, lng: 22.879, zoom: 9 },
+      { name: 'Ephesus', who: 'A quick visit',
+        what: 'Paul stopped briefly in this big city and promised to come back.',
+        verse: 'When they reached Ephesus, he left them there, while he entered the synagogue and held discussions with the Jews.', ref: 'Acts 18:19',
+        today: 'Turkey (ruins near Selçuk)', fact: 'He kept his promise. On his next journey Paul stayed here more than two years.',
+        lat: 37.941, lng: 27.341, zoom: 8 },
+      { name: 'Home to Antioch', who: 'Back again', pinOf: 0,
+        what: 'Paul sailed to Caesarea, visited the church, and returned home to Antioch.',
+        verse: 'Upon landing at Caesarea, he went up and greeted the church and then went down to Antioch.', ref: 'Acts 18:22',
+        today: 'Antakya, Turkey', fact: 'This was the trip that first brought the Gospel to Europe.',
+        lat: 36.2021, lng: 36.1606, zoom: 6 }
+    ],
+    route: [[36.2021,36.1606],[36.918,34.892],[37.36,33.27],[37.578,32.452],[37.871,32.485],[38.306,31.189],[39.3,29.0],[39.752,26.159],[40.48,25.53],[40.937,24.412],[41.013,24.286],[40.82,23.85],[40.640,22.944],[40.524,22.202],[39.9,22.75],[39.2,23.6],[38.6,24.75],[37.6,24.15],[37.972,23.726],[37.906,22.879],[37.884,22.993],[37.6,25.0],[37.941,27.341],[37.75,26.95],[36.95,26.95],[36.2,28.1],[32.500,34.892],[33.271,35.196],[34.43,35.83],[35.52,35.78],[36.2021,36.1606]]
   },
   {
-    name: 'Bethlehem',
-    who: 'Jesus is born',
-    what: 'Joseph and Mary traveled here, to King David\'s hometown, and Jesus was born.',
-    verse: 'And Joseph too went up from Galilee from the town of Nazareth to Judea, to the city of David that is called Bethlehem, because he was of the house and family of David,',
-    ref: 'Luke 2:4',
-    today: 'West Bank (Palestinian territories)',
-    fact: 'Bethlehem is only about 6 miles from Jerusalem. A church has stood over the place of Jesus\'s birth since the 300s.',
-    note: '',
-    lat: 31.7043, lng: 35.2077, zoom: 12
+    id: 'paul3', label: 'Paul\'s 3rd Journey', when: 'About AD 53 to 57 · Acts 18-21', color: '#1e8a5a',
+    sub: 'Saint Paul · Acts 18-21', title: 'Paul\'s Third Missionary Journey',
+    labels: 'current', smallTabs: true,
+    stops: [
+      { name: 'Antioch', who: 'One more trip',
+        what: 'Paul set out a third time to visit and strengthen the churches he had started.',
+        verse: 'After staying there some time, he left and traveled in orderly sequence through the Galatian country and Phrygia, bringing strength to all the disciples.', ref: 'Acts 18:23',
+        today: 'Antakya, Turkey', fact: 'Paul walked back through the same towns he visited on his first two journeys.',
+        lat: 36.2021, lng: 36.1606, zoom: 7 },
+      { name: 'Ephesus', who: 'Two years',
+        what: 'Paul stayed more than two years and taught every day. The message spread all over the region.',
+        verse: 'This continued for two years with the result that all the inhabitants of the province of Asia heard the word of the Lord, Jews and Greeks alike.', ref: 'Acts 19:10',
+        today: 'Turkey (ruins near Selçuk)', fact: 'Silversmiths who made little idols started a riot, because so many people stopped buying them (Acts 19:23-41).',
+        lat: 37.941, lng: 27.341, zoom: 8 },
+      { name: 'Corinth, Greece', who: 'Three months',
+        what: 'Paul traveled through Macedonia, encouraging the churches, and then spent three months in Greece.',
+        verse: 'As he traveled throughout those regions, he provided many words of encouragement for them. Then he arrived in Greece, where he stayed for three months.', ref: 'Acts 20:2-3',
+        today: 'Greece', fact: 'Most scholars think Paul wrote his Letter to the Romans during this stay.',
+        note: 'Acts just says “Greece.” Corinth is the likely city.',
+        lat: 37.906, lng: 22.879, zoom: 8 },
+      { name: 'Troas', who: 'The sleepy listener',
+        what: 'Paul preached until midnight. A young man named Eutychus fell asleep, fell out of a third-story window, and died. Paul brought him back to life!',
+        verse: '…a young man named Eutychus who was sitting on the window sill was sinking into a deep sleep as Paul talked on and on… Paul went down, threw himself upon him, and said as he embraced him, “Don’t be alarmed; there is life in him.”', ref: 'Acts 20:9-10',
+        today: 'Turkey (ruins)', fact: 'They were gathered on “the first day of the week” to break bread: Sunday Mass (Acts 20:7).',
+        lat: 39.752, lng: 26.159, zoom: 8 },
+      { name: 'Miletus', who: 'A sad goodbye',
+        what: 'Paul said goodbye to the leaders from Ephesus. Everyone cried, because they knew they would not see him again.',
+        verse: 'In every way I have shown you that by hard work of that sort we must help the weak, and keep in mind the words of the Lord Jesus who himself said, ‘It is more blessed to give than to receive.’', ref: 'Acts 20:35',
+        today: 'Turkey (ruins)', fact: 'These words of Jesus are not in any of the four Gospels. We only know them because Paul quoted them here.',
+        lat: 37.530, lng: 27.278, zoom: 8 },
+      { name: 'Caesarea', who: 'Ready for anything',
+        what: 'A prophet warned that Paul would be arrested in Jerusalem. His friends begged him not to go.',
+        verse: 'Then Paul replied, “What are you doing, weeping and breaking my heart? I am prepared not only to be bound but even to die in Jerusalem for the name of the Lord Jesus.”', ref: 'Acts 21:13',
+        today: 'Israel (ruins)', fact: 'The prophet Agabus tied up his own hands and feet with Paul\'s belt to show what would happen (Acts 21:11).',
+        lat: 32.500, lng: 34.892, zoom: 8 },
+      { name: 'Jerusalem', who: 'The end of the road',
+        what: 'The Christians in Jerusalem welcomed Paul. A few days later he was arrested in the Temple, just as the prophet said.',
+        verse: 'When we reached Jerusalem the brothers welcomed us warmly.', ref: 'Acts 21:17',
+        today: 'Jerusalem', fact: 'Paul\'s arrest here is what eventually sent him to Rome. See the next story.',
+        lat: 31.7780, lng: 35.2354, zoom: 8 }
+    ],
+    route: [[36.2021,36.1606],[36.918,34.892],[37.36,33.27],[37.578,32.452],[37.871,32.485],[38.306,31.189],[37.941,27.341],[38.9,27.3],[39.752,26.159],[40.48,25.53],[40.937,24.412],[41.013,24.286],[40.640,22.944],[40.524,22.202],[39.9,22.75],[38.5,23.0],[37.906,22.879],[38.5,23.0],[39.9,22.75],[40.524,22.202],[40.640,22.944],[41.013,24.286],[40.937,24.412],[40.48,25.53],[39.752,26.159],[39.49,26.34],[39.10,26.55],[38.4,26.15],[37.7,26.9],[37.530,27.278],[36.89,27.29],[36.44,28.22],[36.15,29.31],[34.3,32.5],[33.271,35.196],[32.92,35.07],[32.500,34.892],[31.7780,35.2354]]
   },
   {
-    name: 'Nazareth',
-    who: 'Jesus grows up',
-    what: 'Jesus grew up here with Mary and Joseph, in a small village in the hills of Galilee.',
-    verse: 'He went down with them and came to Nazareth, and was obedient to them; and his mother kept all these things in her heart.',
-    ref: 'Luke 2:51',
-    today: 'Israel',
-    fact: 'Nazareth is about 90 miles from Bethlehem by road. On foot, that was a trip of about four days.',
-    note: '',
-    lat: 32.7021, lng: 35.2978, zoom: 11
+    id: 'rome', label: 'Paul Sails to Rome', when: 'About AD 59 to 60 · Acts 27-28', color: '#8e44ad',
+    sub: 'Saint Paul · Acts 27-28', title: 'Paul\'s Voyage to Rome',
+    labels: 'current', smallTabs: true,
+    stops: [
+      { name: 'Caesarea', who: 'A prisoner sets sail',
+        what: 'After two years as a prisoner, Paul asked to be judged by the emperor. So the Romans sent him to Rome by ship.',
+        verse: 'When it was decided that we should sail to Italy, they handed Paul and some other prisoners over to a centurion named Julius of the Cohort Augusta.', ref: 'Acts 27:1',
+        today: 'Israel (ruins)', fact: 'Every Roman citizen had the right to appeal to the emperor, and Paul was a Roman citizen (Acts 25:11).',
+        lat: 32.500, lng: 34.892, zoom: 7 },
+      { name: 'Sidon', who: 'A kind soldier',
+        what: 'The Roman officer guarding Paul was kind and let him visit his friends.',
+        verse: 'On the following day we put in at Sidon where Julius was kind enough to allow Paul to visit his friends who took care of him.', ref: 'Acts 27:3',
+        today: 'Saida, Lebanon', fact: 'Sidon is one of the oldest cities in the world, already ancient in Paul\'s day.',
+        lat: 33.563, lng: 35.371, zoom: 8 },
+      { name: 'Myra', who: 'A new ship',
+        what: 'Here they switched to a big grain ship sailing for Italy.',
+        verse: '…and crossing the open sea off the coast of Cilicia and Pamphylia we came to Myra in Lycia.', ref: 'Acts 27:5',
+        today: 'Demre, Turkey', fact: 'About 250 years later, Saint Nicholas, the real Santa Claus, was bishop of Myra.',
+        lat: 36.259, lng: 29.985, zoom: 8 },
+      { name: 'Fair Havens, Crete', who: 'Paul\'s warning',
+        what: 'Winter was coming. Paul warned them not to sail on, but the captain did not listen.',
+        verse: '“Men, I can see that this voyage will result in severe damage and heavy loss not only to the cargo and the ship, but also to our lives.”', ref: 'Acts 27:10',
+        today: 'Crete, Greece', fact: 'Soon after they left, a huge storm hit and pushed the ship for two weeks.',
+        lat: 34.933, lng: 24.803, zoom: 8 },
+      { name: 'Malta', who: 'Shipwrecked!',
+        what: 'The ship ran aground and broke apart, but all 276 people made it to shore. Then a snake bit Paul, and he was fine!',
+        verse: 'But he shook the snake off into the fire and suffered no harm.', ref: 'Acts 28:5',
+        today: 'Malta', fact: 'The bay where people believe the ship wrecked is still called Saint Paul\'s Bay.',
+        lat: 35.949, lng: 14.401, zoom: 9 },
+      { name: 'Puteoli', who: 'Almost there',
+        what: 'They landed in Italy and found Christians already living there.',
+        verse: 'There we found some brothers and were urged to stay with them for seven days. And thus we came to Rome.', ref: 'Acts 28:14',
+        today: 'Pozzuoli, Italy', fact: 'The Gospel had reached Italy before Paul did.',
+        lat: 40.823, lng: 14.122, zoom: 8 },
+      { name: 'Rome', who: 'The capital of the world',
+        what: 'Paul lived in Rome under guard for two years and told everyone who visited him about Jesus.',
+        verse: 'He remained for two full years in his lodgings. He received all who came to him, and with complete assurance and without hindrance he proclaimed the kingdom of God and taught about the Lord Jesus Christ.', ref: 'Acts 28:30-31',
+        today: 'Rome, Italy', fact: 'Christians from Rome walked about 40 miles out to meet him on the road (Acts 28:15).',
+        lat: 41.893, lng: 12.483, zoom: 9 }
+    ],
+    route: [[32.500,34.892],[33.563,35.371],[35.0,35.0],[36.0,34.0],[35.9,32.6],[36.0,30.4],[36.259,29.985],[36.0,29.0],[36.3,28.0],[36.686,27.374],[35.31,26.31],[34.95,25.6],[34.933,24.803],[34.84,24.08],[35.3,20.0],[35.949,14.401],[37.075,15.287],[38.111,15.647],[39.5,15.5],[40.823,14.122],[41.4,13.1],[41.893,12.483]]
   }
 ];
 
 var ERA_NOTE = {
-  ancient: 'Roman times: the map from when Jesus lived. Place names are in Latin, and the red lines are Roman roads. Moses lived over 1,000 years before this map.',
-  satellite: 'A real photo from space. You can see the desert, the Nile River, and the Sea of Galilee.'
+  week5: { ancient: 'Roman times: the map from when Jesus lived. Place names are in Latin, and the red lines are Roman roads. Moses lived over 1,000 years before this map.' },
+  paul: { ancient: 'Roman times: the world Paul traveled. Place names are in Latin, and the red lines are the Roman roads he could have walked.' },
+  satellite: 'A real photo from space. Zoom in to see deserts, rivers, mountains, and seas.'
 };
 
-var map = L.map('map', { zoomControl: true, worldCopyJump: false, minZoom: 4, maxZoom: 16 });
+/* ─── MAP ─────────────────────────────────────────────────────────────── */
+var map = L.map('map', { zoomControl: true, minZoom: 4, maxZoom: 16 });
 var LAYERS = {
   today: L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
     maxZoom: 16, attribution: 'Map tiles &copy; Esri'
@@ -190,9 +381,7 @@ var LAYERS = {
     L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
       maxZoom: 16, attribution: 'Imagery &copy; Esri, Maxar, Earthstar Geographics'
     }),
-    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-      maxZoom: 16
-    })
+    L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', { maxZoom: 16 })
   ]),
   ancient: L.tileLayer('https://dh.gu.se/tiles/imperium/{z}/{x}/{y}.png', {
     maxZoom: 11, maxNativeZoom: 11,
@@ -202,79 +391,172 @@ var LAYERS = {
 var currentLayer = 'today';
 LAYERS.today.addTo(map);
 
-var markers = PLACES.map(function (p, i) {
-  var icon = L.divIcon({ className: '', html: '<div class="pin"><span>' + (i + 1) + '</span></div>', iconSize: [40, 40], iconAnchor: [6, 40] });
-  var m = L.marker([p.lat, p.lng], { icon: icon, title: p.name, keyboard: true }).addTo(map);
-  var left = p.labelSide === 'left';
-  m.bindTooltip(p.name, { permanent: true, direction: left ? 'left' : 'right', offset: left ? [-4, -22] : [18, -22], className: 'place' });
-  m.on('click', function () { show(i); });
-  return m;
-});
-
-var allBounds = L.latLngBounds(PLACES.map(function (p) { return [p.lat, p.lng]; })).pad(0.25);
+var storyLayer = L.layerGroup().addTo(map);
+var story = null;      // the active story
+var markers = [];      // one per stop (null where a stop reuses another's pin)
 var current = -1;
+var bounds = null;
+var reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-var tabs = document.getElementById('stopTabs');
-PLACES.forEach(function (p, i) {
-  var b = document.createElement('button');
-  b.type = 'button';
-  b.textContent = (i + 1) + ' ' + p.name;
-  b.setAttribute('aria-pressed', 'false');
-  b.addEventListener('click', function () { show(i); });
-  tabs.appendChild(b);
-});
+function el(id) { return document.getElementById(id); }
+function setText(id, text) { el(id).textContent = text; }
 
-function setText(id, text) { document.getElementById(id).textContent = text; }
-
-function show(i, stayPut) {
-  current = i;
-  var p = PLACES[i];
-  setText('cEyebrow', 'Place ' + (i + 1) + ' of ' + PLACES.length + ' · ' + p.who);
-  setText('cTitle', p.name);
-  setText('cWhat', p.what);
-  var v = document.getElementById('cVerse');
-  v.textContent = '“' + p.verse + '”';
-  var c = document.createElement('cite');
-  c.textContent = p.ref + ' (NABRE)';
-  v.appendChild(c);
-  var t = document.getElementById('cToday');
-  t.textContent = '';
-  var b = document.createElement('b');
-  b.textContent = 'Today';
-  t.appendChild(b);
-  t.appendChild(document.createTextNode(p.today));
-  setText('cFact', p.fact);
-  var n = document.getElementById('cNote');
-  n.hidden = !p.note;
-  n.textContent = p.note;
-  Array.prototype.forEach.call(tabs.children, function (el, k) { el.setAttribute('aria-pressed', k === i ? 'true' : 'false'); });
-  markers.forEach(function (m, k) {
-    var el = m.getElement();
-    if (el) el.firstChild.classList.toggle('on', k === i);
-  });
-  var z = currentLayer === 'ancient' ? Math.min(p.zoom, 10) : p.zoom;
-  if (!stayPut) map.flyTo([p.lat, p.lng], z, { duration: matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 1.6 });
-  document.getElementById('btnPrev').disabled = i === 0;
-  document.getElementById('btnNext').disabled = i === PLACES.length - 1;
-}
-
-/* Keep pins out from under the info card: it sits on the left on wide screens
-   and along the bottom on phones. */
+/* Keep pins out from under the info card: left side on wide screens, bottom on phones. */
 function boundsPadding() {
   return window.innerWidth > 640
     ? { paddingTopLeft: [450, 30], paddingBottomRight: [40, 30] }
     : { paddingTopLeft: [20, 20], paddingBottomRight: [20, Math.round(window.innerHeight * 0.5)] };
 }
 
-function showAll() {
-  var opts = boundsPadding();
-  opts.duration = matchMedia('(prefers-reduced-motion: reduce)').matches ? 0 : 1.4;
-  map.flyToBounds(allBounds, opts);
+function pinFor(i) {
+  var s = story.stops[i];
+  return markers[s.pinOf != null ? s.pinOf : i];
 }
 
-document.getElementById('btnPrev').addEventListener('click', function () { if (current > 0) show(current - 1); });
-document.getElementById('btnNext').addEventListener('click', function () { if (current < PLACES.length - 1) show(current + 1); });
-document.getElementById('btnAll').addEventListener('click', showAll);
+/* ─── STORY STRIP ─────────────────────────────────────────────────────── */
+var strip = el('storyStrip');
+STORIES.forEach(function (s) {
+  var b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'story';
+  b.setAttribute('data-story', s.id);
+  b.setAttribute('aria-pressed', 'false');
+  var top = document.createElement('span');
+  if (s.color) {
+    var sw = document.createElement('span');
+    sw.className = 'swatch';
+    sw.style.background = s.color;
+    top.appendChild(sw);
+  }
+  top.appendChild(document.createTextNode(s.label));
+  var when = document.createElement('small');
+  when.textContent = s.when;
+  b.appendChild(top);
+  b.appendChild(when);
+  b.addEventListener('click', function () { loadStory(s.id, true); });
+  strip.appendChild(b);
+});
+
+function loadStory(id, animate) {
+  var s = STORIES.filter(function (x) { return x.id === id; })[0] || STORIES[0];
+  story = s;
+  storyLayer.clearLayers();
+  setText('storySub', s.sub);
+  setText('storyTitle', s.title);
+  document.title = s.title + ' · CRUX Bible Map';
+  Array.prototype.forEach.call(strip.querySelectorAll('.story'), function (b) {
+    b.setAttribute('aria-pressed', b.getAttribute('data-story') === s.id ? 'true' : 'false');
+  });
+  if (history.replaceState) history.replaceState(null, '', '#' + s.id);
+
+  if (s.route) {
+    L.polyline(s.route, { color: '#ffffff', weight: 8, opacity: 0.85, lineJoin: 'round' }).addTo(storyLayer);
+    L.polyline(s.route, { color: s.color, weight: 4, dashArray: '10 8', lineJoin: 'round' }).addTo(storyLayer);
+  }
+
+  markers = s.stops.map(function (p, i) {
+    if (p.pinOf != null) return null;
+    var icon = L.divIcon({ className: '', html: '<div class="pin"><span>' + (i + 1) + '</span></div>', iconSize: [40, 40], iconAnchor: [6, 40] });
+    var m = L.marker([p.lat, p.lng], { icon: icon, title: p.name, keyboard: true }).addTo(storyLayer);
+    var left = p.labelSide === 'left';
+    m.bindTooltip(p.name, {
+      permanent: s.labels === 'always',
+      direction: left ? 'left' : 'right',
+      offset: left ? [-4, -22] : [18, -22],
+      className: 'place'
+    });
+    m.on('click', function () { show(i); });
+    return m;
+  });
+
+  var pts = s.stops.map(function (p) { return [p.lat, p.lng]; });
+  if (s.route) pts = pts.concat(s.route);
+  bounds = L.latLngBounds(pts).pad(0.12);
+
+  var tabs = el('stopTabs');
+  tabs.textContent = '';
+  s.stops.forEach(function (p, i) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.textContent = s.smallTabs ? String(i + 1) : (i + 1) + ' ' + p.name;
+    b.setAttribute('aria-label', (i + 1) + ': ' + p.name);
+    b.title = p.name;
+    b.setAttribute('aria-pressed', 'false');
+    b.addEventListener('click', function () { show(i); });
+    tabs.appendChild(b);
+  });
+  updateEraNote();
+
+  var opts = boundsPadding();
+  if (animate && !reduceMotion) { opts.duration = 1.2; map.flyToBounds(bounds, opts); }
+  else map.fitBounds(bounds, opts);
+  show(0, true);
+}
+
+function show(i, stayPut) {
+  current = i;
+  var p = story.stops[i];
+  setText('cEyebrow', (story.smallTabs ? 'Stop ' : 'Place ') + (i + 1) + ' of ' + story.stops.length + ' · ' + p.who);
+  setText('cTitle', p.name);
+  setText('cWhat', p.what);
+  var v = el('cVerse');
+  v.textContent = '“' + p.verse + '”';
+  if (/^[“‘]/.test(p.verse) || /^…[“]/.test(p.verse)) v.textContent = p.verse;
+  var c = document.createElement('cite');
+  c.textContent = p.ref + ' (NABRE)';
+  v.appendChild(c);
+  var t = el('cToday');
+  t.textContent = '';
+  var b = document.createElement('b');
+  b.textContent = 'Today';
+  t.appendChild(b);
+  t.appendChild(document.createTextNode(p.today));
+  setText('cFact', p.fact);
+  var notes = [];
+  if (p.note) notes.push(p.note);
+  if (story.route && i === 0) notes.push('The dashed line shows the journey. Roads and sea routes between cities are approximate.');
+  el('cNote').hidden = !notes.length;
+  setText('cNote', notes.join(' '));
+
+  Array.prototype.forEach.call(el('stopTabs').children, function (tab, k) { tab.setAttribute('aria-pressed', k === i ? 'true' : 'false'); });
+  var on = pinFor(i);
+  markers.forEach(function (m) {
+    if (!m) return;
+    var pinEl = m.getElement();
+    if (pinEl) pinEl.firstChild.classList.toggle('on', m === on);
+    if (story.labels !== 'always') m.closeTooltip();
+  });
+  if (on) {
+    on.setZIndexOffset(1000);
+    markers.forEach(function (m) { if (m && m !== on) m.setZIndexOffset(0); });
+    if (story.labels !== 'always') on.openTooltip();
+  }
+
+  var z = currentLayer === 'ancient' ? Math.min(p.zoom, 10) : p.zoom;
+  if (!stayPut) map.flyTo([p.lat, p.lng], z, { duration: reduceMotion ? 0 : 1.6 });
+  el('btnPrev').disabled = i === 0;
+  el('btnNext').disabled = i === story.stops.length - 1;
+  el('btnNext').textContent = story.smallTabs ? 'Next stop' : 'Next place';
+}
+
+function showAll() {
+  var opts = boundsPadding();
+  opts.duration = reduceMotion ? 0 : 1.4;
+  map.flyToBounds(bounds, opts);
+  if (story.labels !== 'always') markers.forEach(function (m) { if (m) m.closeTooltip(); });
+}
+
+function updateEraNote() {
+  var note = '';
+  if (currentLayer === 'satellite') note = ERA_NOTE.satellite;
+  if (currentLayer === 'ancient') note = (story.id === 'week5' ? ERA_NOTE.week5 : ERA_NOTE.paul).ancient;
+  el('eraNote').hidden = !note;
+  setText('eraNote', note);
+}
+
+el('btnPrev').addEventListener('click', function () { if (current > 0) show(current - 1); });
+el('btnNext').addEventListener('click', function () { if (current < story.stops.length - 1) show(current + 1); });
+el('btnAll').addEventListener('click', showAll);
 
 Array.prototype.forEach.call(document.querySelectorAll('.layers button'), function (btn) {
   btn.addEventListener('click', function () {
@@ -283,26 +565,29 @@ Array.prototype.forEach.call(document.querySelectorAll('.layers button'), functi
     map.removeLayer(LAYERS[currentLayer]);
     LAYERS[key].addTo(map);
     currentLayer = key;
+    storyLayer.eachLayer(function (l) { if (l.bringToFront) l.bringToFront(); });
     Array.prototype.forEach.call(document.querySelectorAll('.layers button'), function (b) {
       b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
     });
-    var era = document.getElementById('eraNote');
-    era.hidden = !ERA_NOTE[key];
-    era.textContent = ERA_NOTE[key] || '';
+    updateEraNote();
     if (key === 'ancient' && map.getZoom() > 11) map.setZoom(11);
   });
 });
 
-/* Arrow keys step through places when presenting (ignored while typing or using map keys). */
+/* Arrow keys step through stops when presenting (ignored while the map or a field has focus). */
 document.addEventListener('keydown', function (e) {
-  if (e.target.closest && e.target.closest('input, textarea, .leaflet-container')) return;
-  if (e.key === 'ArrowRight' && current < PLACES.length - 1) show(current + 1);
+  if (e.target.closest && e.target.closest('input, textarea, select, .leaflet-container')) return;
+  if (e.key === 'ArrowRight' && current < story.stops.length - 1) show(current + 1);
   if (e.key === 'ArrowLeft' && current > 0) show(current - 1);
 });
 
-/* Open on the overview with all five pins; the card starts at place 1. */
-map.fitBounds(allBounds, boundsPadding());
-show(0, true);
+window.addEventListener('hashchange', function () {
+  var id = location.hash.replace('#', '');
+  if (story && id !== story.id) loadStory(id, true);
+});
+
+/* Open on the story named in the link (#paul1 etc.), else Week 5. */
+loadStory(location.hash.replace('#', '') || 'week5', false);
 </script>
 </body>
 </html>
