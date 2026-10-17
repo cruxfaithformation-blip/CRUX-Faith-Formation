@@ -1066,7 +1066,7 @@ const TYPES = [
 // Bump when adding default slides. A slide marked `since: N` is inserted
 // (after the slide whose id is `after`) into saved decks older than N, so
 // teachers get new slides without losing their own edits.
-const DECK_VERSION = 7;
+const DECK_VERSION = 8;
 const DEFAULT_SLIDES = [
   {
     id:1, type:'title', bgSince:6,
@@ -1208,9 +1208,10 @@ const DEFAULT_SLIDES = [
     note:'VOICEOVER: Every Mass has a part called the Liturgy of the Word. A first reading, usually from the Old Testament. A Psalm. A reading from one of the letters. And then the Gospel. Everybody stands for the Gospel, because these are Jesus\'s own words and actions.\n\nPRAYER OF THE WEEK: teach the responses and practice them twice.\nReader: The Word of the Lord. All: Thanks be to God.\nPriest: The Gospel of the Lord. All: Praise to you, Lord Jesus Christ.'
   },
   {
-    id:15, type:'visual',
+    id:15, type:'visual', imagesSince:8,
     title:'Look at the birds in the sky',
-    imageIdea:'Birds lifting off a golden wheat field at sunrise, an empty barn behind (Leonardo prompt #5)',
+    imageIdea:'Birds lifting off a golden wheat field at sunrise, a barn behind (pre-loaded)',
+    images:[{ id:'def-birds', src:'images/bible/birds-wheat-field.jpg', x:7, y:19, w:86, h:77 }],
     body:'', bodySimple:'',
     note:'BEFORE REVEALING: Everybody, find Matthew 6:26. Go. First to find it reads it aloud: "Look at the birds in the sky; they do not sow or reap, they gather nothing into barns, yet your heavenly Father feeds them. Are not you more important than they?"\n\nVOICEOVER: Jesus said this to a crowd full of worried people. Worried about food, about money, about tomorrow. Birds don\'t plant anything. They don\'t have a fridge. And they wake up every morning singing anyway, because God takes care of them.\n\nThe Bible says God\'s word is "living and effective" (Hebrews 4:12). A verse written 2,000 years ago can talk to you about something you\'re worried about this week. A test. Tryouts. Something at home. You matter more to God than the birds do. And he\'s got them covered.\n\n[YOUR STORY: a time this verse found you when you needed it.]\n\nASK: What\'s something people your age worry about?'
   },
