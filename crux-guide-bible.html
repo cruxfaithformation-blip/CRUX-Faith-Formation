@@ -1,0 +1,871 @@
+<title>The Bible: God's Story Teacher's Guide</title>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --navy: #0f1b2d;
+  --gold: #c9a84c;
+  --light-gold: #e8d5a3;
+  --ink: #1a1a1a;
+  --page: #ffffff;
+  --offwhite: #faf8f4;
+  --rule: #d4c9b0;
+  --soft: #555;
+  --teacher-bg: #f4f1eb;
+  --takeaway-bg: #0f1b2d;
+}
+
+html { font-size: 11pt; }
+
+body {
+  background: #d0ccc4;
+  font-family: 'Inter', sans-serif;
+  color: var(--ink);
+  padding-block: 0.4in;
+}
+
+.page {
+  background: var(--page);
+  width: 8.5in;
+  min-height: 11in;
+  margin: 0.4in auto;
+  padding: 0.8in 0.9in 0.85in;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.15);
+  position: relative;
+}
+
+.running-header {
+  position: absolute;
+  top: 0.35in;
+  left: 0.9in;
+  right: 0.9in;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 7.5pt;
+  font-weight: 600;
+  color: var(--gold);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  border-bottom: 0.5pt solid var(--rule);
+  padding-bottom: 0.1in;
+}
+
+.crux-mark { font-family: 'Playfair Display', serif; font-weight: 900; }
+
+.teacher-badge {
+  background: var(--navy);
+  color: white;
+  font-size: 6.5pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  padding: 0.06in 0.14in;
+  border-radius: 2px;
+}
+
+.guide-cover {
+  border-bottom: 2pt solid var(--navy);
+  padding-bottom: 0.3in;
+  margin-bottom: 0.35in;
+}
+
+.guide-eyebrow {
+  font-size: 7.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.12in;
+}
+
+.guide-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 26pt;
+  font-weight: 900;
+  color: var(--navy);
+  line-height: 1.1;
+  margin-bottom: 0.08in;
+}
+
+.guide-sub {
+  font-size: 10pt;
+  color: var(--soft);
+  letter-spacing: 0.05em;
+}
+
+.at-a-glance {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.15in;
+  margin-top: 0.2in;
+  padding-top: 0.2in;
+  border-top: 0.5pt solid var(--rule);
+}
+
+.glance-label {
+  font-size: 6.5pt;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.05in;
+}
+
+.glance-value {
+  font-size: 9pt;
+  font-weight: 600;
+  color: var(--navy);
+  line-height: 1.4;
+}
+
+.section-block { margin-bottom: 0.32in; }
+
+.section-heading {
+  font-family: 'Playfair Display', serif;
+  font-size: 13pt;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 0.12in;
+  padding-bottom: 0.06in;
+  border-bottom: 0.5pt solid var(--rule);
+}
+
+.flow-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 0.1in;
+  font-size: 8.5pt;
+}
+
+.flow-table th {
+  background: var(--navy);
+  color: white;
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.07in 0.1in;
+  text-align: left;
+}
+
+.flow-table td {
+  padding: 0.07in 0.1in;
+  border-bottom: 0.5pt solid var(--rule);
+  vertical-align: top;
+  line-height: 1.45;
+  color: var(--soft);
+}
+
+.flow-table tr:nth-child(even) td { background: var(--offwhite); }
+
+.flow-table td:first-child {
+  font-weight: 700;
+  color: var(--navy);
+  white-space: nowrap;
+  width: 0.6in;
+}
+
+.flow-table td:nth-child(2) {
+  font-weight: 600;
+  color: var(--ink);
+  width: 1.5in;
+}
+
+.lesson-step { margin-bottom: 0.28in; }
+
+.step-header {
+  display: flex;
+  align-items: baseline;
+  gap: 0.15in;
+  margin-bottom: 0.1in;
+}
+
+.step-time {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: white;
+  background: var(--navy);
+  padding: 0.04in 0.1in;
+  border-radius: 2px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.step-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 12pt;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+.step-slide {
+  font-size: 7pt;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-left: auto;
+  flex-shrink: 0;
+  white-space: nowrap;
+}
+
+.step-body {
+  font-size: 9.5pt;
+  line-height: 1.7;
+  color: var(--soft);
+  margin-bottom: 0.1in;
+}
+
+.step-body p { margin-bottom: 0.08in; }
+.step-body strong { color: var(--ink); }
+
+.do-box {
+  background: var(--offwhite);
+  border-left: 3pt solid var(--rule);
+  padding: 0.1in 0.14in;
+  margin-bottom: 0.1in;
+  font-size: 9pt;
+  line-height: 1.6;
+  color: var(--soft);
+}
+
+.do-box strong { color: var(--navy); display: block; margin-bottom: 0.04in; font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase; }
+
+.story-text {
+  background: var(--offwhite);
+  border: 0.5pt solid var(--rule);
+  border-radius: 3px;
+  padding: 0.14in 0.18in;
+  margin-bottom: 0.12in;
+}
+
+.story-chapter { margin-bottom: 0.14in; }
+.story-chapter:last-child { margin-bottom: 0; }
+
+.story-chapter-label {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.05in;
+}
+
+.story-chapter-body {
+  font-family: 'Playfair Display', serif;
+  font-size: 9.5pt;
+  line-height: 1.65;
+  color: var(--ink);
+}
+
+.media-box {
+  background: #fbf2e3;
+  border: 0.5pt solid var(--gold);
+  border-radius: 3px;
+  padding: 0.12in 0.16in;
+  margin-bottom: 0.12in;
+  font-size: 8.5pt;
+  line-height: 1.6;
+  color: #6b5426;
+}
+.media-box strong { color: #8a6a1f; display: block; margin-bottom: 0.05in; font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase; }
+.media-box ul { margin: 0.05in 0 0; padding-left: 0.18in; }
+.media-box li { margin-bottom: 0.07in; }
+.media-box .clip-source { font-weight: 700; color: #8a6a1f; }
+
+.takeaway-box {
+  background: var(--takeaway-bg);
+  color: white;
+  padding: 0.18in 0.2in;
+  margin: 0.12in 0 0.1in;
+  border-radius: 3px;
+}
+
+.takeaway-label {
+  font-size: 6.5pt;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.1in;
+  display: flex;
+  align-items: center;
+  gap: 0.1in;
+}
+
+.takeaway-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(201,168,76,0.3);
+}
+
+.takeaway-body {
+  font-size: 9.5pt;
+  line-height: 1.75;
+  color: rgba(255,255,255,0.88);
+  font-style: italic;
+}
+
+.takeaway-body strong { color: var(--light-gold); font-style: normal; }
+
+.student-says {
+  background: var(--teacher-bg);
+  border: 0.5pt solid var(--rule);
+  border-radius: 3px;
+  padding: 0.12in 0.15in;
+  margin: 0.1in 0;
+  font-size: 9pt;
+  line-height: 1.65;
+}
+
+.student-says-label {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 0.08in;
+}
+
+.student-says-q {
+  font-weight: 600;
+  color: var(--navy);
+  margin-bottom: 0.06in;
+  font-style: italic;
+}
+
+.student-says-a { color: var(--soft); line-height: 1.7; }
+
+.watch-box {
+  display: flex;
+  gap: 0.15in;
+  margin-top: 0.08in;
+}
+
+.watch-col {
+  flex: 1;
+  background: var(--offwhite);
+  border-top: 2pt solid var(--rule);
+  padding: 0.1in 0.12in;
+  font-size: 8.5pt;
+  line-height: 1.6;
+  color: var(--soft);
+}
+
+.watch-col-label {
+  font-size: 7pt;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--navy);
+  margin-bottom: 0.06in;
+}
+
+.watch-col.good { border-top-color: #3a7a4a; }
+.watch-col.good .watch-col-label { color: #3a7a4a; }
+.watch-col.watch { border-top-color: #9a6020; }
+.watch-col.watch .watch-col-label { color: #9a6020; }
+
+.page-num {
+  position: absolute;
+  bottom: 0.4in;
+  left: 0;
+  right: 0;
+  text-align: center;
+  font-size: 8pt;
+  color: var(--rule);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+}
+
+hr.step-rule {
+  border: none;
+  border-top: 0.5pt solid var(--rule);
+  margin: 0.2in 0;
+}
+
+@page { size: letter; margin: 0; }
+@media print {
+  body { background: white; padding-block: 0; }
+  .page { margin: 0; box-shadow: none; height: 11in; overflow: hidden; page-break-after: always; break-after: page; }
+  .page:last-child { page-break-after: auto; break-after: auto; }
+}
+
+@media (max-width: 900px) {
+  body { padding-inline: 12px; }
+  .page { width: 100%; min-height: 0; padding: 0.5in 0.4in; }
+  .at-a-glance { grid-template-columns: repeat(2, 1fr); }
+  .watch-box { flex-direction: column; }
+}
+</style>
+<style>
+.story-slot {
+  border: 1.5pt dashed var(--gold);
+  border-radius: 3px;
+  padding: 0.14in 0.18in;
+  margin: 0.12in 0 0.1in;
+  font-size: 9pt;
+  line-height: 1.65;
+  color: var(--soft);
+}
+.story-slot strong { color: #8a6a1f; display: block; margin-bottom: 0.05in; font-size: 7.5pt; letter-spacing: 0.12em; text-transform: uppercase; }
+.story-lines { margin-top: 0.1in; }
+.story-lines div { height: 0.28in; border-bottom: 0.5pt solid var(--rule); }
+.verse-line { font-family: 'Playfair Display', serif; font-style: italic; color: var(--ink); }
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+<!-- ══════════════════════════════════ PAGE 1 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>The Bible: God's Story &middot; Week 5</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <div class="guide-cover">
+    <div class="guide-eyebrow">CRUX Companion &nbsp;&middot;&nbsp; Beginner's Edition &nbsp;&middot;&nbsp; Grade 4</div>
+    <div class="guide-title">Teacher's Guide<br>The Bible: God's Story</div>
+    <div class="guide-sub">Pillar I &nbsp;&middot;&nbsp; What We Believe &nbsp;&middot;&nbsp; Follows Who Is Jesus Christ? &nbsp;&middot;&nbsp; Use alongside the Classroom Presentation</div>
+
+    <div class="at-a-glance">
+      <div class="glance-item">
+        <div class="glance-label">Total Time</div>
+        <div class="glance-value">60 minutes</div>
+      </div>
+      <div class="glance-item">
+        <div class="glance-label">Materials</div>
+        <div class="glance-value">Screen with internet. One Bible per pair. Treasure Hunt handout, one per pair. Your papyrus scroll.</div>
+      </div>
+      <div class="glance-item">
+        <div class="glance-label">Scripture</div>
+        <div class="glance-value">2 Timothy 3:16 &middot; Luke 4:17&ndash;20 &middot; Matthew 6:26 &middot; Genesis 12:1&ndash;3</div>
+      </div>
+      <div class="glance-item">
+        <div class="glance-label">Slides</div>
+        <div class="glance-value">crux-present-bible.html &nbsp;&middot;&nbsp; 20 slides</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-block">
+    <div class="section-heading">Lesson at a Glance</div>
+    <table class="flow-table">
+      <thead>
+        <tr><th>Time</th><th>Section</th><th>What's Happening</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>0&ndash;2 min</td><td>Opening Prayer</td><td>Slide 1. Sign of the Cross.</td></tr>
+        <tr><td>2&ndash;4 min</td><td>The Best-Seller</td><td>Slide 2. Guess the best-selling book ever.</td></tr>
+        <tr><td>4&ndash;8 min</td><td>A Library on Scrolls</td><td>Slides 3&ndash;4. 73 books. Pass the scroll around.</td></tr>
+        <tr><td>8&ndash;13 min</td><td>One Author, One Story</td><td>Slides 5&ndash;6. Inspiration, then the arc chart.</td></tr>
+        <tr><td>13&ndash;18 min</td><td>The Shelves</td><td>Slides 7&ndash;10. Two Testaments, eight sections, four Gospels.</td></tr>
+        <tr><td>18&ndash;23 min</td><td>Find a Book, Find a Verse</td><td>Slides 11&ndash;12. Live demo and a quick race.</td></tr>
+        <tr><td>23&ndash;38 min</td><td>Treasure Hunt</td><td>Slide 13. Pairs, four stops, John 3:16.</td></tr>
+        <tr><td>38&ndash;41 min</td><td>God's Story</td><td>Slides 14&ndash;15. One timeline, and where our weeks sit on it.</td></tr>
+        <tr><td>41&ndash;44 min</td><td>Where It Happened</td><td>Slide 16. The interactive map.</td></tr>
+        <tr><td>44&ndash;46 min</td><td>We Hear It Every Sunday</td><td>Slide 17. Practice the Mass responses.</td></tr>
+        <tr><td>46&ndash;52 min</td><td>Look at the Birds</td><td>Slide 18. Matthew 6:26 and your story.</td></tr>
+        <tr><td>52&ndash;56 min</td><td>Favorite Bible Story</td><td>Slide 19. Which shelf is it on?</td></tr>
+        <tr><td>56&ndash;60 min</td><td>Take-Home + Closing</td><td>Slide 20. Genesis 12:1&ndash;3. Glory Be.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="page-num">1</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 2 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>The Bible: God's Story &middot; Week 5</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <div class="section-block">
+    <div class="section-heading">The Goal of This Lesson</div>
+    <div class="step-body">
+      <p>Four weeks in, the class has met God, the Fall, the Trinity, and Jesus. This week they get the book all of it comes from, and two skills to go with it: <strong>finding any verse on their own</strong>, and seeing the Bible as <strong>one story</strong> told across 73 books. If a student leaves able to open a Bible and find John 3:16 without help, the lesson worked.</p>
+      <p>The second half sets up the rest of the year. The timeline on Slides 14&ndash;15 shows the gap between the Fall and Jesus. Abraham, Moses, and David fill it, starting next week.</p>
+    </div>
+
+    <div class="takeaway-box">
+      <div class="takeaway-label">Your Core Takeaway</div>
+      <div class="takeaway-body">
+        "Seventy-three books. About forty writers. <strong>One Author.</strong> From the first page to the last, the Bible is God making a promise and keeping it. And when you open it, he's still talking to you."
+      </div>
+    </div>
+  </div>
+
+  <div class="section-heading" style="margin-bottom:0.2in;">Teaching the Lesson: Step by Step</div>
+
+  <!-- STEP 1 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">0&ndash;2 min</span>
+      <span class="step-title">Opening Prayer</span>
+      <span class="step-slide">Slide 1</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Lead the Sign of the Cross. Then: "Today we're talking about a book you've definitely seen, probably own, and maybe have never really opened. By the end of class, you'll know how to find anything in it."
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 2 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">2&ndash;4 min</span>
+      <span class="step-title">The Best-Seller</span>
+      <span class="step-slide">Slide 2</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Ask what the best-selling book of all time is. Take three or four guesses. Someone will say Harry Potter. Then reveal it: the Bible, billions of copies, more than any other book in history. End on the twist: "And it isn't even one book."
+    </div>
+  </div>
+
+  <div class="page-num">2</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 3 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>The Bible: God's Story &middot; Week 5</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">4&ndash;8 min</span>
+      <span class="step-title">A Library on Scrolls</span>
+      <span class="step-slide">Slides 3&ndash;4</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      On Slide 3, count the 73 spines together and point out that each color is a different kind of book. On Slide 4, hold up your papyrus scroll before you say anything. Explain papyrus (a paper made from a reed plant along the Nile) and parchment (animal skin), then show the Great Isaiah Scroll and the 24-foot strip of the whole book unrolled. Start the scroll moving around the room while you talk.
+    </div>
+    <div class="step-body">
+      <p><strong>Get the prop wording right.</strong> The Great Isaiah Scroll on screen is parchment. Your scroll is papyrus. When you point at the picture, say "a scroll like this," not "papyrus like this."</p>
+      <p>Luke 4:17&ndash;20 is the hook for this age: Jesus himself <span class="verse-line">"unrolled the scroll and found the passage"</span> in his hometown synagogue. He read from a scroll just like the one they're holding.</p>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 4 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">8&ndash;13 min</span>
+      <span class="step-title">One Author, One Story</span>
+      <span class="step-slide">Slides 5&ndash;6</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Slide 5: read <span class="verse-line">"All scripture is inspired by God"</span> (2 Timothy 3:16) and use the coach and quarterback picture. The coach calls the play, but the quarterback throws it in his own style. Ask: in the Caravaggio painting, who's really writing? Slide 6: point to the four numbered arcs one at a time and read each pair of verses from the notes.
+    </div>
+    <div class="step-body">
+      <p>Land the arc chart with the honest version. Some writers quoted older books on purpose, like quoting a favorite movie. But Abraham didn't know about Jesus, and the Roman soldiers weren't trying to fulfill a psalm. "Forty writers couldn't plan that. One Author could."</p>
+    </div>
+  </div>
+
+  <div class="page-num">3</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 4 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>The Bible: God's Story &middot; Week 5</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 5 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">13&ndash;18 min</span>
+      <span class="step-title">The Shelves</span>
+      <span class="step-slide">Slides 7&ndash;10</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Move quickly here. These four slides are a map, and the kids will use it in ten minutes. Slide 7: Old Testament, 46 books, everything before Jesus. New Testament, 27 books, Jesus and the Church. Plant one word: <strong>covenant</strong>, a promise between God and his people. Slides 8&ndash;9: name the shelves with one familiar example each. Slide 10: the four Gospels and their symbols (man, lion, ox, eagle).
+    </div>
+    <div class="step-body">
+      <p>Save "covenant." It's the whole story next week, when Abraham, Moses, and David each receive one.</p>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 6 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">18&ndash;23 min</span>
+      <span class="step-title">Find a Book, Find a Verse</span>
+      <span class="step-slide">Slides 11&ndash;12</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Hold up a real Bible for this whole step. Show the table of contents first. Then show the big picture with your thumb: Old Testament is the big chunk in front, and the New Testament starts about three-quarters of the way through, at Matthew. Point to the book name printed at the top of each page. Find Exodus together (right after Genesis), then Galatians (past the Gospels and Acts, after Romans and the two Corinthians). Teach the trick for the next four letters: <strong>Go Eat Pop Corn</strong>, Galatians, Ephesians, Philippians, Colossians.
+    </div>
+    <div class="step-body">
+      <p>On Slide 12, say the order out loud and have them repeat it: <strong>book, big number, little number.</strong> Chapter is the big number, verse is the small one. Then race: "Who can find Exodus first? Now Galatians." The race is the practice round for the treasure hunt.</p>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"My Bible doesn't have the same page numbers as yours."</div>
+      <div class="student-says-a">That's why we use chapter and verse instead of page numbers. Every Bible is printed differently, but John 3:16 is John 3:16 in all of them. That's exactly the problem the chapter and verse numbers were invented to solve.</div>
+    </div>
+  </div>
+
+  <div class="page-num">4</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 5 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>The Bible: God's Story &middot; Week 5</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 7 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">23&ndash;38 min</span>
+      <span class="step-title">Treasure Hunt</span>
+      <span class="step-slide">Slide 13</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Put students in pairs with one Bible and one Treasure Hunt handout. Read the rules on the slide together. Pairs go to the stops in order, copy one line from each verse onto the map, then follow the trail to the treasure. When a pair finds a stop, they read their line aloud and the class guesses which week it came from. When most pairs reach John 3:16, stop everyone and read it out loud together.
+    </div>
+
+    <table class="flow-table">
+      <thead><tr><th>Stop</th><th>Verse</th><th>Week</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Jeremiah 1:5</td><td>Week 1, Who Is God?</td></tr>
+        <tr><td>2</td><td>Galatians 5:22&ndash;23</td><td>Week 2, The Fall &amp; the Fruits of the Spirit</td></tr>
+        <tr><td>3</td><td>Matthew 28:19</td><td>Week 3, The Holy Trinity &amp; the New Commandment</td></tr>
+        <tr><td>4</td><td>John 1:14</td><td>Week 4, Who Is Jesus Christ?</td></tr>
+        <tr><td>X</td><td>John 3:16</td><td>The treasure</td></tr>
+        <tr><td>Bonus</td><td>1 John 4:8</td><td>Week 3, for early finishers</td></tr>
+      </tbody>
+    </table>
+
+    <div class="step-body">
+      <p><strong>Timing.</strong> About two minutes to pair up and explain, ten for the lookups, and a few to read the treasure together. The first stop is slow. By stop four most pairs are fast. If you're behind, give each pair only two stops (1&ndash;2 or 3&ndash;4), then find John 3:16 as a whole class.</p>
+      <p><strong>Watch stop 2 and the bonus.</strong> Galatians is the first stop in the New Testament letters, so expect pairs to get lost in the Gospels. Send them back to the Slide 11 path: past Acts, Romans, 1 and 2 Corinthians. On the bonus, kids land in the Gospel of John chapter 4 instead of the letter 1 John near the very back.</p>
+      <p>The answer key with the full NABRE text of every verse is on page 2 of the handout.</p>
+    </div>
+
+    <div class="watch-box">
+      <div class="watch-col good">
+        <div class="watch-col-label">Signs It's Landing</div>
+        Pairs opening to the table of contents on their own. Kids saying "Old Testament" or "New Testament" before they flip. Partners correcting each other on chapter versus verse.
+      </div>
+      <div class="watch-col watch">
+        <div class="watch-col-label">Signs They're Lost</div>
+        Flipping from the front one page at a time. Mixing up chapter and verse (landing in John 16:3). Kneel down with the pair and walk one stop with them: book, big number, little number.
+      </div>
+    </div>
+  </div>
+
+  <div class="page-num">5</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 6 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>The Bible: God's Story &middot; Week 5</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 8 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">38&ndash;41 min</span>
+      <span class="step-title">God's Story</span>
+      <span class="step-slide">Slides 14&ndash;15</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Slide 14 is the whole Bible in one line: God makes the world, we break it, God makes a promise, and he keeps it all the way to Jesus. Then the Church carries the story to us. On Slide 15, show where our weeks sit on that line. Weeks 1&ndash;2 were the beginning, Week 4 was Jesus, and the gap in the middle is next week.
+    </div>
+    <div class="step-body">
+      <p>Keep Slide 15 handy for the rest of the year. Bringing it back at the start of a class shows students where they are in the story.</p>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 9 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">41&ndash;44 min</span>
+      <span class="step-title">Where It Happened</span>
+      <span class="step-slide">Slide 16</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Point and name the five places on the slide: Egypt, Mount Sinai, Jerusalem, Bethlehem, Nazareth. Then click <strong>Open the interactive map</strong> in the bottom-right corner. Use <strong>Next place</strong> to fly to each one. Every stop shows a verse and what the place is called today. If there's time, switch to <strong>From space</strong> at Mount Sinai, or <strong>Roman times</strong> at Bethlehem.
+    </div>
+    <div class="step-body">
+      <p>The goal here is "these are real places you could visit." Save the journeys themselves for next week. The map at <strong>cruxfaith.com/crux-map-bible.html</strong> also has Paul's missionary journeys for later in the year.</p>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 10 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">44&ndash;46 min</span>
+      <span class="step-title">We Hear It Every Sunday</span>
+      <span class="step-slide">Slide 17</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Connect the Bible to Mass. Every Mass has a first reading, a Psalm, a second reading, and the Gospel, and everyone stands for the Gospel. Teach the two responses and practice each one twice, out loud, with you as reader and priest.
+    </div>
+    <div class="step-body">
+      <p><strong>Reader:</strong> The Word of the Lord. <strong>All:</strong> Thanks be to God.<br>
+      <strong>Priest:</strong> The Gospel of the Lord. <strong>All:</strong> Praise to you, Lord Jesus Christ.</p>
+    </div>
+  </div>
+
+  <div class="page-num">6</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 7 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>The Bible: God's Story &middot; Week 5</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <!-- STEP 11 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">46&ndash;52 min</span>
+      <span class="step-title">Look at the Birds</span>
+      <span class="step-slide">Slide 18</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Before you reveal the slide, say: "Everybody, find Matthew 6:26. Go." The first student to find it reads it aloud. Then reveal the slide and explain: Jesus said this to a crowd of worried people. Birds don't plant anything or keep a fridge, and they wake up singing anyway, because God takes care of them.
+    </div>
+    <div class="step-body">
+      <p class="verse-line">"Look at the birds in the sky; they do not sow or reap, they gather nothing into barns, yet your heavenly Father feeds them. Are not you more important than they?" (Matthew 6:26)</p>
+      <p>Then connect it to them. The Bible calls God's word <span class="verse-line">"living and effective"</span> (Hebrews 4:12). A verse from 2,000 years ago can speak to a test, tryouts, or something going on at home this week. Ask: what's something people your age worry about?</p>
+    </div>
+
+    <div class="story-slot">
+      <strong>Your Story: A Time This Verse Found You</strong>
+      Before class, write down a time Matthew 6:26 (or any verse) spoke to something you were worried about. Keep it short and specific. Tell it right after the verse is read, before you ask the class about their worries.
+      <div class="story-lines"><div></div><div></div><div></div><div></div></div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 12 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">52&ndash;56 min</span>
+      <span class="step-title">Favorite Bible Story</span>
+      <span class="step-slide">Slide 19</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Let students pick any story they know. After each answer, ask: "Which shelf is it on?" Noah and Jonah are easy wins. A Gospel story is a good chance to name which of the four Gospels it's from.
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <!-- STEP 13 -->
+  <div class="lesson-step">
+    <div class="step-header">
+      <span class="step-time">56&ndash;60 min</span>
+      <span class="step-title">Take-Home + Closing Prayer</span>
+      <span class="step-slide">Slide 20</span>
+    </div>
+    <div class="do-box">
+      <strong>Do This</strong>
+      Assign Genesis 12:1&ndash;3 for tonight: "Find it using what you learned today, and come back knowing who Abraham is." Point to the stars on the slide as a hint. God promised Abraham a family as many as the stars. Close with the Glory Be.
+    </div>
+  </div>
+
+  <div class="page-num">7</div>
+</div>
+
+
+<!-- ══════════════════════════════════ PAGE 8 ══ -->
+<div class="page">
+  <div class="running-header">
+    <span><span class="crux-mark">CRUX</span>&nbsp;&middot;&nbsp;Teacher's Guide</span>
+    <span>The Bible: God's Story &middot; Week 5</span>
+    <span class="teacher-badge">Not for Students</span>
+  </div>
+
+  <div class="section-block">
+    <div class="section-heading">When Students Don't Get It</div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"If people wrote it, how is it God's word?"</div>
+      <div class="student-says-a">Go back to the coach and the quarterback. The Church teaches that the Bible has two kinds of authors: God, and the real human writers, who wrote in their own words and style (Catechism 105&ndash;106). Matthew sounds like Matthew, and Paul sounds like Paul, but God is the one calling the play.</div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"My friend's Bible only has 66 books. Why does ours have 73?"</div>
+      <div class="student-says-a">Most Protestant Bibles leave out seven Old Testament books that Catholics have always read: Tobit, Judith, Wisdom, Sirach, Baruch, and 1 and 2 Maccabees. Your friend's Bible is still the Bible. Ours just has the whole library. Keep it kind and simple; this isn't the day for the full history.</div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"Did all of it really happen? Like Jonah and the big fish?"</div>
+      <div class="student-says-a">Remember the shelves. Some books are history, some are songs and poems, some are prophets, some are letters. The Church asks us to read each one as the kind of book it is (Catechism 110). A song and a history book tell the truth in different ways, and every book teaches us something true about God. If a student wants more on a specific story, say you'll talk about it after class.</div>
+    </div>
+
+    <div class="student-says">
+      <div class="student-says-label">If a Student Says</div>
+      <div class="student-says-q">"Who decided which books go in the Bible?"</div>
+      <div class="student-says-a">The Church, guided by the Holy Spirit, over the first few hundred years after Jesus. Christians read many writings, and the Church recognized which ones were inspired by God. That's the list we still use.</div>
+    </div>
+  </div>
+
+  <hr class="step-rule">
+
+  <div class="section-block">
+    <div class="section-heading">Before Next Class</div>
+    <div class="step-body">
+      <p><strong>Take-home:</strong> Genesis 12:1&ndash;3. Ask at the start of next class who found it and who Abraham is. Students who found it on their own just proved this week's lesson worked.</p>
+      <p><strong>No workbook chapter for this lesson yet.</strong> The Treasure Hunt handout is this week's printed piece. Students can take it home.</p>
+      <p><strong>Next class: Abraham, Moses &amp; David.</strong> This week showed the gap on the timeline between the Fall and Jesus. Next week fills it with three people and three covenants, the word students heard today on the Two Testaments slide.</p>
+    </div>
+  </div>
+
+  <div class="page-num">8</div>
+</div>
