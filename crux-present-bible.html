@@ -1066,7 +1066,7 @@ const TYPES = [
 // Bump when adding default slides. A slide marked `since: N` is inserted
 // (after the slide whose id is `after`) into saved decks older than N, so
 // teachers get new slides without losing their own edits.
-const DECK_VERSION = 4;
+const DECK_VERSION = 5;
 const DEFAULT_SLIDES = [
   {
     id:1, type:'title',
@@ -1150,6 +1150,13 @@ const DEFAULT_SLIDES = [
     note:'VOICEOVER: Matthew, Mark, Luke, and John. Four people telling the same story, each in his own way, like four friends describing the same game. Each one has a symbol. Matthew is a man, top left. Mark is a lion, top right. Luke is an ox, bottom left. John is an eagle, bottom right.\n\nMonks in Ireland painted this page about 1,200 years ago, by hand. The Gospels are the center of the whole library, because they\'re about Jesus.'
   },
   {
+    id:20, type:'content', since:5, after:8,
+    title:'How to Find a Book',
+    body:'- Start at the table of contents in the front. It lists every book and its page number.\n- The Old Testament comes first, and it is most of the Bible.\n- The New Testament starts about three-quarters of the way through, with Matthew.\n- The name of the book is printed at the top of every page.\n★ Exodus is near the very front: book 2, right after Genesis.\n★ Galatians is near the back, in Paul\'s letters: Romans, 1 and 2 Corinthians, then Galatians.',
+    bodySimple:'- Check the table of contents in the front.\n- Old Testament first. New Testament near the back.\n- Look for the book name at the top of the page.\n★ Exodus: near the front, right after Genesis.\n★ Galatians: near the back, after Romans and Corinthians.',
+    note:'VOICEOVER: Before we find a verse, we have to find the book. Hold up a Bible and show the table of contents. Every Bible has one, and it tells you the page number for every book. Use it. Even grown-ups do.\n\nNow show them the big picture with your thumb. The Old Testament is the big chunk at the front. Flip about three-quarters of the way through and you hit Matthew, the start of the New Testament. Remember the bookshelf from earlier: the Old Testament shelf was much longer.\n\nThen point out the top of the page. The book\'s name is printed there, so you always know where you are while you flip.\n\nTry two together. Exodus: the Bible\'s second book, so it\'s right at the front, after Genesis. Galatians: go to the New Testament, past the Gospels and Acts, into Paul\'s letters. Romans, 1 Corinthians, 2 Corinthians, then Galatians.\n\nMEMORY TRICK: Four of Paul\'s letters come in a row: Galatians, Ephesians, Philippians, Colossians. Go Eat Pop Corn. G, E, P, C.\n\nASK: Who can find Exodus first? Now Galatians. Ready, go!'
+  },
+  {
     id:9, type:'visual',
     title:'How to Find a Verse',
     imageIdea:'John 13:34 labeled Book, Chapter, Verse (pre-loaded)',
@@ -1158,10 +1165,10 @@ const DEFAULT_SLIDES = [
     note:'VOICEOVER: Demo it live with a Bible in your hand. Book first. Then the big number, the chapter. Then the small number, the verse. John 13:34 is the New Commandment we learned in Week 3.\n\nFun fact: the people who wrote the Bible didn\'t put in chapters or verses. An archbishop named Stephen Langton added chapters about 800 years ago, and a printer named Robert Estienne added verse numbers in 1551, so people could find things faster. Now you can too.'
   },
   {
-    id:10, type:'visual',
-    title:'Bible Scavenger Hunt',
-    imageIdea:'A treasure map with a Bible at the X (Leonardo prompt #3)',
-    body:'', bodySimple:'',
+    id:10, type:'content', replaceSince:5,
+    title:'Treasure Hunt: How to Play',
+    body:'- Team up with a partner. You need one Bible and one treasure map.\n- Go to the stops in order: 1, 2, 3, 4. Find each verse in your Bible.\n- Copy one line from the verse onto your map to mark the spot.\n- Read your line out loud. Can the class guess which week we learned it?\n★ Follow the trail to the treasure: John 3:16!\n> Done early? Try the bonus stop.',
+    bodySimple:'- Get a partner, a Bible, and a map.\n- Find stops 1, 2, 3, 4, in order.\n- Copy one line from each verse.\n- Read it out loud. Guess the week!\n★ The treasure is John 3:16!\n> Done early? Try the bonus.',
     note:'ACTIVITY (15 min): Pairs, one Bible and one Treasure Hunt handout each. Four stops, one from each week so far, then the treasure. 1. Jeremiah 1:5. 2. Galatians 5:22-23. 3. Matthew 28:19. 4. John 1:14. Treasure: John 3:16. Bonus for early finishers: 1 John 4:8.\n\nVOICEOVER: At each stop, copy one line from the verse to mark it found. Follow the trail to the treasure. When you find a stop, read your line out loud, and the class has to guess which week we learned it.\n\nWhen most pairs reach the treasure, read John 3:16 out loud together.\n\nThis is the review for Weeks 1 to 4, without re-teaching any of it. Short on time? Each pair does two stops (1-2 or 3-4), then everyone finds John 3:16 together.'
   },
   {
@@ -1260,6 +1267,15 @@ function mergeNewDefaults(savedVersion) {
   defaultCopy().forEach(function(d) {
     // New default images for an existing slide: fill it only if the teacher
     // hasn't added their own (empty, or still holding our pre-loaded 'def-' image).
+    // A default slide rebuilt as a different kind of slide: swap it in only if the
+    // teacher's copy is still the untouched original (same title, no images added).
+    if (d.replaceSince && d.replaceSince > savedVersion) {
+      var old = slides.filter(function(s) { return s.id === d.id; })[0];
+      if (old && old.type === 'visual' && old.title === 'Bible Scavenger Hunt' && (!old.images || !old.images.length)) {
+        var at0 = slides.indexOf(old);
+        slides[at0] = JSON.parse(JSON.stringify(d));
+      }
+    }
     // A link added to an existing default slide: copy it unless the teacher set their own.
     if (d.linkSince && d.linkSince > savedVersion) {
       var withLink = slides.filter(function(s) { return s.id === d.id; })[0];
