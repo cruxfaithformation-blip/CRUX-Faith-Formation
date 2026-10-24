@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Bible Map · CRUX</title>
-<meta name="description" content="An interactive Bible map: key places from Moses to Jesus and the missionary journeys of Saint Paul, shown on today's map, from space, and in Roman times.">
+<meta name="description" content="An interactive Bible map: key places from Moses to Jesus, the journeys of Abraham and the Exodus, and the missionary journeys of Saint Paul, shown on today's map, from space, and in Roman times.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -168,6 +168,83 @@ var STORIES = [
         today: 'Israel', fact: 'Nazareth is about 90 miles from Bethlehem by road. On foot, that was a trip of about four days.',
         lat: 32.7021, lng: 35.2978, zoom: 11 }
     ]
+  },
+  {
+    id: 'abraham', label: 'Abraham\'s Journey', when: 'About 1800 BC · Genesis 11-18', color: '#b7791f',
+    sub: 'Abraham · Genesis 11-18', title: 'Abraham\'s Journey',
+    labels: 'current', smallTabs: true,
+    stops: [
+      { name: 'Ur', who: 'Where the family began',
+        what: 'Abram grew up in Ur, a big city near the Euphrates River. His father Terah moved the whole family north.',
+        verse: 'Terah took his son Abram, his grandson Lot, son of Haran, and his daughter-in-law Sarai, the wife of his son Abram, and brought them out of Ur of the Chaldeans, to go to the land of Canaan. But when they reached Haran, they settled there.', ref: 'Genesis 11:31',
+        today: 'Iraq (ruins near Nasiriyah)', fact: 'Ur had a giant stepped temple called a ziggurat. Part of it is still standing.',
+        note: 'Most scholars place Ur here, in southern Iraq. A few argue for a different Ur farther north.',
+        lat: 30.9625, lng: 46.1031, zoom: 7 },
+      { name: 'Haran', who: 'God says "Go"',
+        what: 'In Haran, God told Abram to leave his home for a land God would show him. He didn\'t know where he was going. He went anyway.',
+        verse: 'Abram went as the LORD directed him, and Lot went with him. Abram was seventy-five years old when he left Haran.', ref: 'Genesis 12:4',
+        today: 'Harran, Turkey', fact: 'Abram was 75 years old when he set out. His promised son would not be born for 25 more years.',
+        lat: 36.865, lng: 39.032, zoom: 7 },
+      { name: 'Shechem', who: 'The promised land',
+        what: 'Abram reached the land of Canaan. God promised to give this land to his family, and Abram built an altar.',
+        verse: 'The LORD appeared to Abram and said: To your descendants I will give this land. So Abram built an altar there to the LORD who had appeared to him.', ref: 'Genesis 12:7',
+        today: 'Nablus, West Bank', fact: 'From Haran to Shechem is about 400 miles, walking with flocks of animals the whole way.',
+        lat: 32.2137, lng: 35.282, zoom: 9 },
+      { name: 'Egypt', who: 'A detour',
+        what: 'A famine hit, so Abram went to Egypt for food. He was afraid and lied about his wife Sarai. God protected them anyway.',
+        verse: 'There was famine in the land; so Abram went down to Egypt to sojourn there, since the famine in the land was severe.', ref: 'Genesis 12:10',
+        today: 'Egypt', fact: 'Hundreds of years later, Abraham\'s family would end up in Egypt again. That is where the Exodus story begins.',
+        note: 'The Bible doesn\'t say where in Egypt Abram stayed. The pin marks the Nile Delta.',
+        lat: 30.8, lng: 31.8, zoom: 7 },
+      { name: 'Hebron', who: 'Count the stars',
+        what: 'Abram settled near the oak of Mamre. God promised him children as many as the stars, and gave him a new name: Abraham, father of many. Here three visitors said Sarah would have a son.',
+        verse: 'Is anything too marvelous for the LORD to do? At the appointed time, about this time next year, I will return to you, and Sarah will have a son.', ref: 'Genesis 18:14',
+        today: 'Hebron, West Bank', fact: 'Abraham and Sarah are buried in Hebron, in a cave Abraham bought (Genesis 23). People still visit the site today.',
+        lat: 31.5326, lng: 35.0998, zoom: 9 }
+    ],
+    route: [[30.9625,46.1031],[31.32,45.64],[32.54,44.42],[33.42,43.30],[34.45,40.92],[35.33,40.14],[35.95,39.01],[36.865,39.032],[36.20,37.16],[35.13,36.75],[34.73,36.72],[33.51,36.29],[32.9,35.9],[32.2137,35.282],[31.7,35.0],[31.25,34.3],[31.1,33.8],[30.8,31.8],[31.1,33.8],[31.25,34.3],[31.5326,35.0998]]
+  },
+  {
+    id: 'exodus', label: 'The Exodus', when: 'About 1250 BC · Exodus to Joshua', color: '#1f6f8b',
+    sub: 'Moses · Exodus, Deuteronomy, Joshua', title: 'The Exodus',
+    labels: 'current', smallTabs: true,
+    stops: [
+      { name: 'Egypt', who: 'Slaves, then the Passover',
+        what: 'Abraham\'s family had grown into a whole nation, but they were slaves in Egypt. On the night of the Passover, the blood of a lamb on their doors saved them, and they finally left.',
+        verse: 'But for you the blood will mark the houses where you are. Seeing the blood, I will pass over you; thereby, when I strike the land of Egypt, no destructive blow will come upon you.', ref: 'Exodus 12:13',
+        today: 'Egypt', fact: 'Jewish families still celebrate the Passover every spring, more than 3,000 years later.',
+        note: 'The Bible says they left from a city called Rameses, in the Nile Delta. The exact spot is debated.',
+        lat: 30.8, lng: 31.8, zoom: 7 },
+      { name: 'The Red Sea', who: 'Walking through the sea',
+        what: 'Pharaoh\'s army chased them. Moses stretched out his hand, and God split the sea so his people could cross on dry land.',
+        verse: 'Then Moses stretched out his hand over the sea; and the LORD drove back the sea with a strong east wind all night long and turned the sea into dry ground.', ref: 'Exodus 14:21',
+        today: 'Egypt (Gulf of Suez)', fact: 'The Hebrew name is Yam Suph, which can also mean "Sea of Reeds."',
+        note: 'Nobody knows exactly where they crossed. This pin marks one traditional spot.',
+        lat: 29.95, lng: 32.55, zoom: 8 },
+      { name: 'Mount Sinai', who: 'The Ten Commandments',
+        what: 'Moses climbed the mountain and God gave his people the Law, starting with the Ten Commandments. This is the same mountain where Moses first saw the burning bush.',
+        verse: 'I am the LORD your God, who brought you out of the land of Egypt, out of the house of slavery.', ref: 'Exodus 20:2',
+        today: 'Egypt (Sinai Peninsula)', fact: 'The Bible also calls this mountain Horeb. That is where the burning bush was (Exodus 3:1-2).',
+        note: 'This is the traditional mountain. Scholars still debate which mountain it really was.',
+        lat: 28.5394, lng: 33.975, zoom: 9 },
+      { name: 'The Wilderness', who: 'Forty years',
+        what: 'The people grumbled and didn\'t trust God, so they wandered in the desert for forty years. Every morning God fed them bread from heaven, called manna.',
+        verse: 'Then the LORD said to Moses: I am going to rain down bread from heaven for you.', ref: 'Exodus 16:4',
+        today: 'Egypt and Israel (Sinai and Negev deserts)', fact: 'Kadesh-barnea, where the pin is, was their main camp for many of those years.',
+        note: 'The Bible names dozens of campsites. Most can\'t be located for sure.',
+        lat: 30.65, lng: 34.42, zoom: 8 },
+      { name: 'Mount Nebo', who: 'Moses sees the land',
+        what: 'At the end of his life, Moses climbed this mountain and God showed him the whole Promised Land. The promise God made to Abraham was about to come true.',
+        verse: 'This is the land about which I promised on oath to Abraham, Isaac, and Jacob, “I will give it to your descendants.” I have let you see it with your own eyes, but you shall not cross over.', ref: 'Deuteronomy 34:4',
+        today: 'Jordan', fact: 'Saint John Paul II visited Mount Nebo in the year 2000 and prayed where Moses looked out over the land.',
+        lat: 31.7676, lng: 35.7256, zoom: 10 },
+      { name: 'The Jordan River', who: 'Into the Promised Land',
+        what: 'Moses\'s helper Joshua led the people across the Jordan River into the land God had promised Abraham, more than 400 years earlier.',
+        verse: 'The priests carrying the ark of the covenant of the LORD stood on dry ground in the Jordan riverbed while all Israel crossed on dry ground, until the whole nation had completed the crossing of the Jordan.', ref: 'Joshua 3:17',
+        today: 'Near Jericho, West Bank', fact: 'Jesus was baptized in this same river, near this same place.',
+        lat: 31.84, lng: 35.54, zoom: 10 }
+    ],
+    route: [[30.8,31.8],[30.55,32.1],[30.3,32.35],[29.95,32.55],[29.6,32.75],[29.1,33.0],[28.75,33.4],[28.5394,33.975],[29.2,34.2],[29.9,34.35],[30.65,34.42],[30.2,35.0],[30.1,35.6],[30.6,35.9],[31.2,35.85],[31.7676,35.7256],[31.84,35.54]]
   },
   {
     id: 'paul1', label: 'Paul\'s 1st Journey', when: 'About AD 46 to 48 · Acts 13-14', color: '#c0392b',

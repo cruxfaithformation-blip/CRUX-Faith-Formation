@@ -247,6 +247,48 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 .el-size-pct { font-size: 0.5rem; color: rgba(255,255,255,0.7); line-height: 1.2; }
 .el-dragging { outline: 1px dashed var(--gold); outline-offset: 3px; }
 
+/* Editor layout: slide + controls on the left, speaker notes as a full-height column on the right */
+.ed-layout { width: 100%; max-width: 1660px; display: flex; gap: 1.25rem; align-items: flex-start; }
+.ed-main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.ed-notes {
+  flex: 0 0 420px; position: sticky; top: 0; box-sizing: border-box;
+  height: calc(100vh - 6.5rem); min-height: 480px;
+  display: flex; flex-direction: column; gap: 0.65rem;
+  background: var(--cream); border: 1px solid var(--border); border-radius: 8px;
+  padding: 1rem 1.1rem 0.85rem; box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+}
+.ed-notes-head { display: flex; align-items: baseline; justify-content: space-between; gap: 0.75rem; }
+.ed-notes-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1.2rem; color: var(--navy); }
+.ed-notes-slide { font-size: 0.72rem; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; }
+.ed-notes-chips { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+.ed-chip {
+  font-size: 0.62rem; font-weight: 700; letter-spacing: 0.5px; padding: 0.3rem 0.6rem; border-radius: 99px;
+  border: 1px solid var(--border); background: var(--white); color: var(--navy); cursor: pointer; font-family: inherit;
+}
+.ed-chip:hover { border-color: var(--gold); background: var(--gold-pale); }
+.ed-notes-input {
+  flex: 1 1 auto; min-height: 240px; width: 100%; box-sizing: border-box; resize: none;
+  font-family: 'Inter', sans-serif; font-size: 0.95rem; line-height: 1.65; color: var(--text);
+  background: var(--white); border: 1.5px solid var(--border); border-radius: 6px;
+  padding: 0.85rem 1rem; outline: none; transition: border-color 0.15s;
+}
+.ed-notes-input:focus { border-color: var(--gold); }
+.ed-notes-foot { display: flex; justify-content: space-between; gap: 0.75rem; font-size: 0.68rem; color: var(--muted); }
+.ed-main .wysiwyg-controls { flex-wrap: wrap; row-gap: 0.9rem; }
+.wys-col-vocab { flex: 0 0 auto; }
+.wys-col-idea { flex: 1.4; min-width: 200px; }
+@media (max-width: 1400px) {
+  .ed-layout { flex-direction: column; align-items: center; }
+  .ed-main { width: 100%; }
+  .ed-notes { position: static; flex: none; width: 100%; max-width: 1100px; height: auto; min-height: 0; }
+  .ed-notes-input { min-height: 320px; resize: vertical; }
+}
+/* Present mode: notes keep their paragraphs, and labels like VOICEOVER: show in gold */
+#notesText p { margin: 0 0 0.55rem; }
+#notesText p:last-child { margin-bottom: 0; }
+#notesText .nl { color: var(--gold); font-weight: 700; letter-spacing: 0.5px; }
+#notesOverlay { z-index: 30; }
+
 /* Controls strip below slide */
 .wysiwyg-controls {
   width: 100%; max-width: 1100px;
@@ -920,7 +962,7 @@ html, body { height: 100%; overflow: hidden; font-family: 'Inter', sans-serif; b
 }
 #notesOverlay.visible { display: block; }
 .notes-label { font-size: 0.58rem; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--gold); margin-bottom: 0.3rem; }
-#notesText { font-size: 0.88rem; color: rgba(255,255,255,0.65); line-height: 1.55; }
+#notesText { font-size: 1rem; color: rgba(255,255,255,0.85); line-height: 1.6; max-height: 38vh; overflow-y: auto; max-width: 1100px; }
 
 /* Toast */
 #toast {
@@ -2462,6 +2504,7 @@ function renderCanvasSlide() {
   }
   var themeAttr = slideTheme !== 'crux' ? ' data-theme="' + slideTheme + '"' : '';
   canvas.innerHTML =
+    '<div class="ed-layout"><div class="ed-main">' +
     '<div class="wysiwyg-wrapper"' + themeAttr + '>' +
       '<div id="editableSlide" class="type-' + slide.type + '"><div class="slide-bg-glow"></div></div>' +
       '<div class="fmt-toolbar" id="fmtToolbar">' +
@@ -2491,7 +2534,8 @@ function renderCanvasSlide() {
         '<button class="fmt-btn" title="Reset color, bold, and italic on the highlighted words (or the whole line if nothing is highlighted)" onmousedown="event.preventDefault()" onclick="clearTextColor()">✕</button>' +
       '</div>' +
     '</div>' +
-    buildControlsStrip(slide);
+    buildControlsStrip(slide) +
+    '</div>' + buildNotesPanel(slide) + '</div>';
 
   document.getElementById('editableSlide').innerHTML += buildEditableSlideHTML(slide);
   applySlideBg(document.getElementById('editableSlide'), slide);
@@ -2564,18 +2608,75 @@ function buildControlsStrip(slide) {
       '<span class="wys-label">Media</span>' +
       mediaHtml +
     '</div>' : '') +
-    '<div class="wys-col wys-col-notes">' +
-      '<div class="wys-notes-row">' +
-        '<span class="wys-label">Presenter Notes</span>' +
-        '<div class="wys-vocab">' +
-          '<button class="wvt' + (bodyTab === 'advanced' ? ' active' : '') + '" onclick="setBodyTabWys(\'advanced\')">Advanced</button>' +
-          '<button class="wvt' + (bodyTab === 'simple'   ? ' active' : '') + '" onclick="setBodyTabWys(\'simple\')">Child-Friendly</button>' +
-        '</div>' +
+    '<div class="wys-col wys-col-vocab">' +
+      '<span class="wys-label">Slide Text</span>' +
+      '<div class="wys-vocab" title="Which version of this slide\'s text you are editing">' +
+        '<button class="wvt' + (bodyTab === 'advanced' ? ' active' : '') + '" onclick="setBodyTabWys(\'advanced\')">Advanced</button>' +
+        '<button class="wvt' + (bodyTab === 'simple'   ? ' active' : '') + '" onclick="setBodyTabWys(\'simple\')">Child-Friendly</button>' +
       '</div>' +
-      (isVisual ? '<input class="wys-input" type="text" placeholder="Image idea (shown on the empty slate, editor only)…" title="Image idea" value="' + escHtml(slide.imageIdea || '') + '" oninput="updateField(\'imageIdea\',this.value)">' : '') +
-      '<textarea class="wys-notes-input" placeholder="Private notes shown only during presentation…" oninput="updateField(\'note\',this.value)">' + escHtml(slide.note || '') + '</textarea>' +
     '</div>' +
+    (isVisual ?
+    '<div class="wys-col wys-col-idea">' +
+      '<span class="wys-label">Image Idea</span>' +
+      '<input class="wys-input" style="margin-bottom:0;" type="text" placeholder="Shown on the empty slate, editor only…" title="Image idea" value="' + escHtml(slide.imageIdea || '') + '" oninput="updateField(\'imageIdea\',this.value)">' +
+    '</div>' : '') +
   '</div>';
+}
+
+/* ─── SPEAKER NOTES PANEL ───────────────────────────────────────── */
+function noteLabelList() { return ['VOICEOVER:', 'ASK:', 'ANSWER:', 'ACTIVITY:', 'YOUR STORY:', 'IF A STUDENT SAYS:', 'FINAL INVENTORY:']; }
+
+function noteStats(text) {
+  var words = (String(text || '').trim().match(/\S+/g) || []).length;
+  if (!words) return 'No notes yet';
+  var mins = words / 130;
+  return words + ' words · ' + (mins < 1 ? 'under a minute' : 'about ' + Math.round(mins) + ' min') + ' to say';
+}
+function updateNoteStats(text) {
+  var el = document.getElementById('edNotesStats');
+  if (el) el.textContent = noteStats(text);
+}
+function insertNoteLabel(label) {
+  var ta = document.getElementById('edNotesInput');
+  if (!ta) return;
+  var v = ta.value, start = ta.selectionStart, end = ta.selectionEnd;
+  var before = v.slice(0, start);
+  var pre = !before ? '' : /\n\n$/.test(before) ? '' : /\n$/.test(before) ? '\n' : '\n\n';
+  var ins = pre + label + ' ';
+  ta.value = before + ins + v.slice(end);
+  var pos = (before + ins).length;
+  ta.focus();
+  ta.setSelectionRange(pos, pos);
+  updateField('note', ta.value);
+  updateNoteStats(ta.value);
+}
+function buildNotesPanel(slide) {
+  var name = slide.title || (TYPES.filter(function(t) { return t.id === slide.type; })[0] || {}).label || '';
+  return '<aside class="ed-notes" aria-label="Speaker notes">' +
+    '<div class="ed-notes-head">' +
+      '<span class="ed-notes-title">Speaker Notes</span>' +
+      '<span class="ed-notes-slide">Slide ' + (selectedIndex + 1) + (name ? ' · ' + escHtml(name) : '') + '</span>' +
+    '</div>' +
+    '<div class="ed-notes-chips" aria-label="Insert a label">' +
+      noteLabelList().map(function(l) {
+        return '<button type="button" class="ed-chip" onmousedown="event.preventDefault()" onclick="insertNoteLabel(\'' + l + '\')">' + l.replace(':', '') + '</button>';
+      }).join('') +
+    '</div>' +
+    '<label for="edNotesInput" class="wys-label" style="position:absolute;left:-9999px;">Speaker notes for this slide</label>' +
+    '<textarea id="edNotesInput" class="ed-notes-input" placeholder="What you will say on this slide. Start a line with a label like VOICEOVER: or ASK: and it shows in gold while you present." oninput="updateField(\'note\',this.value); updateNoteStats(this.value)">' + escHtml(slide.note || '') + '</textarea>' +
+    '<div class="ed-notes-foot"><span id="edNotesStats">' + noteStats(slide.note) + '</span><span>Only you see these. Press N while presenting.</span></div>' +
+  '</aside>';
+}
+
+/* Present-mode notes: keep paragraphs and line breaks; show leading labels (VOICEOVER:, ASK:, ...) in gold. */
+function formatNotesHTML(text) {
+  if (!text) return '<p>No presenter notes.</p>';
+  return String(text).split(/\n{2,}/).map(function(par) {
+    return '<p>' + par.split('\n').map(function(line) {
+      var m = line.match(/^([A-Z][A-Z0-9 ,'’\/&-]*[A-Z0-9](?: \([^)]{1,40}\))?:)(.*)$/);
+      return m ? '<span class="nl">' + escHtml(m[1]) + '</span>' + escHtml(m[2]) : escHtml(line);
+    }).join('<br>') + '</p>';
+  }).join('');
 }
 
 function buildEditableSlideHTML(slide) {
@@ -3001,7 +3102,7 @@ function renderPresentSlide() {
   renderImageLayers(container, slide);
   renderTextBoxes(container, slide);
   applyContentOffset(container, slide);
-  document.getElementById('notesText').textContent = slide.note || 'No presenter notes.';
+  document.getElementById('notesText').innerHTML = formatNotesHTML(slide.note);
   document.getElementById('slideCounter').textContent = (presentIndex+1) + ' / ' + slides.length;
   // Vocab badge
   const badge = document.getElementById('vocabBadge');
